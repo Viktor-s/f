@@ -38,6 +38,10 @@ class Product extends BaseProduct {
     public function __construct()
     {
         parent::__construct();
+        
+        $this->variants = new ArrayCollection();
+        $this->setMasterVariant(new ProductVariant());
+        
         $this->subProducts = new ArrayCollection();
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();

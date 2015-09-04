@@ -3,10 +3,10 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
-
+use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ProductVariant extends BaseProductVariant {
+class ProductVariant extends BaseProductVariant implements BaseVariantInterface {
     
     /**
      *

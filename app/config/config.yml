@@ -100,7 +100,9 @@ sylius_variation:
         product:
             variant:
                 model: Furniture\ProductBundle\Entity\ProductVariant
-                
+                repository: Furniture\ProductBundle\Entity\Repository\ProductVariantRepository
+                form:
+                    default: Furniture\ProductBundle\Form\Type\ProductVariantType
 sylius_resource:
     resources:
         Furniture.sku_option:
