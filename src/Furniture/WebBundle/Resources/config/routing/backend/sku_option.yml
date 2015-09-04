@@ -1,0 +1,40 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+furniture_backend_sku_option_index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: Furniture.controller.sku_option:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/SkuOption:index.html.twig
+            sortable: true
+
+furniture_backend_sku_option_create:
+    path: /new
+    methods: [GET, POST]
+    defaults:
+        _controller: Furniture.controller.sku_option:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/SkuOption:create.html.twig
+            form: Furniture\SkuOptionBundle\Form\Type\SkuOptionFormType
+            redirect: furniture_backend_sku_option_index
+
+furniture_backend_sku_option_update:
+    path: /{id}/edit
+    methods: [GET, PUT]
+    defaults:
+        _controller: Furniture.controller.sku_option:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/SkuOption:update.html.twig
+            form: Furniture\SkuOptionBundle\Form\Type\SkuOptionFormType
+            redirect: furniture_backend_sku_option_index
+
+furniture_backend_sku_option_delete:
+    path: /{id}
+    methods: [DELETE]
+    defaults:
+        _controller: sylius.controller.product_attribute:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_sku_option_index

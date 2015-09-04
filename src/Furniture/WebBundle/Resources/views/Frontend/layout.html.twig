@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+{% set settings = sylius_settings_all('sylius_general') %}
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, minimal-ui"/>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/idangerous.swiper.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700%7CDancing+Script%7CMontserrat:400,700%7CMerriweather:400,300italic%7CLato:400,700,900' rel='stylesheet' type='text/css' />
+    <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
+    <!--[if IE 9]>
+        <link href="css/ie9.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <link rel="shortcut icon" href="/static/img/favicon-6.ico" />
+    <script href="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <title>
+            {% block title %}
+                {{ settings.title|default('sylius.meta.frontend_title'|trans) }}
+            {% endblock %}
+    </title>
+    <meta charset="UTF-8">
+    <meta name="description" content="{{ settings.meta_description|default('sylius.meta.frontend_description'|trans) }}">
+    <meta name="keywords" content="{{ settings.meta_keywords|default('sylius.meta.frontend_keywords'|trans) }}">
+</head>
+<body class="style-10">
+    {% if settings.tracking_code %}
+        {{ settings.tracking_code|raw }}
+    {% endif %}
+    <!-- LOADER -->
+    <div id="loader-wrapper">
+        <div class="bubbles">
+            <div class="title">loading</div>
+            <span></span>
+            <span id="bubble2"></span>
+            <span id="bubble3"></span>
+        </div>
+    </div>
+
+    <div id="content-block">
+
+        <div class="content-center fixed-header-margin">
+            <!-- HEADER -->
+            <div class="header-wrapper style-10">
+                <header class="type-1">
+
+                    <div class="header-product">
+                        <div class="logo-wrapper">
+                            <a href="shop.html#" id="logo"><img alt="" src="/static/img/logo-9.png"></a>
+                        </div>
+                        <div class="product-header-message">
+                            FREE SHIPPING ON ALL UK ORDERS this week
+                        </div>
+                        <div class="product-header-content">
+                            {% block header %}
+                                    {{ knp_menu_render('sylius.frontend.main', {'template': 'SyliusWebBundle:Frontend:menu.html.twig'}) }}
+                                    {{ knp_menu_render('sylius.frontend.locale', {'template': 'SyliusWebBundle:Frontend:menu.html.twig'}) }}
+                                    {{ knp_menu_render('sylius.frontend.currency', {'template': 'SyliusWebBundle:Frontend:menu.html.twig'}) }}
+                            {% endblock %}
+                            <div class="line-entry">
+                                <div class="header-top-entry increase-icon-responsive open-search-popup">
+                                    <div class="title"><i class="fa fa-search"></i> <span>Search</span></div>
+                                </div>
+                                <div class="header-top-entry">
+                                    <div class="title"><img alt="" src="/static/img/flag-lang-1.png">English<i class="fa fa-caret-down"></i></div>
+                                    <div class="list">
+                                        <a class="list-entry" href="shop.html#"><img alt="" src="/static/img/flag-lang-2.png">French</a>
+                                        <a class="list-entry" href="shop.html#"><img alt="" src="/static/img/flag-lang-3.png">Spanish</a>
+                                    </div>
+                                </div>
+                                <div class="header-top-entry">
+                                    <div class="title">$ USD <i class="fa fa-caret-down"></i></div>
+                                    <div class="list">
+                                        <a class="list-entry" href="shop.html#">$ CAD</a>
+                                        <a class="list-entry" href="shop.html#">€ EUR</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% block flashes %}
+                            {% for type in ['success', 'error', 'fos_user_success', 'notice'] %}
+                                {% for flash in app.session.flashbag.get(type) %}
+                                    <div class="alert alert-{{ type == 'fos_user_success' ? 'success' : type == 'error' ? 'danger' : type == 'notice' ? 'warning' : type }}">
+                                        <a class="close" data-dismiss="alert" href="#">×</a>
+                                        {{ flash|trans }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endblock %}
+                    </div>
+
+                    <div class="close-header-layer"></div>
+                    <div class="navigation">
+                        <div class="navigation-header responsive-menu-toggle-class">
+                            <div class="title">Navigation</div>
+                            <div class="close-menu"></div>
+                        </div>
+                        <div class="nav-overflow">
+                            <nav>
+                                <ul>
+                                    <li class="column-1">
+                                        <a href="blog.html">Blog</a><i class="fa fa-chevron-down"></i>
+                                        <div class="submenu">
+                                            <div class="full-width-menu-items-left">
+                                                <img class="submenu-background" src="/static/img/product-menu-8.jpg" alt="" />
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="submenu-list-title"><a href="blog.html">Blog <span class="menu-label blue">new</span></a><span class="toggle-list-button"></span></div>
+                                                        <ul class="list-type-1 toggle-list-container">
+                                                            <li><a href="blog.html"><i class="fa fa-angle-right"></i>Blog Default</a></li>
+                                                            <li><a href="blog-grid.html"><i class="fa fa-angle-right"></i>Blog Grid</a></li>
+                                                            <li><a href="blog-timeline.html"><i class="fa fa-angle-right"></i>Blog Timeline</a></li>
+                                                            <li><a href="blog-list.html"><i class="fa fa-angle-right"></i>Blog List</a></li>
+                                                            <li><a href="blog-biggrid.html"><i class="fa fa-angle-right"></i>Blog Big Grid</a></li>
+                                                            <li><a href="blog-detail.html"><i class="fa fa-angle-right"></i>Single Post</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="submenu-links-line">
+                                                <div class="submenu-links-line-container">
+                                                    <div class="cell-view">
+                                                        <div class="line-links"><b>Quicklinks:</b>  <a href="shop.html">Blazers</a>, <a href="shop.html">Jackets</a>, <a href="shop.html">Shoes</a>, <a href="shop.html">Bags</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul>
+                                    <li><a href="http://themeforest.net/item/mango-responsive-ecommerce-html5-template/12050763?ref=8theme">Buy this theme</a></li>
+                                    <li class="fixed-header-visible">
+                                        <a class="fixed-header-square-button open-cart-popup"><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="fixed-header-square-button open-search-popup"><i class="fa fa-search"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clear"></div>
+
+                                <a class="fixed-header-visible additional-header-logo"><img src="/static/img/logo-9.png" alt=""/></a>
+                            </nav>
+                            <div class="navigation-footer responsive-menu-toggle-class">
+                                <div class="socials-box">
+                                    <a href="shop.html#"><i class="fa fa-facebook"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-twitter"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-google-plus"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-youtube"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-linkedin"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-instagram"></i></a>
+                                    <a href="shop.html#"><i class="fa fa-pinterest-p"></i></a>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="navigation-copyright">Created by <a href="shop.html#">8theme</a>. All rights reserved</div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="clear"></div>
+            </div>
+
+            <div class="content-push">
+                <div class="breadcrumb-box">
+                    <a href="/">Home</a>
+                    {% block breadcrumb %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col-md-9">
+                {#{% block content %}
+                {% endblock %}#}
+            </div>
+        </div>
+            {% block main %}                
+                <div class="information-blocks">
+                    <div class="row">
+                        <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
+                            {% block content %}
+                            {% endblock %}
+                        </div>
+                        <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+                            <div class="information-blocks categories-border-wrapper">
+                                <div class="block-title size-3">Categories</div>
+                                <div class="accordeon">
+                                    <div class="accordeon-title">Bags &amp; Accessories</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordeon-title">Man's Products</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordeon-title">Woman's Products</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordeon-title">Top Brands</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordeon-title">Special Offer</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="accordeon-title">Leather's Products</div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            <ul>
+                                                <li><a href="shop.html#">Bags &amp; Accessories</a></li>
+                                                <li><a href="shop.html#">Man's Products</a></li>
+                                                <li><a href="shop.html#">Woman's Products</a></li>
+                                                <li><a href="shop.html#">Top Brands</a></li>
+                                                <li><a href="shop.html#">Special Offer</a></li>
+                                                <li><a href="shop.html#">Leather's Products</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>   
+                                </div>
+                            </div>
+                             
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+                <div class="information-blocks">
+                    <div class="row">
+                        {{ render(url('sylius_partial_product_latest', {'limit': 5, 'template': 'SyliusWebBundle:Frontend/Product:latestSidebar.html.twig'})) }}
+                        {{ render(url('sylius_partial_product_latest', {'limit': 5, 'template': 'SyliusWebBundle:Frontend/Product:latestSidebar.html.twig'})) }}
+                        {{ render(url('sylius_partial_product_latest', {'limit': 5, 'template': 'SyliusWebBundle:Frontend/Product:latestSidebar.html.twig'})) }}
+                    </div>
+                </div>                
+                <!-- FOOTER -->
+                <div class="footer-wrapper style-10">
+                    <footer class="type-1">
+                        <div class="footer-columns-entry">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img class="footer-logo" src="/static/img/logo-9.png" alt="" />
+                                    <div class="footer-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</div>
+                                    <div class="footer-address">30 South Avenue San Francisco<br/>
+                                        Phone: +78 123 456 789<br/>
+                                        Email: <a href="mailto:Support@blanco.com">Support@blanco.com</a><br/>
+                                        <a href="http://8theme.com/demo/html/mango/www.inmedio.com"><b>www.inmedio.com</b></a>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="col-md-2 col-sm-4">
+                                    <h3 class="column-title">Our Services</h3>
+                                    <ul class="column">
+                                        <li><a href="shop.html#">About us</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                        <li><a href="shop.html#">Custom Service</a></li>
+                                        <li><a href="shop.html#">Terms &amp; Condition</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="col-md-2 col-sm-4">
+                                    <h3 class="column-title">Our Services</h3>
+                                    <ul class="column">
+                                        <li><a href="shop.html#">About us</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                        <li><a href="shop.html#">Custom Service</a></li>
+                                        <li><a href="shop.html#">Terms &amp; Condition</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="col-md-2 col-sm-4">
+                                    <h3 class="column-title">Our Services</h3>
+                                    <ul class="column">
+                                        <li><a href="shop.html#">About us</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                        <li><a href="shop.html#">Custom Service</a></li>
+                                        <li><a href="shop.html#">Terms &amp; Condition</a></li>
+                                        <li><a href="shop.html#">Order History</a></li>
+                                        <li><a href="shop.html#">Returns</a></li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="clearfix visible-sm-block"></div>
+                                <div class="col-md-3">
+                                    <h3 class="column-title">Company working hours</h3>
+                                    <div class="footer-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</div>
+                                    <div class="footer-description">
+                                        <b>Monday-Friday:</b> 8.30 a.m. - 5.30 p.m.<br/>
+                                        <b>Saturday:</b> 9.00 a.m. - 2.00 p.m.<br/>
+                                        <b>Sunday:</b> Closed
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer-bottom-navigation">
+                            <div class="cell-view">
+                                <div class="footer-links">
+                                    <a href="shop.html#">Site Map</a>
+                                    <a href="shop.html#">Search</a>
+                                    <a href="shop.html#">Terms</a>
+                                    <a href="shop.html#">Advanced Search</a>
+                                    <a href="shop.html#">Orders and Returns</a>
+                                    <a href="shop.html#">Contact Us</a>
+                                </div>
+                                <div class="copyright">Created with by <a href="shop.html#">8theme</a>. All right reserved</div>
+                            </div>
+                            <div class="cell-view">
+                                <div class="payment-methods">
+                                    <a href="shop.html#"><img src="/static/img/payment-method-1.png" alt="" /></a>
+                                    <a href="shop.html#"><img src="/static/img/payment-method-2.png" alt="" /></a>
+                                    <a href="shop.html#"><img src="/static/img/payment-method-3.png" alt="" /></a>
+                                    <a href="shop.html#"><img src="/static/img/payment-method-4.png" alt="" /></a>
+                                    <a href="shop.html#"><img src="/static/img/payment-method-5.png" alt="" /></a>
+                                    <a href="shop.html#"><img src="/static/img/payment-method-6.png" alt="" /></a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="overlay-popup" id="image-popup">
+        
+        <div class="overflow">
+            <div class="table-view">
+                <div class="cell-view">
+                    <div class="close-layer"></div>
+                    <div class="popup-container">
+                        <img class="gallery-image" src="/static/img/portfolio-1.jpg" alt="" />
+                        <div class="close-popup"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-box popup">
+        {% render controller('sylius.controller.search:formAction', {'request':app.request}) %}
+    </div>
+
+    <div class="cart-box popup">
+        <div class="popup-container">
+            <div class="cart-entry">
+                <a class="image"><img src="/static/img/product-menu-1.jpg" alt="" /></a>
+                <div class="content">
+                    <a class="title" href="shop.html#">Pullover Batwing Sleeve Zigzag</a>
+                    <div class="quantity">Quantity: 4</div>
+                    <div class="price">$990,00</div>
+                </div>
+                <div class="button-x"><i class="fa fa-close"></i></div>
+            </div>
+            <div class="cart-entry">
+                <a class="image"><img src="/static/img/product-menu-1_.jpg" alt="" /></a>
+                <div class="content">
+                    <a class="title" href="shop.html#">Pullover Batwing Sleeve Zigzag</a>
+                    <div class="quantity">Quantity: 4</div>
+                    <div class="price">$990,00</div>
+                </div>
+                <div class="button-x"><i class="fa fa-close"></i></div>
+            </div>
+            <div class="summary">
+                <div class="subtotal">Subtotal: $990,00</div>
+                <div class="grandtotal">Grand Total <span>$1029,79</span></div>
+            </div>
+            <div class="cart-buttons">
+                <div class="column">
+                    <a class="button style-3">view cart</a>
+                    <div class="clear"></div>
+                </div>
+                <div class="column">
+                    <a class="button style-4">checkout</a>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/jquery-2.1.3.min.js"></script>
+    <script src="/static/js/idangerous.swiper.min.js"></script>
+    <script src="/static/js/global.js"></script>
+
+    <!-- custom scrollbar -->
+    <script src="/static/js/jquery.mousewheel.js"></script>
+    <script src="/static/js/jquery.jscrollpane.min.js"></script>
+
+    <!-- range slider -->
+    <script src="/static/js/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var minVal = parseInt($('.min-price span').text());
+            var maxVal = parseInt($('.max-price span').text());
+            $( "#prices-range" ).slider({
+                range: true,
+                min: minVal,
+                max: maxVal,
+                step: 5,
+                values: [ minVal, maxVal ],
+                slide: function( event, ui ) {
+                    $('.min-price span').text(ui.values[ 0 ]);
+                    $('.max-price span').text(ui.values[ 1 ]);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

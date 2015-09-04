@@ -1,0 +1,35 @@
+Furniture\ProductBundle\Entity\Product:
+    type: entity
+    table: furniture_product
+    oneToMany:
+        skuOptionVariants:
+          targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
+          cascade: [persist]
+          mappedBy: product
+          OrderBy:
+            - skuOptionType: ASC
+    manyToMany:
+        subProducts:
+            targetEntity: Product
+            cascade: [persist]
+            joinTable:
+                name: bundle_products_relation
+                joinColumns:
+                    bundle_product_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    child_product_id:
+                        referencedColumnName: id
+                        unique: true
+        bundleProducts:
+            fetch: EXTRA_LAZY
+            targetEntity: Product
+            mappedBy: subProducts
+    indexes:
+        factoryCode_index:
+            columns:
+                - factoryCode
+    fields:
+        factoryCode:
+            type: string
+            nullable: true

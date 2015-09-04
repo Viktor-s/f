@@ -1,0 +1,92 @@
+{% extends 'SyliusWebBundle:Frontend:layout.html.twig' %}
+
+{% block slideshow_full %}
+    <div class="row">
+        {{ sonata_block_render({'name': '/cms/blocks/slideshow-full'}) }}
+    </div>
+{% endblock %}
+
+{% block slideshow_sidebar %}
+    <div class="row">
+        {{ sonata_block_render({'name': '/cms/blocks/slideshow-sidebar'}) }}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+{{ sonata_block_render({'name': '/cms/blocks/slideshow-home'}) }}
+
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+
+{% from 'SyliusWebBundle:Frontend/Product:macros.html.twig' import grid %}
+<div class="page-selector">
+                                <div class="pages-box hidden-xs">
+                                    {% if(products.hasPreviousPage()) %}
+                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': 1 })) }}" class="square-button">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>
+                                        <div class="divider"></div>
+                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': products.previousPage })) }}" class="square-button">
+                                            {{ products.previousPage }}
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': products.currentPage })) }}" class="square-button active">{{ products.currentPage }}</a>
+                                    {% if(products.hasNextPage()) %}
+                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': products.nextPage })) }}" class="square-button">
+                                            {{ products.nextPage }}
+                                        </a>
+                                        {% if( products.currentPage == 1 ) %}
+                                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': (products.nextPage+1) })) }}" class="square-button">
+                                                {{ (products.nextPage+1) }}
+                                            </a>
+                                        {% endif %}
+                                    <div class="divider"></div>
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': products.nbPages })) }}" class="square-button"><i class="fa fa-angle-right"></i></a>
+                                    {% endif %}
+                                </div>
+                                <div class="shop-grid-controls">
+                                    <div class="entry">
+                                        <div class="inline-text">Sorty by</div>
+                                        <div class="simple-drop-down">
+                                            <select name="sorting">
+                                                <option>Position</option>
+                                                <option>Price</option>
+                                                <option>Category</option>
+                                                <option>Rating</option>
+                                                <option>Color</option>
+                                            </select>
+                                        </div>
+                                        <div class="sort-button"></div>
+                                    </div>
+                                    <div class="entry">
+                                        <div class="view-button active grid"><i class="fa fa-th"></i></div>
+                                        <div class="view-button list"><i class="fa fa-list"></i></div>
+                                    </div>
+                                    <div class="entry">
+                                        <div class="inline-text">Show</div>
+                                        <div class="simple-drop-down" style="width: 75px;">
+                                            <select name="perpage">
+                                                <option>10</option>
+                                                <option>15</option>
+                                                <option>20</option>
+                                            </select>
+                                        </div>
+                                        <div class="inline-text">per page</div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+<div class="row">
+
+
+
+{{ grid(products) }}
+
+<script>
+    $(document).ready(function(){
+        alert('boo!!!');
+    });
+</script>
+
+{% endblock %}

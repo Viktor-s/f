@@ -1,0 +1,49 @@
+{% from 'SyliusWebBundle:Frontend/Product:macros.html.twig' import grid %}
+{{ products.currentPage }}
+<div class="page-selector">
+                                <div class="pages-box hidden-xs">
+                                    <a href="shop.html#" class="square-button active">1</a>
+                                    <a href="shop.html#" class="square-button">2</a>
+                                    <a href="shop.html#" class="square-button">3</a>
+                                    <div class="divider">...</div>
+                                    <a href="shop.html#" class="square-button"><i class="fa fa-angle-right"></i></a>
+                                </div>
+                                <div class="shop-grid-controls">
+                                    <div class="entry">
+                                        <div class="inline-text">Sorty by</div>
+                                        <div class="simple-drop-down">
+                                            <select>
+                                                <option>Position</option>
+                                                <option>Price</option>
+                                                <option>Category</option>
+                                                <option>Rating</option>
+                                                <option>Color</option>
+                                            </select>
+                                        </div>
+                                        <div class="sort-button"></div>
+                                    </div>
+                                    <div class="entry">
+                                        <div class="view-button active grid"><i class="fa fa-th"></i></div>
+                                        <div class="view-button list"><i class="fa fa-list"></i></div>
+                                    </div>
+                                    <div class="entry">
+                                        <div class="inline-text">Show</div>
+                                        <div class="simple-drop-down" style="width: 75px;">
+                                            <select>
+                                                <option>12</option>
+                                                <option>20</option>
+                                                <option>30</option>
+                                                <option>40</option>
+                                                <option>all</option>
+                                            </select>
+                                        </div>
+                                        <div class="inline-text">per page</div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+<div class="row">
+
+
+
+{{ grid(products) }}

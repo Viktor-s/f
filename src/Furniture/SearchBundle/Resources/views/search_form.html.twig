@@ -1,0 +1,19 @@
+        <form action="{{ path('sylius_search_homepage') }}" method="{{ requestMethod }}">
+            <div class="search-button">
+                <i class="fa fa-search"></i>
+                <input type="submit" />
+            </div>
+            <div class="input-group-btn search-panel search-drop-down">
+                <div class="title"><span>All categories</span><i class="fa fa-angle-down"></i></div>
+                <ul class="list" role="menu">
+                    <li><div class="category-entry"><a href="#all">All categories</a></div></li>
+                    {%  for filter in filters %}
+                    <li><div class="category-entry"><a href="#{{ filter }}">{{ filter }}</a></div></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <input type="hidden" name="search_param" value="{{ searchParam ?: 'all' }}" id="search_param">
+            <div class="search-field">
+                <input type="text" class="text" id="search" placeholder="Search term..." name="q" value="{{ searchTerm ?: '' }}">
+            </div>
+        </form>

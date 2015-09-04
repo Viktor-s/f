@@ -1,0 +1,26 @@
+<div class="col-md-3 col-sm-4 shop-grid-item">
+    <div class="product-slide-entry shift-image">
+        <div class="product-image">
+            <img class="img-rounded img-responsive" src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : 'http://placehold.it/262x255' }}" alt="{{ product.name }}" />
+            {#<img src="/static/img/product-minimal-11.jpg" alt="" />#}
+            <div class="bottom-line left-attached">
+                <a href="{{ path(product) }}" class="bottom-line-a square"><i class="fa fa-shopping-cart"></i></a>
+                <a class="bottom-line-a square"><i class="fa fa-heart"></i></a>
+                <a class="bottom-line-a square"><i class="fa fa-retweet"></i></a>
+                <a class="bottom-line-a square"><i class="fa fa-expand"></i></a>
+            </div>
+        </div>
+        <a class="tag" href="shop.html#">Men clothing</a>
+        <a class="title" href="{{ path(product) }}">{{ product.name|truncate(18) }}</a>
+        <div class="article-container style-1">
+            {{ product.shortDescription|default('sylius.product.no_description')|trans|raw }}
+        </div>
+        <div class="price">
+            {{ sylius_calculate_price(product.masterVariant)|sylius_price }}
+        </div>
+        <div class="list-buttons">
+            <a href="{{ path(product) }}" class="button style-10">Add to cart</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

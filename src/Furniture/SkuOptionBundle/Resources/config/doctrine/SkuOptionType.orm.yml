@@ -1,0 +1,13 @@
+Furniture\SkuOptionBundle\Entity\SkuOptionType:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: furniture_product_option_type
+    id:
+        id:
+             type: integer
+             nullable: false
+             unsigned: false
+             id: true
+             generator:
+                 strategy: AUTO
+            

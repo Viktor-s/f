@@ -1,0 +1,40 @@
+Furniture\SkuOptionBundle\Entity\SkuOptionVariant:
+    type: entity
+    table: furniture_product_sku_option_variants
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinColumn:
+                name: product_id
+                inversedBy: skuOptionVariants
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+        skuOptionType:
+            targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionType
+            joinColumn:
+                name: sku_option_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+    indexes:
+        unique_index:
+            columns:
+                - product_id
+                - sku_option_id
+                - value
+            options:
+                unique: true
+    fields:
+        value:
+             type: string
+        
+             nullable: false

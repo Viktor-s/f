@@ -1,0 +1,20 @@
+Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: furniture_product_option_type_translation
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    indexes:
+        name_index:
+            columns:
+                - name
+    fields:
+        name:
+            type: string
+            nullable: true

@@ -1,0 +1,17 @@
+Furniture\ProductBundle\Entity\ProductVariant:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    
+    manyToMany:
+        skuOptions:
+            targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
+            cascade: [persist]
+            joinTable:
+                name: variant_sku_options_relation
+                joinColumns:
+                    product_variant_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    sku_option_id:
+                        referencedColumnName: id
+                        unique: true

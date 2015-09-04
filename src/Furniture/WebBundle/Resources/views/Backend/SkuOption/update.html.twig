@@ -1,0 +1,35 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{% block javascripts %}
+{{ parent() }}
+{% javascripts output='assets/compiled/backend_product_attribute.js'
+    'bundles/syliusweb/js/sylius-attribute-choices.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+    <li><a href="{{ path('furniture_backend_sku_option_index') }}">Sku attribute</a></li>
+    <li>{{ sku_option.name }}</li>
+    <li>{{ 'sylius.breadcrumb.edit'|trans }}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="glyphicon glyphicon-pencil"></i> {{ 'sylius.product_attribute.update_header'|trans|raw }}</h1>
+</div>
+
+{{ form_errors(form) }}
+
+<form action="{{ path('furniture_backend_sku_option_update', {'id': sku_option.id}) }}" method="post" class="form-horizontal" novalidate>
+    <input type="hidden" name="_method" value="PUT">
+    {% include 'SyliusWebBundle:Backend/SkuOption:_form.html.twig' %}
+    {{ update() }}
+</form>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends 'SyliusWebBundle:Frontend:layout.html.twig' %}
+
+{% set form = sylius_cart_form({'product': product}) %}
+
+{% block breadcrumb %}
+    <a href="{{ path(product) }}">{{ product.name }}</a>
+{% endblock %}
+
+{% block main %}
+
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-md-6 information-entry">
+                {% if product.images|length > 0 %}
+                <div class="product-preview-box">
+                                <div class="swiper-container product-preview-swiper" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
+                                    <div class="swiper-wrapper">
+                                        {% for image in product.images %}
+                                        <div class="swiper-slide">
+                                            <div class="product-zoom-image">
+                                                <img src="{{ image.path|imagine_filter('sylius_medium') }}" alt="{{ product.name }}" data-zoom="{{ image.path|imagine_filter('sylius_large') }}" />
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="pagination"></div>
+                                    <div class="product-zoom-container">
+                                        <div class="move-box">
+                                            <img class="default-image" src="" alt="" />
+                                            <img class="zoomed-image" src="" alt="" />
+                                        </div>
+                                        <div class="zoom-area"></div>
+                                    </div>
+                                </div>
+                                <div class="swiper-hidden-edges">
+                                    <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                                        <div class="swiper-wrapper">
+                                            {% for image in product.images %}
+                                            <div class="swiper-slide selected">
+                                                <div class="paddings-container">
+                                                    <img src="{{ image.path|imagine_filter('sylius_small') }}" alt="" />
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="pagination"></div>
+                                    </div>
+                                </div>
+                            </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6 information-entry">
+                <h3 class="block-title main-heading">{{ product.name }}</h3>
+                <div class="article-container style-1">
+                    <h4>PRODUCT DESCRIPTION</h4>
+                    <p>{{ product.description }}</p>
+                </div>
+                <div class="detail-info-lines">
+                    {% if product.attributes|length > 0 %}
+                        {% for attribute in product.attributes %}
+                            <div class="share-box">
+                                <div class="title"><b>{{ attribute.presentation }}:</b> {{ attribute.value }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="share-box">
+                        <div class="title"><b>Share social:</b></div>
+                        <div class="socials-box">
+                            <a href="project-default.html#"><i class="fa fa-facebook"></i></a>
+                            <a href="project-default.html#"><i class="fa fa-twitter"></i></a>
+                            <a href="project-default.html#"><i class="fa fa-google-plus"></i></a>
+                            <a href="project-default.html#"><i class="fa fa-youtube"></i></a>
+                            <a href="project-default.html#"><i class="fa fa-rss"></i></a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information-blocks">
+        <h3 class="block-title">Related products</h3>
+        <div class="portfolio-container type-1">
+            {% set line=3 %}
+            {% set current_line = 1 %}
+            {% for sub_product in product.subProducts %}
+            {% if current_line == 1 %}
+                <div class="row">
+            {% endif %}
+                <div class="col-sm-4 portfolio-entry">
+                    <div class="image">
+                        <img alt="" src="img/portfolio-1.jpg">
+                        <div class="hover-layer">
+                            <div class="info">
+                                <div class="actions">
+                                    <a class="action-button open-image" href="project-default.html#"><i class="fa fa-search"></i></a>
+                                    <a class="action-button" href="project-default.html#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="title" href="project-default.html#">{{ sub_product.name }}</a>
+                    <div class="description">{{ sub_product.shortDescription }}</div>
+                </div>
+            {% if current_line == line %}
+                </div>
+                {% set current_line = 1 %}
+            {% endif %}
+            {% set current_line = line + 1 %}
+            {% endfor %}
+            {% if current_line and current_line != 3 %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

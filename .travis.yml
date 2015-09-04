@@ -1,0 +1,64 @@
+language: php
+
+sudo: false
+
+matrix:
+    fast_finish: true
+
+    include:
+        - php: 5.6
+          env: TEST_SUITE=1
+        - php: 5.6
+          env: TEST_SUITE=2
+
+        - php: 5.3
+          env: TEST_SUITE=1 COMPOSER_FLAGS="--prefer-lowest"
+        - php: 5.3
+          env: TEST_SUITE=2 COMPOSER_FLAGS="--prefer-lowest"
+
+        - php: 5.3
+          env: TEST_SUITE=1
+        - php: 5.3
+          env: TEST_SUITE=2
+
+        - php: 5.4
+          env: TEST_SUITE=1
+        - php: 5.4
+          env: TEST_SUITE=2
+
+        - php: 5.5
+          env: TEST_SUITE=1
+        - php: 5.5
+          env: TEST_SUITE=2
+
+        - php: 7.0
+          env: TEST_SUITE=1
+        - php: 7.0
+          env: TEST_SUITE=2
+
+    allow_failures:
+        - php: 7.0
+
+services:
+    - mongodb
+
+before_install:
+    - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+    - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "zend.enable_gc = 0" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+    - composer self-update
+    - composer install --prefer-source --no-interaction
+    - composer require doctrine/mongodb-odm="1.0.*@dev" --no-update
+    - composer require jmikola/geojson="~1.0" --no-update
+    - composer update doctrine/mongodb-odm jmikola/geojson --prefer-source --no-interaction $COMPOSER_FLAGS
+
+before_script:
+    - app/console doctrine:database:create --env=test
+    - app/console doctrine:schema:create --env=test
+    - app/console doctrine:phpcr:repository:init --env=test
+    - app/console cache:warmup --env=test
+
+script:
+    - travis/run-tests $TEST_SUITE

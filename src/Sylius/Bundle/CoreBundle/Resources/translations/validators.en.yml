@@ -1,0 +1,25 @@
+sylius:
+    locale:
+        code:
+            not_blank: Please enter locale code.
+            unique: This locale already exists.
+    product_variant:
+        onHand:
+            min: On hand must be greater than {{ limit }}.
+            not_blank: Please enter on hand.
+        price:
+            min: Price must not be negative.
+            not_blank: Please enter the price.
+    product_translation:
+        short_description:
+            max: Short description must not be longer then {{ limit }} characters.
+
+sylius_shipping:
+    method:
+        zone:
+            not_blank: Please enter shipping method zone.
+
+sylius_taxation:
+    rate:
+        zone:
+            not_blank: Please enter tax rate zone.

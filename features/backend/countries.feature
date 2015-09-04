@@ -1,0 +1,154 @@
+@addressing
+Feature: Countries and provinces
+    In order to create tax and shipping zones
+    As a store owner
+    I want to be able to manage countries and their provinces
+
+    Background:
+        Given there is default currency configured
+        And there are following locales configured:
+            | code  | enabled |
+            | en_US | yes     |
+        And there is default channel configured
+        And I am logged in as administrator
+        And there are following countries:
+            | name    | provinces                       |
+            | France  | Lyon, Toulouse, Rennes, Nancy   |
+            | China   |                                 |
+            | Ukraine | Kiev, Odessa, Cherkasy, Kharkiv |
+
+    Scenario: Seeing index of all countries
+        Given I am on the dashboard page
+         When I follow "Countries"
+         Then I should be on the country index page
+          And I should see 3 countries in the list
+
+    Scenario: Names are listed in the index
+        Given I am on the dashboard page
+         When I follow "Countries"
+         Then I should be on the country index page
+          And I should see country with name "China" in the list
+
+    Scenario: ISO codes are listed in the index
+        Given I am on the dashboard page
+         When I follow "Countries"
+         Then I should be on the country index page
+          And I should see country with iso code "FR" in the list
+
+    Scenario: Seeing empty index of countries
+        Given there are no countries
+         When I am on the country index page
+         Then I should see "There are no countries configured"
+
+    Scenario: Accessing the country creation form
+        Given I am on the dashboard page
+         When I follow "Countries"
+          And I follow "Create country"
+         Then I should be on the country creation page
+
+    Scenario: Submitting form without name filled
+        Given I am on the country creation page
+         When I press "Create"
+         Then I should still be on the country creation page
+          And I should see "Please enter country name."
+
+    Scenario: Country ISO code is required
+        Given I am on the country creation page
+         When I fill in "Name" with "Poland"
+         When I press "Create"
+         Then I should still be on the country creation page
+          And I should see "Please enter country ISO code."
+
+    Scenario: Creating new country
+        Given I am on the country creation page
+         When I fill in "Name" with "Poland"
+          And I fill in "ISO name" with "PL"
+          And I press "Create"
+         Then I should be on the page of country "Poland"
+          And I should see "Country has been successfully created."
+
+    @javascript
+    Scenario: Creating new country with provinces
+        Given I am on the country creation page
+         When I fill in "Name" with "Poland"
+          And I fill in "ISO name" with "PL"
+          And I click "Add province"
+          And I click "Add province"
+          And I fill in the 1st province with "Lubusz"
+          And I fill in the 2nd province with "Łódź"
+          And I press "Create"
+         Then I should see "Country has been successfully created."
+          And "Łódź" should appear on the page
+          And "Lubusz" should appear on the page
+
+    Scenario: Created countries appear in the list
+        Given I created country "Poland"
+         When I go to the country index page
+         Then I should see 4 countries in the list
+          And I should see country with name "Poland" in that list
+
+    Scenario: Accessing the country editing form
+        Given I am on the page of country "France"
+         When I follow "edit"
+         Then I should be editing country "France"
+
+    Scenario: Accessing the editing form from the list
+        Given I am on the country index page
+         When I click "edit" near "China"
+         Then I should be editing country "China"
+
+    Scenario: Updating the country and province
+        Given I am editing country "Ukraine"
+         When I fill in "Name" with "Russia"
+          And I fill in "ISO name" with "RU"
+          And I fill in province name with "Volgograd"
+          And I press "Save changes"
+         Then I should be on the page of country "Russia"
+          And "Russia" should appear on the page
+
+    @javascript
+    Scenario: Updating the country and removing province
+      Given I am editing country "Ukraine"
+       When I fill in "Name" with "Russia"
+        And I fill in "ISO name" with "RU"
+        And I remove all the provinces
+        And I press "Save changes"
+       Then I should see "Country has been successfully updated."
+        And "Russia" should appear on the page
+        But I should not see "Provinces"
+
+    @javascript
+    Scenario: Deleting country via the list
+        Given I am on the country index page
+         When I press "delete" near "China"
+          And I click "delete" from the confirmation modal
+         Then I should still be on the country index page
+          And I should see "Country has been successfully deleted."
+          But I should not see country with name "China" in the list
+
+    @javascript
+    Scenario: Deleting country
+        Given I am on the page of country "China"
+         When I press "delete"
+          And I click "delete" from the confirmation modal
+         Then I should be on the country index page
+          And I should see "Country has been successfully deleted."
+
+    Scenario: Accessing country details via the list
+        Given I am on the country index page
+         When I click "China"
+         Then I should be on the page of country "China"
+
+    Scenario: Provinces are listed on country page
+        Given I am on the country index page
+         When I click "France"
+         Then I should be on the page of country "France"
+          And I should see 4 provinces in the list
+
+    @javascript
+    Scenario: Deleting province
+        Given I am on the page of country "France"
+         When I press "delete" near "Toulouse"
+          And I click "delete" from the confirmation modal
+         Then I should still be on the page of country "France"
+          And "Toulouse" should not appear on the page

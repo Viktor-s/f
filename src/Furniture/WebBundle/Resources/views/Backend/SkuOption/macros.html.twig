@@ -1,0 +1,32 @@
+{% macro list(sku_options) %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% if sku_options|length > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sku_option in sku_options %}
+            <tr id="{{ sku_option.id }}">
+                <td>{{ sku_option.name }}</td>
+                <td>
+                    <div class="pull-right">
+                    {{ buttons.edit(path('furniture_backend_sku_option_update', {'id': sku_option.id})) }}
+                    {{ buttons.delete(path('furniture_backend_sku_option_delete', {'id': sku_option.id})) }}
+                   </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+{{ alerts.info('sylius.product_attribute.no_results'|trans) }}
+{% endif %}
+
+{% endmacro %}

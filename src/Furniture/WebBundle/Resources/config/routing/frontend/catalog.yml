@@ -1,0 +1,12 @@
+furniture_catalog_list:
+    path: /catalog
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product:indexAction
+        _sylius:
+            paginate: 6
+            sortable: true
+            sorting:
+                updatedAt: desc
+            template: $template
+            permission: false
