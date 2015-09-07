@@ -5,12 +5,23 @@ namespace Furniture\ProductBundle\Form\Type;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Furniture\ProductBundle\Form\EventListener\BuildSkuOptionFormSubscriber;
 
 class ProductVariantType extends BaseProductVariantType {
-
-    function __construct($dataClass, array $validationGroups, $variableName) {
-        parent::__construct($dataClass, $validationGroups, $variableName);
-        $this->dataClass = $dataClass;
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+        
+        $variant = $builder->getData();
+        
+        if (!$options['master']) {
+            $builder->add('skuOptions', new \Furniture\ProductBundle\Form\Type\ProductVariantSkuOptions($variant));
+        }
+        
     }
     
     /**

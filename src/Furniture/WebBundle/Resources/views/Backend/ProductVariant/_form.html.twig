@@ -8,6 +8,19 @@
                 {{ form_row(optionForm) }}
             {% endfor %}
         {% endif %}
+        <br/>
+        {% if form.skuOptions is defined and form.skuOptions|length > 0 %}
+            {{ form_label(form.skuOptions) }}
+        <hr/>
+            {{ form_widget(form.skuOptions) }}
+        <hr/>
+        {% endif %}
+        {% if form.skuOptions is defined and form.skuOptions|length > 0 %}
+            {{ form_row(form.skuOptions) }}
+            {% for optionForm in form.skuOptions %}
+                {{ form_row(optionForm) }}
+            {% endfor %}
+        {% endif %}
         {{ form_row(form.presentation) }}
         {{ form_row(form.sku) }}
         <div class="form-group">

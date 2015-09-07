@@ -33,6 +33,13 @@ class SkuOptionVariant {
     }
     
     /**
+     * @return string
+     */
+    public function getName(){
+        return $this->getSkuOptionType()->getName();
+    }
+
+        /**
      * 
      * @return integer
      */

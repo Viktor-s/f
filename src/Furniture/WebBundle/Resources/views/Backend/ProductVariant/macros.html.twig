@@ -36,6 +36,12 @@
                 {% for option in variant.options %}
                     <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
                 {% endfor %}
+                {% if variant.skuOptions is defined and variant.skuOptions|length > 0 %}
+                <hr/>
+                {% endif %}
+                {% for sku_option in variant.SkuOptions %}
+                    <li><strong>{{ sku_option.name }}</strong>: {{ sku_option.value }}</li>
+                {% endfor %}
                 </ul>
             </td>
             <td>
