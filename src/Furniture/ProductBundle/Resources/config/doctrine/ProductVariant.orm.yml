@@ -14,4 +14,3 @@ Furniture\ProductBundle\Entity\ProductVariant:
                 inverseJoinColumns:
                     sku_option_id:
                         referencedColumnName: id
-                        unique: true

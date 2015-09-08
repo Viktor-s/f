@@ -1,0 +1,10 @@
+services:
+    Furniture.generator.product_variant:
+        class: Furniture\ProductBundle\Generator\VariantGenerator
+        arguments:
+            - '@sylius.repository.product_variant'
+            - '@sylius.set_builder.cartesian'
+            - '@validator'
+            - '@event_dispatcher'
+        calls:
+        - [setContainer, ['@service_container']]

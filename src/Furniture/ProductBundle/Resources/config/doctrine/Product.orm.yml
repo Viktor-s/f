@@ -20,7 +20,6 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     child_product_id:
                         referencedColumnName: id
-                        unique: true
         bundleProducts:
             fetch: EXTRA_LAZY
             targetEntity: Product

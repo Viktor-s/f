@@ -99,6 +99,7 @@ sylius_variation:
     classes:
         product:
             variant:
+                controller: Furniture\ProductBundle\Controller\VariantController
                 model: Furniture\ProductBundle\Entity\ProductVariant
                 repository: Furniture\ProductBundle\Entity\Repository\ProductVariantRepository
                 form:
