@@ -8,27 +8,47 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-3">
-        <a href="{{ path(product) }}" class="thumbnail">
-            <img src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : 'http://placehold.it/200x200' }}" alt="{{ product.name }}" />
-        </a>
+    <div class="col-sm-5 col-md-4 col-lg-5 information-entry">
+		<div class="product-preview-box">
+			<div class="swiper-container product-preview-swiper swiper-swiper-unique-id-0 initialized">
+				<div class="swiper-wrapper">
+					{# for image in product.images #}
+						<div class="swiper-slide">
+							<div class="product-zoom-image">
+								<img src="{{ product.image ? product.image.path|imagine_filter('sylius_large') : 'http://placehold.it/200x200' }}" alt="{{ product.name }}" />
+							</div>
+						</div>
+					{# endfor #}
+				</div>
+			</div>
+			<div class="swiper-hidden-edges">
+				<div class="swiper-container product-thumbnails-swiper swiper-swiper-unique-id-1 initialized pagination-hidden">
+					<div class="swiper-wrapper">
+					{% if product.images|length > 0 %}
+						{% for image in product.images %}
+							<a href="{{ image.path|imagine_filter('sylius_large') }}" title="{{ product.name }}">
+								<img src="{{ image.path|imagine_filter('sylius_small') }}" alt="{{ product.name }}" />
+							</a>
+						{% endfor %}
+					{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
-    <div class="col-md-9">
-        <a href="{{ path(product) }}" class="btn btn-link"><h3>{{ product.name }}</h3></a>
-        <p>{{ product.shortDescription|default('sylius.product.no_description')|trans|raw }}</p>
+    <div class="col-sm-7 col-md-4 information-entry">
+		<div class="product-detail-box">
+			<h1 class="product-title">{{ product.name }}</h1>
+			<div class="product-description detail-info-entry">{{ product.description|default('sylius.product.no_description')|trans|raw }}</div>
+		</div>
+		<div class="price detail-info-entry">
+			<div class="current">
+				{{ sylius_calculate_price(product.masterVariant)|sylius_price }}
+			</div>
+		</div>
     </div>
+	<div class="clear visible-xs visible-sm"></div>
 </div>
-{% if product.images|length > 0 %}
-<hr>
-<div id="gallery">
-    {% for image in product.images %}
-        <a href="{{ image.path|imagine_filter('sylius_large') }}" title="{{ product.name }}">
-            <img class="img-rounded" src="{{ image.path|imagine_filter('sylius_small') }}" alt="{{ product.name }}" />
-        </a>
-    {% endfor %}
-</div>
-{% endif %}
-<hr>
 <div class="row">
     <div class="col-md-6">
         {% if product.attributes|length > 0 %}
@@ -48,10 +68,6 @@
             </tbody>
         </table>
         {% endif %}
-    </div>
-    <div class="col-md-6">
-        <h4>{{ 'sylius.product.description'|trans }}</h4>
-        <p>{{ product.description|default('sylius.product.no_description')|trans|raw }}</p>
     </div>
 </div>
 <hr>

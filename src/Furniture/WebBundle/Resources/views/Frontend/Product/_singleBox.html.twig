@@ -1,9 +1,8 @@
 <div class="col-md-3 col-sm-4 shop-grid-item">
     <div class="product-slide-entry shift-image">
         <div class="product-image">
-            <img class="img-rounded img-responsive" src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : 'http://placehold.it/262x255' }}" alt="{{ product.name }}" />
-            <img class="img-rounded img-responsive" src="{{ product.images[1] ? product.images[1].path|imagine_filter('sylius_medium') : 'http://placehold.it/262x255' }}" alt="{{ product.name }}" />
-            {#<img src="/static/img/product-minimal-11.jpg" alt="" />#}
+            <img class="img-responsive" src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : 'http://placehold.it/262x255' }}" alt="{{ product.name }}" />
+            <img class="img-responsive" src="{{ product.images[1] ? product.images[1].path|imagine_filter('sylius_medium') : 'http://placehold.it/262x255' }}" alt="{{ product.name }}" />
             <div class="bottom-line left-attached">
                 <a href="{{ path(product) }}" class="bottom-line-a square"><i class="fa fa-shopping-cart"></i></a>
                 <a class="bottom-line-a square"><i class="fa fa-heart"></i></a>
