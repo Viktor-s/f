@@ -37,10 +37,10 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface 
 
     /**
      * 
-     * @param \Furniture\ProductBundle\Entity\Collection $sku_options
+     * @param \Doctrine\Common\Collections\ArrayCollection $sku_options
      * @return \Furniture\ProductBundle\Entity\ProductVariant
      */
-    public function setSkuOptions(Collection $sku_options){
+    public function setSkuOptions(ArrayCollection $sku_options){
         $this->skuOptions = $sku_options;
         return $this;
     }
