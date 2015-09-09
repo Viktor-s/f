@@ -49,16 +49,18 @@
 		<div class="product-detail-box">
 			<h1 class="product-title">{{ product.name }}</h1>
 			<div class="product-description detail-info-entry">{{ product.description|default('sylius.product.no_description')|trans|raw }}</div>
-		</div>
-		<div class="price detail-info-entry">
-			<div class="current">
-				{{ sylius_calculate_price(product.masterVariant)|sylius_price }}
+			<div class="price detail-info-entry">
+				<div class="current">
+					{{ sylius_calculate_price(product.masterVariant)|sylius_price }}
+				</div>
+			</div>
+			<div class="price detail-info-entry">
 			</div>
 		</div>
     </div>
 	<div class="clear visible-xs visible-sm"></div>
 </div>
-<div class="row">
+<!--div class="row">
     <div class="col-md-6">
         {% if product.attributes|length > 0 %}
         <table class="table table-condensed">
@@ -149,5 +151,5 @@
         {% endif %}
     </div>
 </form>
-</div>
+</div-->
 {% endblock %}
