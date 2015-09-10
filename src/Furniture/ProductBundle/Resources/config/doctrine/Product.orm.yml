@@ -6,6 +6,7 @@ Furniture\ProductBundle\Entity\Product:
           targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
           cascade: [persist]
           mappedBy: product
+          orphanRemoval: true
           OrderBy:
             - skuOptionType: ASC
     manyToMany:
