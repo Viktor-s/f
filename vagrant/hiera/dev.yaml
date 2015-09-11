@@ -1,0 +1,47 @@
+domain: furniture.dev
+web_dir: /var/www/furniture.dev/web
+
+php_fpm_user: vagrant
+php_fpm_group: vagrant
+
+classes:
+    - ssh
+
+#--SSH Client--
+ssh::storeconfigs_enabled: false
+ssh::client_options:
+    'Host *':
+        SendEnv: 'LANG LC_*'
+        ForwardX11Trusted: 'yes'
+        ServerAliveInterval: '10'
+        HostbasedAuthentication: 'yes'
+        EnableSSHKeysign: 'yes'
+        UserKnownHostsFile: '/dev/null'
+        StrictHostKeyChecking: 'no'
+        LogLevel: 'DEBUG'
+
+# NGINX
+nginx::nginx_vhosts:
+    "%{hiera('domain')}":
+        www_root: "%{hiera('web_dir')}"
+        try_files: ["$uri /app.php$is_args$args"]
+        server_name: [ "%{hiera('domain')}" ]
+        raw_append:
+            - "charset UTF-8;"
+
+
+nginx::nginx_locations:
+    dev_proxy:
+        vhost: "%{hiera('domain')}"
+        www_root: "%{hiera('web_dir')}"
+        ensure: present
+        location: '~ ^/(app|app_dev|app_test)\.php(/|$)'
+        fastcgi: 127.0.0.1:9000
+        proxy_read_timeout: "300"
+        proxy_connect_timeout: "300"
+        fastcgi_param:
+            SCRIPT_FILENAME: $document_root$fastcgi_script_name
+            HTTPS: "off"
+
+php::packages:
+    - php56w-pecl-xdebug

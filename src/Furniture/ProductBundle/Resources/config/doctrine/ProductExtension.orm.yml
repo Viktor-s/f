@@ -1,0 +1,22 @@
+Furniture\ProductBundle\Entity\ProductExtension:
+    type: entity
+    table: product_extension
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name
+
+    oneToMany:
+        optionValues:
+            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionOptionValue
+            mappedBy: extension
+            cascade: [ persist ]
+            orphanRemoval: true

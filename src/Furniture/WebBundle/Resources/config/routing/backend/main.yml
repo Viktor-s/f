@@ -44,6 +44,10 @@ furniture_backend_sku_option:
     resource: @SyliusWebBundle/Resources/config/routing/backend/sku_option.yml
     prefix: /sku-attributes
 
+furniture_backend_product_extension:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_extension.yml
+    prefix: /product-extension
+
 sylius_backend_product_archetype:
     resource: @SyliusWebBundle/Resources/config/routing/backend/product_archetype.yml
     prefix: /product-archetypes

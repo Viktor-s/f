@@ -1,0 +1,77 @@
+furniture_backend_product_extension:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_extension:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension:index.html.twig
+
+furniture_backend_product_extension_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_extension:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension:create.html.twig
+            redirect: furniture_backend_product_extension
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionType
+
+furniture_backend_product_extension_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension:update.html.twig
+            redirect: furniture_backend_product_extension
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionType
+
+furniture_backend_product_extenstion_delete:
+    path: /{id}/delete
+    methods: [ GET, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_extension
+
+furniture_backend_product_extension_option:
+    path: /options
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_extension_option:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension/Option:index.html.twig
+
+furniture_backend_product_extension_option_create:
+    path: /option/new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_extension_option:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension/Option:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionOptionType
+            redirect: furniture_backend_product_extension_option
+
+furniture_backend_product_extension_option_update:
+    path: /option/{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension_option:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension/Option:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionOptionType
+            redirect: furniture_backend_product_extension_option
+
+furniture_backend_product_extension_option_delete:
+    path: /option/{id}/delete
+    methods: [ GET, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension_option:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_extension_option

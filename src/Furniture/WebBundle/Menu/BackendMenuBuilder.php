@@ -128,10 +128,16 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'furniture_backend_sku_option_index',
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
             ))->setLabel('SKU Attribute types');
+
             $child->addChild('product_attributes', array(
                 'route' => 'sylius_backend_product_attribute_index',
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.attributes', $section)));
+
+            $child->addChild('product_extension', [
+                'route' => 'furniture_backend_product_extension',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Product extensions');
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_archetype.index')) {

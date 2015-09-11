@@ -1,0 +1,64 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li>Product extensions</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{ buttons.manage(path('furniture_backend_product_extension_option'), 'product_extension_option.manage'|trans) }}
+            {{ buttons.create(path('furniture_backend_product_extension_create'), 'Create extension') }}
+        </div>
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_extension.header.index'|trans|raw }}</h1>
+    </div>
+
+    {{ pagination(product_extensions) }}
+
+    {% if product_extensions|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'product_extension.name'|trans) }}</th>
+                <th>{{ 'product_exception.option_values'|trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product_extension in product_extensions %}
+                <tr id="{{ product_extension.id }}">
+                    <td>{{ product_extension.name }}</td>
+                    <td>
+                        <ul>
+                            {% for grouped in product_extension.groupedOptionValues %}
+                                <li>
+                                    <strong>{{ grouped.name }}:</strong>
+                                    {{ grouped.values.toArray()|join(', ') }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_product_extension_update', {'id': product_extension.id})) }}
+                            {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {'id': product_extension.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ alerts.info('product_extension.no_results'|trans) }}
+    {% endif %}
+
+    {{ pagination(product_extensions) }}
+
+{% endblock %}

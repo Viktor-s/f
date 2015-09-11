@@ -1,0 +1,39 @@
+Furniture\ProductBundle\Entity\ProductExtensionVariant:
+    type: entity
+    table: product_extension_variant
+
+    id:
+        id:
+            type: integer
+            name: id
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        available:
+            type: boolean
+            name: available
+
+    manyToOne:
+        extension:
+            targetEntity: Furniture\ProductBundle\Entity\ProductExtension
+            joinColumn:
+                name: product_extension_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    manyToMany:
+        values:
+            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionOptionValue
+            cascade: [ persist ]
+            joinTable:
+                name: product_extension_variant_value
+                joinColumns:
+                    product_extension_variant_id:
+                        referencedColumnName: id
+
+                inverseJoinColumns:
+                    product_exception_option_value_id:
+                        referencedColumnName: id

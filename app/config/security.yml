@@ -92,15 +92,45 @@ sylius_rbac:
         Furniture.sku_option.create: create new sku attribute
         Furniture.sku_option.update: update sku attribute
         Furniture.sku_option.delete: delete sku attribute
+
+        furniture.manage.product_extensions: manage product extensions
+        furniture.product_extension.index: list product extensions
+        furniture.product_extension.create: create product extension
+        furniture.product_extension.update: update product extension
+        furniture.product_extension.delete: delete product extension
+
+        furniture.manage.product_extension_options: manage product extension options
+        furniture.product_extension_option.index: list product extension options
+        furniture.product_extension_option.create: create product extension option
+        furniture.product_extension_option.update: update product extension option
+        furniture.product_extension_option.delete: delete product extension option
+
     permissions_hierarchy:
         furniture.manage.sku_options: 
             - Furniture.sku_option.index
             - Furniture.sku_option.create
             - Furniture.sku_option.update
             - Furniture.sku_option.delete
+
+        furniture.manage.product_extensions:
+            - furniture.product_extension.index
+            - furniture.product_extension.create
+            - furniture.product_extension.update
+            - furniture.product_extension.delete
+
+        furniture.manage.product_extension_options:
+            - furniture.product_extension_option.index
+            - furniture.product_extension_option.create
+            - furniture.product_extension_option.update
+            - furniture.product_extension_option.delete
+
     roles:
         administrator:
             name: Administrator
             description: Administrator user
-            permissions: [ furniture.manage.sku_options ]
-            security_roles: [ROLE_ADMINISTRATION_ACCESS]
+            permissions:
+                - furniture.manage.product_extensions
+                - furniture.manage.product_extension_options
+                - furniture.manage.sku_options
+
+            security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

@@ -1,15 +1,8 @@
-#!/bin/bash
-#
-set -x
-sudo apt-get update
-mkdir -p /etc/puppet/modules
+#!/bin/sh
 
-puppet module install example42/puppi --version 2.1.7 --force
-puppet module install example42/apache --version 2.1.4 --force
-puppet module install puppetlabs/stdlib --version 4.1.0 --force
-puppet module install puppetlabs/apt --version 1.4.0 --force
-puppet module install example42/php --version 2.0.17 --force
-puppet module install puppetlabs/mysql --version 2.1.0 --force
-puppet module install willdurand/composer --version 1.1.0 --force
-puppet module install maestrodev/wget --version 1.2.3 --force
-puppet module install elasticsearch/elasticsearch  --force
+sudo chmod 0777 -R /var/www/furniture.dev/app/cache
+sudo chmod 0777 -R /var/www/furniture.dev/app/logs
+echo "cd /var/www/furniture.dev" >> /home/vagrant/.bashrc
+
+cd /var/www/furniture.dev
+/usr/local/bin/composer install --no-interaction

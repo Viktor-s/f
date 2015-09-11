@@ -113,3 +113,16 @@ sylius_resource:
                 translation:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
+
+        furniture.product_extension:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductExtension
+                translation:
+                    model: Furniture\ProductBundle\Entity\ProductExtensionTranslation
+                    mapping: ~
+
+        furniture.product_extension_option:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductExtensionOption

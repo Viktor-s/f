@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2cc9c4bdbd46a84742ace74de5348186",
+    "hash": "0342d44fb4ff5a25d0e29ce87eade5b3",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1076,7 +1076,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/27edc388296a3cffc7c30942a7613abb4998701c",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/4e85ba638acf62e1afe735f94b0c51aa971f8773",
                 "reference": "27edc388296a3cffc7c30942a7613abb4998701c",
                 "shasum": ""
             },
@@ -1358,6 +1358,56 @@
                 "phpcr"
             ],
             "time": "2015-07-03 08:09:31"
+        },
+        {
+            "name": "fivelab/exception",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FiveLab/Exception.git",
+                "reference": "6fc8bb53fe8f70b32e3cf71840799179893220a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FiveLab/Exception/zipball/6fc8bb53fe8f70b32e3cf71840799179893220a7",
+                "reference": "6fc8bb53fe8f70b32e3cf71840799179893220a7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "symfony/validator": "~2.3"
+            },
+            "suggest": {
+                "symfony/validator": "For ViolationListException"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FiveLab\\Component\\Exception\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaliy Zhuk",
+                    "email": "v.zhuk@fivelab.org"
+                },
+                {
+                    "name": "FiveLab Team",
+                    "email": "dev@fivelab.org",
+                    "homepage": "http://fivelab.org"
+                }
+            ],
+            "description": "Adds another exceptions to your system",
+            "keywords": [
+                "exception"
+            ],
+            "time": "2015-08-31 08:23:03"
         },
         {
             "name": "fp/klarna-invoice",
@@ -5211,12 +5261,12 @@
             "version": "V0.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paypal/rest-api-sdk-php.git",
+                "url": "https://github.com/paypal/PayPal-PHP-SDK.git",
                 "reference": "9e09f7bff507e81cbb03d233c15c080fefd1d512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paypal/rest-api-sdk-php/zipball/9e09f7bff507e81cbb03d233c15c080fefd1d512",
+                "url": "https://api.github.com/repos/paypal/PayPal-PHP-SDK/zipball/9e09f7bff507e81cbb03d233c15c080fefd1d512",
                 "reference": "9e09f7bff507e81cbb03d233c15c080fefd1d512",
                 "shasum": ""
             },
@@ -7830,12 +7880,12 @@
             "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Behat/MinkBrowserKitDriver.git",
+                "url": "https://github.com/minkphp/MinkBrowserKitDriver.git",
                 "reference": "aed8f4a596b79014a75254c3e337511c33e38cbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkBrowserKitDriver/zipball/aed8f4a596b79014a75254c3e337511c33e38cbd",
+                "url": "https://api.github.com/repos/minkphp/MinkBrowserKitDriver/zipball/aed8f4a596b79014a75254c3e337511c33e38cbd",
                 "reference": "aed8f4a596b79014a75254c3e337511c33e38cbd",
                 "shasum": ""
             },
@@ -7944,12 +7994,12 @@
             "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Behat/MinkSelenium2Driver.git",
+                "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
                 "reference": "8018fee80bf6573f909ece3e0dfc07d0eb352210"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkSelenium2Driver/zipball/8018fee80bf6573f909ece3e0dfc07d0eb352210",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/8018fee80bf6573f909ece3e0dfc07d0eb352210",
                 "reference": "8018fee80bf6573f909ece3e0dfc07d0eb352210",
                 "shasum": ""
             },
