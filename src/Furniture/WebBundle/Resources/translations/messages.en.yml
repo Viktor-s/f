@@ -11,6 +11,7 @@ product_extension:
     name: Name
     no_results: Not found product extensions
     option_values: Option values
+    manage: Manage extensions
 
     form:
         name: Name
@@ -29,10 +30,16 @@ product_extension_option:
     name: Name
     no_results: Not found product extension options
     manage: Manage options
+    create: Create option
 
     form:
         name: Name
         presentation: Presentation
+
+product_extension_option_value:
+    form:
+        option: Option
+        value: Value
 
 sylius:
     product:

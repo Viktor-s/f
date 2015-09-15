@@ -19,9 +19,11 @@ class ProductVariantType extends BaseProductVariantType {
         $variant = $builder->getData();
         
         if (!$options['master']) {
-            $builder->add('skuOptions', new \Furniture\ProductBundle\Form\Type\ProductVariantSkuOptions($variant));
+            $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
+            $builder->add('extensionVariants', new ProductVariantExtensionVariantsType(), [
+                'product_variant' => $variant
+            ]);
         }
-        
     }
     
     /**

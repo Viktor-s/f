@@ -248,4 +248,14 @@ class ProductExtension extends AbstractTranslatable
     {
         return $this->variants;
     }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name ?: '';
+    }
 }

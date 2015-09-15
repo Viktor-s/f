@@ -27,7 +27,7 @@ class Product extends BaseProduct
     /**
      * @var Collection
      */
-    protected $extensionVariants;
+    protected $extensions;
     
     /**
      * @var string
@@ -47,7 +47,7 @@ class Product extends BaseProduct
         $this->subProducts = new ArrayCollection();
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();
-        $this->extensionVariants = new ArrayCollection();
+        $this->extensions = new ArrayCollection();
     }
     
     /**
@@ -318,13 +318,13 @@ class Product extends BaseProduct
     /**
      * Set extension variants
      *
-     * @param Collection $extensionVariants
+     * @param Collection $extensions
      *
      * @return Product
      */
-    public function setExtensionVariants(Collection $extensionVariants)
+    public function setExtensions(Collection $extensions)
     {
-        $this->extensionVariants = $extensionVariants;
+        $this->extensions = $extensions;
 
         return $this;
     }
@@ -332,11 +332,11 @@ class Product extends BaseProduct
     /**
      * Get extension variants
      *
-     * @return Collection
+     * @return Collection|ProductExtension[]
      */
-    public function getExtensionVariants()
+    public function getExtensions()
     {
-        return $this->extensionVariants;
+        return $this->extensions;
     }
     
     /**

@@ -168,13 +168,7 @@ class ProductExtensionVariant
             $parts[] = $value->getValue();
         }
 
-        $name = sprintf(
-            '%s: %s',
-            $this->extension->getName(),
-            implode(', ', $parts)
-        );
-
-        $this->name = $name;
+        $this->name = implode(', ', $parts);
 
         return $this;
     }

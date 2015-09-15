@@ -3,7 +3,7 @@
 namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\ProductBundle\Entity\Product;
-use Furniture\ProductBundle\Entity\ProductExtensionVariant;
+use Furniture\ProductBundle\Entity\ProductExtension;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,8 +35,8 @@ class ProductType extends BaseProductType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('extensionVariants', 'entity', [
-                'class' => ProductExtensionVariant::class,
+            ->add('extensions', 'entity', [
+                'class' => ProductExtension::class,
                 'multiple' => true,
                 'expanded' => false
             ]);

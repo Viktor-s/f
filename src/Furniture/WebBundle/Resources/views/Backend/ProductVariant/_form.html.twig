@@ -3,26 +3,40 @@
 <div class="row">
     <div class="col-md-8 row-split">
         {{ form_errors(form) }}
+
         {% if form.options is defined and form.options|length > 0 %}
             {% for optionForm in form.options %}
                 {{ form_row(optionForm) }}
             {% endfor %}
         {% endif %}
+
         <br/>
+
         {% if form.skuOptions is defined and form.skuOptions|length > 0 %}
             {{ form_label(form.skuOptions) }}
-        <hr/>
+            <hr/>
             {{ form_widget(form.skuOptions) }}
-        <hr/>
+            <hr/>
         {% endif %}
+
         {% if form.skuOptions is defined and form.skuOptions|length > 0 %}
             {{ form_row(form.skuOptions) }}
+
             {% for optionForm in form.skuOptions %}
                 {{ form_row(optionForm) }}
             {% endfor %}
         {% endif %}
+
+        {% if form.extensionVariants is defined and form.extensionVariants|length > 0 %}
+            {% for child in form.extensionVariants %}
+                {{ form_row(child) }}
+            {% endfor %}
+            <hr />
+        {% endif %}
+
         {{ form_row(form.presentation) }}
         {{ form_row(form.sku) }}
+
         <div class="form-group">
             {{ form_label(form.availableOn) }}
             <div class="col-lg-10">
@@ -30,8 +44,10 @@
                 {{ form_row(form.availableOn.time, {'label': false}) }}
             </div>
         </div>
+
         {{ form_row(form.price) }}
         {{ form_row(form.pricingCalculator) }}
+
         {% if form.pricingConfiguration is defined %}
             {% if form.pricingCalculator.vars.value == 'volume_based' %}
                 <div>

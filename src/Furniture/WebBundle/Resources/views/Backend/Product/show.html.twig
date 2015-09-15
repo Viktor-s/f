@@ -124,10 +124,10 @@
                 <tr>
                     <td>Extensions:</td>
                     <td>
-                        {% if product.extensionVariants|length > 0 %}
+                        {% if product.extensions|length > 0 %}
                             <ul>
-                                {% for extensionVariant in product.extensionVariants %}
-                                    <li>{{ extensionVariant.name }}</li>
+                                {% for extension in product.extensions %}
+                                    <li>{{ extension.name }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}

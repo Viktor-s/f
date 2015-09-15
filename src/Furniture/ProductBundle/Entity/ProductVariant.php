@@ -2,81 +2,134 @@
 
 namespace Furniture\ProductBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ProductVariant extends BaseProductVariant implements BaseVariantInterface {
-    
+class ProductVariant extends BaseProductVariant implements BaseVariantInterface
+{
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $skuOptions;
-    
-    function __construct() {
+
+    /**
+     * @var Collection
+     */
+    protected $extensionVariants;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
+
         $this->skuOptions = new ArrayCollection();
+        $this->extensionVariants = new ArrayCollection();
     }
     
-    /*
+    /**
+     * Has SKU options?
+     *
      * @return bool
      */
-    public function hasSkuOptions(){
+    public function hasSkuOptions()
+    {
         return (bool)!$this->skuOptions->isEmpty();
     }
     
     /**
-     * 
+     * Get SKU options?
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getSkuOptions(){
+    public function getSkuOptions()
+    {
         return $this->skuOptions;
     }
-    
 
     /**
-     * 
-     * @param \Doctrine\Common\Collections\ArrayCollection $sku_options
-     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     * Set SKU options
+     *
+     * @param Collection $skuOptions
+     *
+     * @return ProductVariant
      */
-    public function setSkuOptions(ArrayCollection $sku_options){
-        $this->skuOptions = $sku_options;
+    public function setSkuOptions(Collection $skuOptions)
+    {
+        $this->skuOptions = $skuOptions;
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
+     * Has SKU option variant?
+     *
+     * @param SkuOptionVariant $skuOptionVariant
+     *
      * @return bool
      */
-    public function hasSkuOption(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        return $this->skuOptions->contains($sku_option_variant);
+    public function hasSkuOption(SkuOptionVariant $skuOptionVariant)
+    {
+        return $this->skuOptions->contains($skuOptionVariant);
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
+     * Add SKU option
+     *
+     * @param SkuOptionVariant $skuOptionVariant
+     *
      * @return \Furniture\ProductBundle\Entity\ProductVariant
      */
-    public function addSkuOption(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        if(!$this->hasSkuOption($sku_option_variant)){
-            $this->skuOptions[] = $sku_option_variant;
+    public function addSkuOption(SkuOptionVariant $skuOptionVariant)
+    {
+        if (!$this->hasSkuOption($skuOptionVariant)) {
+            $this->skuOptions[] = $skuOptionVariant;
         }
         
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
+     * Remove SKU option variant
+     *
+     * @param SkuOptionVariant $skuOptionVariant
+     *
      * @return \Furniture\ProductBundle\Entity\ProductVariant
      */
-    public function removeSkuOption(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        if($this->hasSkuOption($sku_option_variant)){
-            $this->skuOptions->removeElement($sku_option_variant);
+    public function removeSkuOption(SkuOptionVariant $skuOptionVariant)
+    {
+        if ($this->hasSkuOption($skuOptionVariant)) {
+            $this->skuOptions->removeElement($skuOptionVariant);
         }
+
         return $this;
     }
-    
+
+    /**
+     * Set extension variants
+     *
+     * @param Collection $variants
+     *
+     * @return ProductVariant
+     */
+    public function setExtensionVariants(Collection $variants)
+    {
+        $this->extensionVariants = $variants;
+
+        return $this;
+    }
+
+    /**
+     * Get extension variants
+     *
+     * @return Collection $variants
+     */
+    public function getExtensionVariants()
+    {
+        return $this->extensionVariants;
+    }
 }
