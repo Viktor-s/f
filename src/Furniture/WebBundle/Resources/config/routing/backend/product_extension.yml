@@ -1,3 +1,4 @@
+# Product extension routes
 furniture_backend_product_extension:
     path: /
     methods: [ GET ]
@@ -37,6 +38,16 @@ furniture_backend_product_extenstion_delete:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect: furniture_backend_product_extension
 
+furniture_backend_product_extension_show:
+    path: /{id}/show
+    methods: [ GET ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension:showAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension:show.html.twig
+
+# Product extension option routes
 furniture_backend_product_extension_option:
     path: /options
     methods: [ GET ]
@@ -75,3 +86,42 @@ furniture_backend_product_extension_option_delete:
         _sylius:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect: furniture_backend_product_extension_option
+
+# Product extension variant routes
+furniture_backend_product_extension_variant_create:
+    path: /{product_extension}/variant/create
+    methods: [ GET, POST ]
+    requirements: { product_extension: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension_variant:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension/Variant:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionVariantType
+            redirect:
+                route: furniture_backend_product_extension_show
+                params: { id: $product_extension }
+
+furniture_backend_product_extension_variant_update:
+    path: /{product_extension}/variant/{id}/update
+    methods: [ GET, POST ]
+    requirements: { product_extension: \d+, id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension_variant:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductExtension/Variant:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductExtensionVariantType
+            redirect:
+                route: furniture_backend_product_extension_show
+                params: { id: $product_extension }
+
+furniture_backend_product_extension_variant_delete:
+    path: /{product_extension}/variant/{id}/remove
+    methods: [ GET, DELETE ]
+    requirements: { product_extension: \d+, id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_extension_variant:deleteAction
+        _syliys:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect:
+                route: furniture_backend_product_extension_show
+                params: { id: $product_extension }

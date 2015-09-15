@@ -2,56 +2,62 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Furniture\ProductBundle\Entity\ProductVariant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductVariantSkuOptions extends AbstractType {
-    
+class ProductVariantSkuOptions extends AbstractType
+{
     /**
-     *
-     * @var \Furniture\ProductBundle\Entity\ProductVariant
+     * @var ProductVariant
      */
     protected $variant;
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductVariant $variant
+     * Construct
+     *
+     * @param ProductVariant $variant
      */
-    function __construct($variant) {
+    public function __construct(ProductVariant $variant)
+    {
         $this->variant = $variant;
     }
     
     /**
-     * 
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options){
-        
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $data = [];
-        foreach($this->variant->getSkuOptions() as $sku_option){
-            $data[$sku_option->getSkuOptionType()->getId()] = $sku_option;
+
+        foreach($this->variant->getSkuOptions() as $skuOption) {
+            $id = $skuOption->getSkuOptionType()->getId();
+            $data[$id] = $skuOption;
         }
         
         $i = 0;
+
         foreach($this->variant->getProduct()->getSkuOptionVariantsGrouped() as $grouped){
-            $sku_option_type = $grouped[0]->getSkuOptionType();
+            /** @var \Furniture\SkuOptionBundle\Entity\SkuOptionType $skuOptionType */
+            $skuOptionType = $grouped[0]->getSkuOptionType();
+            $id = $skuOptionType->getId();
+
             $builder->add( $i, 'entity', [
                 'class' => 'Furniture\SkuOptionBundle\Entity\SkuOptionVariant',
                 'choice_label' => 'value',
-                'label' => $sku_option_type->getName(),
+                'label' => $skuOptionType->getName(),
                 'choices' => $grouped,
-                'data' => isset($data[$sku_option_type->getId()]) ? $data[$sku_option_type->getId()] : null,
+                'data' => isset($data[$id]) ? $data[$id] : null,
             ]);
+
             $i ++;
         }
         
     }
     
-    public function getName() {
+    public function getName()
+    {
         return 'product_variant_sku_options';
     }
-
 }
 

@@ -16,22 +16,26 @@
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
-    {{ buttons.manage(path('sylius_backend_product_index'), 'sylius.product.manage'|trans) }}
-    {% if not product.deleted %}
-    {{ buttons.edit(path('sylius_backend_product_update', {'id': product.id})) }}
-    {{ buttons.delete(path('sylius_backend_product_delete', {'id': product.id}), null, false, false) }}
-    <a href="{{ path(product) }}" class="btn btn-info">
-       <i class="glyphicon glyphicon-shopping-cart"></i>
-        {{ 'sylius.product.show_in_store'|trans }}
-    </a>
-    {% else %}
-        {{ buttons.patch(path('sylius_backend_product_delete_restore', {'id': product.id}), 'sylius.product.delete_restore', null, 'btn btn-primary') }}
-    {% endif %}
-    <a href="{{ path('sylius_backend_product_history', {'id': product.id}) }}" class="btn btn-info">
-       <i class="glyphicon glyphicon-calendar"></i>
-        {{ 'sylius.history.header'|trans }}
-    </a>
+        {{ buttons.manage(path('sylius_backend_product_index'), 'sylius.product.manage'|trans) }}
+
+        {% if not product.deleted %}
+            {{ buttons.edit(path('sylius_backend_product_update', {'id': product.id})) }}
+            {{ buttons.delete(path('sylius_backend_product_delete', {'id': product.id}), null, false, false) }}
+
+            <a href="{{ path(product) }}" class="btn btn-info">
+               <i class="glyphicon glyphicon-shopping-cart"></i>
+                {{ 'sylius.product.show_in_store'|trans }}
+            </a>
+        {% else %}
+            {{ buttons.patch(path('sylius_backend_product_delete_restore', {'id': product.id}), 'sylius.product.delete_restore', null, 'btn btn-primary') }}
+        {% endif %}
+
+        <a href="{{ path('sylius_backend_product_history', {'id': product.id}) }}" class="btn btn-info">
+           <i class="glyphicon glyphicon-calendar"></i>
+            {{ 'sylius.history.header'|trans }}
+        </a>
     </div>
+
     <h1>
         <i class="glyphicon glyphicon-info-sign"></i> {{ 'sylius.product.show_header'|trans({'%product%': product.name})|raw }}
         {% if product.deleted %}<span class="label label-danger">{{ 'sylius.deleted'|trans }}</span>{% endif %}
@@ -60,6 +64,7 @@
                     <th colspan="2">{{ 'sylius.order.general_info'|trans }}</th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr>
                     <td><strong>{{ 'sylius.shipment.id'|trans }}</strong></td>
@@ -111,6 +116,23 @@
                         {% else %}
                             <span class="label label-info">
                                 <i class="glyphicon glyphicon-list-alt icon-white"></i> {{ 'sylius.product.no_options'|trans }}
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Extensions:</td>
+                    <td>
+                        {% if product.extensionVariants|length > 0 %}
+                            <ul>
+                                {% for extensionVariant in product.extensionVariants %}
+                                    <li>{{ extensionVariant.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span class="label label-info">
+                                <i class="glyphicon glyphicon-list-alt icon-white"></i> {{ 'sylius.product.no_extensions'|trans }}
                             </span>
                         {% endif %}
                     </td>

@@ -126,3 +126,9 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\ProductExtensionOption
+
+        furniture.product_extension_variant:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductExtensionVariant
+                controller: Furniture\ProductBundle\Controller\ProductExtensionVariantController

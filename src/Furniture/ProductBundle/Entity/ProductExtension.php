@@ -39,6 +39,11 @@ class ProductExtension extends AbstractTranslatable
     protected $optionValues;
 
     /**
+     * @var Collection|ProductExtensionVariant[]
+     */
+    protected $variants;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -46,6 +51,7 @@ class ProductExtension extends AbstractTranslatable
         parent::__construct();
 
         $this->optionValues = new ArrayCollection();
+        $this->variants = new ArrayCollection();
     }
 
     /**
@@ -167,26 +173,31 @@ class ProductExtension extends AbstractTranslatable
     /**
      * Get grouped option values
      *
-     * @return ProductExtensionOptionValueGrouped
+     * @return ProductExtensionOptionValueGrouped|ProductExtensionOptionValueGrouped[]
      */
     public function getGroupedOptionValues()
     {
         $data = [];
 
         foreach ($this->optionValues as $optionValue) {
-            $option = $optionValue->getOption()->getName();
+            $option = $optionValue->getOption();
+            $optionName = $option->getName();
 
-            if (!isset($data[$option])) {
-                $data[$option] = [];
+            if (!isset($data[$optionName])) {
+                $data[$optionName] = [
+                    'option' => $option,
+                    'values' => []
+                ];
             }
 
-            $data[$option][] = $optionValue->getValue();
+            $data[$optionName]['values'][] = $optionValue;
         }
 
         $result = new ArrayCollection();
 
-        foreach ($data as $option => $values) {
-            $values = new ArrayCollection($values);
+        foreach ($data as $info) {
+            $option = $info['option'];
+            $values = new ArrayCollection($info['values']);
 
             $result->add(new ProductExtensionOptionValueGrouped($option, $values));
         }
@@ -226,5 +237,15 @@ class ProductExtension extends AbstractTranslatable
         }
 
         return $this;
+    }
+
+    /**
+     * Get all variants for this extension
+     *
+     * @return Collection|ProductExtensionVariant[]
+     */
+    public function getVariants()
+    {
+        return $this->variants;
     }
 }

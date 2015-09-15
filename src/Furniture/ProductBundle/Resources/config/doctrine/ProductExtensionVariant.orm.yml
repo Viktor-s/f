@@ -15,9 +15,14 @@ Furniture\ProductBundle\Entity\ProductExtensionVariant:
             type: boolean
             name: available
 
+        name:
+            type: string
+            name: name
+
     manyToOne:
         extension:
             targetEntity: Furniture\ProductBundle\Entity\ProductExtension
+            inversedBy: variants
             joinColumn:
                 name: product_extension_id
                 referencedColumnName: id
@@ -37,3 +42,7 @@ Furniture\ProductBundle\Entity\ProductExtensionVariant:
                 inverseJoinColumns:
                     product_exception_option_value_id:
                         referencedColumnName: id
+
+    lifecycleCallbacks:
+        prePersist: [ generateNameFromValues ]
+        preUpdate: [ generateNameFromValues ]

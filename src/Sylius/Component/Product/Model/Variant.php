@@ -39,7 +39,7 @@ class Variant extends BaseVariant implements VariantInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getProduct()
     {

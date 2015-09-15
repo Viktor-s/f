@@ -3,13 +3,15 @@
 namespace Furniture\ProductBundle\Model;
 
 use Doctrine\Common\Collections\Collection;
+use Furniture\ProductBundle\Entity\ProductExtensionOption;
+use Furniture\ProductBundle\Entity\ProductExtensionOptionValue;
 
 class ProductExtensionOptionValueGrouped
 {
     /**
-     * @var string
+     * @var ProductExtensionOption
      */
-    private $name;
+    private $option;
 
     /**
      * @var Collection
@@ -19,13 +21,23 @@ class ProductExtensionOptionValueGrouped
     /**
      * Construct
      *
-     * @param string     $name
-     * @param Collection $values
+     * @param ProductExtensionOption                   $option
+     * @param Collection|ProductExtensionOptionValue[] $values
      */
-    public function __construct($name, Collection $values)
+    public function __construct(ProductExtensionOption $option, Collection $values)
     {
-        $this->name = $name;
+        $this->option = $option;
         $this->values = $values;
+    }
+
+    /**
+     * Get option
+     *
+     * @return ProductExtensionOption
+     */
+    public function getOption()
+    {
+        return $this->option;
     }
 
     /**
@@ -35,16 +47,42 @@ class ProductExtensionOptionValueGrouped
      */
     public function getName()
     {
-        return $this->name;
+        return $this->option->getName();
     }
 
     /**
      * Get values
      *
-     * @return string
+     * @return Collection|ProductExtensionOptionValue[]
      */
     public function getValues()
     {
         return $this->values;
+    }
+
+    /**
+     * Get values as string
+     *
+     * @return string
+     */
+    public function getValuesAsString()
+    {
+        $strings = [];
+
+        $this->values->forAll(function (ProductExtensionOptionValue $value) use (&$strings) {
+            $strings[] = $value->getValue();
+        });
+
+        return implode(', ', $strings);
+    }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getValuesAsString() ?: '';
     }
 }

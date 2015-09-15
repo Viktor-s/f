@@ -2,32 +2,34 @@
 
 namespace Furniture\ProductBundle\Entity;
 
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Product extends BaseProduct {
-     
+class Product extends BaseProduct
+{
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $subProducts;
 
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $bundleProducts;
     
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $skuOptionVariants;
+
+    /**
+     * @var Collection
+     */
+    protected $extensionVariants;
     
     /**
-     *
      * @var string
      */
     protected $factoryCode;
@@ -45,146 +47,209 @@ class Product extends BaseProduct {
         $this->subProducts = new ArrayCollection();
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();
+        $this->extensionVariants = new ArrayCollection();
     }
     
-    /*
+    /**
+     * Has sub products
+     *
      * @return bool
      */
-    public function hasSubProducts(){
+    public function hasSubProducts()
+    {
         return (bool)!$this->subProducts->isEmpty();
     }
     
-    /*
+    /**
+     * Is bundle?
+     *
      * @return bool
      */
-    public function isBundle(){
-        if($this->hasSubProducts()){
+    public function isBundle()
+    {
+        if ($this->hasSubProducts()) {
             return true;
         }
-        if($this->bundleProducts->count()){
+
+        if ($this->bundleProducts->count()) {
             return false;
         }
-        return false;
-    }
-    
-    /*
-     * @return bool
-     */
-    public function isBelongable(){
-        if( !$this->bundleProducts->isEmpty() ){
-            return true;
-        }
-        if( !$this->hasSubProducts() ){
-            return true;
-        }
-        return true;
-    }
-    
-    /*
-     * @return bool
-     */
-    public function isSimple(){
-        if( $this->bundleProducts->isEmpty() && $this->subProducts->isEmpty() ){
-            return true;
-        }
+
         return false;
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Is belongable?
+     *
+     * @return bool
      */
-    public function getSubProducts(){
+    public function isBelongable()
+    {
+        if (!$this->bundleProducts->isEmpty()) {
+            return true;
+        }
+
+        if (!$this->hasSubProducts()) {
+            return true;
+        }
+
+        return true;
+    }
+    
+    /**
+     * Is simple?
+     *
+     * @return bool
+     */
+    public function isSimple()
+    {
+        if ($this->bundleProducts->isEmpty() && $this->subProducts->isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * Get sub products
+     *
+     * @return Collection
+     */
+    public function getSubProducts()
+    {
         return $this->subProducts;
     }
     
     
     /**
-     * 
-     * @param Collection $bundle_products
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Set sub products
+     *
+     * @param Collection $bundleProducts
+     *
+     * @return Product
      */
-    public function setSubProducts(Collection $bundle_products){
-        $this->subProducts = $bundle_products;
+    public function setSubProducts(Collection $bundleProducts)
+    {
+        $this->subProducts = $bundleProducts;
+
         return $this;
     }
     
-    /*
+    /**
+     * Has sub products
+     *
      * @param Product $product
+     *
      * @return bool
      */
-    public function hasSubProduct(Product $product){
+    public function hasSubProduct(Product $product)
+    {
         return $this->subProducts->contains($product);
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Product $product
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Add sub product
+     *
+     * @param Product $product
+     *
+     * @return Product
+     *
      * @throws \Exception
      */
-    public function addSubProduct(Product $product){
-        if(!$product->isBelongable()){
+    public function addSubProduct(Product $product)
+    {
+        if (!$product->isBelongable()) {
             throw new \Exception(__CLASS__.'::'.__METHOD__.' '.get_class($product).' must be belongable!');
         }
-        if( $this->getId() && $this->getId() == $product->getId() ){
+
+        if ($this->getId() && $this->getId() == $product->getId()) {
             throw new \Exception(__CLASS__.'::'.__METHOD__.' '.get_class($product).' cant contains it self!');
         }
-        if(!$this->hasSubProduct($product)){
+
+        if (!$this->hasSubProduct($product)) {
             $this->subProducts[] = $product;
         }
         
         return $this;
     }
-    
-    public function removeSubProduct(Product $product){
-        if($this->hasSubProduct($product)){
+
+    /**
+     * Remove sub product
+     *
+     * @param Product $product
+     *
+     * @return Product
+     */
+    public function removeSubProduct(Product $product)
+    {
+        if ($this->hasSubProduct($product)) {
             $this->subProducts->removeElement($product);
         }
+
         return $this;
     }
     
     /**
-     * 
+     * Get factory code
+     *
      * @return string
      */
-    public function getFactoryCode(){
+    public function getFactoryCode()
+    {
         return $this->factoryCode;
     }
     
     /**
-     * 
-     * @param string $factory_code
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Set factory code
+     *
+     * @param string $code
+     *
+     * @return Product
      */
-    public function setFactoryCode($factory_code){
-        $this->factoryCode = $factory_code;
+    public function setFactoryCode($code)
+    {
+        $this->factoryCode = $code;
+
         return $this;
     }
     
-    /*
+    /**
+     * Has SKU option variants
+     *
      * @return bool
      */
-    public function hasSkuOptionVariants(){
+    public function hasSkuOptionVariants()
+    {
         return (bool)!$this->skuOptionVariants->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get SKU option variants
+     *
+     * @return Collection
      */
-    public function getSkuOptionVariants(){
+    public function getSkuOptionVariants()
+    {
         return $this->skuOptionVariants;
     }
-    
+
+    /**
+     * Get grouped SKU option variants
+     *
+     * @return array
+     */
     public function getSkuOptionVariantsGrouped(){
         $grouped = [];
         
-        $this->skuOptionVariants->forAll(function ($id, $sku_variant) use (&$grouped) {
-            $opt_id = $sku_variant->getSkuOptionType()->getId();
-            if( !isset($grouped[$opt_id]) ) 
-                $grouped[$opt_id] = [];
-            $grouped[$opt_id][] = $sku_variant;
+        $this->skuOptionVariants->forAll(function ($id, SkuOptionVariant $skuVariant) use (&$grouped) {
+            $optionId = $skuVariant->getSkuOptionType()->getId();
+
+            if (!isset($grouped[$optionId])) {
+                $grouped[$optionId] = [];
+            }
+
+            $grouped[$optionId][] = $skuVariant;
+
             return true;
         });
         
@@ -192,48 +257,86 @@ class Product extends BaseProduct {
     }
     
     /**
-     * 
-     * @param Collection $bundle_products
+     * Set SKU option variants
+     *
+     * @param Collection $variants
+     *
      * @return \Furniture\ProductBundle\Entity\Product
      */
-    public function setSkuOptionVariants(Collection $sku_option_variants){
-        $this->skuOptionVariants = $sku_option_variants;
+    public function setSkuOptionVariants(Collection $variants)
+    {
+        $this->skuOptionVariants = $variants;
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
-     * @return type
+     * Has SKU option variant
+     *
+     * @param SkuOptionVariant $optionVariant
+     *
+     * @return bool
      */
-    public function hasSkuOptionVariant(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        return $this->skuOptionVariants->contains($sku_option_variant);
+    public function hasSkuOptionVariant(SkuOptionVariant $optionVariant)
+    {
+        return $this->skuOptionVariants->contains($optionVariant);
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Add SKU option variant
+     *
+     * @param SkuOptionVariant $optionVariant
+     *
+     * @return Product
      */
-    public function addSkuOptionVariant(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        if(!$this->hasSkuOptionVariant($sku_option_variant)){
-            $sku_option_variant->setProduct($this);
-            $this->skuOptionVariants[] = $sku_option_variant;
+    public function addSkuOptionVariant(SkuOptionVariant $optionVariant)
+    {
+        if (!$this->hasSkuOptionVariant($optionVariant)) {
+            $optionVariant->setProduct($this);
+            $this->skuOptionVariants[] = $optionVariant;
         }
         
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Remove SKU option variant
+     *
+     * @param SkuOptionVariant $optionVariant
+     *
+     * @return Product
      */
-    public function removeSkuOptionVariant(\Furniture\SkuOptionBundle\Entity\SkuOptionVariant $sku_option_variant){
-        if($this->hasSkuOptionVariant($sku_option_variant)){
-            $this->skuOptionVariants->removeElement($sku_option_variant);
+    public function removeSkuOptionVariant(SkuOptionVariant $optionVariant)
+    {
+        if($this->hasSkuOptionVariant($optionVariant)){
+            $this->skuOptionVariants->removeElement($optionVariant);
         }
+
         return $this;
+    }
+
+    /**
+     * Set extension variants
+     *
+     * @param Collection $extensionVariants
+     *
+     * @return Product
+     */
+    public function setExtensionVariants(Collection $extensionVariants)
+    {
+        $this->extensionVariants = $extensionVariants;
+
+        return $this;
+    }
+
+    /**
+     * Get extension variants
+     *
+     * @return Collection
+     */
+    public function getExtensionVariants()
+    {
+        return $this->extensionVariants;
     }
     
     /**
@@ -245,5 +348,4 @@ class Product extends BaseProduct {
     {
         return get_parent_class(__CLASS__).'Translation';
     }
-    
 }

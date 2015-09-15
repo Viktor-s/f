@@ -1,0 +1,112 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+{% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li><a href="{{ path('furniture_backend_product_extension') }}">Product extensions</a></li>
+        <li>{{ product_extension.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 style="float: left;">{{ product_extension.name }}</h1>
+
+        <div class="actions-menu">
+            {{ buttons.edit(path('furniture_backend_product_extension_update', {id: product_extension.id})) }}
+            {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {id: product_extension.id})) }}
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Values</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for grouped in product_extension.groupedOptionValues %}
+                <tr>
+                    <td>{{ grouped.name }}</td>
+                    <td>{{ grouped.values.toArray()|join(', ') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <h3>Variants:</h3>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Available</th>
+                <th>Values</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for variant in product_extension.variants %}
+                <tr>
+                    <td>{{ variant.name }}</td>
+
+                    <td>
+                        <i class="glyphicon glyphicon-{{ variant.available ? 'ok' : 'remove' }}"></i>
+                    </td>
+
+                    <td>
+                        <ul>
+                            {% for value in variant.values %}
+                                <li>
+                                    <strong>{{ value.option.name }}:</strong>
+                                    {{ value.value }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_product_extension_variant_update', {product_extension: product_extension.id, id: variant.id})) }}
+                            {{ buttons.delete(path('furniture_backend_product_extension_variant_delete', {product_extension: product_extension.id, id: variant.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Not found variants for this extension.
+                        You can
+                        <a href="{{ path('furniture_backend_product_extension_variant_create', {product_extension: product_extension.id}) }}">create</a>
+                        or
+                        <a href="#">generate</a>
+                        variants for this extension.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            {% if product_extension.variants|length %}
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        {{ buttons.create(path('furniture_backend_product_extension_variant_create', {product_extension: product_extension.id})) }}
+                    </td>
+                </tr>
+                </tfoot>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}

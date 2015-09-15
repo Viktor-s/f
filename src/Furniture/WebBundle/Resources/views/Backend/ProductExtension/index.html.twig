@@ -27,7 +27,7 @@
             <thead>
             <tr>
                 <th>{{ sylius_resource_sort('name', 'product_extension.name'|trans) }}</th>
-                <th>{{ 'product_exception.option_values'|trans }}</th>
+                <th>{{ 'product_extension.option_values'|trans }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -47,8 +47,9 @@
                     </td>
                     <td>
                         <div class="pull-right">
-                            {{ buttons.edit(path('furniture_backend_product_extension_update', {'id': product_extension.id})) }}
-                            {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {'id': product_extension.id})) }}
+                            {{ buttons.show(path('furniture_backend_product_extension_show', {id: product_extension.id})) }}
+                            {{ buttons.edit(path('furniture_backend_product_extension_update', {id: product_extension.id})) }}
+                            {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {id: product_extension.id})) }}
                         </div>
                     </td>
                 </tr>

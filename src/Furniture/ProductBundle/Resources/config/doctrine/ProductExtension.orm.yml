@@ -20,3 +20,9 @@ Furniture\ProductBundle\Entity\ProductExtension:
             mappedBy: extension
             cascade: [ persist ]
             orphanRemoval: true
+
+        variants:
+            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant
+            mappedBy: extension
+            cascade: [ persist ]
+            orphanRemoval: true

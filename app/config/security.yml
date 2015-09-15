@@ -5,8 +5,10 @@ security:
     providers:
         sylius_user_provider:
             id: sylius.user_provider.name_or_email
+
     encoders:
         Sylius\Component\User\Model\UserInterface: sha512
+
     firewalls:
         administration:
             switch_user: true
@@ -98,12 +100,20 @@ sylius_rbac:
         furniture.product_extension.create: create product extension
         furniture.product_extension.update: update product extension
         furniture.product_extension.delete: delete product extension
+        furniture.product_extension.show: show product extension
 
         furniture.manage.product_extension_options: manage product extension options
         furniture.product_extension_option.index: list product extension options
         furniture.product_extension_option.create: create product extension option
         furniture.product_extension_option.update: update product extension option
         furniture.product_extension_option.delete: delete product extension option
+
+        furniture.manage.product_extension_variants: manage product extension variants
+        furniture.product_extension_variant.index: list product extension variants
+        furniture.product_extension_variant.create: create a product extension variant
+        furniture.product_extension_variant.update: update product extension variant
+        furniture.product_extension_variant.delete: delete product extension variant
+        furniture.product_extension_variant.generate: generate a product extension variants
 
     permissions_hierarchy:
         furniture.manage.sku_options: 
@@ -117,12 +127,20 @@ sylius_rbac:
             - furniture.product_extension.create
             - furniture.product_extension.update
             - furniture.product_extension.delete
+            - furniture.product_extension.show
 
         furniture.manage.product_extension_options:
             - furniture.product_extension_option.index
             - furniture.product_extension_option.create
             - furniture.product_extension_option.update
             - furniture.product_extension_option.delete
+
+        furniture.manage.product_extension_variants:
+            - furniture.product_extension_variant.index
+            - furniture.product_extension_variant.create
+            - furniture.product_extension_variant.update
+            - furniture.product_extension_variant.delete
+            - furniture.product_extension_variant.generate
 
     roles:
         administrator:
@@ -131,6 +149,7 @@ sylius_rbac:
             permissions:
                 - furniture.manage.product_extensions
                 - furniture.manage.product_extension_options
+                - furniture.manage.product_extension_variants
                 - furniture.manage.sku_options
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

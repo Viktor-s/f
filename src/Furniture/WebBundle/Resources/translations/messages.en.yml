@@ -10,6 +10,7 @@ product_extension:
 
     name: Name
     no_results: Not found product extensions
+    option_values: Option values
 
     form:
         name: Name
@@ -32,3 +33,9 @@ product_extension_option:
     form:
         name: Name
         presentation: Presentation
+
+sylius:
+    product:
+        no_extensions:  There are no extensions for this product
+        tabs:
+            extensions: Extensions

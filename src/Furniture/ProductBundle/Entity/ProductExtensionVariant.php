@@ -19,7 +19,7 @@ class ProductExtensionVariant
     private $extension;
 
     /**
-     * @var Collection
+     * @var Collection|ProductExtensionOptionValue[]
      */
     private $values;
 
@@ -27,6 +27,11 @@ class ProductExtensionVariant
      * @var bool
      */
     private $available = true;
+
+    /**
+     * @var string
+     */
+    private $name;
 
     /**
      * Construct
@@ -124,5 +129,63 @@ class ProductExtensionVariant
     public function isAvailable()
     {
         return $this->available;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return ProductExtensionVariant
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Generate name from values
+     *
+     * @return ProductExtensionVariant
+     */
+    public function generateNameFromValues()
+    {
+        $parts = [];
+
+        foreach ($this->values as $value) {
+            $parts[] = $value->getValue();
+        }
+
+        $name = sprintf(
+            '%s: %s',
+            $this->extension->getName(),
+            implode(', ', $parts)
+        );
+
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name ?: '';
     }
 }

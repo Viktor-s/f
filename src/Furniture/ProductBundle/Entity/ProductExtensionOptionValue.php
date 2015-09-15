@@ -108,4 +108,14 @@ class ProductExtensionOptionValue
     {
         return $this->value;
     }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->value ?: '';
+    }
 }
