@@ -76,7 +76,8 @@
         "willdurand/hateoas-bundle":            "~0.4",
         "winzou/state-machine-bundle":          "~0.2",
 
-        "fivelab/exception":                    "~1.0"
+        "fivelab/exception":                    "~1.0",
+        "sonata-project/formatter-bundle": "~2.3"
     },
     "require-dev": {
         "behat/behat":                          "~3.0",
@@ -87,7 +88,8 @@
         "behat/mink":                           "~1.6",
         "coduo/php-matcher":                    "~1.0",
         "phpspec/phpspec":                      "~2.1",
-        "phpunit/phpunit":                      "~4.1"
+        "phpunit/phpunit":                      "~4.1",
+        "sensio/generator-bundle": "~2.5"
     },
     "replace": {
         "sylius/addressing":         "0.15.x-dev",

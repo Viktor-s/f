@@ -1,5 +1,7 @@
-# This file is part of the Sylius package.
-# (c) Paweł Jędrzejewski
+furniture_factory:
+    resource: "@FurnitureFactoryBundle/Resources/config/routing.yml"
+    prefix:   /
+
 
 sylius_installer:
     resource: "@SyliusInstallerBundle/Resources/config/routing.yml"

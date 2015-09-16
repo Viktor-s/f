@@ -1,0 +1,24 @@
+Furniture\FactoryBundle\Entity\Factory:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: factory
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    oneToMany:
+        images:
+            cascade: [persist]
+            orphanRemoval: true
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryImage
+            mappedBy: factory
+        products:
+            cascade: [persist]
+            orphanRemoval: true
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            fetch: EXTRA_LAZY
+            mappedBy: factory

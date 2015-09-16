@@ -1,0 +1,26 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% from 'SyliusWebBundle:Backend/Factory:macros.html.twig' import list %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li>Factories</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="actions-menu">
+        {{ buttons.create(path('furniture_backend_factory_create'), 'Create factory') }}
+    </div>
+    <h1><i class="glyphicon glyphicon-list-alt"></i> Factories</h1>
+</div>
+
+{{ pagination(factories) }}
+{{ list(factories) }}
+{{ pagination(factories) }}
+
+{% endblock %}

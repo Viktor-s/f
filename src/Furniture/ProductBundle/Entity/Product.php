@@ -35,6 +35,12 @@ class Product extends BaseProduct
     protected $factoryCode;
     
     /**
+     *
+     * @var \Furniture\FactoryBundle\Entity\Factory
+     */
+    protected $factory;
+    
+    /**
      * Constructor.
      */
     public function __construct()
@@ -337,6 +343,26 @@ class Product extends BaseProduct
     public function getExtensions()
     {
         return $this->extensions;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\FactoryBundle\Entity\Factory $factory
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setFactory(\Furniture\FactoryBundle\Entity\Factory $factory)
+    {
+        $this->factory = $factory;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
     }
     
     /**
