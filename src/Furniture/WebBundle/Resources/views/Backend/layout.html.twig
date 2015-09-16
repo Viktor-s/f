@@ -20,42 +20,24 @@
                 'bundles/syliusresource/css/form-collection.css'
             %}
             <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/skins/sonata/style.css') }}" type="text/css" media="all" />
-<link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/markdown/style.css') }}" type="text/css" media="all" />
-<link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/html/style.css') }}" type="text/css" media="all" />
-<link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/textile/style.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/markdown/style.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/html/style.css') }}" type="text/css" media="all" />
+            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/textile/style.css') }}" type="text/css" media="all" />
 
-                <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
             {% endstylesheets %}
         {% endblock %}
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        
-                {# javascripts... #}
-        {% block javascripts %}
-            <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-            <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-            {% javascripts output='assets/compiled/backend.js'
-                'bundles/syliusreport/js/chart.js'
-                'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
-                'bundles/syliusweb/js/confirm-modal.js'
-                'bundles/syliusweb/js/form-collection.js'
-                'bundles/syliusweb/js/form-spinner.js'
-                'bundles/syliusweb/js/select2.js'
-                'bundles/syliusweb/js/bootstrap-datepicker.js'
-                'bundles/syliusweb/js/backend.js'
-                'bundles/syliusresource/js/form-collection.js'
-                'bundles/common/js/formtype.js'
-            %}
-            <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        {% endblock %}
-        
-        
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+        <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -66,18 +48,18 @@
         <div class="row main-container">
             <div class="col-md-1 col-lg-2 hidden-sm hidden-xs">
                 {% block sidebar %}
-                <div id="sidebar">
-                    <div class="sidebar-nav">
-                        {{ knp_menu_render('sylius.backend.sidebar', {'template': 'SyliusWebBundle::menu.html.twig', 'currentClass': 'active'}) }}
+                    <div id="sidebar">
+                        <div class="sidebar-nav">
+                            {{ knp_menu_render('sylius.backend.sidebar', {'template': 'SyliusWebBundle::menu.html.twig', 'currentClass': 'active'}) }}
+                        </div>
                     </div>
-                </div>
                 {% endblock %}
             </div>
 
             <div class="col-md-11 col-lg-10">
                 <div id="topbar">
                     {% block topbar %}
-                    {% include 'SyliusWebBundle:Backend:_breadcrumb.html.twig' %}
+                        {% include 'SyliusWebBundle:Backend:_breadcrumb.html.twig' %}
                     {% endblock %}
                 </div>
 
@@ -102,4 +84,21 @@
             </div>
         </div>
     </body>
+    {# javascripts... #}
+    {% block javascripts %}
+        {% javascripts output='assets/compiled/backend.js'
+                'bundles/syliusreport/js/chart.js'
+                'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
+                'bundles/syliusweb/js/confirm-modal.js'
+                'bundles/syliusweb/js/form-collection.js'
+                'bundles/syliusweb/js/form-spinner.js'
+                'bundles/syliusweb/js/select2.js'
+                'bundles/syliusweb/js/bootstrap-datepicker.js'
+                'bundles/syliusweb/js/backend.js'
+                'bundles/syliusresource/js/form-collection.js'
+                'bundles/common/js/formtype.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
 </html>
