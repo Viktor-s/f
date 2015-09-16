@@ -2,8 +2,10 @@
 
 <div class="tab-pane active" id="main">
     {{ form_row(form.translations, {'attr': {'class': 'input-lg'}}) }}
-    {{ form_row(form.masterVariant.sku) }}
+    <hr />
+    {{ form_row(form.factory) }}
     {{ form_row(form.factoryCode) }}
+    {{ form_row(form.masterVariant.sku) }}
     <hr />
     <div class="row">
         <div class="col-md-6">

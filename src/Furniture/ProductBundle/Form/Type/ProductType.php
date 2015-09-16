@@ -4,6 +4,7 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductExtension;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,6 +40,12 @@ class ProductType extends BaseProductType
                 'class' => ProductExtension::class,
                 'multiple' => true,
                 'expanded' => false
+            ])
+            ->add('factory', 'entity', [
+                'required' => true,
+                'class'    => Factory::class,
+                'multiple' => false,
+                'property' => 'name',
             ]);
     }
     
