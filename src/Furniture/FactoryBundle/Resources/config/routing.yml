@@ -1,0 +1,3 @@
+furniture_factory_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: FurnitureFactoryBundle:Default:index }

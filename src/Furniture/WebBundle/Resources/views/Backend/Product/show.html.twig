@@ -79,6 +79,14 @@
                     <td>{{ product.name }}</td>
                 </tr>
                 <tr>
+                    <td>Factory</td>
+                    <td>
+                        {% if product.factory.name is defined %}
+                        {{ product.factory.name }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <td>{{ 'sylius.product.available_on'|trans }}</td>
                     <td><span class="label label-{{ product.available ? 'success' : 'danger' }}">{{ product.availableOn|date }}</span></td>
                 </tr>

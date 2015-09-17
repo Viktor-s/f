@@ -51,6 +51,12 @@
                                 <strong>{{ 'sylius.product.sku'|trans }}: </strong> <code class="sku">{{ product.sku }}</code>
                             {% endif %}
                         </div>
+                        <div class="media-body">
+                            {% if product.factory.name is defined %}
+                                <strong>Factory: </strong> 
+                                <code class="sku">{{ product.factory.name }}</code>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </td>

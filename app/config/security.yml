@@ -114,6 +114,12 @@ sylius_rbac:
         furniture.product_extension_variant.update: update product extension variant
         furniture.product_extension_variant.delete: delete product extension variant
         furniture.product_extension_variant.generate: generate a product extension variants
+        
+        furniture.manage.factories: manage factories
+        Furniture.factory.index: show factories manage page
+        Furniture.factory.create: edit factory data
+        Furniture.factory.update: update factory data
+        Furniture.factory.delete: delete factory data
 
         furniture.manage.composite_collections: manage composite collection
         furniture.composite_collection.index: list composite collections
@@ -134,6 +140,12 @@ sylius_rbac:
         furniture.composite.delete: delete composite
 
     permissions_hierarchy:
+        furniture.manage.factories:
+            - Furniture.factory.index
+            - Furniture.factory.create
+            - Furniture.factory.update
+            - Furniture.factory.delete
+        
         furniture.manage.sku_options: 
             - Furniture.sku_option.index
             - Furniture.sku_option.create
@@ -190,5 +202,6 @@ sylius_rbac:
                 - furniture.manage.product_extension_options
                 - furniture.manage.product_extension_variants
                 - furniture.manage.sku_options
+                - furniture.manage.factories
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

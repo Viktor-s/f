@@ -31,10 +31,16 @@ class AppKernel extends Kernel
             new \Furniture\CommonBundle\CommonBundle(),
             new \Furniture\SkuOptionBundle\SkuOptionBundle(),
             new \Furniture\CompositionBundle\CompositionBundle(),
+            new \Furniture\FactoryBundle\FurnitureFactoryBundle(),
+
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new Sonata\FormatterBundle\SonataFormatterBundle(),
         );
 
         if (in_array($this->environment, array('dev', 'test'))) {
             $bundles[] = new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new \Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return array_merge(parent::registerBundles(), $bundles);

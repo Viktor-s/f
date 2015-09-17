@@ -1,0 +1,15 @@
+Furniture\FactoryBundle\Entity\FactoryImage:
+    type: entity
+    table: factory_image
+    inheritanceType: SINGLE_TABLE
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                cascade: [persist]
+                name: factory_id
+                inversedBy: images
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+        

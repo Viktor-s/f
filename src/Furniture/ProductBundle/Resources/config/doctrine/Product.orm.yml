@@ -10,6 +10,16 @@ Furniture\ProductBundle\Entity\Product:
           OrderBy:
             - skuOptionType: ASC
 
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                name: product_id
+                inversedBy: products
+                referencedColumnName: id
+                onDelete: "SET NULL"
+                nullable: true
+
     manyToMany:
         subProducts:
             targetEntity: Product

@@ -140,6 +140,11 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'furniture_backend_product_extension',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel('Product extensions');
+            
+            $child->addChild('factory', [
+                'route' => 'furniture_backend_factory_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Factory');
         }
 
         if ($this->authorizationChecker->isGranted('furniture.composite_collection.index')) {

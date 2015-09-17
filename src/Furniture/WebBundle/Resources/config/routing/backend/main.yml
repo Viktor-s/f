@@ -174,3 +174,7 @@ sylius_backend_content:
 sylius_backend_report:
     resource: @SyliusWebBundle/Resources/config/routing/backend/report.yml
     prefix: /reports
+    
+furniture_backend_factory:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/factory.yml
+    prefix: /factory

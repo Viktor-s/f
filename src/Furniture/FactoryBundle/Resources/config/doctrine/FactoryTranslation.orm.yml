@@ -1,0 +1,19 @@
+Furniture\FactoryBundle\Entity\FactoryTranslation:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: factory_translation
+    id:
+        id:
+             type: integer
+             nullable: false
+             unsigned: false
+             id: true
+             generator:
+                 strategy: AUTO
+    fields:
+        name:
+            type: string
+            nullable: true
+        description:
+            type: string
+            nullable: true

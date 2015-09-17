@@ -1,0 +1,8 @@
+services:
+    furniture_factory.factory_entity_listener:
+        class: Furniture\FactoryBundle\EventListener\FactoryEntityListener
+        calls:
+            - [ setContainer, ['@service_container'] ]
+        tags:
+            - { name: kernel.event_listener, event: Furniture.factory.pre_create, method: pre_create }
+            - { name: kernel.event_listener, event: Furniture.factory.pre_update, method: pre_update }

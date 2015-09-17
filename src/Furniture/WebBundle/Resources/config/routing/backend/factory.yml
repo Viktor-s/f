@@ -1,0 +1,37 @@
+#Factory admin routes
+furniture_backend_factory_index:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: Furniture.controller.factory:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Factory:index.html.twig
+            
+furniture_backend_factory_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: Furniture.controller.factory:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Factory:create.html.twig
+            redirect: furniture_backend_factory_index
+            form: Furniture\FactoryBundle\Form\FactoryType
+            
+furniture_backend_factory_update:
+    path: /{id}/edit
+    methods: [GET, PUT]
+    defaults:
+        _controller: Furniture.controller.factory:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Factory:update.html.twig
+            form: Furniture\FactoryBundle\Form\FactoryType
+            redirect: furniture_backend_factory_index
+            
+furniture_backend_factory_delete:
+    path: /{id}
+    methods: [DELETE]
+    defaults:
+        _controller: Furniture.controller.factory:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_factory_index
