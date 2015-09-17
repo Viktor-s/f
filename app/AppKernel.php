@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new \Furniture\VariationBundle\VariationBundle(),
             new \Furniture\CommonBundle\CommonBundle(),
             new \Furniture\SkuOptionBundle\SkuOptionBundle(),
+            new \Furniture\CompositionBundle\CompositionBundle(),
         );
 
         if (in_array($this->environment, array('dev', 'test'))) {

@@ -41,8 +41,91 @@ product_extension_option_value:
         option: Option
         value: Value
 
+composite_collection:
+    button:
+        create: Create collection
+        edit: Edit
+        delete: Delete
+
+    form:
+        name: Name
+        presentation: Presentation
+        description: Description
+
+    breadcrumb:
+        index: Composite collections
+        create: Create collection
+        update: Update collection
+
+    header:
+        index: Composite collections
+        create: Create collection
+        update: Update collection
+
+    name: Name
+    description: Description
+    no_results: Not found composite collections
+
+composite_template:
+    button:
+        create: Create template
+        edit: Edit
+        delete: Delete
+
+    form:
+        name: Name
+        collection: Collection
+
+    breadcrumb:
+        index: Composite template
+        create: Create template
+        update: Update template
+
+    header:
+        index: Composite templates
+        create: Create template
+        update: Update template
+
+    name: Name
+    items: Items
+    collection: Collection
+    no_results: Not found composite templates
+
+composite:
+    button:
+        create: Create composite
+        edit: Edit
+        delete: Delete
+
+    form:
+        name: Name
+        template: Template
+        presentation: Presentation
+        description: Description
+
+    breadcrumb:
+        index: Composities
+        create: Create composite
+        update: Update composite
+
+    header:
+        index: Composities
+        create: Create composite
+        update: Update composite
+
+    name: Name
+    products: Products
+    no_results: Not found composities
+
+composite_template_item:
+    form:
+        taxon: Category
+        count_items: Count items
+        position: Position
+
 sylius:
     product:
         no_extensions:  There are no extensions for this product
         tabs:
             extensions: Extensions
+            composite_collections: Collections

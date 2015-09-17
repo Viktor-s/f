@@ -115,6 +115,24 @@ sylius_rbac:
         furniture.product_extension_variant.delete: delete product extension variant
         furniture.product_extension_variant.generate: generate a product extension variants
 
+        furniture.manage.composite_collections: manage composite collection
+        furniture.composite_collection.index: list composite collections
+        furniture.composite_collection.create: create a composite collection
+        furniture.composite_collection.update: update a composite collection
+        furniture.composite_collection.delete: delete a composite collection
+
+        furniture.manage.composite_templates: manage composite templates
+        furniture.composite_template.index: list composite templates
+        furniture.composite_template.create: create a composite template
+        furniture.composite_template.update: update a composite template
+        furniture.composite_template.delete: delete a composite template
+
+        furniture.manage.composite: manage composities
+        furniture.composite.index: list composities
+        furniture.composite.create: create composite
+        furniture.composite.update: update compose
+        furniture.composite.delete: delete composite
+
     permissions_hierarchy:
         furniture.manage.sku_options: 
             - Furniture.sku_option.index
@@ -142,11 +160,32 @@ sylius_rbac:
             - furniture.product_extension_variant.delete
             - furniture.product_extension_variant.generate
 
+        furniture.manage.composite_collections:
+            - furniture.composite_collection.index
+            - furniture.composite_collection.create
+            - furniture.composite_collection.update
+            - furniture.composite_collection.delete
+
+        furniture.manage.composite_templates:
+            - furniture.composite_template.index
+            - furniture.composite_template.create
+            - furniture.composite_template.update
+            - furniture.composite_template.delete
+
+        furniture.manage.composite:
+            - furniture.composite.index
+            - furniture.composite.create
+            - furniture.composite.update
+            - furniture.composite.delete
+
     roles:
         administrator:
             name: Administrator
             description: Administrator user
             permissions:
+                - furniture.manage.composite
+                - furniture.manage.composite_templates
+                - furniture.manage.composite_collections
                 - furniture.manage.product_extensions
                 - furniture.manage.product_extension_options
                 - furniture.manage.product_extension_variants

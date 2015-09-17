@@ -1,0 +1,112 @@
+# Composite collections
+furniture_backend_composite_collection:
+    path: /collection
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.composite_collection:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Collection:index.html.twig
+
+furniture_backend_composite_collection_create:
+    path: /collection/create
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite_collection:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Collection:create.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeCollectionType
+            redirect: furniture_backend_composite_collection
+
+furniture_backend_composite_collection_update:
+    path: /collection/{id}/update
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite_collection:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Collection:update.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeCollectionType
+            redirect: furniture_backend_composite_collection
+
+furniture_backend_composite_collection_delete:
+    path: /collection/{id}/delete
+    methods: [ GET, DELETE ]
+    defaults:
+        _controller: furniture.controller.composite_collection:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_composite_collection
+
+# Comosite templates
+furniture_backend_composite_template:
+    path: /template
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.composite_template:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Template:index.html.twig
+
+furniture_backend_composite_template_create:
+    path: /template/create
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite_template:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Template:create.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeTemplateType
+            redirect: furniture_backend_composite_template
+
+furniture_backend_composite_template_update:
+    path: /template/{id}/update
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite_template:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite/Template:update.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeTemplateType
+            redirect: furniture_backend_composite_template
+
+furniture_backend_composite_template_delete:
+    path: /template/{id}/delete
+    methods: [ GET, DELETE ]
+    defaults:
+        _controller: furniture.controller.composite_template:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_composite_template
+
+furniture_backend_composite:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.composite:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite:index.html.twig
+
+furniture_backend_composite_create:
+    path: /create
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite:create.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeType
+            redirect: furniture_backend_composite
+
+furniture_backend_composite_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.composite:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Composite:update.html.twig
+            form: Furniture\CompositionBundle\Form\Type\CompositeType
+            redirect: furniture_backend_composite
+
+furniture_backend_composite_delete:
+    path: /{id}/delete
+    methods: [ GET, DELETE ]
+    defaults:
+        _controller: furniture.controller.composite:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_composite

@@ -1,0 +1,18 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{{ form_row(form.name) }}
+{{ form_row(form.template) }}
+{{ form_row(form.translations) }}
+
+{% if form.products is defined and form.products|length > 0 %}
+    <hr />
+    {% if form.products.vars.errors|length %}
+        {{ form_errors(form.product) }}
+    {% endif %}
+
+    {% for child in form.products %}
+        {{ form_widget(child) }}
+    {% endfor %}
+{% endif %}
+
+{{ form_rest(form) }}

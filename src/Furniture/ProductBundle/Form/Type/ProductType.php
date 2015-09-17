@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductExtension;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
@@ -37,6 +38,11 @@ class ProductType extends BaseProductType
             ])
             ->add('extensions', 'entity', [
                 'class' => ProductExtension::class,
+                'multiple' => true,
+                'expanded' => false
+            ])
+            ->add('compositeCollections', 'entity', [
+                'class' => CompositeCollection::class,
                 'multiple' => true,
                 'expanded' => false
             ]);

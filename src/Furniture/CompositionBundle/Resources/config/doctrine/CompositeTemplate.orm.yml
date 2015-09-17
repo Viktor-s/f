@@ -1,0 +1,33 @@
+Furniture\CompositionBundle\Entity\CompositeTemplate:
+    type: entity
+    table: composite_template
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name
+
+    oneToMany:
+        items:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeTemplateItem
+            mappedBy: template
+            orphanRemoval: true
+            cascade: [ persist ]
+            orderBy:
+                position: ASC
+
+    manyToOne:
+        collection:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeCollection
+            joinColumn:
+                name: composite_collection_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

@@ -137,6 +137,24 @@
                         {% endif %}
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Composite collections:</td>
+
+                    <td>
+                        {% if product.compositeCollections|length > 0 %}
+                            <ul>
+                                {% for collection in product.compositeCollections %}
+                                    <li>{{ collection.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span class="label label-info">
+                                <i class="glyphicon glyphicon-list-alt icon-white"></i>  There are no composite collections for this produc
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
                 
                 <tr>
                     <td>{{ 'sylius.product.categorization'|trans }}</td>

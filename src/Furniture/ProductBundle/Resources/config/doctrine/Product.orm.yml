@@ -42,6 +42,19 @@ Furniture\ProductBundle\Entity\Product:
                     product_extension_id:
                         referencedColumnName: id
 
+        compositeCollections:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeCollection
+            orphanRemoval: true
+            joinTable:
+                name: product_composite_collection_relation
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+
+                inverseJoinColumns:
+                    composite_collection_id:
+                        referencedColumnName: id
+
     indexes:
         factoryCode_index:
             columns:
