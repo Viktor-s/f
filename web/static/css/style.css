@@ -379,7 +379,18 @@ nav .simple-list .submenu a .fa{color: #cacaca; display: inline-block; position:
     header.fixed-header nav{max-width: 1310px; padding: 0 70px; margin: 0 auto; text-align: right;}
     header.fixed-header nav>ul:nth-child(2){float: none;}
     header.fixed-header nav>ul{display: inline-block; text-align: left;}
-    header .additional-header-logo{position: absolute; left: 70px; top: 50%; transform: translateY(-50%); -moz-transform: translateY(-50%); -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%);}
+    header .additional-header-logo{
+        position: absolute;
+        left: 70px;
+        top: 50%;
+        font-size:36px;
+        color:#ca1515;
+        margin-left:20px;
+        transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+    }
     header .additional-header-logo img{max-height: 50px; width: auto; display: block;}
 
     /*buttons*/
@@ -428,9 +439,20 @@ body:not(.mobile) .socials-box a:hover .fa{top: -5px;}
 .header-functionality-entry .fa{display: inline-block; vertical-align: middle; position: relative; top: -2px; margin-right: 5px;}
 .header-functionality-entry b{font-size: 18px; color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;}
 .logo-wrapper{display: table-cell; vertical-align: middle; width: 300px;}
-#logo{display: inline-block; max-width: 90%; height: auto; min-height: 45px;}
+#logo{
+    display: inline-block;
+    font-size:36px;
+    color:#ca1515;
+    margin-left:20px;
+    max-width: 90%;
+    height: auto;
+    min-height: 45px;
+}
 #logo img{display: block; width: 100%;}
-.middle-entry{display: table-cell; vertical-align: middle;}
+.middle-entry{
+    display: none; /* table-cell */
+    vertical-align: middle;
+}
 .search-box{background: #fff;}
 .search-button{float: right; width: 45px; height: 45px; background: #03b4ea; position: relative;}
 .search-button:hover{background: #999!important;}
@@ -546,7 +568,14 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
     nav>ul>li.opened>.fa{transform: rotate(180deg); -moz-transform: rotate(180deg); -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg);}
     .full-width-menu-items-right{display: none;}
     .full-width-menu-items-left{margin-left: 0; margin-right: 0;}
-    .submenu{position: relative; top: auto; left: auto; padding: 0!important;}
+    .submenu{
+        position: relative;
+        display: none;
+        opacity: 1;
+        top: auto;
+        left: auto;
+        padding: 0 !important;
+    }
     .submenu-links-line{display: none;}
     .submenu-list-title{margin: 0; display: block; position: relative;}
     .submenu-list-title a{display: block; margin: 0; font-size: 12px; line-height: 14px; padding: 15px 45px 15px 20px;}
@@ -695,7 +724,7 @@ footer{position: relative;}
 .products-swiper:before, .products-swiper:after{position: absolute; left: 0; top: 0; width: 21.25px; height: 100%; background: #fff; content: ""; z-index: 2;}
 .products-swiper:after{right: -3px; left: auto;}
 .products-swiper .paddings-container{padding: 0 21.25px;}
-.product-slide-entry{max-width: 210px; margin: 0 auto; margin-bottom: 50px;}
+.product-slide-entry{max-width: 310px; margin: 0 auto; margin-bottom: 50px;}
 .product-image-label{border-radius: 50%; -webkit-border-radius: 50%; position: absolute; z-index: 1;}
 .product-image-label span{position: absolute; width: 100%; left: 0; top: 50%; transform: translateY(-50%); -moz-transform: translateY(-50%); -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); font-size: 11px; line-height: 12px; color: #fff; font-weight: 700; text-transform: uppercase; text-align: center;}
 .product-image-label.type-1{left: 7px; top: 7px; width: 40px; height: 40px; background: #93b92c;}
@@ -2692,8 +2721,8 @@ body.style-15 .footer-links a:hover{color: #c8c8c8;}
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 body.style-16 .product-slide-entry{text-align: center;}
 body.style-16 .swiper-tabs .block-title:before{background: #5f573a;}
-body.style-16 .sidebar-navigation .title{background: #5f573a;}
-body.style-16 .sidebar-navigation{border-color: #5f573a;}
+body.style-16 .sidebar-navigation .title{background: #fff;color:#000;}
+body.style-16 .sidebar-navigation{border: none;}
 body.style-16 .sidebar-navigation .entry:before{background: #5f573a;}
 body.style-16 .price .current{color: #5f573a;}
 body.style-16 #loader-wrapper .bubbles span{background: #5f573a;}
