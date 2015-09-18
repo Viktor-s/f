@@ -1,0 +1,10 @@
+Furniture\CommonBundle\Entity\User:
+    type: entity
+    table: furniture_user
+    
+    oneToMany:
+        factoryRelations:
+            cascade: [persist]
+            orphanRemoval: true
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
+            mappedBy: user

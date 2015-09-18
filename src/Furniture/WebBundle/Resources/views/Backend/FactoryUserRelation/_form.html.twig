@@ -1,0 +1,8 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+{{ form_row(form.user) }}
+<hr/>
+{{ form_row(form.isActive) }}
+{{ form_row(form.accessProducts) }}
+{{ form_row(form.accessProductsPrices) }}
+{{ form_row(form.discount) }}
+{{ form_widget(form._token) }}

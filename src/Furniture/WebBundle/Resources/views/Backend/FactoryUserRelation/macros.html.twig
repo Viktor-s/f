@@ -1,0 +1,41 @@
+{% macro list(factory_user_relations) %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+{% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
+
+{% if factory_user_relations|length > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
+                <th>Email</th>
+                <th>Permissions</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for factory_user_relation in factory_user_relations %}
+            <tr id="{{ factory_user_relation.id }}">
+                <td>{{ factory_user_relation.user.customer.getFullName() }}</td>
+                <td>{{ factory_user_relation.user.customer.getEmail() }}</td>
+                <td>
+                   Active: {{ misc.state_label(factory_user_relation.isActive) }}<br/>
+                   Catalog: {{ misc.state_label(factory_user_relation.accessProducts) }}<br/>
+                   Price: {{ misc.state_label(factory_user_relation.accessProductsPrices) }}<br/>
+                </td>
+                <td>
+                    <div class="pull-right">
+                    {{ buttons.edit(path('furniture_backend_factory_user_relation_update', {'id': factory.id, 'rid': factory_user_relation.id})) }}
+                    {{ buttons.delete(path('furniture_backend_factory_user_relation_delete', {'fid': factory.id, 'id': factory_user_relation.id})) }}
+                   </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+{{ alerts.info('sylius.product_attribute.no_results'|trans) }}
+{% endif %}
+
+{% endmacro %}

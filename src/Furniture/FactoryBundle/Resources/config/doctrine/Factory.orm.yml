@@ -11,6 +11,11 @@ Furniture\FactoryBundle\Entity\Factory:
             generator:
                 strategy: AUTO
     oneToMany:
+        userRelations:
+            cascade: [persist]
+            orphanRemoval: true
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
+            mappedBy: factory
         images:
             cascade: [persist]
             orphanRemoval: true

@@ -14,7 +14,7 @@ furniture_backend_factory_create:
         _controller: Furniture.controller.factory:createAction
         _sylius:
             template: SyliusWebBundle:Backend/Factory:create.html.twig
-            redirect: furniture_backend_factory_index
+            redirect: furniture_backend_factory_show
             form: Furniture\FactoryBundle\Form\FactoryType
             
 furniture_backend_factory_update:
@@ -25,8 +25,16 @@ furniture_backend_factory_update:
         _sylius:
             template: SyliusWebBundle:Backend/Factory:update.html.twig
             form: Furniture\FactoryBundle\Form\FactoryType
-            redirect: furniture_backend_factory_index
+            redirect: furniture_backend_factory_show
             
+furniture_backend_factory_show:
+    path: /{id}/show
+    methods: [GET]
+    defaults:
+        _controller: Furniture.controller.factory:showAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Factory:show.html.twig
+    
 furniture_backend_factory_delete:
     path: /{id}
     methods: [DELETE]
@@ -35,3 +43,47 @@ furniture_backend_factory_delete:
         _sylius:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect: furniture_backend_factory_index
+#Factory user relation admin routes
+furniture_backend_factory_user_relation_index:
+    path: /{id}/edit/userrelation
+    methods: [ GET ]
+    defaults:
+        _controller: Furniture.controller.factory_user_relation:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryUserRelation:index.html.twig
+            criteria: { factory: $id }
+            
+furniture_backend_factory_user_relation_create:
+    path: /{id}/edit/userrelation/new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: Furniture.controller.factory_user_relation:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryUserRelation:create.html.twig
+            redirect: 
+                route: furniture_backend_factory_user_relation_index
+                parameters: { id: $id }
+            form: Furniture\FactoryBundle\Form\FactoryUserRelationType
+            
+furniture_backend_factory_user_relation_update:
+    path: /{id}/edit/{rid}
+    methods: [GET, PUT]
+    defaults:
+        _controller: Furniture.controller.factory_user_relation:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryUserRelation:update.html.twig
+            form: Furniture\FactoryBundle\Form\FactoryUserRelationType
+            redirect: 
+                route: furniture_backend_factory_user_relation_index
+                parameters: { id: $id }
+            
+furniture_backend_factory_user_relation_delete:
+    path: /{fid}/userrelation/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: Furniture.controller.factory_user_relation:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: 
+                route: furniture_backend_factory_user_relation_index
+                parameters: { id: $fid }

@@ -15,5 +15,5 @@ Furniture\FactoryBundle\Entity\FactoryTranslation:
             type: string
             nullable: true
         description:
-            type: string
+            type: text
             nullable: true
