@@ -20,7 +20,7 @@
 
     {{ form_errors(form) }}
 
-    <form action="{{ path('furniture_backend_composite_create') }}" method="post" class="form-horizontal" novalidate>
+    <form action="{{ path('furniture_backend_composite_create') }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
         {% include 'SyliusWebBundle:Backend/Composite:form.html.twig' %}
 
         {{ create() }}

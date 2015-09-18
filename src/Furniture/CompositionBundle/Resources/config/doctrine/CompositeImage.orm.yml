@@ -1,0 +1,14 @@
+Furniture\CompositionBundle\Entity\CompositeImage:
+    type: entity
+    table: composite_image
+    inheritanceType: SINGLE_TABLE
+    manyToOne:
+        composite:
+            targetEntity: Furniture\CompositionBundle\Entity\Composite
+            joinColumn:
+                cascade: [persist]
+                name: composite_id
+                inversedBy: images
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false

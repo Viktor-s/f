@@ -28,6 +28,13 @@ class Composite extends AbstractTranslatable
     protected $products;
 
     /**
+     *
+     * @var Collection
+     */
+    protected $images;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -137,4 +144,65 @@ class Composite extends AbstractTranslatable
 
         return $categories;
     }
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function hasImages(){
+        return (bool)!$this->images->isEmpty();
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getImages(){
+        return $this->images;
+    }
+    
+    /**
+     * 
+     * @param Collection $images
+     * @return \Furniture\CompositionBundle\Entity\Composite
+     */
+    public function setImages(Collection $images){
+        $this->images = $images;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param Furniture\CompositionBundle\Entity\CompositeImage $image
+     * @return bool
+     */
+    public function hasImage(CompositeImage $image){
+        return $this->images->contains($image);
+    }
+    
+    /**
+     * 
+     * @param \Furniture\CompositionBundle\Entity\CompositeImage $image
+     * @return \Furniture\CompositionBundle\Entity\Composite
+     */
+    public function addImage(CompositeImage $image){
+        if(!$this->hasImage($image)){
+            $image->setComposite($this);
+            $this->images->add($image);
+        }
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\CompositionBundle\Entity\CompositeImage $image
+     * @return \Furniture\CompositionBundle\Entity\Composite
+     */
+    public function removeImage(CompositeImage $image){
+        if($this->hasImage($image)){
+            $this->images->removeElement($image);
+        }
+        return $this;
+    }
+    
 }

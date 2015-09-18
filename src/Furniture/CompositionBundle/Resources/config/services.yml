@@ -1,0 +1,8 @@
+services:
+    furniture_compose.compose_entity_listener:
+        class: Furniture\CompositionBundle\EventListener\ComposeEntityListener
+        calls:
+            - [ setContainer, ['@service_container'] ]
+        tags:
+            - { name: kernel.event_listener, event: furniture.composite.pre_create, method: pre_create }
+            - { name: kernel.event_listener, event: furniture.composite.pre_update, method: pre_update }
