@@ -1,0 +1,36 @@
+Furniture\CompositionBundle\Entity\CompositeProduct:
+    type: entity
+    table: composite_product
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        composite:
+            targetEntity: Furniture\CompositionBundle\Entity\Composite
+            inversedBy: products
+            joinColumn:
+                name: composite_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        templateItem:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeTemplateItem
+            joinColumn:
+                name: composite_template_item_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

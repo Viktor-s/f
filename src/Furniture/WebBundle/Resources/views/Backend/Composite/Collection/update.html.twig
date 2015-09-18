@@ -1,0 +1,28 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{% block title %}{{ 'composite_collection.header.update'|trans }} :: {{ 'composite_collection.header.index'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('furniture_backend_composite_collection') }}">{{ 'composite_collection.breadcrumb.index'|trans }}</a></li>
+        <li>{{ 'composite_collection.breadcrumb.update'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'composite_collection.header.update'|trans }}</h1>
+    </div>
+
+    {{ form_errors(form) }}
+
+    <form action="{{ path('furniture_backend_composite_collection_update', {id: composite_collection.id}) }}" method="post" class="form-horizontal" novalidate>
+        {{ form_widget(form) }}
+
+        {{ update() }}
+    </form>
+{% endblock %}

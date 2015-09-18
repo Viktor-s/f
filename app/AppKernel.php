@@ -30,7 +30,9 @@ class AppKernel extends Kernel
             new \Furniture\VariationBundle\VariationBundle(),
             new \Furniture\CommonBundle\CommonBundle(),
             new \Furniture\SkuOptionBundle\SkuOptionBundle(),
+            new \Furniture\CompositionBundle\CompositionBundle(),
             new \Furniture\FactoryBundle\FurnitureFactoryBundle(),
+
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),

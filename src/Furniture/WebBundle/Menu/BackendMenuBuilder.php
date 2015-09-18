@@ -133,7 +133,9 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'sylius_backend_product_attribute_index',
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.attributes', $section)));
+        }
 
+        if ($this->authorizationChecker->isGranted('furniture.product_extension.index')) {
             $child->addChild('product_extension', [
                 'route' => 'furniture_backend_product_extension',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
@@ -143,6 +145,27 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'furniture_backend_factory_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel('Factory');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.composite_collection.index')) {
+            $child->addChild('composite_collection', [
+                'route' => 'furniture_backend_composite_collection',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Composite collections');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.composite_template.index')) {
+            $child->addChild('composite_template', [
+                'route' => 'furniture_backend_composite_template',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Composite templates');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.composite.index')) {
+            $child->addChild('composite', [
+                'route' => 'furniture_backend_composite',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Composities');
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_archetype.index')) {

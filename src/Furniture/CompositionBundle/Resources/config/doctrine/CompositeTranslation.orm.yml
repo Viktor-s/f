@@ -1,0 +1,20 @@
+Furniture\CompositionBundle\Entity\CompositeTranslation:
+    type: entity
+    table: composite_translation
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        presentation:
+            type: string
+            name: presentation
+
+        description:
+            type: text
+            name: description
+            nullable: true

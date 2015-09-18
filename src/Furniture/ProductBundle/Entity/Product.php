@@ -28,6 +28,11 @@ class Product extends BaseProduct
      * @var Collection
      */
     protected $extensions;
+
+    /**
+     * @var Collection
+     */
+    protected $compositeCollections;
     
     /**
      * @var string
@@ -49,11 +54,12 @@ class Product extends BaseProduct
         
         $this->variants = new ArrayCollection();
         $this->setMasterVariant(new ProductVariant());
-        
+
         $this->subProducts = new ArrayCollection();
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();
         $this->extensions = new ArrayCollection();
+        $this->compositeCollections = new ArrayCollection();
     }
     
     /**
@@ -344,6 +350,30 @@ class Product extends BaseProduct
     {
         return $this->extensions;
     }
+
+    /**
+     * Set composite collections
+     *
+     * @param Collection $collections
+     *
+     * @return Product
+     */
+    public function setCompositeCollections(Collection $collections)
+    {
+        $this->compositeCollections = $collections;
+
+        return $this;
+    }
+
+    /**
+     * Get composite collections
+     *
+     * @return Collection
+     */
+    public function getCompositeCollections()
+    {
+        return $this->compositeCollections;
+    }
     
     /**
      * 
@@ -373,5 +403,15 @@ class Product extends BaseProduct
     public static function getTranslationClass()
     {
         return get_parent_class(__CLASS__).'Translation';
+    }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName() ?: '';
     }
 }

@@ -1,0 +1,39 @@
+Furniture\CompositionBundle\Entity\CompositeTemplateItem:
+    type: entity
+    table: composite_template_item
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        position:
+            type: integer
+            name: position
+
+        count:
+            type: integer
+            name: count_elements
+
+    manyToOne:
+        template:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeTemplate
+            inversedBy: items
+            joinColumn:
+                name: template_id
+                referencedColumnName: id
+                nullable: false
+
+        taxon:
+            targetEntity: Sylius\Component\Core\Model\Taxon
+            joinColumn:
+                name: taxon_id
+                referencedColumnName: id
+                nullable: false
+
+    uniqueConstraints:
+        composite_template_item_unique:
+            columns: [ template_id, taxon_id ]

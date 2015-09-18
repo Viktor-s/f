@@ -1,0 +1,19 @@
+Furniture\CompositionBundle\Entity\CompositeCollectionTranslation:
+    type: entity
+    table: composition_collection_translation
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        presentation:
+            type: string
+            name: presentation
+
+        description:
+            type: string
+            name: description

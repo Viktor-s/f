@@ -194,3 +194,24 @@ sylius_resource:
             classes:
                 model: Furniture\ProductBundle\Entity\ProductExtensionVariant
                 controller: Furniture\ProductBundle\Controller\ProductExtensionVariantController
+
+        furniture.composite_collection:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\CompositionBundle\Entity\CompositeCollection
+                translation:
+                    model: Furniture\CompositionBundle\Entity\CompositeCollectionTranslation
+                    mapping: ~
+
+        furniture.composite_template:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\CompositionBundle\Entity\CompositeTemplate
+
+        furniture.composite:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\CompositionBundle\Entity\Composite
+                translation:
+                    model: Furniture\CompositionBundle\Entity\CompositeTranslation
+                    mapping: ~

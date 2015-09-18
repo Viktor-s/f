@@ -1,0 +1,64 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block title %}{{ 'composite.header.index'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'composite.breadcrumb.index'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{ buttons.create(path('furniture_backend_composite_create'), 'composite.button.create'|trans) }}
+        </div>
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'composite.header.index'|trans|raw }}</h1>
+    </div>
+
+    {{ pagination(composites) }}
+
+    {% if composites|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'composite.name'|trans) }}</th>
+                <th>{{ 'composite.products'|trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for composite in composites %}
+                <tr id="{{ composite.id }}">
+                    <td>{{ composite.name }}</td>
+                    <td>
+                        <ul>
+                            {% for item in composite.productsGroupedByCategory %}
+                                <li>
+                                    <strong>{{ item.category.name }}:</strong>
+                                    {{ item.product_names|join(', ') }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_composite_update', {id: composite.id})) }}
+                            {{ buttons.delete(path('furniture_backend_composite_delete', {id: composite.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ alerts.info('composite.no_results'|trans) }}
+    {% endif %}
+
+    {{ pagination(composites) }}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{% block title %}{{ 'composite.header.update'|trans }} :: {{ 'composite.header.update'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('furniture_backend_composite') }}">{{ 'composite.breadcrumb.update'|trans }}</a></li>
+        <li>{{ 'composite.breadcrumb.update'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'composite.header.update'|trans }}</h1>
+    </div>
+
+    {{ form_errors(form) }}
+
+    <form action="{{ path('furniture_backend_composite_update', {id: composite.id}) }}" method="post" class="form-horizontal" novalidate>
+        {% include 'SyliusWebBundle:Backend/Composite:form.html.twig' %}
+
+        {{ update() }}
+    </form>
+{% endblock %}
