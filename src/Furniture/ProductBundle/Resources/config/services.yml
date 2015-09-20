@@ -8,3 +8,8 @@ services:
             - '@event_dispatcher'
         calls:
         - [setContainer, ['@service_container']]
+
+    sylius.validator.variant.combination:
+        class: Furniture\ProductBundle\Validator\VariantCombinationValidator
+        tags:
+            - { name: validator.constraint_validator, alias: sylius.validator.variant.combination }
