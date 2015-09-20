@@ -147,6 +147,7 @@ sylius_rbac:
         furniture.composite.update: update compose
         furniture.composite.delete: delete composite
 
+        sylius.product.variantGrouEdit: variants group update
     permissions_hierarchy:
         furniture.manage.factories:
             - Furniture.factory.show
@@ -167,6 +168,7 @@ sylius_rbac:
             - Furniture.sku_option.create
             - Furniture.sku_option.update
             - Furniture.sku_option.delete
+            - sylius.product.variantGrouEdit
 
         furniture.manage.product_extensions:
             - furniture.product_extension.index
