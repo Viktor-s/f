@@ -33,16 +33,11 @@ class ProductController extends BaseProductController {
                     'label' => 'Option filter',
                     'expanded' => true,
                     'multiple' => true,
-                    'data' => $optionsValues,
-                    ]  );
-        }
-        if( $optionsValues ){
-            $form_builer->add( 'options', 'entity', 
-                [
-                    'class' => get_class($optionsValues[0]),
-                    'label' => 'Option filter',
-                    'expanded' => true,
-                    'multiple' => true,
+                    'query_builder' => function( $er ) use ( $optionsValues ) {
+                        return $er->createQueryBuilder('ov')
+                                ->where('ov in (:ovs)')->setParameter('ovs', $optionsValues)
+                                ;
+                    },
                     'data' => $optionsValues,
                     ]  );
         }
@@ -57,6 +52,11 @@ class ProductController extends BaseProductController {
                     'choice_label' => 'value',
                     'expanded' => true,
                     'multiple' => true,
+                    'query_builder' => function( $er ) use ( $skuOptionsVariants ) {
+                        return $er->createQueryBuilder('sov')
+                                ->where('sov in (:sovs)')->setParameter('sovs', $skuOptionsVariants)
+                                ;
+                    },
                     'data' => $skuOptionsVariants,
                     ]  );
         }
