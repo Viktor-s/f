@@ -28,10 +28,17 @@ class Factory extends AbstractTranslatable
      */
     protected $products;
     
+    /**
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $userRelations;
+            
     function __construct() {
         parent::__construct();
         $this->images = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->userRelations = new ArrayCollection();
     }
     
     /**
@@ -196,5 +203,66 @@ class Factory extends AbstractTranslatable
         }
         return $this;
     }
-
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function hasUserRelations(){
+        return (bool)!$this->userRelations->isEmpty();
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getUserRelations(){
+        return $this->userRelations;
+    }
+    
+    /**
+     * 
+     * @param Collection $userRelations
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function setUserRelations(Collection $userRelations){
+        $this->userRelations = $userRelations;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
+     * @return bool
+     */
+    public function hasUserRelation(FactoryUserRelation $userRelation){
+        return $this->userRelations->contains($userRelation);
+    }
+    
+    /**
+     * 
+     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function addUserRelation(FactoryUserRelation $userRelation){
+        if(!$this->hasUserRelation($userRelation)){
+            $userRelation->setFactory($this);
+            $this->userRelations->add($userRelation);
+        }
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function removeUserRelation(FactoryUserRelation $userRelation){
+        if($this->hasUserRelation($userRelation)){
+            $this->userRelations->removeElement($userRelation);
+        }
+        return $this;
+    }
+    
+    
 }

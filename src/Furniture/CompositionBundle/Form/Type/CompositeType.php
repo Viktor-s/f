@@ -33,7 +33,14 @@ class CompositeType extends AbstractType
             ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new CompositeTranslationType()
-            ]);
+            ])
+            ->add('images', 'collection', array(
+                'type'         => new \Sylius\Bundle\CoreBundle\Form\Type\ImageType('Furniture\CompositionBundle\Entity\CompositeImage'),
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ))
+            ;
 
         // Add event listener for control collection field state (Enabled or disabled)
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

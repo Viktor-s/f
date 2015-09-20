@@ -24,5 +24,12 @@ class FurnitureFactoryExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        
+        /* 
+         * furniture_factory:
+         *   content_access_control:
+         *     roles: [ content_user ] 
+         */
+        $container->setParameter('factory.content_access_control.roles', $config['content_access_control']['roles']);
     }
 }

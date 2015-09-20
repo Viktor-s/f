@@ -116,10 +116,18 @@ sylius_rbac:
         furniture.product_extension_variant.generate: generate a product extension variants
         
         furniture.manage.factories: manage factories
+        Furniture.factory.show: show details page
         Furniture.factory.index: show factories manage page
         Furniture.factory.create: edit factory data
         Furniture.factory.update: update factory data
         Furniture.factory.delete: delete factory data
+        
+        furniture.manage.factories.user_relations: manage factory user relations
+        Furniture.factory_user_relation.index: users list
+        Furniture.factory_user_relation.show: show detail page
+        Furniture.factory_user_relation.create: create new relation
+        Furniture.factory_user_relation.update: update current relation
+        Furniture.factory_user_relation.delete: delete relation
 
         furniture.manage.composite_collections: manage composite collection
         furniture.composite_collection.index: list composite collections
@@ -141,10 +149,18 @@ sylius_rbac:
 
     permissions_hierarchy:
         furniture.manage.factories:
+            - Furniture.factory.show
             - Furniture.factory.index
             - Furniture.factory.create
             - Furniture.factory.update
             - Furniture.factory.delete
+            
+        furniture.manage.factories.user_relations:
+            - Furniture.factory_user_relation.show
+            - Furniture.factory_user_relation.index
+            - Furniture.factory_user_relation.create
+            - Furniture.factory_user_relation.update
+            - Furniture.factory_user_relation.delete
         
         furniture.manage.sku_options: 
             - Furniture.sku_option.index
@@ -190,7 +206,15 @@ sylius_rbac:
             - furniture.composite.update
             - furniture.composite.delete
 
+    security_roles:
+        PUBLIC_CONTENT_USER: It's our Architect/Designer/Retailer, factory user such as factory manager or agent
+        
     roles:
+        content_user:
+            name: User
+            description: Architect/Designer/Retailer
+            permissions: []
+            security_roles: [ PUBLIC_CONTENT_USER ] 
         administrator:
             name: Administrator
             description: Administrator user
@@ -203,5 +227,6 @@ sylius_rbac:
                 - furniture.manage.product_extension_variants
                 - furniture.manage.sku_options
                 - furniture.manage.factories
+                - furniture.manage.factories.user_relations
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

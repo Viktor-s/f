@@ -1,0 +1,53 @@
+Furniture\FactoryBundle\Entity\FactoryUserRelation:
+    type: entity
+    table: factory_user_relation
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        factory:
+            cascade: [persist]
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                cascade: [persist]
+                name: factory_id
+                inversedBy: userRelations
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+        user:
+            cascade: [persist]
+            targetEntity: Furniture\CommonBundle\Entity\User
+            joinColumn:
+                cascade: [persist]
+                name: user_id
+                inversedBy: factoryRelations
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+    indexes:
+        unique_relation_index:            
+            columns:
+                - factory_id
+                - user_id
+            options:
+                unique: true
+    fields:
+        isActive:
+            type: boolean
+            default: false
+        accessProducts:
+            type: boolean
+            default: false
+        accessProductsPrices:
+            type: boolean
+            nullable: false
+        discount:
+            type: integer
+            default: 0
+            

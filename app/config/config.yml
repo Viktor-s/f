@@ -125,6 +125,10 @@ swiftmailer:
     username:  %sylius.mailer.user%
     password:  %sylius.mailer.password%
 
+furniture_factory:
+    content_access_control:
+        roles: [ content_user ]
+
 sylius_product:
     classes:
         product:
@@ -143,8 +147,20 @@ sylius_variation:
                 repository: Furniture\ProductBundle\Entity\Repository\ProductVariantRepository
                 form:
                     default: Furniture\ProductBundle\Form\Type\ProductVariantType
+
+sylius_user:
+    classes:
+        user:
+            model: Furniture\CommonBundle\Entity\User
+
 sylius_resource:
     resources:
+        Furniture.factory_user_relation:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryUserRelation
+                controller: Furniture\WebBundle\Controller\FactoryUserRelationController
+        
         Furniture.factory:
             driver: doctrine/orm
             classes:
