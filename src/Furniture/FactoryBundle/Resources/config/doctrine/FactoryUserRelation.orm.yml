@@ -13,20 +13,20 @@ Furniture\FactoryBundle\Entity\FactoryUserRelation:
         factory:
             cascade: [persist]
             targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: userRelations
             joinColumn:
                 cascade: [persist]
                 name: factory_id
-                inversedBy: userRelations
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false
         user:
             cascade: [persist]
             targetEntity: Furniture\CommonBundle\Entity\User
+            inversedBy: factoryRelations
             joinColumn:
                 cascade: [persist]
                 name: user_id
-                inversedBy: factoryRelations
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false

@@ -12,15 +12,17 @@ Furniture\SkuOptionBundle\Entity\SkuOptionVariant:
     manyToOne:
         product:
             targetEntity: Furniture\ProductBundle\Entity\Product
+            inversedBy: skuOptionVariants
             joinColumn:
+                cascade: [persist, remove]
                 name: product_id
-                inversedBy: skuOptionVariants
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false
         skuOptionType:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionType
             joinColumn:
+                cascade: [persist, remove]
                 name: sku_option_id
                 referencedColumnName: id
                 onDelete: CASCADE

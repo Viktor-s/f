@@ -5,10 +5,10 @@ Furniture\CompositionBundle\Entity\CompositeImage:
     manyToOne:
         composite:
             targetEntity: Furniture\CompositionBundle\Entity\Composite
+            inversedBy: images
             joinColumn:
                 cascade: [persist]
                 name: composite_id
-                inversedBy: images
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false

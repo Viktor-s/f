@@ -13,9 +13,9 @@ Furniture\ProductBundle\Entity\Product:
     manyToOne:
         factory:
             targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: products
             joinColumn:
                 name: product_id
-                inversedBy: products
                 referencedColumnName: id
                 onDelete: "SET NULL"
                 nullable: true
@@ -24,9 +24,9 @@ Furniture\ProductBundle\Entity\Product:
         subProducts:
             targetEntity: Product
             cascade: [persist]
+            inversedBy: bundleProducts
             joinTable:
                 name: bundle_products_relation
-
                 joinColumns:
                     bundle_product_id:
                         referencedColumnName: id

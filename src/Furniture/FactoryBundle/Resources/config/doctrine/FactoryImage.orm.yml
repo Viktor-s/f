@@ -5,10 +5,10 @@ Furniture\FactoryBundle\Entity\FactoryImage:
     manyToOne:
         factory:
             targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: images
             joinColumn:
                 cascade: [persist]
                 name: factory_id
-                inversedBy: images
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false
