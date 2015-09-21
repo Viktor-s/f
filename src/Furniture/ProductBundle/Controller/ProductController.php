@@ -95,15 +95,15 @@ class ProductController extends BaseProductController {
         
         $form = $form_builer->getForm();
         $filteredVariants = [];
-        if ($request->isMethod('PUT') && $form->submit($request)->isValid()) {
+        if ($request->isMethod('PUT') && $form->handleRequest($request) ) {
             $data = $form->getData();
+            var_dump($data);
             $options = new ArrayCollection($data['options']);
-            $sku_options = $data['sku_options'];
+            $sku_options = new ArrayCollection($data['sku_options']->toArray());
             foreach($product->getVariants() as $variant){
-                
                 /*Check sku options*/
                 foreach($variant->getSkuOptions() as $skuOption){
-                    if(!$sku_options->contains($skuOption)){
+                    if(!$sku_options->exists(function($k,$e) use ($skuOption){ return ($e->getId() == $skuOption->getId()); })){
                         continue 2;
                     }
                 }
@@ -143,10 +143,8 @@ class ProductController extends BaseProductController {
                     $variant->setWeight($value);
                 }
             }
-            
+            $this->getDoctrine()->getManager()->flush();
         }
-        
-        $this->getDoctrine()->getManager()->flush();
         
         $view = $this
             ->view([
