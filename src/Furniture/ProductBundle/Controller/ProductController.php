@@ -57,7 +57,7 @@ class ProductController extends BaseProductController {
                                 ->where('sov in (:sovs)')->setParameter('sovs', $skuOptionsVariants)
                                 ;
                     },
-                    'data' => $skuOptionsVariants,
+                    'data' => clone $skuOptionsVariants,
                     ]  );
         }
         
@@ -95,9 +95,9 @@ class ProductController extends BaseProductController {
         
         $form = $form_builer->getForm();
         $filteredVariants = [];
-        if ($request->isMethod('PUT') && $form->handleRequest($request) ) {
+        $form->handleRequest($request);
+        if ( $form->isValid() ) {
             $data = $form->getData();
-            var_dump($data);
             $options = new ArrayCollection($data['options']);
             $sku_options = new ArrayCollection($data['sku_options']->toArray());
             foreach($product->getVariants() as $variant){

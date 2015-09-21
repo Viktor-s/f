@@ -5,8 +5,6 @@ Furniture\ProductBundle\Entity\ProductVariant:
     manyToMany:
         skuOptions:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
-            cascade: [persist, remove]
-            orphanRemoval: true
             onDelete: CASCADE
             joinTable:
                 name: variant_sku_options_relation

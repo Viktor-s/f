@@ -14,7 +14,6 @@ Furniture\SkuOptionBundle\Entity\SkuOptionVariant:
             targetEntity: Furniture\ProductBundle\Entity\Product
             inversedBy: skuOptionVariants
             joinColumn:
-                cascade: [persist, remove]
                 name: product_id
                 referencedColumnName: id
                 onDelete: CASCADE
