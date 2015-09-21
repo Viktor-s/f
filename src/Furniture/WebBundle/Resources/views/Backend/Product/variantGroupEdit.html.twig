@@ -19,8 +19,8 @@
 
     {{ form_errors(form) }}
 
-    <form action="{{ path('sylius_backend_product_variant_group_edit', {'id': product.id}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
-        <input type="hidden" name="_method" value="PUT">
+    <form action="{{ path('sylius_backend_product_variant_group_edit', {'id': product.id}) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+        <input type="hidden" name="_method" value="POST">
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group">

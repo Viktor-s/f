@@ -10,6 +10,7 @@
  */
 
 use Sylius\Bundle\CoreBundle\Kernel\Kernel;
+use Sylius\Bundle\FixturesBundle\SyliusFixturesBundle;
 
 /**
  * Sylius application kernel.
@@ -33,6 +34,8 @@ class AppKernel extends Kernel
             new \Furniture\CompositionBundle\CompositionBundle(),
             new \Furniture\FactoryBundle\FurnitureFactoryBundle(),
 
+            new \Furniture\FixturesBundle\FixturesBundle(),
+
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),
@@ -43,6 +46,16 @@ class AppKernel extends Kernel
             $bundles[] = new \Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
-        return array_merge(parent::registerBundles(), $bundles);
+        $bundles = array_merge(parent::registerBundles(), $bundles);
+
+        $bundles = array_filter($bundles, function ($bundle) {
+            if ($bundle instanceof SyliusFixturesBundle) {
+                return false;
+            }
+
+            return true;
+        });
+
+        return $bundles;
     }
 }

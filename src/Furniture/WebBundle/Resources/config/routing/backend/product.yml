@@ -100,7 +100,7 @@ sylius_backend_product_show:
                 
 sylius_backend_product_variant_group_edit:
     path: /{id}/variant/group/edit
-    methods: [GET, PUT, POST, DELETE]
+    methods: [ GET, POST ]
     defaults:
         _controller: sylius.controller.product:variantGroupEditAction
         _sylius:
