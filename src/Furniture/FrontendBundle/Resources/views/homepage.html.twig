@@ -1,0 +1,7 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ 'frontend.title.homepage'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block content %}
+    {{ sonata_block_render({type: 'frontend.block.factory'}, {newest: true}) }}
+{% endblock %}

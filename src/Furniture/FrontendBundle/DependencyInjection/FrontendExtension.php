@@ -18,5 +18,9 @@ class FrontendExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('controllers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('menus.yml');
+        $loader->load('blocks.yml');
     }
 }

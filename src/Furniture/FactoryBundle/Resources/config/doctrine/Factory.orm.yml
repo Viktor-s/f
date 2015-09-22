@@ -1,26 +1,30 @@
 Furniture\FactoryBundle\Entity\Factory:
     type: entity
-    inheritanceType: SINGLE_TABLE
     table: factory
     id:
         id:
             type: integer
-            nullable: false
-            unsigned: false
             id: true
             generator:
                 strategy: AUTO
+
+    fields:
+        createdAt:
+            type: datetime
+
     oneToMany:
         userRelations:
             cascade: [persist]
             orphanRemoval: true
             targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
             mappedBy: factory
+
         images:
             cascade: [persist]
             orphanRemoval: true
             targetEntity: Furniture\FactoryBundle\Entity\FactoryImage
             mappedBy: factory
+
         products:
             cascade: [persist]
             orphanRemoval: true

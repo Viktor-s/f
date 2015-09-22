@@ -4,7 +4,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: migrations.yml }    
+    - { resource: migrations.yml }
     - { resource: @SyliusCoreBundle/Resources/config/app/main.yml }
 
 framework:
@@ -20,6 +20,10 @@ framework:
     default_locale:  "%sylius.locale%"
     trusted_proxies: ~
     session:         ~
+
+sonata_block:
+    blocks:
+        frontend.block.factory: ~
 
 sonata_formatter:
     formatters:
@@ -76,7 +80,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        ['SyliusWebBundle', 'CmfCreateBundle', 'SyliusResourceBundle']
+    bundles:        ['SyliusWebBundle', 'CmfCreateBundle', 'SyliusResourceBundle', 'FrontendBundle']
     filters:
         cssrewrite: ~
 
@@ -137,7 +141,7 @@ sylius_product:
             repository: Furniture\ProductBundle\Entity\Repository\ProductRepository
             form:
                 default: Furniture\ProductBundle\Form\Type\ProductType
-                
+
 sylius_variation:
     classes:
         product:
@@ -160,7 +164,7 @@ sylius_resource:
             classes:
                 model: Furniture\FactoryBundle\Entity\FactoryUserRelation
                 controller: Furniture\WebBundle\Controller\FactoryUserRelationController
-        
+
         Furniture.factory:
             driver: doctrine/orm
             classes:

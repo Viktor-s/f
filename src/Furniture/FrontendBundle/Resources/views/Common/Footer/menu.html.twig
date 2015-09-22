@@ -1,0 +1,5 @@
+{% block root %}
+    {% for child in item.children %}
+        <a href="#">{{ child.label }}</a>
+    {% endfor %}
+{% endblock %}

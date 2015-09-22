@@ -1,0 +1,6 @@
+services:
+    frontend.block.factory:
+        class: Furniture\FrontendBundle\Blocks\FactoryBlock
+        arguments: [ @frontend.repository.factory, @templating ]
+        tags:
+            - { name: sonata.block }
