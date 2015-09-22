@@ -123,8 +123,9 @@ class ProductController extends BaseProductController {
         /*
          * Delete items flag
          */
-        $formBuilder->add( 'delete_filtered', 'checkbox', [
-            'label' => 'Delete this items'
+        $formBuilder->add( 'delete_by_filter', 'submit', [
+            'label' => 'Delete this items',
+            'attr' => ['class' => 'btn btn-danger btn-md']
         ]);
         
         $form = $formBuilder->getForm();
@@ -137,7 +138,7 @@ class ProductController extends BaseProductController {
             $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
             $productExtensions = isset($data['productExtension']) ? new ArrayCollection($data['productExtension']) : [];
             $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
-            
+            $deleteAction = $form->get('delete_by_filter')->isClicked();
 
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
             foreach ($product->getVariants() as $variant) {
@@ -167,9 +168,8 @@ class ProductController extends BaseProductController {
                     }
                 }
                 
-                if ($data['delete_filtered']) {
+                if ($deleteAction) {
                     $this->getDoctrine()->getManager()->remove($variant);
-
                     continue;
                 }
                 
