@@ -50,3 +50,6 @@ facebook_login:
 
 google_login:
     path: /login/check-google
+
+frontend:
+    resource: "@FrontendBundle/Resources/config/routing.yml"

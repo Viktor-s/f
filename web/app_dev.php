@@ -32,7 +32,7 @@ require_once __DIR__.'/../app/AppKernel.php';
 
 // Initialize kernel and run the application.
 $kernel = new AppKernel('dev', true);
-$kernel->loadClassCache();
+//$kernel->loadClassCache();
 
 $request = Request::createFromGlobals();
 

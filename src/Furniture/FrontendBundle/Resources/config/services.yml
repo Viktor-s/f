@@ -1,0 +1,8 @@
+services:
+    # Menus
+
+
+    # Blocks
+    frontend.block.factory:
+        class: Furniture\FrontendBundle\Blocks\FactoryBlock
+        arguments: [ ]

@@ -2,267 +2,351 @@
 
 namespace Furniture\FactoryBundle\Entity;
 
+use Furniture\ProductBundle\Entity\Product;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\FactoryBundle\Entity\FactoryImage;
 
 class Factory extends AbstractTranslatable
 {
-    
     /**
-     *
      * @var integer
      */
     protected $id;
+
+    /**
+     * @var \DateTime
+     */
+    protected $createdAt;
     
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $images;
     
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $products;
     
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $userRelations;
-            
-    function __construct() {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
+
+        $this->createdAt = new \DateTime();
         $this->images = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->userRelations = new ArrayCollection();
     }
     
     /**
-     * 
+     * Get id
+     *
      * @return integer
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
+    }
+
+    /**
+     * Get created at
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
     
     /**
-     * 
+     * Get name
+     *
      * @return string
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->translate()->getName();
     }
     
     /**
-     * 
+     * Set name
+     *
      * @param string $name
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @return Factory
      */
-    public function setName($name){
+    public function setName($name)
+    {
         $this->translate()->setName($name);
+
         return $this;
     }
     
     /**
-     * 
+     * Get description
+     *
      * @return string
      */
-    public function getDescription(){
+    public function getDescription()
+    {
         return $this->translate()->getDescription();
     }
     
     /**
-     * 
-     * @param string $name
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Factory
      */
-    public function setDescription($description){
+    public function setDescription($description)
+    {
         $this->translate()->setDescription($description);
+
         return $this;
     }
     
     /**
-     * 
+     * Is has images?
+     *
      * @return bool
      */
-    public function hasImages(){
+    public function hasImages()
+    {
         return (bool)!$this->images->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get images
+     *
+     * @return Collection
      */
-    public function getImages(){
+    public function getImages()
+    {
         return $this->images;
     }
     
     /**
-     * 
+     * Set images
+     *
      * @param Collection $images
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @return Factory
      */
-    public function setImages(Collection $images){
+    public function setImages(Collection $images)
+    {
         $this->images = $images;
+
         return $this;
     }
     
     /**
-     * 
-     * @param Image $image
+     * Has image
+     *
+     * @param FactoryImage $image
+     *
      * @return bool
      */
-    public function hasImage(FactoryImage $image){
+    public function hasImage(FactoryImage $image)
+    {
         return $this->images->contains($image);
     }
     
     /**
-     * 
-     * @param Image $image
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Add image
+     *
+     * @param FactoryImage $image
+     *
+     * @return Factory
      */
-    public function addImage(FactoryImage $image){
+    public function addImage(FactoryImage $image)
+    {
         if(!$this->hasImage($image)){
             $image->setFactory($this);
             $this->images->add($image);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param Image $image
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Remove image
+     *
+     * @param FactoryImage $image
+     *
+     * @return Factory
      */
-    public function removeImage(FactoryImage $image){
+    public function removeImage(FactoryImage $image)
+    {
         if($this->hasImage($image)){
             $this->images->removeElement($image);
         }
+
         return $this;
     }
     
     /**
-     * 
+     * Has products
+     *
      * @return bool
      */
-    public function hasProducts(){
+    public function hasProducts()
+    {
         return (bool)!$this->products->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get products
+     *
+     * @return Collection
      */
-    public function getProducts(){
+    public function getProducts()
+    {
         return $this->products;
     }
     
     /**
-     * 
+     * Set products
+     *
      * @param Collection $products
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @return Factory
      */
-    public function setProducts(Collection $products){
+    public function setProducts(Collection $products)
+    {
         $this->products = $products;
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Product $product
+     * Has product
+     *
+     * @param Product $product
+     *
      * @return bool
      */
-    public function hasProduct(\Furniture\ProductBundle\Entity\Product $product){
+    public function hasProduct(Product $product)
+    {
         return $this->products->contains($product);
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Product $product
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Add product
+     *
+     * @param Product $product
+     *
+     * @return Factory
      */
-    public function addProduct(\Furniture\ProductBundle\Entity\Product $product){
+    public function addProduct(Product $product)
+    {
         if(!$this->hasProduct($product)){
             $this->products->add($product);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Product $product
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Remove product
+     *
+     * @param Product $product
+     *
+     * @return Factory
      */
-    public function removeProduct(\Furniture\ProductBundle\Entity\Product $product){
+    public function removeProduct(Product $product){
         if($this->hasProduct($product)){
             $this->products->removeElement($product);
         }
+
         return $this;
     }
     
     /**
-     * 
+     * Has user relations
+     *
      * @return bool
      */
-    public function hasUserRelations(){
+    public function hasUserRelations()
+    {
         return (bool)!$this->userRelations->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get user relations
+     *
+     * @return Collection
      */
-    public function getUserRelations(){
+    public function getUserRelations()
+    {
         return $this->userRelations;
     }
     
     /**
-     * 
+     * Set user relations
+     *
      * @param Collection $userRelations
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @return Factory
      */
-    public function setUserRelations(Collection $userRelations){
+    public function setUserRelations(Collection $userRelations)
+    {
         $this->userRelations = $userRelations;
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
+     * Has user relation?
+     *
+     * @param FactoryUserRelation $userRelation
+     *
      * @return bool
      */
-    public function hasUserRelation(FactoryUserRelation $userRelation){
+    public function hasUserRelation(FactoryUserRelation $userRelation)
+    {
         return $this->userRelations->contains($userRelation);
     }
     
     /**
-     * 
-     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Add user relation
+     *
+     * @param FactoryUserRelation $userRelation
+     *
+     * @return Factory
      */
-    public function addUserRelation(FactoryUserRelation $userRelation){
+    public function addUserRelation(FactoryUserRelation $userRelation)
+    {
         if(!$this->hasUserRelation($userRelation)){
             $userRelation->setFactory($this);
             $this->userRelations->add($userRelation);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\FactoryBundle\Entity\FactoryUserRelation $userRelation
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Remove user relation
+     *
+     * @param FactoryUserRelation $userRelation
+     *
+     * @return Factory
      */
-    public function removeUserRelation(FactoryUserRelation $userRelation){
+    public function removeUserRelation(FactoryUserRelation $userRelation)
+    {
         if($this->hasUserRelation($userRelation)){
             $this->userRelations->removeElement($userRelation);
         }
+
         return $this;
     }
-    
-    
 }

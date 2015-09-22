@@ -1,0 +1,40 @@
+{% spaceless %}
+    <div class="logo-wrapper">
+        <a id="logo" href="#">AgentA</a>
+    </div>
+
+    {# @todo: why the middle entry? #}
+    <div class="middle-entry">
+        <a href="#" class="icon-entry">
+            <span class="image">
+                <i class="fa fa-car"></i>
+            </span>
+            <span class="text">
+                <b>Free Shipping</b> <br> on order over $200
+            </span>
+        </a>
+
+        <a href="#" class="icon-entry">
+            <span class="image">
+                <i class="fa fa-comments-o"></i>
+            </span>
+            <span class="text">
+                <b>Support Center</b> <br> Working everyday 24/7
+            </span>
+        </a>
+
+        <a href="#" class="icon-entry">
+            <span class="image">
+                <i class="fa fa-usd"></i>
+            </span>
+            <span class="text">
+                <b>Summer Sale</b> <br> Even 50% cheaper!
+            </span>
+        </a>
+    </div>
+
+    <div class="right-entries">
+        <a class="header-functionality-entry" href="#"><i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span></a>
+        <a class="header-functionality-entry" href="#"><span>{{ 'frontend.button.logout'|trans }}</span></a>
+    </div>
+{% endspaceless %}

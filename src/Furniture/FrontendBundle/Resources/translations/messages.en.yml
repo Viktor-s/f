@@ -1,0 +1,21 @@
+frontend:
+    all_right_reserved: All right reserved
+    agenta_solution: AgentA Solution
+
+    title:
+        index: Furniture
+        homepage: Homepage
+        navigation: Navigation
+
+    button:
+        settings: Settings
+        logout: Log out
+
+    menu_items:
+        footer:
+            sitemap: Sitemap
+            terms_and_condition: Terms and condition
+            privacy_policy: Privacy policy
+            about_us: About Us
+            contact_us: Contact Us
+            advanced_search: Advanced search

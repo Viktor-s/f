@@ -1,0 +1,23 @@
+services:
+    frontend.menu_builder:
+        class: Furniture\FrontendBundle\Menu\FrontendMenuBuilder
+        arguments:
+            - @knp_menu.factory
+            - @security.context
+            - @translator
+            - @event_dispatcher
+            - @sylius.authorization_checker
+
+    frontend.menu.header:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createHeaderMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.header }
+
+    frontend.menu.footer:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createFooterMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.footer }

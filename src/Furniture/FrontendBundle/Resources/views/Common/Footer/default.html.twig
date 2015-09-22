@@ -1,0 +1,14 @@
+{% spaceless %}
+    <div class="footer-bottom-navigation">
+        <div class="cell-view">
+            <div class="footer-links">
+                {{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}
+            </div>
+
+            <div class="copyright">
+                Created by <a href="#">{{ 'frontend.agenta_solution' }}</a>.
+                {{ 'frontend.all_right_reserved'|trans }}
+            </div>
+        </div>
+    </div>
+{% endspaceless %}

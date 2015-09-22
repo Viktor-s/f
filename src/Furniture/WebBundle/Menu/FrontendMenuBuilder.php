@@ -140,11 +140,11 @@ class FrontendMenuBuilder extends MenuBuilder
                 ))->setLabel($this->translate('sylius.frontend.menu.main.account'));
             }
 
-            $menu->addChild('logout', array(
-                'route' => 'sylius_user_security_logout',
-                'linkAttributes' => array('title' => $this->translate('sylius.frontend.menu.main.logout')),
-                'labelAttributes' => array('icon' => 'icon-off icon-large', 'iconOnly' => false)
-            ))->setLabel($this->translate('sylius.frontend.menu.main.logout'));
+            #$menu->addChild('logout', array(
+            #    'route' => 'sylius_user_security_logout',
+            #    'linkAttributes' => array('title' => $this->translate('sylius.frontend.menu.main.logout')),
+            #    'labelAttributes' => array('icon' => 'icon-off icon-large', 'iconOnly' => false)
+            #))->setLabel($this->translate('sylius.frontend.menu.main.logout'));
         } else {
             $menu->addChild('login', array(
                 'route' => 'sylius_user_security_login',

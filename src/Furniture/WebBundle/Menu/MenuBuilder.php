@@ -4,7 +4,7 @@ namespace Furniture\WebBundle\Menu;
 
 use JMS\TranslationBundle\Annotation\Ignore;
 use Knp\Menu\FactoryInterface;
-use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface;
+use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationCheckerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -51,25 +51,25 @@ abstract class MenuBuilder
     protected $eventDispatcher;
 
     /**
-     * @var AuthorizationCheckerInterface
+     * @var RbacAuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
     /**
      * Constructor.
      *
-     * @param FactoryInterface         $factory
-     * @param SecurityContextInterface $securityContext
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param FactoryInterface                  $factory
+     * @param SecurityContextInterface          $securityContext
+     * @param TranslatorInterface               $translator
+     * @param EventDispatcherInterface          $eventDispatcher
+     * @param RbacAuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         FactoryInterface $factory,
         SecurityContextInterface $securityContext,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        AuthorizationCheckerInterface $authorizationChecker
+        RbacAuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->factory = $factory;
         $this->securityContext = $securityContext;

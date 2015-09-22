@@ -1,0 +1,11 @@
+homepage_index:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.homepage:index
+
+homepage:
+    path: /homepage
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.homepage:home
