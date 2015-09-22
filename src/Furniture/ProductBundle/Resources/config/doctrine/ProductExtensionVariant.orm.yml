@@ -18,6 +18,14 @@ Furniture\ProductBundle\Entity\ProductExtensionVariant:
         name:
             type: string
             name: name
+            
+        descriptionalName:
+            type: string
+            nullable: true
+            
+        descriptionalCode:
+            type: string
+            nullable: true
 
     manyToOne:
         extension:

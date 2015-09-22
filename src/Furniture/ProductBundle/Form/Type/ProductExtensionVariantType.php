@@ -31,6 +31,14 @@ class ProductExtensionVariantType extends AbstractType
         /** @var ProductExtension $productExtension */
         $productExtension = $options['product_extension'];
 
+        $builder->add('descriptionalName', 'text', [
+            'label' => 'Extension item name'
+        ]);
+        
+        $builder->add('descriptionalCode', 'text', [
+            'label' => 'Extension item code '
+        ]);
+
         $builder->add('available', 'checkbox', [
             'label' => 'Available'
         ]);

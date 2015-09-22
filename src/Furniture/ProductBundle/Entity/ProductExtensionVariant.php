@@ -34,6 +34,18 @@ class ProductExtensionVariant
     private $name;
 
     /**
+     *
+     * @var string
+     */
+    private $descriptionalName;
+
+    /**
+     *
+     * @var string
+     */
+    private $descriptionalCode;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -164,6 +176,46 @@ class ProductExtensionVariant
     }
 
     /**
+     * 
+     * @return string
+     */
+    public function getDescriptionalName()
+    {
+        return $this->descriptionalName;
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return \Furniture\ProductBundle\Entity\ProductExtensionVariant
+     */
+    public function setDescriptionalName($name)
+    {
+        $this->descriptionalName = $name;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getDescriptionalCode()
+    {
+        return $this->descriptionalCode;
+    }
+
+    /**
+     * 
+     * @param string $code
+     * @return \Furniture\ProductBundle\Entity\ProductExtensionVariant
+     */
+    public function setDescriptionalCode($code)
+    {
+        $this->descriptionalCode = $code;
+        return $this;
+    }
+
+        /**
      * Generate name from values
      *
      * @return ProductExtensionVariant
@@ -176,7 +228,7 @@ class ProductExtensionVariant
             $parts[] = $value->getValue();
         }
 
-        $this->name = implode(', ', $parts);
+        $this->name = $this->getDescriptionalName().':'.implode(', ', $parts);
 
         return $this;
     }
