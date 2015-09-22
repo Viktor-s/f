@@ -132,4 +132,46 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return $this->extensionVariants;
     }
+    
+    /**
+     * Remove SKU option variant
+     *
+     * @param SkuOptionVariant $skuOptionVariant
+     *
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function removeExtensionVariant(ProductExtensionVariant $productExtensionVariant)
+    {
+        if ($this->hasExtensionVariant($productExtensionVariant)) {
+            $this->extensionVariants->removeElement($productExtensionVariant);
+        }
+
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductExtensionVariant $productExtensionVariant
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function addExtensionVariant(ProductExtensionVariant $productExtensionVariant)
+    {
+        if (!$this->hasExtensionVariant($productExtensionVariant)) {
+            $this->extensionVariants[] = $productExtensionVariant;
+        }
+        return $this;
+    }
+    
+    
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductExtensionVariant $productExtensionVariant
+     * @return bool
+     */
+    public function hasExtensionVariant(ProductExtensionVariant $productExtensionVariant)
+    {
+        return $this->extensionVariants->contains($productExtensionVariant);
+    }
+    
 }

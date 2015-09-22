@@ -64,6 +64,14 @@ class ProductExtensionVariant
 
         return $this;
     }
+    
+    /**
+     * 
+     * @return ProductExtension
+     */
+    public function getExtension(){
+        return $this->extension;
+    }
 
     /**
      * Get product extension

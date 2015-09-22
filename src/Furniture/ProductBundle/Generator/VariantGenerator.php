@@ -60,12 +60,25 @@ class VariantGenerator extends ContainerAware {
                 $optionMap[$route_id] = $value;
             }
         }
+        
+        /*
+         * Get product extensions
+         */
+        $extPref = 'ext';
+        foreach ($product->getExtensions() as $k => $extensions) {
+            foreach ($extensions->getVariants() as $variant) {
+                $route_id = $extPref . '_' . $variant->getId();
+                $optionSet[$extPref . '_' . $k][] = $route_id;
+                $optionMap[$route_id] = $variant;
+            }
+        }
 
         //echo '<pre>' . print_r($optionSet, true) . '</pre>';
 
         $permutations = $this->setBuilder->build($optionSet);
-
+        
         //echo '<pre>' . print_r($permutations, true) . '</pre>';
+        
         foreach ($permutations as $permutation) {
             $variant = $this->variantRepository->createNew();
             $variant->setObject($product);
@@ -85,6 +98,12 @@ class VariantGenerator extends ContainerAware {
                 if (split('_', $route_id)[0] == $sOptionPref) {
                     $variant->addSkuOption($optionMap[$route_id]);
                 }
+                /*
+                 * add product extension value to sku
+                 */
+                if (split('_', $route_id)[0] == $extPref) {
+                    $variant->addExtensionVariant($optionMap[$route_id]);
+                }
             } else
                 foreach ($permutation as $k => $route_id) {
                     /*
@@ -98,6 +117,12 @@ class VariantGenerator extends ContainerAware {
                      */
                     if (split('_', $route_id)[0] == $sOptionPref) {
                         $variant->addSkuOption($optionMap[$route_id]);
+                    }
+                    /*
+                     * add product extension value to sku
+                     */
+                    if (split('_', $route_id)[0] == $extPref) {
+                        $variant->addExtensionVariant($optionMap[$route_id]);
                     }
                 }
             $product->addVariant($variant);
