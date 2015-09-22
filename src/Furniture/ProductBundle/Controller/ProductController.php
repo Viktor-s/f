@@ -101,23 +101,23 @@ class ProductController extends BaseProductController {
          * Common editable values
          */
         $formBuilder->add( 'price_calculator', 'text', [
-            'label' => 'Change cost on'
+            'label' => 'Change cost'
         ]);
 
         $formBuilder->add( 'width', 'text', [
-            'label' => 'Change width on'
+            'label' => 'Change width'
         ]);
 
         $formBuilder->add( 'height', 'text', [
-            'label' => 'Change height on'
+            'label' => 'Change height'
         ]);
 
         $formBuilder->add( 'depth', 'text', [
-            'label' => 'Change depth on'
+            'label' => 'Change depth'
         ]);
 
         $formBuilder->add( 'weight', 'text', [
-            'label' => 'Change weight on'
+            'label' => 'Change weight'
         ]);
         
         /*
