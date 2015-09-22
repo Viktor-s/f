@@ -8,7 +8,7 @@ Furniture\ProductBundle\Entity\Product:
           mappedBy: product
           orphanRemoval: true
           OrderBy:
-            - skuOptionType: ASC
+            - skuOptionType: ASCZA
 
     manyToOne:
         factory:
