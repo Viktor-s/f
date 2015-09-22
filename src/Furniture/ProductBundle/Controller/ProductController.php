@@ -30,6 +30,33 @@ class ProductController extends BaseProductController {
             );
         }
 
+        $productExtensionVariants = [];
+        foreach($product->getExtensions() as $extension){
+            $productExtensionVariants = array_merge(
+                $productExtensionVariants,
+                $extension->getVariants()->toArray()
+            );
+        }
+        
+        if($productExtensionVariants){
+            $formBuilder->add('productExtension', 'entity', [
+                'class' => get_class($productExtensionVariants[0]),
+                'label' => 'Product extension filter',
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(EntityRepository $er ) use ($productExtensionVariants) {
+                    return $er
+                        ->createQueryBuilder('pev')
+                        ->where('pev in (:pevs)')
+                        ->setParameter('pevs', $productExtensionVariants)
+                        ->orderBy('pev.extension', 'ASC')
+                        ->orderBy('pev.id', 'ASC')
+                        ;
+                },
+                'data' => $productExtensionVariants,
+                ]);
+        }
+        
         if ($optionsValues) {
             $formBuilder->add('options', 'entity', [
                 'class' => get_class($optionsValues[0]),
@@ -40,7 +67,10 @@ class ProductController extends BaseProductController {
                     return $er
                         ->createQueryBuilder('ov')
                         ->where('ov in (:ovs)')
-                        ->setParameter('ovs', $optionsValues);
+                        ->setParameter('ovs', $optionsValues)
+                        ->orderBy('ov.option', 'ASC')
+                        ->orderBy('ov.id', 'ASC')
+                        ;
                 },
                 'data' => $optionsValues,
             ]);
@@ -57,11 +87,15 @@ class ProductController extends BaseProductController {
                     return $er
                         ->createQueryBuilder('sov')
                         ->where('sov in (:sovs)')
-                        ->setParameter('sovs', $skuOptionsVariants);
+                        ->setParameter('sovs', $skuOptionsVariants)
+                        ->orderBy('sov.typeCode', 'ASC')
+                        ->orderBy('sov.id', 'ASC')
+                        ;
                 },
                 'data' => clone $skuOptionsVariants,
             ]);
         }
+        
         
         /**
          * Common editable values
@@ -100,11 +134,23 @@ class ProductController extends BaseProductController {
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $options = new ArrayCollection($data['options']);
-            $skuOptions = new ArrayCollection($data['sku_options']->toArray());
+            $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
+            $productExtensions = isset($data['productExtension']) ? new ArrayCollection($data['productExtension']) : [];
+            $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
+            
 
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
             foreach ($product->getVariants() as $variant) {
+                foreach($variant->getExtensionVariants() as $productExtensionVariant){
+                    $callbackForExists = function ($k, $e) use ($productExtensionVariant) {
+                        return $e->getId() == $productExtensionVariant->getId();
+                    };
+                    
+                    if(!$productExtensions->exists($callbackForExists)){
+                        continue 2;
+                    }
+                }
+                
                 foreach($variant->getSkuOptions() as $skuOption){
                     $callbackForExists = function ($k, $e) use ($skuOption) {
                         return $e->getId() == $skuOption->getId();

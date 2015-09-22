@@ -51,6 +51,20 @@
                         </ul>
                     </div>
                 </div>
+                <div class="form-group">
+                    {{ form_label(form.productExtension) }}
+                    <div class="col-lg-9">
+                        <ul class="list-unstyled" id="hierarchy-root">
+                            {% for extension in form.productExtension %}
+                                <li>
+                                    {{ form.productExtension.vars.choices[extension.vars.value].data.extension.presentation }}
+                                    {{ form.productExtension.vars.choices[extension.vars.value].data.name }}
+                                    {{ form_widget(extension) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
                 <hr/>
                 <div class="form-group" color="red">
                     {{ form_label(form.delete_filtered) }}
