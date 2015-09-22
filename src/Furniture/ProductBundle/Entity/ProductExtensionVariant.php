@@ -227,8 +227,14 @@ class ProductExtensionVariant
         foreach ($this->values as $value) {
             $parts[] = $value->getValue();
         }
-
-        $this->name = $this->getDescriptionalName().':'.implode(', ', $parts);
+        
+        $prefix = [];
+        if( !empty($this->getDescriptionalName()) )
+            $prefix[] = $this->getDescriptionalName();
+        if(!empty($this->getDescriptionalCode()))
+            $prefix[] = $this->getDescriptionalCode();
+        
+        $this->name = implode( '-',$prefix).' '.implode(', ', $parts);
 
         return $this;
     }
