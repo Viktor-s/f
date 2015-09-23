@@ -171,6 +171,7 @@ sylius_resource:
             classes:
                 model: Furniture\FactoryBundle\Entity\Factory
                 translation:
+                    repository: Furniture\FactoryBundle\Entity\Repository\FactoryRepository
                     model: Furniture\FactoryBundle\Entity\FactoryTranslation
                     mapping: ~
         Furniture.sku_option:

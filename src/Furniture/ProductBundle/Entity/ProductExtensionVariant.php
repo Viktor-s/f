@@ -128,6 +128,47 @@ class ProductExtensionVariant
     }
 
     /**
+     * 
+     * @return bool
+     */
+    public function hasValues(){
+        return (bool)!$this->values->isEmpty();
+    }
+
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductExtensionOptionValue $value
+     * @return bool
+     */
+    public function hasValue(ProductExtensionOptionValue $value){
+        return $this->values->contains($value);
+    }
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductExtensionOptionValue $value
+     * @return \Furniture\ProductBundle\Entity\ProductExtensionVariant
+     */
+    public function addValue(ProductExtensionOptionValue $value){
+        if(!$this->hasValue($value)){
+            $this->values->add($value);
+        }
+        return $this;
+    }
+
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductExtensionOptionValue $value
+     * @return \Furniture\ProductBundle\Entity\ProductExtensionVariant
+     */
+    public function removeValue(ProductExtensionOptionValue $value){
+        if($this->hasValue($value)){
+            $this->values->removeElement($value);
+        }
+        return $this;
+    }
+
+        /**
      * Set available status
      *
      * @param bool $available
