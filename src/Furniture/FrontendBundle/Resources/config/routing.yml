@@ -5,7 +5,13 @@ homepage_index:
         _controller: frontend.controller.homepage:index
 
 homepage:
-    path: /homepage
+    path: /{_locale}/
     methods: [ GET ]
     defaults:
         _controller: frontend.controller.homepage:home
+
+product:
+    path: /{_locale}/product/{product}
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.product:product

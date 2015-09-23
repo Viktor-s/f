@@ -37,11 +37,11 @@ class HomepageController
      */
     public function index()
     {
-        $url = $this->urlGenerator->generate('homepage');
+        $url = $this->urlGenerator->generate('homepage', [
+            'locale' => 'en'
+        ]);
 
         return new RedirectResponse($url);
-
-
     }
 
     /**

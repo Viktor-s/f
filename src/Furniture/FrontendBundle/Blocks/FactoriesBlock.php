@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FactoryBlock extends BaseBlockService
+class FactoriesBlock extends BaseBlockService
 {
     /**
      * @var FactoryRepository

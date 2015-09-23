@@ -2,3 +2,7 @@ services:
     frontend.repository.factory:
         class: Furniture\FrontendBundle\Repository\FactoryRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.product:
+        class: Furniture\FrontendBundle\Repository\ProductRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]

@@ -193,6 +193,17 @@ class Factory extends AbstractTranslatable
 
         return $this;
     }
+
+    /**
+     * Get primary image
+     * Now returns first image
+     *
+     * @return FactoryImage
+     */
+    public function getPrimaryImage()
+    {
+        return $this->images->first();
+    }
     
     /**
      * Has products

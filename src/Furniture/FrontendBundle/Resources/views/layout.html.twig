@@ -44,7 +44,7 @@
 
     <link rel="shortcut icon" href="{{ asset('bundles/frontend/img/favicon-6.ico') }}" />
 
-    <title>{{ 'frontend.title.index'|trans }}</title>
+    <title>{% block title %}{{ 'frontend.title.index'|trans }}{% endblock %}</title>
 
     <meta name="description" content="{% block meta_description %}{% endblock %}" />
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />

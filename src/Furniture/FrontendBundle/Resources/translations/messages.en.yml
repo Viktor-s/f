@@ -1,6 +1,11 @@
 frontend:
     all_right_reserved: All right reserved
     agenta_solution: AgentA Solution
+    new_arrivals: New arrivals
+    new_factories: New factories
+    factories: Factories
+    question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
+    products: Products
 
     title:
         index: Furniture
@@ -11,6 +16,14 @@ frontend:
         settings: Settings
         logout: Log out
 
+    language:
+        english: English
+        russian: Russian
+        italian: Italian
+
+    factory:
+        posted: Posted on :created
+
     menu_items:
         footer:
             sitemap: Sitemap
@@ -19,3 +32,7 @@ frontend:
             about_us: About Us
             contact_us: Contact Us
             advanced_search: Advanced search
+
+        header:
+            homepage: Home
+            factories: Factories

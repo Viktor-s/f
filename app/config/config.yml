@@ -23,7 +23,8 @@ framework:
 
 sonata_block:
     blocks:
-        frontend.block.factory: ~
+        frontend.block.factories: ~
+        frontend.block.products: ~
 
 sonata_formatter:
     formatters:
@@ -219,3 +220,10 @@ sylius_resource:
                 translation:
                     model: Furniture\CompositionBundle\Entity\CompositeTranslation
                     mapping: ~
+
+
+liip_imagine:
+    filter_sets:
+        s201x123:
+            filters:
+                thumbnail: { size: [201, 123], mode: outbound }

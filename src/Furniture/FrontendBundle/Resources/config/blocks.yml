@@ -1,6 +1,12 @@
 services:
-    frontend.block.factory:
-        class: Furniture\FrontendBundle\Blocks\FactoryBlock
+    frontend.block.factories:
+        class: Furniture\FrontendBundle\Blocks\FactoriesBlock
         arguments: [ @frontend.repository.factory, @templating ]
+        tags:
+            - { name: sonata.block }
+
+    frontend.block.products:
+        class: Furniture\FrontendBundle\Blocks\ProductsBlock
+        arguments: [ @frontend.repository.product, @templating ]
         tags:
             - { name: sonata.block }

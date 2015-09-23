@@ -3,9 +3,8 @@ services:
         class: Furniture\FrontendBundle\Menu\FrontendMenuBuilder
         arguments:
             - @knp_menu.factory
-            - @security.context
             - @translator
-            - @event_dispatcher
+            - @security.authorization_checker
             - @sylius.authorization_checker
 
     frontend.menu.header:

@@ -2,3 +2,7 @@ services:
     frontend.controller.homepage:
         class: Furniture\FrontendBundle\Controller\HomepageController
         arguments: [ @twig, @router ]
+
+    frontend.controller.product:
+        class: Furniture\FrontendBundle\Controller\ProductController
+        arguments: [ @twig, @frontend.repository.product ]

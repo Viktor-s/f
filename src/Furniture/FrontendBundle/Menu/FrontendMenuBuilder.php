@@ -2,32 +2,51 @@
 
 namespace Furniture\FrontendBundle\Menu;
 
-use Furniture\WebBundle\Menu\MenuBuilder;
 use Knp\Menu\FactoryInterface;
 use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationCheckerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as SymfonyAuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class FrontendMenuBuilder extends MenuBuilder
+class FrontendMenuBuilder
 {
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var SymfonyAuthorizationCheckerInterface
+     */
+    private $sfAuthorizationChecker;
+
+    /**
+     * @var RbacAuthorizationCheckerInterface
+     */
+    private $rbacAuthorizationChecker;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     /**
      * Construct
      *
-     * @param FactoryInterface                  $factory
-     * @param SecurityContextInterface          $securityContext
-     * @param TranslatorInterface               $translator
-     * @param EventDispatcherInterface          $eventDispatcher
-     * @param RbacAuthorizationCheckerInterface $authorizationChecker
+     * @param FactoryInterface                     $factory
+     * @param TranslatorInterface                  $translator
+     * @param SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker
+     * @param RbacAuthorizationCheckerInterface    $rbacAuthorizationChecker
      */
     public function __construct(
         FactoryInterface $factory,
-        SecurityContextInterface $securityContext,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        RbacAuthorizationCheckerInterface $authorizationChecker
+        SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker,
+        RbacAuthorizationCheckerInterface $rbacAuthorizationChecker
     ) {
-        parent::__construct($factory, $securityContext, $translator, $eventDispatcher, $authorizationChecker);
+        $this->factory = $factory;
+        $this->translator = $translator;
+        $this->sfAuthorizationChecker = $sfAuthorizationChecker;
+        $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
     }
 
     /**
@@ -38,6 +57,22 @@ class FrontendMenuBuilder extends MenuBuilder
     public function createHeaderMenu()
     {
         $menu = $this->factory->createItem('root');
+
+        $menu
+            ->addChild('home', [
+                'route' => 'homepage',
+                'label' => $this->translator->trans('frontend.menu_items.header.homepage')
+            ]);
+
+        $factories = $menu->addChild('factories', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.menu_items.header.factories')
+        ]);
+
+        $factories->addChild('factories', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.menu_items.header.factories')
+        ]);
 
         return $menu;
     }

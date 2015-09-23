@@ -5,13 +5,16 @@
                 <div class="paddings-container">
                     <div class="product-slide-entry">
                         <a class="product-image hover-class-1" href="#">
-
+                            <img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" title="{{ factory.translate.name }}" />
                         </a>
 
                         <a class="subtitle" href="#">{{ factory.translate.name }}</a>
+                        <div class="date">{{ 'frontend.factory.posted'|trans({':created': factory.createdAt.format('d M Y')}) }}</div>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <div class="pagination"></div>
 </div>
