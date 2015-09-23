@@ -17,24 +17,5 @@
 <br/>
 <hr/>
 Image list
-    <div class="tab-pane" id="images">
-        <div id="factory-images" class="col-md-12" data-prototype="{{ form_widget(form.images.vars.prototype)|e }}">
-        {% for imageForm in form.images %}
-            <div class="factory-images-image">
-                <div class="control-group">
-                    <div class="controls">
-                        <a href="{{ imageForm.vars.value.path|imagine_filter('sylius_small') }}" target="_blank"><img class="img-polaroid" src="{{ imageForm.vars.value.path|imagine_filter('sylius_small') }}" alt="" /></a>
-                        &nbsp;
-                        {{ form_row(imageForm.file) }}
-                        &nbsp;
-                        <a href="#" class="btn btn-danger" data-collection-button="delete" data-collection="factory-images" data-collection-item="image"><i class="glyphicon glyphicon-trash"></i>&nbsp;{{ 'sylius.variant.delete_image'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        </div>
-        <div class="col-md-12">
-            <a href="#" class="btn btn-success btn-block" data-collection-button="add" data-prototype="factory-images" data-collection="factory-images">{{ 'sylius.variant.add_image'|trans }}</a>
-        </div>
-    </div>
+{{ form_widget(form.images) }}
 {{ form_rest(form) }}

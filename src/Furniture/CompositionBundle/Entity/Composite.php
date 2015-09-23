@@ -3,6 +3,7 @@
 namespace Furniture\CompositionBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 
 class Composite extends AbstractTranslatable
@@ -33,6 +34,10 @@ class Composite extends AbstractTranslatable
      */
     protected $images;
 
+    function __construct() {
+        parent::__construct();
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * Get id
