@@ -5,7 +5,11 @@
                 <div class="paddings-container">
                     <div class="product-slide-entry">
                         <a class="product-image hover-class-1" href="#">
+                            {% if factory.hasImages() %}
                             <img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" title="{{ factory.translate.name }}" />
+                            {% else %}
+                            <img src="{{ 'http://placehold.it/201x203' }}" alt="{{ factory.translate.name }}" title="{{ factory.translate.name }}" />
+                            {% endif %}
                         </a>
 
                         <a class="subtitle" href="#">{{ factory.translate.name }}</a>
