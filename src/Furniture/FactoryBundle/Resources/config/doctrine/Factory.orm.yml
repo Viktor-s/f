@@ -11,6 +11,7 @@ Furniture\FactoryBundle\Entity\Factory:
     fields:
         createdAt:
             type: datetime
+            nullable: true
 
     oneToMany:
         userRelations:

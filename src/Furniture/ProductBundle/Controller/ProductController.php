@@ -101,30 +101,31 @@ class ProductController extends BaseProductController {
          * Common editable values
          */
         $formBuilder->add( 'price_calculator', 'text', [
-            'label' => 'Change cost on'
+            'label' => 'Change cost'
         ]);
 
         $formBuilder->add( 'width', 'text', [
-            'label' => 'Change width on'
+            'label' => 'Change width'
         ]);
 
         $formBuilder->add( 'height', 'text', [
-            'label' => 'Change height on'
+            'label' => 'Change height'
         ]);
 
         $formBuilder->add( 'depth', 'text', [
-            'label' => 'Change depth on'
+            'label' => 'Change depth'
         ]);
 
         $formBuilder->add( 'weight', 'text', [
-            'label' => 'Change weight on'
+            'label' => 'Change weight'
         ]);
         
         /*
          * Delete items flag
          */
-        $formBuilder->add( 'delete_filtered', 'checkbox', [
-            'label' => 'Delete this items'
+        $formBuilder->add( 'delete_by_filter', 'submit', [
+            'label' => 'Delete this items',
+            'attr' => ['class' => 'btn btn-danger btn-md']
         ]);
         
         $form = $formBuilder->getForm();
@@ -137,7 +138,7 @@ class ProductController extends BaseProductController {
             $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
             $productExtensions = isset($data['productExtension']) ? new ArrayCollection($data['productExtension']) : [];
             $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
-            
+            $deleteAction = $form->get('delete_by_filter')->isClicked();
 
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
             foreach ($product->getVariants() as $variant) {
@@ -167,9 +168,8 @@ class ProductController extends BaseProductController {
                     }
                 }
                 
-                if ($data['delete_filtered']) {
+                if ($deleteAction) {
                     $this->getDoctrine()->getManager()->remove($variant);
-
                     continue;
                 }
                 
