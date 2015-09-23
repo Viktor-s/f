@@ -1,0 +1,32 @@
+Furniture\SpecificationBundle\Entity\Buyer:
+    type: entity
+    table: specification_buyer
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        createdAt:
+            type: datetime
+            name: created_at
+
+        firstName:
+            type: string
+            name: first_name
+
+        secondName:
+            type: string
+            name: second_name
+
+    manyToOne:
+        creator:
+            targetEntity: Furniture\CommonBundle\Entity\User
+            joinColumn:
+                name: creator
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

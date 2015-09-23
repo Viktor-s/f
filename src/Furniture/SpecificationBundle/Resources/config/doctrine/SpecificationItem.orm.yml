@@ -1,0 +1,44 @@
+Furniture\SpecificationBundle\Entity\SpecificationItem:
+    type: entity
+    table: specification_item
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        productVariant:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariant
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT
+
+        composite:
+            targetEntity: Furniture\CompositionBundle\Entity\Composite
+            joinColumn:
+                name: composite_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT
+
+    fields:
+        cost:
+            type: integer
+            name: cost
+            nullable: true
+
+        createdAt:
+            type: datetime
+            name: created_at
+
+        updatedAt:
+            type: datetime
+            name: updated_at
+
+    lifecycleCallbacks:
+        preUpdate: [ onUpdate ]
