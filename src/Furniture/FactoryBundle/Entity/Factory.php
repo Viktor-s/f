@@ -15,6 +15,12 @@ class Factory extends AbstractTranslatable
     protected $id;
 
     /**
+     *
+     * @var string
+     */
+    protected $name;
+    
+    /**
      * @var \DateTime
      */
     protected $createdAt;
@@ -74,7 +80,7 @@ class Factory extends AbstractTranslatable
      */
     public function getName()
     {
-        return $this->translate()->getName();
+        return $this->name;
     }
     
     /**
@@ -86,7 +92,7 @@ class Factory extends AbstractTranslatable
      */
     public function setName($name)
     {
-        $this->translate()->setName($name);
+        $this->name = $name;
 
         return $this;
     }

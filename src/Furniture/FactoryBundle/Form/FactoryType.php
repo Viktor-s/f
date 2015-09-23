@@ -15,6 +15,9 @@ class FactoryType extends AbstractType
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new FactoryTranslationType('Furniture\FactoryBundle\Entity\FactoryTranslation')
             ])
+            ->add('name', 'text', [
+                'required' => true
+            ])
             ->add('images', 'collection', array(
                 'type'         => new \Sylius\Bundle\CoreBundle\Form\Type\ImageType('Furniture\FactoryBundle\Entity\FactoryImage'),
                 'allow_add'    => true,

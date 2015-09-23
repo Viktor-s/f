@@ -14,9 +14,6 @@ class FactoryTranslationType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', [
-                'required' => true
-            ])
             ->add('description', 'textarea', array('attr' => array('class' => 'ckeditor')) )
             ;
     }

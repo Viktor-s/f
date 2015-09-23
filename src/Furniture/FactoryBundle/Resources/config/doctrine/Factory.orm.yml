@@ -9,6 +9,9 @@ Furniture\FactoryBundle\Entity\Factory:
                 strategy: AUTO
 
     fields:
+        name:
+            type: string
+            nullable: true
         createdAt:
             type: datetime
             nullable: true
