@@ -95,7 +95,32 @@ class LoadProductsData extends BaseLoadProductsData
 
         $this->setTaxons($product, array('Table'));
 
-        $randomDesigner = $this->faker->randomElement(
+        $product->addOption($this->getReference('Sylius.Option.table_legs'));
+        $product->addOption($this->getReference('Sylius.Option.table_tops'));
+        
+        $this->setDesignerAttribute($product);
+        
+        $this->setSkuOptions($product, [
+                '1x5',
+                '1x10',
+                '2x3',
+                '4x6',
+            ]);
+        
+        $this->generateVariants($product);
+
+        $this->setFactory($product);
+        
+        $this->setCollections($product);
+        
+        $this->setReference('Sylius.Product.'.$i, $product);
+        
+        return $product;
+    }
+
+    protected  function setDesignerAttribute(ProductInterface $product)
+    {
+        return $this->addAttribute($product, 'Designer', $this->faker->randomElement(
                 array(
                     'Eero Aarnio',
                     'Thomas Affleck', 
@@ -104,13 +129,18 @@ class LoadProductsData extends BaseLoadProductsData
                     'Antonio Citterio',
                     'Paul Evans',
                     'T. H. Robsjohn-Gibbings')
-                );
-        $this->addAttribute($product, 'Designer', $randomDesigner);
+                ));
+    }
 
-        $product->addOption($this->getReference('Sylius.Option.table_legs'));
-        $product->addOption($this->getReference('Sylius.Option.table_tops'));
-        
-        $product->setFactory(
+
+    /**
+     * 
+     * @param ProductInterface $product
+     * @return ProductInterface
+     */
+    protected function setFactory(ProductInterface $product)
+    {
+        return $product->setFactory(
                 $this->getReference( 
                         'Furniture.factory.'.$this->faker->randomElement(
                                 [
@@ -123,18 +153,21 @@ class LoadProductsData extends BaseLoadProductsData
                                 ]
                                 ) )
                 );
-        
-        $this->generateVariants($product);
+    }
 
+
+    /**
+     * 
+     * @param ProductInterface $product
+     * @param array $optionVariants
+     * @return ProductInterface
+     */
+    protected function setSkuOptions(ProductInterface $product, array $optionVariants)
+    {
         /* generate sku options */
-        $num = rand(0,4);
+        $num = rand(0,count($optionVariants));
         if($num){
-            $sizes = array_slice([
-                '1x5',
-                '1x10',
-                '2x3',
-                '4x6',
-            ], 0, $num);
+            $sizes = array_slice( $optionVariants, 0, $num);
             
             foreach (  $sizes as $size ){
                 $sku_option = new \Furniture\SkuOptionBundle\Entity\SkuOptionVariant();
@@ -144,11 +177,32 @@ class LoadProductsData extends BaseLoadProductsData
             }
         }
         
-        $this->setReference('Sylius.Product.'.$i, $product);
-
         return $product;
     }
-
+    
+    /**
+     * 
+     * @param ProductInterface $product
+     * @return ProductInterface
+     */
+    protected function setCollections(ProductInterface $product)
+    {
+        /* set composite collections */
+        $collections = [];
+        foreach( $this->faker->randomElements([
+            'Mitchell',
+            'Gallery',
+            'Takat',
+            'Holtom',
+            'Natura',
+            'Ashworth Customizable Desk System'
+        ], rand(1,3)) as $collection ){
+            $collections[] = $this->getReference('Furniture.composite_collection.'.$collection);
+        }
+        $product->setCompositeCollections(new ArrayCollection($collections));
+        return $product;
+    }
+    
     /**
      * Generates all possible variants with random prices.
      *
