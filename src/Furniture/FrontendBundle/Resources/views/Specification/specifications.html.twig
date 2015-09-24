@@ -1,0 +1,66 @@
+{% extends 'FrontendBundle:Specification:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.list'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#opened" aria-controls="opened" role="tab" data-toggle="tab">{{ 'frontend.opened'|trans }}</a>
+            </li>
+
+            <li role="presentation">
+                <a href="#finished" aria-controls="finished" role="tab" data-toggle="tab">{{ 'frontend.finished'|trans }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="opened">
+                <a href="{{ path('specification_create') }}">{{ 'frontend.create'|trans }}</a>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ 'frontend.name'|trans }}</th>
+                        <th>{{ 'frontend.buyer'|trans }}</th>
+                        <th>{{ 'frontend.total_price'|trans }}</th>
+                        <th>{{ 'frontend.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for specification in opened_specifications %}
+                    <tr>
+                        <td>{{ specification.name }}</td>
+                        <td>{{ specification.buyer }}</td>
+                        <td>{{ (specification.totalPrice / 100)|round }} EUR</td>
+                        <td>
+                            <a href="{{ path('specification', {specification: specification.id}) }}">{{ 'frontend.show'|trans }}</a>
+                            <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                            <a href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">
+                            {{ 'frontend.specfications_not_found'|trans }}
+                            <a href="{{ path('specification_create') }}">{{ 'frontend.create'|trans }}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="finished">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

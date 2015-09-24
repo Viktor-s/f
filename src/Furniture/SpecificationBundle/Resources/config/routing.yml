@@ -1,0 +1,3 @@
+specification_api:
+    resource: @SpecificationBundle/Resources/config/routing_api.yml
+    prefix: /specification/api

@@ -36,7 +36,7 @@ class LoadProductsData extends BaseLoadProductsData
         $chairs = new ArrayCollection;
         $tables = new ArrayCollection;
         $armchair = new ArrayCollection;
-        for ($i = 1; $i <= 120; $i++) {
+        for ($i = 1; $i <= 60; $i++) {
             switch (rand(0, 2)) {
                 case 0:
                     $e = $this->createTable($i);

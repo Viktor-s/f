@@ -1,0 +1,10 @@
+specification:
+    buyer:
+        form:
+            first_name: First name
+            second_name: Second name
+
+    form:
+        buyer: Buyer
+        name: Name
+        description: Description

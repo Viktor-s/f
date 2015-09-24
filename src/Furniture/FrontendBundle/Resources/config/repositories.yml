@@ -6,3 +6,11 @@ services:
     frontend.repository.product:
         class: Furniture\FrontendBundle\Repository\ProductRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.specification:
+        class: Furniture\FrontendBundle\Repository\SpecificationRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.specification_buyer:
+        class: Furniture\FrontendBundle\Repository\SpecificationBuyerRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]

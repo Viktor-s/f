@@ -5,14 +5,13 @@ namespace Furniture\FixturesBundle\DataFixtures\ORM;
 use Sylius\Bundle\FixturesBundle\DataFixtures\DataFixture;
 use \Doctrine\Common\Persistence\ObjectManager;
 
-class LoadFactoriesData extends DataFixture {
-    
-    
-    public function getOrder() {
-        return 19;
-    }
-
-    public function load(ObjectManager $manager) {
+class LoadFactoriesData extends DataFixture
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
         
         $factory = $this->createFactory(
                 'Selva',
@@ -73,13 +72,15 @@ class LoadFactoriesData extends DataFixture {
     }
 
     /**
-     * 
+     * Create a new factory
+     *
      * @param string $name
-     * @param array $translations
-     * @param array $images
+     * @param array  $translations
+     *
      * @return \Furniture\FactoryBundle\Entity\Factory
      */
-    public function createFactory($name, array $translations){
+    private function createFactory($name, array $translations)
+    {
         /* @var $factory \Furniture\FactoryBundle\Entity\Factory */
         $factory = $this->get('Furniture.repository.factory')->createNew();
         $factory->setName($name);
@@ -94,6 +95,12 @@ class LoadFactoriesData extends DataFixture {
         return $factory;
         
     }
-    
-}
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 19;
+    }
+}

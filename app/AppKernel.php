@@ -11,6 +11,7 @@
 
 use Sylius\Bundle\CoreBundle\Kernel\Kernel;
 use Sylius\Bundle\FixturesBundle\SyliusFixturesBundle;
+use HWI\Bundle\OAuthBundle\HWIOAuthBundle;
 
 /**
  * Sylius application kernel.

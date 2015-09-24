@@ -1,0 +1,9 @@
+Please select locale:<br />
+
+<ul>
+{% for locale in available_locales %}
+    <li>
+        <a href="{{ path('homepage', {_locale: locale}) }}">{{ locale }}</a>
+    </li>
+{% endfor %}
+</ul>

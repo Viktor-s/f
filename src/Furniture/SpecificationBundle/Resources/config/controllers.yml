@@ -1,0 +1,7 @@
+services:
+    specification.controller.api.specification:
+        class: Furniture\SpecificationBundle\Controller\Api\SpecificationController
+        arguments:
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage

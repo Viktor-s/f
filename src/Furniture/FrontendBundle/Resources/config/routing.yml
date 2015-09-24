@@ -7,11 +7,98 @@ homepage_index:
 homepage:
     path: /{_locale}/
     methods: [ GET ]
+    requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.homepage:home
 
 product:
     path: /{_locale}/product/{product}
     methods: [ GET ]
+    requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.product:product
+
+# Specifications
+specifications:
+    path: /{_locale}/specifications
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification:specifications
+
+specification:
+    path: /{_locale}/specification/{specification}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification:specification
+
+specification_create:
+    path: /{_locale}/specifications/new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification:edit
+
+specification_edit:
+    path: /{_locale}/specifications/{specification}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:edit
+
+specification_remove:
+    path: /{_locale}/specifications/{specification}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:remove
+
+specification_finish:
+    path: /{_locale}/specifications/{specification}/finish
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d }
+    defaults:
+        _controller: frontend.controller.specification:finish
+
+# Specification buyers
+specification_buyers:
+    path: /{_locale}/specifications/buyers
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification_buyer:buyers
+
+specification_buyer_create:
+    path: /{_locale}/specification/buyers/new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification_buyer:edit
+
+specification_buyer_edit:
+    path: /{_locale}/specification/buyers/{buyer}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:edit
+
+specification_buyer_remove:
+    path: /{_locale}/specification/buyers/{buyer}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:remove
+
+# Security
+security_login:
+    path: /login
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:login
+
+security_login_check:
+    path: /login_check
+
+security_logout:
+    path: /logout

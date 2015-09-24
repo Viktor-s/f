@@ -16,7 +16,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     protected $skuOptions;
 
     /**
-     * @var Collection
+     * @var Collection|ProductExtensionVariant[]
      */
     protected $extensionVariants;
 
@@ -126,7 +126,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     /**
      * Get extension variants
      *
-     * @return Collection $variants
+     * @return Collection|ProductExtensionVariant[]
      */
     public function getExtensionVariants()
     {

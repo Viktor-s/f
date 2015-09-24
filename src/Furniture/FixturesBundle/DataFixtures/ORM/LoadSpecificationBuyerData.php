@@ -1,0 +1,45 @@
+<?php
+
+namespace Furniture\FixturesBundle\DataFixtures\ORM;
+
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
+use Furniture\SpecificationBundle\Entity\Buyer;
+
+class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtureInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $faker = Factory::create();
+
+        /** @var \Furniture\CommonBundle\Entity\User $administer */
+        $administer = $this->getReference('Sylius.User-Administrator');
+
+        for ($i = 0; $i < 5; $i++) {
+            $buyer = new Buyer();
+            $buyer
+                ->setCreator($administer)
+                ->setFirstName($faker->firstName)
+                ->setSecondName($faker->lastName);
+
+            $this->setReference('specification:buyer:' . ((string) ($i + 1)), $buyer);
+
+            $manager->persist($buyer);
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 30;
+    }
+}
