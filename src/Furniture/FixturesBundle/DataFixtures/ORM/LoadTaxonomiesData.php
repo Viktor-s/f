@@ -20,6 +20,7 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData
             array(
                 array($this->defaultLocale => 'Table', 'es_ES' => 'Table'),
                 array($this->defaultLocale => 'Chair', 'es_ES' => 'Chair'),
+                array($this->defaultLocale => 'ArmChair', 'es_ES' => 'ArmChair'),
             )));
 
         $manager->flush();

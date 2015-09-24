@@ -33,18 +33,27 @@ class LoadProductsData extends BaseLoadProductsData
      */
     public function load(ObjectManager $manager)
     {
+        $chairs = new ArrayCollection;
+        $tables = new ArrayCollection;
+        $armchair = new ArrayCollection;
         for ($i = 1; $i <= 120; $i++) {
-            switch (rand(0, 3)) {
+            switch (rand(0, 2)) {
                 case 0:
-                    $manager->persist($this->createTable($i));
+                    $e = $this->createTable($i);
+                    $tables->add($e);
+                    $manager->persist($e);
                     break;
 
                 case 1:
-                    //$manager->persist($this->createFurnture($i));
+                    $e = $this->createChair($i);
+                    $chairs->add($e);
+                    $manager->persist($e);
                     break;
 
                 case 2:
-                    //$manager->persist($this->createFurnture($i));
+                    $e = $this->createArmChair($i);
+                    $armchair->add($e);
+                    $manager->persist($e);
                     break;
 
                 case 3:
@@ -57,6 +66,10 @@ class LoadProductsData extends BaseLoadProductsData
             }
         }
 
+        $this->setReference('Sylius.Product.Chairs', $chairs);
+        $this->setReference('Sylius.Product.ArmChairs', $armchair);
+        $this->setReference('Sylius.Product.Tables', $tables);
+        
         $manager->flush();
 
         $this->defineTotalVariants();
@@ -71,7 +84,100 @@ class LoadProductsData extends BaseLoadProductsData
     }
 
     /**
-     * Creates t-shirt product.
+     * Creates chair product.
+     *
+     * @param integer $i
+     *
+     * @return ProductInterface
+     */
+    protected function createArmChair($i)
+    {
+        $product = $this->createProduct();
+
+        $translatedNames = array(
+            $this->defaultLocale => sprintf('ArmChair "%s"', $this->faker->word),
+            'es_ES' => sprintf('ArmChair "%s"', $this->fakers['es_ES']->word),
+        );
+        $this->addTranslatedFields($product, $translatedNames);
+
+        $product->setVariantSelectionMethod(ProductInterface::VARIANT_SELECTION_MATCH);
+
+        $this->addMasterVariant($product);
+        $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
+
+        $this->setTaxons($product, array('ArmChair'));
+
+        $product->addOption($this->getReference('Sylius.Option.chair_legs'));
+        $product->setExtensions(new ArrayCollection([
+            $this->getReference('Furniture.product_extension.upholstery_material')
+        ]));
+        
+        $this->setDesignerAttribute($product);
+        
+        $this->setSkuOptions($product, [
+                '5',
+                '10',
+                '15',
+            ]);
+        
+        $this->generateVariants($product);
+
+        $this->setFactory($product);
+        
+        $this->setCollections($product);
+        
+        return $product;
+    }
+    
+    /**
+     * Creates chair product.
+     *
+     * @param integer $i
+     *
+     * @return ProductInterface
+     */
+    protected function createChair($i)
+    {
+        $product = $this->createProduct();
+
+        $translatedNames = array(
+            $this->defaultLocale => sprintf('Chair "%s"', $this->faker->word),
+            'es_ES' => sprintf('Chair "%s"', $this->fakers['es_ES']->word),
+        );
+        $this->addTranslatedFields($product, $translatedNames);
+
+        $product->setVariantSelectionMethod(ProductInterface::VARIANT_SELECTION_MATCH);
+
+        $this->addMasterVariant($product);
+        $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
+
+        $this->setTaxons($product, array('Chair'));
+
+        $product->addOption($this->getReference('Sylius.Option.chair_legs'));
+        $product->setExtensions(new ArrayCollection([
+            $this->getReference('Furniture.product_extension.upholstery_material')
+        ]));
+        
+        $this->setDesignerAttribute($product);
+        
+        $this->setSkuOptions($product, [
+                '2-23x5',
+                '1-1x100',
+                '1x50',
+                '7x8',
+            ]);
+        
+        $this->generateVariants($product);
+
+        $this->setFactory($product);
+        
+        $this->setCollections($product);
+        
+        return $product;
+    }
+    
+    /**
+     * Creates table product.
      *
      * @param integer $i
      *
@@ -113,7 +219,7 @@ class LoadProductsData extends BaseLoadProductsData
         
         $this->setCollections($product);
         
-        $this->setReference('Sylius.Product.'.$i, $product);
+        $this->setReference('Sylius.Product.Table'.$i, $product);
         
         return $product;
     }

@@ -22,6 +22,21 @@ class LoadProductOptionData extends BaseLoadProductOptionData {
 
         //table legs
         $option = $this->createOption(
+            'chair_legs',
+            array($this->defaultLocale => 'Legs', 'es_ES' => 'Legs'),
+            array(
+                'cabriole', 
+                'Flemish scroll',
+                'saber',
+                'spiral',
+                'spider',
+                'reeded'
+                )
+        );
+        $manager->persist($option);
+        
+        //table legs
+        $option = $this->createOption(
             'table_legs',
             array($this->defaultLocale => 'Legs', 'es_ES' => 'Legs'),
             array(
