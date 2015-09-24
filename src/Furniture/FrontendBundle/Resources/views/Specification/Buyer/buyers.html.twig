@@ -1,0 +1,45 @@
+{% extends 'FrontendBundle:Specification/Buyer:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <span>{{ 'frontend.title.list'|trans }}</span>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>{{ 'frontend.name'|trans }}</th>
+                <th>{{ 'frontend.created_at'|trans }}</th>
+                <th>{{ 'frontend.actions'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for buyer in buyers %}
+                <tr>
+                    <td>{{ buyer }}</td>
+                    <td>{{ buyer.createdAt.format('d M Y H:i') }}</td>
+                    <td>
+                        <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                        <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">
+                        {{ 'frontend.buyers_not_found'|trans }}
+                        <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

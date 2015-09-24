@@ -60,7 +60,9 @@ security:
                 failure_path: /login
                 oauth_user_provider:
                     service: sylius.oauth.user_provider
-            logout: true
+            logout:
+                path: /logout
+
             anonymous: true
 
         oauth_token:
@@ -82,10 +84,11 @@ security:
         - { path: "/administration.*", role: ROLE_ADMINISTRATION_ACCESS }
 
         - { path: "/account.*", role: ROLE_USER }
-
         - { path: ^/api, role: ROLE_API }
-
         - { path: "/_partial.*", ip: 127.0.0.1 }
+
+        - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.+, role: ROLE_USER }
 
 sylius_rbac:
     permissions:

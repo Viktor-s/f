@@ -23,8 +23,16 @@ Furniture\SpecificationBundle\Entity\SpecificationItem:
             joinColumn:
                 name: composite_id
                 referencedColumnName: id
-                nullable: false
                 onDelete: RESTRICT
+
+        specification:
+            targetEntity: Furniture\SpecificationBundle\Entity\Specification
+            inversedBy: items
+            joinColumn:
+                name: specification_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
 
     fields:
         cost:
@@ -39,6 +47,7 @@ Furniture\SpecificationBundle\Entity\SpecificationItem:
         updatedAt:
             type: datetime
             name: updated_at
+            nullable: true
 
     lifecycleCallbacks:
         preUpdate: [ onUpdate ]

@@ -1,0 +1,121 @@
+{% extends 'FrontendBundle:Product:base.html.twig' %}
+
+{% block title %}{{ product.name }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ product.name }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-sm-6 information-entry">
+                <div class="product-preview-box">
+                </div>
+            </div>
+
+            <div class="col-sm-6 information-entry">
+                <div class="product-detail-box">
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    <h3 class="product-subtitle">{{ product.shortDescription }}</h3>
+
+                    <div class="product-description detail-info-entry">{{ product.description }}</div>
+
+                    <div class="price detail-info-entry">
+                        <div class="prev"></div>
+                        <div class="current">{{ (prices.min / 100)|round(2) }} - {{ (prices.max / 100)|round(2) }} EUR</div>
+                    </div>
+
+                    <div class="options-selector detail-info-entry">
+                        {% for option in options %}
+                            <div class="detail-info-entry">
+                                <div class="detail-info-entry-title">{{ option.name }}</div>
+                                <select class="form-control">
+                                    {% for value in option.values %}
+                                        <option value="{{ value }}">{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="quantity-selector detail-info-entry">
+                        <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
+                        <div class="entry number-minus">&nbsp;</div>
+                        <div class="entry number">1</div>
+                        <div class="entry number-plus">&nbsp;</div>
+                    </div>
+
+                    <div class="detail-info-entry">
+                        <div class="btn-group">
+                            <button type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.add_to_specification'|trans }}</button>
+                            <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;width:50px;min-width:50px;">
+                                <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">{{ 'frontend.new_specification'|trans }}</a>
+                                </li>
+
+                                <li role="separator" class="divider"></li>
+
+                                {% for specification in specifications %}
+                                    <li>
+                                        <a href="#">{{ specification.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($){
+            var productVariants = {{ variants|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
+
+
+            function searchProductFromSelectedOptions()
+            {
+                var hashParts = [];
+
+                $('.options-selector select').each(function (){
+                    hashParts.push($(this).val());
+                });
+
+                var hash = hashParts.join('');
+
+                if (productVariants.hasOwnProperty(hash)) {
+                    return productVariants[hash];
+                }
+
+                return null;
+            }
+
+            function onChangeAnyOption()
+            {
+                var variant = searchProductFromSelectedOptions(),
+                    priceContainer = $('.price .current');
+
+                if (variant) {
+                    priceContainer.text(Math.round(variant.price / 100, 2) + ' EUR');
+                } else {
+                    priceContainer.text('Undefined');
+                }
+            }
+
+            $(document).ready(function (){
+                $('.options-selector select').change(onChangeAnyOption);
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

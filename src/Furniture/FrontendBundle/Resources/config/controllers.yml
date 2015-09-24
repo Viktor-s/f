@@ -1,8 +1,36 @@
 services:
     frontend.controller.homepage:
         class: Furniture\FrontendBundle\Controller\HomepageController
-        arguments: [ @twig, @router ]
+        arguments: [ @twig, @router, %available_locales% ]
 
     frontend.controller.product:
         class: Furniture\FrontendBundle\Controller\ProductController
-        arguments: [ @twig, @frontend.repository.product ]
+        arguments:
+            - @twig
+            - @frontend.repository.product
+            - @frontend.repository.specification
+            - @security.token_storage
+
+    frontend.controller.security:
+        class: Furniture\FrontendBundle\Controller\SecurityController
+        arguments: [ @twig, @security.csrf.token_manager ]
+
+    frontend.controller.specification:
+        class: Furniture\FrontendBundle\Controller\SpecificationController
+        arguments:
+            - @twig
+            - @frontend.repository.specification
+            - @security.token_storage
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @router
+
+    frontend.controller.specification_buyer:
+        class: Furniture\FrontendBundle\Controller\SpecificationBuyerController
+        arguments:
+            - @twig
+            - @frontend.repository.specification_buyer
+            - @security.token_storage
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @router

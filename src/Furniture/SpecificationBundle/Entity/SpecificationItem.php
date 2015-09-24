@@ -4,6 +4,7 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Furniture\CompositionBundle\Entity\Composite;
 use Furniture\ProductBundle\Entity\ProductVariant;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SpecificationItem
 {
@@ -13,7 +14,16 @@ class SpecificationItem
     private $id;
 
     /**
+     * @var Specification
+     *
+     * @Assert\NotBlank()
+     */
+    private $specification;
+
+    /**
      * @var ProductVariant
+     *
+     * @Assert\NotBlank()
      */
     private $productVariant;
 
@@ -53,6 +63,30 @@ class SpecificationItem
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set specification
+     *
+     * @param Specification $specification
+     *
+     * @return SpecificationItem
+     */
+    public function setSpecification(Specification $specification)
+    {
+        $this->specification = $specification;
+
+        return $this;
+    }
+
+    /**
+     * Get specification
+     *
+     * @return Specification
+     */
+    public function getSpecification()
+    {
+        return $this->specification;
     }
 
     /**

@@ -1,0 +1,9 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ 'frontend.title.buyers'|trans }} :: {{ 'frontend.title.specifications'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('specifications') }}">{{ 'frontend.title.specifications'|trans }}</a>
+    <a href="{{ path('specification_buyers') }}">{{ 'frontend.title.buyers'|trans }}</a>
+{% endblock %}

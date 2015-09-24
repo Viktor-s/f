@@ -34,22 +34,25 @@ payum_notify:
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
 
-hwi_oauth_security:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix: /login
+#hwi_oauth_security:
+#    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+#    prefix: /login
 
-hwi_oauth_redirect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix: /connect
+#hwi_oauth_redirect:
+#    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+#    prefix: /connect
 
-amazon_login:
-    path: /login/check-amazon
+#amazon_login:
+#    path: /login/check-amazon
 
-facebook_login:
-    path: /login/check-facebook
+#facebook_login:
+#    path: /login/check-facebook
 
-google_login:
-    path: /login/check-google
+#google_login:
+#    path: /login/check-google
+
+specification:
+    resource: "@SpecificationBundle/Resources/config/routing.yml"
 
 frontend:
     resource: "@FrontendBundle/Resources/config/routing.yml"

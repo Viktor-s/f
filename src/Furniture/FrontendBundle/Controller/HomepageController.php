@@ -19,15 +19,22 @@ class HomepageController
     private $urlGenerator;
 
     /**
+     * @var array
+     */
+    private $availableLocales;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment     $twig
      * @param UrlGeneratorInterface $urlGenerator
+     * @param string                $availableLocales
      */
-    public function __construct(\Twig_Environment $twig, UrlGeneratorInterface $urlGenerator)
+    public function __construct(\Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, $availableLocales)
     {
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
+        $this->availableLocales = explode('|', $availableLocales);
     }
 
     /**
@@ -37,11 +44,12 @@ class HomepageController
      */
     public function index()
     {
-        $url = $this->urlGenerator->generate('homepage', [
-            'locale' => 'en'
-        ]);
-
-        return new RedirectResponse($url);
+        return new RedirectResponse('/en/');
+//        $content = $this->twig->render('FrontendBundle::select_locale.html.twig', [
+//            'available_locales' => $this->availableLocales
+//        ]);
+//
+//        return new Response($content);
     }
 
     /**

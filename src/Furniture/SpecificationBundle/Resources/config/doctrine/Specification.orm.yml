@@ -32,3 +32,28 @@ Furniture\SpecificationBundle\Entity\Specification:
             type: datetime
             name: finished_at
             nullable: true
+
+    manyToOne:
+        user:
+            targetEntity: Furniture\CommonBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+
+        buyer:
+            targetEntity: Furniture\SpecificationBundle\Entity\Buyer
+            joinColumn:
+                name: buyer_id
+                referencedColumnName: id
+                onDelete: RESTRICT
+                nullable: true
+
+    oneToMany:
+        items:
+            targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
+            mappedBy: specification
+
+    lifecycleCallbacks:
+        preUpdate: [ onUpdate ]

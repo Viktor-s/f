@@ -3,6 +3,7 @@
 namespace Furniture\SpecificationBundle\Entity;
 
 use Furniture\CommonBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Buyer
 {
@@ -23,11 +24,15 @@ class Buyer
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $secondName;
 
@@ -59,6 +64,8 @@ class Buyer
     public function setCreator(User $user)
     {
         $this->creator = $user;
+
+        return $this;
     }
 
     /**
@@ -127,5 +134,19 @@ class Buyer
     public function getSecondName()
     {
         return $this->secondName;
+    }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            '%s %s',
+            $this->firstName,
+            $this->secondName
+        );
     }
 }

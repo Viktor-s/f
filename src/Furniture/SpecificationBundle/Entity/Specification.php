@@ -4,6 +4,8 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Furniture\CommonBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Specification
 {
@@ -13,7 +15,14 @@ class Specification
     private $id;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -64,6 +73,30 @@ class Specification
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     *
+     * @return Specification
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -145,7 +178,7 @@ class Specification
      *
      * @return Specification
      */
-    public function setBuyer(Buyer $buyer)
+    public function setBuyer(Buyer $buyer = null)
     {
         $this->buyer = $buyer;
 
@@ -198,5 +231,30 @@ class Specification
     public function getFinishedAt()
     {
         return $this->finishedAt;
+    }
+
+    /**
+     * Calculate total price (In EUR)
+     *
+     * @return int
+     */
+    public function getTotalPrice()
+    {
+        $price = 0;
+
+        foreach ($this->items as $item) {
+            $productVariant = $item->getProductVariant();
+            $price += $productVariant->getPrice();
+        }
+
+        return $price;
+    }
+
+    /**
+     * Life hook on update
+     */
+    public function onUpdate()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }

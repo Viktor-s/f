@@ -1,0 +1,19 @@
+{% extends 'FrontendBundle:Specification/Buyer:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (buyer.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ ('frontend.title.' ~ (buyer.id ? 'edit' : 'create'))|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <form action="" method="POST">
+            {{ form_widget(form) }}
+
+            <input type="submit" value="{{ 'frontend.save'|trans }}" />
+        </form>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@ services:
             - @translator
             - @security.authorization_checker
             - @sylius.authorization_checker
+            - @router
 
     frontend.menu.header:
         class: Knp\Menu\MenuItem

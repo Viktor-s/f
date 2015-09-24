@@ -1,0 +1,11 @@
+specificaiton_api_specification_create:
+    path: /create
+    methods: [ POST ]
+    defaults:
+        _controller: specification.controller.api.specification:create
+
+specification_api_specification_add_item:
+    path: /item/add
+    methods: [ POST ]
+    defaults:
+        _controller: specification.controller.api.specification:addItem

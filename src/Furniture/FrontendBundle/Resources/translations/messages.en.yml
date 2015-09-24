@@ -6,20 +6,45 @@ frontend:
     factories: Factories
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     products: Products
+    name: Name
+    actions: Actions
+    created_at: Created at
+    buyers_not_found: Buyers not found.
+    buyer: Buyer
+    specfications_not_found: Specifications not found.
+    create: Create
+    update: Update
+    edit: Edit
+    remove: Remove
+    show: Show
+    save: Save
+    opened: Opened
+    finished: Finished
+    total_price: Total price
+    add_to_specification: Add to specification
+    new_specification: New specification
+    quantity: Quantity
 
     title:
         index: Furniture
         homepage: Homepage
         navigation: Navigation
+        buyers: Buyers
+        specifications: Specifications
+        products: Products
+        buyers: Buyers
+        list: List
+        create: Create
+        edit: Edit
 
     button:
         settings: Settings
         logout: Log out
 
     language:
-        english: English
-        russian: Russian
-        italian: Italian
+        en: English
+        ru: Russian
+        it: Italian
 
     factory:
         posted: Posted on :created
@@ -36,3 +61,11 @@ frontend:
         header:
             homepage: Home
             factories: Factories
+            specifications: Specifications
+            specification_buyers: Buyers
+
+    login:
+        username: Username
+        password: Password
+        remember_me: Remember me
+        submit: Login

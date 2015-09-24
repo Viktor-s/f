@@ -29,6 +29,7 @@
             '@FrontendBundle/Resources/public/js/jquery.mousewheel.js'
             '@FrontendBundle/Resources/public/js/jquery.jscrollpane.min.js'
             '@FrontendBundle/Resources/public/js/idangerous.swiper.min.js'
+            '@FrontendBundle/Resources/public/js/bootstrap.min.js'
             '@FrontendBundle/Resources/public/js/global.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -98,6 +99,11 @@
             </div>
 
             <div class="content-push">
+                {% set breadcumb_content = block('breadcrumb') %}
+                {% if breadcumb_content|trim|length > 0 %}
+                    <div class="breadcrumb-box">{{ breadcumb_content|raw }}</div>
+                {% endif %}
+
                 {% block content %}{% endblock %}
 
                 {% block footer_container %}
@@ -112,5 +118,7 @@
             </div>
         </div>
     </div>
+{% block footer_javascripts %}
+{% endblock %}
 </body>
 </html>
