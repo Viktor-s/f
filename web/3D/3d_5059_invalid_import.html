@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>3d Viewer</title>
+        <style>
+            body { margin: 0; }
+            canvas { width: 100%; height: 100% }
+        </style>
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.js"></script>
+        <script src="OBJLoader.js"></script>
+        <script src="Projector.js"></script>
+        <script>
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
+
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+            var projector = new THREE.Projector();
+            document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+            var ambient = new THREE.AmbientLight( 0x101030 );
+            scene.add( ambient );
+
+            var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+            directionalLight.position.set( 0, 0, 1 );
+            scene.add( directionalLight );
+
+        light = new THREE.DirectionalLight( 0xffffff );
+        light.position.set( 1, 1, 1 );
+        scene.add( light );
+
+        light = new THREE.DirectionalLight( 0x002288 );
+        light.position.set( -1, -1, -1 );
+        scene.add( light );
+
+            document.body.appendChild( renderer.domElement );
+
+            //var texture = THREE.ImageUtils.loadTexture( 'textures/texture.jpg', {}, function(){
+            var texture = THREE.ImageUtils.loadTexture( 'textures/wood-floor.jpg', {}, function(){
+                render();
+            },
+            function() {
+            });
+
+            material = new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
+            //material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+
+            function onDocumentMouseDown(event) {
+                var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
+                vector = vector.unproject(camera);
+                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+                var intersects;
+
+                var objs;
+                objs = [];
+
+                for ( var i = 0, el; i < obj.children.length; i++ ) {
+                    objs.push( obj.children[i] );
+                }
+                intersects = raycaster.intersectObjects( objs );
+                if ( intersects[0] ) {
+                    console.log( intersects[0] );
+                    intersects[0].object.material.color = {
+                        r: Math.random(),
+                        g: Math.random(),
+                        b: Math.random()
+                    }
+                }
+            }
+
+            var loader = new THREE.OBJLoader();
+            var obj;
+            loader.load(
+                // resource URL
+                //'/models/1750.obj',
+                //'/models/1750_.obj',
+                '/models/5059.obj',
+                //'/models/1056.obj',
+                // Function when resource is loaded
+                function ( object ) {
+                    obj = object;
+//mesh = new THREE.Mesh( obj, material );
+console.log( obj );
+//console.log( mesh );
+//obj.position.z = -450;
+//obj.position.y = -50;
+obj.position.z = 5;
+obj.position.x = -3;
+obj.position.y = 0;
+
+                    obj.traverse(function(child) {
+                        if ( child instanceof THREE.Mesh ) {
+//mesh = new THREE.Mesh(child, material);
+//scene.add(mesh);
+                            child.material.color = {
+                                r: Math.random(),
+                                g: Math.random(),
+                                b: Math.random()
+                            }
+                        }
+                    });
+//obj.children[3].material = material;
+                    obj.rotation.y += 0.7;
+                    scene.add( object );
+                }
+            );
+
+            camera.position.z = 5;
+
+            function render() {
+if ( obj ) {
+    //obj.rotation.y += 0.005;
+}
+/*
+camera.rotation.x += 0.1;
+camera.rotation.y += 0.1;
+*/
+                requestAnimationFrame( render );
+                renderer.render( scene, camera );
+            }
+            render();
+        </script>
+    </body>
+</html>
