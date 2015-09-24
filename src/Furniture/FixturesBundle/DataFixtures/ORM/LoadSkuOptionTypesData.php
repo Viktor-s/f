@@ -32,7 +32,7 @@ class LoadSkuOptionTypesData extends DataFixture {
             $skuOptionType->setName($presentation['name']);
         }
         
-        $this->setReference('Furniture.factory.'.$skuOptionType->getName(), $skuOptionType);
+        $this->setReference('Furniture.sku_option.'.$skuOptionType->getName(), $skuOptionType);
         
         return $skuOptionType;
     }

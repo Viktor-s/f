@@ -80,6 +80,8 @@ class LoadProductExtensionData extends DataFixture {
         $productExtension = $this->get('furniture.repository.product_extension')->createNew();
         $productExtension->setName($name);
         
+        $this->setReference( 'Furniture.product_extension.'.$name, $productExtension);
+        
         foreach ($translations as $locale => $presentation) {
             $productExtension->setCurrentLocale($locale);
             $productExtension->setPresentation($presentation['presentation']);
