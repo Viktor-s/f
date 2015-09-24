@@ -3,10 +3,15 @@
 namespace Furniture\FixturesBundle\DataFixtures\ORM;
 
 use Sylius\Bundle\FixturesBundle\DataFixtures\DataFixture;
-use \Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 class LoadFactoriesData extends DataFixture
 {
+    
+    protected $factory_path = '/../../Resources/fixtures/factoryImages/';
+    
     /**
      * {@inheritDoc}
      */
@@ -89,6 +94,18 @@ class LoadFactoriesData extends DataFixture
             $factory->setCurrentLocale($locale);
             $factory->setDescription($presentation['description']);
         }
+        
+        echo $this->factory_path.$name.'-logo.jpg'.PHP_EOL;
+        $img = new \SplFileInfo(__DIR__.$this->factory_path.$name.'-logo.jpg');
+        echo $img->getRealPath().$img->getFilename();
+        $uploadFile = new UploadedFile($img->getRealPath(), $img->getFilename());
+        
+        $image = new \Furniture\FactoryBundle\Entity\FactoryImage();
+        $image->setFile($uploadFile);
+        $image->setFactory($factory);
+        $this->get('sylius.image_uploader')->upload($image);
+        
+        $factory->addImage($image);
         
         $this->setReference('Furniture.factory.'.$name, $factory);
         

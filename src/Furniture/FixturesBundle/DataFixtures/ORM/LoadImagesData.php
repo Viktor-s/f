@@ -25,7 +25,7 @@ class LoadImagesData extends BaseLoadImagesData
         $finder = new Finder();
         $uploader = $this->get('sylius.image_uploader');
 
-        foreach ($finder->files()->in(__DIR__.$this->path) as $img) {
+        foreach ($finder->files()->in(__DIR__.$this->product_path) as $img) {
             $image = $this->getProductVariantImageRepository()->createNew();
             $image->setFile(new UploadedFile($img->getRealPath(), $img->getFilename()));
             $uploader->upload($image);
