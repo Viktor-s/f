@@ -7,8 +7,9 @@ use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Furniture\PricingBundle\Model\PricingInterface;
 
-class Product extends BaseProduct
+class Product extends BaseProduct implements PricingInterface
 {
     /**
      * @var Collection

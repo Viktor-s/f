@@ -226,6 +226,9 @@ sylius_resource:
 
 liip_imagine:
     filter_sets:
+        s200x250:
+            filters:
+                thumbnail: { size: [200, 150], mode: outbound }
         s201x123:
             filters:
                 thumbnail: { size: [201, 123], mode: outbound }

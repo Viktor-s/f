@@ -21,6 +21,7 @@ frontend:
     edit: Edit
     remove: Remove
     show: Show
+    detailed: Detailed
     save: Save
     opened: Opened
     finished: Finished
@@ -70,6 +71,9 @@ frontend:
         header:
             homepage: Home
             factories: Factories
+            products: Products
+            catalog: Catalog
+            compositions: Compositions
             specifications: Specifications
             specification_buyers: Buyers
 

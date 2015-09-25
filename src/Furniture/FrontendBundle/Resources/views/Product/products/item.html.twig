@@ -1,0 +1,28 @@
+<div class="col-md-3 col-sm-4 shop-grid-item">
+    <div class="product-slide-entry">
+        <div class="product-image">
+            {% if product.getImage() %}
+                <img src="{{ product.image.path|imagine_filter('s200x250') }}" alt="" />
+            {% endif %}
+            <div class="bottom-line">
+                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" ><i class="fa fa-try"></i> {{ 'frontend.detailed' | trans }}</a>
+            </div>
+        </div>
+        {% if product.taxons %}
+            {% for taxon in product.taxons %}
+                <a class="tag" href="shop.html#">{{ taxon.name }}</a>
+            {% endfor %}
+        {% endif %}
+        <a class="title" href="{{ path('product', {'product':product.id}) }}">{{ product.name }}</a>
+        <div class="article-container style-1">
+            <p>{{ product.shortDescription }}</p>
+        </div>
+        <div class="price">
+            <div class="current">{{ product | userPrice }}</div>
+        </div>
+        <div class="list-buttons">
+            <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

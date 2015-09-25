@@ -1,0 +1,15 @@
+services:
+    pricing.calculator.user_based:
+        class: Furniture\PricingBundle\Calculator\UserBasedPriceCalculator
+    
+    pricing.twig_extension:
+        class: Furniture\PricingBundle\Twig\PricingExtension
+        arguments:
+            - @pricing.calculator.user_based
+            - @security.token_storage
+            - @sylius.context.currency
+            - @sylius.templating.helper.currency
+            - @sylius.templating.helper.money
+        public: true
+        tags:
+            - { name: twig.extension }
