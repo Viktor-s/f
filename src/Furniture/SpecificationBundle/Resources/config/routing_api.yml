@@ -9,3 +9,15 @@ specification_api_specification_add_item:
     methods: [ POST ]
     defaults:
         _controller: specification.controller.api.specification:addItem
+
+specification_api_specification_editable:
+    path: /{specification}/editable
+    methods: [ POST ]
+    defaults:
+        _controller: specification.controller.api.specification:editable
+
+specification_api_specification_buyers:
+    path: /buyers
+    methods: [ GET ]
+    defaults:
+        _controller: specification.controller.api.specification:buyers

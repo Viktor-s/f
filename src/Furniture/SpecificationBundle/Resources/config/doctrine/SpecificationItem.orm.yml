@@ -35,6 +35,15 @@ Furniture\SpecificationBundle\Entity\SpecificationItem:
                 onDelete: CASCADE
 
     fields:
+        note:
+            type: text
+            name: note
+            nullable: true
+
+        quantity:
+            type: integer
+            name: quantity
+
         cost:
             type: integer
             name: cost

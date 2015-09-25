@@ -3,6 +3,7 @@
 namespace Furniture\SpecificationBundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Form\Type\SpecificationItemSingleType;
@@ -10,6 +11,7 @@ use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -83,7 +85,7 @@ class SpecificationController
         return new JsonResponse([
             'status' => false,
             'errors' => $this->convertFormErrorsToArray($form)
-        ]);
+        ], 400);
     }
 
     /**
@@ -105,18 +107,140 @@ class SpecificationController
 
         if ($form->isValid()) {
             // @todo: add check granted for add option to this specification
-            $this->em->persist($specificationItem);
+            $quantity = $form->get('quantity')->getData();
+
+            for ($i = 1; $i <= $quantity; $i++) {
+                $newItem = clone ($specificationItem);
+                $this->em->persist($newItem);
+            }
+
             $this->em->flush();
 
             return new JsonResponse([
-                'status' => true,
-                'id' => $specificationItem->getId()
+                'status' => true
             ]);
         }
 
         return new JsonResponse([
             'status' => false,
             'errors' => $this->convertFormErrorsToArray($form)
-        ]);
+        ], 400);
+    }
+
+    /**
+     * Editable item
+     *
+     * @param Request $request
+     * @param int     $item
+     *
+     * @return Response
+     */
+    public function editableItem(Request $request, $item)
+    {
+    }
+
+    /**
+     * Editable specification
+     *
+     * @param Request $request
+     * @param int     $specification
+     *
+     * @return Response
+     */
+    public function editable(Request $request, $specification)
+    {
+        $specification = $this->em->find(Specification::class, $specificationId = $specification);
+
+        if (!$specification) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification with identifier "%s".',
+                $specificationId
+            ));
+        }
+
+        // @todo: check access granted for edit this specification (via security voter in Symfony)
+
+        $id = $request->request->get('id');
+        $value = $request->request->get('value');
+
+        if ($value == 'None') {
+            return new Response('None');
+        }
+
+        if (!$id) {
+            throw new NotFoundHttpException('Missing "id" field.');
+        }
+
+        $id = str_replace('specification-', '', $id);
+
+        switch ($id) {
+            case 'name':
+                $specification->setName($value);
+                break;
+
+            case 'description':
+                $specification->setDescription($value);
+                break;
+
+            case 'buyer':
+                if (!$value) {
+                    $specification->setBuyer(null);
+                    $value = 'None';
+                } else {
+                    $buyer = $this->em->find(Buyer::class, $value);
+
+                    if (!$buyer) {
+                        throw new NotFoundHttpException(sprintf(
+                            'Not found buyer with identifier "%s".',
+                            $value
+                        ));
+                    }
+
+                    // @todo: add check granted for use this buyer (via security voter in Symfony)
+                    $specification->setBuyer($buyer);
+
+                    $value = (string) $buyer;
+                }
+
+                break;
+
+
+            default:
+                throw new NotFoundHttpException(sprintf(
+                    'Undefined identifier "%s".',
+                    $id
+                ));
+        }
+
+        $this->em->flush();
+
+        return new Response($value);
+    }
+
+    /**
+     * Get available buyers
+     *
+     * @return JsonResponse
+     */
+    public function buyers(Request $request)
+    {
+        $user = $this->tokenStorage->getToken()
+            ->getUser();
+
+        $buyers = $this->em->createQueryBuilder()
+            ->from(Buyer::class, 'b')
+            ->select('b.id, b.firstName, b.secondName')
+            ->andWhere('b.creator = :creator')
+            ->setParameter('creator', $user)
+            ->getQuery()
+            ->getResult();
+
+        $result = [''];
+
+        foreach ($buyers as $buyerInfo) {
+            $result[$buyerInfo['id']] = $buyerInfo['firstName'] . ' ' . $buyerInfo['secondName'];
+        }
+
+        return new JsonResponse($result);
     }
 }

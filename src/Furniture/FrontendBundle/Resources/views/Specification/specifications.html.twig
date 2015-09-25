@@ -27,6 +27,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th>{{ 'frontend.name'|trans }}</th>
                         <th>{{ 'frontend.buyer'|trans }}</th>
                         <th>{{ 'frontend.total_price'|trans }}</th>
@@ -37,13 +38,14 @@
                     <tbody>
                     {% for specification in opened_specifications %}
                     <tr>
+                        <td>{{ specification.id }}</td>
                         <td>{{ specification.name }}</td>
                         <td>{{ specification.buyer }}</td>
                         <td>{{ (specification.totalPrice / 100)|round }} EUR</td>
                         <td>
-                            <a href="{{ path('specification', {specification: specification.id}) }}">{{ 'frontend.show'|trans }}</a>
                             <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
                             <a href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                            <a href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                         </td>
                     </tr>
                     {% else %}

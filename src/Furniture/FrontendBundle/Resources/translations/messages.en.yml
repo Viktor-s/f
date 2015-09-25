@@ -7,6 +7,7 @@ frontend:
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     products: Products
     name: Name
+    description: Description
     actions: Actions
     created_at: Created at
     buyers_not_found: Buyers not found.
@@ -20,10 +21,15 @@ frontend:
     save: Save
     opened: Opened
     finished: Finished
+    price: Price
     total_price: Total price
     add_to_specification: Add to specification
     new_specification: New specification
     quantity: Quantity
+    finish: Finish
+    click_to_edit: Click to edit
+    factory: Factory
+    note: Note
 
     title:
         index: Furniture
