@@ -34,7 +34,7 @@
         </div>
 
         <div class="col-sm-6 information-entry">
-            <div class="information-blocks form-horizontal">
+            <div class="information-blocks form-horizontal specification-info">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">{{ 'frontend.name'|trans }}</label>
                     <div class="col-sm-10 name editable" id="specification-name">{{ specification.name }}</div>
@@ -58,6 +58,7 @@
             <thead>
             <tr>
                 <th>{{ 'frontend.factory'|trans }}</th>
+                <th>{{ 'frontend.options'|trans }}</th>
                 <th>{{ 'frontend.note'|trans }}</th>
                 <th>{{ 'frontend.quantity'|trans }}</th>
                 <th>{{ 'frontend.price'|trans }}</th>
@@ -68,9 +69,15 @@
 
             <tbody>
             {% for specification_item in specification.items %}
-                <tr>
+                <tr data-id="{{ specification_item.id }}" class="specification-item-info{% if active_item_id == specification_item.id %} info{% endif %}" data-price="{{ specification_item.productVariant.price }}">
                     <td>
                         <div class="factory-info">
+                            {% if specification_item.productVariant.product.factory.primaryImage %}
+                                <div class="image">
+                                    <img src="{{ specification_item.productVariant.product.factory.primaryImage.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                                </div>
+                            {% endif %}
+
                             <div class="factory-name">
                                 <a href="#">{{ specification_item.productVariant.product.factory.name }}</a>
                             </div>
@@ -78,20 +85,56 @@
                     </td>
 
                     <td>
-                        <div class="note editable form-group">{{ specification_item.note }}</div>
+                        <ul>
+                            {% for option in specification_item.productVariant.options %}
+                                <li>
+                                    <strong>{{ option.name }}:</strong>
+                                    {{ option.value }}
+                                </li>
+                            {% endfor %}
+
+                            {% for option in specification_item.productVariant.skuOptions %}
+                                <li>
+                                    <strong>{{ option.name }}:</strong>
+                                    {{ option.value }}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </td>
 
                     <td>
-                        <div class="quantity editable form-group">{{ specification_item.quantity }}</div>
+                        <div class="note editable form-group" id="specification-item-note">{{ specification_item.note|default('None') }}</div>
                     </td>
 
-                    <td class="price">{{ (specification_item.productVariant.price / 100)|round(2) }}</td>
-                    <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }}</td>
+                    <td>
+                        <div class="quantity editable form-group" id="specification-item-quantity">{{ specification_item.quantity }}</div>
+                    </td>
 
-                    <td></td>
+                    <td class="price">{{ (specification_item.productVariant.price / 100)|round(2) }} EUR</td>
+                    <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }} EUR</td>
+
+                    <td>
+                        <a class="btn btn-default btn-xs" href="{{ path('product', {product: specification_item.productVariant.product.id, sku: specification_item.productVariant.sku, si: specification_item.id}) }}">
+                            <i class="fa fa-pencil"></i>
+                            {{ 'frontend.edit'|trans }}
+                        </a>
+
+                        <a class="btn btn-danger btn-xs remove" href="#">
+                            <i class="fa fa-trash-o"></i>
+                            {{ 'frontend.remove'|trans }}
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="5" class="text-right">{{ 'frontend.total_price'|trans }}</td>
+                <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+                <td></td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 {% endblock %}
@@ -103,23 +146,82 @@
         <script type="text/javascript">
             (function ($){
                 var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
+                    itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
+                    itemRemoveUrl = '{{ path('specification_api_specification_item_remove', {item: 123}) }}',
                     editableParams = {
                         width: '100%',
                         height: '100%',
                         tooltip: '{{ 'frontend.click_to_edit'|trans }}'
+                    },
+                    updateTotalAmountViaQuantity = function (id, quantity) {
+                        var itemElement = $('.specification-item-info[data-id="' + id + '"]');
+
+                        if (!itemElement.size()) {
+                            throw new Error('Not found element with id "' + id + '".');
+                        }
+
+                        var price = parseInt(itemElement.data('price')),
+                            totalPrice = price * quantity;
+
+                        itemElement.find('.total-price').text((Math.round(totalPrice / 100, 2)) + ' EUR');
                     };
 
                 $(document).ready(function (){
-                    $('.editable.name').editable(editableUrl, editableParams);
-                    $('.editable.description').editable(editableUrl, $.extend(editableParams, {
+                    $('.specification-info .editable.name').editable(editableUrl, editableParams);
+
+                    $('.specification-info .editable.description').editable(editableUrl, $.extend({
                         type: 'textarea'
-                    }));
-                    $('.editable.buyer').editable(editableUrl, $.extend(editableParams, {
+                    }, editableParams));
+
+                    $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
                         type: 'select',
                         loadurl: '{{ path('specification_api_specification_buyers') }}',
                         submit: 'Ok'
 
-                    }));
+                    }, editableParams));
+
+                    $('.specification-item-info').each(function (){
+                        var itemId = parseInt($(this).data('id')),
+                            url = itemEditableUrl.replace(/123/, itemId.toString()),
+                            itemElement = $(this);
+
+                        $(this).find('.editable.note').editable(url, editableParams);
+                        $(this).find('.editable.quantity').editable(url, $.extend({
+                            callback: function (value) {
+                                updateTotalAmountViaQuantity(itemId, value);
+                            }
+                        }, editableParams));
+
+                        $(this).find('.remove').click(function () {
+                            itemElement.addClass('danger');
+                            $(this).prop('disabled', true);
+                            var aElement = $(this);
+
+                            if (confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}')) {
+                                $.ajax({
+                                    url: itemRemoveUrl.replace(/123/, itemId.toString()),
+                                    complete: function () {
+                                        itemElement.removeClass('danger');
+                                        aElement.prop('disabled', false);
+                                    },
+                                    error: function () {
+                                        alert('Error with remove specification item. Please try again.');
+                                    },
+                                    success: function () {
+                                        itemElement.animate({
+                                            height: '0px'
+                                        }, 500, 'swing', function () {
+                                            itemElement.remove();
+                                        });
+                                    }
+                                });
+                            } else {
+                                itemElement.removeClass('danger');
+                            }
+
+                            return false;
+                        });
+                    });
                 });
             })(jQuery);
         </script>

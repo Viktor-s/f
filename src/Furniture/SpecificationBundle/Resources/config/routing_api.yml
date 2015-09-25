@@ -10,11 +10,33 @@ specification_api_specification_add_item:
     defaults:
         _controller: specification.controller.api.specification:addItem
 
+specification_api_specification_item_edit:
+    path: /item/{item}/edit
+    methods: [ POST ]
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification:editItem
+
 specification_api_specification_editable:
     path: /{specification}/editable
     methods: [ POST ]
+    requirements: { specification: \d+ }
     defaults:
         _controller: specification.controller.api.specification:editable
+
+specification_api_specification_item_editable:
+    path: /item/{item}/editable
+    methods: [ POST ]
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification:editableItem
+
+specification_api_specification_item_remove:
+    path: /item/{item}/remove
+    methods: GET
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification:remove
 
 specification_api_specification_buyers:
     path: /buyers

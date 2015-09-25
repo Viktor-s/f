@@ -107,13 +107,49 @@ class SpecificationController
 
         if ($form->isValid()) {
             // @todo: add check granted for add option to this specification
-            $quantity = $form->get('quantity')->getData();
+            $this->em->persist($specificationItem);
+            $this->em->flush();
 
-            for ($i = 1; $i <= $quantity; $i++) {
-                $newItem = clone ($specificationItem);
-                $this->em->persist($newItem);
-            }
+            return new JsonResponse([
+                'status' => true
+            ]);
+        }
 
+        return new JsonResponse([
+            'status' => false,
+            'errors' => $this->convertFormErrorsToArray($form)
+        ], 400);
+    }
+
+    /**
+     * Edit item
+     *
+     * @param Request $request
+     * @param int     $item
+     *
+     * @return JsonResponse
+     */
+    public function editItem(Request $request, $item)
+    {
+        $item = $this->em->find(SpecificationItem::class, $itemId = $item);
+
+        if (!$item) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification item with id "%s".',
+                $itemId
+            ));
+        }
+
+        // @todo: check granted for edit item (via security voter in Symfony)
+
+        $form = $this->formFactory->createNamed('', new SpecificationItemSingleType($this->em), $item, [
+            'csrf_protection' => false,
+            'method' => 'PATCH'
+        ]);
+
+        $form->submit($request, false);
+
+        if ($form->isValid()) {
             $this->em->flush();
 
             return new JsonResponse([
@@ -137,6 +173,77 @@ class SpecificationController
      */
     public function editableItem(Request $request, $item)
     {
+        $item = $this->em->find(SpecificationItem::class, $itemId = $item);
+
+        if (!$item) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification item with identifier "%s".',
+                $itemId
+            ));
+        }
+
+        // @todo: add check granted for edit this item (via security voter in symfony)
+
+        $id = $request->request->get('id');
+        $value = $request->request->get('value');
+
+        if ($value == 'None') {
+            return new Response('None');
+        }
+
+        if (!$id) {
+            throw new NotFoundHttpException('Missing "id" field.');
+        }
+
+        $id = str_replace('specification-item-', '', $id);
+
+        switch ($id) {
+            case 'note':
+                $item->setNote($value);
+                break;
+
+            case 'quantity':
+                $item->setQuantity($value);
+                break;
+
+            default:
+                throw new NotFoundHttpException(sprintf(
+                    'Undefined identifier "%s".',
+                    $id
+                ));
+        }
+
+        $this->em->flush();
+
+        return new Response($value);
+    }
+
+    /**
+     * Remove item action
+     *
+     * @param int $item
+     *
+     * @return JsonResponse
+     */
+    public function remove($item)
+    {
+        $item = $this->em->find(SpecificationItem::class, $itemId = $item);
+
+        if (!$item) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification item with identifier "%s".',
+                $itemId
+            ));
+        }
+
+        // @todo: check granted for remove this item
+
+        $this->em->remove($item);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'status' => true
+        ]);
     }
 
     /**

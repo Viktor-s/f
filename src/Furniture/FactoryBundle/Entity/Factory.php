@@ -26,7 +26,7 @@ class Factory extends AbstractTranslatable
     protected $createdAt;
     
     /**
-     * @var Collection
+     * @var Collection|FactoryImage[]
      */
     protected $images;
     
@@ -208,7 +208,7 @@ class Factory extends AbstractTranslatable
      */
     public function getPrimaryImage()
     {
-        return $this->images->first();
+        return $this->images->first() ?: null;
     }
     
     /**
@@ -280,7 +280,8 @@ class Factory extends AbstractTranslatable
      *
      * @return Factory
      */
-    public function removeProduct(Product $product){
+    public function removeProduct(Product $product)
+    {
         if($this->hasProduct($product)){
             $this->products->removeElement($product);
         }

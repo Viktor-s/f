@@ -43,6 +43,8 @@ class LoadSpecificationData extends AbstractFixture implements OrderedFixtureInt
                 ->setDescription($description);
 
             $manager->persist($specification);
+
+            $this->setReference('specification:' . (string) ($i + 1), $specification);
         }
 
         $manager->flush();

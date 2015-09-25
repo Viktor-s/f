@@ -41,7 +41,7 @@
                         <td>{{ specification.id }}</td>
                         <td>{{ specification.name }}</td>
                         <td>{{ specification.buyer }}</td>
-                        <td>{{ (specification.totalPrice / 100)|round }} EUR</td>
+                        <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
                         <td>
                             <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
                             <a href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
@@ -61,6 +61,27 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="finished">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ 'frontend.name'|trans }}</th>
+                        <th>{{ 'frontend.buyer'|trans }}</th>
+                        <th>{{ 'frontend.total_price'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for specification in finished_specifications %}
+                        <tr>
+                            <td>{{ specification.id }}</td>
+                            <td>{{ specification.name }}</td>
+                            <td>{{ specification.buyer }}</td>
+                            <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

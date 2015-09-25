@@ -34,7 +34,7 @@
                                 <div class="detail-info-entry-title">{{ option.name }}</div>
                                 <select class="form-control">
                                     {% for value in option.values %}
-                                        <option value="{{ value }}">{{ value }}</option>
+                                        <option{% if option.value and option.value == value  %} selected="selected"{% endif %} value="{{ value }}">{{ value }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -44,32 +44,38 @@
                     <div class="quantity-selector detail-info-entry">
                         <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
                         <div class="entry number-minus">&nbsp;</div>
-                        <div class="entry number">1</div>
+                        <div class="entry number">{{ quantity }}</div>
                         <div class="entry number-plus">&nbsp;</div>
                     </div>
 
-                    <div class="add-to-specification detail-info-entry">
-                        <div class="btn-group">
-                            <button type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.add_to_specification'|trans }}</button>
-                            <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;width:50px;min-width:50px;">
-                                <span class="caret"></span>
-                            </button>
-
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#" class="new-specification">{{ 'frontend.new_specification'|trans }}</a>
-                                </li>
-
-                                <li role="separator" class="divider"></li>
-
-                                {% for specification in specifications %}
-                                    <li>
-                                        <a href="#" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                    {% if update_specification_item %}
+                        <div class="update-specification-item detail-info-entry">
+                            <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="add-to-specification detail-info-entry">
+                            <div class="btn-group">
+                                <button type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.add_to_specification'|trans }}</button>
+                                <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;width:50px;min-width:50px;">
+                                    <span class="caret"></span>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" class="new-specification">{{ 'frontend.new_specification'|trans }}</a>
+                                    </li>
+
+                                    <li role="separator" class="divider"></li>
+
+                                    {% for specification in specifications %}
+                                        <li>
+                                            <a href="#" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -81,9 +87,7 @@
 
     <script type="text/javascript">
         (function ($){
-            var productVariants = {{ variants|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                addSpecificationProcessed = false;
-
+            var productVariants = {{ variants|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
 
             function searchProductFromSelectedOptions()
             {
@@ -114,51 +118,103 @@
                 }
             }
 
-            function onAddToSpecification()
-            {
-                if (addSpecificationProcessed) {
-                    return false;
-                }
-
-                addSpecificationProcessed = true;
-
-                var variant = searchProductFromSelectedOptions(),
-                    quantity = parseInt($('.quantity-selector .entry.number').text());
-
-                if (!variant) {
-                    alert('Attention: Not found product variant with selected option.');
-                    addSpecificationProcessed = false;
-
-                    return false;
-                }
-
-                var url = '{{ path('specification_api_specification_add_item') }}',
-                    data = {
-                    sku: variant.sku,
-                    quantity: quantity,
-                    specification: parseInt($(this).attr('data-specification-id'))
-                };
-
-                $.ajax({
-                    url: url,
-                    data: data,
-                    method: 'POST',
-                    success: function () {
-                        alert('Successfully add product to specification.');
-                        addSpecificationProcessed = false;
-                    },
-                    error: function () {
-                        alert('Error with add product to specification.');
-                        addSpecificationProcessed = false;
+            {% if not update_specification_item %}
+                var addSpecificationProcessed = false;
+                function onAddToSpecification()
+                {
+                    if (addSpecificationProcessed) {
+                        return false;
                     }
-                });
 
-                return false;
-            }
+                    addSpecificationProcessed = true;
+
+                    var variant = searchProductFromSelectedOptions(),
+                        quantity = parseInt($('.quantity-selector .entry.number').text());
+
+                    if (!variant) {
+                        alert('Attention: Not found product variant with selected option.');
+                        addSpecificationProcessed = false;
+
+                        return false;
+                    }
+
+                    var url = '{{ path('specification_api_specification_add_item') }}',
+                        data = {
+                            sku: variant.sku,
+                            quantity: quantity,
+                            specification: parseInt($(this).attr('data-specification-id'))
+                        };
+
+                    $.ajax({
+                        url: url,
+                        data: data,
+                        method: 'POST',
+                        success: function () {
+                            alert('Successfully add product to specification.');
+                            addSpecificationProcessed = false;
+                        },
+                        error: function () {
+                            alert('Error with add product to specification.');
+                            addSpecificationProcessed = false;
+                        }
+                    });
+
+                    return false;
+                }
+            {% endif %}
+
+            {% if update_specification_item %}
+                var updateSpecificationItemProcessed = false;
+                function updateSpecificationItem()
+                {
+                    if (updateSpecificationItemProcessed) {
+                        return false;
+                    }
+
+                    updateSpecificationItemProcessed = true;
+
+                    var itemId = $(this).data('specification-item-id'),
+                        variant = searchProductFromSelectedOptions(),
+                        quantity = parseInt($('.quantity-selector .entry.number').text());
+
+                    if (!variant) {
+                        alert('Attention: Not found product variant with selected option.');
+                        updateSpecificationItemProcessed = false;
+
+                        return false;
+                    }
+
+                    var url = '{{ path('specification_api_specification_item_edit', {item: 123}) }}'.replace(/123/, itemId.toString()),
+                        data = {
+                            sku: variant.sku,
+                            quantity: quantity
+                        };
+
+                    $.ajax({
+                        url: url,
+                        data: data,
+                        method: 'POST',
+                        success: function () {
+                            window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
+                        },
+                        error: function () {
+                            alert('Error with update specification item. Please try again.');
+                            updateSpecificationItemProcessed = false;
+                        }
+                    });
+                }
+            {% endif %}
 
             $(document).ready(function (){
                 $('.options-selector select').change(onChangeAnyOption);
-                $('.add-to-specification a').click(onAddToSpecification);
+
+                {% if not update_specification_item %}
+                    $('.add-to-specification a').click(onAddToSpecification);
+                {% endif %}
+
+                {% if update_specification_item %}
+                    $('.update-specification-item button').click(updateSpecificationItem);
+                {% endif %}
             });
         })(jQuery);
     </script>

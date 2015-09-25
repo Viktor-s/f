@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Entity;
 
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -376,23 +377,46 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
-     * @param \Furniture\FactoryBundle\Entity\Factory $factory
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Set the factory
+     *
+     * @param Factory $factory
+     *
+     * @return Product
      */
-    public function setFactory(\Furniture\FactoryBundle\Entity\Factory $factory)
+    public function setFactory(Factory $factory)
     {
         $this->factory = $factory;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Get factory
+     *
+     * @return Factory
      */
     public function getFactory()
     {
         return $this->factory;
+    }
+
+    /**
+     * Get the product variant by sky
+     *
+     * @param string $sku
+     *
+     * @return ProductVariant|null
+     */
+    public function getVariantBySku($sku)
+    {
+        /** @var ProductVariant $productVariant */
+        foreach ($this->variants as $productVariant) {
+            if ($productVariant->getSku() == $sku) {
+                return $productVariant;
+            }
+        }
+
+        return null;
     }
     
     /**

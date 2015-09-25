@@ -9,6 +9,7 @@ services:
             - @twig
             - @frontend.repository.product
             - @frontend.repository.specification
+            - @frontend.repository.specification_item
             - @security.token_storage
 
     frontend.controller.security:

@@ -41,6 +41,7 @@ class SpecificationItem
      * @var int
      *
      * @Assert\NotBlank()
+     * @Assert\Type("numeric")
      * @Assert\Range(min=1)
      */
     private $quantity;

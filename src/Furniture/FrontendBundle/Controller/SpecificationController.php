@@ -139,7 +139,8 @@ class SpecificationController
 
         $content = $this->twig->render('FrontendBundle:Specification:edit.html.twig', [
             'specification' => $specification,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'active_item_id' => $request->get('item')
         ]);
 
         return new Response($content);

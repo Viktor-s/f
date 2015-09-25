@@ -14,3 +14,7 @@ services:
     frontend.repository.specification_buyer:
         class: Furniture\FrontendBundle\Repository\SpecificationBuyerRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.specification_item:
+        class: Furniture\FrontendBundle\Repository\SpecificationItemRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
