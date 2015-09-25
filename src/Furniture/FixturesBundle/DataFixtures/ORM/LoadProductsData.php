@@ -33,26 +33,20 @@ class LoadProductsData extends BaseLoadProductsData
      */
     public function load(ObjectManager $manager)
     {
-        $chairs = new ArrayCollection;
-        $tables = new ArrayCollection;
-        $armchair = new ArrayCollection;
         for ($i = 1; $i <= 60; $i++) {
             switch (rand(0, 2)) {
                 case 0:
                     $e = $this->createTable($i);
-                    $tables->add($e);
                     $manager->persist($e);
                     break;
 
                 case 1:
                     $e = $this->createChair($i);
-                    $chairs->add($e);
                     $manager->persist($e);
                     break;
 
                 case 2:
                     $e = $this->createArmChair($i);
-                    $armchair->add($e);
                     $manager->persist($e);
                     break;
 
@@ -60,15 +54,11 @@ class LoadProductsData extends BaseLoadProductsData
                     //$manager->persist($this->createFurnture($i));
                     break;
             }
-
+            
             if (0 === $i % 20) {
                 $manager->flush();
             }
         }
-
-        $this->setReference('Sylius.Product.Chairs', $chairs);
-        $this->setReference('Sylius.Product.ArmChairs', $armchair);
-        $this->setReference('Sylius.Product.Tables', $tables);
         
         $manager->flush();
 
@@ -246,9 +236,8 @@ class LoadProductsData extends BaseLoadProductsData
      */
     protected function setFactory(ProductInterface $product)
     {
-        return $product->setFactory(
-                $this->getReference( 
-                        'Furniture.factory.'.$this->faker->randomElement(
+     
+        $factory = $this->faker->randomElement(
                                 [
                                     'Selva',
                                     'Antonello Italia',
@@ -257,7 +246,11 @@ class LoadProductsData extends BaseLoadProductsData
                                     'Passini',
                                     'i4 Mariani'
                                 ]
-                                ) )
+                                );
+        
+        return $product->setFactory(
+                $this->getReference( 
+                        'Furniture.factory.'.$factory )
                 );
     }
 
@@ -303,7 +296,7 @@ class LoadProductsData extends BaseLoadProductsData
             'Natura',
             'Ashworth Customizable Desk System'
         ], rand(1,3)) as $collection ){
-            $collections[] = $this->getReference('Furniture.composite_collection.'.$collection);
+            $collections[] = $this->getReference('Furniture.composite_collection.'.$collection);            
         }
         $product->setCompositeCollections(new ArrayCollection($collections));
         return $product;

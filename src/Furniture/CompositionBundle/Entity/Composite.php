@@ -37,6 +37,7 @@ class Composite extends AbstractTranslatable
     function __construct() {
         parent::__construct();
         $this->images = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
