@@ -32,6 +32,8 @@ class ProductController
      */
     private $tokenStorage;
 
+    private $paginator;
+    
     /**
      * Construct
      *
@@ -42,7 +44,7 @@ class ProductController
      */
     public function __construct(
         \Twig_Environment $twig,
-        ProductRepository $productRepository,
+        \Doctrine\ORM\EntityRepository $productRepository,
         SpecificationRepository $specificationRepository,
         TokenStorageInterface $tokenStorage
     ) {
@@ -52,6 +54,23 @@ class ProductController
         $this->tokenStorage = $tokenStorage;
     }
 
+    public function products(Request $request, $page)
+    {
+        $user = $this->tokenStorage->getToken()
+            ->getUser();
+        
+        $products = $this->productRepository->getPaginator(
+                $this->productRepository->createQueryBuilder('p')
+                );
+        
+        $content = $this->twig->render('FrontendBundle:Product:products.html.twig', [
+            'products' => $products,
+        ]);
+
+        return new Response($content);
+        
+    }
+    
     /**
      * Show product action
      *

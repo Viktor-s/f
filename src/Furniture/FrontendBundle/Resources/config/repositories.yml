@@ -5,7 +5,9 @@ services:
 
     frontend.repository.product:
         class: Furniture\FrontendBundle\Repository\ProductRepository
-        arguments: [ @doctrine.orm.default_entity_manager ]
+        arguments:
+            - @doctrine.orm.default_entity_manager
+            - 'Furniture\ProductBundle\Entity\Product'
 
     frontend.repository.specification:
         class: Furniture\FrontendBundle\Repository\SpecificationRepository

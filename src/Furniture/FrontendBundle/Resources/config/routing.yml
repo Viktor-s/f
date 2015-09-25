@@ -17,6 +17,14 @@ product:
     requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.product:product
+        
+products:
+    path: /{_locale}/products/{page}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.product:products
+        page: 1
 
 # Specifications
 specifications:
