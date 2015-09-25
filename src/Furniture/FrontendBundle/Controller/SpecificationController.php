@@ -94,33 +94,6 @@ class SpecificationController
     }
 
     /**
-     * Show specification item
-     *
-     * @param int $specification
-     *
-     * @return Response
-     */
-    public function specification($specification)
-    {
-        $specification = $this->specificationRepository->find($specificationId = $specification);
-
-        if (!$specification) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found specification with identifier "%s".',
-                $specificationId
-            ));
-        }
-
-        // @todo: check granted for view this item (via security voter in Symfony)
-
-        $content = $this->twig->render('FrontendBundle:Specification:specification.html.twig', [
-            'specification' => $specification
-        ]);
-
-        return new Response($content);
-    }
-
-    /**
      * Edit/Create specification
      *
      * @param Request $request

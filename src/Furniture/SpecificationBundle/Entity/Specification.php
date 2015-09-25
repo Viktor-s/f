@@ -243,8 +243,7 @@ class Specification
         $price = 0;
 
         foreach ($this->items as $item) {
-            $productVariant = $item->getProductVariant();
-            $price += $productVariant->getPrice();
+            $price += $item->getTotalPrice();
         }
 
         return $price;

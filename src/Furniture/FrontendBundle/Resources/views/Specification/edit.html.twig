@@ -1,6 +1,6 @@
 {% extends 'FrontendBundle:Specification:base.html.twig' %}
 
-{% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create')) }} :: {{ parent() }}{% endblock %}
+{% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
     {{ parent() }}
@@ -9,6 +9,14 @@
 {% endblock %}
 
 {% block content %}
+    {% if not specification.id %}
+        {{ block('content_with_create') }}
+    {% else %}
+        {{ block('content_with_edit') }}
+    {% endif %}
+{% endblock %}
+
+{% block content_with_create %}
     <div class="information-blocks">
         <form action="" method="POST">
             {{ form_widget(form) }}
@@ -16,4 +24,104 @@
             <input type="submit" value="{{ 'frontend.save'|trans }}" />
         </form>
     </div>
+{% endblock %}
+
+{% block content_with_edit %}
+    <div class="row information-blocks">
+        <div class="col-sm-4 information-entry">
+            <div class="user-info">{{ app.user.username }}</div>
+            <div class="document-id">#{{ specification.id }}</div>
+        </div>
+
+        <div class="col-sm-6 information-entry">
+            <div class="information-blocks form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.name'|trans }}</label>
+                    <div class="col-sm-10 name editable" id="specification-name">{{ specification.name }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.description'|trans }}</label>
+                    <div class="col-sm-10 description editable" id="specification-description">{{ specification.description|default('None') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
+                    <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information-blocks">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>{{ 'frontend.factory'|trans }}</th>
+                <th>{{ 'frontend.note'|trans }}</th>
+                <th>{{ 'frontend.quantity'|trans }}</th>
+                <th>{{ 'frontend.price'|trans }}</th>
+                <th>{{ 'frontend.total_price'|trans }}</th>
+                <th>{{ 'frontend.actions'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for specification_item in specification.items %}
+                <tr>
+                    <td>
+                        <div class="factory-info">
+                            <div class="factory-name">
+                                <a href="#">{{ specification_item.productVariant.product.factory.name }}</a>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="note editable form-group">{{ specification_item.note }}</div>
+                    </td>
+
+                    <td>
+                        <div class="quantity editable form-group">{{ specification_item.quantity }}</div>
+                    </td>
+
+                    <td class="price">{{ (specification_item.productVariant.price / 100)|round(2) }}</td>
+                    <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }}</td>
+
+                    <td></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    {% if specification.id %}
+        <script type="text/javascript">
+            (function ($){
+                var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
+                    editableParams = {
+                        width: '100%',
+                        height: '100%',
+                        tooltip: '{{ 'frontend.click_to_edit'|trans }}'
+                    };
+
+                $(document).ready(function (){
+                    $('.editable.name').editable(editableUrl, editableParams);
+                    $('.editable.description').editable(editableUrl, $.extend(editableParams, {
+                        type: 'textarea'
+                    }));
+                    $('.editable.buyer').editable(editableUrl, $.extend(editableParams, {
+                        type: 'select',
+                        loadurl: '{{ path('specification_api_specification_buyers') }}',
+                        submit: 'Ok'
+
+                    }));
+                });
+            })(jQuery);
+        </script>
+    {% endif %}
 {% endblock %}

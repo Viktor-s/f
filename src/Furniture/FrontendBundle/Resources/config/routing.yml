@@ -26,13 +26,6 @@ specifications:
     defaults:
         _controller: frontend.controller.specification:specifications
 
-specification:
-    path: /{_locale}/specification/{specification}
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.specification:specification
-
 specification_create:
     path: /{_locale}/specifications/new
     methods: [ GET, POST ]
@@ -57,7 +50,7 @@ specification_remove:
 specification_finish:
     path: /{_locale}/specifications/{specification}/finish
     methods: [ GET ]
-    requirements: { _locale: %available_locales%, specification: \d }
+    requirements: { _locale: %available_locales%, specification: \d+ }
     defaults:
         _controller: frontend.controller.specification:finish
 

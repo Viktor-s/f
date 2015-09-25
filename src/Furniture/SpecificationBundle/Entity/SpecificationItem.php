@@ -33,6 +33,19 @@ class SpecificationItem
     private $composite;
 
     /**
+     * @var string
+     */
+    private $note;
+
+    /**
+     * @var int
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1)
+     */
+    private $quantity;
+
+    /**
      * @var int
      */
     private $cost;
@@ -138,6 +151,54 @@ class SpecificationItem
     }
 
     /**
+     * Set description
+     *
+     * @param string $note
+     *
+     * @return SpecificationItem
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set quantity
+     *
+     * @param integer $quantity
+     *
+     * @return SpecificationItem
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get quantity
+     *
+     * @return integer
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
      * Set cost
      *
      * @param int $cost
@@ -179,6 +240,16 @@ class SpecificationItem
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Get total price
+     *
+     * @return int
+     */
+    public function getTotalPrice()
+    {
+        return $this->productVariant->getPrice() * $this->quantity;
     }
 
     /**

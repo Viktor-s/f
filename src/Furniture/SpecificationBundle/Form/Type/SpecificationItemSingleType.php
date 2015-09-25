@@ -4,12 +4,14 @@ namespace Furniture\SpecificationBundle\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CompositionBundle\Form\DataTransformer\CompositeIdModelTransformer;
-use Furniture\ProductBundle\Form\DataTransformer\ProductVariantIdModelTransformer;
+use Furniture\ProductBundle\Form\DataTransformer\ProductVariantSkuModelTransformer;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Form\DataTransformer\SpecificationIdModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class SpecificationItemSingleType extends AbstractType
 {
@@ -53,10 +55,12 @@ class SpecificationItemSingleType extends AbstractType
             ])
             ->add('composite', 'integer', [
                 'invalid_message' => 'Invalid composite'
-            ]);
+            ])
+            ->add('quantity', 'integer')
+            ->add('note', 'textarea');
 
         $builder->get('specification')->addModelTransformer(new SpecificationIdModelTransformer($this->em));
-        $builder->get('sku')->addModelTransformer(new ProductVariantIdModelTransformer($this->em));
+        $builder->get('sku')->addModelTransformer(new ProductVariantSkuModelTransformer($this->em));
         $builder->get('composite')->addModelTransformer(new CompositeIdModelTransformer($this->em));
     }
 
