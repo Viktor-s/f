@@ -67,6 +67,7 @@ frontend:
         header:
             homepage: Home
             factories: Factories
+            products: Products
             specifications: Specifications
             specification_buyers: Buyers
 
