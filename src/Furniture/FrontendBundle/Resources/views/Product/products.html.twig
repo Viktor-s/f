@@ -1,4 +1,5 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+{% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
 
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -12,19 +13,14 @@
     <div class="information-blocks">
         <div class="row">
             <div class="col-md-12 col-md-push-0 col-sm-8 col-sm-push-4">
+
                 <div class="page-selector">
-                    <div class="pages-box hidden-xs">
-                        <a href="shop.html#" class="square-button active">1</a>
-                        <a href="shop.html#" class="square-button">2</a>
-                        <a href="shop.html#" class="square-button">3</a>
-                        <div class="divider">...</div>
-                        <a href="shop.html#" class="square-button"><i class="fa fa-angle-right"></i></a>
-                    </div>
+                    {{ pagination(products) }}
                     <div class="shop-grid-controls">
                         <div class="entry">
                             <div class="inline-text">Sorty by</div>
                             <div class="simple-drop-down">
-                                <select>
+                                <select name="sorting">
                                     <option>Position</option>
                                     <option>Price</option>
                                     <option>Category</option>
@@ -38,25 +34,31 @@
                             <div class="view-button active grid"><i class="fa fa-th"></i></div>
                             <div class="view-button list"><i class="fa fa-list"></i></div>
                         </div>
+                        <div class="entry">
+                            <div class="inline-text">Show</div>
+                            <div class="simple-drop-down" style="width: 75px;">
+                                <select name="perpage">
+                                    <option>10</option>
+                                    <option>15</option>
+                                    <option>20</option>
+                                </select>
+                            </div>
+                            <div class="inline-text">per page</div>
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>
+
                 <div class="row shop-grid grid-view">
 
                     {% for product in products %}
                         {% include 'FrontendBundle:Product:products/item.html.twig' with {'product' : product} %}
                     {% endfor %}
-                    
+
                 </div>
                 <div class="page-selector">
-                    <div class="description">Showing: 1-3 of 16</div>
-                    <div class="pages-box">
-                        <a href="shop.html#" class="square-button active">1</a>
-                        <a href="shop.html#" class="square-button">2</a>
-                        <a href="shop.html#" class="square-button">3</a>
-                        <div class="divider">...</div>
-                        <a href="shop.html#" class="square-button"><i class="fa fa-angle-right"></i></a>
-                    </div>
+                    <div class="description">Showing: {{ products.getCurrentPageOffsetStart() }}-{{ products.getCurrentPageOffsetEnd() }} of {{ products.getNbResults() }}</div>
+                    {{ pagination(products) }}
                     <div class="clear"></div>
                 </div>
             </div>

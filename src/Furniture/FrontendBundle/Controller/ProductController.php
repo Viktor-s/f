@@ -63,8 +63,9 @@ class ProductController
                 $this->productRepository->createQueryBuilder('p')
                 );
         
-        $products->setMaxPerPage(12);
         
+        $products->setMaxPerPage(12);
+        $products->setCurrentPage($page);
         $content = $this->twig->render('FrontendBundle:Product:products.html.twig', [
             'products' => $products,
         ]);
