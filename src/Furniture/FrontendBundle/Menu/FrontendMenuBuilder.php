@@ -78,9 +78,19 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.menu_items.header.factories')
         ]);
         
-        $factories = $menu->addChild('products', [
+        $products = $menu->addChild('products', [
             'uri' => 'products',
             'label' => $this->translator->trans('frontend.menu_items.header.products')
+        ]);
+        
+        $catalog = $products->addChild('catalog', [
+            'uri' => 'catalog',
+            'label' => $this->translator->trans('frontend.menu_items.header.catalog')
+        ]);
+        
+        $catalog = $products->addChild('Compositions', [
+            'uri' => 'compositions',
+            'label' => $this->translator->trans('frontend.menu_items.header.compositions')
         ]);
 
         $factories->addChild('factories', [

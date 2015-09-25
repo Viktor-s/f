@@ -4,10 +4,8 @@
             {% if product.getImage() %}
                 <img src="{{ product.image.path|imagine_filter('s200x250') }}" alt="" />
             {% endif %}
-            <a class="top-line-a left"><i class="fa fa-retweet"></i></a>
-            <a class="top-line-a right"><i class="fa fa-heart"></i></a>
             <div class="bottom-line">
-                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" ><i class="fa fa-try"></i> Detail</a>
+                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" ><i class="fa fa-try"></i> {{ 'frontend.detailed' | trans }}</a>
             </div>
         </div>
         {% if product.taxons %}
@@ -23,7 +21,7 @@
             <div class="current">{{ product | userPrice }}</div>
         </div>
         <div class="list-buttons">
-            <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">Detail</a>
+            <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>
         </div>
     </div>
     <div class="clear"></div>
