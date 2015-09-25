@@ -1,28 +1,27 @@
 {% macro pagination(paginator, options) %}
     {% if paginator.haveToPaginate()|default(false) %}
-
         <div class="pages-box hidden-xs">
             {% if(paginator.hasPreviousPage()) %}
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': 1 })) }}" class="square-button">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1 }))) }}" class="square-button">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 <div class="divider"></div>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': paginator.previousPage })) }}" class="square-button">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.previousPage }))) }}" class="square-button">
                     {{ paginator.previousPage }}
                 </a>
             {% endif %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': paginator.currentPage })) }}" class="square-button active">{{ paginator.currentPage }}</a>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.currentPage }))) }}" class="square-button active">{{ paginator.currentPage }}</a>
             {% if(paginator.hasNextPage()) %}
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': paginator.nextPage })) }}" class="square-button">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nextPage }))) }}" class="square-button">
                     {{ paginator.nextPage }}
                 </a>
                 {% if( paginator.currentPage == 1 ) %}
-                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': (paginator.nextPage+1) })) }}" class="square-button">
+                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.nextPage+1) }))) }}" class="square-button">
                         {{ (paginator.nextPage+1) }}
                     </a>
                 {% endif %}
                 <div class="divider"></div>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'page': paginator.nbPages })) }}" class="square-button"><i class="fa fa-angle-right"></i></a>
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nbPages }))) }}" class="square-button"><i class="fa fa-angle-right"></i></a>
                 {% endif %}
         </div>
     {% endif %}

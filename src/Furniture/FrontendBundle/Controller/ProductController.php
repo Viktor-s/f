@@ -72,6 +72,7 @@ class ProductController
         
         if($taxons = $request->get('taxons', false)){
             $taxons = array_map( function($v){ return (int)$v; }, $taxons);
+            
             $qBuilder->innerJoin('p.taxons', 'taxon')
                 ->andWhere('taxon in ( :taxons )')
                 ->setParameter('taxons', $taxons)
@@ -80,7 +81,6 @@ class ProductController
         }
         
         $products = $this->productRepository->getPaginator($qBuilder);
-        
         
         $products->setMaxPerPage(12);
         $products->setCurrentPage($page);
