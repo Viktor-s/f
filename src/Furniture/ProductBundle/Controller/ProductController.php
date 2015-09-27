@@ -46,7 +46,6 @@ class ProductController extends BaseProductController {
                                     ->where('pev in (:pevs)')
                                     ->setParameter('pevs', $productExtensionVariants)
                                     ->orderBy('pev.extension', 'ASC')
-                                    ->orderBy('pev.id', 'ASC')
                     ;
                 },
                 'data' => $productExtensionVariants,
@@ -65,7 +64,6 @@ class ProductController extends BaseProductController {
                                     ->where('ov in (:ovs)')
                                     ->setParameter('ovs', $optionsValues)
                                     ->orderBy('ov.option', 'ASC')
-                                    ->orderBy('ov.id', 'ASC')
                     ;
                 },
                 'data' => $optionsValues,
@@ -85,7 +83,6 @@ class ProductController extends BaseProductController {
                                     ->where('sov in (:sovs)')
                                     ->setParameter('sovs', $skuOptionsVariants)
                                     ->orderBy('sov.typeCode', 'ASC')
-                                    ->orderBy('sov.id', 'ASC')
                     ;
                 },
                 'data' => clone $skuOptionsVariants,
