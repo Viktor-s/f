@@ -236,3 +236,6 @@ liip_imagine:
         s150x150:
             filters:
                 thumbnail: { size: [150, 150], mode: outbound }
+        s425x200:
+            filters:
+                thumbnail: { size: [425, 200], mode: outbound }

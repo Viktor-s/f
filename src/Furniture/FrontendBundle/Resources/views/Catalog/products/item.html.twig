@@ -10,7 +10,11 @@
         </div>
         {% if product.taxons %}
             {% for taxon in product.taxons %}
-                <a class="tag" href="{{ path('products', {'taxons[]':taxon.id}) }}">
+                <a class="tag" href="{{ path('products', {
+                                                            'category_permalink':app.request.attributes.get('_route_params')['category_permalink'],
+                                                            'taxons[]':taxon.id
+                                            }) 
+                                    }}">
                     {{ taxon.name }}
                 </a>
             {% endfor %}
