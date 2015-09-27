@@ -95,7 +95,7 @@ class LoadProductsData extends BaseLoadProductsData
         $this->addMasterVariant($product);
         $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
 
-        $this->setTaxons($product, array('ArmChair'));
+        $this->setTaxons($product, array('Desks + Tables'));
 
         $product->addOption($this->getReference('Sylius.Option.chair_legs'));
         $product->setExtensions(new ArrayCollection([
@@ -141,7 +141,7 @@ class LoadProductsData extends BaseLoadProductsData
         $this->addMasterVariant($product);
         $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
 
-        $this->setTaxons($product, array('Chair'));
+        $this->setTaxons($product, array('Lounge Chairs', 'Rocking Chairs'));
 
         $product->addOption($this->getReference('Sylius.Option.chair_legs'));
         $product->setExtensions(new ArrayCollection([
@@ -189,7 +189,7 @@ class LoadProductsData extends BaseLoadProductsData
         $this->addMasterVariant($product);
         $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
 
-        $this->setTaxons($product, array('Table'));
+        $this->setTaxons($product, array('Side Tables', 'Сoffee Tables', 'Console Tables'));
 
         $product->addOption($this->getReference('Sylius.Option.table_legs'));
         $product->addOption($this->getReference('Sylius.Option.table_tops'));
@@ -383,6 +383,7 @@ class LoadProductsData extends BaseLoadProductsData
         $taxons = new ArrayCollection();
 
         foreach ($taxonNames as $taxonName) {
+            //echo 'Sylius.Taxon.'.$taxonName.PHP_EOL;
             $taxons->add($this->getReference('Sylius.Taxon.'.$taxonName));
         }
 
