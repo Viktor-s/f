@@ -49,9 +49,9 @@ class SpecificationItemSingleType extends AbstractType
             ->add('specification', 'integer', [
                 'invalid_message' => 'Invalid specification.'
             ])
-            ->add('sku', 'integer', [
+            ->add('id', 'integer', [
                 'property_path' => 'productVariant',
-                'invalid_message' => 'Invalid SKU'
+                'invalid_message' => 'Invalid SKU id'
             ])
             ->add('composite', 'integer', [
                 'invalid_message' => 'Invalid composite'
@@ -60,7 +60,7 @@ class SpecificationItemSingleType extends AbstractType
             ->add('note', 'textarea');
 
         $builder->get('specification')->addModelTransformer(new SpecificationIdModelTransformer($this->em));
-        $builder->get('sku')->addModelTransformer(new ProductVariantSkuModelTransformer($this->em));
+        $builder->get('id')->addModelTransformer(new ProductVariantSkuModelTransformer($this->em));
         $builder->get('composite')->addModelTransformer(new CompositeIdModelTransformer($this->em));
     }
 

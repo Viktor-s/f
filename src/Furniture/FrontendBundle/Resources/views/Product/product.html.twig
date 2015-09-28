@@ -8,6 +8,18 @@
     <a href="#">{{ product.name }}</a>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts output='static/js/widget/.*.js'
+                        'static/js/widget/variant_data_container.js'
+                        'static/js/widget/variant.js'
+                        'static/js/widget/variant_table.js'
+                        'static/js/widget/variant_buy_btn.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
     <div class="information-blocks">
         <div class="row">
@@ -39,6 +51,9 @@
                                 </select>
                             </div>
                         {% endfor %}
+                    </div>
+                    <div id="skuoption" class="options-selector detail-info-entry">
+
                     </div>
 
                     <div class="quantity-selector detail-info-entry">
@@ -86,136 +101,78 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        (function ($){
-            var productVariants = {{ variants|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
+        (function ($) {
 
-            function searchProductFromSelectedOptions()
-            {
-                var hashParts = [];
+            var sku_matrix = {{ sku_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
+            //console.log(sku_matrix);
 
-                $('.options-selector select').each(function (){
-                    hashParts.push($(this).val());
-                });
-
-                var hash = hashParts.join('');
-
-                if (productVariants.hasOwnProperty(hash)) {
-                    return productVariants[hash];
-                }
-
-                return null;
-            }
-
-            function onChangeAnyOption()
-            {
-                var variant = searchProductFromSelectedOptions(),
-                    priceContainer = $('.price .current');
-
-                if (variant) {
-                    priceContainer.text(Math.round(variant.price / 100, 2) + ' EUR');
-                } else {
-                    priceContainer.text('Undefined');
-                }
-            }
-
-            {% if not update_specification_item %}
-                var addSpecificationProcessed = false;
-                function onAddToSpecification()
-                {
-                    if (addSpecificationProcessed) {
-                        return false;
-                    }
-
-                    addSpecificationProcessed = true;
-
-                    var variant = searchProductFromSelectedOptions(),
-                        quantity = parseInt($('.quantity-selector .entry.number').text());
-
-                    if (!variant) {
-                        alert('Attention: Not found product variant with selected option.');
-                        addSpecificationProcessed = false;
-
-                        return false;
-                    }
-
-                    var url = '{{ path('specification_api_specification_add_item') }}',
-                        data = {
-                            sku: variant.sku,
-                            quantity: quantity,
-                            specification: parseInt($(this).attr('data-specification-id'))
-                        };
-
-                    $.ajax({
-                        url: url,
-                        data: data,
-                        method: 'POST',
-                        success: function () {
-                            alert('Successfully add product to specification.');
-                            addSpecificationProcessed = false;
-                        },
-                        error: function () {
-                            alert('Error with add product to specification.');
-                            addSpecificationProcessed = false;
-                        }
-                    });
-
-                    return false;
-                }
+            var variants_container = new variant_data_container(sku_matrix);
+            
+            var variant = $('#skuoption').variant({
+                data_container: variants_container
+            });
+            
+            {% if active_variant_matrix %}
+                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
             {% endif %}
+            
+            {% if not update_specification_item %}
+            $('.add-to-specification a').click(function(){
+                var el = $(this);
+                
+                if(variants_container.getFiltered().length == 1){
+                    quantity = parseInt($('.quantity-selector .entry.number').text());
+                        var url = '{{ path('specification_api_specification_add_item') }}',
+                            data = {
+                                id: variants_container.getFiltered()[0].id,
+                                quantity: quantity,
+                                specification: parseInt($(this).attr('data-specification-id'))
+                            };
 
-            {% if update_specification_item %}
-                var updateSpecificationItemProcessed = false;
-                function updateSpecificationItem()
-                {
-                    if (updateSpecificationItemProcessed) {
-                        return false;
-                    }
-
-                    updateSpecificationItemProcessed = true;
-
-                    var itemId = $(this).data('specification-item-id'),
-                        variant = searchProductFromSelectedOptions(),
-                        quantity = parseInt($('.quantity-selector .entry.number').text());
-
-                    if (!variant) {
-                        alert('Attention: Not found product variant with selected option.');
-                        updateSpecificationItemProcessed = false;
-
-                        return false;
-                    }
-
-                    var url = '{{ path('specification_api_specification_item_edit', {item: 123}) }}'.replace(/123/, itemId.toString()),
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            method: 'POST',
+                            success: function () {
+                                alert('Successfully add product to specification.');
+                                addSpecificationProcessed = false;
+                            },
+                            error: function () {
+                                alert('Error with add product to specification.');
+                                addSpecificationProcessed = false;
+                            }
+                        });
+                }                
+            });
+            {% else %}
+            $('.update-specification-item button').click(function(){
+                var el = $(this);
+                console.log(variants_container.getFiltered());
+                if(variants_container.getFiltered().length == 1){
+                    
+                    
+                    quantity = parseInt($('.quantity-selector .entry.number').text());
+                    
+                    var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
                         data = {
-                            sku: variant.sku,
+                            id: variants_container.getFiltered()[0].id,
                             quantity: quantity
                         };
 
-                    $.ajax({
-                        url: url,
-                        data: data,
-                        method: 'POST',
-                        success: function () {
-                            window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
-                        },
-                        error: function () {
-                            alert('Error with update specification item. Please try again.');
-                            updateSpecificationItemProcessed = false;
-                        }
-                    });
-                }
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            method: 'POST',
+                            success: function () {
+                                window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
+                            },
+                            error: function () {
+                                alert('Error with update specification item. Please try again.');
+                            }
+                        });
+                }                
+            });   
             {% endif %}
-
-            $(document).ready(function (){
-                $('.options-selector select').change(onChangeAnyOption);
-
-                {% if not update_specification_item %}
-                    $('.add-to-specification a').click(onAddToSpecification);
-                {% endif %}
-
-                {% if update_specification_item %}
-                    $('.update-specification-item button').click(updateSpecificationItem);
-                {% endif %}
-            });
-        })(jQuery);
+            })(jQuery);
     </script>
 {% endblock %}

@@ -118,14 +118,14 @@ class ProductController
 
         // Get active variant
         $activeVariant = null;
-        if ($sku = $request->query->get('sku')) {
-            $activeVariant = $product->getVariantBySku($sku);
+        if ($sku_id = $request->query->get('sku_id')) {
+            $activeVariant = $product->getVariantById($sku_id);
 
             if (!$activeVariant) {
                 throw new NotFoundHttpException(sprintf(
-                    'The product with identifier "%s" not have a variant with sku "%s".',
+                    'The product with identifier "%s" not have a variant with sku id "%s".',
                     $product->getId(),
-                    $sku
+                    $sku_id
                 ));
             }
         }
@@ -133,7 +133,7 @@ class ProductController
         // Check, if update for specification item
         $updateSpecificationItem = false;
         $specificationItem = null;
-        if ($specificationItemSku = $request->query->get('sku') && $specificationItemId = $request->query->get('si')) {
+        if ($specificationItemSku = $request->query->get('sku_id') && $specificationItemId = $request->query->get('si')) {
             $updateSpecificationItem = true;
             $specificationItem = $this->specificationItemRepository->find($specificationItemId);
 
@@ -148,57 +148,36 @@ class ProductController
         }
 
         // Group options, sku options and extensions and min and max price
-        $variants = [];
         $options = [];
 
+        $skuMatrix = [];
+        $activeVariantMatrix = false;
+        
         /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
         foreach ($product->getVariants() as $variant) {
-            $hash = '';
-
-            foreach ($variant->getOptions() as $option) {
-                $key = 'o' . $option->getName();
-
-                if (!isset($options[$key])) {
-                    $options[$key] = [
-                        'name' => $option->getName(),
-                        'values' => [],
-                        'value' => null
-                    ];
-                }
-
-                $value = $option->getValue();
-                $options[$key]['values'][$value] = $value;
-                $hash .= $value;
-
-                if ($activeVariant && $activeVariant->getId() == $variant->getId()) {
-                    $options[$key]['value'] = $value;
-                }
-            }
-
-            /** @var \Furniture\SkuOptionBundle\Entity\SkuOptionVariant $option */
-            foreach ($variant->getSkuOptions() as $option) {
-                $key = 'so' . $option->getName();
-
-                if (!isset($options[$key])) {
-                    $options[$key] = [
-                        'name' => $option->getName(),
-                        'values' => []
-                    ];
-                }
-
-                $value = $option->getValue();
-                $options[$key]['values'][$value] = $value;
-                $hash .= $value;
-
-                if ($activeVariant && $activeVariant->getId() == $variant->getId()) {
-                    $options[$key]['value'] = $value;
-                }
-            }
-
-            $variants[$hash] = [
-                'sku' => $variant->getSku(),
-                'price' => $variant->getPrice()
-            ];
+           $item = [
+               'id' => $variant->getId(),
+               'presentation' => $variant->getPresentation(),
+               'options' => []
+           ];
+           
+           foreach($variant->getOptions() as $option){
+               $item['options']['option_'.$option->getName()] = $option->getValue();
+           }
+           
+           foreach($variant->getSkuOptions() as $option){
+               $item['options']['skuoption_'.$option->getName()] = $option->getValue();
+           }
+           
+           foreach($variant->getExtensionVariants() as $extension){
+               $item['options']['extension_'.$extension->getExtension()->getName()] = $extension->getName();
+           }
+           
+           if($activeVariant && $variant == $activeVariant){
+               $activeVariantMatrix = $item['options'];
+           }
+           
+           $skuMatrix[] = $item;
         }
 
         // Get min and max prices
@@ -219,11 +198,11 @@ class ProductController
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
             'product' => $product,
+            'sku_matrix' => $skuMatrix,
+            'active_variant_matrix' => $activeVariantMatrix,
             'options' => $options,
-            'variants' => $variants,
             'prices' => $prices,
             'specifications' => $specifications,
-            'active_variant' => $activeVariant,
             'specification_item' => $specificationItem,
             'update_specification_item' => $updateSpecificationItem,
             'quantity' => $quantity

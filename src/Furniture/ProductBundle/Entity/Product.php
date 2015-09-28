@@ -408,11 +408,11 @@ class Product extends BaseProduct implements PricingInterface
      *
      * @return ProductVariant|null
      */
-    public function getVariantBySku($sku)
+    public function getVariantById($sku_id)
     {
         /** @var ProductVariant $productVariant */
         foreach ($this->variants as $productVariant) {
-            if ($productVariant->getSku() == $sku) {
+            if ($productVariant->getId() == $sku_id) {
                 return $productVariant;
             }
         }
