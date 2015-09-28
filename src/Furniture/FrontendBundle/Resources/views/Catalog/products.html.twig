@@ -8,7 +8,7 @@
     <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
     <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
     {% if sub_category %}
-        <a href="{{ path('products', {'category_permalink':sub_category.permalink}) }}">{{ sub_category.name }}</a>
+        <a href="{{ path('products', {'category_permalink': current_root_taxon.permalink, subcategory:sub_category.id}) }}">{{ sub_category.name }}</a>
     {% endif %}
 {% endblock %}
 
@@ -99,13 +99,17 @@
                             {% set k = 1 %}
                             {% for factory in brands %}
                                 {% if k > column_size %}
-                        </div>
-                        <div class="col-xs-6">
+                                </div>
+                                <div class="col-xs-6">
                                     {% set k = 1 %}
                                 {% endif %}
-                            <label class="checkbox-entry">
-                                <input type="checkbox" /><span class="check"></span>{{ factory.name }}
-                            </label>
+                                <label class="checkbox-entry">
+                                    <input 
+                                        {% if factory_ids is iterable and factory.id in factory_ids %}
+                                            checked
+                                        {% endif %}
+                                        type="checkbox" value="{{ factory.id }}" /><span class="check"></span>{{ factory.name }}
+                                </label>
                                 {% set k = k + 1 %}
                             {% endfor %}
                         </div>
@@ -115,4 +119,32 @@
         </div>
     </div>
 
-{% endblock %}    
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var brandFilterForm = $('#brand_filter');
+        {% if sub_category %}
+                    var getUrl = "{{ path('products', {'category_permalink': current_root_taxon.permalink, subcategory:sub_category.id}) }}";
+        {% else %}
+                    var getUrl = "{{ path('products', {'category_permalink': current_root_taxon.permalink}) }}?";
+        {% endif %}
+
+                    brandFilterForm.find('input:checkbox').change(function () {
+                        var brandFilter = [];
+                        brandFilterForm.find('input:checkbox:checked').each(function (i, el) {
+                            var el = $(this);
+                            brandFilter.push(el.val());
+                        });
+                        if (brandFilter.length > 0) {
+                            getUrl += '&brand[]=' + brandFilter.join('&brand[]=');
+                        }
+                        window.location.href = getUrl;
+                    });
+                });
+            })(jQuery);
+    </script>
+{% endblock%}

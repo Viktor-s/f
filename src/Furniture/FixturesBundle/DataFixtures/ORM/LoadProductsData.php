@@ -38,16 +38,25 @@ class LoadProductsData extends BaseLoadProductsData
                 case 0:
                     $e = $this->createTable($i);
                     $manager->persist($e);
+                    $manager->flush();
+                    $this->generateVariants($e);
+                    $manager->flush();
                     break;
 
                 case 1:
                     $e = $this->createChair($i);
                     $manager->persist($e);
+                    $manager->flush();
+                    $this->generateVariants($e);
+                    $manager->flush();
                     break;
 
                 case 2:
                     $e = $this->createArmChair($i);
                     $manager->persist($e);
+                    $manager->flush();
+                    $this->generateVariants($e);
+                    $manager->flush();
                     break;
 
                 case 3:
@@ -109,8 +118,6 @@ class LoadProductsData extends BaseLoadProductsData
                 '10',
                 '15',
             ]);
-        
-        $this->generateVariants($product);
 
         $this->setFactory($product);
         
@@ -267,7 +274,6 @@ class LoadProductsData extends BaseLoadProductsData
         $num = rand(0,count($optionVariants));
         if($num){
             $sizes = array_slice( $optionVariants, 0, $num);
-            
             foreach (  $sizes as $size ){
                 $sku_option = new \Furniture\SkuOptionBundle\Entity\SkuOptionVariant();
                 $sku_option->setSkuOptionType($this->getReference('Furniture.sku_option.Size'));
@@ -309,8 +315,7 @@ class LoadProductsData extends BaseLoadProductsData
      */
     protected function generateVariants(ProductInterface $product)
     {
-        $this
-            ->getVariantGenerator()
+        $this->get('Furniture.generator.product_variant')
             ->generate($product)
         ;
 

@@ -120,7 +120,7 @@ class CatalogController {
         }else{
             $child_taxons = $this->getAllChildTaxons($root_taxon);
         }
-
+        
         /* Build product query */
         $page = $request->get('page', 1);
         $qBuilder = $this->productRepository->createQueryBuilder('p');
@@ -128,6 +128,17 @@ class CatalogController {
                 ->andWhere('taxon in ( :taxons )')
                 ->setParameter('taxons', $child_taxons)
         ;
+        
+        /* Factory filter */
+        if( ($factory_ids = $request->get('brand', [])) && count($factory_ids) ){
+            $factory_ids = array_map(function($v){ return (int)$v; }, $factory_ids);
+            
+            $qBuilder
+                    ->andWhere('p.factory in (:factories)')
+                    ->setParameter('factories', $factory_ids)
+                    ;
+        }
+        
         /* Create product paginator */
         $products = $this->productRepository->getPaginator($qBuilder);
         $products->setMaxPerPage(12);
@@ -139,6 +150,7 @@ class CatalogController {
             'current_root_taxon' => $root_taxon, //Current root taxon
             'sub_category' => $subcategory, //if selected child taxon = taxon else null
             'brands' => $this->factoryRepository->findAll(),
+            'factory_ids' => $factory_ids,
         ]);
 
         return new Response($content);
