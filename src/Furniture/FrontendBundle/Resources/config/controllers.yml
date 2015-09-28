@@ -3,6 +3,18 @@ services:
         class: Furniture\FrontendBundle\Controller\HomepageController
         arguments: [ @twig, @router, %available_locales% ]
 
+    frontend.controller.catalog:
+        class: Furniture\FrontendBundle\Controller\CatalogController
+        arguments:
+            - @twig
+            - @frontend.repository.product
+            - @frontend.repository.factory
+            - @sylius.repository.taxon
+            - @sylius.repository.taxonomy
+            - @frontend.repository.specification
+            - @frontend.repository.specification_item
+            - @security.token_storage
+
     frontend.controller.product:
         class: Furniture\FrontendBundle\Controller\ProductController
         arguments:

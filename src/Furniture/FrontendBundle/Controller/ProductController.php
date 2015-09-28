@@ -68,10 +68,19 @@ class ProductController
         $user = $this->tokenStorage->getToken()
             ->getUser();
         
-        $products = $this->productRepository->getPaginator(
-                $this->productRepository->createQueryBuilder('p')
-                );
+        $qBuilder = $this->productRepository->createQueryBuilder('p');
         
+        if($taxons = $request->get('taxons', false)){
+            $taxons = array_map( function($v){ return (int)$v; }, $taxons);
+            
+            $qBuilder->innerJoin('p.taxons', 'taxon')
+                ->andWhere('taxon in ( :taxons )')
+                ->setParameter('taxons', $taxons)
+                ;
+            
+        }
+        
+        $products = $this->productRepository->getPaginator($qBuilder);
         
         $products->setMaxPerPage(12);
         $products->setCurrentPage($page);

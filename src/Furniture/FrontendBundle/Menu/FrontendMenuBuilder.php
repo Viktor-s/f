@@ -79,12 +79,12 @@ class FrontendMenuBuilder
         ]);
         
         $products = $menu->addChild('products', [
-            'uri' => 'products',
+            'uri' => '#',
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
         
         $catalog = $products->addChild('catalog', [
-            'uri' => 'catalog',
+            'uri' => $this->urlGenerator->generate('taxonomy'),
             'label' => $this->translator->trans('frontend.menu_items.header.catalog')
         ]);
         

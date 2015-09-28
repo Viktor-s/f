@@ -42,6 +42,7 @@ frontend:
         buyers: Buyers
         specifications: Specifications
         products: Products
+        catalog: Catalog
         buyers: Buyers
         list: List
         create: Create
@@ -55,6 +56,10 @@ frontend:
         en: English
         ru: Russian
         it: Italian
+
+    catalog:
+        space_selector: Select space
+        brand_filter: Brand
 
     factory:
         posted: Posted on :created

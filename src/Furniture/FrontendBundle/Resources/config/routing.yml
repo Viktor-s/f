@@ -18,13 +18,21 @@ product:
     defaults:
         _controller: frontend.controller.product:product
         
-products:
-    path: /{_locale}/products/{page}
+taxonomy:
+    path: /{_locale}/catalog/
     methods: [ GET ]
     requirements: { _locale: %available_locales% }
     defaults:
-        _controller: frontend.controller.product:products
-        page: 1
+        _controller: frontend.controller.catalog:taxonomy
+        
+products:
+    path: /{_locale}/catalog/{category_permalink}
+    methods: [ GET ]
+    requirements: 
+        _locale: %available_locales%
+        category_permalink: .+
+    defaults:
+        _controller: frontend.controller.catalog:products
 
 # Specifications
 specifications:

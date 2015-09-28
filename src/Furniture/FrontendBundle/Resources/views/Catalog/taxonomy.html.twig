@@ -1,0 +1,35 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %} {{ 'frontend.taxonomy'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="#">{{ 'frontend.title.taxonomy' }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="mozaic-banners-wrapper type-2">
+
+            {% for taxon in Category.taxons %}
+                <div class="banner-column col-sm-6">
+                    <a href="{{ path('products', {'category_permalink':taxon.permalink}) }}" 
+                       {% if taxon.path|length > 0 %}
+                       style="background-image: url({{ taxon.path|imagine_filter('s425x200') }}); background-size: cover;" class="mozaic-banner-entry type-3"
+                       {% else %}
+                       style="background-image: url(img/bags-3.jpg); background-size: cover;" class="mozaic-banner-entry type-3"
+                       {% endif %}
+                       >
+                        <span class="mozaic-banner-content">
+                            <span class="subtitle">{{ Category.name }}</span>
+                            <span class="title">{{ taxon.name }}</span>
+                            <span class="view">view category</span>
+                        </span>
+                    </a>
+                </div>
+            {% endfor %}
+            <div class="clear"></div>
+        </div>
+    </div>
+
+{% endblock %}

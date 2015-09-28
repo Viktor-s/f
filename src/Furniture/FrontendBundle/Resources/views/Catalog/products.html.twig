@@ -1,0 +1,118 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+{% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
+
+{% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
+    <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
+    {% if sub_category %}
+        <a href="{{ path('products', {'category_permalink':sub_category.permalink}) }}">{{ sub_category.name }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
+
+                <div class="page-selector">
+                    {{ pagination(products) }}
+                    <div class="shop-grid-controls">
+                        <div class="entry">
+                            <div class="inline-text">Sorty by</div>
+                            <div class="simple-drop-down">
+                                <select name="sorting">
+                                    <option>Position</option>
+                                    <option>Price</option>
+                                    <option>Category</option>
+                                    <option>Rating</option>
+                                    <option>Color</option>
+                                </select>
+                            </div>
+                            <div class="sort-button"></div>
+                        </div>
+                        <div class="entry">
+                            <div class="view-button active grid"><i class="fa fa-th"></i></div>
+                            <div class="view-button list"><i class="fa fa-list"></i></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="row shop-grid grid-view">
+
+                    {% for product in products %}
+                        {% include 'FrontendBundle:Catalog:products/item.html.twig' with {'product' : product} %}
+                    {% endfor %}
+
+                </div>
+                <div class="page-selector">
+                    <div class="description">Showing: {{ products.getCurrentPageOffsetStart() }}-{{ products.getCurrentPageOffsetEnd() }} of {{ products.getNbResults() }}</div>
+                    {{ pagination(products) }}
+                    <div class="clear"></div>
+                </div>
+            </div>
+            {# Left side catalog menu #}
+            <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+                {# Catalog space selector #}
+                <div class="information-blocks">
+                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.catalog.space_selector'| trans }}</div>
+                    <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
+                        {% for taxon in category.taxons %}
+                            <option  value="{{ path('products', {'category_permalink':taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category_permalink'] %} selected="selected" {% endif %}>
+                                {{ taxon.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {# Catalog category selector #}
+                <div class="information-blocks categories-border-wrapper">
+                    <div class="block-title size-3">{{ current_root_taxon.name }}</div>
+                    <div class="accordeon">
+                        {% for children_taxon_1 in current_root_taxon.children %}
+                            <div class="accordeon-title">{{ children_taxon_1.name }}</div>
+                            <div class="accordeon-entry">
+                                <div class="article-container style-1">
+                                    <ul>
+                                        {% for children_taxon_2 in  children_taxon_1.children %}
+                                            <li>
+                                                <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink, 'subcategory':children_taxon_2.id}) }}">
+                                                    {{ children_taxon_2.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {# Catalog brand selector #}
+                <div id="brand_filter" class="information-blocks">
+                    {% set column_size = (brands|length)/2 %}
+                    <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for factory in brands %}
+                                {% if k > column_size %}
+                        </div>
+                        <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+                            <label class="checkbox-entry">
+                                <input type="checkbox" /><span class="check"></span>{{ factory.name }}
+                            </label>
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}    
