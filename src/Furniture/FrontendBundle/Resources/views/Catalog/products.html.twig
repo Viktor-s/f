@@ -51,6 +51,18 @@
                     <div class="clear"></div>
                 </div>
             </div>
+            <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+                <div class="information-blocks">
+                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">Select space</div>
+                    <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
+                        {% for taxon in category.taxons %}
+                            <option  value="{{ path('products', {'category_permalink':taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category_permalink'] %} selected="selected" {% endif %}>
+                            {{ taxon.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
