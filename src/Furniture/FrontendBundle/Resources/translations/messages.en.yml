@@ -57,6 +57,10 @@ frontend:
         ru: Russian
         it: Italian
 
+    catalog:
+        space_selector: Select space
+        brand_filter: Brand
+
     factory:
         posted: Posted on :created
 

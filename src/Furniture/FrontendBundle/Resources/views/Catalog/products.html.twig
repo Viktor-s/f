@@ -55,9 +55,11 @@
                     <div class="clear"></div>
                 </div>
             </div>
+            {# Left side catalog menu #}
             <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+                {# Catalog space selector #}
                 <div class="information-blocks">
-                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">Select space</div>
+                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.catalog.space_selector'| trans }}</div>
                     <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
                         {% for taxon in category.taxons %}
                             <option  value="{{ path('products', {'category_permalink':taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category_permalink'] %} selected="selected" {% endif %}>
@@ -66,6 +68,7 @@
                         {% endfor %}
                     </select>
                 </div>
+                {# Catalog category selector #}
                 <div class="information-blocks categories-border-wrapper">
                     <div class="block-title size-3">{{ current_root_taxon.name }}</div>
                     <div class="accordeon">
@@ -85,6 +88,27 @@
                                 </div>
                             </div>
                         {% endfor %}
+                    </div>
+                </div>
+                {# Catalog brand selector #}
+                <div id="brand_filter" class="information-blocks">
+                    {% set column_size = (brands|length)/2 %}
+                    <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for factory in brands %}
+                                {% if k > column_size %}
+                        </div>
+                        <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+                            <label class="checkbox-entry">
+                                <input type="checkbox" /><span class="check"></span>{{ factory.name }}
+                            </label>
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

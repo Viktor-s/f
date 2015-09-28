@@ -46,6 +46,7 @@ class CatalogController {
      */
     private $taxonomyRepository;
 
+    private $factoryRepository;
     /**
      * @var TokenStorageInterface
      */
@@ -62,10 +63,11 @@ class CatalogController {
      * @param TokenStorageInterface       $tokenStorage
      */
     public function __construct(
-    \Twig_Environment $twig, \Doctrine\ORM\EntityRepository $productRepository, \Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository $taxonRepository, EntityRepository $taxonomyRepository, SpecificationRepository $specificationRepository, SpecificationItemRepository $specificationItemRepository, TokenStorageInterface $tokenStorage
+    \Twig_Environment $twig, \Doctrine\ORM\EntityRepository $productRepository, \Doctrine\ORM\EntityRepository $factoryRepository, \Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository $taxonRepository, EntityRepository $taxonomyRepository, SpecificationRepository $specificationRepository, SpecificationItemRepository $specificationItemRepository, TokenStorageInterface $tokenStorage
     ) {
         $this->twig = $twig;
         $this->productRepository = $productRepository;
+        $this->factoryRepository = $factoryRepository;
         $this->taxonRepository = $taxonRepository;
         $this->taxonomyRepository = $taxonomyRepository;
         $this->specificationRepository = $specificationRepository;
@@ -136,6 +138,7 @@ class CatalogController {
             'category' => $this->getCategoryTaxonomy(), //Category taxonomy onject
             'current_root_taxon' => $root_taxon, //Current root taxon
             'sub_category' => $subcategory, //if selected child taxon = taxon else null
+            'brands' => $this->factoryRepository->findAll(),
         ]);
 
         return new Response($content);

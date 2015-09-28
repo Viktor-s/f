@@ -8,6 +8,7 @@ services:
         arguments:
             - @twig
             - @frontend.repository.product
+            - @frontend.repository.factory
             - @sylius.repository.taxon
             - @sylius.repository.taxonomy
             - @frontend.repository.specification
