@@ -1,0 +1,23 @@
+furniture_backend_specification:
+    path: /
+    defaults:
+        _controller: furniture.controller.specification:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Specification:index.html.twig
+
+furniture_backend_specification_delete:
+    path: /{id}/delete
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.specification:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_specification
+
+furniture_backend_specification_show:
+    path: /{id}
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.specification:showAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Specification:show.html.twig

@@ -168,6 +168,13 @@ class BackendMenuBuilder extends MenuBuilder
             ])->setLabel('Composities');
         }
 
+        if ($this->authorizationChecker->isGranted('furniture.specification.index')) {
+            $child->addChild('specification', [
+                'route' => 'furniture_backend_specification',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Specifications');
+        }
+
         if ($this->authorizationChecker->isGranted('sylius.product_archetype.index')) {
             $child->addChild('product_archetypes', array(
                 'route' => 'sylius_backend_product_archetype_index',

@@ -9,9 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-class ProductController extends BaseProductController {
-
-    public function variantGroupEditAction(Request $request) {
+class ProductController extends BaseProductController
+{
+    /**
+     * Variant actions
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function variantGroupEditAction(Request $request)
+    {
         // @todo: fix typos
         // $this->isGrantedOr403('variantGrouEdit');
 
