@@ -5,7 +5,11 @@
 
 {% block breadcrumb %}
     <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
-    <a href="#">{{ 'frontend.title.products' }}</a>
+    <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
+    <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
+    {% if sub_category %}
+        <a href="{{ path('products', {'category_permalink':sub_category.permalink}) }}">{{ sub_category.name }}</a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -57,10 +61,31 @@
                     <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
                         {% for taxon in category.taxons %}
                             <option  value="{{ path('products', {'category_permalink':taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category_permalink'] %} selected="selected" {% endif %}>
-                            {{ taxon.name }}
+                                {{ taxon.name }}
                             </option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="information-blocks categories-border-wrapper">
+                    <div class="block-title size-3">{{ current_root_taxon.name }}</div>
+                    <div class="accordeon">
+                        {% for children_taxon_1 in current_root_taxon.children %}
+                            <div class="accordeon-title">{{ children_taxon_1.name }}</div>
+                            <div class="accordeon-entry">
+                                <div class="article-container style-1">
+                                    <ul>
+                                        {% for children_taxon_2 in  children_taxon_1.children %}
+                                            <li>
+                                                <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink, 'subcategory':children_taxon_2.id}) }}">
+                                                    {{ children_taxon_2.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

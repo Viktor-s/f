@@ -92,7 +92,7 @@ class CatalogController {
                 ->getUser();
 
         $category = $this->getCategoryTaxonomy();
-
+        
         $content = $this->twig->render('FrontendBundle:Catalog:taxonomy.html.twig', [
             'Category' => $category,
         ]);
@@ -103,28 +103,39 @@ class CatalogController {
     public function products(Request $request, $category_permalink) {
         $user = $this->tokenStorage->getToken()
                 ->getUser();
-
-        $taxon = $this->taxonRepository
+        
+        /* Getting root taxon by permalink */
+        $root_taxon = $this->taxonRepository
                 ->findOneBy(['permalink' => $category_permalink]);
 
-        $child_taxons = $this->getAllChildTaxons($taxon);
+        $child_taxons = [];
+        /* if selected sub category, get products from sub category */
+        if( $subcategory = $request->get('subcategory', null) ){
+            if( $subcategory = $this->taxonRepository->findOneById($subcategory) ){
+                $child_taxons = $this->getAllChildTaxons($subcategory);
+                $child_taxons[] = $subcategory;
+            }
+        }else{
+            $child_taxons = $this->getAllChildTaxons($root_taxon);
+        }
 
+        /* Build product query */
         $page = $request->get('page', 1);
-
         $qBuilder = $this->productRepository->createQueryBuilder('p');
-
         $qBuilder->innerJoin('p.taxons', 'taxon')
                 ->andWhere('taxon in ( :taxons )')
                 ->setParameter('taxons', $child_taxons)
         ;
-
+        /* Create product paginator */
         $products = $this->productRepository->getPaginator($qBuilder);
-        
         $products->setMaxPerPage(12);
         $products->setCurrentPage($page);
+        
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
-            'products' => $products,
-            'category' => $this->getCategoryTaxonomy(),
+            'products' => $products, //Paginator object
+            'category' => $this->getCategoryTaxonomy(), //Category taxonomy onject
+            'current_root_taxon' => $root_taxon, //Current root taxon
+            'sub_category' => $subcategory, //if selected child taxon = taxon else null
         ]);
 
         return new Response($content);

@@ -8,6 +8,7 @@
                 <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" ><i class="fa fa-try"></i> {{ 'frontend.detailed' | trans }}</a>
             </div>
         </div>
+            {#
         {% if product.taxons %}
             {% for taxon in product.taxons %}
                 <a class="tag" href="{{ path('products', {
@@ -19,6 +20,7 @@
                 </a>
             {% endfor %}
         {% endif %}
+        #}
         <a class="title" href="{{ path('product', {'product':product.id}) }}">{{ product.name }}</a>
         <div class="article-container style-1">
             <p>{{ product.shortDescription }}</p>
