@@ -309,8 +309,7 @@ class LoadProductsData extends BaseLoadProductsData
      */
     protected function generateVariants(ProductInterface $product)
     {
-        $this
-            ->getVariantGenerator()
+        $this->get('Furniture.generator.product_variant')
             ->generate($product)
         ;
 
