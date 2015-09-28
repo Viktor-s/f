@@ -150,6 +150,11 @@ sylius_rbac:
         furniture.composite.update: update compose
         furniture.composite.delete: delete composite
 
+        furniture.manage.specifications: manage specifications
+        furniture.specification.index: list specifications
+        furniture.specification.show: show specification
+        furniture.specification.delete: delete specifications
+
         sylius.product.variantGrouEdit: variants group update
     permissions_hierarchy:
         furniture.manage.factories:
@@ -211,6 +216,11 @@ sylius_rbac:
             - furniture.composite.update
             - furniture.composite.delete
 
+        furniture.manage.specifications:
+            - furniture.specification.index
+            - furniture.specification.show
+            - furniture.specification.delete
+
     security_roles:
         PUBLIC_CONTENT_USER: It's our Architect/Designer/Retailer, factory user such as factory manager or agent
         
@@ -233,5 +243,6 @@ sylius_rbac:
                 - furniture.manage.sku_options
                 - furniture.manage.factories
                 - furniture.manage.factories.user_relations
+                - furniture.manage.specifications
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

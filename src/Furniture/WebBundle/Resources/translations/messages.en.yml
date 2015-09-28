@@ -123,6 +123,30 @@ composite_template_item:
         count_items: Count items
         position: Position
 
+specification:
+    header:
+        index: Specifications
+
+    table:
+        id: Id
+        user: User
+        buyer: Buyer
+        name: Name
+        created_at: Created
+        finished_at: Finished
+        count_items: Items
+        price: Price
+        actions: Actions
+        factory: Factory
+        options: Options
+        note: Note
+        quantity: Quantity
+        total_price: Total price
+
+    actions:
+        delete: Delete
+        show: Show
+
 sylius:
     product:
         no_extensions:  There are no extensions for this product

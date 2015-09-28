@@ -1,0 +1,57 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li>Specifications</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'specification.header.index'|trans|raw }}</h1>
+    </div>
+
+    {{ pagination(specifications) }}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ 'specification.table.id'|trans }}</th>
+            <th>{{ 'specification.table.user'|trans }}</th>
+            <th>{{ 'specification.table.buyer'|trans }}</th>
+            <th>{{ 'specification.table.created_at'|trans }}</th>
+            <th>{{ 'specification.table.finished_at'|trans }}</th>
+            <th>{{ 'specification.table.name'|trans }}</th>
+            <th>{{ 'specification.table.count_items'|trans }}</th>
+            <th>{{ 'specification.table.price'|trans }}</th>
+            <th>{{ 'specification.table.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for specification in specifications %}
+            <tr>
+                <td>{{ specification.id }}</td>
+                <td>{{ specification.user.username }}</td>
+                <td>{{ specification.buyer ? specification.buyer : '~' }}</td>
+                <td>{{ specification.createdAt.format('Y/m/d H:i') }}</td>
+                <td>{{ specification.finishedAt ? specification.finishedAt.format('Y/m/d H:i') }}</td>
+                <td>{{ specification.name }}</td>
+                <td>{{ specification.countItems }}</td>
+                <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+                <td>
+                    {{ buttons.delete(path('furniture_backend_specification_delete', {id: specification.id}), 'specification.actions.delete'|trans) }}
+                    {{ buttons.show(path('furniture_backend_specification_show', {id: specification.id}), 'specification.actions.show'|trans) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ pagination(specifications) }}
+{% endblock %}

@@ -223,6 +223,10 @@ sylius_resource:
                     model: Furniture\CompositionBundle\Entity\CompositeTranslation
                     mapping: ~
 
+        furniture.specification:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\SpecificationBundle\Entity\Specification
 
 liip_imagine:
     filter_sets:

@@ -250,6 +250,22 @@ class Specification
     }
 
     /**
+     * Get count items
+     *
+     * @return int
+     */
+    public function getCountItems()
+    {
+        $items = 0;
+
+        foreach ($this->items as $item) {
+            $items += $item->getQuantity();
+        }
+
+        return $items;
+    }
+
+    /**
      * Life hook on update
      */
     public function onUpdate()
