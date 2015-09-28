@@ -163,8 +163,6 @@ class LoadProductsData extends BaseLoadProductsData
                 '1x50',
                 '7x8',
             ]);
-        
-        $this->generateVariants($product);
 
         $this->setFactory($product);
         
@@ -209,8 +207,6 @@ class LoadProductsData extends BaseLoadProductsData
                 '2x3',
                 '4x6',
             ]);
-        
-        $this->generateVariants($product);
 
         $this->setFactory($product);
         
