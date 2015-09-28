@@ -70,6 +70,20 @@ specification_finish:
     defaults:
         _controller: frontend.controller.specification:finish
 
+specification_export_preview:
+    path: /{_locale}/specifications/{specification}/export/preview
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:exportPreview
+
+specification_export:
+    path: /{_locale}/specifications/{specification}/export
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:export
+
 # Specification buyers
 specification_buyers:
     path: /{_locale}/specifications/buyers

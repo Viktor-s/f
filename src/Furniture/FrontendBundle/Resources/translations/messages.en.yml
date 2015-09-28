@@ -34,6 +34,17 @@ frontend:
     options: Options
     note: Note
     are_you_sure_remove_specification_item: Are you sure remote specification item?
+    export: Export
+    full: Full
+    by_company: By company
+    photo: Photo
+    product_article: Article
+    product_size: Size
+    finishes: Finishes
+    characteristics: Characteristics
+    export: Export
+    total_quantities: Total quantities
+    sku: SKU
 
     title:
         index: Furniture
@@ -47,6 +58,8 @@ frontend:
         list: List
         create: Create
         edit: Edit
+        preview: Preview
+        export: Export
 
     button:
         settings: Settings

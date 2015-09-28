@@ -9,72 +9,97 @@ use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 
 class User extends BaseUser 
 {
+    const ROLE_CONTENT_USER = 'ROLE_CONTENT_USER';
+    const ROLE_FACTORY_ADMIN = 'ROLE_FACTORY_ADMIN';
+    const ROLE_FACTORY_USER = 'ROLE_FACTORY_USER';
 
     /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      */
     protected $factoryRelations;
-    
-    function __construct() {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
+
         $this->factoryRelations = new ArrayCollection();
     }
     
     /**
-     * 
+     * Is has factory relations?
+     *
      * @return bool
      */
-    public function hasFactoryRelations(){
+    public function hasFactoryRelations()
+    {
         return (bool)!$this->factoryRelations->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get factory relations
+     *
+     * @return Collection
      */
-    public function getFactoryRelations(){
+    public function getFactoryRelations()
+    {
         return $this->factoryRelations;
     }
     
     /**
-     * 
+     * Set factory relations
+     *
      * @param Collection $factoryRelations
-     * @return \Furniture\CommonBundle\Entity\User
+     *
+     * @return User
      */
-    public function setFactoryRelations(Collection $factoryRelations){
+    public function setFactoryRelations(Collection $factoryRelations)
+    {
         $this->factoryRelations = $factoryRelations;
+
         return $this;
     }
     
     /**
-     * 
+     * Is has factory relation?
+     *
      * @param FactoryUserRelation $factoryRelations
+     *
      * @return bool
      */
-    public function hasFactoryRelation(FactoryUserRelation $factoryRelations){
+    public function hasFactoryRelation(FactoryUserRelation $factoryRelations)
+    {
         return $this->factoryRelations->contains($factoryRelations);
     }
     
     /**
-     * 
+     * Add factory relation
+     *
      * @param FactoryUserRelation $factoryRelations
-     * @return \Furniture\CommonBundle\Entity\User
+     *
+     * @return User
      */
-    public function addFactoryRelation(FactoryUserRelation $factoryRelations){
+    public function addFactoryRelation(FactoryUserRelation $factoryRelations)
+    {
         if(!$this->hasFactoryRelation($factoryRelations)){
             $factoryRelations->setFactory($this);
             $this->factoryRelations->add($factoryRelations);
         }
+
         return $this;
     }
     
     /**
-     * 
+     * Remove factory relation
+     *
      * @param FactoryUserRelation $factoryRelations
-     * @return \Furniture\CommonBundle\Entity\User
+     *
+     * @return User
      */
-    public function removeFactoryRelation(FactoryUserRelation $factoryRelations){
+    public function removeFactoryRelation(FactoryUserRelation $factoryRelations)
+    {
         if($this->hasUserRelation($factoryRelations)){
             $this->factoryRelations->removeElement($factoryRelations);
         }

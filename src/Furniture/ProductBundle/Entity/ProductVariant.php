@@ -42,9 +42,9 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     }
     
     /**
-     * Get SKU options?
+     * Get SKU options
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return Collection|SkuOptionVariant[]
      */
     public function getSkuOptions()
     {
@@ -173,5 +173,23 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return $this->extensionVariants->contains($productExtensionVariant);
     }
-    
+
+    /**
+     * Get human size
+     *
+     * @return string
+     */
+    public function getHumanSize()
+    {
+        if ($this->width && $this->height && $this->depth) {
+            return sprintf(
+                '%sx%sx%s',
+                $this->width,
+                $this->height,
+                $this->depth
+            );
+        }
+
+        return '';
+    }
 }

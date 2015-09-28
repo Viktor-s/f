@@ -37,6 +37,7 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @router
+            - @specification.exporter.excel
 
     frontend.controller.specification_buyer:
         class: Furniture\FrontendBundle\Controller\SpecificationBuyerController
