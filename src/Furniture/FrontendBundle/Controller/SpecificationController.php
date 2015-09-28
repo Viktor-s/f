@@ -3,9 +3,13 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\HttpFoundation\ExcelResponse;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Exporter\ExporterInterface;
+use Furniture\SpecificationBundle\Exporter\FieldMapForClient;
+use Furniture\SpecificationBundle\Exporter\FieldMapForFactory;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,6 +52,11 @@ class SpecificationController
     private $urlGenerator;
 
     /**
+     * @var ExporterInterface
+     */
+    private $exporter;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment       $twig
@@ -56,6 +65,7 @@ class SpecificationController
      * @param FormFactoryInterface    $formFactory
      * @param EntityManagerInterface  $em
      * @param UrlGeneratorInterface   $urlGenerator
+     * @param ExporterInterface       $exporter
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -63,7 +73,8 @@ class SpecificationController
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        ExporterInterface $exporter
     ) {
         $this->twig = $twig;
         $this->specificationRepository = $specificationRepository;
@@ -71,6 +82,7 @@ class SpecificationController
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->urlGenerator = $urlGenerator;
+        $this->exporter = $exporter;
     }
 
     /**
@@ -205,5 +217,102 @@ class SpecificationController
         $url = RedirectHelper::getRedirectUrl($request, $url);
 
         return new RedirectResponse($url);
+    }
+
+    /**
+     * Export preview action
+     *
+     * @param int $specification
+     *
+     * @return Response
+     */
+    public function exportPreview($specification)
+    {
+        $specification = $this->specificationRepository->find($specificationId = $specification);
+
+        if (!$specification) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification with identifier "%s".',
+                $specificationId
+            ));
+        }
+
+        // @todo: add check granted for export this specification (via security voter in Symfony)
+
+        // Group items
+        $groupedItemsByFactory = $specification->getGroupedItemsByFactory();
+
+        $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
+            'specification' => $specification,
+            'grouped_items_by_factory' => $groupedItemsByFactory
+        ]);
+
+        return new Response($content);
+    }
+
+    /**
+     * Export specification
+     *
+     * @param Request $request
+     * @param int     $specification
+     *
+     * @return Response
+     */
+    public function export(Request $request, $specification)
+    {
+        $specification = $this->specificationRepository->find($specificationId = $specification);
+
+        if (!$specification) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification with identifier "%s".',
+                $specificationId
+            ));
+        }
+
+        // @todo: add check granted for export this specification (via security voter in Symfony)
+
+        // Attention: Now we work only with excel exporter
+        if ($request->query->get('mode') == 'full') {
+            $fieldMap = new FieldMapForClient($request->query->get('fields', []));
+            $writer = $this->exporter->exportForClient($specification, $fieldMap);
+
+            return new ExcelResponse($writer, 'specification.xlsx');
+        } else if ($request->query->get('mode') == 'factory') {
+            if (!$factoryId = $request->query->get('factory_id')) {
+                throw new NotFoundHttpException('Missing "factory_id" parameter.');
+            }
+
+            // Search factory
+            $factory = null;
+            foreach ($specification->getItems() as $item) {
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $item->getProductVariant()->getProduct();
+                $itemFactory = $product->getFactory();
+
+                if ($itemFactory->getId() == $factoryId) {
+                    $factory = $itemFactory;
+                    break;
+                }
+            }
+
+            if (!$factory) {
+                throw new NotFoundHttpException(sprintf(
+                    'Not found factory with identifier "%s" for specification "%s [%d]".',
+                    $factoryId,
+                    $specification->getName(),
+                    $specification->getId()
+                ));
+            }
+
+            $fieldMap = new FieldMapForFactory($request->query->get('fields', []));
+            $writer = $this->exporter->exportForFactory($specification, $fieldMap, $factory);
+
+            return new ExcelResponse($writer, $factory->getName() . '.xlsx');
+        } else {
+            throw new NotFoundHttpException(sprintf(
+                'Invalid mode "%s".',
+                $request->query->get('mode')
+            ));
+        }
     }
 }

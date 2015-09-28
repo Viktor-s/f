@@ -5,6 +5,7 @@ namespace Furniture\SpecificationBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\SpecificationBundle\Model\GroupedItemsByFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Specification
@@ -164,11 +165,47 @@ class Specification
     /**
      * Get items
      *
-     * @return Collection
+     * @return Collection|SpecificationItem[]
      */
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * Get grouped items by factory
+     *
+     * @return Collection|GroupedItemsByFactory[]
+     */
+    public function getGroupedItemsByFactory()
+    {
+        $grouped = [];
+
+        foreach ($this->items as $item) {
+            $variant = $item->getProductVariant();
+            /** @var \Furniture\ProductBundle\Entity\Product $product */
+            $product = $variant->getProduct();
+            $factory = $product->getFactory();
+
+            if (!isset($grouped[$factory->getId()])) {
+                $grouped[$factory->getId()] = [
+                    'factory' => $factory,
+                    'items' => new ArrayCollection()
+                ];
+            }
+
+            /** @var Collection $items */
+            $items = $grouped[$factory->getId()]['items'];
+            $items->add($item);
+        }
+
+        $result = new ArrayCollection();
+
+        foreach ($grouped as $groupInfo) {
+            $result->add(new GroupedItemsByFactory($groupInfo['factory'], $groupInfo['items']));
+        }
+
+        return $result;
     }
 
     /**

@@ -8,3 +8,18 @@ specification:
         buyer: Buyer
         name: Name
         description: Description
+
+    excel:
+        number: "#"
+        factory: Factory
+        name: Name
+        photo: Photo
+        article: Article
+        size: Size
+        finishes: Finishes
+        characteristics: Characteristics
+        quantity: Quantity
+        price: Price
+        total_price: Total price
+        description: Description
+        sku: Sku

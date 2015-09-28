@@ -46,6 +46,7 @@
                             <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
                             <a href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
                             <a href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                            <a href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                         </td>
                     </tr>
                     {% else %}

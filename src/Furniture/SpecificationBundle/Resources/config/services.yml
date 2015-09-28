@@ -2,3 +2,7 @@ services:
     specification.api.request_matcher:
         class: Symfony\Component\HttpFoundation\RequestMatcher
         arguments: [ '/specification/api' ]
+
+    specification.exporter.excel:
+        class: Furniture\SpecificationBundle\Exporter\ExcelExporter
+        arguments: [ @translator ]

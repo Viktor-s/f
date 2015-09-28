@@ -77,7 +77,8 @@
         "winzou/state-machine-bundle":          "~0.2",
 
         "fivelab/exception":                    "~1.0",
-        "sonata-project/formatter-bundle": "~2.3"
+        "sonata-project/formatter-bundle":      "~2.3",
+        "phpoffice/phpexcel":                   "~1.8"
     },
     "require-dev": {
         "behat/behat":                          "~3.0",
