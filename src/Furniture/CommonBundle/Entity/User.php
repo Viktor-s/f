@@ -9,9 +9,10 @@ use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 
 class User extends BaseUser 
 {
-    const ROLE_CONTENT_USER = 'ROLE_CONTENT_USER';
-    const ROLE_FACTORY_ADMIN = 'ROLE_FACTORY_ADMIN';
-    const ROLE_FACTORY_USER = 'ROLE_FACTORY_USER';
+    const ROLE_CONTENT_USER   = 'ROLE_CONTENT_USER';
+    const ROLE_FACTORY_ADMIN  = 'ROLE_FACTORY_ADMIN';
+    const ROLE_FACTORY_USER   = 'ROLE_FACTORY_USER';
+    const ROLE_PUBLIC_CONTENT = 'ROLE_PUBLIC_CONTENT';
 
     /**
      * @var Collection

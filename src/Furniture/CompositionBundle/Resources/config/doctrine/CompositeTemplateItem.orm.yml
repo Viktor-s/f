@@ -33,6 +33,7 @@ Furniture\CompositionBundle\Entity\CompositeTemplateItem:
                 name: taxon_id
                 referencedColumnName: id
                 nullable: false
+                onDelete: CASCADE
 
     uniqueConstraints:
         composite_template_item_unique:

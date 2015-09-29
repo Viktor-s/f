@@ -94,10 +94,8 @@ class LoadFactoriesData extends DataFixture
             $factory->setCurrentLocale($locale);
             $factory->setDescription($presentation['description']);
         }
-        
-        echo $this->factory_path.$name.'-logo.jpg'.PHP_EOL;
+
         $img = new \SplFileInfo(__DIR__.$this->factory_path.$name.'-logo.jpg');
-        echo $img->getRealPath().$img->getFilename();
         $uploadFile = new UploadedFile($img->getRealPath(), $img->getFilename());
         
         $image = new \Furniture\FactoryBundle\Entity\FactoryImage();

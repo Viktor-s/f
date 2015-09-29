@@ -222,14 +222,29 @@ sylius_rbac:
             - furniture.specification.delete
 
     security_roles:
-        PUBLIC_CONTENT_USER: It's our Architect/Designer/Retailer, factory user such as factory manager or agent
+        ROLE_PUBLIC_CONTENT_USER: It's our Architect/Designer/Retailer, factory user such as factory manager or agent
+        ROLE_FACTORY_ADMIN: It's our Factory administer
+        ROLE_FACTORY_USER: It's out Factory user
         
     roles:
         content_user:
             name: User
             description: Architect/Designer/Retailer
             permissions: []
-            security_roles: [ PUBLIC_CONTENT_USER ] 
+            security_roles: [ ROLE_PUBLIC_CONTENT_USER ]
+
+        factory_admin:
+            name: Factory admin
+            description: Factory administer
+            permissions: []
+            security_roles: [ ROLE_FACTORY_ADMIN ]
+
+        factory_user:
+            name: Factory user
+            description: Factory user
+            permissions: []
+            security_roles: [ ROLE_FACTORY_USER ]
+
         administrator:
             name: Administrator
             description: Administrator user

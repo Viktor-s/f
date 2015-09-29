@@ -29,6 +29,7 @@ Furniture\CompositionBundle\Entity\Composite:
             cascade: [ persist ]
             mappedBy: composite
             orphanRemoval: true
+
         images:
             cascade: [persist]
             orphanRemoval: true

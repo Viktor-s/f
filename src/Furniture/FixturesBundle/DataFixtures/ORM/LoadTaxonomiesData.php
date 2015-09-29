@@ -736,7 +736,6 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
 
     protected function createTaxon(array $taxon_description, $taxonomy, $parent = false) {
         if (count($taxon_description) > 2) {
-            print_r($taxon_description);
             throw new \Exception('Taxonomy description Error', 100500);
         }
 
@@ -747,15 +746,13 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
             $taxon->setCurrentLocale($locale);
             $taxon->setFallbackLocale($locale);
             $taxon->setName($name);
-            var_dump($name);
+
             if ($this->defaultLocale === $locale) {
-                //echo 'Taxon:' . 'Sylius.Taxon.' . $name . PHP_EOL;
                 $this->setReference('Sylius.Taxon.' . $name, $taxon);
             }
         }
         
         if($parent){
-            echo 'Parent:'.$parent->getName();
             $parent->addChild($taxon);
             $taxon->setPermalink($parent->getName().'/'.$taxon->getName());
         }
@@ -772,8 +769,8 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
     /**
      * {@inheritdoc}
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return 10;
     }
-
 }

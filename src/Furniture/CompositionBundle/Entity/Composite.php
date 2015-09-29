@@ -29,13 +29,17 @@ class Composite extends AbstractTranslatable
     protected $products;
 
     /**
-     *
      * @var Collection
      */
     protected $images;
 
-    function __construct() {
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
+
         $this->images = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
@@ -152,63 +156,81 @@ class Composite extends AbstractTranslatable
     }
     
     /**
-     * 
+     * Has images?
+     *
      * @return bool
      */
-    public function hasImages(){
+    public function hasImages()
+    {
         return (bool)!$this->images->isEmpty();
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * Get images
+     *
+     * @return Collection
      */
-    public function getImages(){
+    public function getImages()
+    {
         return $this->images;
     }
     
     /**
-     * 
+     * Set images
+     *
      * @param Collection $images
-     * @return \Furniture\CompositionBundle\Entity\Composite
+     *
+     * @return Composite
      */
-    public function setImages(Collection $images){
+    public function setImages(Collection $images)
+    {
         $this->images = $images;
+
         return $this;
     }
     
     /**
-     * 
-     * @param Furniture\CompositionBundle\Entity\CompositeImage $image
+     * Has image?
+     *
+     * @param CompositeImage $image
+     *
      * @return bool
      */
-    public function hasImage(CompositeImage $image){
+    public function hasImage(CompositeImage $image)
+    {
         return $this->images->contains($image);
     }
     
     /**
-     * 
-     * @param \Furniture\CompositionBundle\Entity\CompositeImage $image
-     * @return \Furniture\CompositionBundle\Entity\Composite
+     * Add image
+     *
+     * @param CompositeImage $image
+     *
+     * @return Composite
      */
-    public function addImage(CompositeImage $image){
+    public function addImage(CompositeImage $image)
+    {
         if(!$this->hasImage($image)){
             $image->setComposite($this);
             $this->images->add($image);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\CompositionBundle\Entity\CompositeImage $image
-     * @return \Furniture\CompositionBundle\Entity\Composite
+     * Remove image
+     *
+     * @param CompositeImage $image
+     *
+     * @return Composite
      */
-    public function removeImage(CompositeImage $image){
+    public function removeImage(CompositeImage $image)
+    {
         if($this->hasImage($image)){
             $this->images->removeElement($image);
         }
+
         return $this;
     }
-    
 }
