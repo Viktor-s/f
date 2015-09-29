@@ -50,11 +50,6 @@ class LoadProductExtensionData extends DataFixture {
         ]);
         $manager->persist($productExtensionVariant);
         
-        $productExtensionVariant = $this->createProductEtensionVariant('Synthetic Leather Brown', 'Synthetic Leather', $productExtension, [
-            'Furniture.product_extension_option.values.Synthetic Leather'
-        ]);
-        $manager->persist($productExtensionVariant);
-        
         $productExtensionVariant = $this->createProductEtensionVariant('', '806 T', $productExtension, [
             'Furniture.product_extension_option.values.Fabric A'
         ]);

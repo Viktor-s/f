@@ -55,8 +55,8 @@ class ProductVariantSkuModelTransformer implements DataTransformerInterface
         $variant = $this->em->createQueryBuilder()
             ->from(ProductVariant::class, 'p')
             ->select('p')
-            ->andWhere('p.sku = :sku')
-            ->setParameter('sku', $value)
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $value)
             ->getQuery()
             ->getOneOrNullResult();
 

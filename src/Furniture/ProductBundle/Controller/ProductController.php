@@ -90,7 +90,7 @@ class ProductController extends BaseProductController
                                     ->createQueryBuilder('sov')
                                     ->where('sov in (:sovs)')
                                     ->setParameter('sovs', $skuOptionsVariants)
-                                    ->orderBy('sov.typeCode', 'ASC')
+                                    ->orderBy('sov.skuOptionType', 'ASC')
                     ;
                 },
                 'data' => clone $skuOptionsVariants,
