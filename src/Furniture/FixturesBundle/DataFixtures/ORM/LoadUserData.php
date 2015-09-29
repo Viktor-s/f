@@ -8,7 +8,6 @@ use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadUsersData as BaseLoadUserD
 
 class LoadUserData extends BaseLoadUserData
 {
-    private $usernames = [];
     /**
      * {@inheritdoc}
      */
@@ -19,6 +18,8 @@ class LoadUserData extends BaseLoadUserData
 
         $this->createContentUsers($manager);
         $this->createFactoryAdminUsers($manager);
+
+        $manager->flush();
     }
 
     /**
@@ -29,7 +30,6 @@ class LoadUserData extends BaseLoadUserData
     private function createContentUsers(ObjectManager $manager)
     {
         for ($i = 1; $i <= 5; $i++) {
-            $username = $this->randomUsername();
             $email = 'user' . $i . '@content-user.com';
 
             /** @var \Furniture\CommonBundle\Entity\User $user */
@@ -55,7 +55,6 @@ class LoadUserData extends BaseLoadUserData
     private function createFactoryAdminUsers(ObjectManager $manager)
     {
         for ($i = 1; $i <= 5; $i++) {
-            $username = $this->randomUsername();
             $email = 'user' . $i . '@factory-admin.com';
 
             /** @var \Furniture\CommonBundle\Entity\User $user */
@@ -103,21 +102,5 @@ class LoadUserData extends BaseLoadUserData
         $manager->flush();
 
         $this->setReference('Sylius.User-Administrator', $user);
-    }
-
-    /**
-     * Get random username
-     *
-     * @return string
-     */
-    private function randomUsername()
-    {
-        $username = $this->faker->username;
-
-        while (isset($this->usernames[$username])) {
-            $username = $this->faker->username;
-        }
-
-        return $username;
     }
 }

@@ -113,6 +113,21 @@ specification_buyer_remove:
     defaults:
         _controller: frontend.controller.specification_buyer:remove
 
+# Factory profile
+factory_profile:
+    path: /{_locale}/profile/factory
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory_profile:dashboard
+
+content_user_profile:
+    path: /{_locale}/profile/user
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.content_user_profile:dashboard
+
 # Security
 security_login:
     path: /login

@@ -48,3 +48,15 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @router
+
+    frontend.controller.factory_profile:
+        class: Furniture\FrontendBundle\Controller\FactoryProfileController
+        arguments:
+            - @twig
+            - @sylius.authorization_checker
+
+    frontend.controller.content_user_profile:
+        class: Furniture\FrontendBundle\Controller\ContentUserProfileController
+        arguments:
+            - @twig
+            - @sylius.authorization_checker

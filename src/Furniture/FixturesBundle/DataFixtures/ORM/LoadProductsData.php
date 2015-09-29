@@ -33,7 +33,7 @@ class LoadProductsData extends BaseLoadProductsData
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             switch (rand(0, 2)) {
                 case 0:
                     $e = $this->createTable($i);

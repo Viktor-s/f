@@ -152,4 +152,48 @@ class FrontendMenuBuilder
 
         return $menu;
     }
+
+    /**
+     * Create menu for factory profile
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createFactoryProfileMenu()
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('item1', [
+            'uri' => '#',
+            'label' => 'Item #1'
+        ]);
+
+        $menu->addChild('item2', [
+            'uri' => '#',
+            'label' => 'Item #2'
+        ]);
+
+        return $menu;
+    }
+
+    /**
+     * Create menu for factory profile
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createContentUserProfileMenu()
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('item1', [
+            'uri' => '#',
+            'label' => 'Item #1'
+        ]);
+
+        $menu->addChild('item2', [
+            'uri' => '#',
+            'label' => 'Item #2'
+        ]);
+
+        return $menu;
+    }
 }

@@ -34,7 +34,18 @@
     </div>
 
     <div class="right-entries">
-        <a class="header-functionality-entry" href="#"><i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span></a>
-        <a class="header-functionality-entry" href="#"><span>{{ 'frontend.button.logout'|trans }}</span></a>
+        {% if is_granted('ROLE_CONTENT_USER') %}
+            <a class="header-functionality-entry" href="{{ path('content_user_profile') }}">
+                <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
+            </a>
+        {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
+            <a class="header-functionality-entry" href="{{ path('factory_profile') }}">
+                <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
+            </a>
+        {% endif %}
+
+        <a class="header-functionality-entry" href="{{ path('security_logout') }}">
+            <span>{{ 'frontend.button.logout'|trans }}</span>
+        </a>
     </div>
 {% endspaceless %}

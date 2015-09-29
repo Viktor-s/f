@@ -21,3 +21,17 @@ services:
         factory_method: createFooterMenu
         tags:
             - { name: knp_menu.menu, alias: frontend.footer }
+
+    frontend.menu.factory_profile:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createFactoryProfileMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.factory_profile }
+
+    frontend.menu.content_user_profile:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createContentUserProfileMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.content_user_profile }

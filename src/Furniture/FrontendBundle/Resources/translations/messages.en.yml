@@ -45,6 +45,8 @@ frontend:
     export: Export
     total_quantities: Total quantities
     sku: SKU
+    factory_profile: Factory profile
+    content_user_profile: User profile
 
     title:
         index: Furniture
@@ -60,6 +62,9 @@ frontend:
         edit: Edit
         preview: Preview
         export: Export
+        factory_profile: Factory profile
+        content_user_profile: User profile
+        dashboard: Dashboard
 
     button:
         settings: Settings

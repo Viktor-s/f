@@ -71,6 +71,7 @@ class AuthorizationChecker implements AuthorizationCheckerInterface
 
         $roles = $this->rolesResolver->getRoles($identity);
 
+        /** @var \Sylius\Component\Rbac\Model\Role $role */
         foreach ($roles as $role) {
             if ($this->permissionMap->hasPermission($role, $permissionCode)) {
                 return true;

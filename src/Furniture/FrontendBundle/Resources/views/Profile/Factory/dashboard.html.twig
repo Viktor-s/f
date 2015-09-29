@@ -1,0 +1,13 @@
+{% extends 'FrontendBundle:Profile/Factory:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.dashboard'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.dashboard'|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    <h1>Dashboard</h1>
+{% endblock %}
