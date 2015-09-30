@@ -17,14 +17,14 @@ Furniture\ProductBundle\Entity\ProductVariant:
                         referencedColumnName: id
                         onDelete: "CASCADE"
 
-        extensionVariants:
-            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant
-            orphanRemoval: true
-            joinTable:
-                name: product_variant_extension_variant_relation
-                joinColumns:
-                    product_variant_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    product_extension_variant_id:
-                        referencedColumnName: id
+#        extensionVariants:
+#            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant
+#            orphanRemoval: true
+#            joinTable:
+#                name: product_variant_extension_variant_relation
+#                joinColumns:
+#                    product_variant_id:
+#                        referencedColumnName: id
+#                inverseJoinColumns:
+#                    product_extension_variant_id:
+#                        referencedColumnName: id

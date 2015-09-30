@@ -1,0 +1,27 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import create %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li><a href="{{ path('sylius_backend_product_attribute_index') }}">{{ 'product_part_material.breadcrumb.index'|trans }}</a></li>
+        <li>{{ 'create'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'product_part_material.header.create'|trans }}</h1>
+    </div>
+
+    {{ form_errors(form) }}
+
+    <form action="{{ path('furniture_backend_product_part_material_create') }}" method="post" class="form-horizontal" novalidate>
+        {{ form_widget(form) }}
+
+        {{ create() }}
+    </form>
+{% endblock %}

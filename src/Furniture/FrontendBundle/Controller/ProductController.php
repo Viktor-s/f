@@ -147,7 +147,7 @@ class ProductController
             $quantity = $specificationItem->getQuantity();
         }
 
-        // Group options, sku options and extensions and min and max price
+        // Group options, sku options and min and max price
         $options = [];
 
         $skuMatrix = [];
@@ -167,10 +167,6 @@ class ProductController
            
            foreach($variant->getSkuOptions() as $option){
                $item['options']['skuoption_'.$option->getName()] = $option->getValue();
-           }
-           
-           foreach($variant->getExtensionVariants() as $extension){
-               $item['options']['extension_'.$extension->getExtension()->getName()] = $extension->getName();
            }
            
            if($activeVariant && $variant == $activeVariant){

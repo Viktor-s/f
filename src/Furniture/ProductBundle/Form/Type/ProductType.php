@@ -4,7 +4,6 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Product;
-use Furniture\ProductBundle\Entity\ProductExtension;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
@@ -36,11 +35,6 @@ class ProductType extends BaseProductType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-            ])
-            ->add('extensions', 'entity', [
-                'class' => ProductExtension::class,
-                'multiple' => true,
-                'expanded' => false
             ])
             ->add('compositeCollections', 'entity', [
                 'class' => CompositeCollection::class,

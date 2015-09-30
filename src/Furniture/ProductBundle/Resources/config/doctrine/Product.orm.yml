@@ -39,18 +39,17 @@ Furniture\ProductBundle\Entity\Product:
             targetEntity: Product
             mappedBy: subProducts
 
-        extensions:
-            targetEntity: Furniture\ProductBundle\Entity\ProductExtension
-            orphanRemoval: true
-            joinTable:
-                name: product_extension_relation
-                joinColumns:
-                    product_id:
-                        referencedColumnName: id
-
-                inverseJoinColumns:
-                    product_extension_id:
-                        referencedColumnName: id
+#        extensions:
+#            targetEntity: Furniture\ProductBundle\Entity\ProductExtension
+#            orphanRemoval: true
+#            joinTable:
+#                name: product_extension_relation
+#                joinColumns:
+#                    product_id:
+#                        referencedColumnName: id
+#                inverseJoinColumns:
+#                    product_extension_id:
+#                        referencedColumnName: id
 
         compositeCollections:
             targetEntity: Furniture\CompositionBundle\Entity\CompositeCollection

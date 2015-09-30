@@ -1,0 +1,112 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+{% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li><a href="{{ path('furniture_backend_product_part_material') }}">Product part materials</a></li>
+        <li>{{ product_part_material.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 style="float: left;">{{ product_part_material.name }}</h1>
+
+        <div class="actions-menu">
+            {{ buttons.edit(path('furniture_backend_product_part_material_update', {id: product_part_material.id})) }}
+            {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {id: product_part_material.id})) }}
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Values</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for grouped in product_part_material.groupedOptionValues %}
+                <tr>
+                    <td>{{ grouped.name }}</td>
+                    <td>{{ grouped.values.toArray()|join(', ') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <h3>Variants:</h3>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Available</th>
+                <th>Values</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for variant in product_part_material.variants %}
+                <tr>
+                    <td>{{ variant.name }}</td>
+
+                    <td>
+                        <i class="glyphicon glyphicon-{{ variant.available ? 'ok' : 'remove' }}"></i>
+                    </td>
+
+                    <td>
+                        <ul>
+                            {% for value in variant.values %}
+                                <li>
+                                    <strong>{{ value.option.name }}:</strong>
+                                    {{ value.value }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_product_part_material_variant_update', {product_part_material: product_part_material.id, id: variant.id})) }}
+                            {{ buttons.delete(path('furniture_backend_product_part_material_variant_delete', {product_part_material: product_part_material.id, id: variant.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Not found variants for this product part material.
+                        You can
+                        <a href="{{ path('furniture_backend_product_part_material_variant_create', {product_part_material: product_part_material.id}) }}">create</a>
+                        or
+                        <a href="#">generate</a>
+                        variants for this product part material.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            {% if product_part_material.variants|length %}
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        {{ buttons.create(path('furniture_backend_product_part_material_variant_create', {product_part_material: product_part_material.id})) }}
+                    </td>
+                </tr>
+                </tfoot>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}

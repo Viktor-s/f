@@ -42,10 +42,6 @@
                 {% for sku_option in variant.SkuOptions %}
                     <li><strong>{{ sku_option.name }}</strong>: {{ sku_option.value }}</li>
                 {% endfor %}
-                <hr/>
-                {% for extension_variant in variant.extensionVariants %}
-                    <li><strong>{{ extension_variant.extension.presentation }}</strong>: {{ extension_variant.name }}</li>
-                {% endfor %}
                 </ul>
             </td>
             <td>

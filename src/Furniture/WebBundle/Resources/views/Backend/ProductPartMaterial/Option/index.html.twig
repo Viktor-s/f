@@ -1,0 +1,53 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li>{{ 'product_part_material_option.header.index'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{ buttons.manage(path('furniture_backend_product_part_material'), 'product_part_material.manage'|trans) }}
+            {{ buttons.create(path('furniture_backend_product_part_material_option_create'), 'product_part_material_option.create'|trans) }}
+        </div>
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_part_material_option.header.index'|trans|raw }}</h1>
+    </div>
+
+    {{ pagination(product_part_material_options) }}
+
+    {% if product_part_material_options|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'product_part_material_option.name'|trans) }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product_part_material_option in product_part_material_options %}
+                <tr id="{{ product_part_material_option.id }}">
+                    <td>{{ product_part_material_option.name }}</td>
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_product_part_material_option_update', {'id': product_part_material_option.id})) }}
+                            {{ buttons.delete(path('furniture_backend_product_part_material_option_delete', {'id': product_part_material_option.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ alerts.info('product_part_material_option.no_results'|trans) }}
+    {% endif %}
+
+    {{ pagination(product_part_material_options) }}
+
+{% endblock %}

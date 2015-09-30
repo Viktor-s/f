@@ -64,6 +64,7 @@ class VariantGenerator extends ContainerAware {
         /*
          * Get product extensions
          */
+        /*
         $extPref = 'ext';
         foreach ($product->getExtensions() as $k => $extensions) {
             foreach ($extensions->getVariants() as $variant) {
@@ -72,6 +73,7 @@ class VariantGenerator extends ContainerAware {
                 $optionMap[$route_id] = $variant;
             }
         }
+        */
 
         //echo '<pre>' . print_r($optionSet, true) . '</pre>';
 
@@ -101,9 +103,12 @@ class VariantGenerator extends ContainerAware {
                 /*
                  * add product extension value to sku
                  */
+                /*
                 if (split('_', $route_id)[0] == $extPref) {
                     $variant->addExtensionVariant($optionMap[$route_id]);
                 }
+                 * 
+                 */
             } else
                 foreach ($permutation as $k => $route_id) {
                     /*
@@ -121,9 +126,12 @@ class VariantGenerator extends ContainerAware {
                     /*
                      * add product extension value to sku
                      */
+                    /*
                     if (split('_', $route_id)[0] == $extPref) {
                         $variant->addExtensionVariant($optionMap[$route_id]);
                     }
+                     * 
+                     */
                 }
             $product->addVariant($variant);
         }
