@@ -128,24 +128,6 @@
                         {% endif %}
                     </td>
                 </tr>
-
-                <tr>
-                    <td>Extensions:</td>
-                    <td>
-                        {% if product.extensions|length > 0 %}
-                            <ul>
-                                {% for extension in product.extensions %}
-                                    <li>{{ extension.name }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <span class="label label-info">
-                                <i class="glyphicon glyphicon-list-alt icon-white"></i> {{ 'sylius.product.no_extensions'|trans }}
-                            </span>
-                        {% endif %}
-                    </td>
-                </tr>
-
                 <tr>
                     <td>Composite collections:</td>
 

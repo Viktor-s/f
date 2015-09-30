@@ -183,24 +183,24 @@ sylius_resource:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
 
-        furniture.product_extension:
+        furniture.product_part_material:
             driver: doctrine/orm
             classes:
-                model: Furniture\ProductBundle\Entity\ProductExtension
+                model: Furniture\ProductBundle\Entity\ProductPartMaterial
                 translation:
-                    model: Furniture\ProductBundle\Entity\ProductExtensionTranslation
+                    model: Furniture\ProductBundle\Entity\ProductPartMaterialTranslation
                     mapping: ~
 
-        furniture.product_extension_option:
+        furniture.product_part_material_option:
             driver: doctrine/orm
             classes:
-                model: Furniture\ProductBundle\Entity\ProductExtensionOption
+                model: Furniture\ProductBundle\Entity\ProductPartMaterialOption
 
-        furniture.product_extension_variant:
+        furniture.product_part_material_variant:
             driver: doctrine/orm
             classes:
-                model: Furniture\ProductBundle\Entity\ProductExtensionVariant
-                controller: Furniture\ProductBundle\Controller\ProductExtensionVariantController
+                model: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+                controller: Furniture\ProductBundle\Controller\ProductPartMaterialVariantController
 
         furniture.composite_collection:
             driver: doctrine/orm

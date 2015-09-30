@@ -107,9 +107,6 @@ class LoadProductsData extends BaseLoadProductsData
         $this->setTaxons($product, array('Desks + Tables'));
 
         $product->addOption($this->getReference('Sylius.Option.chair_legs'));
-        $product->setExtensions(new ArrayCollection([
-            $this->getReference('Furniture.product_extension.upholstery_material')
-        ]));
         
         $this->setDesignerAttribute($product);
         
@@ -151,9 +148,6 @@ class LoadProductsData extends BaseLoadProductsData
         $this->setTaxons($product, array('Lounge Chairs', 'Rocking Chairs'));
 
         $product->addOption($this->getReference('Sylius.Option.chair_legs'));
-        $product->setExtensions(new ArrayCollection([
-            $this->getReference('Furniture.product_extension.upholstery_material')
-        ]));
         
         $this->setDesignerAttribute($product);
         

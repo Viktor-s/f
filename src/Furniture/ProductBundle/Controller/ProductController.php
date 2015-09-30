@@ -99,13 +99,6 @@ class ProductController extends BaseProductController
             );
         }
 
-        $productExtensionVariants = [];
-        foreach ($product->getExtensions() as $extension) {
-            $productExtensionVariants = array_merge(
-                    $productExtensionVariants, $extension->getVariants()->toArray()
-            );
-        }
-
         if (count($productExtensionVariants) > 0) {
             $formBuilder->add('productExtension', 'entity', [
                 'class' => get_class($productExtensionVariants[0]),
@@ -201,22 +194,12 @@ class ProductController extends BaseProductController
         if ($form->isValid()) {
             $data = $form->getData();
             $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
-            $productExtensions = isset($data['productExtension']) ? new ArrayCollection($data['productExtension']) : [];
             $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
             $deleteAction = $form->get('delete_by_filter')->isClicked();
 
             $removed = 0;
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
             foreach ($product->getVariants() as $variant) {
-                foreach ($variant->getExtensionVariants() as $productExtensionVariant) {
-                    $callbackForExists = function ($k, $e) use ($productExtensionVariant) {
-                        return $e->getId() == $productExtensionVariant->getId();
-                    };
-
-                    if (!$productExtensions->exists($callbackForExists)) {
-                        continue 2;
-                    }
-                }
 
                 foreach ($variant->getSkuOptions() as $skuOption) {
                     $callbackForExists = function ($k, $e) use ($skuOption) {

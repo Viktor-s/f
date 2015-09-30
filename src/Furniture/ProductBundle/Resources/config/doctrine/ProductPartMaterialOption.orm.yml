@@ -1,0 +1,16 @@
+Furniture\ProductBundle\Entity\ProductPartMaterialOption:
+    type: entity
+    table: product_part_material_option
+
+    id:
+        id:
+            type: integer
+            id: true
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name

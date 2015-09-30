@@ -1,0 +1,16 @@
+Furniture\ProductBundle\Entity\ProductPartMaterialTranslation:
+    type: entity
+    table: product_part_material_translation
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        presentation:
+            type: string
+            nullable: true
+

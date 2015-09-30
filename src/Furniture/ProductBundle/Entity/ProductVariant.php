@@ -16,11 +16,6 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     protected $skuOptions;
 
     /**
-     * @var Collection|ProductExtensionVariant[]
-     */
-    protected $extensionVariants;
-
-    /**
      * Construct
      */
     public function __construct()
@@ -28,7 +23,6 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         parent::__construct();
 
         $this->skuOptions = new ArrayCollection();
-        $this->extensionVariants = new ArrayCollection();
     }
     
     /**
@@ -107,71 +101,6 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         }
 
         return $this;
-    }
-
-    /**
-     * Set extension variants
-     *
-     * @param Collection $variants
-     *
-     * @return ProductVariant
-     */
-    public function setExtensionVariants(Collection $variants)
-    {
-        $this->extensionVariants = $variants;
-
-        return $this;
-    }
-
-    /**
-     * Get extension variants
-     *
-     * @return Collection|ProductExtensionVariant[]
-     */
-    public function getExtensionVariants()
-    {
-        return $this->extensionVariants;
-    }
-    
-    /**
-     * Remove SKU option variant
-     *
-     * @param SkuOptionVariant $skuOptionVariant
-     *
-     * @return \Furniture\ProductBundle\Entity\ProductVariant
-     */
-    public function removeExtensionVariant(ProductExtensionVariant $productExtensionVariant)
-    {
-        if ($this->hasExtensionVariant($productExtensionVariant)) {
-            $this->extensionVariants->removeElement($productExtensionVariant);
-        }
-
-        return $this;
-    }
-    
-    /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductExtensionVariant $productExtensionVariant
-     * @return \Furniture\ProductBundle\Entity\ProductVariant
-     */
-    public function addExtensionVariant(ProductExtensionVariant $productExtensionVariant)
-    {
-        if (!$this->hasExtensionVariant($productExtensionVariant)) {
-            $this->extensionVariants[] = $productExtensionVariant;
-        }
-        return $this;
-    }
-    
-    
-    
-    /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductExtensionVariant $productExtensionVariant
-     * @return bool
-     */
-    public function hasExtensionVariant(ProductExtensionVariant $productExtensionVariant)
-    {
-        return $this->extensionVariants->contains($productExtensionVariant);
     }
 
     /**

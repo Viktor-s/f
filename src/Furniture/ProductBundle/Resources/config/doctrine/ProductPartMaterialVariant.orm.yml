@@ -1,0 +1,56 @@
+Furniture\ProductBundle\Entity\ProductPartMaterialVariant:
+    type: entity
+    table: product_part_material_variant
+
+    id:
+        id:
+            type: integer
+            name: id
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        available:
+            type: boolean
+            name: available
+
+        name:
+            type: string
+            name: name
+            
+        descriptionalName:
+            type: string
+            nullable: true
+            
+        descriptionalCode:
+            type: string
+            nullable: true
+
+    manyToOne:
+        material:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterial
+            inversedBy: variants
+            joinColumn:
+                name: product_extension_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    manyToMany:
+        values:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue
+            cascade: [ persist ]
+            joinTable:
+                name: product_extension_variant_value
+                joinColumns:
+                    product_extension_variant_id:
+                        referencedColumnName: id
+
+                inverseJoinColumns:
+                    product_exception_option_value_id:
+                        referencedColumnName: id
+
+    lifecycleCallbacks:
+        prePersist: [ generateNameFromValues ]
+        preUpdate: [ generateNameFromValues ]

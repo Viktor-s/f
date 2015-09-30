@@ -1,0 +1,127 @@
+# Product extension routes
+furniture_backend_product_part_material:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_part_material:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial:index.html.twig
+
+furniture_backend_product_part_material_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_part_material:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial:create.html.twig
+            redirect: furniture_backend_product_part_material
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialType
+
+furniture_backend_product_part_material_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial:update.html.twig
+            redirect: furniture_backend_product_part_material
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialType
+
+furniture_backend_product_extenstion_delete:
+    path: /{id}/delete
+    methods: [ GET, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_part_material
+
+furniture_backend_product_part_material_show:
+    path: /{id}/show
+    methods: [ GET ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material:showAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial:show.html.twig
+
+# Product extension option routes
+furniture_backend_product_part_material_option:
+    path: /options
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_part_material_option:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial/Option:index.html.twig
+
+furniture_backend_product_part_material_option_create:
+    path: /option/new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_part_material_option:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial/Option:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialOptionType
+            redirect: furniture_backend_product_part_material_option
+
+furniture_backend_product_part_material_option_update:
+    path: /option/{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material_option:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial/Option:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialOptionType
+            redirect: furniture_backend_product_part_material_option
+
+furniture_backend_product_part_material_option_delete:
+    path: /option/{id}/delete
+    methods: [ GET, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material_option:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_part_material_option
+
+# Product extension variant routes
+furniture_backend_product_part_material_variant_create:
+    path: /{product_part_material}/variant/create
+    methods: [ GET, POST ]
+    requirements: { product_part_material: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material_variant:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial/Variant:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialVariantType
+            redirect:
+                route: furniture_backend_product_part_material_show
+                params: { id: $product_part_material }
+
+furniture_backend_product_part_material_variant_update:
+    path: /{product_part_material}/variant/{id}/update
+    methods: [ GET, POST ]
+    requirements: { product_part_material: \d+, id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material_variant:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartMaterial/Variant:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartMaterialVariantType
+            redirect:
+                route: furniture_backend_product_part_material_show
+                params: { id: $product_part_material }
+
+furniture_backend_product_part_material_variant_delete:
+    path: /{product_part_material}/variant/{id}/remove
+    methods: [ GET, DELETE ]
+    requirements: { product_part_material: \d+, id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_material_variant:deleteAction
+        _syliys:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect:
+                route: furniture_backend_product_part_material_show
+                params: { id: $product_part_material }

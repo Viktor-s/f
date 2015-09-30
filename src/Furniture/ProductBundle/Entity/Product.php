@@ -29,11 +29,6 @@ class Product extends BaseProduct implements PricingInterface
     /**
      * @var Collection
      */
-    protected $extensions;
-
-    /**
-     * @var Collection
-     */
     protected $compositeCollections;
     
     /**
@@ -60,7 +55,6 @@ class Product extends BaseProduct implements PricingInterface
         $this->subProducts = new ArrayCollection();
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();
-        $this->extensions = new ArrayCollection();
         $this->compositeCollections = new ArrayCollection();
     }
     
@@ -328,30 +322,6 @@ class Product extends BaseProduct implements PricingInterface
         }
 
         return $this;
-    }
-
-    /**
-     * Set extension variants
-     *
-     * @param Collection $extensions
-     *
-     * @return Product
-     */
-    public function setExtensions(Collection $extensions)
-    {
-        $this->extensions = $extensions;
-
-        return $this;
-    }
-
-    /**
-     * Get extension variants
-     *
-     * @return Collection|ProductExtension[]
-     */
-    public function getExtensions()
-    {
-        return $this->extensions;
     }
 
     /**
