@@ -278,18 +278,41 @@
 <hr>
 
 {% if not product.deleted %}
-<div class="well well-sm">
-    {{ buttons.create(path('sylius_backend_product_variant_create', {'productId': product.id}), 'sylius.variant.create'|trans) }}
-    {% if product.hasOptions or product.hasSkuOptionVariants %}
-        {{ buttons.patch(path('sylius_backend_product_variant_generate', {'productId': product.id}), 'sylius.product.generate_variants'|trans) }}
-        {{ buttons.manage(path('sylius_backend_product_variant_group_edit', {'id': product.id}), 'Group edit') }}
-    {% endif %}
-    <div class="pull-right">
-        <strong>{{ 'sylius.product.variant_selection_method'|trans }}</strong>: {{ product.variantSelectionMethodLabel }}
+    <div class="well well-sm">
+        {% if not app.request.query.get('sdv') %}
+            {{ buttons.create(path('sylius_backend_product_variant_create', {'productId': product.id}), 'sylius.variant.create'|trans) }}
+
+            {% if product.hasOptions or product.hasSkuOptionVariants %}
+                {{ buttons.patch(path('sylius_backend_product_variant_generate', {'productId': product.id}), 'sylius.product.generate_variants'|trans) }}
+                {{ buttons.manage(path('sylius_backend_product_variant_group_edit', {'id': product.id}), 'Group edit') }}
+            {% endif %}
+
+            <a class="btn btn-danger" href="{{ path('sylius_backend_product_show', {id: product.id, sdv: 1}) }}">
+                <i class="glyphicon glyphicon-trash"></i>
+                {{ 'sylius.product.show_deleted_variants'|trans  }}
+            </a>
+
+            <div class="pull-right">
+                <strong>{{ 'sylius.product.variant_selection_method'|trans }}</strong>: {{ product.variantSelectionMethodLabel }}
+            </div>
+        {% else %}
+            <a class="btn btn-primary" href="{{ path('sylius_backend_product_show', { id: product.id}) }}">
+                <i class="glyphicon glyphicon-folder-open"></i>
+                {{ 'sylius.product.hide_deleted'|trans }}
+            </a>
+
+            <a class="btn btn-danger btn-confirm" href="{{ path('sylius_backend_product_variant_clear_deleted', { productId: product.id}) }}">
+                <i class="glyphicon glyphicon-trash"></i>
+                {{ 'sylius.product.clear_deleted'|trans }}
+            </a>
+        {% endif %}
     </div>
-</div>
 {% endif %}
 
-{{ list_variants(product.variants) }}
+{% if app.request.query.get('sdv') %}
+    {{ list_variants(product.deletedVariants, true) }}
+{% else %}
+    {{ list_variants(product.variants) }}
+{% endif %}
 
 {% endblock %}

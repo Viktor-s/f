@@ -12,10 +12,11 @@ Furniture\ProductBundle\Entity\ProductVariant:
                 joinColumns:
                     product_variant_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     sku_option_id:
                         referencedColumnName: id
-                        onDelete: "CASCADE"
+                        onDelete: CASCADE
 
         extensionVariants:
             targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant

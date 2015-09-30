@@ -10,7 +10,7 @@ sylius_backend_product_variant_create:
             template: SyliusWebBundle:Backend/ProductVariant:create.html.twig
             redirect:
                 route: sylius_backend_product_show
-                parameters: {'id': $productId}
+                parameters: { id: $productId }
 
 sylius_backend_product_variant_update:
     path: /{id}/edit
@@ -21,7 +21,7 @@ sylius_backend_product_variant_update:
             template: SyliusWebBundle:Backend/ProductVariant:update.html.twig
             redirect:
                 route: sylius_backend_product_show
-                parameters: {'id': $productId}
+                parameters: { id: $productId }
 
 sylius_backend_product_variant_delete:
     path: /{id}
@@ -32,7 +32,7 @@ sylius_backend_product_variant_delete:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect:
                 route: sylius_backend_product_show
-                parameters: {'id': $productId}
+                parameters: { id: $productId }
 
 sylius_backend_product_variant_generate:
     path: /generate
@@ -41,3 +41,25 @@ sylius_backend_product_variant_generate:
         _controller: sylius.controller.product_variant:generateAction
         _sylius:
             redirect: referer
+
+sylius_backend_product_variant_restore:
+    path: /{id}/restore
+    methods: [ GET ]
+    defaults:
+        _controller: sylius.controller.product_variant:restoreAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:restore.html.twig
+            redirect:
+                route: sylius_backend_product_show
+                parameters: { id: $productId }
+
+sylius_backend_product_variant_clear_deleted:
+    path: /clear-deleted
+    methods: [ GET ]
+    defaults:
+        _controller: sylius.controller.product_variant:clearDeletedAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:restore.html.twig
+            redirect:
+                route: sylius_backend_product_show
+                parameters: { id: $productId }
