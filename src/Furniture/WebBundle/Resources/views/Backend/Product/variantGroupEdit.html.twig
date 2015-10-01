@@ -55,6 +55,24 @@
                     </div>
                 </div>
                 {% endif %}
+                {% if product.hasProductParts() %}
+                {% for productPart in product.productParts %}
+                <div class="form-group">
+                    {% set partInputName = 'part_' ~ productPart.id %}
+                    {{ form_label(form[partInputName]) }}
+                    <div class="col-lg-9">
+                        <ul class="list-unstyled" id="hierarchy-root">
+                            {% for option in form[partInputName] %}
+                                <li>
+                                    {{ form[partInputName].vars.choices[option.vars.value].data.name }}
+                                    {{ form_widget(option) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
                 <hr/>
                 <br/>
                 <div class="form-group" color="red">

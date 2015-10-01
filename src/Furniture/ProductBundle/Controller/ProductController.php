@@ -148,6 +148,18 @@ class ProductController extends BaseProductController
             ]);
         }
 
+        $inputParts = [];
+        foreach ($product->getProductParts() as $productPart) {
+            $formBuilder->add('part_'.$productPart->getId(), 'entity', [
+                'class' => 'Furniture\ProductBundle\Entity\ProductPartMaterialVariant',
+                'label' => $productPart->getLabel(),
+                'choice_label' => 'name',
+                'property_path' => '[part_'.$productPart->getId().'][productPartMaterials][variants]',
+                'expanded' => true,
+                'multiple' => true,
+                'data' => [$productPart]
+            ]);
+        }
 
         /**
          * Common editable values
@@ -189,6 +201,13 @@ class ProductController extends BaseProductController
             $data = $form->getData();
             $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
             $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
+            
+            $ppmt = [];
+            
+            foreach($product->getProductParts() as $pp){
+                $ppmt[$pp->getId()] = new ArrayCollection($data['part_'.$pp->getId()]['productPartMaterials']['variants']);
+            }
+            
             $deleteAction = $form->get('delete_by_filter')->isClicked();
 
             $removed = 0;
@@ -203,6 +222,18 @@ class ProductController extends BaseProductController
                     if (!$skuOptions->exists($callbackForExists)) {
                         continue 2;
                     }
+                    
+                    foreach($variant->getProductPartVariantSelections() as $vs){
+                        //echo $variant->getId().':'.$vs->getProductPart()->getId().'<br/>';
+                        if( !isset( $ppmt[$vs->getProductPart()->getId()] ) || 
+                                !$ppmt[$vs->getProductPart()->getId()]->exists(function($k, $e) use ($vs){
+                                    return $e->getId() == $vs->getProductPartMaterialVariant()->getId();
+                                })
+                                ){
+                            continue 3;
+                        }
+                    }
+                    
                 }
 
                 foreach ($variant->getOptions() as $option) {
