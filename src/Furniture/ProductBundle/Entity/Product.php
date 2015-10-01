@@ -324,7 +324,8 @@ class Product extends BaseProduct implements PricingInterface
      *
      * @return array
      */
-    public function getSkuOptionVariantsGrouped(){
+    public function getSkuOptionVariantsGrouped()
+    {
         $grouped = [];
         
         $this->skuOptionVariants->forAll(function ($id, SkuOptionVariant $skuVariant) use (&$grouped) {
@@ -452,20 +453,32 @@ class Product extends BaseProduct implements PricingInterface
     /**
      * Get the product variant by sky
      *
-     * @param string $sku
+     * @param string $skuId
      *
      * @return ProductVariant|null
      */
-    public function getVariantById($sku_id)
+    public function getVariantById($skuId)
     {
         /** @var ProductVariant $productVariant */
         foreach ($this->variants as $productVariant) {
-            if ($productVariant->getId() == $sku_id) {
+            if ($productVariant->getId() == $skuId) {
                 return $productVariant;
             }
         }
 
         return null;
+    }
+
+    /**
+     * Get deleted variants
+     *
+     * @return Collection|ProductVariant[]
+     */
+    public function getDeletedVariants()
+    {
+        return $this->variants->filter(function (ProductVariant $variant) {
+            return $variant->isDeleted() && !$variant->isMaster();
+        });
     }
     
     /**

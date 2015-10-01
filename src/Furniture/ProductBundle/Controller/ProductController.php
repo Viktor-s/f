@@ -5,12 +5,76 @@ namespace Furniture\ProductBundle\Controller;
 use Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\CoreBundle\Controller\ProductController as BaseProductController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Furniture\ProductBundle\Entity\Product;
 
 class ProductController extends BaseProductController
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteAction(Request $request)
+    {
+        $hardDelete = $request->get('hard');
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        if ($hardDelete) {
+            $em->getFilters()->disable('softdeleteable');
+        }
+
+        $response = parent::deleteAction($request);
+
+        if ($hardDelete) {
+            $em->getFilters()->enable('softdeleteable');
+        }
+
+        if ($request->get('_from')) {
+            return new RedirectResponse($request->get('_url'));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Clear deleted products
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @todo: can execute delete query?
+     */
+    public function clearDeletedAction(Request $request)
+    {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        $em->getFilters()->disable('softdeleteable');
+
+        $products = $em->createQueryBuilder()
+            ->from(Product::class, 'p')
+            ->select('p')
+            ->andWhere('p.deletedAt IS NOT NULL AND p.deletedAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+
+        foreach ($products as $product) {
+            $em->remove($product);
+        }
+
+        $em->flush();
+
+        $em->getFilters()->enable('softdeleteable');
+
+        if ($request->get('_from')) {
+            return new RedirectResponse($request->get('_from'));
+        }
+
+        return $this->redirectHandler->redirectToIndex();
+    }
+
     /**
      * Variant actions
      *
@@ -240,4 +304,32 @@ class ProductController extends BaseProductController
         return new JsonResponse($response);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function findOr404(Request $request, array $criteria = array())
+    {
+        // So, the sylius is "govno" and disable softdeletable filter only on repository method,
+        // but do not think, what we have a any relations, which are loaded later.
+        // And we should get the all relations for load with disable filter
+
+        /** @var \Furniture\ProductBundle\Entity\Product $product */
+        $product = parent::findOr404($request, $criteria);
+
+        if ($request->query->get('sdv')) {
+            // Use for "Show Deleted Variants"
+            $em = $this->get('doctrine.orm.default_entity_manager');
+
+            // Disable filter
+            $em->getFilters()->disable('softdeleteable');
+
+            // Load relations
+            $product->getVariants();
+
+            // Enable filter
+            $em->getFilters()->enable('softdeleteable');
+        }
+
+        return $product;
+    }
 }
