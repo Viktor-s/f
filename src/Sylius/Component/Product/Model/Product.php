@@ -13,6 +13,7 @@ namespace Sylius\Component\Product\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Furniture\ProductBundle\Entity\ProductVariant;
 use Sylius\Component\Archetype\Model\ArchetypeInterface as BaseArchetypeInterface;
 use Sylius\Component\Attribute\Model\AttributeValueInterface as BaseAttributeValueInterface;
 use Sylius\Component\Variation\Model\OptionInterface as BaseOptionInterface;
@@ -373,13 +374,25 @@ class Product extends AbstractTranslatable implements ProductInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get available variants
+     *
+     * @return \Doctrine\Common\Collections\Collection|ProductVariant[]
      */
     public function getAvailableVariants()
     {
-        return $this->variants->filter(function (BaseVariantInterface $variant) {
+        return $this->variants->filter(function (ProductVariant $variant) {
             return !$variant->isDeleted() && !$variant->isMaster() && $variant->isAvailable();
         });
+    }
+
+    /**
+     * Get all variants
+     *
+     * @return \Doctrine\Common\Collections\Collection|ProductVariant[]
+     */
+    public function getAllVariants()
+    {
+        return $this->variants;
     }
 
     /**
