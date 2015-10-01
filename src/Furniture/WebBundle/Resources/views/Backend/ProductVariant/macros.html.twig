@@ -53,6 +53,10 @@
                     {% for sku_option in variant.SkuOptions %}
                         <li><strong>{{ sku_option.name }}</strong>: {{ sku_option.value }}</li>
                     {% endfor %}
+                    
+                    {% for p_material_selection in variant.productPartVariantSelections %}
+                        <li><strong>{{ p_material_selection.productPart.label }}</strong>: {{ p_material_selection.productPartMaterialVariant.name }}</li>
+                    {% endfor %}
                 </ul>
             </td>
 

@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Furniture\ProductBundle\Entity\Product;
 use Sylius\Component\Variation\Model\VariantInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 
 class VariantGenerator extends ContainerAware {
 
@@ -62,30 +63,32 @@ class VariantGenerator extends ContainerAware {
         }
         
         /*
-         * Get product extensions
+         * Product part
          */
-        /*
-        $extPref = 'ext';
-        foreach ($product->getExtensions() as $k => $extensions) {
-            foreach ($extensions->getVariants() as $variant) {
-                $route_id = $extPref . '_' . $variant->getId();
-                $optionSet[$extPref . '_' . $k][] = $route_id;
-                $optionMap[$route_id] = $variant;
+        $pPMaterialPref = 'ppm';
+        foreach ($product->getProductParts() as $k => $pp) {
+            foreach ($pp->getProductPartMaterials() as $ppMaterial) {
+                foreach($ppMaterial->getVariants() as $ppmVariant){
+                    $route_id = $pPMaterialPref . '_' . $ppmVariant->getId() . '_' . $pp->getId();
+                    $optionSet[$pPMaterialPref . '_' . $k][] = $route_id;
+                    $optionMap[$route_id] = [
+                        'pp' => $pp,
+                        'ppmVariant' => $ppmVariant
+                    ];                    
+                }
             }
         }
-        */
 
         //echo '<pre>' . print_r($optionSet, true) . '</pre>';
 
         $permutations = $this->setBuilder->build($optionSet);
         
         //echo '<pre>' . print_r($permutations, true) . '</pre>';
-        
+        //die();
         foreach ($permutations as $permutation) {
             $variant = $this->variantRepository->createNew();
             $variant->setObject($product);
             $variant->setDefaults($product->getMasterVariant());
-            //echo '<pre>'.print_r($permutation,true).'</pre>';
             if (!is_array($permutation)) {
                 $route_id = $permutation;
                 /*
@@ -101,15 +104,13 @@ class VariantGenerator extends ContainerAware {
                     $variant->addSkuOption($optionMap[$route_id]);
                 }
                 /*
-                 * add product extension value to sku
-                 */
-                /*
-                if (split('_', $route_id)[0] == $extPref) {
-                    $variant->addExtensionVariant($optionMap[$route_id]);
+                 * add product parts
+                 *
+                */
+                if (split('_', $route_id)[0] == $pPMaterialPref) {
+                    $variant->addProductPartVariantSelection($optionMap[$route_id]);
                 }
-                 * 
-                 */
-            } else
+            } else{
                 foreach ($permutation as $k => $route_id) {
                     /*
                      * add to product option
@@ -124,18 +125,19 @@ class VariantGenerator extends ContainerAware {
                         $variant->addSkuOption($optionMap[$route_id]);
                     }
                     /*
-                     * add product extension value to sku
-                     */
-                    /*
-                    if (split('_', $route_id)[0] == $extPref) {
-                        $variant->addExtensionVariant($optionMap[$route_id]);
+                     * add product parts
+                     *
+                    */
+                    if (split('_', $route_id)[0] == $pPMaterialPref) {
+                        $variant->addProductPartVariantSelection((new ProductPartVariantSelection())
+                        ->setProductPart($optionMap[$route_id]['pp'])
+                        ->setProductPartMaterialVariant($optionMap[$route_id]['ppmVariant'])
+                            );
                     }
-                     * 
-                     */
                 }
+            }
             $product->addVariant($variant);
         }
-        //die();
         $this->process($product, $variant);
     }
 
