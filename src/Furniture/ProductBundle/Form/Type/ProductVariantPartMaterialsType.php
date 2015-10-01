@@ -4,12 +4,12 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Common\Collections\Collection;
-
-use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
+use Furniture\ProductBundle\Form\DataTransformer\ProductPartVariantMaterialVariantSelectionTransformer;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class ProductVariantPartMaterialsType extends AbstractType
 {
@@ -37,9 +37,6 @@ class ProductVariantPartMaterialsType extends AbstractType
         $resolver->setRequired([
             'product_varant_object'
         ]);
-        $resolver->setDefaults([
-            'data_class' => Collection::class,
-        ]);
     }
     
     /**
@@ -58,32 +55,35 @@ class ProductVariantPartMaterialsType extends AbstractType
             $contains[$ppvs->getProductPartMaterialVariant()->getId()] = $ppvs->getProductPartMaterialVariant();
         }
         
+        $i = 0;
+        
         foreach( $productVariant->getProduct()->getProductParts() as $productPart )
         {
             $productPartMaterialsVariants = [];
-            $selected = null;
+            $choiceLabels = [];
+            $choiceValues = [];
+            
             foreach($productPart->getProductPartMaterials() as $productPartMaterial)
             {
                 foreach($productPartMaterial->getVariants() as $productPartMaterialVariant)
-                $productPartMaterialVariants[] = $productPartMaterialVariant;
-                if( isset($contains[$productPartMaterialVariant->getId()])){
-                    $selected = $productPartMaterialVariant;
+                {
+                    $productPartMaterialsVariants[$productPartMaterialVariant->getName()] = $productPartMaterialVariant->getId();
+                    $choiceLabels[] = $productPartMaterialVariant->getName();
+                    $choiceValues[] = $productPart->getId().'_'.$productPartMaterialVariant->getId();
                 }
+                
             }
             
             if(count($productPartMaterialsVariants) > 0)
             {
-                $builder->add( $i, 'entity', [
-                    'class' => 'Furniture\ProductBundle\Entity\ProductPartMaterialVariant',
-                    'choice_label' => 'name',
+                $builder->add( $i, 'choice', [
                     'label' => $productPart->getLabel(),
-                    'choices' => $productPartMaterialVariants,
-                    'data' => $selected,
-                ])->addModelTransformer(new SpecificationIdModelTransformer($this->em));
+                    'choice_list' => new ChoiceList($choiceValues, $choiceLabels),
+                    'multiple' => false
+                ]);
+                $i ++;
             }
         }
-        
-        //$builder->get('specification')->addModelTransformer(new SpecificationIdModelTransformer($this->em));
     }
     
     /**

@@ -132,6 +132,60 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     }
     
     /**
+     * Has SKU options?
+     *
+     * @return bool
+     */
+    public function hasProductPartVariantSelections()
+    {
+        return (bool)!$this->productPartVariantSelections->isEmpty();
+    }
+    
+    /**
+     *
+     * @param ProductPartVariantSelection $variantSelection
+     *
+     * @return bool
+     */
+    public function hasProductPartVariantSelection(ProductPartVariantSelection $variantSelection)
+    {
+        return $this->productPartVariantSelections->contains($variantSelection);
+    }
+    
+    /**
+     * Add ProductPartVariantSelection option
+     *
+     * @param ProductPartVariantSelection $variantSelection
+     *
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function addProductPartVariantSelection(ProductPartVariantSelection $variantSelection)
+    {
+        if (!$this->hasProductPartVariantSelection($variantSelection)) {
+            $variantSelection->setProductVariant($this);
+            $this->productPartVariantSelections[] = $variantSelection;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Remove ProductPartVariantSelection option
+     *
+     * @param ProductPartVariantSelection $variantSelection
+     *
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function removeProductPartVariantSelection(ProductPartVariantSelection $variantSelection)
+    {
+        if ($this->hasProductPartVariantSelection($variantSelection)) {
+            $this->productPartVariantSelections->removeElement($variantSelection);
+        }
+
+        return $this;
+    }
+    
+    /**
      * Get human size
      *
      * @return string

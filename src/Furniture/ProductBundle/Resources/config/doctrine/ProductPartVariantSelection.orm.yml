@@ -13,6 +13,7 @@ Furniture\ProductBundle\Entity\ProductPartVariantSelection:
         productPart:
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
             joinColumn:
+                cascade: [ persist ]
                 name: product_part_id
                 referencedColumnName: id
                 nullable: false
@@ -21,6 +22,7 @@ Furniture\ProductBundle\Entity\ProductPartVariantSelection:
             targetEntity: Furniture\ProductBundle\Entity\ProductVariant
             inversedBy: productPartVariantSelections
             joinColumn:
+                cascade: [ persist ]
                 name: product_variant_id
                 referencedColumnName: id
                 nullable: false
@@ -28,6 +30,7 @@ Furniture\ProductBundle\Entity\ProductPartVariantSelection:
         productPartMaterialVariant:
             targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
             joinColumn:
+                cascade: [ persist ]
                 name: product_part_material_variant_id
                 referencedColumnName: id
                 nullable: false
