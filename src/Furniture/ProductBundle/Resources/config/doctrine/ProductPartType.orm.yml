@@ -1,0 +1,23 @@
+Furniture\ProductBundle\Entity\ProductPartType:
+    type: entity
+    table: furniture_product_part_type
+    
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    
+    fields:
+        code: 
+            type: string
+            name: code
+            length: 254
+            unique: true
+            
+    oneToMany:
+        productParts:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPart
+            mappedBy: prtoductPartType
+            cascade: [ persist ]

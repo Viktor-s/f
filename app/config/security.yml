@@ -98,25 +98,31 @@ sylius_rbac:
         Furniture.sku_option.update: update sku attribute
         Furniture.sku_option.delete: delete sku attribute
 
-        furniture.manage.product_part_materials: manage product extensions
-        furniture.product_part_material.index: list product extensions
-        furniture.product_part_material.create: create product extension
-        furniture.product_part_material.update: update product extension
-        furniture.product_part_material.delete: delete product extension
-        furniture.product_part_material.show: show product extension
+        furniture.manage.product_part_materials: manage product part materials
+        furniture.product_part_material.index: list product part materials
+        furniture.product_part_material.create: create product part material
+        furniture.product_part_material.update: update product part material
+        furniture.product_part_material.delete: delete product part material
+        furniture.product_part_material.show: show product part material
 
-        furniture.manage.product_part_material_options: manage product extension options
-        furniture.product_part_material_option.index: list product extension options
-        furniture.product_part_material_option.create: create product extension option
-        furniture.product_part_material_option.update: update product extension option
-        furniture.product_part_material_option.delete: delete product extension option
+        furniture.manage.product_part_material_types: manage product part material types
+        furniture.product_part_type.index: list product part type
+        furniture.product_part_type.create: create product part type
+        furniture.product_part_type.update: update product part type
+        furniture.product_part_type.delete: delete product part type
+        
+        furniture.manage.product_part_material_options: manage product part material options
+        furniture.product_part_material_option.index: list product part material options
+        furniture.product_part_material_option.create: create product part material option
+        furniture.product_part_material_option.update: update product part materialfurniture.product_part_type.index option
+        furniture.product_part_material_option.delete: delete product part material option
 
-        furniture.manage.product_part_material_variants: manage product extension variants
-        furniture.product_part_material_variant.index: list product extension variants
-        furniture.product_part_material_variant.create: create a product extension variant
-        furniture.product_part_material_variant.update: update product extension variant
-        furniture.product_part_material_variant.delete: delete product extension variant
-        furniture.product_part_material_variant.generate: generate a product extension variants
+        furniture.manage.product_part_material_variants: manage product part material variants
+        furniture.product_part_material_variant.index: list product part material variants
+        furniture.product_part_material_variant.create: create a product part material variant
+        furniture.product_part_material_variant.update: update product part material variant
+        furniture.product_part_material_variant.delete: delete product part material variant
+        furniture.product_part_material_variant.generate: generate a product part material variants
         
         furniture.manage.factories: manage factories
         Furniture.factory.show: show details page
@@ -185,6 +191,12 @@ sylius_rbac:
             - furniture.product_part_material.delete
             - furniture.product_part_material.show
 
+        furniture.manage.product_part_material_types:
+            - furniture.product_part_type.index
+            - furniture.product_part_type.create
+            - furniture.product_part_type.update
+            - furniture.product_part_type.delete
+
         furniture.manage.product_part_material_options:
             - furniture.product_part_material_option.index
             - furniture.product_part_material_option.create
@@ -252,6 +264,7 @@ sylius_rbac:
                 - furniture.manage.composite
                 - furniture.manage.composite_templates
                 - furniture.manage.composite_collections
+                - furniture.manage.product_part_material_types
                 - furniture.manage.product_part_materials
                 - furniture.manage.product_part_material_options
                 - furniture.manage.product_part_material_variants

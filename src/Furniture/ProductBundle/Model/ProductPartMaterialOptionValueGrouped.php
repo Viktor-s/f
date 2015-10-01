@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\ProductBundle\Entity\ProductPartMaterialOption;
 use Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue;
 
-class ProductPartOptionValueGrouped
+class ProductPartMaterialOptionValueGrouped
 {
     /**
      * @var ProductPartMaterialOption

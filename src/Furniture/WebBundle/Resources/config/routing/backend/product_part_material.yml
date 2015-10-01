@@ -1,4 +1,4 @@
-# Product extension routes
+# Product part material routes
 furniture_backend_product_part_material:
     path: /
     methods: [ GET ]

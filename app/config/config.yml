@@ -183,6 +183,19 @@ sylius_resource:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
 
+        furniture.product_part:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductPart
+                translation:
+                    model: Furniture\ProductBundle\Entity\ProductPartTranslation
+                    mapping: ~
+
+        furniture.product_part_type:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductPartType
+
         furniture.product_part_material:
             driver: doctrine/orm
             classes:

@@ -35,24 +35,6 @@ class ProductController extends BaseProductController
             );
         }
 
-        if (count($productExtensionVariants) > 0) {
-            $formBuilder->add('productExtension', 'entity', [
-                'class' => get_class($productExtensionVariants[0]),
-                'label' => 'Product extension filter',
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function(EntityRepository $er ) use ($productExtensionVariants) {
-                    return $er
-                                    ->createQueryBuilder('pev')
-                                    ->where('pev in (:pevs)')
-                                    ->setParameter('pevs', $productExtensionVariants)
-                                    ->orderBy('pev.extension', 'ASC')
-                    ;
-                },
-                'data' => $productExtensionVariants,
-            ]);
-        }
-
         if (count($optionsValues) > 0) {
             $formBuilder->add('options', 'entity', [
                 'class' => get_class($optionsValues[0]),

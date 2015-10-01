@@ -46,7 +46,15 @@ class ProductType extends BaseProductType
                 'class'    => Factory::class,
                 'multiple' => false,
                 'property' => 'name',
-            ]);
+            ])
+            ->add('productParts', 'collection', [
+                'type' => new ProductPartFormType(),
+                'required'  => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ;
     }
     
     /**

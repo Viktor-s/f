@@ -9,6 +9,11 @@ Furniture\ProductBundle\Entity\Product:
           orphanRemoval: true
           OrderBy:
             - skuOptionType: ASCZA
+        productParts:
+            targetEntity: ProductPart
+            cascade: [persist]
+            mappedBy: product
+            orphanRemoval: true
 
     manyToOne:
         factory:

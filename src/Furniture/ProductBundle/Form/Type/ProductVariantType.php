@@ -20,6 +20,10 @@ class ProductVariantType extends BaseProductVariantType {
         
         if (!$options['master']) {
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
+            $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType',
+                    [
+                        'product_varant_object' => $variant
+                    ]);
         }
     }
     

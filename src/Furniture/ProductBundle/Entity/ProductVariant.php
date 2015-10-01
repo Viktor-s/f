@@ -16,6 +16,13 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     protected $skuOptions;
 
     /**
+     *
+     * @var Collection
+     */
+    protected $productPartVariantSelections;
+
+
+    /**
      * Construct
      */
     public function __construct()
@@ -23,6 +30,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         parent::__construct();
 
         $this->skuOptions = new ArrayCollection();
+        $this->productPartVariantSelections = new ArrayCollection();
     }
     
     /**
@@ -103,6 +111,26 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         return $this;
     }
 
+    /**
+     * 
+     * @param Collection $variantSelections
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function setProductPartVariantSelections(Collection $variantSelections)
+    {
+        $this->productPartVariantSelections = $variantSelections;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return Collection
+     */
+    public function getProductPartVariantSelections()
+    {
+        return $this->productPartVariantSelections;
+    }
+    
     /**
      * Get human size
      *

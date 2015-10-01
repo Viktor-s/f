@@ -1,0 +1,43 @@
+Furniture\ProductBundle\Entity\ProductPart:
+    type: entity
+    table: furniture_product_part
+    
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+                
+    manyToMany:
+        productPartMaterials:
+            targetEntity: ProductPartMaterial
+            orphanRemoval: true
+            cascade: [persist]
+            joinTable:
+                name: product_part_material_relation
+                joinColumns:
+                    product_part_id:
+                        referencedColumnName: id
+
+                inverseJoinColumns:
+                    product_part_material_id:
+                        referencedColumnName: id
+                
+    manyToOne:
+        prtoductPartType:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartType
+            inversedBy: productParts
+            joinColumn:
+                name: product_part_type_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            inversedBy: productParts
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
