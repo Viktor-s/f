@@ -47,6 +47,10 @@ furniture_backend_sku_option:
 furniture_backend_product_part_material:
     resource: @SyliusWebBundle/Resources/config/routing/backend/product_part_material.yml
     prefix: /product-part-material
+    
+furniture_backend_product_part_type:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_part_type.yml
+    prefix: /product-part-type
 
 furniture_backend_composite:
     resource: @SyliusWebBundle/Resources/config/routing/backend/composite.yml

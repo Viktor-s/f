@@ -37,7 +37,7 @@
                     <td>{{ product_part_material.name }}</td>
                     <td>
                         <ul>
-                            {% for grouped in product_part_material.groupedOptionValues %}
+                            {% for grouped in product_part_material.getGroupedOptionValues() %}
                                 <li>
                                     <strong>{{ grouped.name }}:</strong>
                                     {{ grouped.values.toArray()|join(', ') }}

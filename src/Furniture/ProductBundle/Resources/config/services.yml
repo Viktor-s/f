@@ -9,6 +9,13 @@ services:
         calls:
         - [setContainer, ['@service_container']]
 
+    Furniture.product.form.ProductVariantPartMaterialsType:
+        class: Furniture\ProductBundle\Form\Type\ProductVariantPartMaterialsType
+        tags:
+            - { name: form.type, alias: ProductVariantPartMaterialsType }
+        arguments: 
+            em: "@doctrine.orm.entity_manager"
+
     sylius.validator.variant.combination:
         class: Furniture\ProductBundle\Validator\VariantCombinationValidator
         tags:

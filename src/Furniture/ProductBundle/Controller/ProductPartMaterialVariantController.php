@@ -2,14 +2,14 @@
 
 namespace Furniture\ProductBundle\Controller;
 
-use Furniture\ProductBundle\Entity\ProductExtension;
-use Furniture\ProductBundle\Entity\ProductExtensionVariant;
+use Furniture\ProductBundle\Entity\ProductPartMaterial;
+use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductExtensionVariantController extends ResourceController
+class ProductPartMaterialVariantController extends ResourceController
 {
     /**
      * {@inheritDoc}
@@ -19,24 +19,24 @@ class ProductExtensionVariantController extends ResourceController
         $this->isGrantedOr403('create');
 
         $productExtensionRepository = $this->container->get('doctrine.orm.default_entity_manager')
-            ->getRepository(ProductExtension::class);
+            ->getRepository(ProductPartMaterial::class);
 
-        $productExtensionId = $request->attributes->get('product_extension');
-        /** @var ProductExtension $productExtension */
+        $productExtensionId = $request->attributes->get('product_part_material');
+        /** @var ProductPartMaterial $productExtension */
         $productExtension = $productExtensionRepository->find($productExtensionId);
 
         if (!$productExtension) {
             throw new NotFoundHttpException(sprintf(
-                'Not found product extension with id "%s".',
+                'Not found product part material with id "%s".',
                 $productExtensionId
             ));
         }
 
-        /** @var ProductExtensionVariant $resource */
+        /** @var ProductPartMaterialVariant $resource */
         $resource = $this->createNew();
         $resource->setExtension($productExtension);
         $form = $this->getForm($resource, [
-            'product_extension' => $productExtension
+            'product_part_material' => $productExtension
         ]);
 
         $form->handleRequest($request);
@@ -44,7 +44,7 @@ class ProductExtensionVariantController extends ResourceController
         if ($form->isValid()) {
             $this->domainManager->create($form->getData());
 
-            $url = $this->generateUrl('furniture_backend_product_extension_show', [
+            $url = $this->generateUrl('furniture_backend_product_part_material_show', [
                 'id' => $productExtensionId
             ]);
 
@@ -57,7 +57,7 @@ class ProductExtensionVariantController extends ResourceController
             ->setData(array(
                 $this->config->getResourceName() => $resource,
                 'form'                           => $form->createView(),
-                'product_extension'              => $productExtension
+                'product_part_material'              => $productExtension
             ))
         ;
 
@@ -72,23 +72,23 @@ class ProductExtensionVariantController extends ResourceController
         $this->isGrantedOr403('update');
 
         $productExtensionRepository = $this->container->get('doctrine.orm.default_entity_manager')
-            ->getRepository(ProductExtension::class);
+            ->getRepository(ProductPartMaterial::class);
 
-        $productExtensionId = $request->attributes->get('product_extension');
-        /** @var ProductExtension $productExtension */
+        $productExtensionId = $request->attributes->get('product_part_material');
+        /** @var ProductPartMaterial $productExtension */
         $productExtension = $productExtensionRepository->find($productExtensionId);
 
         if (!$productExtension) {
             throw new NotFoundHttpException(sprintf(
-                'Not found product extension with identifier "%s".',
+                'Not found product part material with identifier "%s".',
                 $productExtensionId
             ));
         }
 
-        /** @var ProductExtensionVariant $resource */
+        /** @var ProductPartMaterialVariant $resource */
         $resource = $this->findOr404($request);
         $form     = $this->getForm($resource, [
-            'product_extension' => $productExtension
+            'product_part_material' => $productExtension
         ]);
 
         $form->handleRequest($request);
@@ -96,7 +96,7 @@ class ProductExtensionVariantController extends ResourceController
         if ($form->isValid()) {
             $this->domainManager->update($resource);
 
-            $url = $this->generateUrl('furniture_backend_product_extension_show', [
+            $url = $this->generateUrl('furniture_backend_product_part_material_show', [
                 'id' => $productExtensionId
             ]);
 
@@ -109,7 +109,7 @@ class ProductExtensionVariantController extends ResourceController
             ->setData(array(
                 $this->config->getResourceName() => $resource,
                 'form'                           => $form->createView(),
-                'product_extension'              => $productExtension
+                'product_part_material'              => $productExtension
             ))
         ;
 
@@ -124,9 +124,9 @@ class ProductExtensionVariantController extends ResourceController
         $this->isGrantedOr403('delete');
         $this->domainManager->delete($this->findOr404($request));
 
-        $productExtensionId = $request->attributes->get('product_extension');
+        $productExtensionId = $request->attributes->get('product_part_material');
 
-        $url = $this->generateUrl('furniture_backend_product_extension_show', [
+        $url = $this->generateUrl('furniture_backend_product_part_material_show', [
             'id' => $productExtensionId
         ]);
 

@@ -2,6 +2,13 @@ Furniture\ProductBundle\Entity\ProductVariant:
     type: entity
     inheritanceType: SINGLE_TABLE
     
+    oneToMany:
+        productPartVariantSelections:
+            orphanRemoval: true
+            targetEntity: ProductPartVariantSelection
+            cascade: [ persist ]
+            mappedBy: productVariant
+    
     manyToMany:
         skuOptions:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant

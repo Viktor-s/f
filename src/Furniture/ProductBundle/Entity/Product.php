@@ -43,6 +43,13 @@ class Product extends BaseProduct implements PricingInterface
     protected $factory;
     
     /**
+     *
+     * @var Collection
+     */
+    protected $productParts;
+
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -56,7 +63,78 @@ class Product extends BaseProduct implements PricingInterface
         $this->bundleProducts = new ArrayCollection();
         $this->skuOptionVariants = new ArrayCollection();
         $this->compositeCollections = new ArrayCollection();
+        $this->productParts = new ArrayCollection();
     }
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function hasProductParts()
+    {
+        return (bool)!$this->productParts->isEmpty();
+    }
+    
+    /**
+     * 
+     * @return Collection
+     */
+    public function getProductParts()
+    {
+        return $this->productParts;
+    }
+
+    /**
+     * 
+     * @param Collection $productParts
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setProductParts(Collection $productParts)
+    {
+        $this->productParts = $productParts;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
+     * @return bool
+     */
+    public function hasProductPart(ProductPart $productPart)
+    {
+        return $this->productParts->contains($productPart);
+    }
+    
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function addProductPart(ProductPart $productPart)
+    {
+        if (!$this->hasProductPart($productPart)) {
+            $productPart->setProduct($this);
+            $this->productParts[] = $productPart;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function removeProductPart(ProductPart $productPart)
+    {
+        if($this->hasProductPart($productPart)){
+            $this->productParts->removeElement($productPart);
+        }
+
+        return $this;
+    }
+
     
     /**
      * Has sub products

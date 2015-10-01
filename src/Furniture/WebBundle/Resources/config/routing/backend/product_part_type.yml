@@ -1,0 +1,39 @@
+# Product part type routes
+furniture_backend_product_part_type:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_part_type:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartType:index.html.twig
+
+furniture_backend_product_part_type_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_part_type:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartType:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartTypeType
+            redirect: furniture_backend_product_part_type
+
+furniture_backend_product_part_type_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_type:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPartType:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\ProductPartTypeType
+            redirect: furniture_backend_product_part_type
+
+furniture_backend_product_part_type_delete:
+    path: /{id}/delete
+    methods: [ GET, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_part_type:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_part_type

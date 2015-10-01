@@ -146,6 +146,18 @@ class BackendMenuBuilder extends MenuBuilder
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel('Factory');
         }
+        
+        if ($this->authorizationChecker->isGranted('furniture.product_part_type.index')) {
+            $child->addChild('product_part_type', [
+                'route' => 'furniture_backend_product_part_type',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Product part types');
+            
+            $child->addChild('factory', [
+                'route' => 'furniture_backend_factory_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('Factory');
+        }
 
         if ($this->authorizationChecker->isGranted('furniture.composite_collection.index')) {
             $child->addChild('composite_collection', [
