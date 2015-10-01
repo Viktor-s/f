@@ -13,3 +13,7 @@ services:
         class: Furniture\ProductBundle\Validator\VariantCombinationValidator
         tags:
             - { name: validator.constraint_validator, alias: sylius.validator.variant.combination }
+
+    product.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]

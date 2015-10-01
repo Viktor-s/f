@@ -18,6 +18,8 @@ class ProductController extends BaseProductController
      */
     public function deleteAction(Request $request)
     {
+        $this->isGrantedOr403('delete');
+
         $hardDelete = $request->get('hard');
         $em = $this->get('doctrine.orm.default_entity_manager');
 
@@ -25,17 +27,25 @@ class ProductController extends BaseProductController
             $em->getFilters()->disable('softdeleteable');
         }
 
-        $response = parent::deleteAction($request);
+        $product = $this->findOr404($request);
+
+        if ($hardDelete) {
+            $checker = $this->get('product.removal_checker');
+            $removal = $checker->canHardRemove($product);
+
+            if ($removal->notCanRemove()) {
+                // @todo: add message to alerts
+                return $this->createRedirectResponse($request);
+            }
+        }
+
+        $this->domainManager->delete($product);
 
         if ($hardDelete) {
             $em->getFilters()->enable('softdeleteable');
         }
 
-        if ($request->get('_from')) {
-            return new RedirectResponse($request->get('_url'));
-        }
-
-        return $response;
+        return $this->createRedirectResponse($request);
     }
 
     /**
@@ -52,6 +62,8 @@ class ProductController extends BaseProductController
         $em = $this->get('doctrine.orm.default_entity_manager');
         $em->getFilters()->disable('softdeleteable');
 
+        $removalChecker = $this->get('product.removal_checker');
+
         $products = $em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
@@ -61,18 +73,18 @@ class ProductController extends BaseProductController
             ->getResult();
 
         foreach ($products as $product) {
-            $em->remove($product);
+            $removal = $removalChecker->canHardRemove($product);
+
+            if ($removal->canRemove()) {
+                $em->remove($product);
+            }
         }
 
         $em->flush();
 
         $em->getFilters()->enable('softdeleteable');
 
-        if ($request->get('_from')) {
-            return new RedirectResponse($request->get('_from'));
-        }
-
-        return $this->redirectHandler->redirectToIndex();
+        return $this->createRedirectResponse($request);
     }
 
     /**
@@ -349,5 +361,21 @@ class ProductController extends BaseProductController
         }
 
         return $product;
+    }
+
+    /**
+     * Create redirect response
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    private function createRedirectResponse(Request $request)
+    {
+        if ($request->get('_from')) {
+            return new RedirectResponse($request->get('_from'));
+        }
+
+        return $this->redirectHandler->redirectToIndex();
     }
 }
