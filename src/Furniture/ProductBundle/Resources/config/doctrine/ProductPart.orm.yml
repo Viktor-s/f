@@ -12,10 +12,10 @@ Furniture\ProductBundle\Entity\ProductPart:
     manyToMany:
         productPartMaterials:
             targetEntity: ProductPartMaterial
-            orphanRemoval: true
             cascade: [persist]
             joinTable:
                 name: product_part_material_relation
+                orphanRemoval: true
                 joinColumns:
                     product_part_id:
                         referencedColumnName: id
