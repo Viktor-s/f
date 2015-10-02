@@ -111,8 +111,8 @@
                                 </td>
 
                                 <td>{{ item.quantity }}</td>
-                                <td>{{ (productVariant.price / 100)|round(2) }} EUR</td>
-                                <td>{{ (item.totalPrice / 100)|round(2) }} EUR</td>
+                                <td>{{ productVariant|sku_price|money }}</td>
+                                <td>{{ item|specification_item_total_price|money }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -122,7 +122,7 @@
                             <td colspan="8" class="text-right">{{ 'frontend.total_quantities'|trans }}</td>
                             <td>{{ specification.countItems }}</td>
                             <td class="text-right">{{ 'frontend.total_price'|trans }}</td>
-                            <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+                            <td>{{ specification|specification_total_price|money }}</td>
                         </tr>
 
                         <tr>

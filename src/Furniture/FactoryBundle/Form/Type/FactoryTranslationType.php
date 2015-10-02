@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FactoryBundle\Form;
+namespace Furniture\FactoryBundle\Form\Type;
 
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 

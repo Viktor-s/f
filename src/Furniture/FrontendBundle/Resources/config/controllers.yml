@@ -55,8 +55,18 @@ services:
             - @twig
             - @sylius.authorization_checker
 
-    frontend.controller.content_user_profile:
-        class: Furniture\FrontendBundle\Controller\ContentUserProfileController
+    frontend.controller.content_user.dashboard:
+        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\DashboardController
         arguments:
             - @twig
-            - @sylius.authorization_checker
+            - @security.token_storage
+
+    frontend.controller.content_user.factory_rates:
+        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\FactoryRatesController
+        arguments:
+            - @twig
+            - @security.token_storage
+            - @frontend.repository.user_factory_rates
+            - @doctrine.orm.default_entity_manager
+            - @form.factory
+            - @router

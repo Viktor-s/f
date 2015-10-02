@@ -1,0 +1,34 @@
+content_user_profile:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.content_user.dashboard:dashboard
+
+content_user_profile_factory_rates:
+    path: /factory/rates
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.content_user.factory_rates:rates
+
+content_user_profile_factory_rate_create:
+    path: /factory/rates/create
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.content_user.factory_rates:edit
+
+content_user_profile_factory_rate_edit:
+    path: /factory/rates/{rate}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, rate: \d+ }
+    defaults:
+        _controller: frontend.controller.content_user.factory_rates:edit
+
+content_user_profile_factory_rate_remove:
+    path: /factory/rate/{rate}/remove
+    methods: [ GET ]
+    requirements: { _locale, %available_locales%, rate: \d+ }
+    defaults:
+        _controller: frontend.controller.content_user.factory_rates:remove

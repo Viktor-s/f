@@ -58,11 +58,17 @@ class Specification
     private $finishedAt;
 
     /**
+     * @var Collection|SpecificationSale[]
+     */
+    private $sales;
+
+    /**
      * Construct
      */
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->sales = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -268,6 +274,30 @@ class Specification
     public function getFinishedAt()
     {
         return $this->finishedAt;
+    }
+
+    /**
+     * Set sales
+     *
+     * @param Collection|SpecificationSale[] $sales
+     *
+     * @return Specification
+     */
+    public function setSales(Collection $sales)
+    {
+        $this->sales = $sales;
+
+        return $this;
+    }
+
+    /**
+     * Get sales
+     *
+     * @return Collection|SpecificationSale[]
+     */
+    public function getSales()
+    {
+        return $this->sales;
     }
 
     /**

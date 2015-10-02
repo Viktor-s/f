@@ -1,0 +1,28 @@
+Furniture\SpecificationBundle\Entity\SpecificationSale:
+    type: entity
+    table: specification_sale
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        sale:
+            type: float
+            name: sale
+
+        position:
+            type: integer
+            name: position
+
+    manyToOne:
+        specification:
+            targetEntity: Furniture\SpecificationBundle\Entity\Specification
+            joinColumn:
+                name: specification_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

@@ -30,6 +30,9 @@ class BuyerType extends AbstractType
             ])
             ->add('secondName', 'text', [
                 'label' => 'specification.buyer.form.second_name'
+            ])
+            ->add('sale', 'number', [
+                'label' => 'specification.buyer.form.sale'
             ]);
     }
 

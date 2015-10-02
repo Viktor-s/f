@@ -1,7 +1,8 @@
 <?php
 
-namespace Furniture\FactoryBundle\Form;
+namespace Furniture\FactoryBundle\Form\Type;
 
+use Furniture\FactoryBundle\Form\Type\FactoryTranslationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

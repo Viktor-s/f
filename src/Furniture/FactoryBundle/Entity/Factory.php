@@ -367,4 +367,14 @@ class Factory extends AbstractTranslatable
 
         return $this;
     }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name ?: '';
+    }
 }

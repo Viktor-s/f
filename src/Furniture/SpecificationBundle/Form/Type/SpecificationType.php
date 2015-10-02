@@ -6,8 +6,11 @@ use Doctrine\ORM\EntityRepository;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Entity\SpecificationSale;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SpecificationType extends AbstractType

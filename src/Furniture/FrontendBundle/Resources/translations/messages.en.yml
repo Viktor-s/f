@@ -47,6 +47,11 @@ frontend:
     sku: SKU
     factory_profile: Factory profile
     content_user_profile: User profile
+    factory_rates: Factory rates
+    you_not_have_factory_rates: You not have factory rates.
+    coefficient: Coefficient
+    dumping: Dumping
+    sale: Sale
 
     title:
         index: Furniture
@@ -65,6 +70,7 @@ frontend:
         factory_profile: Factory profile
         content_user_profile: User profile
         dashboard: Dashboard
+        factory_rates: Factory rates
 
     button:
         settings: Settings

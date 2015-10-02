@@ -22,6 +22,10 @@ Furniture\SpecificationBundle\Entity\Buyer:
             type: string
             name: second_name
 
+        sale:
+            type: float
+            name: sale
+
     manyToOne:
         creator:
             targetEntity: Furniture\CommonBundle\Entity\User

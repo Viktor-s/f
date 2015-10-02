@@ -121,12 +121,10 @@ factory_profile:
     defaults:
         _controller: frontend.controller.factory_profile:dashboard
 
+# Content user profile
 content_user_profile:
-    path: /{_locale}/profile/user
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.content_user_profile:dashboard
+    resource: @FrontendBundle/Resources/config/routing/content_user_profile.yml
+    prefix: /{_locale}/profile/user
 
 # Security
 security_login:

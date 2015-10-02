@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FactoryBundle\Form;
+namespace Furniture\FactoryBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,11 +27,11 @@ class FactoryUserRelationType extends AbstractType
                 'read_only' => $read_only,
                 'query_builder' => function(EntityRepository $r) use ($options, $entity) {
                     return $r->createQueryBuilder('u')
-                            ->leftJoin('u.authorizationRoles', 'ar')
-                            ->leftJoin('u.factoryRelations', 'fr')
-                            ->where('ar.code IN (:codes) AND (fr.factory != :factory_id OR fr.factory IS NULL )' )
-                              ->setParameter('codes', $options['content_access_user_roles'])
-                              ->setParameter('factory_id', $entity->getFactory()->getId())
+                        ->leftJoin('u.authorizationRoles', 'ar')
+                        ->leftJoin('u.factoryRelations', 'fr')
+                        ->where('ar.code IN (:codes) AND (fr.factory != :factory_id OR fr.factory IS NULL )' )
+                        ->setParameter('codes', $options['content_access_user_roles'])
+                        ->setParameter('factory_id', $entity->getFactory()->getId())
                             
                         ;
                 }

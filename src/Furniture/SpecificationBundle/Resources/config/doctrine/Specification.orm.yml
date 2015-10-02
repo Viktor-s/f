@@ -55,5 +55,11 @@ Furniture\SpecificationBundle\Entity\Specification:
             targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
             mappedBy: specification
 
+        sales:
+            targetEntity: Furniture\SpecificationBundle\Entity\SpecificationSale
+            mappedBy: specification
+            orderBy:
+                position: ASC
+
     lifecycleCallbacks:
         preUpdate: [ onUpdate ]

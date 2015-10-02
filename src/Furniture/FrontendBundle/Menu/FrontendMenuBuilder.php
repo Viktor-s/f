@@ -184,14 +184,9 @@ class FrontendMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('item1', [
-            'uri' => '#',
-            'label' => 'Item #1'
-        ]);
-
-        $menu->addChild('item2', [
-            'uri' => '#',
-            'label' => 'Item #2'
+        $menu->addChild('factory_rates', [
+            'uri' => $this->urlGenerator->generate('content_user_profile_factory_rates'),
+            'label' => $this->translator->trans('frontend.factory_rates')
         ]);
 
         return $menu;

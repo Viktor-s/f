@@ -37,6 +37,15 @@ class Buyer
     private $secondName;
 
     /**
+     * In percentage
+     *
+     * @var float
+     *
+     * @Assert\Range(min = 0, max = 100)
+     */
+    private $sale = 0;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -134,6 +143,40 @@ class Buyer
     public function getSecondName()
     {
         return $this->secondName;
+    }
+
+    /**
+     * Set sale
+     *
+     * @param float $sale
+     *
+     * @return Buyer
+     */
+    public function setSale($sale)
+    {
+        $this->sale = $sale;
+
+        return $this;
+    }
+
+    /**
+     * Get sale
+     *
+     * @return float
+     */
+    public function getSale()
+    {
+        return $this->sale;
+    }
+
+    /**
+     * Has sale?
+     *
+     * @return bool
+     */
+    public function hasSale()
+    {
+        return $this->sale > 0;
     }
 
     /**

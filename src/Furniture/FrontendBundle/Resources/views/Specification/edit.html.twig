@@ -49,6 +49,13 @@
                     <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
                     <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
                 </div>
+
+                {% if specification.buyer and specification.buyer.hasSale() %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
+                        <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -110,8 +117,8 @@
                         <div class="quantity editable form-group" id="specification-item-quantity">{{ specification_item.quantity }}</div>
                     </td>
 
-                    <td class="price">{{ (specification_item.productVariant.price / 100)|round(2) }} EUR</td>
-                    <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }} EUR</td>
+                    <td class="price">{{ specification_item.productVariant|sku_price|money }}</td>
+                    <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
 
                     <td>
                         <a class="btn btn-default btn-xs" href="{{ path('product', {product: specification_item.productVariant.product.id, sku_id: specification_item.productVariant.id, si: specification_item.id}) }}">
@@ -128,15 +135,28 @@
             {% endfor %}
             </tbody>
 
-            <tfoot>
+            <tfoot data-sale-prototype="{{ block('specification_sale')|e }}">
+            {% for sale in specification.sales %}
+                {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
+            {% endfor %}
             <tr>
                 <td colspan="5" class="text-right">{{ 'frontend.total_price'|trans }}</td>
-                <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+                <td class="total-price">{{ specification|specification_total_price|money }}</td>
                 <td></td>
             </tr>
             </tfoot>
         </table>
     </div>
+{% endblock %}
+
+{% block specification_sale %}
+    <tr class="specification-sale">
+        <td colspan="5"></td>
+        <td>
+            <div class="sale editable form-group" id="specification-sale" data-index="__index__">__sale__</div>
+        </td>
+        <td></td>
+    </tr>
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -221,6 +241,58 @@
 
                             return false;
                         });
+                    });
+
+                    $('tr.specification-sale .editable').each(function (){
+                        var index = $(this).data('index');
+                        $(this).editable(editableUrl, {
+                            submitdata: function (value) {
+                                return {
+                                    index: index
+                                }
+                            }
+                        });
+                    });
+
+                    $('.total-price').click(function () {
+                        var sales = $('.specification-sale'),
+                            hasNotPressed = false,
+                            checkPressed = function () {
+                                if ($(this).find('input').size() > 0) {
+                                    hasNotPressed = true;
+                                }
+
+                                if (!parseFloat($(this).text())) {
+                                    hasNotPressed = true;
+                                }
+                            };
+
+                        sales.each(checkPressed);
+
+                        if (sales.size() >= 3 || hasNotPressed) {
+                            // Only 3 sales allowed or any not pressed
+                            return;
+                        }
+
+                        var tFoot = $('tfoot[data-sale-prototype]');
+                        var proto = tFoot.attr('data-sale-prototype')
+                                .replace(/__index__/, sales.size() + 1)
+                                .replace(/__sale__/, 0),
+                            e = $(proto);
+
+                        if (sales.size()) {
+                            sales.last().after(e);
+                        } else {
+                            tFoot.prepend(e);
+                        }
+
+                        e.find('.editable').editable(editableUrl, {
+                            submitdata: function (value) {
+                                return {
+                                    index: sales.size() + 1
+                                }
+                            }
+                        }).click();
                     });
                 });
             })(jQuery);

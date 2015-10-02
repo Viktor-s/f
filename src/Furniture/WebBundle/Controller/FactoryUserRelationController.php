@@ -8,7 +8,7 @@ use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 
-use Furniture\FactoryBundle\Form\FactoryUserRelationType;
+use Furniture\FactoryBundle\Form\Type\FactoryUserRelationType;
 
 class FactoryUserRelationController extends ResourceController {
 

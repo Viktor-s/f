@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
+use Furniture\SpecificationBundle\Entity\SpecificationSale;
 use Furniture\SpecificationBundle\Form\Type\SpecificationItemSingleType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -311,6 +312,33 @@ class SpecificationController
 
                 break;
 
+            case 'sale':
+                if(!$index = $request->request->get('index')) {
+                    throw new NotFoundHttpException('Missing "index" parameter.');
+                }
+
+                if ($index > 3) {
+                    throw new NotFoundHttpException('Invalid "index" parameter.');
+                }
+
+                // Fix index for work with collection
+                $index = $index - 1;
+
+                $sales = $specification->getSales();
+
+                if (isset($sales[$index])) {
+                    $sales[$index]->setSale($value);
+                } else {
+                    $sale = new SpecificationSale();
+                    $sale
+                        ->setSpecification($specification)
+                        ->setSale($value);
+
+                    $this->em->persist($sale);
+                }
+
+                break;
+
 
             default:
                 throw new NotFoundHttpException(sprintf(
@@ -329,7 +357,7 @@ class SpecificationController
      *
      * @return JsonResponse
      */
-    public function buyers(Request $request)
+    public function buyers()
     {
         $user = $this->tokenStorage->getToken()
             ->getUser();

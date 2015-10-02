@@ -17,6 +17,7 @@
             <tr>
                 <th>{{ 'frontend.name'|trans }}</th>
                 <th>{{ 'frontend.created_at'|trans }}</th>
+                <th>{{ 'frontend.sale'|trans }}</th>
                 <th>{{ 'frontend.actions'|trans }}</th>
             </tr>
             </thead>
@@ -26,6 +27,7 @@
                 <tr>
                     <td>{{ buyer }}</td>
                     <td>{{ buyer.createdAt.format('d M Y H:i') }}</td>
+                    <td>{{ buyer.sale|default('0') }}%</td>
                     <td>
                         <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}">{{ 'frontend.edit'|trans }}</a>
                         <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}">{{ 'frontend.remove'|trans }}</a>

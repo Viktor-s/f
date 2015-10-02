@@ -40,6 +40,7 @@ class LoadUserData extends BaseLoadUserData
             );
 
             $user->addAuthorizationRole($this->get('sylius.repository.role')->findOneBy(array('code' => 'content_user')));
+            $this->setReference('user:content:' . $i, $user);
 
             $manager->persist($user);
         }

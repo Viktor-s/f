@@ -1,11 +1,11 @@
 <?php
 
-namespace Furniture\FrontendBundle\Controller;
+namespace Furniture\FrontendBundle\Controller\Profile\ContentUser;
 
-use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationChecker;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ContentUserProfileController
+class DashboardController
 {
     /**
      * @var \Twig_Environment
@@ -13,22 +13,22 @@ class ContentUserProfileController
     private $twig;
 
     /**
-     * @var RbacAuthorizationChecker
+     * @var TokenStorageInterface
      */
-    private $rbacAuthorizationChecker;
+    private $tokenStorage;
 
     /**
      * Construct
      *
-     * @param \Twig_Environment        $twig
-     * @param RbacAuthorizationChecker $rbacAuthorizationChecker
+     * @param \Twig_Environment          $twig
+     * @param TokenStorageInterface      $tokenStorage
      */
     public function __construct(
         \Twig_Environment $twig,
-        RbacAuthorizationChecker $rbacAuthorizationChecker
+        TokenStorageInterface $tokenStorage
     ) {
         $this->twig = $twig;
-        $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**

@@ -3,11 +3,13 @@ specification:
         form:
             first_name: First name
             second_name: Second name
+            sale: Sale
 
     form:
         buyer: Buyer
         name: Name
         description: Description
+        sale: Sale
 
     excel:
         number: "#"

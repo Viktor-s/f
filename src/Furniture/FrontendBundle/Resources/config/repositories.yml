@@ -22,3 +22,7 @@ services:
     frontend.repository.specification_item:
         class: Furniture\FrontendBundle\Repository\SpecificationItemRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.user_factory_rates:
+        class: Furniture\FrontendBundle\Repository\UserFactoryRateRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]

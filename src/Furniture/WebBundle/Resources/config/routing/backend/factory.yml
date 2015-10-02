@@ -15,7 +15,7 @@ furniture_backend_factory_create:
         _sylius:
             template: SyliusWebBundle:Backend/Factory:create.html.twig
             redirect: furniture_backend_factory_show
-            form: Furniture\FactoryBundle\Form\FactoryType
+            form: Furniture\FactoryBundle\Form\Type\FactoryType
             
 furniture_backend_factory_update:
     path: /{id}/edit
@@ -24,7 +24,7 @@ furniture_backend_factory_update:
         _controller: Furniture.controller.factory:updateAction
         _sylius:
             template: SyliusWebBundle:Backend/Factory:update.html.twig
-            form: Furniture\FactoryBundle\Form\FactoryType
+            form: Furniture\FactoryBundle\Form\Type\FactoryType
             redirect: furniture_backend_factory_show
             
 furniture_backend_factory_show:
@@ -63,7 +63,7 @@ furniture_backend_factory_user_relation_create:
             redirect: 
                 route: furniture_backend_factory_user_relation_index
                 parameters: { id: $id }
-            form: Furniture\FactoryBundle\Form\FactoryUserRelationType
+            form: Furniture\FactoryBundle\Form\Type\FactoryUserRelationType
             
 furniture_backend_factory_user_relation_update:
     path: /{id}/edit/{rid}
@@ -72,7 +72,7 @@ furniture_backend_factory_user_relation_update:
         _controller: Furniture.controller.factory_user_relation:updateAction
         _sylius:
             template: SyliusWebBundle:Backend/FactoryUserRelation:update.html.twig
-            form: Furniture\FactoryBundle\Form\FactoryUserRelationType
+            form: Furniture\FactoryBundle\Form\Type\FactoryUserRelationType
             redirect: 
                 route: furniture_backend_factory_user_relation_index
                 parameters: { id: $id }

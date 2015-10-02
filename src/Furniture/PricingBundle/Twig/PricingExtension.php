@@ -2,59 +2,130 @@
 
 namespace Furniture\PricingBundle\Twig;
 
-use Furniture\PricingBundle\Model\PricingInterface;
-use Sylius\Component\User\Model\UserInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Templating\Helper\Helper;
+use Furniture\PricingBundle\Calculator\PriceCalculator;
+use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Entity\ProductVariant;
+use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Entity\SpecificationItem;
+use Sylius\Bundle\CurrencyBundle\Templating\Helper\MoneyHelper;
 use Sylius\Component\Currency\Context\CurrencyContextInterface;
 
-class PricingExtension extends \Twig_Extension {
-    
+class PricingExtension extends \Twig_Extension
+{
+    /**
+     * @var PriceCalculator
+     */
     protected $calculator;
-    
-    protected $authorizedUser;
-    
-    protected $currencyHelper;
-    
+
+    /**
+     * @var MoneyHelper
+     */
     protected $moneyHelper;
-    
+
+    /**
+     * @var CurrencyContextInterface
+     */
     protected $currencyContext;
-            
-    function __construct($calculator, TokenStorageInterface $tokenStorage, CurrencyContextInterface $currencyContext, $currencyHelper, $moneyHelper) {
-        
-        $this->currencyContext = $currencyContext;
-        
+
+    /**
+     * Construct
+     *
+     * @param PriceCalculator          $calculator
+     * @param CurrencyContextInterface $currencyContext
+     * @param MoneyHelper              $moneyHelper
+     */
+    public function __construct (
+        PriceCalculator $calculator,
+        CurrencyContextInterface $currencyContext,
+        MoneyHelper $moneyHelper
+    )
+    {
         $this->calculator = $calculator;
-        
+        $this->currencyContext = $currencyContext;
         $this->moneyHelper = $moneyHelper;
-        
-        $this->currencyHelper = $currencyHelper;
-        
-        if($token = $tokenStorage->getToken()){
-            $this->authorizedUser = $token->getUser();
-        }
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('userPrice', array($this, 'userPriceFilter')),
-        );
+        return [
+            'product_price'                  => new \Twig_Filter_Method($this, 'productPrice'),
+            'sku_price'                      => new \Twig_Filter_Method($this, 'skuPrice'),
+            'specification_item_total_price' => new \Twig_Filter_Method($this, 'specificationItemTotalPrice'),
+            'specification_total_price'      => new \Twig_Filter_Method($this, 'specificationTotalPrice'),
+            'money'                          => new \Twig_Filter_Method($this, 'money')
+        ];
     }
-    
-    public function userPriceFilter(PricingInterface $object, array $context = []){
-        if($this->authorizedUser){
-            $currency = $this->currencyContext->getCurrency();
-            $calculatedPrice = $this->calculator->calculateByUserRules($object, $this->authorizedUser, $context);
-            return $this->moneyHelper->formatAmount($calculatedPrice, $currency);
-        }
-        return 0;
+
+    /**
+     * Get price for product
+     *
+     * @param Product $product
+     *
+     * @return int
+     */
+    public function productPrice(Product $product)
+    {
+        return $this->calculator->calculateForProduct($product);
     }
-    
+
+    /**
+     * Get price for product variant
+     *
+     * @param ProductVariant $sku
+     *
+     * @return int
+     */
+    public function skuPrice(ProductVariant $sku)
+    {
+        return $this->calculator->calculateForProductVariant($sku);
+    }
+
+    /**
+     * Get specification item total price
+     *
+     * @param SpecificationItem $specificationItem
+     *
+     * @return int
+     */
+    public function specificationItemTotalPrice(SpecificationItem $specificationItem)
+    {
+        return $this->calculator->calculateForSpecificationItem($specificationItem);
+    }
+
+    /**
+     * Get specification total price
+     *
+     * @param Specification $specification
+     *
+     * @return int
+     */
+    public function specificationTotalPrice(Specification $specification)
+    {
+        return $this->calculator->calculateForSpecification($specification);
+    }
+
+    /**
+     * Format money
+     *
+     * @param int $amount
+     *
+     * @return string
+     */
+    public function money($amount)
+    {
+        $currency = $this->currencyContext->getCurrency();
+
+        return $this->moneyHelper->formatAmount($amount, $currency);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'pricing_extension';
     }
-    
 }
-

@@ -15,16 +15,16 @@ class LoadSpecificationData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $administer */
-        $administer = $this->getReference('Sylius.User-Administrator');
-
         $faker = Factory::create();
+
+        /** @var \Furniture\CommonBundle\Entity\User $user */
+        $user = $this->getReference('user:content:1');
 
         for ($i = 0; $i < 5; $i++) {
             $hasBuyer = rand(0, 1);
 
             if ($hasBuyer) {
-                $buyer = $this->getReference('specification:buyer:' . (string) rand(1, 5));
+                $buyer = $this->getReference('specification:buyer:' . (string)rand(1, 5));
             } else {
                 $buyer = null;
             }
@@ -37,14 +37,14 @@ class LoadSpecificationData extends AbstractFixture implements OrderedFixtureInt
 
             $specification = new Specification();
             $specification
-                ->setUser($administer)
+                ->setUser($user)
                 ->setBuyer($buyer)
                 ->setName($faker->words(rand(2, 4), true))
                 ->setDescription($description);
 
             $manager->persist($specification);
 
-            $this->setReference('specification:' . (string) ($i + 1), $specification);
+            $this->setReference('specification:' . (string)($i + 1), $specification);
         }
 
         $manager->flush();

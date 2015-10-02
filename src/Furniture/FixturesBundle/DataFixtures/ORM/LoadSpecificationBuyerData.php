@@ -25,7 +25,8 @@ class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtu
             $buyer
                 ->setCreator($administer)
                 ->setFirstName($faker->firstName)
-                ->setSecondName($faker->lastName);
+                ->setSecondName($faker->lastName)
+                ->setSale(rand(0, 10));
 
             $this->setReference('specification:buyer:' . ((string) ($i + 1)), $buyer);
 
