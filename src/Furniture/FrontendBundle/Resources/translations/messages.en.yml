@@ -27,6 +27,7 @@ frontend:
     finished: Finished
     price: Price
     total_price: Total price
+    last_modified: Last modified
     quantity: Quantity
     finish: Finish
     click_to_edit: Click to edit

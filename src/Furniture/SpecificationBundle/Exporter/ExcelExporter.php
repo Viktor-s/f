@@ -3,6 +3,7 @@
 namespace Furniture\SpecificationBundle\Exporter;
 
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -15,13 +16,20 @@ class ExcelExporter implements ExporterInterface
     private $translator;
 
     /**
+     * @var PriceCalculator
+     */
+    private $priceCalculator;
+
+    /**
      * Construct
      *
      * @param TranslatorInterface $translator
+     * @param PriceCalculator     $priceCalculator
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, PriceCalculator $priceCalculator)
     {
         $this->translator = $translator;
+        $this->priceCalculator = $priceCalculator;
     }
 
     /**
@@ -146,14 +154,14 @@ class ExcelExporter implements ExporterInterface
 
             if ($fieldMap->hasFieldPrice()) {
                 $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $price = round($productVariant->getPrice() / 100, 2) . ' EUR';
-                $activeSheet->setCellValue($key, $price);
+                $price = $this->priceCalculator->calculateForProductVariant($productVariant);
+                $activeSheet->setCellValue($key, $price . ' EUR');
             }
 
             if ($fieldMap->hasFieldTotalPrice()) {
                 $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $price = round($item->getTotalPrice() / 100, 2) . ' EUR';
-                $activeSheet->setCellValue($key, $price);
+                $price = $this->priceCalculator->calculateForSpecificationItem($item);
+                $activeSheet->setCellValue($key, $price . ' EUR');
             }
 
             $rowIndex++;

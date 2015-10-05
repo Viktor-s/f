@@ -34,13 +34,16 @@ class ProductPartMaterialVariant
     private $name;
 
     /**
-     *
+     * @var ProductPartMaterialVariantImage
+     */
+    private $image;
+
+    /**
      * @var string
      */
     private $descriptionalName;
 
     /**
-     *
      * @var string
      */
     private $descriptionalCode;
@@ -78,10 +81,11 @@ class ProductPartMaterialVariant
     }
     
     /**
-     * 
+     *
      * @return ProductPartMaterial
      */
-    public function getExtension(){
+    public function getExtension()
+    {
         return $this->material;
     }
 
@@ -128,47 +132,60 @@ class ProductPartMaterialVariant
     }
 
     /**
-     * 
+     * Has values?
+     *
      * @return bool
      */
-    public function hasValues(){
-        return (bool)!$this->values->isEmpty();
+    public function hasValues()
+    {
+        return $this->values->count() > 0;
     }
 
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue $value
+     * Has value
+     *
+     * @param ProductPartMaterialOptionValue $value
+     *
      * @return bool
      */
-    public function hasValue(ProductPartMaterialOptionValue $value){
+    public function hasValue(ProductPartMaterialOptionValue $value)
+    {
         return $this->values->contains($value);
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue $value
-     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+     * Add value
+     *
+     * @param ProductPartMaterialOptionValue $value
+     *
+     * @return ProductPartMaterialVariant
      */
-    public function addValue(ProductPartMaterialOptionValue $value){
+    public function addValue(ProductPartMaterialOptionValue $value)
+    {
         if(!$this->hasValue($value)){
             $this->values->add($value);
         }
+
         return $this;
     }
 
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue $value
-     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+     * Remove value
+     *
+     * @param ProductPartMaterialOptionValue $value
+     *
+     * @return ProductPartMaterialVariant
      */
-    public function removeValue(ProductPartMaterialOptionValue $value){
+    public function removeValue(ProductPartMaterialOptionValue $value)
+    {
         if($this->hasValue($value)){
             $this->values->removeElement($value);
         }
+
         return $this;
     }
 
-        /**
+    /**
      * Set available status
      *
      * @param bool $available
@@ -217,6 +234,30 @@ class ProductPartMaterialVariant
     }
 
     /**
+     * Set image
+     *
+     * @param ProductPartMaterialVariantImage $image
+     *
+     * @return ProductPartMaterialVariant
+     */
+    public function setImage(ProductPartMaterialVariantImage $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return ProductPartMaterialVariantImage
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * 
      * @return string
      */
@@ -226,9 +267,11 @@ class ProductPartMaterialVariant
     }
     
     /**
-     * 
+     * Set descriptional name
+     *
      * @param string $name
-     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+     *
+     * @return ProductPartMaterialVariant
      */
     public function setDescriptionalName($name)
     {
@@ -237,7 +280,8 @@ class ProductPartMaterialVariant
     }
 
     /**
-     * 
+     * Get code
+     *
      * @return string
      */
     public function getDescriptionalCode()
@@ -246,9 +290,11 @@ class ProductPartMaterialVariant
     }
 
     /**
-     * 
+     * Set code
+     *
      * @param string $code
-     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+     *
+     * @return ProductPartMaterialVariant
      */
     public function setDescriptionalCode($code)
     {
@@ -270,12 +316,20 @@ class ProductPartMaterialVariant
         }
         
         $prefix = [];
-        if( !empty($this->getDescriptionalName()) )
+
+        if($this->getDescriptionalName()) {
             $prefix[] = $this->getDescriptionalName();
-        if(!empty($this->getDescriptionalCode()))
+        }
+
+        if($this->getDescriptionalCode()) {
             $prefix[] = $this->getDescriptionalCode();
-        
-        $this->name = implode( '-',$prefix).' '.implode(', ', $parts);
+        }
+
+        $this->name = sprintf(
+            '%s %s',
+            implode('-', $prefix),
+            implode(', ', $parts)
+        );
 
         return $this;
     }

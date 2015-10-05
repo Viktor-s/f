@@ -70,6 +70,7 @@ class Specification
         $this->items = new ArrayCollection();
         $this->sales = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     /**

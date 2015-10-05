@@ -3,12 +3,14 @@
 namespace Furniture\CompositionBundle\Form\Type;
 
 use Furniture\CompositionBundle\Entity\Composite;
+use Furniture\CompositionBundle\Entity\CompositeImage;
 use Furniture\CompositionBundle\Entity\CompositeTemplate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
 
 class CompositeType extends AbstractType
 {
@@ -35,12 +37,11 @@ class CompositeType extends AbstractType
                 'form_type' => new CompositeTranslationType()
             ])
             ->add('images', 'collection', array(
-                'type'         => new \Sylius\Bundle\CoreBundle\Form\Type\ImageType('Furniture\CompositionBundle\Entity\CompositeImage'),
+                'type'         => new ImageType(CompositeImage::class),
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-            ))
-            ;
+            ));
 
         // Add event listener for control collection field state (Enabled or disabled)
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

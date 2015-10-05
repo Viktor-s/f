@@ -2,8 +2,6 @@
 
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
-{% from 'SyliusResourceBundle:Macros:actions.html.twig' import create %}
-
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
@@ -17,11 +15,5 @@
         <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'product_part_material_variant.header.create'|trans }}</h1>
     </div>
 
-    {{ form_errors(form) }}
-
-    <form action="{{ path('furniture_backend_product_part_material_variant_create', {product_part_material: product_part_material.id}) }}" method="post" class="form-horizontal" novalidate>
-        {{ form_widget(form) }}
-
-        {{ create() }}
-    </form>
+    {% include 'WebBundle:Backend/ProductPartMaterial/Variant:_form.html.twig' %}
 {% endblock %}

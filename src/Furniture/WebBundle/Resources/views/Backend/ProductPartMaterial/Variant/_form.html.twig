@@ -1,0 +1,24 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import create %}
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{{ form_errors(form) }}
+
+{% if product_part_material.id %}
+    {% set form_path = path('furniture_backend_product_part_material_variant_update', { product_part_material: product_part_material.id, id: product_part_material_variant.id}) %}
+{% else %}
+    {% set form_path = path('furniture_backend_product_part_material_variant_create', { product_part_material: product_part_material.id}) %}
+{% endif %}
+
+<form action="{{ form_path }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+    {{ form_row(form.descriptionalName) }}
+    {{ form_row(form.descriptionalCode) }}
+    {{ form_row(form.available) }}
+    {{ form_widget(form.image) }}
+    {{ form_row(form.values) }}
+
+    {{ form_rest(form) }}
+
+    {{ product_part_material.id ? update() : create() }}
+</form>

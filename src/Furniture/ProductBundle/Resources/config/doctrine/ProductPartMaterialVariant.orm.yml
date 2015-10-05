@@ -51,6 +51,12 @@ Furniture\ProductBundle\Entity\ProductPartMaterialVariant:
                     product_exception_option_value_id:
                         referencedColumnName: id
 
+    oneToOne:
+        image:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage
+            cascade: [ persist ]
+            mappedBy: materialVariant
+
     lifecycleCallbacks:
         prePersist: [ generateNameFromValues ]
         preUpdate: [ generateNameFromValues ]

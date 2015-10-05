@@ -26,7 +26,6 @@ Furniture\SpecificationBundle\Entity\Specification:
         updatedAt:
             type: datetime
             name: updated_at
-            nullable: true
 
         finishedAt:
             type: datetime

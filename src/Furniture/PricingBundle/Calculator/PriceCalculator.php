@@ -10,7 +10,6 @@ use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
-use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PriceCalculator
@@ -100,6 +99,8 @@ class PriceCalculator
         if ($buyer && $buyer->hasSale()) {
             $amount = $amount - ($amount * ($buyer->getSale() / 100));
         }
+
+        $amount = $amount * $specificationItem->getQuantity();
 
         return $amount;
     }

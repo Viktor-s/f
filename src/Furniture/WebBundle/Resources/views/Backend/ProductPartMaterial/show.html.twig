@@ -51,6 +51,7 @@
             <thead>
             <tr>
                 <th>Name</th>
+                <th>Image</th>
                 <th>Available</th>
                 <th>Values</th>
                 <th>Actions</th>
@@ -61,6 +62,12 @@
             {% for variant in product_part_material.variants %}
                 <tr>
                     <td>{{ variant.name }}</td>
+
+                    <td>
+                        {% if variant.image %}
+                            <img src="{{ variant.image.path|imagine_filter('s100x100') }}" />
+                        {% endif %}
+                    </td>
 
                     <td>
                         <i class="glyphicon glyphicon-{{ variant.available ? 'ok' : 'remove' }}"></i>

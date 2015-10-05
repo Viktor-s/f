@@ -1,0 +1,13 @@
+Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage:
+    type: entity
+    table: product_part_material_variant_image
+
+    oneToOne:
+        materialVariant:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+            inversedBy: image
+            joinColumn:
+                name: material_variant_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE

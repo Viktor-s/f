@@ -30,6 +30,7 @@
                         <th>ID</th>
                         <th>{{ 'frontend.name'|trans }}</th>
                         <th>{{ 'frontend.buyer'|trans }}</th>
+                        <th>{{ 'frontend.last_modified'|trans }}</th>
                         <th>{{ 'frontend.total_price'|trans }}</th>
                         <th>{{ 'frontend.actions'|trans }}</th>
                     </tr>
@@ -41,6 +42,7 @@
                         <td>{{ specification.id }}</td>
                         <td>{{ specification.name }}</td>
                         <td>{{ specification.buyer }}</td>
+                        <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>
                         <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
                         <td>
                             <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>

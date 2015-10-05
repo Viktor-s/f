@@ -65,6 +65,7 @@
             <thead>
             <tr>
                 <th>{{ 'frontend.factory'|trans }}</th>
+                <th>{{ 'frontend.name'|trans }}</th>
                 <th>{{ 'frontend.options'|trans }}</th>
                 <th>{{ 'frontend.note'|trans }}</th>
                 <th>{{ 'frontend.quantity'|trans }}</th>
@@ -76,6 +77,8 @@
 
             <tbody>
             {% for specification_item in specification.items %}
+                {% set product_variant = specification_item.productVariant %}
+                {% set product = product_variant.product %}
                 <tr data-id="{{ specification_item.id }}" class="specification-item-info{% if active_item_id == specification_item.id %} info{% endif %}" data-price="{{ specification_item.productVariant.price }}">
                     <td>
                         <div class="factory-info">
@@ -89,6 +92,12 @@
                                 <a href="#">{{ specification_item.productVariant.product.factory.name }}</a>
                             </div>
                         </div>
+                    </td>
+
+                    <td>
+                        <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
+                            {{ product.translate.name }}
+                        </a>
                     </td>
 
                     <td>
@@ -126,6 +135,8 @@
                             {{ 'frontend.edit'|trans }}
                         </a>
 
+                        <br />
+
                         <a class="btn btn-danger btn-xs remove" href="#">
                             <i class="fa fa-trash-o"></i>
                             {{ 'frontend.remove'|trans }}
@@ -146,6 +157,8 @@
             </tr>
             </tfoot>
         </table>
+
+        <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
     </div>
 {% endblock %}
 

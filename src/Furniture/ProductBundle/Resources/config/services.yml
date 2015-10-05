@@ -24,3 +24,9 @@ services:
     product.removal_checker:
         class: Furniture\ProductBundle\ProductRemoval\ProductRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_part_material_variant.subscriber.entity:
+        class: Furniture\ProductBundle\EventListener\ProductPartMaterialVariantEntitySubscriber
+        arguments: [ @sylius.image_uploader ]
+        tags:
+            - { name: kernel.event_subscriber }

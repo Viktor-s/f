@@ -17,11 +17,5 @@
         <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'product_part_material_variant.header.update'|trans }}</h1>
     </div>
 
-    {{ form_errors(form) }}
-
-    <form action="{{ path('furniture_backend_product_part_material_variant_update', {product_part_material: product_part_material.id, id: product_part_material_variant.id}) }}" method="post" class="form-horizontal" novalidate>
-        {{ form_widget(form) }}
-
-        {{ update() }}
-    </form>
+    {% include 'WebBundle:Backend/ProductPartMaterial/Variant:_form.html.twig' %}
 {% endblock %}
