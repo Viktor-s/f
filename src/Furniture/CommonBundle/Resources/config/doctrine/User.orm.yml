@@ -8,3 +8,13 @@ Furniture\CommonBundle\Entity\User:
             orphanRemoval: true
             targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
             mappedBy: user
+
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: users
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: SET NULL

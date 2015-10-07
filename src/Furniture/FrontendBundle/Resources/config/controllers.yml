@@ -49,12 +49,24 @@ services:
             - @doctrine.orm.default_entity_manager
             - @router
 
-    frontend.controller.factory_profile:
-        class: Furniture\FrontendBundle\Controller\FactoryProfileController
+    # Factory profile controllers
+    frontend.controller.factory.dashboard:
+        class: Furniture\FrontendBundle\Controller\Profile\Factory\DashboardController
         arguments:
             - @twig
             - @sylius.authorization_checker
 
+    frontend.controller.factory.user_relation:
+        class: Furniture\FrontendBundle\Controller\Profile\Factory\UserRelationController
+        arguments:
+            - @twig
+            - @frontend.repository.factory_user_relation
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @router
+            - @form.factory
+
+    # Content user profile controllers
     frontend.controller.content_user.dashboard:
         class: Furniture\FrontendBundle\Controller\Profile\ContentUser\DashboardController
         arguments:
@@ -66,7 +78,7 @@ services:
         arguments:
             - @twig
             - @security.token_storage
-            - @frontend.repository.user_factory_rates
+            - @frontend.repository.user_factory_rate
             - @doctrine.orm.default_entity_manager
             - @form.factory
             - @router

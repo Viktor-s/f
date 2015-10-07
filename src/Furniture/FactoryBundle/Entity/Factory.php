@@ -41,6 +41,11 @@ class Factory extends AbstractTranslatable
     protected $userRelations;
 
     /**
+     * @var Collection|\Furniture\CommonBundle\Entity\User[]
+     */
+    protected $users;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -51,6 +56,7 @@ class Factory extends AbstractTranslatable
         $this->images = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->userRelations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
     
     /**
@@ -366,6 +372,16 @@ class Factory extends AbstractTranslatable
         }
 
         return $this;
+    }
+
+    /**
+     * Get users
+     *
+     * @return Collection|\Furniture\CommonBundle\Entity\User
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     /**

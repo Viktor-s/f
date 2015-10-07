@@ -4,6 +4,7 @@ namespace Furniture\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadUsersData as BaseLoadUserData;
 
 class LoadUserData extends BaseLoadUserData
@@ -18,6 +19,7 @@ class LoadUserData extends BaseLoadUserData
 
         $this->createContentUsers($manager);
         $this->createFactoryAdminUsers($manager);
+        $this->createRelationsBetweenUserAndFactory($manager);
 
         $manager->flush();
     }
@@ -65,12 +67,95 @@ class LoadUserData extends BaseLoadUserData
                 true
             );
 
+            if ($i == 1) {
+                // Add the factory for user
+                $user->setFactory($this->getReference('Furniture.factory.Selva'));
+            }
+
             $user->addAuthorizationRole($this->get('sylius.repository.role')->findOneBy(array('code' => 'factory_admin')));
+
+            $this->setReference('user:factory:' . $i, $user);
 
             $manager->persist($user);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * Create a relations between user and factory
+     *
+     * @param ObjectManager $manager
+     */
+    private function createRelationsBetweenUserAndFactory(ObjectManager $manager)
+    {
+        /** @var \Furniture\FactoryBundle\Entity\Factory $selvaFactory */
+        $selvaFactory = $this->getReference('Furniture.factory.Selva');
+
+        // Write relation for user:content:1 (Request to factory)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:1'))
+            ->setFactory($selvaFactory)
+            ->setActive(true)
+            ->setFactoryAccept(false)
+            ->setUserAccept(true);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:2 (Factory request to user with all rights)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:2'))
+            ->setFactory($selvaFactory)
+            ->setActive(true)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(true)
+            ->setFactoryAccept(true)
+            ->setUserAccept(false);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:3 (Factory request to user without product price rights)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:3'))
+            ->setFactory($selvaFactory)
+            ->setActive(true)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(false)
+            ->setFactoryAccept(true)
+            ->setUserAccept(false);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:4 (Authorized user with all rights)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:4'))
+            ->setFactory($selvaFactory)
+            ->setActive(true)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(true)
+            ->setFactoryAccept(true)
+            ->setUserAccept(true);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:5 (Authorized user without product price right)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:5'))
+            ->setFactory($selvaFactory)
+            ->setActive(true)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(false)
+            ->setFactoryAccept(true)
+            ->setUserAccept(true);
+
+        $manager->persist($factoryUserRelation);
+        $manager->flush();
+
     }
 
     /**

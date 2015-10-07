@@ -2,6 +2,7 @@
 
 namespace Furniture\CommonBundle\Entity;
 
+use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,11 @@ class User extends BaseUser
     const ROLE_FACTORY_ADMIN  = 'ROLE_FACTORY_ADMIN';
     const ROLE_FACTORY_USER   = 'ROLE_FACTORY_USER';
     const ROLE_PUBLIC_CONTENT = 'ROLE_PUBLIC_CONTENT';
+
+    /**
+     * @var Factory
+     */
+    protected $factory;
 
     /**
      * @var Collection
@@ -27,6 +33,40 @@ class User extends BaseUser
         parent::__construct();
 
         $this->factoryRelations = new ArrayCollection();
+    }
+
+    /**
+     * Set factory
+     *
+     * @param Factory $factory
+     *
+     * @return User
+     */
+    public function setFactory(Factory $factory = null)
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Get factory
+     *
+     * @return Factory|null
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Has factory
+     *
+     * @return bool
+     */
+    public function hasFactory()
+    {
+        return $this->factory ? true : false;
     }
     
     /**

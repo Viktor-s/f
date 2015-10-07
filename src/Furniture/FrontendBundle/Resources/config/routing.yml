@@ -115,11 +115,8 @@ specification_buyer_remove:
 
 # Factory profile
 factory_profile:
-    path: /{_locale}/profile/factory
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.factory_profile:dashboard
+    resource: @FrontendBundle/Resources/config/routing/factory_profile.yml
+    prefix: /{_locale}/profile/factory
 
 # Content user profile
 content_user_profile:

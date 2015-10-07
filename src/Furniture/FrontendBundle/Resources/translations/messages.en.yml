@@ -53,6 +53,17 @@ frontend:
     coefficient: Coefficient
     dumping: Dumping
     sale: Sale
+    user_relations: User relations
+    user_requests: User requests
+    to_user_requests: Requests to user
+    authorized_users: Authorized users
+    username: Username
+    products_view: View products
+    product_prices_view: Prices view
+    discount: Discount
+    create_to_user_relation: Relate to user
+    are_you_sure_remove_user_relation: Are you sure remove user relation?
+    approve: Approve
 
     title:
         index: Furniture
@@ -72,6 +83,7 @@ frontend:
         content_user_profile: User profile
         dashboard: Dashboard
         factory_rates: Factory rates
+        user_relations: User relations
 
     button:
         settings: Settings

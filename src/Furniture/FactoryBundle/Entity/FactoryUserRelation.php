@@ -4,167 +4,256 @@ namespace Furniture\FactoryBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\CommonBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class FactoryUserRelation
 {
-    
     /**
-     *
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     *
      * @var \Furniture\FactoryBundle\Entity\Factory
      */
-    protected $factory;
+    private $factory;
     
     /**
-     *
      * @var \Furniture\CommonBundle\Entity\User
      */
-    protected $user;
+    private $user;
     
     /**
-     *
      * @var bool
      */
-    protected $accessProducts;
+    private $accessProducts = false;
     
     /**
-     *
      * @var bool
      */
-    protected $accessProductsPrices;
+    private $accessProductsPrices = false;
     
     /**
+     * The discount for user in percentage
      *
      * @var int
      */
-    protected $discount;
+    private $discount = 0;
     
     /**
-     *
      * @var bool
      */
-    protected $isActive;
+    private $active = false;
 
     /**
-     * 
-     * @return bool
+     * @var bool
      */
-    public function getIsActive(){
-        return $this->isActive;
-    }
+    private $userAccept;
 
     /**
-     * 
-     * @param bool $status
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     * @var bool
      */
-    public function setIsActive($status){
-        $this->isActive = (bool)$status;
-        return $this;
-    }
+    private $factoryAccept;
 
-        /**
-     * 
+    /**
+     * Get id
+     *
      * @return int
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
-
     /**
-     * 
-     * @param \Furniture\FactoryBundle\Entity\Factory $factory
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     * Set factory
+     *
+     * @param Factory $factory
+     *
+     * @return FactoryUserRelation
      */
-    public function setFactory(Factory $factory){
+    public function setFactory(Factory $factory)
+    {
         $this->factory = $factory;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * Get factory
+     *
+     * @return Factory
      */
-    public function getFactory(){
+    public function getFactory()
+    {
         return $this->factory;
     }
     
     /**
-     * 
-     * @param \Furniture\CommonBundle\Entity\User $user
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     * Set user
+     *
+     * @param User $user
+     *
+     * @return FactoryUserRelation
      */
-    public function setUser(User $user){
+    public function setUser(User $user)
+    {
         $this->user = $user;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\CommonBundle\Entity\User
+     * Get user
+     *
+     * @return User
      */
-    public function getUser(){
+    public function getUser()
+    {
         return $this->user;
     }
     
     /**
-     * 
+     * Set right for access to products
+     *
      * @param bool $status
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     *
+     * @return FactoryUserRelation
      */
-    public function setAccessProducts($status){
+    public function setAccessProducts($status)
+    {
         $this->accessProducts = (bool)$status;
+
         return $this;
     }
     
     /**
-     * 
+     * Is access to products
+     *
      * @return bool
      */
-    public function getAccessProducts(){
+    public function isAccessProducts()
+    {
         return $this->accessProducts;
     }
     
     /**
-     * 
+     * Set rights for access to product prices
+     *
      * @param bool $status
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     *
+     * @return FactoryUserRelation
      */
-    public function setAccessProductsPrices($status){
+    public function setAccessProductsPrices($status)
+    {
         $this->accessProductsPrices = (bool)$status;
+
         return $this;
     }
     
     /**
-     * 
+     * Is rights for access to product prices
+     *
      * @return bool
      */
-    public function getAccessProductsPrices(){
+    public function isAccessProductsPrices()
+    {
         return $this->accessProductsPrices;
     }
     
     /**
-     * 
+     * Set discount
+     *
      * @param int $percent
-     * @return \Furniture\FactoryBundle\Entity\FactoryUserRelation
+     *
+     * @return FactoryUserRelation
      */
-    public function setDiscount($percent){
+    public function setDiscount($percent)
+    {
         $this->discount = (int)$percent;
+
         return $this;
     }
     
     /**
-     * 
+     * Get discount
+     *
      * @return int
      */
-    public function getDiscount(){
+    public function getDiscount()
+    {
         return $this->discount;
     }
-    
+
+    /**
+     * Is active relation
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set active
+     *
+     * @param bool $status
+     *
+     * @return FactoryUserRelation
+     */
+    public function setActive($status)
+    {
+        $this->active = (bool) $status;
+
+        return $this;
+    }
+
+    /**
+     * Set user accept
+     *
+     * @param bool $accept
+     *
+     * @return FactoryUserRelation
+     */
+    public function setUserAccept($accept)
+    {
+        $this->userAccept = (bool) $accept;
+
+        return $this;
+    }
+
+    /**
+     * Is user accept
+     *
+     * @return bool
+     */
+    public function isUserAccept()
+    {
+        return $this->userAccept;
+    }
+
+    /**
+     * Set factory accept
+     *
+     * @param bool $accept
+     *
+     * @return FactoryUserRelation
+     */
+    public function setFactoryAccept($accept)
+    {
+        $this->factoryAccept = (bool) $accept;
+
+        return $this;
+    }
+
+    /**
+     * Is user accept
+     *
+     * @return bool
+     */
+    public function isFactoryAccept()
+    {
+        return $this->factoryAccept;
+    }
 }

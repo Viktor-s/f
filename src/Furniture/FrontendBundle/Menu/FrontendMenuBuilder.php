@@ -162,14 +162,9 @@ class FrontendMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('item1', [
-            'uri' => '#',
-            'label' => 'Item #1'
-        ]);
-
-        $menu->addChild('item2', [
-            'uri' => '#',
-            'label' => 'Item #2'
+        $menu->addChild('user_relations', [
+            'uri' => $this->urlGenerator->generate('factory_profile_user_relations'),
+            'label' => $this->translator->trans('frontend.user_relations')
         ]);
 
         return $menu;

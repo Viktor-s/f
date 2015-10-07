@@ -1,11 +1,11 @@
 <?php
 
-namespace Furniture\FrontendBundle\Controller;
+namespace Furniture\FrontendBundle\Controller\Profile\Factory;
 
 use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationChecker;
 use Symfony\Component\HttpFoundation\Response;
 
-class FactoryProfileController
+class DashboardController
 {
     /**
      * @var \Twig_Environment
@@ -13,22 +13,14 @@ class FactoryProfileController
     private $twig;
 
     /**
-     * @var RbacAuthorizationChecker
-     */
-    private $rbacAuthorizationChecker;
-
-    /**
      * Construct
      *
      * @param \Twig_Environment        $twig
-     * @param RbacAuthorizationChecker $rbacAuthorizationChecker
      */
     public function __construct(
-        \Twig_Environment $twig,
-        RbacAuthorizationChecker $rbacAuthorizationChecker
+        \Twig_Environment $twig
     ) {
         $this->twig = $twig;
-        $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
     }
 
     /**

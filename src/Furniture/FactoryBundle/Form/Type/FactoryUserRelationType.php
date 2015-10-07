@@ -12,9 +12,9 @@ class FactoryUserRelationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
         $read_only = false;
         $entity = $builder->getForm()->getData();
+
         if( $entity->getId() ){
             $read_only = true;
         }
@@ -31,16 +31,13 @@ class FactoryUserRelationType extends AbstractType
                         ->leftJoin('u.factoryRelations', 'fr')
                         ->where('ar.code IN (:codes) AND (fr.factory != :factory_id OR fr.factory IS NULL )' )
                         ->setParameter('codes', $options['content_access_user_roles'])
-                        ->setParameter('factory_id', $entity->getFactory()->getId())
-                            
-                        ;
+                        ->setParameter('factory_id', $entity->getFactory()->getId());
                 }
             ])
             ->add('isActive', 'checkbox', ['label' => 'Activate rule'])
             ->add('accessProducts', 'checkbox', ['label' => 'Can see product list'])
             ->add('accessProductsPrices', 'checkbox', ['label' => 'Can work with prices'])
-            ->add('discount', 'integer', ['label' => 'Set price discount'])
-            ;
+            ->add('discount', 'integer', ['label' => 'Set price discount']);
     }
     
     /**

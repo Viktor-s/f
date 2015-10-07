@@ -1,0 +1,62 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endblock choice_widget_collapsed %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    <label class="checkbox-entry col-lg-offset-2">
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <span class="check"></span>
+        {{ form.vars.label|trans({}, form.vars.translation_domain) }}
+    </label>
+{% endspaceless %}
+{% endblock %}
+
+{% block text_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock %}
+
+{% block form_label %}
+{% spaceless %}
+    {% set label_attr = label_attr|merge({'class': label_attr.class|default('col-lg-2') ~ ' control-label'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock form_label %}
+
+{% block form_row %}
+{% spaceless %}
+    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+        {{ form_label(form) }}
+
+        <div class="col-lg-10">
+            {{ form_widget(form) }}
+
+            {% for error in errors %}
+                <span class="help-block form-error">
+                    {{
+                        error.messagePluralization is null
+                            ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                            : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                    }}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+        {% for error in errors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}

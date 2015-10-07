@@ -38,16 +38,26 @@ Furniture\FactoryBundle\Entity\FactoryUserRelation:
             options:
                 unique: true
     fields:
-        isActive:
+        active:
             type: boolean
             default: false
+
         accessProducts:
             type: boolean
             default: false
+
         accessProductsPrices:
             type: boolean
             nullable: false
+
         discount:
             type: integer
             default: 0
+
+        userAccept:
+            type: boolean
+
+        factoryAccept:
+            type: boolean
+
             
