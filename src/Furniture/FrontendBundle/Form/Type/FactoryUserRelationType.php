@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,6 +41,14 @@ class FactoryUserRelationType extends AbstractType
                 );
             }
         });
+
+        $resolver->setNormalizer('content_user', function (OptionsResolver $resolver, $value) {
+            if ($resolver->offsetGet('mode') == 'from_user' && !$value) {
+                throw new NoSuchOptionException(
+                    'The option "content_user" is required for use with mode "from_user".'
+                );
+            }
+        });
     }
 
     /**
@@ -62,10 +71,21 @@ class FactoryUserRelationType extends AbstractType
 
             if ($options['mode'] == 'from_factory') {
                 $form->add('user', 'entity', [
+                    'label' => 'frontend.user',
                     'class' => User::class,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')
                             ->andWhere('u.factory IS NULL');
+                    }
+                ]);
+            }
+
+            if ($options['mode'] == 'from_user') {
+                $form->add('factory', 'entity', [
+                    'label' => 'frontend.factory',
+                    'class' => Factory::class,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('f');
                     }
                 ]);
             }

@@ -91,6 +91,10 @@ class LoadUserData extends BaseLoadUserData
     {
         /** @var \Furniture\FactoryBundle\Entity\Factory $selvaFactory */
         $selvaFactory = $this->getReference('Furniture.factory.Selva');
+        /** @var \Furniture\FactoryBundle\Entity\Factory $antonelloItaliaFactory */
+        $antonelloItaliaFactory = $this->getReference('Furniture.factory.Antonello Italia');
+        /** @var \Furniture\FactoryBundle\Entity\Factory $kartellFactory */
+        $kartellFactory = $this->getReference('Furniture.factory.Kartell');
 
         // Write relation for user:content:1 (Request to factory)
         $factoryUserRelation = new FactoryUserRelation();
@@ -100,6 +104,34 @@ class LoadUserData extends BaseLoadUserData
             ->setActive(true)
             ->setFactoryAccept(false)
             ->setUserAccept(true);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:1 (Request from factory Antonello Italia)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:1'))
+            ->setFactory($antonelloItaliaFactory)
+            ->setActive(true)
+            ->setFactoryAccept(true)
+            ->setUserAccept(false)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(true)
+            ->setDiscount(5);
+
+        $manager->persist($factoryUserRelation);
+
+        // Write relation for user:content:1 (Authorized factory with all rights)
+        $factoryUserRelation = new FactoryUserRelation();
+        $factoryUserRelation
+            ->setUser($this->getReference('user:content:1'))
+            ->setFactory($kartellFactory)
+            ->setAccessProductsPrices(true)
+            ->setFactoryAccept(true)
+            ->setUserAccept(true)
+            ->setAccessProducts(true)
+            ->setAccessProductsPrices(true)
+            ->setDiscount(15);
 
         $manager->persist($factoryUserRelation);
 

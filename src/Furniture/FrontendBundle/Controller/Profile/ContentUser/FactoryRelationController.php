@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FrontendBundle\Controller\Profile\Factory;
+namespace Furniture\FrontendBundle\Controller\Profile\ContentUser;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\FactoryUserRelation;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserRelationController
+class FactoryRelationController
 {
     /**
      * @var \Twig_Environment
@@ -74,22 +74,22 @@ class UserRelationController
     }
 
     /**
-     * View user relations
+     * View factory relations
      *
      * @return Response
      */
-    public function userRelations()
+    public function factoryRelations()
     {
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
-        $userRequests = $this->factoryUserRelationRepository->findUserRequestsForFactory($user);
-        $requestsToUsers = $this->factoryUserRelationRepository->findRequestToUsersForFactory($user);
-        $relations = $this->factoryUserRelationRepository->findAuthorizedForFactory($user);
+        $factoryRequests = $this->factoryUserRelationRepository->findFactoryRequestsForUser($user);
+        $requestsToFactories = $this->factoryUserRelationRepository->findRequestsToFactoriesForUser($user);
+        $relations = $this->factoryUserRelationRepository->findAuthorizedForUser($user);
 
-        $content = $this->twig->render('FrontendBundle:Profile/Factory/UserRelation:relations.html.twig', [
-            'user_requests' => $userRequests,
-            'requests_to_users' => $requestsToUsers,
+        $content = $this->twig->render('FrontendBundle:Profile/ContentUser/FactoryRelation:relations.html.twig', [
+            'factory_requests' => $factoryRequests,
+            'requests_to_factories' => $requestsToFactories,
             'authorized_relations' => $relations
         ]);
 
@@ -97,7 +97,7 @@ class UserRelationController
     }
 
     /**
-     * Edit user relation
+     * Edit factory relation
      *
      * @param Request $request
      * @param int     $relation
@@ -106,17 +106,8 @@ class UserRelationController
      */
     public function edit(Request $request, $relation = null)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
-
-        if (!$user->hasFactory()) {
-            // @todo: control this error?
-            throw new \RuntimeException(sprintf(
-                'The user "%s" does not have a factory.',
-                $user->getUsername()
-            ));
-        }
 
         if ($relation) {
             $relation = $this->factoryUserRelationRepository->find($relationId = $relation);
@@ -132,14 +123,14 @@ class UserRelationController
         } else {
             $relation = new FactoryUserRelation();
             $relation
-                ->setFactory($user->getFactory())
-                ->setUserAccept(false)
-                ->setFactoryAccept(true);
+                ->setUser($user)
+                ->setUserAccept(true)
+                ->setFactoryAccept(false);
         }
 
         $form = $this->formFactory->create(new FactoryUserRelationType(), $relation, [
-            'mode'         => 'from_factory',
-            'factory_user' => $user
+            'mode' => 'from_user',
+            'content_user' => $user
         ]);
 
         $form->handleRequest($request);
@@ -148,12 +139,12 @@ class UserRelationController
             $this->em->persist($relation);
             $this->em->flush();
 
-            $url = $this->urlGenerator->generate('factory_profile_user_relations');
+            $url = $this->urlGenerator->generate('content_user_profile_factory_relations');
 
             return new RedirectResponse($url);
         }
 
-        $content = $this->twig->render('FrontendBundle:Profile/Factory/UserRelation:edit.html.twig', [
+        $content = $this->twig->render('FrontendBundle:Profile/ContentUser/FactoryRelation:edit.html.twig', [
             'relation' => $relation,
             'form' => $form->createView()
         ]);
@@ -182,7 +173,7 @@ class UserRelationController
 
         // @todo: add check granted for approve this relation (via security voter in Symfony3)
 
-        $relation->setFactoryAccept(true);
+        $relation->setUserAccept(true);
 
         $this->em->flush();
 
@@ -196,7 +187,7 @@ class UserRelationController
             return new RedirectResponse($url);
         }
 
-        $url = $this->urlGenerator->generate('factory_profile_user_relations');
+        $url = $this->urlGenerator->generate('content_user_profile_factory_relations');
 
         return new RedirectResponse($url);
     }
@@ -235,7 +226,7 @@ class UserRelationController
             return new RedirectResponse($url);
         }
 
-        $url = $this->urlGenerator->generate('factory_profile_user_relations');
+        $url = $this->urlGenerator->generate('content_user_profile_factory_relations');
 
         return new RedirectResponse($url);
     }

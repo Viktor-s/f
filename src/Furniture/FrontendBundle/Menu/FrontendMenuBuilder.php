@@ -184,6 +184,11 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.factory_rates')
         ]);
 
+        $menu->addChild('factory_relations', [
+            'uri' => $this->urlGenerator->generate('content_user_profile_factory_relations'),
+            'label' => $this->translator->trans('frontend.factory_relations')
+        ]);
+
         return $menu;
     }
 }

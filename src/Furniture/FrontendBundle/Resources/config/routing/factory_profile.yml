@@ -33,7 +33,6 @@ factory_profile_user_relation_remove:
     defaults:
         _controller: frontend.controller.factory.user_relation:remove
 
-
 factory_profile_user_relation_approve:
     path: /user-relation/{relation}/approve
     methods: [ GET ]

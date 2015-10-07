@@ -84,6 +84,48 @@ class FactoryUserRelationRepository
     }
 
     /**
+     * Find request from factory to user
+     *
+     * @param User $user
+     *
+     * @return FactoryUserRelation[]
+     */
+    public function findFactoryRequestsForUser(User $user)
+    {
+        return $this->createQueryBuilderForRequestsForUser($user, false, true)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find requests from user to factory
+     *
+     * @param User $user
+     *
+     * @return FactoryUserRelation[]
+     */
+    public function findRequestsToFactoriesForUser(User $user)
+    {
+        return $this->createQueryBuilderForRequestsForUser($user, true, false)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find authorized relations for user
+     *
+     * @param User $user
+     *
+     * @return FactoryUserRelation[]
+     */
+    public function findAuthorizedForUser(User $user)
+    {
+        return $this->createQueryBuilderForRequestsForUser($user, true, true)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Create a query builder for factory user relations
      *
      * @param User $user
@@ -106,6 +148,31 @@ class FactoryUserRelationRepository
                 'user' => $user,
                 'user_accept' => $userAccept,
                 'factory_accept' => $factoryAccept
+            ]);
+    }
+
+    /**
+     * Create a query builder for user relations
+     *
+     * @param User $user
+     * @param bool $userAccept
+     * @param bool $factoryAccept
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createQueryBuilderForRequestsForUser(User $user, $userAccept, $factoryAccept)
+    {
+        return $this->em->createQueryBuilder()
+            ->from(FactoryUserRelation::class, 'fur')
+            ->select('fur')
+            ->innerJoin('fur.user', 'u')
+            ->andWhere('u.id = :user')
+            ->andWhere('fur.userAccept = :user_accept')
+            ->andWhere('fur.factoryAccept = :factory_accept')
+            ->setParameters([
+                'user' => $user,
+                'factory_accept' => $factoryAccept,
+                'user_accept' => $userAccept
             ]);
     }
 }

@@ -82,3 +82,13 @@ services:
             - @doctrine.orm.default_entity_manager
             - @form.factory
             - @router
+
+    frontend.controller.content_user.factory_relation:
+        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\FactoryRelationController
+        arguments:
+            - @twig
+            - @frontend.repository.factory_user_relation
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @router
+            - @form.factory
