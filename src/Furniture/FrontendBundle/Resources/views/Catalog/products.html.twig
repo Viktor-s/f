@@ -6,9 +6,9 @@
 {% block breadcrumb %}
     <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
     <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
-    <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
+    <a href="{{ path('products', {category: current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
     {% if sub_category %}
-        <a href="{{ path('products', {'category_permalink': current_root_taxon.permalink, subcategory:sub_category.id}) }}">{{ sub_category.name }}</a>
+        <a href="{{ path('products', {category: current_root_taxon.permalink, subcategory:sub_category.id}) }}">{{ sub_category.name }}</a>
     {% endif %}
 {% endblock %}
 
@@ -62,7 +62,7 @@
                     <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.catalog.space_selector'| trans }}</div>
                     <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
                         {% for taxon in category.taxons %}
-                            <option  value="{{ path('products', {'category_permalink':taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category_permalink'] %} selected="selected" {% endif %}>
+                            <option  value="{{ path('products', {category: taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category'] %} selected="selected" {% endif %}>
                                 {{ taxon.name }}
                             </option>
                         {% endfor %}
@@ -79,7 +79,7 @@
                                     <ul>
                                         {% for children_taxon_2 in  children_taxon_1.children %}
                                             <li>
-                                                <a href="{{ path('products', {'category_permalink':current_root_taxon.permalink, 'subcategory':children_taxon_2.id}) }}">
+                                                <a href="{{ path('products', {category: current_root_taxon.permalink, 'subcategory':children_taxon_2.id}) }}">
                                                     {{ children_taxon_2.name }}
                                                 </a>
                                             </li>
@@ -128,9 +128,9 @@
             $(document).ready(function () {
                 var brandFilterForm = $('#brand_filter');
         {% if sub_category %}
-                    var getUrl = "{{ path('products', {'category_permalink': current_root_taxon.permalink, subcategory:sub_category.id}) }}";
+                    var getUrl = "{{ path('products', {category: current_root_taxon.permalink, subcategory:sub_category.id}) }}";
         {% else %}
-                    var getUrl = "{{ path('products', {'category_permalink': current_root_taxon.permalink}) }}?";
+                    var getUrl = "{{ path('products', {category: current_root_taxon.permalink}) }}?";
         {% endif %}
 
                     brandFilterForm.find('input:checkbox').change(function () {

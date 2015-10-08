@@ -15,13 +15,6 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block text_widget %}
-{% spaceless %}
-    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
-    {{ parent() }}
-{% endspaceless %}
-{% endblock %}
-
 {% block form_label %}
 {% spaceless %}
     {% set label_attr = label_attr|merge({'class': label_attr.class|default('col-lg-2') ~ ' control-label'}) %}
