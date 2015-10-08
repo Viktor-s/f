@@ -124,14 +124,14 @@
                             max = variant.price;
                         }
                     });
-                } else {
-                    min = max = variants[0].price
                 }
-
                 var text;
-
-                if (min == max) {
-                    text = max;
+                console.log(variants);
+                console.log(variants.length);
+                if(variants.length == 0){
+                    text = 'Unavailable combination'
+                }else if (variants.length == 1) {
+                    text = variants[0].price;
                 } else {
                     text = min + '-' + max;
                 }
