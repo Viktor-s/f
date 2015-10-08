@@ -1,0 +1,29 @@
+Furniture\FactoryBundle\Entity\FactoryDefaultRelation:
+    type: entity
+    table: factory_default_relation
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        accessProducts:
+            type: boolean
+            name: access_products
+
+        accessProductsPrices:
+            type: boolean
+            name: access_products_prices
+
+    oneToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: defaultRelation
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

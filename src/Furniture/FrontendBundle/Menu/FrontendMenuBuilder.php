@@ -167,6 +167,11 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.user_relations')
         ]);
 
+        $menu->addChild('default_relation', [
+            'uri' => $this->urlGenerator->generate('factory_profile_default_relation'),
+            'label' => $this->translator->trans('frontend.default_relation')
+        ]);
+
         return $menu;
     }
 

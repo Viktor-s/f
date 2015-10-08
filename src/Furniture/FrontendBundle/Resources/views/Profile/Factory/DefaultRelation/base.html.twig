@@ -1,0 +1,9 @@
+{% extends 'FrontendBundle:Profile/Factory:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.default_relation'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="{{ path('factory_profile_default_relation') }}">{{ 'frontend.title.default_relation'|trans }}</a>
+{% endblock %}

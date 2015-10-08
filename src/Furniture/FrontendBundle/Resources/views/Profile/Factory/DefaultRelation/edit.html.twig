@@ -1,0 +1,15 @@
+{% extends 'FrontendBundle:Profile/Factory/DefaultRelation:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.edit'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.edit'|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -66,6 +66,15 @@ services:
             - @router
             - @form.factory
 
+    frontend.controller.factory.default_relation:
+        class: Furniture\FrontendBundle\Controller\Profile\Factory\DefaultRelationController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @router
+            - @form.factory
+
     # Content user profile controllers
     frontend.controller.content_user.dashboard:
         class: Furniture\FrontendBundle\Controller\Profile\ContentUser\DashboardController

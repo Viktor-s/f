@@ -46,6 +46,11 @@ class Factory extends AbstractTranslatable
     protected $users;
 
     /**
+     * @var FactoryDefaultRelation
+     */
+    protected $defaultRelation;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -57,6 +62,7 @@ class Factory extends AbstractTranslatable
         $this->products = new ArrayCollection();
         $this->userRelations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->defaultRelation = new FactoryDefaultRelation($this);
     }
     
     /**
@@ -382,6 +388,16 @@ class Factory extends AbstractTranslatable
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Get default relation
+     *
+     * @return FactoryDefaultRelation
+     */
+    public function getDefaultRelation()
+    {
+        return $this->defaultRelation;
     }
 
     /**

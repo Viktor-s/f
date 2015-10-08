@@ -71,6 +71,7 @@ frontend:
     to_factory_requests: Requests to factory
     authorized_factories: Authorized factories
     user: User
+    default_relation: Default relation
 
     title:
         index: Furniture
@@ -92,6 +93,8 @@ frontend:
         factory_rates: Factory rates
         user_relations: User relations
         factory_relations: Factory relations
+        default_relation: Default relation
+        view: View
 
     button:
         settings: Settings

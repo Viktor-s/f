@@ -1,0 +1,25 @@
+{% extends 'FrontendBundle:Profile/Factory/DefaultRelation:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.view'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.view'|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="information-blocks default-relation">
+        <a href="{{ path('factory_profile_default_relation_edit') }}" class="btn btn-primary">{{ 'frontend.edit'|trans }}</a>
+
+        <div class="group-item">
+            <div class="col-lg-2">{{ 'frontend.products_view'|trans }}</div>
+            <div class="col-lg-10"><i class="fa fa-{{ default_relation.accessProducts ? 'check' : 'remove' }}"></i></div>
+        </div>
+
+        <div class="group-item">
+            <div class="col-lg-2">{{ 'frontend.product_prices_view'|trans }}</div>
+            <div class="col-lg-10"><i class="fa fa-{{ default_relation.accessProductsPrices ? 'check' : 'remove' }}"></i></div>
+        </div>
+    </div>
+{% endblock %}

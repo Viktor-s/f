@@ -39,3 +39,17 @@ factory_profile_user_relation_approve:
     requirements: { _locale: %available_locales%, relation: \d+ }
     defaults:
         _controller: frontend.controller.factory.user_relation:approve
+
+factory_profile_default_relation:
+    path: /default-relation
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory.default_relation:defaultRelation
+
+factory_profile_default_relation_edit:
+    path: /default-relation/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory.default_relation:edit
