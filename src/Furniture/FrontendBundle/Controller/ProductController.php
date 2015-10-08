@@ -3,9 +3,11 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Furniture\FrontendBundle\Repository\ProductRepository;
+use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Furniture\FrontendBundle\Repository\SpecificationItemRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\ProductBundle\Entity\ProductVariant;
+use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,24 +36,29 @@ class ProductController
     private $specificationItemRepository;
 
     /**
+     * @var TaxonRepository
+     */
+    private $taxonRepository;
+
+    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
-
-    private $paginator;
     
     /**
      * Construct
      *
      * @param \Twig_Environment           $twig
      * @param ProductRepository           $productRepository
+     * @param TaxonRepository             $taxonRepository
      * @param SpecificationRepository     $specificationRepository
      * @param SpecificationItemRepository $specificationItemRepository
      * @param TokenStorageInterface       $tokenStorage
      */
     public function __construct(
         \Twig_Environment $twig,
-        \Doctrine\ORM\EntityRepository $productRepository,
+        ProductRepository $productRepository,
+        TaxonRepository $taxonRepository,
         SpecificationRepository $specificationRepository,
         SpecificationItemRepository $specificationItemRepository,
         TokenStorageInterface $tokenStorage
@@ -60,30 +67,25 @@ class ProductController
         $this->productRepository = $productRepository;
         $this->specificationRepository = $specificationRepository;
         $this->specificationItemRepository = $specificationItemRepository;
+        $this->taxonRepository = $taxonRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
     public function products(Request $request, $page)
     {
-        $user = $this->tokenStorage->getToken()
-            ->getUser();
+        $productQuery = new ProductQuery();
         
-        $qBuilder = $this->productRepository->createQueryBuilder('p');
-        
-        if($taxons = $request->get('taxons', false)){
-            $taxons = array_map( function($v){ return (int)$v; }, $taxons);
-            
-            $qBuilder->innerJoin('p.taxons', 'taxon')
-                ->andWhere('taxon in ( :taxons )')
-                ->setParameter('taxons', $taxons)
-                ;
+        if($taxons = $request->get('taxons', [])) {
+            $taxons = $this->taxonRepository->findBy([
+                'id' => $taxons
+            ]);
+
+            $productQuery->withTaxons($taxons);
             
         }
         
-        $products = $this->productRepository->getPaginator($qBuilder);
-        
-        $products->setMaxPerPage(12);
-        $products->setCurrentPage($page);
+        $products = $this->productRepository->findBy($productQuery, $page, 12);
+
         $content = $this->twig->render('FrontendBundle:Product:products.html.twig', [
             'products' => $products,
         ]);

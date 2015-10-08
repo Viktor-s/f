@@ -11,17 +11,17 @@
     <div class="row">
         <div class="mozaic-banners-wrapper type-2">
 
-            {% for taxon in Category.taxons %}
+            {% for taxon in category.taxons %}
                 <div class="banner-column col-sm-6">
-                    <a href="{{ path('products', {'category_permalink':taxon.permalink}) }}" 
+                    <a href="{{ path('products', {category: taxon.permalink}) }}"
                        {% if taxon.path|length > 0 %}
                        style="background-image: url({{ taxon.path|imagine_filter('s425x200') }}); background-size: cover;" class="mozaic-banner-entry type-3"
                        {% else %}
                        style="background-image: url(img/bags-3.jpg); background-size: cover;" class="mozaic-banner-entry type-3"
                        {% endif %}
-                       >
+                    >
                         <span class="mozaic-banner-content">
-                            <span class="subtitle">{{ Category.name }}</span>
+                            <span class="subtitle">{{ category.name }}</span>
                             <span class="title">{{ taxon.name }}</span>
                             <span class="view">view category</span>
                         </span>

@@ -26,11 +26,11 @@ taxonomy:
         _controller: frontend.controller.catalog:taxonomy
         
 products:
-    path: /{_locale}/catalog/{category_permalink}
+    path: /{_locale}/catalog/{category}
     methods: [ GET ]
     requirements: 
         _locale: %available_locales%
-        category_permalink: .+
+        category: .+
     defaults:
         _controller: frontend.controller.catalog:products
 
