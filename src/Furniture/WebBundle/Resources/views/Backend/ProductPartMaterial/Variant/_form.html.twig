@@ -5,7 +5,7 @@
 
 {{ form_errors(form) }}
 
-{% if product_part_material.id %}
+{% if product_part_material_variant.id %}
     {% set form_path = path('furniture_backend_product_part_material_variant_update', { product_part_material: product_part_material.id, id: product_part_material_variant.id}) %}
 {% else %}
     {% set form_path = path('furniture_backend_product_part_material_variant_create', { product_part_material: product_part_material.id}) %}
