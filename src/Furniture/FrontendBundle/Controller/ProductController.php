@@ -158,9 +158,8 @@ class ProductController
         foreach ($product->getVariants() as $variant) {
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
            $item = [
-               'id' => $variant->getId(),
-               'presentation' => $variant->getPresentation(),
                'options' => [],
+               'variant' => $variant,
                'options_labels' => []
            ];
            
