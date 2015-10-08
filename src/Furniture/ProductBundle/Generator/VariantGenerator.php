@@ -31,7 +31,7 @@ class VariantGenerator extends ContainerAware {
      */
     public function generate(Product $product) {
 
-        if (!$product->hasOptions() && !$product->hasSkuOptionVariants()) {
+        if (!$product->hasOptions() && !$product->hasSkuOptionVariants() && !$product->hasProductParts() ) {
             throw new \InvalidArgumentException('Cannot generate variants for an product without options and sku options');
         }
 
@@ -108,7 +108,10 @@ class VariantGenerator extends ContainerAware {
                  *
                 */
                 if (split('_', $route_id)[0] == $pPMaterialPref) {
-                    $variant->addProductPartVariantSelection($optionMap[$route_id]);
+                    $variant->addProductPartVariantSelection((new ProductPartVariantSelection())
+                        ->setProductPart($optionMap[$route_id]['pp'])
+                        ->setProductPartMaterialVariant($optionMap[$route_id]['ppmVariant'])
+                            );
                 }
             } else{
                 foreach ($permutation as $k => $route_id) {

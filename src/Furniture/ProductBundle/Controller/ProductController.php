@@ -154,10 +154,23 @@ class ProductController extends BaseProductController
                 'class' => 'Furniture\ProductBundle\Entity\ProductPartMaterialVariant',
                 'label' => $productPart->getLabel(),
                 'choice_label' => 'name',
-                'property_path' => '[part_'.$productPart->getId().'][productPartMaterials][variants]',
+                //'property_path' => '[part_'.$productPart->getId().'][productPartMaterials][variants]',
                 'expanded' => true,
                 'multiple' => true,
-                'data' => [$productPart]
+                'query_builder' => function(EntityRepository $er) use ($productPart) {
+                    return $er
+                            ->createQueryBuilder('ppmv')        
+                            ->leftJoin(
+                                    'Furniture\ProductBundle\Entity\ProductPartVariantSelection',
+                                    'ppvs',
+                                    'WITH',
+                                    'ppvs.productPartMaterialVariant = ppmv.id'
+                                    )
+                            ->where('ppvs.productPart = :pp')
+                            ->setParameter('pp', $productPart)
+                            ->orderBy('ppvs.productPart', 'ASC')
+                    ;
+                },
             ]);
         }
 
@@ -205,7 +218,7 @@ class ProductController extends BaseProductController
             $ppmt = [];
             
             foreach($product->getProductParts() as $pp){
-                $ppmt[$pp->getId()] = new ArrayCollection($data['part_'.$pp->getId()]['productPartMaterials']['variants']);
+                $ppmt[$pp->getId()] = new ArrayCollection($data['part_'.$pp->getId()]->toArray());
             }
             
             $deleteAction = $form->get('delete_by_filter')->isClicked();
@@ -222,18 +235,17 @@ class ProductController extends BaseProductController
                     if (!$skuOptions->exists($callbackForExists)) {
                         continue 2;
                     }
-                    
-                    foreach($variant->getProductPartVariantSelections() as $vs){
-                        //echo $variant->getId().':'.$vs->getProductPart()->getId().'<br/>';
-                        if( !isset( $ppmt[$vs->getProductPart()->getId()] ) || 
-                                !$ppmt[$vs->getProductPart()->getId()]->exists(function($k, $e) use ($vs){
-                                    return $e->getId() == $vs->getProductPartMaterialVariant()->getId();
-                                })
-                                ){
-                            continue 3;
-                        }
+                }
+
+                foreach ($variant->getProductPartVariantSelections() as $vs) {
+                    //echo $variant->getId() . ':' . $vs->getProductPart()->getId() . '<br/>';
+                    if (!isset($ppmt[$vs->getProductPart()->getId()]) ||
+                            !$ppmt[$vs->getProductPart()->getId()]->exists(function($k, $e) use ($vs) {
+                                return $e->getId() == $vs->getProductPartMaterialVariant()->getId();
+                            })
+                    ) {
+                        continue 2;
                     }
-                    
                 }
 
                 foreach ($variant->getOptions() as $option) {
