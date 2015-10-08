@@ -264,7 +264,7 @@
         {% if not app.request.query.get('sdv') %}
             {{ buttons.create(path('sylius_backend_product_variant_create', {'productId': product.id}), 'sylius.variant.create'|trans) }}
 
-            {% if product.hasOptions or product.hasSkuOptionVariants %}
+            {% if product.hasOptions or product.hasSkuOptionVariants or product.productParts %}
                 {{ buttons.patch(path('sylius_backend_product_variant_generate', {'productId': product.id}), 'sylius.product.generate_variants'|trans) }}
                 {{ buttons.manage(path('sylius_backend_product_variant_group_edit', {'id': product.id}), 'Group edit') }}
             {% endif %}
