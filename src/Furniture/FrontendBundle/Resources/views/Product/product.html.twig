@@ -38,7 +38,7 @@
                     <div class="price detail-info-entry">
                         <div class="current" id="prices"></div>
                     </div>
-                    
+
                     <div id="skuoption" class="options-selector detail-info-entry">
 
                     </div>
@@ -86,126 +86,129 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-    
+
     <script type="text/javascript">
         (function ($) {
 
             var sku_matrix = [{% for v in sku_matrix %}
-                {
-                  'id':{{v.variant.id}},
-                  'presentation':{{v.variant.getPresentation() ? v.variant.getPresentation() : "null" }},
-                  'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                  'options_labels':{{ v.options_labels|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                  'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
-                },{% endfor %}];
-            //console.log(sku_matrix);
+            {
+            'id':{{v.variant.id}},
+                    'presentation':{{v.variant.getPresentation() ? v.variant.getPresentation() : "null" }},
+                    'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                    'options_labels':{{ v.options_labels|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                    'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+            },{% endfor %} ];
+                    var variants_container = new variant_data_container(sku_matrix);
 
-            var variants_container = new variant_data_container(sku_matrix);
-            
             var variant = $('#skuoption').variant({
                 data_container: variants_container
             });
-            
-            
-            var low_max_price = function(){
+
+
+            var low_max_price = function () {
                 var variants = variants_container.getFiltered()
-                if(variants.length > 1){
+                if (variants.length > 1) {
                     var max = 0;
                     var min = 0;
                     variants.forEach(function (variant) {
-                        if(
-                            min == 0 ||
-                            parseInt(variant.price.substr(1)) < parseInt(min.substr(1)) 
-                            ){
+                        if (
+                                min == 0 ||
+                                parseInt(variant.price.substr(1)) < parseInt(min.substr(1))
+                                ) {
                             min = variant.price;
                         }
-                        if(
-                            max == 0 ||
-                            parseInt(variant.price.substr(1)) > parseInt(max.substr(1)) 
-                                ){
+                        if (
+                                max == 0 ||
+                                parseInt(variant.price.substr(1)) > parseInt(max.substr(1))
+                                ) {
                             max = variant.price;
                         }
                     });
-                }else{
+                } else {
                     min = max = variants[0].price
                 }
-                
-                if( min == max ){
-                    $('#prices').text(max);
-                }else{
-                    $('#prices').text(min+'-'+max);
+
+                var text;
+
+                if (min == max) {
+                    text = max;
+                } else {
+                    text = min + '-' + max;
                 }
-                console.log('----');
-                
+
+                if( text != $('#prices').text() )
+                    $('#prices').fadeOut(50, function () {
+                        $('#prices').text(text)
+                        $('#prices').fadeIn('medium');
+                    });
             };
-            
+
             low_max_price();
-            
+
             $(document).on('filter:update', function (event) {
                 low_max_price();
             });
-            
-            {% if active_variant_matrix %}
-                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
-            {% endif %}
-            
-            {% if not update_specification_item %}
-            $('.add-to-specification a').click(function(){
-                var el = $(this);
-                
-                if(variants_container.getFiltered().length == 1){
-                    quantity = parseInt($('.quantity-selector .entry.number').text());
-                        var url = '{{ path('specification_api_specification_add_item') }}',
-                            data = {
-                                id: variants_container.getFiltered()[0].id,
-                                quantity: quantity,
-                                specification: parseInt($(this).attr('data-specification-id'))
-                            };
 
-                        $.ajax({
-                            url: url,
-                            data: data,
-                            method: 'POST',
-                            success: function () {
-                                alert('Successfully add product to specification.');
-                                addSpecificationProcessed = false;
-                            },
-                            error: function () {
-                                alert('Error with add product to specification.');
-                                addSpecificationProcessed = false;
-                            }
-                        });
-                }                
-            });
-            {% else %}
-            $('.update-specification-item button').click(function(){
-                var el = $(this);
-                console.log(variants_container.getFiltered());
-                if(variants_container.getFiltered().length == 1){
-                    
-                    
-                    quantity = parseInt($('.quantity-selector .entry.number').text());
-                    
-                    var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
-                        data = {
-                            id: variants_container.getFiltered()[0].id,
-                            quantity: quantity
-                        };
+        {% if active_variant_matrix %}
+                    variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+        {% endif %}
 
-                        $.ajax({
-                            url: url,
-                            data: data,
-                            method: 'POST',
-                            success: function () {
-                                window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
-                            },
-                            error: function () {
-                                alert('Error with update specification item. Please try again.');
-                            }
-                        });
-                }                
-            });   
-            {% endif %}
-            })(jQuery);
+        {% if not update_specification_item %}
+                    $('.add-to-specification a').click(function () {
+                        var el = $(this);
+
+                        if (variants_container.getFiltered().length == 1) {
+                            quantity = parseInt($('.quantity-selector .entry.number').text());
+                            var url = '{{ path('specification_api_specification_add_item') }}',
+                                    data = {
+                                        id: variants_container.getFiltered()[0].id,
+                                        quantity: quantity,
+                                        specification: parseInt($(this).attr('data-specification-id'))
+                                    };
+
+                            $.ajax({
+                                url: url,
+                                data: data,
+                                method: 'POST',
+                                success: function () {
+                                    alert('Successfully add product to specification.');
+                                    addSpecificationProcessed = false;
+                                },
+                                error: function () {
+                                    alert('Error with add product to specification.');
+                                    addSpecificationProcessed = false;
+                                }
+                            });
+                        }
+                    });
+        {% else %}
+                    $('.update-specification-item button').click(function () {
+                        var el = $(this);
+                        if (variants_container.getFiltered().length == 1) {
+
+
+                            quantity = parseInt($('.quantity-selector .entry.number').text());
+
+                            var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
+                                    data = {
+                                        id: variants_container.getFiltered()[0].id,
+                                        quantity: quantity
+                                    };
+
+                            $.ajax({
+                                url: url,
+                                data: data,
+                                method: 'POST',
+                                success: function () {
+                                    window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
+                                },
+                                error: function () {
+                                    alert('Error with update specification item. Please try again.');
+                                }
+                            });
+                        }
+                    });
+        {% endif %}
+                })(jQuery);
     </script>
 {% endblock %}
