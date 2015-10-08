@@ -39,19 +39,7 @@
                         <div class="prev"></div>
                         <div class="current">{{ (prices.min / 100)|round(2) }} - {{ (prices.max / 100)|round(2) }} EUR</div>
                     </div>
-
-                    <div class="options-selector detail-info-entry">
-                        {% for option in options %}
-                            <div class="detail-info-entry">
-                                <div class="detail-info-entry-title">{{ option.name }}</div>
-                                <select class="form-control">
-                                    {% for value in option.values %}
-                                        <option{% if option.value and option.value == value  %} selected="selected"{% endif %} value="{{ value }}">{{ value }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        {% endfor %}
-                    </div>
+                    
                     <div id="skuoption" class="options-selector detail-info-entry">
 
                     </div>

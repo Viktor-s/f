@@ -68,7 +68,7 @@ $.widget('furniture.variant', {
                 if (!(option_name in $this._inputs)) {
                     $this._inputs[option_name] = $this
                             ._elements_creator
-                            ._get_select_element(option_name);
+                            ._get_select_element(variant.options_labels[option_name], option_name);
 
                     $this._inputs[option_name].find('select').change(
                             function (e) {
@@ -104,8 +104,8 @@ $.widget('furniture.variant', {
         _get_filter_input_table: function () {
             return $('<table class="table"></table>');
         },
-        _get_select_element: function (name) {
-            return $('<tr><td>' + name + '</td><td>\
+        _get_select_element: function (label, name) {
+            return $('<tr><td>' + label + '</td><td>\
                                     <div class="input-group input-group-lg">\
                                         <span class="input-group-addon"></span>\
                                         <select disabled class="form-control" name="' + name + '"></select>\

@@ -153,20 +153,31 @@ class ProductController
         $skuMatrix = [];
         $activeVariantMatrix = false;
         
-        /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
         foreach ($product->getVariants() as $variant) {
+            /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
            $item = [
                'id' => $variant->getId(),
                'presentation' => $variant->getPresentation(),
-               'options' => []
+               'options' => [],
+               'options_labels' => []
            ];
            
            foreach($variant->getOptions() as $option){
                $item['options']['option_'.$option->getName()] = $option->getValue();
+               $item['options_labels']['option_'.$option->getName()] = $option->getName();
            }
            
            foreach($variant->getSkuOptions() as $option){
                $item['options']['skuoption_'.$option->getName()] = $option->getValue();
+               $item['options_labels']['skuoption_'.$option->getName()] = $option->getName();
+           }
+           
+           foreach ($variant->getProductPartVariantSelections() as $variant_selection)
+           {
+               $item['options']['productpart_'.$variant_selection->getProductPart()->getLabel()] 
+                       = $variant_selection->getProductPartMaterialVariant()->getName();
+               $item['options_labels']['productpart_'.$variant_selection->getProductPart()->getLabel()]
+                       = $variant_selection->getProductPart()->getLabel();
            }
            
            if($activeVariant && $variant == $activeVariant){
