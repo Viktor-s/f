@@ -65,6 +65,7 @@
             <thead>
             <tr>
                 <th>{{ 'frontend.factory'|trans }}</th>
+                <th>{{ 'frontend.image'|trans }}</th>
                 <th>{{ 'frontend.name'|trans }}</th>
                 <th>{{ 'frontend.options'|trans }}</th>
                 <th>{{ 'frontend.note'|trans }}</th>
@@ -92,6 +93,14 @@
                                 <a href="#">{{ specification_item.productVariant.product.factory.name }}</a>
                             </div>
                         </div>
+                    </td>
+
+                    <td>
+                        {% if product.image %}
+                            <div class="product-image">
+                                <img src="{{ product.image.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                            </div>
+                        {% endif %}
                     </td>
 
                     <td>
@@ -151,7 +160,7 @@
                 {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
             {% endfor %}
             <tr>
-                <td colspan="5" class="text-right">{{ 'frontend.total_price'|trans }}</td>
+                <td colspan="7" class="text-right">{{ 'frontend.total_price'|trans }}</td>
                 <td class="total-price">{{ specification|specification_total_price|money }}</td>
                 <td></td>
             </tr>
@@ -164,7 +173,7 @@
 
 {% block specification_sale %}
     <tr class="specification-sale">
-        <td colspan="5"></td>
+        <td colspan="7"></td>
         <td>
             <div class="sale editable form-group" id="specification-sale" data-index="__index__">__sale__</div>
         </td>

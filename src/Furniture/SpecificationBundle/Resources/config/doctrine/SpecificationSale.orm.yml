@@ -21,6 +21,7 @@ Furniture\SpecificationBundle\Entity\SpecificationSale:
     manyToOne:
         specification:
             targetEntity: Furniture\SpecificationBundle\Entity\Specification
+            inversedBy: sales
             joinColumn:
                 name: specification_id
                 referencedColumnName: id

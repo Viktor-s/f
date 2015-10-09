@@ -32,6 +32,7 @@ frontend:
     finish: Finish
     click_to_edit: Click to edit
     factory: Factory
+    image: Image
     options: Options
     note: Note
     are_you_sure_remove_specification_item: Are you sure remote specification item?
