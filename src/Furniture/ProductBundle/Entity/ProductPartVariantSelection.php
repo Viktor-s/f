@@ -5,32 +5,28 @@ namespace Furniture\ProductBundle\Entity;
 class ProductPartVariantSelection
 {
     /**
-     *
      * @var int
      */
     protected $id;
     
     /**
-     *
-     * @var ProductPart 
+     * @var ProductPart
      */
     protected $productPart;
     
     /**
-     *
      * @var ProductVariant 
      */
     protected $productVariant;
-    
-    
+
     /**
-     *
      * @var ProductPartMaterialVariant 
      */
     protected $productPartMaterialVariant;
     
     /**
-     * 
+     * Get id
+     *
      * @return int
      */
     public function getId()
@@ -39,7 +35,8 @@ class ProductPartVariantSelection
     }
     
     /**
-     * 
+     * Get product part
+     *
      * @return ProductPart
      */
     public function getProductPart()
@@ -48,13 +45,16 @@ class ProductPartVariantSelection
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
-     * @return \Furniture\ProductBundle\Entity\ProductPartVariantSelection
+     * Set product part
+     *
+     * @param ProductPart $productPart
+     *
+     * @return ProductPartVariantSelection
      */
     public function setProductPart(ProductPart $productPart)
     {
         $this->productPart = $productPart;
+
         return $this;
     }
     
@@ -68,35 +68,40 @@ class ProductPartVariantSelection
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductVariant $productVariant
-     * @return \Furniture\ProductBundle\Entity\ProductPartVariantSelection
+     * Set product variant
+     *
+     * @param ProductVariant $productVariant
+     *
+     * @return ProductPartVariantSelection
      */
     public function setProductVariant(ProductVariant $productVariant)
     {
         $this->productVariant = $productVariant;
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPartMaterialVariant $material
-     * @return \Furniture\ProductBundle\Entity\ProductPartVariantSelection
+     * Set product part material variant
+     *
+     * @param ProductPartMaterialVariant $material
+     *
+     * @return ProductPartVariantSelection
      */
     public function setProductPartMaterialVariant(ProductPartMaterialVariant $material)
     {
         $this->productPartMaterialVariant = $material;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+     * Get product part material variant
+     *
+     * @return ProductPartMaterialVariant
      */
     public function getProductPartMaterialVariant()
     {
         return $this->productPartMaterialVariant;
     }
-    
 }
-

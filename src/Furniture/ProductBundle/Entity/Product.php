@@ -43,7 +43,7 @@ class Product extends BaseProduct
     
     /**
      *
-     * @var Collection
+     * @var Collection|ProductPart[]
      */
     protected $productParts;
 
@@ -66,7 +66,8 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
+     * Has product parts?
+     *
      * @return bool
      */
     public function hasProductParts()
@@ -75,8 +76,9 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
-     * @return Collection
+     * Get product parts
+     *
+     * @return Collection|ProductPart[]
      */
     public function getProductParts()
     {
@@ -95,8 +97,10 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
+     * Has product path?
+     *
+     * @param ProductPart $productPart
+     *
      * @return bool
      */
     public function hasProductPart(ProductPart $productPart)
@@ -106,8 +110,10 @@ class Product extends BaseProduct
     
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
+     * Add product part
+     *
+     * @param ProductPart $productPart
+     *
      * @return \Furniture\ProductBundle\Entity\Product
      */
     public function addProductPart(ProductPart $productPart)
@@ -121,9 +127,11 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Remove product part
+     *
+     * @param ProductPart $productPart
+     *
+     * @return Product
      */
     public function removeProductPart(ProductPart $productPart)
     {
@@ -327,7 +335,7 @@ class Product extends BaseProduct
     {
         $grouped = [];
         
-        $this->skuOptionVariants->forAll(function ($id, SkuOptionVariant $skuVariant) use (&$grouped) {
+        $this->skuOptionVariants->forAll(function ($index, SkuOptionVariant $skuVariant) use (&$grouped) {
             $optionId = $skuVariant->getSkuOptionType()->getId();
 
             if (!isset($grouped[$optionId])) {

@@ -40,7 +40,7 @@ class ProductPartFormType extends AbstractType
                 'multiple' => true,
                 'expanded' => false
             ])
-            ->add('prtoductPartType', 'entity', [
+            ->add('productPartType', 'entity', [
                 'class' => ProductPartType::class,
                 'multiple' => false
             ])

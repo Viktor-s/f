@@ -70,24 +70,44 @@ class FactoryUserRelationType extends AbstractType
             $disabledAccessRights = $options['mode'] == 'from_user' && $relation->isFactoryAccept();
 
             if ($options['mode'] == 'from_factory') {
-                $form->add('user', 'entity', [
-                    'label' => 'frontend.user',
-                    'class' => User::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('u')
-                            ->andWhere('u.factory IS NULL');
-                    }
-                ]);
+                if ($relation->getId()) {
+                    // Edit saved relation
+                    $form->add('_user', 'text', [
+                        'label' => 'frontend.user',
+                        'mapped' => false,
+                        'disabled' => true,
+                        'data' => $relation->getUser()->getUsername()
+                    ]);
+                } else {
+                    $form->add('user', 'entity', [
+                        'label' => 'frontend.user',
+                        'class' => User::class,
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('u')
+                                ->andWhere('u.factory IS NULL');
+                        }
+                    ]);
+                }
             }
 
             if ($options['mode'] == 'from_user') {
-                $form->add('factory', 'entity', [
-                    'label' => 'frontend.factory',
-                    'class' => Factory::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('f');
-                    }
-                ]);
+                if ($relation->getId()) {
+                    // Edit saved relation
+                    $form->add('_factory', 'text', [
+                        'label' => 'frontend.factory',
+                        'mapped' => false,
+                        'disabled' => true,
+                        'data' => $relation->getFactory()->getName()
+                    ]);
+                } else {
+                    $form->add('factory', 'entity', [
+                        'label' => 'frontend.factory',
+                        'class' => Factory::class,
+                        'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('f');
+                        }
+                    ]);
+                }
             }
 
             $form

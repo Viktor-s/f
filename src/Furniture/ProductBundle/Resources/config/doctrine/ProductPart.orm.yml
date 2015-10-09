@@ -25,7 +25,7 @@ Furniture\ProductBundle\Entity\ProductPart:
                         referencedColumnName: id
                 
     manyToOne:
-        prtoductPartType:
+        productPartType:
             targetEntity: Furniture\ProductBundle\Entity\ProductPartType
             inversedBy: productParts
             joinColumn:

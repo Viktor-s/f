@@ -11,16 +11,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 {
     /**
-     * @var Collection
+     * @var Collection|SkuOptionVariant[]
      */
     protected $skuOptions;
 
     /**
-     *
-     * @var Collection
+     * @var Collection|ProductPartVariantSelection[]
      */
     protected $productPartVariantSelections;
-
 
     /**
      * Construct
@@ -112,8 +110,10 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     }
 
     /**
-     * 
-     * @param Collection $variantSelections
+     * Set product part variant selections
+     *
+     * @param Collection|ProductPartVariantSelection[] $variantSelections
+     *
      * @return \Furniture\ProductBundle\Entity\ProductVariant
      */
     public function setProductPartVariantSelections(Collection $variantSelections)
@@ -123,8 +123,9 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     }
 
     /**
-     * 
-     * @return Collection
+     * Get product part variant selections
+     *
+     * @return Collection|ProductPartVariantSelection[]
      */
     public function getProductPartVariantSelections()
     {

@@ -8,59 +8,65 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductPart extends AbstractTranslatable
 {
-    
     /**
-     *
      * @var int
      */
     protected $id;
     
     /**
-     *
      * @var ProductPartType
      */
-    protected $prtoductPartType;
+    protected $productPartType;
     
     /**
-     *
-     * @var \Furniture\ProductBundle\Entity\Product
+     * @var Product
      */
     protected $product;
 
     /**
-     *
-     * @var Collection
+     * @var Collection|ProductPartMaterial[]
      */
     protected $productPartMaterials;
-    
-    function __construct() {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
+
         $this->productPartMaterials = new ArrayCollection();
     }
 
 
     /**
-     * 
+     * Get id
+     *
      * @return int
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Product $product
-     * @return \Furniture\ProductBundle\Entity\ProductPart
+     * Set product
+     *
+     * @param Product $product
+     *
+     * @return ProductPart
      */
     public function setProduct(Product $product)
     {
         $this->product = $product;
+
         return $this;
     }
 
     /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Get product
+     *
+     * @return Product
      */
     public function getProduct()
     {
@@ -69,7 +75,8 @@ class ProductPart extends AbstractTranslatable
 
 
     /**
-     * 
+     * Get label
+     *
      * @return string
      */
     public function getLabel()
@@ -78,60 +85,74 @@ class ProductPart extends AbstractTranslatable
     }
     
     /**
-     * 
+     * Set label
+     *
      * @param string $label
-     * @return \Furniture\ProductBundle\Entity\ProductPart
+     *
+     * @return ProductPart
      */
     public function setLabel($label)
     {
         $this->translate()->setLabel($label);
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPartType $prtoductPartType
-     * @return \Furniture\ProductBundle\Entity\ProductPart
+     * Set product part type
+     *
+     * @param ProductPartType $productPartType
+     *
+     * @return ProductPart
      */
-    public function setPrtoductPartType(ProductPartType $prtoductPartType)
+    public function setProductPartType(ProductPartType $productPartType)
     {
-        $this->prtoductPartType = $prtoductPartType;
+        $this->productPartType = $productPartType;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\ProductPartType
+     * Get product part type
+     *
+     * @return ProductPartType
      */
-    public function getPrtoductPartType()
+    public function getProductPartType()
     {
-        return $this->prtoductPartType;
+        return $this->productPartType;
     }
     
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\Collection $productPartMaterials
-     * @return \Furniture\ProductBundle\Entity\ProductPart
+     * Set product part materials
+     *
+     * @param Collection|ProductPartMaterial[] $productPartMaterials
+     *
+     * @return ProductPart
      */
     public function setProductPartMaterials(Collection $productPartMaterials)
     {
         $this->productPartMaterials = $productPartMaterials;
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\Collection
+     * Get product part materials
+     *
+     * @return Collection|ProductPartMaterial[]
      */
     public function getProductPartMaterials()
     {
         return $this->productPartMaterials;
     }
 
-    public function __toString() 
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
     {
-        $this->getLabel();
+        return $this->getLabel() ?: '';
     }
-    
 }
-

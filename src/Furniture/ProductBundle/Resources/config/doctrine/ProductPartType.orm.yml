@@ -19,5 +19,5 @@ Furniture\ProductBundle\Entity\ProductPartType:
     oneToMany:
         productParts:
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
-            mappedBy: prtoductPartType
+            mappedBy: productPartType
             cascade: [ persist ]

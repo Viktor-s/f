@@ -96,8 +96,6 @@
                                 <td>{{ productVariant.sku }}</td>
                                 <td>{{ productVariant.humanSize }}</td>
 
-                                <td></td>
-
                                 <td>
                                     <ul>
                                         {% for option in productVariant.options %}
@@ -107,8 +105,17 @@
                                         {% for option in productVariant.skuOptions %}
                                             <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
                                         {% endfor %}
+
+                                        {% for part_variant_selection in item.productVariant.productPartVariantSelections %}
+                                            <li>
+                                                <strong>{{ part_variant_selection.productPart.label }}:</strong>
+                                                {{ part_variant_selection.productPartMaterialVariant.name }}
+                                            </li>
+                                        {% endfor %}
                                     </ul>
                                 </td>
+
+                                <td></td>
 
                                 <td>{{ item.quantity }}</td>
                                 <td>{{ productVariant|sku_price|money }}</td>

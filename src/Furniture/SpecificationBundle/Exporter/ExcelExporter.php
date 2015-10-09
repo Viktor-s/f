@@ -326,6 +326,14 @@ class ExcelExporter implements ExporterInterface
             $options[] = sprintf('%s: %s', $option->getName(), $option->getValue());
         }
 
+        foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
+            $options[] = sprintf(
+                '%s: %s',
+                $variantSelection->getProductPart()->getLabel(),
+                $variantSelection->getProductPartMaterialVariant()->getName()
+            );
+        }
+
         return implode("\n", $options);
     }
 
