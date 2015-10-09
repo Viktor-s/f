@@ -2,6 +2,7 @@
 
 namespace Furniture\FactoryBundle\Entity;
 
+use Furniture\CommonBundle\Entity\User;
 use Furniture\ProductBundle\Entity\Product;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +37,7 @@ class Factory extends AbstractTranslatable
     protected $products;
     
     /**
-     * @var Collection
+     * @var Collection|FactoryUserRelation[]
      */
     protected $userRelations;
 
@@ -319,6 +320,24 @@ class Factory extends AbstractTranslatable
     public function getUserRelations()
     {
         return $this->userRelations;
+    }
+
+    /**
+     * Get users relation by user
+     *
+     * @param User $user
+     *
+     * @return FactoryUserRelation|null
+     */
+    public function getUserRelationByUser(User $user)
+    {
+        foreach ($this->userRelations as $userRelation) {
+            if ($userRelation->getUser()->getId() == $user->getId()) {
+                return $userRelation;
+            }
+        }
+
+        return null;
     }
     
     /**

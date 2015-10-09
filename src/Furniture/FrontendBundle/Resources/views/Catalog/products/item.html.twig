@@ -26,7 +26,11 @@
             <p>{{ product.shortDescription }}</p>
         </div>
         <div class="price">
-            <div class="current">{{ product|product_price|money }}</div>
+            <div class="current">
+                {% if is_granted('VIEW_PRICE', product) %}
+                    {{ product|product_price|money }}
+                {% endif %}
+            </div>
         </div>
         <div class="list-buttons">
             <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>

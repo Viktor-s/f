@@ -6,3 +6,8 @@ services:
         tags:
             - { name: kernel.event_listener, event: Furniture.factory.pre_create, method: pre_create }
             - { name: kernel.event_listener, event: Furniture.factory.pre_update, method: pre_update }
+
+    factory.security.voter.view_price:
+        class: Furniture\FactoryBundle\Security\Voter\ViewPriceVoter
+        tags:
+            - { name: security.voter }
