@@ -157,6 +157,9 @@ sylius_user:
     classes:
         user:
             model: Furniture\CommonBundle\Entity\User
+            form:
+                default: Furniture\CommonBundle\Form\Type\UserType
+            
 
 sylius_resource:
     resources:

@@ -53,3 +53,10 @@ factory_profile_default_relation_edit:
     requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.factory.default_relation:edit
+        
+factory_profile_map_cluser:
+    path: /retailer/map
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory.user_map:clusterMap
