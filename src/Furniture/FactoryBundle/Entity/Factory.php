@@ -416,7 +416,7 @@ class Factory extends AbstractTranslatable
      */
     public function getDefaultRelation()
     {
-        return $this->defaultRelation;
+        return $this->defaultRelation ?: new FactoryDefaultRelation($this);
     }
 
     /**
