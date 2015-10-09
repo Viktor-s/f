@@ -15,6 +15,9 @@
                         'static/js/widget/variant.js'
                         'static/js/widget/variant_table.js'
                         'static/js/widget/variant_buy_btn.js'
+                        'https://cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.js'
+                        'static/js/3d/OBJLoader.js'
+                        'static/js/3d/Projector.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -24,7 +27,62 @@
     <div class="information-blocks">
         <div class="row">
             <div class="col-sm-6 information-entry">
-                <div class="product-preview-box">
+                <div class="tabs-container">
+                    <div class="swiper-tabs tabs-switch">
+                        <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
+                        <div class="list">
+                            <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
+                            <a class="block-title tab-switcher">{{ 'frontend.product.media_tab.model'|trans }}</a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="tabs-entry">
+                            {% if product.images|length > 0 %}
+                                <div class="product-preview-box">
+                                    <div class="swiper-container product-preview-swiper" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
+                                        <div class="swiper-wrapper">
+                                            {% for image in product.images %}
+                                                <div class="swiper-slide">
+                                                    <div class="product-zoom-image">
+                                                        <img src="{{ image ? image.path|imagine_filter('sylius_large') : 'http://placehold.it/200x200' }}" alt="{{ product.name }}" data-zoom="{{ image ? image.path : 'http://placehold.it/200x200' }}" />
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="pagination"></div>
+                                        <div class="product-zoom-container">
+                                            <div class="move-box">
+                                                <img class="default-image" src="{{ product.image ? product.image.path|imagine_filter('sylius_large') : 'http://placehold.it/200x200' }}" alt="" />
+                                                <img class="zoomed-image" src="{{ product.image ? product.image.path : 'http://placehold.it/200x200' }}" alt="" />
+                                            </div>
+                                            <div class="zoom-area"></div>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-hidden-edges">
+                                        <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                                            <div class="swiper-wrapper">
+                                                {% if product.images|length > 0 %}
+                                                    {% for image in product.images %}
+                                                        <div class="swiper-slide">
+                                                            <div class="paddings-container">
+                                                                <img src="{{ image.path|imagine_filter('sylius_small') }}" alt="{{ product.name }}" />
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="pagination"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="tabs-entry">
+                            <div style="width:540px;height:360px" id="model_viewer">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -126,17 +184,15 @@
                     });
                 }
                 var text;
-                console.log(variants);
-                console.log(variants.length);
-                if(variants.length == 0){
+                if (variants.length == 0) {
                     text = 'Unavailable combination'
-                }else if (variants.length == 1) {
+                } else if (variants.length == 1) {
                     text = variants[0].price;
                 } else {
                     text = min + '-' + max;
                 }
 
-                if( text != $('#prices').text() )
+                if (text != $('#prices').text())
                     $('#prices').fadeOut(50, function () {
                         $('#prices').text(text)
                         $('#prices').fadeIn('medium');
@@ -150,65 +206,197 @@
             });
 
         {% if active_variant_matrix %}
-                    variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
         {% endif %}
 
         {% if not update_specification_item %}
-                    $('.add-to-specification a').click(function () {
-                        var el = $(this);
+                $('.add-to-specification a').click(function () {
+                    var el = $(this);
 
-                        if (variants_container.getFiltered().length == 1) {
-                            quantity = parseInt($('.quantity-selector .entry.number').text());
-                            var url = '{{ path('specification_api_specification_add_item') }}',
-                                    data = {
-                                        id: variants_container.getFiltered()[0].id,
-                                        quantity: quantity,
-                                        specification: parseInt($(this).attr('data-specification-id'))
-                                    };
+                    if (variants_container.getFiltered().length == 1) {
+                        quantity = parseInt($('.quantity-selector .entry.number').text());
+                        var url = '{{ path('specification_api_specification_add_item') }}',
+                                data = {
+                                    id: variants_container.getFiltered()[0].id,
+                                    quantity: quantity,
+                                    specification: parseInt($(this).attr('data-specification-id'))
+                                };
 
-                            $.ajax({
-                                url: url,
-                                data: data,
-                                method: 'POST',
-                                success: function () {
-                                    alert('Successfully add product to specification.');
-                                    addSpecificationProcessed = false;
-                                },
-                                error: function () {
-                                    alert('Error with add product to specification.');
-                                    addSpecificationProcessed = false;
-                                }
-                            });
-                        }
-                    });
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            method: 'POST',
+                            success: function () {
+                                alert('Successfully add product to specification.');
+                                addSpecificationProcessed = false;
+                            },
+                            error: function () {
+                                alert('Error with add product to specification.');
+                                addSpecificationProcessed = false;
+                            }
+                        });
+                    }
+                });
         {% else %}
-                    $('.update-specification-item button').click(function () {
-                        var el = $(this);
-                        if (variants_container.getFiltered().length == 1) {
+                $('.update-specification-item button').click(function () {
+                    var el = $(this);
+                    if (variants_container.getFiltered().length == 1) {
 
 
-                            quantity = parseInt($('.quantity-selector .entry.number').text());
+                        quantity = parseInt($('.quantity-selector .entry.number').text());
 
-                            var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
-                                    data = {
-                                        id: variants_container.getFiltered()[0].id,
-                                        quantity: quantity
-                                    };
+                        var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
+                                data = {
+                                    id: variants_container.getFiltered()[0].id,
+                                    quantity: quantity
+                                };
 
-                            $.ajax({
-                                url: url,
-                                data: data,
-                                method: 'POST',
-                                success: function () {
-                                    window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
-                                },
-                                error: function () {
-                                    alert('Error with update specification item. Please try again.');
-                                }
-                            });
-                        }
-                    });
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            method: 'POST',
+                            success: function () {
+                                window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
+                            },
+                            error: function () {
+                                alert('Error with update specification item. Please try again.');
+                            }
+                        });
+                    }
+                });
         {% endif %}
-                })(jQuery);
+            })(jQuery);
+    </script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                var three = THREE;
+
+                var scene = new three.Scene();
+
+                var ambient = new THREE.AmbientLight( 0x101030 );
+                scene.add( ambient );
+                var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+                directionalLight.position.set( 2, 2, 1 );
+                scene.add( directionalLight );
+                                
+                var innerWidth = 540;
+                var innerHeight = 360;
+
+                var camera = new three.PerspectiveCamera(10, innerWidth / innerHeight, 0.1, 1000);
+                var renderer = new three.WebGLRenderer();
+
+                renderer.setSize(innerWidth, innerHeight);
+                $('#model_viewer').get()[0].appendChild(renderer.domElement);
+
+                var texture = new THREE.Texture();
+                var loader = new THREE.ImageLoader();
+                loader.load( '/static/js/3d/example/texture/wood-floor.jpg', function ( image ) {
+                    texture.image = image;
+                    texture.needsUpdate = true;
+                });
+
+                var loader = new THREE.OBJLoader();
+                var obj;
+                loader.load(
+                    '/static/js/3d/example/model/1750.obj',
+                    function ( object ) {
+                        obj = object;
+                        obj.traverse(function(child) {
+                            if ( child instanceof THREE.Mesh ) {
+                                child.material.map = texture;
+                            }
+                        });
+                        obj.position.y = -0.5;
+                        obj.position.x = -0.2;
+                        scene.add( obj );
+                    }
+                );
+
+
+                camera.position.z = 10;
+
+                var isDragging = false;
+                var previousMousePosition = {
+                    x: 0,
+                    y: 0
+                };
+                $(renderer.domElement).on('mousedown', function (e) {
+                    isDragging = true;
+                })
+                        .on('mousemove', function (e) {
+                            //console.log(e);
+                            var deltaMove = {
+                                x: e.offsetX - previousMousePosition.x,
+                                y: e.offsetY - previousMousePosition.y
+                            };
+
+                            if (isDragging) {
+
+                                var deltaRotationQuaternion = new three.Quaternion()
+                                        .setFromEuler(new three.Euler(
+                                                toRadians(deltaMove.y * 1),
+                                                toRadians(deltaMove.x * 1),
+                                                0,
+                                                'XYZ'
+                                                ));
+
+                                obj.quaternion.multiplyQuaternions(deltaRotationQuaternion, obj.quaternion);
+                            }
+
+                            previousMousePosition = {
+                                x: e.offsetX,
+                                y: e.offsetY
+                            };
+                        });
+
+                $(document).on('mouseup', function (e) {
+                    isDragging = false;
+                });
+
+
+
+// shim layer with setTimeout fallback
+                window.requestAnimFrame = (function () {
+                    return  window.requestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.mozRequestAnimationFrame ||
+                            function (callback) {
+                                window.setTimeout(callback, 1000 / 60);
+                            };
+                })();
+
+                var lastFrameTime = new Date().getTime() / 1000;
+                var totalGameTime = 0;
+                function update(dt, t) {
+                    setTimeout(function () {
+                        var currTime = new Date().getTime() / 1000;
+                        var dt = currTime - (lastFrameTime || currTime);
+                        totalGameTime += dt;
+
+                        update(dt, totalGameTime);
+
+                        lastFrameTime = currTime;
+                    }, 0);
+                }
+
+
+                function render() {
+                    renderer.render(scene, camera);
+                    requestAnimFrame(render);
+                }
+
+                render();
+                update(0, totalGameTime);
+
+                function toRadians(angle) {
+                    return angle * (Math.PI / 180);
+                }
+
+                function toDegrees(angle) {
+                    return angle * (180 / Math.PI);
+                }
+            });
+        })(jQuery);
     </script>
 {% endblock %}

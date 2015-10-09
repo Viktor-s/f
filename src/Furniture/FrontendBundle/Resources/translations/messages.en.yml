@@ -110,7 +110,11 @@ frontend:
     catalog:
         space_selector: Select space
         brand_filter: Brand
-
+    product:
+        media_tab:
+            title: Product media
+            images: Images
+            model: 3d model
     factory:
         posted: Posted on :created
 
