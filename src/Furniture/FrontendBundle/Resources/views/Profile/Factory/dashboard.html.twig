@@ -9,5 +9,22 @@
 {% endblock %}
 
 {% block page_content %}
-    <h1>Dashboard</h1>
+    <div class="article-container style-1">
+        <h5>{{ app.user.username }}</h5>
+        <p>8808 Ave Dermentum, Onsectetur Adipiscing<br>
+            Tortor Sagittis, CA 880986,<br>
+            United States<br>
+            CA 90896<br> 
+            United States<br></p>
+    </div>
+    <div class="swiper-slide swiper-slide-visible swiper-slide-active" style="width: 229px; height: 330px;">
+    {% if ( is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') ) and app.user.factory %}
+        <div class="product-slide-entry">
+            {% if app.user.factory.hasImages() %}
+                <img src="{{ app.user.factory.primaryImage.path|imagine_filter('s201x123') }}">
+            {% endif %}
+            <a href="#" class="title">{{ app.user.factory.name }}</a>
+        </div>
+    {% endif %}
+</div>    
 {% endblock %}
