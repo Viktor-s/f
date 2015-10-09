@@ -33,19 +33,28 @@
         </a>
     </div>
 
-    <div class="right-entries">
-        {% if is_granted('ROLE_CONTENT_USER') %}
-            <a class="header-functionality-entry" href="{{ path('content_user_profile') }}">
-                <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-            </a>
-        {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
-            <a class="header-functionality-entry" href="{{ path('factory_profile') }}">
-                <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-            </a>
-        {% endif %}
+    <div class="right-entries product-header-content">
+        <div class="line-entry">
+            {% if is_granted('ROLE_CONTENT_USER') %}
+                <a class="header-functionality-entry" href="{{ path('content_user_profile') }}">
+                    <i class="fa fa-user"></i><span>{{ 'frontend.button.settings'|trans }}</span>
+                </a>
+            {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
+                <a class="header-functionality-entry" href="{{ path('factory_profile') }}">
+                    <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
+                </a>
+            {% endif %}
 
-        <a class="header-functionality-entry" href="{{ path('security_logout') }}">
-            <span>{{ 'frontend.button.logout'|trans }}</span>
-        </a>
+            <a class="header-functionality-entry" href="{{ path('security_logout') }}">
+                <span>{{ 'frontend.button.logout'|trans }}</span>
+            </a>
+        </div>
+        <div class="middle-line"></div>
+        <div class="line-entry">
+            <span class="header-functionality-entry" >{{ app.user.username }}</span>
+            {% if is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
+                <span class="header-functionality-entry" >Factory: {{ app.user.factory ? app.user.factory.name : '' }}</span>    
+            {% endif %}
+        </div>
     </div>
 {% endspaceless %}
