@@ -157,4 +157,14 @@ class User extends BaseUser
     {
         return $this->hasRole(self::ROLE_CONTENT_USER);
     }
+
+    /**
+     * Is this factory admin user?
+     *
+     * @return bool
+     */
+    public function isFactoryAdmin()
+    {
+        return $this->hasRole(self::ROLE_FACTORY_ADMIN);
+    }
 }
