@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
+use Furniture\CommonBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\Taxon;
 
@@ -16,6 +17,11 @@ class ProductQuery
      * @var array|Factory[]
      */
     private $factories = [];
+
+    /**
+     * @var User
+     */
+    private $contentUser;
 
     /**
      * With taxon
@@ -119,5 +125,47 @@ class ProductQuery
     public function getFactories()
     {
         return array_values($this->factories);
+    }
+
+    /**
+     * With content user.
+     * Attention: Allowed only users with ROLE_CONTENT_USER role!
+     *
+     * @param User $user
+     *
+     * @return ProductQuery
+     */
+    public function withContentUser(User $user)
+    {
+        if (!$user->hasRole(User::ROLE_CONTENT_USER)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Can not use user "%s", because here not have a CONTENT_USER role.',
+                $user->getUsername()
+            ));
+        }
+
+        $this->contentUser = $user;
+
+        return $this;
+    }
+
+    /**
+     * Has content user?
+     *
+     * @return bool
+     */
+    public function hasContentUser()
+    {
+        return (bool) $this->contentUser;
+    }
+
+    /**
+     * Get content user
+     *
+     * @return User
+     */
+    public function getContentUser()
+    {
+        return $this->contentUser;
     }
 }

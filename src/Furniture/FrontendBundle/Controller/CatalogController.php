@@ -149,36 +149,24 @@ class CatalogController
 
         $factoryIds = [];
         if ($request->query->has('brand')) {
+            $factoryIds = $request->query->get('brand');
             $factoryQuery = new FactoryQuery();
-            $factoryQuery->withIds($request->query->get('brand'));
+            $factoryQuery->withIds($factoryIds);
             $factories = $this->factoryRepository->findBy($factoryQuery);
 
             $productQuery
                 ->withFactories($factories);
         }
-        
-//        /* Build product query */
-//        $page = $request->get('page', 1);
-//        $qBuilder = $this->productRepository->createQueryBuilder('p');
-//        $qBuilder->innerJoin('p.taxons', 'taxon')
-//                ->andWhere('taxon in ( :taxons )')
-//                ->setParameter('taxons', $childTaxons)
-//        ;
-//
-//        /* Factory filter */
-//        if( ($factory_ids = $request->get('brand', [])) && count($factory_ids) ){
-//            $factory_ids = array_map(function($v){ return (int)$v; }, $factory_ids);
-//
-//            $qBuilder
-//                    ->andWhere('p.factory in (:factories)')
-//                    ->setParameter('factories', $factory_ids)
-//                    ;
-//        }
+
+        /** @var \Furniture\CommonBundle\Entity\User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user->isContentUser()) {
+            $productQuery->withContentUser($user);
+        }
         
         /* Create product paginator */
         $products = $this->productRepository->findBy($productQuery);
-//        $products->setMaxPerPage(12);
-//        $products->setCurrentPage($page);
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
             'products' => $products, //Paginator object

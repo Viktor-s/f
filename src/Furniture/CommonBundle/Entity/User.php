@@ -144,7 +144,17 @@ class User extends BaseUser
         if($this->hasUserRelation($factoryRelations)){
             $this->factoryRelations->removeElement($factoryRelations);
         }
+
         return $this;
     }
-    
+
+    /**
+     * Is this content user?
+     *
+     * @return bool
+     */
+    public function isContentUser()
+    {
+        return $this->hasRole(self::ROLE_CONTENT_USER);
+    }
 }
