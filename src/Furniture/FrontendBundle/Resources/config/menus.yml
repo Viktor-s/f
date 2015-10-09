@@ -7,6 +7,7 @@ services:
             - @security.authorization_checker
             - @sylius.authorization_checker
             - @router
+            - @security.token_storage
 
     frontend.menu.header:
         class: Knp\Menu\MenuItem

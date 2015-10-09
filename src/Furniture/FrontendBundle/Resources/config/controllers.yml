@@ -75,6 +75,13 @@ services:
             - @security.token_storage
             - @router
             - @form.factory
+            
+    frontend.controller.factory.user_map:
+        class: Furniture\FrontendBundle\Controller\Profile\Factory\UserMapController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
 
     # Content user profile controllers
     frontend.controller.content_user.dashboard:

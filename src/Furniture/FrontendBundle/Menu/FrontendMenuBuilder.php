@@ -7,6 +7,7 @@ use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAut
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as SymfonyAuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FrontendMenuBuilder
 {
@@ -36,6 +37,11 @@ class FrontendMenuBuilder
     private $urlGenerator;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+    
+    /**
      * Construct
      *
      * @param FactoryInterface                     $factory
@@ -43,19 +49,22 @@ class FrontendMenuBuilder
      * @param SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker
      * @param RbacAuthorizationCheckerInterface    $rbacAuthorizationChecker
      * @param UrlGeneratorInterface                $urlGenerator
+     * @param TokenStorageInterface       $tokenStorage
      */
     public function __construct(
         FactoryInterface $factory,
         TranslatorInterface $translator,
         SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker,
         RbacAuthorizationCheckerInterface $rbacAuthorizationChecker,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->factory = $factory;
         $this->translator = $translator;
         $this->sfAuthorizationChecker = $sfAuthorizationChecker;
         $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
         $this->urlGenerator = $urlGenerator;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -67,16 +76,24 @@ class FrontendMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
+        if(!($user = $this->tokenStorage->getToken()->getUser()))
+        {
+            return $menu;
+        }
+        
         $menu
             ->addChild('home', [
                 'route' => 'homepage',
                 'label' => $this->translator->trans('frontend.menu_items.header.homepage')
             ]);
 
-        $factories = $menu->addChild('factories', [
-            'uri' => '#',
-            'label' => $this->translator->trans('frontend.menu_items.header.factories')
-        ]);
+        if($user->isContentUser())
+        {
+            $factories = $menu->addChild('factories', [
+                'uri' => '#',
+                'label' => $this->translator->trans('frontend.menu_items.header.factories')
+            ]);
+        }
         
         $products = $menu->addChild('products', [
             'uri' => '#',
@@ -93,20 +110,18 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.menu_items.header.compositions')
         ]);
 
-        $factories->addChild('factories', [
-            'uri' => '#',
-            'label' => $this->translator->trans('frontend.menu_items.header.factories')
-        ]);
+        if($user->isContentUser())
+        {
+            $specifications = $menu->addChild('specifications', [
+                'uri' => $this->urlGenerator->generate('specifications'),
+                'label' => $this->translator->trans('frontend.menu_items.header.specifications')
+            ]);
 
-        $specifications = $menu->addChild('specifications', [
-            'uri' => $this->urlGenerator->generate('specifications'),
-            'label' => $this->translator->trans('frontend.menu_items.header.specifications')
-        ]);
-
-        $specifications->addChild('buyers', [
-            'uri' => $this->urlGenerator->generate('specification_buyers'),
-            'label' => $this->translator->trans('frontend.menu_items.header.specification_buyers')
-        ]);
+            $specifications->addChild('buyers', [
+                'uri' => $this->urlGenerator->generate('specification_buyers'),
+                'label' => $this->translator->trans('frontend.menu_items.header.specification_buyers')
+            ]);
+        }
 
         return $menu;
     }
