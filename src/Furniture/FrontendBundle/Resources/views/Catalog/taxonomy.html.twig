@@ -15,7 +15,7 @@
                 <div class="banner-column col-sm-6">
                     <a href="{{ path('products', {category: taxon.permalink}) }}"
                        {% if taxon.path|length > 0 %}
-                       style="background-image: url({{ taxon.path|imagine_filter('s425x200') }}); background-size: cover;" class="mozaic-banner-entry type-3"
+                       style="; background-image: url({{ taxon.path|imagine_filter('s425x200') }}); background-size: cover;" class="mozaic-banner-entry type-3"
                        {% else %}
                        style="background-image: url(img/bags-3.jpg); background-size: cover;" class="mozaic-banner-entry type-3"
                        {% endif %}
