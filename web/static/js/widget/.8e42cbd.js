@@ -83,7 +83,7 @@ $.widget('furniture.variant', {
         
         for(name in filters){
             var value = filters[name];
-            this._inputs[name].find('option[value="'+filters[name]+'"]').prop('selected', true);
+            this._inputs[name].find('option[value="'+value+'"]').prop('selected', true);
             this._inputs[name].find('select').prop('disabled', false);
         }
     },
