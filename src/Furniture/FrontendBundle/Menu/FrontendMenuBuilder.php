@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as SymfonyAuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
+use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 
 class FrontendMenuBuilder
 {
@@ -42,6 +44,17 @@ class FrontendMenuBuilder
     private $tokenStorage;
     
     /**
+     *
+     * @var TaxonRepository
+     */
+    private $taxonRepository;
+
+    /**
+     * @var TaxonomyRepository
+     */
+    private $taxonomyRepository;
+    
+    /**
      * Construct
      *
      * @param FactoryInterface                     $factory
@@ -57,7 +70,9 @@ class FrontendMenuBuilder
         SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker,
         RbacAuthorizationCheckerInterface $rbacAuthorizationChecker,
         UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        TaxonRepository $taxonRepository,
+        TaxonomyRepository $taxonomyRepository
     ) {
         $this->factory = $factory;
         $this->translator = $translator;
@@ -65,6 +80,8 @@ class FrontendMenuBuilder
         $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
+        $this->taxonRepository = $taxonRepository;
+        $this->taxonomyRepository = $taxonomyRepository;
     }
 
     /**
@@ -96,19 +113,21 @@ class FrontendMenuBuilder
         }
         
         $products = $menu->addChild('products', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('taxonomy'),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
         
-        $catalog = $products->addChild('catalog', [
-            'uri' => $this->urlGenerator->generate('taxonomy'),
-            'label' => $this->translator->trans('frontend.menu_items.header.catalog')
-        ]);
+        foreach($this->taxonomyRepository->findOneBy(['name' => 'Category'])->getTaxons() as $taxon){
+            $products->addChild('taxon_'.$taxon->getName(), [
+                'uri' => $this->urlGenerator->generate('products', ['category' => $taxon->getPermalink()]),
+                'label' => $taxon->getName()
+            ]);
+        }
         
-        $catalog = $products->addChild('Compositions', [
+        /*$catalog = $menu->addChild('Compositions', [
             'uri' => 'compositions',
             'label' => $this->translator->trans('frontend.menu_items.header.compositions')
-        ]);
+        ]);*/
 
         if($user->isContentUser())
         {
@@ -117,7 +136,7 @@ class FrontendMenuBuilder
                 'label' => $this->translator->trans('frontend.menu_items.header.specifications')
             ]);
 
-            $specifications->addChild('buyers', [
+            $menu->addChild('buyers', [
                 'uri' => $this->urlGenerator->generate('specification_buyers'),
                 'label' => $this->translator->trans('frontend.menu_items.header.specification_buyers')
             ]);

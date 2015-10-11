@@ -8,6 +8,8 @@ services:
             - @sylius.authorization_checker
             - @router
             - @security.token_storage
+            - @sylius.repository.taxon
+            - @sylius.repository.taxonomy
 
     frontend.menu.header:
         class: Knp\Menu\MenuItem
