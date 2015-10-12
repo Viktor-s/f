@@ -58,6 +58,19 @@
                         <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
                     </div>
                 {% endif %}
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
+                    <div class="col-sm-10">
+                        <a class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+
+                        {% if not specification.finished %}
+                            <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                        {% endif %}
+
+                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

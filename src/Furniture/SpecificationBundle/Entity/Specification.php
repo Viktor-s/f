@@ -268,6 +268,16 @@ class Specification
     }
 
     /**
+     * Is finished
+     *
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->finishedAt ? true : false;
+    }
+
+    /**
      * Get finished at
      *
      * @return \DateTime

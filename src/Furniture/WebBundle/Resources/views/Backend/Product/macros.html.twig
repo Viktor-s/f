@@ -78,15 +78,15 @@
 
 
             {# Retail Price #}
-            {% if not product.hasOptions %}
+            {#{% if not product.hasOptions %}#}
                 <td class="retail-price">
                     {{ product.masterVariant.price|sylius_price }}
                 </td>
-            {% else %}
-                <td class="retail-price text-muted">
-                    <em>{{ 'sylius.na'|trans }}</em>
-                </td>
-            {% endif %}
+            {#{% else %}#}
+                {#<td class="retail-price text-muted">#}
+                    {#<em>{{ 'sylius.na'|trans }}</em>#}
+                {#</td>#}
+            {#{% endif %}#}
 
             <td class="updated-at">
                 {{ product.updatedAt|date('Y/m/d') }}

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
+    <div class="information-blocks" style="position: relative;">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#opened" aria-controls="opened" role="tab" data-toggle="tab">{{ 'frontend.opened'|trans }}</a>
@@ -20,9 +20,10 @@
             </li>
         </ul>
 
+        <a href="{{ path('specification_create') }}" class="btn btn-success" style="position: absolute; top: 0; right: 0;">{{ 'frontend.create'|trans }}</a>
+
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="opened">
-                <a href="{{ path('specification_create') }}">{{ 'frontend.create'|trans }}</a>
 
                 <table class="table table-bordered">
                     <thead>
@@ -45,10 +46,10 @@
                         <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>
                         <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
                         <td>
-                            <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                            <a href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
-                            <a href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
-                            <a href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                            <a class="btn btn-success btn-xs" href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                            <a class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                            <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                            <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                         </td>
                     </tr>
                     {% else %}
