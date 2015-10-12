@@ -8,5 +8,13 @@
 {% endblock %}
 
 {% block content %}
-    
+    <div class="information-blocks">
+        {{ knp_menu_render('frontend.factory_side', {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+        <div class="row">
+            <div class="col-md-12 information-entry">
+                {% block factory_side_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

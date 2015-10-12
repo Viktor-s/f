@@ -121,6 +121,14 @@ frontend:
     factory:
         posted: Posted on :created
 
+    factory_side:
+        menu:
+            general: General
+            collections: Collections
+            work_info: Work info
+            contacts: Contacts
+            circulars: Circulars
+
     menu_items:
         footer:
             sitemap: Sitemap
