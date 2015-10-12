@@ -130,12 +130,12 @@ frontend:
 
         header:
             homepage: Home
-            factories: Factories
+            factories: Factory
             products: Products
             catalog: Catalog
             compositions: Compositions
-            specifications: Specifications
-            specification_buyers: Buyers
+            specifications: Specification
+            specification_buyers: Client
 
     login:
         username: Username
