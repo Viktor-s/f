@@ -23,8 +23,6 @@ class UserType extends BaseUserType
             ->add('factory', 'entity', [
                 'class' => Factory::class,
                 'multiple' => false,
-                'empty_data'  => null,
-                'data' => null,
                 'required' => false
             ]);
 
