@@ -135,6 +135,30 @@ class Factory extends AbstractTranslatable
     }
     
     /**
+     * Get short description
+     *
+     * @return string
+     */
+    public function getShortDescription()
+    {
+        return $this->translate()->getShortDescription();
+    }
+    
+    /**
+     * Set short description
+     *
+     * @param string $description
+     *
+     * @return Factory
+     */
+    public function setShortDescription($description)
+    {
+        $this->translate()->setShortDescription($description);
+
+        return $this;
+    }
+    
+    /**
      * Is has images?
      *
      * @return bool

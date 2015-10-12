@@ -1,0 +1,9 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}general replace to trans :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.general'|trans }}</a>
+{% endblock %}

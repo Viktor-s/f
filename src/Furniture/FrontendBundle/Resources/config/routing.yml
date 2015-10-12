@@ -118,6 +118,11 @@ factory_profile:
     resource: @FrontendBundle/Resources/config/routing/factory_profile.yml
     prefix: /{_locale}/profile/factory
 
+# Factory site side
+factory_side:
+    resource: @FrontendBundle/Resources/config/routing/factory_side.yml
+    prefix: /{_locale}/factory
+
 # Content user profile
 content_user_profile:
     resource: @FrontendBundle/Resources/config/routing/content_user_profile.yml

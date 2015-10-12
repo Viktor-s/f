@@ -107,7 +107,7 @@ class FrontendMenuBuilder
         if($user->isContentUser())
         {
             $factories = $menu->addChild('factories', [
-                'uri' => '#',
+                'uri' => $this->urlGenerator->generate('factory_side_list'),
                 'label' => $this->translator->trans('frontend.menu_items.header.factories')
             ]);
         }

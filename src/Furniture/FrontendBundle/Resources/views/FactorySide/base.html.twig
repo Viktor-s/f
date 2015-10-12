@@ -1,0 +1,12 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ 'frontend.title.factory_side'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('content_user_profile') }}">{{ 'frontend.title.factory_side'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    
+{% endblock %}

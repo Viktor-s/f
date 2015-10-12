@@ -98,6 +98,8 @@ frontend:
         default_relation: Default relation
         view: View
         taxonomy: Categories
+        factory_side: Factory
+        general: General
 
     button:
         settings: Settings

@@ -25,6 +25,12 @@ class FactoryTranslation extends AbstractTranslation
     protected $description;
     
     /**
+     *
+     * @var string
+     */
+    protected $shortDescription;
+    
+    /**
      * 
      * @return integer
      */
@@ -65,6 +71,24 @@ class FactoryTranslation extends AbstractTranslation
      */
     public function setDescription($description){
         $this->description = $description;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getShortDescription(){
+        return $this->shortDescription;
+    }
+    
+    /**
+     * 
+     * @param string $description
+     * @return \Furniture\FactoryBundle\Entity\FactoryTranslation
+     */
+    public function setShortDescription($description){
+        $this->shortDescription = $description;
         return $this;
     }
     
