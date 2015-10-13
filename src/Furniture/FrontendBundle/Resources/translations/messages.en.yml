@@ -54,6 +54,8 @@ frontend:
     coefficient: Coefficient
     dumping: Dumping
     sale: Sale
+    contact: Contact
+    address: Address
     user_relations: User relations
     user_requests: User requests
     to_user_requests: Requests to user

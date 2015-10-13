@@ -17,6 +17,8 @@
             <tr>
                 <th>{{ 'frontend.name'|trans }}</th>
                 <th>{{ 'frontend.created_at'|trans }}</th>
+                <th>{{ 'frontend.contact'|trans }}</th>
+                <th>{{ 'frontend.address'|trans }}</th>
                 <th>{{ 'frontend.sale'|trans }}</th>
                 <th>{{ 'frontend.actions'|trans }}</th>
             </tr>
@@ -25,17 +27,34 @@
             <tbody>
             {% for buyer in buyers %}
                 <tr>
-                    <td>{{ buyer }}</td>
-                    <td>{{ buyer.createdAt.format('d M Y H:i') }}</td>
+                    <td>
+                        {{ buyer }}
+                    </td>
+
+                    <td>
+                        {{ buyer.createdAt.format('d M Y H:i') }}
+                    </td>
+
+                    <td>
+                        {{ buyer.email }}
+                        <br />
+                        {{ buyer.phone }}
+                    </td>
+
+                    <td>
+                        {{ buyer.address }}
+                    </td>
+
                     <td>{{ buyer.sale|default('0') }}%</td>
                     <td>
-                        <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                        <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                        <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
+                        <br />
+                        <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">
+                    <td colspan="6">
                         {{ 'frontend.buyers_not_found'|trans }}
                         <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
                     </td>

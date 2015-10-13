@@ -1,0 +1,48 @@
+furniture_backend_posts:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.post:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Post:index.html.twig
+
+furniture_backend_post:
+    path: /{id}
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.post:showAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Post:show.html.twig
+
+furniture_backend_post_create:
+    path: /create
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.post:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Post:create.html.twig
+            form: post
+            redirect: furniture_backend_posts
+
+furniture_backend_post_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.post:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Post:update.html.twig
+            form: post
+            redirect: furniture_backend_posts
+
+furniture_backend_post_delete:
+    path: /{id}/delete
+    methods: [ GET, POST, DELETE ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.post:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_posts
+

@@ -36,6 +36,7 @@ class AppKernel extends Kernel
             new \Furniture\FactoryBundle\FurnitureFactoryBundle(),
             new \Furniture\FrontendBundle\FrontendBundle(),
             new \Furniture\SpecificationBundle\SpecificationBundle(),
+            new \Furniture\PostBundle\PostBundle(),
 
             new \Furniture\FixturesBundle\FixturesBundle(),
 

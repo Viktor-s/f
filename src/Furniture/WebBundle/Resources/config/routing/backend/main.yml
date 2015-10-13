@@ -186,3 +186,7 @@ furniture_backend_factory:
 furniture_backend_specification:
     resource: @SyliusWebBundle/Resources/config/routing/backend/specification.yml
     prefix: /specification
+
+furniture_backend_post:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/post.yml
+    prefix: /post

@@ -1,0 +1,61 @@
+Furniture\PostBundle\Entity\Post:
+    type: entity
+    table: posts
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        displayName:
+            type: string
+            name: display_name
+
+        slug:
+            type: string
+            name: slug
+
+        type:
+            type: smallint
+            name: type
+
+        createdAt:
+            type: datetime
+            name: created_at
+
+        updatedAt:
+            type: datetime
+            name: updated_at
+
+        publishedAt:
+            type: datetime
+            name: published_at
+
+    manyToOne:
+        creator:
+            targetEntity: Furniture\CommonBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                name: factry_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE
+
+    oneToMany:
+        images:
+            targetEntity: Furniture\PostBundle\Entity\PostImage
+            mappedBy: post
+            cascade: [ persist ]
+
+    lifecycleCallbacks:
+        preUpdate: [ onUpdate ]

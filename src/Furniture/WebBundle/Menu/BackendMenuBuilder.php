@@ -244,6 +244,13 @@ class BackendMenuBuilder extends MenuBuilder
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.routes', $section)));
         }
 
+        if ($this->authorizationChecker->isGranted('furniture.post.index')) {
+            $child->addChild('Posts', [
+                'route' => 'furniture_backend_posts',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-random']
+            ])->setLabel('Posts');
+        }
+
         if (!$child->hasChildren()) {
             $menu->removeChild('content');
         }

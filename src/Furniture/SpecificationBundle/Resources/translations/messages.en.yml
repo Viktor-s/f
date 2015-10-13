@@ -4,6 +4,10 @@ specification:
             first_name: First name
             second_name: Second name
             sale: Sale
+            email: Email
+            phone: Phone
+            address: Address
+            photo: Photo
 
     form:
         buyer: Buyer

@@ -147,6 +147,34 @@ specification:
         delete: Delete
         show: Show
 
+post:
+    header:
+        index: Posts
+        edit: Edit
+        create: Create
+
+    breadcrumb:
+        index: Posts
+        create: Create
+        edit: Edit
+
+    table:
+        id: Id
+        creator: Creator
+        factory: Factory
+        created_at: Created
+        updated_at: Updated
+        published_at: Published
+        name: Name
+        actions: Actions
+        slug: Slug
+
+    form:
+        display_name: Display name
+        published: Published
+        factory: Factory
+        slug: Slug
+
 sylius:
     product:
         show_deleted_variants: Show deleted

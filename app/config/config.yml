@@ -244,6 +244,14 @@ sylius_resource:
             classes:
                 model: Furniture\SpecificationBundle\Entity\Specification
 
+        furniture.post:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\PostBundle\Entity\Post
+                translation:
+                    model: Furniture\PostBundle\Entity\PostTranslation
+                    mapping: ~
+
 liip_imagine:
     filter_sets:
         s200x250:

@@ -1,0 +1,67 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>Posts</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{ buttons.create(path('furniture_backend_post_create'), 'Create') }}
+        </div>
+
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'post.header.index'|trans|raw }}</h1>
+    </div>
+
+    {{ pagination(posts) }}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ 'post.table.id'|trans }}</th>
+            <th>{{ 'post.table.creator'|trans }}</th>
+            <th>{{ 'post.table.factory'|trans }}</th>
+            <th>{{ 'post.table.created_at'|trans }}</th>
+            <th>{{ 'post.table.name'|trans }}</th>
+            <th>{{ 'post.table.slug'|trans }}</th>
+            <th>{{ 'post.table.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.creator }}</td>
+                <td>{{ post.factory }}</td>
+
+                <td>
+                    {{ post.createdAt.format('Y/m/d H:i') }}
+                    <br />
+                    {{ post.updatedAt.format('Y/m/d H:i') }}
+                    <br />
+                    {{ post.publishedAt.format('Y/m/d H:i') }}
+                </td>
+
+                <td>{{ post.displayName }}</td>
+                <td>{{ post.slug }}</td>
+                <td>
+                    <div class="pull-right">
+                        {{ buttons.show(path('furniture_backend_post', {'id': post.id})) }}
+                        {{ buttons.edit(path('furniture_backend_post_update', {'id': post.id})) }}
+                        {{ buttons.delete(path('furniture_backend_post_delete', {'id': post.id})) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ pagination(posts) }}
+{% endblock %}

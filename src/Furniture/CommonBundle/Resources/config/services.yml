@@ -1,3 +1,9 @@
 parameters:
     stof_doctrine_extensions.listener.softdeleteable.class: Furniture\CommonBundle\Gedmo\SoftDeletable\SoftDeletableListener
 
+services:
+    doctrine.subscriber.uplodable:
+        class: Furniture\CommonBundle\Uploadable\UploadableSubscriber
+        arguments: [ @sylius.image_uploader ]
+        tags:
+            - { name: doctrine.event_subscriber }

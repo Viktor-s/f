@@ -1,0 +1,341 @@
+<?php
+
+namespace Furniture\PostBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Furniture\CommonBundle\Entity\User;
+use Furniture\FactoryBundle\Entity\Factory;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Post extends AbstractTranslatable
+{
+    const TYPE_POST     = 1;
+    const TYPE_CIRCULAR = 2;
+
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection|PostTranslation[]
+     *
+     * @Assert\Valid
+     */
+    protected $translations;
+
+    /**
+     * The name for display on administer pages
+     *
+     * @var string
+     *
+     * @Assert\NotBlank()
+     */
+    private $displayName;
+
+    /**
+     * @var string
+     */
+    private $slug;
+
+    /**
+     * @var int
+     */
+    private $type = self::TYPE_POST;
+
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
+     * @var User
+     */
+    private $creator;
+
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $publishedAt;
+
+    /**
+     * @var Collection|PostImage[]
+     */
+    private $images;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->images = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+        $this->publishedAt = new \DateTime();
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set display name
+     *
+     * @param string $name
+     *
+     * @return Post
+     */
+    public function setDisplayName($name)
+    {
+        $this->displayName = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get display name
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Post
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set type
+     *
+     * @param int $type
+     *
+     * @return Post
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set creator
+     *
+     * @param User $creator
+     *
+     * @return Post
+     */
+    public function setCreator(User $creator)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return User
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * Set factory
+     *
+     * @param Factory $factory
+     *
+     * @return Post
+     */
+    public function setFactory(Factory $factory = null)
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Get factory
+     *
+     * @return Factory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Get created at
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set published at
+     *
+     * @param \DateTime $publishedAt
+     *
+     * @return Post
+     */
+    public function setPublishedAt(\DateTime $publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get published at
+     *
+     * @return \DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * Set images
+     *
+     * @param Collection|PostImage[] $images
+     *
+     * @return Post
+     */
+    public function setImages(Collection $images)
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * Get images
+     *
+     * @return Collection|PostImage[]
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Has image
+     *
+     * @param PostImage $image
+     *
+     * @return bool
+     */
+    public function hasImage(PostImage $image)
+    {
+        return $this->images->contains($image);
+    }
+
+    /**
+     * Add image
+     *
+     * @param PostImage $image
+     *
+     * @return Factory
+     */
+    public function addImage(PostImage $image)
+    {
+        if(!$this->hasImage($image)){
+            $image->setPost($this);
+            $this->images->add($image);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param PostImage $image
+     *
+     * @return Factory
+     */
+    public function removeImage(PostImage $image)
+    {
+        if($this->hasImage($image)){
+            $this->images->removeElement($image);
+        }
+
+        return $this;
+    }
+
+    /**
+     * On update
+     */
+    public function onUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+}

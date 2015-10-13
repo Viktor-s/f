@@ -1,0 +1,13 @@
+Furniture\PostBundle\Entity\PostImage:
+    type: entity
+    table: post_image
+
+    manyToOne:
+        post:
+            targetEntity: Furniture\PostBundle\Entity\Post
+            inversedBy: images
+            joinColumn:
+                name: post_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

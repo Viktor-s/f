@@ -161,6 +161,13 @@ sylius_rbac:
         furniture.specification.show: show specification
         furniture.specification.delete: delete specifications
 
+        furniture.manage.posts: manage posts
+        furniture.post.index: list posts
+        furniture.post.show: show post
+        furniture.post.create: create post
+        furniture.post.update: update post
+        furniture.post.delete: delete post
+
         sylius.product.variantGrouEdit: variants group update
     permissions_hierarchy:
         furniture.manage.factories:
@@ -233,6 +240,13 @@ sylius_rbac:
             - furniture.specification.show
             - furniture.specification.delete
 
+        furniture.manage.posts:
+            - furniture.post.show
+            - furniture.post.create
+            - furniture.post.index
+            - furniture.post.update
+            - furniture.post.delete
+
     security_roles:
         ROLE_CONTENT_USER: It's our Architect/Designer/Retailer, factory user such as factory manager or agent
         ROLE_FACTORY_ADMIN: It's our Factory administer
@@ -272,5 +286,6 @@ sylius_rbac:
                 - furniture.manage.factories
                 - furniture.manage.factories.user_relations
                 - furniture.manage.specifications
+                - furniture.manage.posts
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

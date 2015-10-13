@@ -1,0 +1,23 @@
+Furniture\PostBundle\Entity\PostTranslation:
+    type: entity
+    table: post_translation
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        title:
+            type: string
+            name: title
+
+        shortDescription:
+            type: text
+            name: short_description
+
+        content:
+            type: text
+            name: content

@@ -46,6 +46,27 @@ class Buyer
     private $sale = 0;
 
     /**
+     * @var string
+     *
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @Assert\Length(max=255)
+     */
+    private $address;
+
+    /**
+     * @var string
+     *
+     * @Assert\Length(max=255)
+     */
+    private $phone;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -177,6 +198,78 @@ class Buyer
     public function hasSale()
     {
         return $this->sale > 0;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Buyer
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Buyer
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set phone number
+     *
+     * @param string $phone
+     *
+     * @return Buyer
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     /**
