@@ -32,6 +32,11 @@ class Factory extends AbstractTranslatable
     protected $images;
     
     /**
+     * @var FactoryLogoImage
+     */
+    protected $logoImage;
+    
+    /**
      * @var Collection
      */
     protected $products;
@@ -248,6 +253,28 @@ class Factory extends AbstractTranslatable
         return $this->images->first() ?: null;
     }
     
+    /**
+     * 
+     * @return \Furniture\FactoryBundle\Entity\FactoryLogoImage
+     */
+    public function getLogoImage()
+    {
+        return $this->logoImage;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\FactoryBundle\Entity\FactoryLogoImage $logo
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function setLogoImage(FactoryLogoImage $logo)
+    {
+        $logo->setFactory($this);
+        $this->logoImage = $logo;
+        return $this;
+    }
+
+
     /**
      * Has products
      *
