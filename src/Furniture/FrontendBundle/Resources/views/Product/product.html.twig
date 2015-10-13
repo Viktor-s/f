@@ -45,7 +45,7 @@
                                             {% for image in product.images %}
                                                 <div class="swiper-slide">
                                                     <div class="product-zoom-image">
-                                                        <img src="{{ image ? image.path|imagine_filter('sylius_large') : 'http://placehold.it/200x200' }}" alt="{{ product.name }}" data-zoom="{{ image ? image.path : 'http://placehold.it/200x200' }}" />
+                                                        <img src="{{ image ? image.path|imagine_filter('sylius_large') : '/img/200x200.png' }}" alt="{{ product.name }}" data-zoom="{{ image ? image.path : '/img/200x200.png' }}" />
                                                     </div>
                                                 </div>
                                             {% endfor %}

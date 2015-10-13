@@ -1,0 +1,14 @@
+{% block root %}
+{% spaceless %}
+    <div class="portfolio-navigation">
+    <div class="links-drop-down">
+        <div class="title">Select</div>
+        <div class="list">
+        {% for child in item.children %}
+            <a href="{{ child.uri }}">{{ child.label }}</a>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endspaceless %}
+{% endblock %}

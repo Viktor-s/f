@@ -15,6 +15,7 @@ class FactoryTranslationType extends AbstractResourceType
     {
         $builder
             ->add('description', 'textarea', array('attr' => array('class' => 'ckeditor')) )
+            ->add('shortDescription', 'textarea')
             ;
     }
 

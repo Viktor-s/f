@@ -38,3 +38,10 @@ services:
         factory_method: createContentUserProfileMenu
         tags:
             - { name: knp_menu.menu, alias: frontend.content_user_profile }
+            
+    frontend.menu.factory_side:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createFactorySideMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.factory_side }

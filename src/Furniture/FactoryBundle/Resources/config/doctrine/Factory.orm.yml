@@ -46,3 +46,7 @@ Furniture\FactoryBundle\Entity\Factory:
             targetEntity: Furniture\FactoryBundle\Entity\FactoryDefaultRelation
             mappedBy: factory
             cascade: [ persist ]
+        logoImage:
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryLogoImage
+            mappedBy: factory
+            cascade: [ persist ]

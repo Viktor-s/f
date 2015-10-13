@@ -1,0 +1,13 @@
+factory_side_list:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory_section:factories
+    
+factory_side_general:
+    path: /{id}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory_section:general

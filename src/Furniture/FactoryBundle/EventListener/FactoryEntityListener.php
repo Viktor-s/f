@@ -42,6 +42,15 @@ class FactoryEntityListener extends ContainerAware {
             
         }
         
+        if( $logo = $factory->getLogoImage() )
+        {
+            $this->getImageUploader()->upload($logo);
+            if( $logo->getPath()  === null)
+            {
+                
+            }
+        }
+        
     }
     
 }

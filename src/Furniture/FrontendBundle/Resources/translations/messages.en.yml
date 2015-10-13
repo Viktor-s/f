@@ -31,7 +31,6 @@ frontend:
     quantity: Quantity
     finish: Finish
     click_to_edit: Click to edit
-    factory: Factory
     image: Image
     options: Options
     note: Note
@@ -100,6 +99,8 @@ frontend:
         default_relation: Default relation
         view: View
         taxonomy: Categories
+        factory_side: Factory
+        general: General
 
     button:
         settings: Settings
@@ -119,7 +120,15 @@ frontend:
             images: Images
             model: 3d model
     factory:
-        posted: Posted on :created
+        posted: Joined :created
+
+    factory_side:
+        menu:
+            general: General
+            collections: Collections
+            work_info: Work info
+            contacts: Contacts
+            circulars: Circulars
 
     menu_items:
         footer:

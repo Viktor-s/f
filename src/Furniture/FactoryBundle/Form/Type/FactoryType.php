@@ -6,6 +6,8 @@ use Furniture\FactoryBundle\Form\Type\FactoryTranslationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
+use Furniture\FactoryBundle\Entity\FactoryLogoImage;
 
 class FactoryType extends AbstractType
 {
@@ -25,7 +27,9 @@ class FactoryType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ))
-            ;
+            ->add('logoImage', new ImageType(FactoryLogoImage::class), [
+                'required' => false
+            ]);
     }
     
     /**

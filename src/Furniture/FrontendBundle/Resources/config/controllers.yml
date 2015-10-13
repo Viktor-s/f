@@ -109,3 +109,10 @@ services:
             - @security.token_storage
             - @router
             - @form.factory
+
+    frontend.controller.factory_section:
+        class: Furniture\FrontendBundle\Controller\FactoryController
+        arguments:
+            - @twig
+            - @frontend.repository.factory
+            - @security.token_storage

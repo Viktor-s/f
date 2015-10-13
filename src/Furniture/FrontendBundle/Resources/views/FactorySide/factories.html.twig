@@ -1,0 +1,33 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}general replace to trans :: {{ parent() }}{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-md-12 information-entry">
+                <div class="blog-landing-box type-3 columns-1">
+
+
+                    {% for factory in factries %}
+                        <div class="blog-entry">
+                            {% if factory.hasImages() %}
+                                <a class="image hover-class-1" href="{{ path('factory_side_general', {'id':factory.id}) }}"><img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" />
+                            {% else %}
+                                <a class="image hover-class-1" href="{{ path('factory_side_general', {'id':factory.id}) }}"><img src="{{ '/img/201x203.png' }}" alt="{{ factory.translate.name }}" />
+                            {% endif %}
+                                    <span class="hover-label">Show</span>
+                                </a>
+                            <div class="content">
+                                <a class="title" href="{{ path('factory_side_general', {'id':factory.id}) }}">{{ factory.translate.name }}</a>
+                                <div class="description">{{ factory.shortDescription }}</div>
+                                <a class="readmore" href="{{ path('factory_side_general', {'id':factory.id}) }}">Show</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

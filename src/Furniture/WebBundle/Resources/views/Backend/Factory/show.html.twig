@@ -24,7 +24,13 @@
 
         <div class="clearfix"></div>
     </div>
-
+    <div class="row">
+        <div class="col-md-8">
+            <a href="{{ factory.logoImage.path|imagine_filter('sylius_large') }}" title="{{ factory.name }}" class="thumbnail">
+                <img src="{{ factory.logoImage.path|imagine_filter('sylius_small') }}" alt="{{ factory.name }}" />
+            </a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-8">
             {{ factory.description | raw }}

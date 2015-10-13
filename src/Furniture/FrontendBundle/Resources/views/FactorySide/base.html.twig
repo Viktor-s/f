@@ -1,0 +1,20 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ 'frontend.title.factory_side'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('content_user_profile') }}">{{ 'frontend.title.factory_side'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        {{ knp_menu_render('frontend.factory_side', {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+        <div class="row">
+            <div class="col-md-12 information-entry">
+                {% block factory_side_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

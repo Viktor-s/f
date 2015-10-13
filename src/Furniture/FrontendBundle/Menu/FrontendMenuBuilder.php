@@ -107,7 +107,7 @@ class FrontendMenuBuilder
         if($user->isContentUser())
         {
             $factories = $menu->addChild('factories', [
-                'uri' => '#',
+                'uri' => $this->urlGenerator->generate('factory_side_list'),
                 'label' => $this->translator->trans('frontend.menu_items.header.factories')
             ]);
         }
@@ -228,6 +228,43 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.factory_relations')
         ]);
 
+        return $menu;
+    }
+    
+    /**
+     * Create menu for factory side page
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createFactorySideMenu()
+    {
+        $menu = $this->factory->createItem('root');
+        
+        $menu->addChild('general', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.factory_side.menu.general')
+        ]);
+        
+        $menu->addChild('collections', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.factory_side.menu.collections')
+        ]);
+        
+        $menu->addChild('work_info', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
+        ]);
+        
+        $menu->addChild('contacts', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.factory_side.menu.contacts')
+        ]);
+        
+        $menu->addChild('circulars', [
+            'uri' => '#',
+            'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
+        ]);
+        
         return $menu;
     }
 }
