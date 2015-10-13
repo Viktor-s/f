@@ -14,7 +14,7 @@
                             {% if factory.hasImages() %}
                                 <a class="image hover-class-1" href="{{ path('factory_side_general', {'id':factory.id}) }}"><img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" />
                             {% else %}
-                                <a class="image hover-class-1" href="{{ path('factory_side_general', {'id':factory.id}) }}"><img src="{{ 'http://placehold.it/201x203' }}" alt="{{ factory.translate.name }}" />
+                                <a class="image hover-class-1" href="{{ path('factory_side_general', {'id':factory.id}) }}"><img src="{{ '/img/201x203.png' }}" alt="{{ factory.translate.name }}" />
                             {% endif %}
                                     <span class="hover-label">Show</span>
                                 </a>

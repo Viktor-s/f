@@ -1,7 +1,7 @@
 <div class="row product">
     <div class="col-md-3">
         <a href="{{ path(product) }}" class="thumbnail">
-            <img src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : 'http://placehold.it/200x200' }}" alt="{{ product.name }}" />
+            <img src="{{ product.image ? product.image.path|imagine_filter('sylius_medium') : '/img/200x200.png' }}" alt="{{ product.name }}" />
         </a>
     </div>
     <div class="col-md-9">
