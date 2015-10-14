@@ -69,7 +69,14 @@ class GroupVariantFilterType extends AbstractType
                 'type' => new ProuctPartMaterialVariantsGroupEditType(),
                 'label' => false,
                 'allow_add' => false,
-                ]);
+                ])
+                
+            ->add('skuPrice', 'integer', [
+                'label' => 'Price',
+                'data' => null,
+                'required' => false
+            ])
+                        ;
     }
     
     public function getName() {

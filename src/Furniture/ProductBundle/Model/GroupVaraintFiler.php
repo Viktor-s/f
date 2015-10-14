@@ -34,6 +34,8 @@ class GroupVaraintFiler {
     private $productPartMaterialVariants;
     private $productPartMaterial;
 
+    private $skuPrice = null;
+    
     /**
      * 
      * @param Product $product
@@ -94,11 +96,33 @@ class GroupVaraintFiler {
         $this->productPartMaterialVariants = $productPartMaterialVariants;
         return $this;
     }
+    
+    public function setSkuPrice($skuPrice)
+    {
+        $this->skuPrice = $skuPrice;
+        return $this;
+    }
+    
+    public function getSkuPrice()
+    {
+        return $this->skuPrice;
+    }
 
+    public function getSkuPriceCent()
+    {
+        return (int)ceil($this->skuPrice*100);
+    }
+    
     public function getFilteredVariants() {
         $filtered = new ArrayCollection();
 
         foreach ($this->getProduct()->getVariants() as $variant) {
+            
+            if($this->getSkuPrice() !== null && $variant->getPrice() != $this->getSkuPriceCent())
+            {
+                continue;
+            }
+            
             foreach ($variant->getSkuOptions() as $skuOption) {
                 $callbackForExists = function ($k, $e) use ($skuOption) {
                     return $e->getId() == $skuOption->getId();

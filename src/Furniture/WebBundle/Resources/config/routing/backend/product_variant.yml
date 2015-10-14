@@ -36,10 +36,11 @@ sylius_backend_product_variant_delete:
 
 sylius_backend_product_variant_generate:
     path: /generate
-    methods: [PATCH]
+    methods: [PATCH,POST,GET]
     defaults:
         _controller: sylius.controller.product_variant:generateAction
         _sylius:
+            template: SyliusWebBundle:Backend/ProductVariant:generate.html.twig
             redirect: referer
 
 sylius_backend_product_variant_restore:

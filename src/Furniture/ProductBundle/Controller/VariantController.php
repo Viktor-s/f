@@ -7,6 +7,8 @@ use Sylius\Bundle\ProductBundle\Controller\VariantController as BaseVariantContr
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Furniture\ProductBundle\Model\GroupVaraintFilter;
+use Furniture\ProductBundle\Form\Type\GroupVariantFilterType;
 
 class VariantController extends BaseVariantController
 {
@@ -106,15 +108,29 @@ class VariantController extends BaseVariantController
 
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findProductOr404($productId);
-        $this->getGenerator()->generate($product);
-
-        $manager = $this->get('sylius.manager.product');
-        $manager->persist($product);
-        $manager->flush();
+        
+        $form = $this->createForm(new GroupVariantFilterType, new \Furniture\ProductBundle\Model\GroupVaraintFiler($product) );
+        
+        $form->handleRequest($request);
+        
+        if ($form->isValid()) {
+            $filter = $form->getData();
+            $this->getGenerator()->generateByFilter($filter);
+            $manager = $this->get('sylius.manager.product');
+            $manager->persist($filter->getProduct());
+            $manager->flush();
+        }
 
         $this->flashHelper->setFlash('success', 'generate');
 
-        return $this->redirectHandler->redirectTo($product);
+        $view = $this
+                ->view([
+                    'product' => $product,
+                    'form' => $form->createView(),
+                ])
+                ->setTemplate($this->config->getTemplate('generate.html'));
+
+        return $this->handleView($view);
     }
     
 }

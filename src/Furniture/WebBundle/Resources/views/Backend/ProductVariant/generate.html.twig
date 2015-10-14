@@ -8,7 +8,7 @@
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
         <li><a href="{{ path('sylius_backend_product_index') }}">{{ 'sylius.breadcrumb.product.index'|trans }}</a></li>
         <li><a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
-        <li>{{ 'sylius.breadcrumb.edit'|trans }} variants</li>
+        <li>{{ 'sylius.breadcrumb.generate'|trans }} variants</li>
     </ol>
 {% endblock %}
 
@@ -154,79 +154,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="highlight">
-                All inputs supports ExpressionLanguage.
-                <a href="http://symfony.com/doc/current/components/expression_language/syntax.html"> language descripion </a>
-            </div>
-            <div class="highlight">
-                <pre>
-    Set the value or math formula to change the price.
-    Value example: 100
-    Math formula example: price+100 (where price is the current cost)
-                </pre>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.priceCalculator) }}
-                <div class="col-lg-8">
-                    {{ form_widget(form.priceCalculator) }}
-                </div>
-            </div><br/>
-            <hr/>
-            <div class="highlight">
-                <pre>
-    Set the value or math formula to change the width.
-    Value example: 100
-    Math formula example: width+100 (where width is the current value)
-                </pre>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.width) }}
-                <div class="col-lg-8">
-                    {{ form_widget(form.width) }}
-                </div>
-            </div><br/>
-            <hr/>
-            <div class="highlight">
-                <pre>
-    Set the value or math formula to change the height.
-    Value example: 100
-    Math formula example: height+100 (where height is the current value)
-                </pre>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.height) }}
-                <div class="col-lg-8">
-                    {{ form_widget(form.height) }}
-                </div>
-            </div><br/>
-            <hr/>
-            <div class="highlight">
-                <pre>
-    Set the value or math formula to change the depth.
-    Value example: 100
-    Math formula example: depth+100 (where depth is the current value)
-                </pre>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.depth) }}
-                <div class="col-lg-8">
-                    {{ form_widget(form.depth) }}
-                </div>
-            </div><br/>
-            <hr/>
-            <div class="highlight">
-                <pre>
-    Set the value or math formula to change the weight.
-    Value example: 100
-    Math formula example: weight+100 (where weight is the current value)
-                </pre>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.weight) }}
-                <div class="col-lg-8">
-                    {{ form_widget(form.weight) }}
-                </div>
-            </div>
+            
         </div>
     </div>
 
