@@ -1,0 +1,21 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (circulars ? 'circulars' : 'news'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    {% if circulars %}
+        <a href="{{ path('factory_side_circulars', {factory: factory.id}) }}">{{ 'frontend.title.circulars'|trans }}</a>
+    {% else %}
+        <a href="{{ path('factory_side_news', {factory: factory.id}) }}">{{ 'frontend.title.news'|trans }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-posts">
+        {% for post in posts %}
+            {% include 'FrontendBundle:FactorySide/Common:post_item.html.twig' with {post: post} %}
+        {% endfor %}
+    </div>
+{% endblock %}

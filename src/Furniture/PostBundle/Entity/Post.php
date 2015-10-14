@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Post extends AbstractTranslatable
 {
-    const TYPE_POST     = 1;
+    const TYPE_NEWS     = 1;
     const TYPE_CIRCULAR = 2;
 
     /**
@@ -43,7 +43,7 @@ class Post extends AbstractTranslatable
     /**
      * @var int
      */
-    private $type = self::TYPE_POST;
+    private $type = self::TYPE_NEWS;
 
     /**
      * @var Factory
@@ -76,6 +76,11 @@ class Post extends AbstractTranslatable
     private $images;
 
     /**
+     * @var Collection|PostFile[]
+     */
+    private $files;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -83,6 +88,7 @@ class Post extends AbstractTranslatable
         parent::__construct();
 
         $this->images = new ArrayCollection();
+        $this->files = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
         $this->publishedAt = new \DateTime();
@@ -329,6 +335,95 @@ class Post extends AbstractTranslatable
         }
 
         return $this;
+    }
+
+    /**
+     * Set files
+     *
+     * @param Collection|PostFile[] $files
+     *
+     * @return Post
+     */
+    public function setFiles(Collection $files)
+    {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    /**
+     * Get files
+     *
+     * @return Collection|PostFile[]
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * Has file?
+     *
+     * @param PostFile $file
+     *
+     * @return bool
+     */
+    public function hasFile(PostFile $file)
+    {
+        return $this->files->contains($file);
+    }
+
+    /**
+     * Add file
+     *
+     * @param PostFile $file
+     *
+     * @return Post
+     */
+    public function addFile(PostFile $file)
+    {
+        if (!$this->hasFile($file)) {
+            $file->setPost($this);
+            $this->files->add($file);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove file
+     *
+     * @param PostFile $file
+     *
+     * @return Post
+     */
+    public function removeFile(PostFile $file)
+    {
+        if ($this->hasFile($file)) {
+            $this->files->removeElement($file);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Is news?
+     *
+     * @return bool
+     */
+    public function isNews()
+    {
+        return $this->type == self::TYPE_NEWS;
+    }
+
+    /**
+     * Is circular?
+     *
+     * @return bool
+     */
+    public function isCircular()
+    {
+        return $this->type == self::TYPE_CIRCULAR;
     }
 
     /**

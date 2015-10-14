@@ -57,5 +57,12 @@ Furniture\PostBundle\Entity\Post:
             mappedBy: post
             cascade: [ persist ]
 
+        files:
+            targetEntity: Furniture\PostBundle\Entity\PostFile
+            mappedBy: post
+            cascade: [ persist ]
+
     lifecycleCallbacks:
         preUpdate: [ onUpdate ]
+
+    uniqueConstraints:

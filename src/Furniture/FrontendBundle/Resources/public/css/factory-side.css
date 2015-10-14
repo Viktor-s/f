@@ -1,0 +1,78 @@
+.factory-posts .post-item
+{
+    padding: 10px 15px;
+    margin: 10px 15px;
+}
+
+.factory-posts .post-item.with-image .image
+{
+    float: left;
+    width: 170px;
+}
+
+.factory-posts .post-item.with-image .post-info
+{
+    padding-left: 170px;
+}
+
+.factory-posts .post-item.with-image .image img
+{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.factory-posts .post-item .title
+{
+    font-weight: 600;
+    font-size: 1.3em;
+    line-height: 1.8em;
+}
+
+.factory-posts .post-item .title a
+{
+    color: #222;
+}
+
+.factory-posts .post-item .short-description
+{
+    color: #555;
+    line-height: 1.3em;
+    text-align: justify;
+}
+
+.factory-post.with-images .images
+{
+    width: 170px;
+    float: left;
+}
+
+.factory-post.with-images .content
+{
+    padding-left: 180px;
+}
+
+.factory-post h1
+{
+    font-weight: bold;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.factory-post .content
+{
+    font-size: 1.15em;
+    line-height: 1.5em;
+    text-align: justify;
+}
+
+.factory-post .files
+{
+    float: right;
+    margin: 20px 0 10px 0;
+}
+
+.factory-post .files .file
+{
+    line-height: 1.8em;
+}

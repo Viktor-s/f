@@ -32,7 +32,7 @@ class LoadPostData extends DataFixture
                 ->setSlug($slug)
                 ->setCreator($syliusUser)
                 ->setFactory($factory)
-                ->setType(Post::TYPE_POST);
+                ->setType(Post::TYPE_NEWS);
 
             $translation = new PostTranslation();
             $translation

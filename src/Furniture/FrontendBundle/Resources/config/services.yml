@@ -1,1 +1,6 @@
 services:
+    twig.extension.frontend:
+        class: Furniture\FrontendBundle\Twig\FrontendExtension
+        arguments: [ @knp_menu.helper, @frontend.menu_builder ]
+        tags:
+            - { name: twig.extension }

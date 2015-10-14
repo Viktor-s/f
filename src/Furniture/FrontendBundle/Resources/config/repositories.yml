@@ -30,3 +30,7 @@ services:
     frontend.repository.factory_user_relation:
         class: Furniture\FrontendBundle\Repository\FactoryUserRelationRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.post:
+        class: Furniture\FrontendBundle\Repository\PostRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]

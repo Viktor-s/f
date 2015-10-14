@@ -115,4 +115,5 @@ services:
         arguments:
             - @twig
             - @frontend.repository.factory
+            - @frontend.repository.post
             - @security.token_storage

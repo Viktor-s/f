@@ -1,0 +1,47 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}{{ post.translate.title }} :: {{ 'frontend.title.news'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    {% if post.circular %}
+        <a href="{{ path('factory_side_circulars', {factory: factory.id}) }}">{{ 'frontend.title.circulars'|trans }}</a>
+    {% else %}
+        <a href="{{ path('factory_side_news', {factory: factory.id}) }}">{{ 'frontend.title.news'|trans }}</a>
+    {% endif %}
+
+    <a href="#">{{ post.translate.title }}</a>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-post{% if post.images|length > 0 %} with-images{% endif %}">
+        <h1>{{ post.translate.title }}</h1>
+
+        {% if post.images|length > 0 %}
+            <div class="images">
+                {% for image in post.images %}
+                    <img src="{{ image.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="content">{{ post.translate.content|raw }}</div>
+
+        {% if post.images|length > 0 %}
+            <div class="clearfix"></div>
+        {% endif %}
+
+        {% if post.circular and post.files|length > 0 %}
+            <div class="files">
+                {% for file in post.files %}
+                    <div class="file">
+                        <a href="/media/image/{{ file.path }}">{{ 'frontend.downlod_file_with_number'|trans({':number': loop.index}) }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="clearfix"></div>
+        {% endif %}
+    </div>
+{% endblock %}

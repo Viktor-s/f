@@ -24,22 +24,26 @@
     <table class="table">
         <thead>
         <tr>
-            <th>{{ 'post.table.id'|trans }}</th>
-            <th>{{ 'post.table.creator'|trans }}</th>
-            <th>{{ 'post.table.factory'|trans }}</th>
-            <th>{{ 'post.table.created_at'|trans }}</th>
-            <th>{{ 'post.table.name'|trans }}</th>
-            <th>{{ 'post.table.slug'|trans }}</th>
-            <th>{{ 'post.table.actions'|trans }}</th>
+            <th class="text-center">{{ 'post.table.id'|trans }}</th>
+            <th class="text-center">{{ 'post.table.creator'|trans }}</th>
+            <th class="text-center">{{ 'post.table.factory'|trans }}</th>
+            <th class="text-center">{{ 'post.table.created_at'|trans }}</th>
+            <th class="text-center">{{ 'post.table.name'|trans }}</th>
+            <th class="text-center">{{ 'post.table.slug'|trans }}</th>
+            <th class="text-center">{{ 'post.table.actions'|trans }}</th>
         </tr>
         </thead>
 
         <tbody>
         {% for post in posts %}
-            <tr>
+            <tr class="text-center">
                 <td>{{ post.id }}</td>
                 <td>{{ post.creator }}</td>
-                <td>{{ post.factory }}</td>
+                <td>
+                    {{ post.factory }}
+
+                    <div class="post-type">{{ post.circular ? 'Circular' : 'News' }}</div>
+                </td>
 
                 <td>
                     {{ post.createdAt.format('Y/m/d H:i') }}

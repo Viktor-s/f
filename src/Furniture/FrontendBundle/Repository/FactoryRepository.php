@@ -24,6 +24,18 @@ class FactoryRepository
     }
 
     /**
+     * Find factory by identifier
+     *
+     * @param int $factory
+     *
+     * @return Factory|null
+     */
+    public function find($factory)
+    {
+        return $this->em->find(Factory::class, $factory);
+    }
+
+    /**
      * Find by
      *
      * @param FactoryQuery $query

@@ -5,6 +5,7 @@ namespace Furniture\PostBundle\Form\Type;
 use Behat\Transliterator\Transliterator;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\PostBundle\Entity\Post;
+use Furniture\PostBundle\Entity\PostFile;
 use Furniture\PostBundle\Entity\PostImage;
 use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
@@ -57,7 +58,7 @@ class PostType extends AbstractType
             ->add('type', 'choice', [
                 'label' => 'post.form.type',
                 'choices' => [
-                    Post::TYPE_POST     => 'Post',
+                    Post::TYPE_NEWS     => 'Post',
                     Post::TYPE_CIRCULAR => 'Circular'
                 ]
             ])
@@ -71,6 +72,11 @@ class PostType extends AbstractType
             ])
             ->add('images', 'collection', [
                 'type' => new ImageType(PostImage::class),
+                'allow_add' => true,
+                'allow_delete' => true
+            ])
+            ->add('files', 'collection', [
+                'type' => new ImageType(PostFile::class),
                 'allow_add' => true,
                 'allow_delete' => true
             ])
@@ -95,6 +101,10 @@ class PostType extends AbstractType
 
             foreach ($post->getImages() as $image) {
                 $image->setPost($post);
+            }
+
+            foreach ($post->getFiles() as $file) {
+                $file->setPost($post);
             }
         });
     }

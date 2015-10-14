@@ -4,12 +4,14 @@
 
 {% block breadcrumb %}
     <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
-    <a href="{{ path('content_user_profile') }}">{{ 'frontend.title.factory_side'|trans }}</a>
+    <a href="{{ path('factory_side_list') }}">{{ 'frontend.title.factories'|trans }}</a>
+    <a href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name }}</a>
 {% endblock %}
 
 {% block content %}
     <div class="information-blocks">
-        {{ knp_menu_render('frontend.factory_side', {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+        {{ knp_menu_render_factory_side(factory, {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+
         <div class="row">
             <div class="col-md-12 information-entry">
                 {% block factory_side_content %}

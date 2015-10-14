@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Menu;
 
+use Furniture\FactoryBundle\Entity\Factory;
 use Knp\Menu\FactoryInterface;
 use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationCheckerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -62,7 +63,9 @@ class FrontendMenuBuilder
      * @param SymfonyAuthorizationCheckerInterface $sfAuthorizationChecker
      * @param RbacAuthorizationCheckerInterface    $rbacAuthorizationChecker
      * @param UrlGeneratorInterface                $urlGenerator
-     * @param TokenStorageInterface       $tokenStorage
+     * @param TokenStorageInterface                $tokenStorage
+     * @param TaxonRepository                      $taxonRepository
+     * @param TaxonomyRepository                   $taxonomyRepository
      */
     public function __construct(
         FactoryInterface $factory,
@@ -92,9 +95,9 @@ class FrontendMenuBuilder
     public function createHeaderMenu()
     {
         $menu = $this->factory->createItem('root');
+        $user = $this->tokenStorage->getToken()->getUser();
 
-        if(!($user = $this->tokenStorage->getToken()->getUser()))
-        {
+        if (!$user) {
             return $menu;
         }
         
@@ -104,8 +107,7 @@ class FrontendMenuBuilder
                 'label' => $this->translator->trans('frontend.menu_items.header.homepage')
             ]);
 
-        if($user->isContentUser())
-        {
+        if($user->isContentUser()) {
             $factories = $menu->addChild('factories', [
                 'uri' => $this->urlGenerator->generate('factory_side_list'),
                 'label' => $this->translator->trans('frontend.menu_items.header.factories')
@@ -116,8 +118,13 @@ class FrontendMenuBuilder
             'uri' => $this->urlGenerator->generate('taxonomy'),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
+
+        /** @var \Sylius\Component\Core\Model\Taxon[] $taxons */
+        $taxons = $this->taxonomyRepository
+            ->findOneBy(['name' => 'Category'])
+            ->getTaxons();
         
-        foreach($this->taxonomyRepository->findOneBy(['name' => 'Category'])->getTaxons() as $taxon){
+        foreach ($taxons as $taxon){
             $products->addChild('taxon_'.$taxon->getName(), [
                 'uri' => $this->urlGenerator->generate('products', ['category' => $taxon->getPermalink()]),
                 'label' => $taxon->getName()
@@ -129,9 +136,8 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.menu_items.header.compositions')
         ]);*/
 
-        if($user->isContentUser())
-        {
-            $specifications = $menu->addChild('specifications', [
+        if ($user->isContentUser()) {
+            $menu->addChild('specifications', [
                 'uri' => $this->urlGenerator->generate('specifications'),
                 'label' => $this->translator->trans('frontend.menu_items.header.specifications')
             ]);
@@ -234,15 +240,22 @@ class FrontendMenuBuilder
     /**
      * Create menu for factory side page
      *
+     * @param Factory $factory
+     *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createFactorySideMenu()
+    public function createFactorySideMenu(Factory $factory)
     {
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [
             'uri' => '#',
             'label' => $this->translator->trans('frontend.factory_side.menu.general')
+        ]);
+
+        $menu->addChild('news', [
+            'uri' => $this->urlGenerator->generate('factory_side_news', ['factory' => $factory->getId()]),
+            'label' => $this->translator->trans('frontend.factory_side.menu.news')
         ]);
         
         $menu->addChild('collections', [
@@ -261,7 +274,7 @@ class FrontendMenuBuilder
         ]);
         
         $menu->addChild('circulars', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('factory_side_circulars', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
         ]);
         

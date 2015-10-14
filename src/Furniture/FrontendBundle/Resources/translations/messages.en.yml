@@ -75,10 +75,14 @@ frontend:
     user: User
     default_relation: Default relation
     taxonomy: Categories
+    downlod_file_with_number: "Download file #:number"
 
     title:
         index: Furniture
         homepage: Homepage
+        factories: Factories
+        news: News
+        circulars: Circulars
         navigation: Navigation
         buyers: Buyers
         specifications: Specifications
@@ -129,6 +133,7 @@ frontend:
             work_info: Work info
             contacts: Contacts
             circulars: Circulars
+            news: News
 
     menu_items:
         footer:
