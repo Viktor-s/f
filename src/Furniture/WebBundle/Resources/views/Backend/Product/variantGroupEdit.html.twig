@@ -16,148 +16,236 @@
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-pencil"></i> Variants of "{{ product.name }}"</h1>
     </div>
-
-    {{ form_errors(form) }}
-
-    <form action="{{ path('sylius_backend_product_variant_group_edit', {'id': product.id}) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }} novalidate>
-        <input type="hidden" name="_method" value="POST">
-        <div class="row">
-            <div class="col-md-5">
-                {% if form.options is defined %}
-                <div class="form-group">
-                    {{ form_label(form.options) }}
-                    <div class="col-lg-9">
-                        <ul class="list-unstyled" id="hierarchy-root">
-                            {% for option in form.options %}
-                                <li>
-                                    {{ form.options.vars.choices[option.vars.value].data.name }}
-                                    {{ form.options.vars.choices[option.vars.value].data.value }}
-                                    {{ form_widget(option) }}
-                                </li>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_errors(form) }}
+        </div>
+    </div>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if form.OptionValues is defined %}
+                        <table class="table-striped" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th SCOPE=col ROWSPAN=2>Options</th>
+                                </tr>
+                            </thead>
+                            {% set cur_option = '' %}
+                            {% for option in form.OptionValues %}
+                                {% if cur_option != form.OptionValues.vars.choices[option.vars.value].data.name %}
+                                    {% set cur_option = form.OptionValues.vars.choices[option.vars.value].data.name %}
+                                    <tr>
+                                        <td>
+                                            - {{ cur_option }}
+                                        </td><td>
+                                            <a href="#" data-group=".option_value_{{ cur_option }}" class="select_all_option_values">Select</a>/
+                                            <a href="#" data-group=".option_value_{{ cur_option }}" class="unselect_all_option_values">Unselect</a>
+                                            all
+                                        </td>
+                                    </tr>    
+                                {% endif %}
+                                <tr class="option_value_{{ cur_option }}" >
+                                    <td>
+                                        {{ form_widget(option) }}
+                                    </td><td>
+                                        {{ form.OptionValues.vars.choices[option.vars.value].data.value }}
+                                    </td>
+                                </tr>
                             {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endif %}
-                {% if form.sku_options is defined %}
-                <div class="form-group">
-                    {{ form_label(form.sku_options) }}
-                    <div class="col-lg-9">
-                        <ul class="list-unstyled" id="hierarchy-root">
-                            {% for option in form.sku_options %}
-                                <li>
-                                    {{ form.sku_options.vars.choices[option.vars.value].data.name }}
-                                    {{ form.sku_options.vars.choices[option.vars.value].data.value }}
-                                    {{ form_widget(option) }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endif %}
-                {% if product.hasProductParts() %}
-                {% for productPart in product.productParts %}
-                <div class="form-group">
-                    {% set partInputName = 'part_' ~ productPart.id %}
-                    {{ form_label(form[partInputName]) }}
-                    <div class="col-lg-9">
-                        <ul class="list-unstyled" id="hierarchy-root">
-                            {% for option in form[partInputName] %}
-                                <li>
-                                    {{ form[partInputName].vars.choices[option.vars.value].data.name }}
-                                    {{ form_widget(option) }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endfor %}
-                {% endif %}
-                <hr/>
-                <br/>
-                <div class="form-group" color="red">
-                    <div class="col-lg-8">
-                        {{ form_widget(form.delete_by_filter) }}
-                    </div>
+                        </table>
+                    {% endif %}
                 </div>
             </div>
-            <div class="col-md-7">
-                <div class="highlight">
-                    All inputs supports ExpressionLanguage.
-                    <a href="http://symfony.com/doc/current/components/expression_language/syntax.html"> language descripion </a>
+            <div class="row">
+                <div class="col-md-12">
+                    {% if form.skuOptionsValues is defined %}
+                        <table class="table-striped" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th SCOPE=col ROWSPAN=2>Sku options</th>
+                                </tr>
+                            </thead>
+                            {% set cur_option = '' %}
+                            {% for option in form.skuOptionsValues %}
+                                {% if cur_option != form.skuOptionsValues.vars.choices[option.vars.value].data.name %}
+                                    {% set cur_option = form.skuOptionsValues.vars.choices[option.vars.value].data.name %}
+                                    <tr>
+                                        <td>
+                                            - {{ cur_option }}
+                                        </td><td>
+                                            <a href="#" data-group=".sku_option_value_{{ cur_option }}" class="select_all_option_values">Select</a>/
+                                            <a href="#" data-group=".sku_option_value_{{ cur_option }}" class="unselect_all_option_values">Unselect</a>
+                                            all
+                                        </td>
+                                    </tr>    
+                                {% endif %}
+                                <tr class="sku_option_value_{{ cur_option }}" >
+                                    <td>
+                                        {{ form_widget(option) }}
+                                    </td><td>
+                                        {{ form.skuOptionsValues.vars.choices[option.vars.value].data.value }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
                 </div>
-                <div class="highlight">
-                    <pre>
-Set the value or math formula to change the price.
-Value example: 100
-Math formula example: price+100 (where price is the current cost)
-                    </pre>
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.price_calculator) }}
-                    <div class="col-lg-8">
-                        {{ form_widget(form.price_calculator) }}
-                    </div>
-                </div>
-                <hr/>
-                <div class="highlight">
-                    <pre>
-Set the value or math formula to change the width.
-Value example: 100
-Math formula example: width+100 (where width is the current value)
-                    </pre>
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.width) }}
-                    <div class="col-lg-8">
-                        {{ form_widget(form.width) }}
-                    </div>
-                </div>
-                <hr/>
-                <div class="highlight">
-                    <pre>
-Set the value or math formula to change the height.
-Value example: 100
-Math formula example: height+100 (where height is the current value)
-                    </pre>
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.height) }}
-                    <div class="col-lg-8">
-                        {{ form_widget(form.height) }}
-                    </div>
-                </div>
-                <hr/>
-                <div class="highlight">
-                    <pre>
-Set the value or math formula to change the depth.
-Value example: 100
-Math formula example: depth+100 (where depth is the current value)
-                    </pre>
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.depth) }}
-                    <div class="col-lg-8">
-                        {{ form_widget(form.depth) }}
-                    </div>
-                </div>
-                <hr/>
-                <div class="highlight">
-                    <pre>
-Set the value or math formula to change the weight.
-Value example: 100
-Math formula example: weight+100 (where weight is the current value)
-                    </pre>
-                </div>
-                <div class="form-group">
-                    {{ form_label(form.weight) }}
-                    <div class="col-lg-8">
-                        {{ form_widget(form.weight) }}
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">    
+                    {% if form.productPartMaterialVariants is defined %}
+                        <table class="table-striped" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th SCOPE=col ROWSPAN=2>Product Parts</th>
+                                </tr>
+                            </thead>
+                            {% set cur_material_class = '' %}
+                            {% for part in form.productPartMaterialVariants %}
+                                {% set part_class = 'pp_'+part.vars.value.productPart.id %}
+                                <tr>
+                                    <td>
+                                        <b> - {{ part.vars.value.productPart.label }}</b>
+                                    </td><td>
+                                        <a href="#" data-group=".{{ part_class }}" class="select_all_option_values">Select</a>/
+                                        <a href="#" data-group=".{{ part_class }}" class="unselect_all_option_values">Unselect</a>
+                                        all
+                                    </td>
+                                </tr>
+                                {% for mvariant in part.productPartMaterialVariants %}
+                                    {% set material_class = 'pp_m_'+part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.material.id %}
+                                    {% if cur_material_class != material_class %}
+                                        {% set cur_material_class = material_class %}
+                                        <tr>
+                                            <td>
+                                                - - {{ part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.material.name }}
+                                            </td><td>
+                                                <a href="#" data-group=".{{ part_class }}.{{ cur_material_class }}" class="select_all_option_values">Select</a>/
+                                                <a href="#" data-group=".{{ part_class }}.{{ cur_material_class }}" class="unselect_all_option_values">Unselect</a>
+                                                all
+                                            </td>
+                                        </tr>    
+                                    {% endif %}
+                                    <tr class="{{ part_class }} {{ cur_material_class }}" >
+                                        <td>
+                                            {{ form_widget(mvariant) }}
+                                        </td><td>
+                                            {{ part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.name }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
-        {{ form_widget(form._token) }}
-        {{ update() }}
-    </form>
+        <div class="col-md-6">
+            <div class="highlight">
+                All inputs supports ExpressionLanguage.
+                <a href="http://symfony.com/doc/current/components/expression_language/syntax.html"> language descripion </a>
+            </div>
+            <div class="highlight">
+                <pre>
+    Set the value or math formula to change the price.
+    Value example: 100
+    Math formula example: price+100 (where price is the current cost)
+                </pre>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.priceCalculator) }}
+                <div class="col-lg-8">
+                    {{ form_widget(form.priceCalculator) }}
+                </div>
+            </div><br/>
+            <hr/>
+            <div class="highlight">
+                <pre>
+    Set the value or math formula to change the width.
+    Value example: 100
+    Math formula example: width+100 (where width is the current value)
+                </pre>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.width) }}
+                <div class="col-lg-8">
+                    {{ form_widget(form.width) }}
+                </div>
+            </div><br/>
+            <hr/>
+            <div class="highlight">
+                <pre>
+    Set the value or math formula to change the height.
+    Value example: 100
+    Math formula example: height+100 (where height is the current value)
+                </pre>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.height) }}
+                <div class="col-lg-8">
+                    {{ form_widget(form.height) }}
+                </div>
+            </div><br/>
+            <hr/>
+            <div class="highlight">
+                <pre>
+    Set the value or math formula to change the depth.
+    Value example: 100
+    Math formula example: depth+100 (where depth is the current value)
+                </pre>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.depth) }}
+                <div class="col-lg-8">
+                    {{ form_widget(form.depth) }}
+                </div>
+            </div><br/>
+            <hr/>
+            <div class="highlight">
+                <pre>
+    Set the value or math formula to change the weight.
+    Value example: 100
+    Math formula example: weight+100 (where weight is the current value)
+                </pre>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.weight) }}
+                <div class="col-lg-8">
+                    {{ form_widget(form.weight) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ update() }}
+    {{ form_end(form) }}
+    <script>
+        $(document).ready(function () {
+            $('.select_all_option_values').click(function () {
+                var el = $(this);
+                console.log(el.data('group') + ' input');
+                $(el.data('group') + ' input').prop('checked', true);
+                return false;
+            });
+            $('.unselect_all_option_values').click(function () {
+                var el = $(this);
+                console.log(el.data('group') + ' input');
+                $(el.data('group') + ' input').prop('checked', false);
+                return false;
+            })
+        });
+    </script>
+    {#
+        {{ form_errors(form) }}
+    
+        <form action="{{ path('sylius_backend_product_variant_group_edit', {'id': product.id}) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+            <input type="hidden" name="_method" value="POST">
+            {{ form_widget(form._token) }}
+            {{ update() }}
+        </form>
+        #}
 {% endblock %}

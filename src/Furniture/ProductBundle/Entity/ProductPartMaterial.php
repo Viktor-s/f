@@ -150,7 +150,7 @@ class ProductPartMaterial extends AbstractTranslatable
                 throw UnexpectedTypeException::create($optionValue, ProductPartMaterialOptionValue::class);
             }
 
-            $optionValue->setExtension($this);
+            $optionValue->setMaterial($this);
 
             return true;
         });
@@ -215,7 +215,7 @@ class ProductPartMaterial extends AbstractTranslatable
     public function addOptionValue(ProductPartMaterialOptionValue $optionValue)
     {
         if (!$this->optionValues->contains($optionValue)) {
-            $optionValue->setExtension($this);
+            $optionValue->setMaterial($this);
             $this->optionValues->add($optionValue);
         }
 
@@ -232,7 +232,7 @@ class ProductPartMaterial extends AbstractTranslatable
     public function removeOptionValue(ProductPartMaterialOptionValue $optionValue)
     {
         if ($this->optionValues->contains($optionValue)) {
-            $optionValue->setExtension(null);
+            $optionValue->setMaterial(null);
             $this->optionValues->removeElement($optionValue);
         }
 

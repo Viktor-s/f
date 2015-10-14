@@ -31,7 +31,7 @@ class ProductVariantExtensionVariantsType extends AbstractType
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $productVariant->getProduct();
 
-        $extensions = $product->getExtensions();
+        $extensions = $product->getMaterials();
 
         $i = 0;
         foreach ($extensions as $extension) {

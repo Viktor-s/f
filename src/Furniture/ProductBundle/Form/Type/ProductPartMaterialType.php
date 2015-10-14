@@ -48,7 +48,7 @@ class ProductPartMaterialType extends AbstractType
             $extension = $event->getData();
 
             $extension->getOptionValues()->forAll(function ($key, ProductPartMaterialOptionValue $optionValue) use ($extension) {
-                $optionValue->setExtension($extension);
+                $optionValue->setMaterial($extension);
 
                 return true;
             });

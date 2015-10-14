@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Model\GroupVaraintEdit;
+
+use Furniture\ProductBundle\Form\Type\GroupVariantEditType;
 
 class ProductController extends BaseProductController
 {
@@ -86,7 +89,7 @@ class ProductController extends BaseProductController
 
         return $this->createRedirectResponse($request);
     }
-
+    
     /**
      * Variant actions
      *
@@ -96,212 +99,72 @@ class ProductController extends BaseProductController
      */
     public function variantGroupEditAction(Request $request)
     {
-        // @todo: fix typos
-        // $this->isGrantedOr403('variantGrouEdit');
-
-        /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findOr404($request);
-
-        $formBuilder = $this->createFormBuilder([]);
-        $optionsValues = [];
-
-        foreach ($product->getOptions() as $k => $option) {
-            $optionsValues = array_merge(
-                    $optionsValues, $option->getValues()->toArray()
-            );
-        }
-
-        if (count($optionsValues) > 0) {
-            $formBuilder->add('options', 'entity', [
-                'class' => get_class($optionsValues[0]),
-                'label' => 'Option filter',
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function(EntityRepository $er ) use ($optionsValues) {
-                    return $er
-                                    ->createQueryBuilder('ov')
-                                    ->where('ov in (:ovs)')
-                                    ->setParameter('ovs', $optionsValues)
-                                    ->orderBy('ov.option', 'ASC')
-                    ;
-                },
-                'data' => $optionsValues,
-            ]);
-        }
-
-        if (count($skuOptionsVariants = $product->getSkuOptionVariants()) > 0) {
-            $formBuilder->add('sku_options', 'entity', [
-                'class' => get_class($skuOptionsVariants[0]),
-                'label' => 'Sku option filter',
-                'choice_label' => 'value',
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function(EntityRepository $er) use ($skuOptionsVariants) {
-                    return $er
-                                    ->createQueryBuilder('sov')
-                                    ->where('sov in (:sovs)')
-                                    ->setParameter('sovs', $skuOptionsVariants)
-                                    ->orderBy('sov.skuOptionType', 'ASC')
-                    ;
-                },
-                'data' => clone $skuOptionsVariants,
-            ]);
-        }
-
-        $inputParts = [];
-        foreach ($product->getProductParts() as $productPart) {
-            $formBuilder->add('part_'.$productPart->getId(), 'entity', [
-                'class' => 'Furniture\ProductBundle\Entity\ProductPartMaterialVariant',
-                'label' => $productPart->getLabel(),
-                'choice_label' => 'name',
-                //'property_path' => '[part_'.$productPart->getId().'][productPartMaterials][variants]',
-                'expanded' => true,
-                'multiple' => true,
-                'query_builder' => function(EntityRepository $er) use ($productPart) {
-                    return $er
-                            ->createQueryBuilder('ppmv')        
-                            ->leftJoin(
-                                    'Furniture\ProductBundle\Entity\ProductPartVariantSelection',
-                                    'ppvs',
-                                    'WITH',
-                                    'ppvs.productPartMaterialVariant = ppmv.id'
-                                    )
-                            ->where('ppvs.productPart = :pp')
-                            ->setParameter('pp', $productPart)
-                            ->orderBy('ppvs.productPart', 'ASC')
-                    ;
-                },
-            ]);
-        }
-
-        /**
-         * Common editable values
-         */
-        $formBuilder->add('price_calculator', 'text', [
-            'label' => 'Change cost'
-        ]);
-
-        $formBuilder->add('width', 'text', [
-            'label' => 'Change width'
-        ]);
-
-        $formBuilder->add('height', 'text', [
-            'label' => 'Change height'
-        ]);
-
-        $formBuilder->add('depth', 'text', [
-            'label' => 'Change depth'
-        ]);
-
-        $formBuilder->add('weight', 'text', [
-            'label' => 'Change weight'
-        ]);
-
-        /*
-         * Delete items flag
-         */
-        $formBuilder->add('delete_by_filter', 'submit', [
-            'label' => 'Delete this items',
-            'attr' => ['class' => 'btn btn-danger btn-md']
-        ]);
-
-        $form = $formBuilder->getForm();
-        $filteredVariants = [];
-
+        
+        $form = $this->createForm(new GroupVariantEditType, new \Furniture\ProductBundle\Model\GroupVaraintEdit($product) );
+        
         $form->handleRequest($request);
 
+        $filteredVariants = [];
+        
         if ($form->isValid()) {
-            $data = $form->getData();
-            $options = isset($data['options']) ? new ArrayCollection($data['options']) : [];
-            $skuOptions = isset($data['sku_options']) ? new ArrayCollection($data['sku_options']->toArray()) : [];
-            
-            $ppmt = [];
-            
-            foreach($product->getProductParts() as $pp){
-                $ppmt[$pp->getId()] = new ArrayCollection($data['part_'.$pp->getId()]->toArray());
-            }
-            
-            $deleteAction = $form->get('delete_by_filter')->isClicked();
+            /**
+             * var \Furniture\ProductBundle\Model\GroupVaraintEdit $editObject
+             */
+            $editObject = $form->getData();
 
+            $filteredVariants = $editObject->getFilteredVariants();
             $removed = 0;
-            /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-            foreach ($product->getVariants() as $variant) {
-
-                foreach ($variant->getSkuOptions() as $skuOption) {
-                    $callbackForExists = function ($k, $e) use ($skuOption) {
-                        return $e->getId() == $skuOption->getId();
-                    };
-
-                    if (!$skuOptions->exists($callbackForExists)) {
-                        continue 2;
-                    }
-                }
-
-                foreach ($variant->getProductPartVariantSelections() as $vs) {
-                    //echo $variant->getId() . ':' . $vs->getProductPart()->getId() . '<br/>';
-                    if (!isset($ppmt[$vs->getProductPart()->getId()]) ||
-                            !$ppmt[$vs->getProductPart()->getId()]->exists(function($k, $e) use ($vs) {
-                                return $e->getId() == $vs->getProductPartMaterialVariant()->getId();
-                            })
-                    ) {
-                        continue 2;
-                    }
-                }
-
-                foreach ($variant->getOptions() as $option) {
-                    if (!$options->contains($option)) {
-                        continue 2;
-                    }
-                }
-
-                if ($deleteAction) {
+            foreach ($filteredVariants as $variant) {
+                if ($form->get('delete_by_filter')->isClicked()) {
                     $this->getDoctrine()->getManager()->remove($variant);
-                    $removed++;
+                    $removed ++;
                     continue;
                 }
-
-                $filteredVariants[] = $variant;
-
+                
                 $language = new ExpressionLanguage();
 
-                if ($data['price_calculator'] !== null) {
-                    $price = $language->evaluate($data['price_calculator'], [
+                if ($editObject->getPriceCalculator() !== null) {
+                    $price = $language->evaluate($editObject->getPriceCalculator(), [
                         'price' => $variant->getPrice() / 100
                     ]);
                     $variant->setPrice((int) (ceil(($price * 100))));
                 }
 
 
-                if (!is_null($data['width'])) {
-                    $value = $language->evaluate($data['width'], [
+                if ($editObject->getWidth() !== null) {
+                    $value = $language->evaluate($editObject->getWidth(), [
                         'width' => $variant->getWidth()
                     ]);
 
                     $variant->setWidth($value);
                 }
 
-                if (!is_null($data['height'])) {
-                    $value = $language->evaluate($data['height'], [
+                if ($editObject->getHeight() !== null) {
+                    $value = $language->evaluate($editObject->getHeight(), [
                         'height' => $variant->getHeight()
                     ]);
 
                     $variant->setHeight($value);
                 }
 
-                if (!is_null($data['depth'])) {
-                    $value = $language->evaluate($data['depth'], ['depth' => $variant->getDepth()]);
+                if ($editObject->getDepth() !== null) {
+                    $value = $language->evaluate($editObject->getDepth(), [
+                        'depth' => $variant->getDepth()
+                    ]);
                     $variant->setDepth($value);
                 }
 
-                if (!is_null($data['weight'])) {
-                    $value = $language->evaluate($data['weight'], ['weight' => $variant->getWeight()]);
+                if ($editObject->getWeight() !== null) {
+                    $value = $language->evaluate($editObject->getWeight(), [
+                        'weight' => $variant->getWeight()
+                    ]);
                     $variant->setWeight($value);
                 }
+                
             }
-
             $this->getDoctrine()->getManager()->flush();
-
-            if ($deleteAction) {
+            if ($form->get('delete_by_filter')->isClicked()) {
                 $this->flashHelper->setFlash(
                         'warning', 'Deleted ' . $removed . ' Items'
                 );
@@ -312,13 +175,12 @@ class ProductController extends BaseProductController
             }
         }
 
-
-
         $view = $this
                 ->view([
+                    'updatedVariants' => $filteredVariants,
                     'product' => $product,
                     'form' => $form->createView(),
-                    'updatedVariants' => $filteredVariants
+                    'updatedVariants' => []
                 ])
                 ->setTemplate($this->config->getTemplate('variantGroupEdit.html'));
 

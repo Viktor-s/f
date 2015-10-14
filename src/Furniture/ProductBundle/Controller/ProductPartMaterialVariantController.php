@@ -34,7 +34,7 @@ class ProductPartMaterialVariantController extends ResourceController
 
         /** @var ProductPartMaterialVariant $resource */
         $resource = $this->createNew();
-        $resource->setExtension($productExtension);
+        $resource->setMaterial($productExtension);
         $form = $this->getForm($resource, [
             'product_part_material' => $productExtension
         ]);
