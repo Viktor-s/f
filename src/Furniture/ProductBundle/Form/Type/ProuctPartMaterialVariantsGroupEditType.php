@@ -35,14 +35,12 @@ class ProuctPartMaterialVariantsGroupEditType extends AbstractType {
                         'expanded' => true,
                         'multiple' => true,
                         'query_builder' => function(EntityRepository $er) use ($ppmFilter) {
-                            return $er
+                            return $er                                    
                                     ->createQueryBuilder('ppmv')
-                                    ->leftJoin(
-                                            'Furniture\ProductBundle\Entity\ProductPartVariantSelection', 'ppvs', 'WITH', 'ppvs.productPartMaterialVariant = ppmv.id'
-                                    )
-                                    ->where('ppvs.productPart = :pp')
-                                    ->setParameter('pp', $ppmFilter->getProductPart())
-                                    ->orderBy('ppvs.productPart', 'ASC')
+                                    ->join('ppmv.material', 'material')
+                                    ->where('material in ( :materials )')
+                                    ->setParameter('materials', $ppmFilter->getProductPart()->getProductPartMaterials())
+                                    ->orderBy('material.id', 'ASC')
                             ;
                         },
             ]);
