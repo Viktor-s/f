@@ -119,9 +119,8 @@ class VariantController extends BaseVariantController
             $manager = $this->get('sylius.manager.product');
             $manager->persist($filter->getProduct());
             $manager->flush();
+            $this->flashHelper->setFlash('success', 'generate');
         }
-
-        $this->flashHelper->setFlash('success', 'generate');
 
         $view = $this
                 ->view([
