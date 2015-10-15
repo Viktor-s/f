@@ -67,6 +67,11 @@ class Buyer
     private $phone;
 
     /**
+     * @var BuyerImage
+     */
+    private $image;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -271,6 +276,36 @@ class Buyer
     {
         return $this->phone;
     }
+
+    /**
+     * Set image
+     *
+     * @param BuyerImage $image
+     *
+     * @return Buyer
+     */
+    public function setImage(BuyerImage $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return Buyer
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Remove image
+     *
+     * @return Buyer
+     */
 
     /**
      * Implement __toString

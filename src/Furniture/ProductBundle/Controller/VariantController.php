@@ -22,17 +22,24 @@ class VariantController extends BaseVariantController
             $em->getFilters()->disable('softdeleteable');
         }
 
-        $response = parent::deleteAction($request);
+        /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+        $variant = $this->findOr404($request);
 
         if ($hardDelete) {
+            $checker = $this->get('product_variant.removal_checker');
+            $removal = $checker->canHardRemove($variant);
+
+            if ($removal->notCanRemove()) {
+                // @todo: add message to alerts
+                return $this->createRedirectResponse($request);
+            }
+
             $em->getFilters()->enable('softdeleteable');
         }
 
-        if ($request->get('_from')) {
-            return new RedirectResponse($request->get('_from'));
-        }
+        $this->domainManager->delete($variant);
 
-        return $response;
+        return $this->createRedirectResponse($request);
     }
 
     /**
@@ -66,8 +73,14 @@ class VariantController extends BaseVariantController
         $product = $this->findProductOr404($productId);
         $deletedVariants = $product->getDeletedVariants();
 
+        $removalChecker = $this->get('product_variant.removal_checker');
+
         foreach ($deletedVariants as $variant) {
-            $em->remove($variant);
+            $removal = $removalChecker->canHardRemove($variant);
+
+            if ($removal->canRemove()) {
+                $em->remove($variant);
+            }
         }
 
         $em->flush();
@@ -116,6 +129,20 @@ class VariantController extends BaseVariantController
 
         return $this->redirectHandler->redirectTo($product);
     }
-    
-}
 
+    /**
+     * Create redirect response
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    private function createRedirectResponse(Request $request)
+    {
+        if ($request->get('_from')) {
+            return new RedirectResponse($request->get('_from'));
+        }
+
+        return $this->redirectHandler->redirectToIndex();
+    }
+}

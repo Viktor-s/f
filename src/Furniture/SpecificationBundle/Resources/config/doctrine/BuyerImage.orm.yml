@@ -1,0 +1,13 @@
+Furniture\SpecificationBundle\Entity\BuyerImage:
+    type: entity
+    table: specification_buyer_image
+
+    oneToOne:
+        buyer:
+            targetEntity: Furniture\SpecificationBundle\Entity\BuyerImage
+            inversedBy: buyer
+            joinColumn:
+                name: buyer_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE

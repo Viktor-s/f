@@ -2,6 +2,6 @@
 
 namespace Furniture\ProductBundle\ProductRemoval;
 
-class ProductRemoval extends Removal
+class VariantRemoval extends Removal
 {
 }

@@ -49,3 +49,9 @@ Furniture\SpecificationBundle\Entity\Buyer:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+
+    oneToOne:
+        image:
+            targetEntity: Furniture\SpecificationBundle\Entity\BuyerImage
+            inversedBy: buyer
+            cascade: [ persist ]
