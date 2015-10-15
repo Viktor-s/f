@@ -136,6 +136,12 @@ class ProductRepository
                 ->setParameter('default_access_products', true);
         }
 
+        if ($query->isOnlyAvailable()) {
+            $qb
+                ->andWhere('p.availableOn <= :now')
+                ->setParameter('now', new \DateTime());
+        }
+
         return $qb;
     }
 }
