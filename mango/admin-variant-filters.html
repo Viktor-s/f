@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, minimal-ui"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/idangerous.swiper.css" rel="stylesheet" type="text/css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700%7CDancing+Script%7CMontserrat:400,700%7CMerriweather:400,300italic%7CLato:400,700,900' rel='stylesheet' type='text/css' />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <!--[if IE 9]>
+        <link href="css/ie9.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <link rel="shortcut icon" href="img/favicon-6.ico" />
+    <title>Catalog - PGP (product grid page)</title>
+    <style type="text/css">
+    /* Use this css */
+        .nav > li.divider {
+            height: 1px;
+            margin: 9px 1px;
+            overflow: hidden;
+            background-color: #e5e5e5;
+        }
+        .admin-filter-variants .tree-toggle.nav-header.checkbox-entry{
+            font-weight:bold;
+            margin-bottom: 5px;
+        }
+        .admin-filter-variants .btn-submenu {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .admin-filter-variants .nav{
+            margin-left:10px;
+            margin-right:10px;
+        }
+        .admin-filter-variants .tree-opener{
+            font-weight:bold;
+            font-size:20px;
+            border:solid black 1px;
+            line-height:14px;
+            width:15px;
+            height:15px;
+            text-align:center;
+            position:absolute;
+            top:5px;
+            left:-18px;
+            background:#ccc;
+            cursor:pointer;
+            display: none;
+        }
+        .admin-filter-variants .nav.nav-list.tree .nav.nav-list.tree{
+            
+        }
+        .admin-filter-variants .nav-tree-main{
+            margin: 10px 10px 20px 10px;
+            padding-bottom: 30px;
+        }
+        .admin-filter-variants .panel{
+            margin-bottom: 30px !important;
+        }
+    /* Use this css end */
+    </style>
+</head>
+<body class="style-16">
+
+    <!-- LOADER -->
+    <div id="loader-wrapper">
+        <div class="bubbles">
+            <div class="title">loading</div>
+            <span></span>
+            <span id="bubble2"></span>
+            <span id="bubble3"></span>
+        </div>
+    </div>
+
+    <div id="content-block">
+
+        <div class="content-center fixed-header-margin">
+            <!-- HEADER -->
+            <div class="header-wrapper style-16">
+                <header class="type-4">
+                    <div class="header-top">
+                        <div class="header-top-entry">
+                            <div class="title"><img src="img/flag-lang-1.png" alt="">English<i class="fa fa-caret-down"></i></div>
+                            <div class="list">
+                                <a href="#" class="list-entry"><img src="img/flag-lang-2.png" alt="">Italian</a>
+                                <a href="#" class="list-entry"><img src="img/flag-lang-3.png" alt="">Russian</a>
+                            </div>
+                        </div>
+                        <div class="header-top-entry hidden-xs">
+                            <div class="title"><i class="fa fa-phone"></i>Any question? Call Us <a href="tel:+380630776632"><b>+380630776632</b></a></div>
+                        </div>
+                        
+                        <div class="menu-button responsive-menu-toggle-class"><i class="fa fa-reorder"></i></div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="header-middle">
+                        <div class="logo-wrapper">
+                            <a id="logo" href="#" style="font-size:36px; color:#ca1515; margin-left:20px;">AgentA</a>
+                        </div>
+
+                        <div class="middle-entry" style="display:none">
+                            <a href="#" class="icon-entry">
+                                <span class="image">
+                                    <i class="fa fa-car"></i>
+                                </span>
+                                <span class="text">
+                                    <b>Free Shipping</b> <br> on order over $200
+                                </span>
+                            </a>
+                            <a href="#" class="icon-entry">
+                                <span class="image">
+                                    <i class="fa fa-comments-o"></i>
+                                </span>
+                                <span class="text">
+                                    <b>Support Center</b> <br> Working everyday 24/7
+                                </span>
+                            </a>
+                            <a href="#" class="icon-entry">
+                                <span class="image">
+                                    <i class="fa fa-usd"></i>
+                                </span>
+                                <span class="text">
+                                    <b>Summer Sale</b> <br> Even 50% cheaper!
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="right-entries">
+                            <a class="header-functionality-entry" href="#"><i class="fa fa-cog"></i><span>Settings</span></a>
+                            <a class="header-functionality-entry" href="#"><span>Log out</span></a>
+                        </div>
+
+                    </div>
+
+                    <div class="close-header-layer"></div>
+                    <div class="navigation disable-animation">
+                        <div class="navigation-header responsive-menu-toggle-class">
+                            <div class="title">Navigation</div>
+                            <div class="close-menu"></div>
+                        </div>
+                        <div class="header-simple-search hidden-xs hidden-sm hidden-md">
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-9">
+                                    <div class="simple-search-form">
+                                        <form>
+                                            <input type="text" placeholder="Search for product">
+                                            <div class="simple-submit">
+                                                <i class="fa fa-search"></i>
+                                                <input type="submit">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-overflow">
+                            <nav class="disable-animation">
+                                <ul>
+                                    <li class="simple-list">
+                                        <a href="shop.html">Home</a></i>
+                                    </li>
+                                    <li class="simple-list">
+                                        <a href="shop.html">Factories</a><i class="fa fa-chevron-down"></i>
+                                        <div class="submenu" style="display: none; opacity: 1;">
+                                            <ul class="simple-menu-list-column">
+                                                <li><a href="shop.html"><i class="fa fa-angle-right"></i>Shop</a></li>
+                                                <li><a href="product.html"><i class="fa fa-angle-right"></i>Product</a></li>
+                                                <li><a href="product-nosidebar.html"><i class="fa fa-angle-right"></i>No Sidebar</a></li>
+                                                <li><a href="product-tabnosidebar.html"><i class="fa fa-angle-right"></i>Tab No Sidebar</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="simple-list">
+                                        <a href="shop.html">Products</a><i class="fa fa-chevron-down"></i>
+                                        <div class="submenu" style="display: none; opacity: 1;">
+                                            <ul class="simple-menu-list-column">
+                                                <li><a href="shop.html"><i class="fa fa-angle-right"></i>Shop</a></li>
+                                                <li><a href="product.html"><i class="fa fa-angle-right"></i>Product</a></li>
+                                                <li><a href="product-nosidebar.html"><i class="fa fa-angle-right"></i>No Sidebar</a></li>
+                                                <li><a href="product-tabnosidebar.html"><i class="fa fa-angle-right"></i>Tab No Sidebar</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="simple-list">
+                                        <a href="shop.html">Clients</a><i class="fa fa-chevron-down"></i>
+                                        <div class="submenu" style="display: none; opacity: 1;">
+                                            <ul class="simple-menu-list-column">
+                                                <li><a href="shop.html"><i class="fa fa-angle-right"></i>Shop</a></li>
+                                                <li><a href="product.html"><i class="fa fa-angle-right"></i>Product</a></li>
+                                                <li><a href="product-nosidebar.html"><i class="fa fa-angle-right"></i>No Sidebar</a></li>
+                                                <li><a href="product-tabnosidebar.html"><i class="fa fa-angle-right"></i>Tab No Sidebar</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <li class="simple-list">
+                                        <a href="index.html">Specifications</a>
+                                    </li>
+                                    <li class="fixed-header-visible">
+                                        <a class="fixed-header-square-button open-search-popup"><i class="fa fa-search"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clear"></div>
+
+                                <a class="fixed-header-visible additional-header-logo" style="font-size:36px; color:#ca1515; margin-left:20px;">AgentA</a>
+                            </nav>
+                            <div class="navigation-footer responsive-menu-toggle-class">
+                                <div class="socials-box">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    <a href="#"><i class="fa fa-youtube"></i></a>
+                                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="navigation-copyright">Created by <a href="#">8theme</a>. All rights reserved</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </header>
+                <div class="clear"></div>
+            </div>
+
+            <div class="admin-filter-variants">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                Size
+                                <div style="float:right">
+                                    <span class="label label-success">On</span>
+                                    <span class="label label-danger">Off</span>
+                                    <span class="label label-info">Inv</span>
+                                </div>
+                            </div>
+
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <label class="checkbox-entry">
+                                      <input type="checkbox"> <span class="check"></span> Cm.160/260 x 90 x h.76
+                                    </label>
+                                </li>
+                                <li class="list-group-item">
+                                    <label class="checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span> Cm.200/300 x 100 x h.76
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                Top
+                                <div style="float:right">
+                                    <span class="label label-success">On</span>
+                                    <span class="label label-danger">Off</span>
+                                    <span class="label label-info">Inv</span>
+                                </div>
+                            </div>
+
+                            <!-- TREE start -->
+                            <ul class="nav nav-list nav-tree-main">
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Fabric
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Fabric A
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Fabric B
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <div class="tree-opener">+</div>
+                                            <label class="tree-toggle nav-header checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Fabric C
+                                            </label>
+                                            <ul class="nav nav-list tree">
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span>2344
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span>2344
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span>2344
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span>2344
+                                                    </label>
+                                                </li>
+                                
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Leather
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Soft
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Hide
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Stamped
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Synthetic
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Wood
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Wood veneered
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Shined
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Matt
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- TREE end -->
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                Legs
+                                <div style="float:right">
+                                    <span class="label label-success">On</span>
+                                    <span class="label label-danger">Off</span>
+                                    <span class="label label-info">Inv</span>
+                                </div>
+                            </div>
+
+                            <!-- TREE start -->
+                            <ul class="nav nav-list nav-tree-main">
+                                
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Leather
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Soft
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Hide
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Stamped
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Synthetic
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Wood
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Wood veneered
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Shined
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Matt
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- TREE end -->
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                Set
+                            </div>
+
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <label> Price
+                                        <input class="simple-field form-control" type="text">
+                                    </label>
+                                </li>
+                                <li class="list-group-item">
+                                   <button type="button" class="btn btn-primary btn-lg">Save</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">  
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                All Options
+                                <div style="float:right">
+                                    <span class="label label-success">On</span>
+                                    <span class="label label-danger">Off</span>
+                                    <span class="label label-info">Inv</span>
+                                </div>
+                            </div>
+
+                            <!-- TREE start -->
+                            <ul class="nav nav-list nav-tree-main">
+                                
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Sku options
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Size
+                                            </label>
+                                            <ul class="nav nav-list tree">
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span> Cm. 163/213/263 x 101 x h.77
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>Product Parts
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Top
+                                            </label>
+                                            <ul class="nav nav-list tree">
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span> antonello_italia_glass
+                                                    </label>
+                                                    <ul class="nav nav-list tree">
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Green-3063 SHINING PAINTED
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Red-5089 MATT PAINTED SATINED
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Dark Brown-3091 SHINING PAINTED
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> FLOAT CLEAR GLASS
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span> Legs
+                                            </label>
+                                            <ul class="nav nav-list tree">
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span> antonello_italia_leather
+                                                    </label>
+                                                    <ul class="nav nav-list tree">
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Ivory-SI 04 SYNTHETIC
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Creamy White-A130 SOFT
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Black-PA04 STAMPED HIDE
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> White-PA01 STAMPED HIDE
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            
+                                                <li>
+                                                    <label class="checkbox-entry">
+                                                        <input type="checkbox"> <span class="check"></span> antonello_italia_metal
+                                                    </label>
+                                                    <ul class="nav nav-list tree">
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Matt White-M10
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Matt Ash Grey-M24
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Anodized Aluminium-M12
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <label class="checkbox-entry">
+                                                                <input type="checkbox"> <span class="check"></span> Bronze Aluminium-M20
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+
+                            </ul>
+                            <!-- TREE end -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="search-box popup">
+        <form>
+            <div class="search-button">
+                <i class="fa fa-search"></i>
+                <input type="submit" />
+            </div>
+            <div class="search-drop-down">
+                <div class="title"><span>All categories</span><i class="fa fa-angle-down"></i></div>
+                <div class="list">
+                    <div class="overflow">
+                        <div class="category-entry">Category 1</div>
+                        <div class="category-entry">Category 2</div>
+                        <div class="category-entry">Category 2</div>
+                        <div class="category-entry">Category 4</div>
+                        <div class="category-entry">Category 5</div>
+                        <div class="category-entry">Lorem</div>
+                        <div class="category-entry">Ipsum</div>
+                        <div class="category-entry">Dollor</div>
+                        <div class="category-entry">Sit Amet</div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-field">
+                <input type="text" value="" placeholder="Search for product" />
+            </div>
+        </form>
+    </div>
+
+
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/idangerous.swiper.min.js"></script>
+    <script src="js/global.js"></script>
+
+    <!-- custom scrollbar -->
+    <script src="js/jquery.mousewheel.js"></script>
+    <script src="js/jquery.jscrollpane.min.js"></script>
+</body>
+</html>
