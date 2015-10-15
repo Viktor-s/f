@@ -68,7 +68,7 @@
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-pencil"></i> Variants of "{{ product.name }}"</h1>
     </div>
-     <script>
+    <script>
         $(document).ready(function () {
             $('.panel-on').click(function () {
                 var el = $(this);
@@ -131,7 +131,6 @@
                         console.log(data);
                         if(data[0] == 'materialvalue'){
                             var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
-                            console.log('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
                             matval.prop('checked', el.prop('checked'));
                             matval.parents('ul li').find('input:first').prop('checked', el.prop('checked'));
                         }
@@ -148,11 +147,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             {{ option.name }}
-                            <div data-controledcontainer="option_panel_{{ option.id }}" style="float:right">
+                            {#<div data-controledcontainer="option_panel_{{ option.id }}" style="float:right">
                                 <span class="label label-success panel-on">On</span>
                                 <span class="label label-danger panel-off">Off</span>
                                 <span class="label label-info panel-inv">Inv</span>
-                            </div>
+                            </div>#}
                         </div>
                         <ul class="list-group">
                             {% for value in option.values %}
@@ -173,11 +172,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             {{ skuOptionGroup[0].name }}
-                            <div data-controledcontainer="sku_option_panel_{{ skuOptionGroup[0].id }}" style="float:right">
+                            {#<div data-controledcontainer="sku_option_panel_{{ skuOptionGroup[0].id }}" style="float:right">
                                 <span class="label label-success panel-on">On</span>
                                 <span class="label label-danger panel-off">Off</span>
                                 <span class="label label-info panel-inv">Inv</span>
-                            </div>
+                            </div>#}
                         </div>
                         <ul class="list-group">
                             {% for skuValue in skuOptionGroup %}
@@ -198,11 +197,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             {{ productPart.label }}
-                            <div style="float:right" data-controledcontainer="product_part_panel_{{ productPart.id }}">
+                            {#<div style="float:right" data-controledcontainer="product_part_panel_{{ productPart.id }}">
                                 <span class="label label-success panel-on">On</span>
                                 <span class="label label-danger panel-off">Off</span>
                                 <span class="label label-info panel-inv">Inv</span>
-                            </div>
+                            </div>#}
                         </div>
 
                         <ul class="nav nav-list nav-tree-main">

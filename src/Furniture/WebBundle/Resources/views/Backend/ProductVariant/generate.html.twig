@@ -3,6 +3,58 @@
 {% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
 {% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        /* Use this css */
+        .nav > li.divider {
+            height: 1px;
+            margin: 9px 1px;
+            overflow: hidden;
+            background-color: #e5e5e5;
+        }
+        .admin-filter-variants .tree-toggle.nav-header.checkbox-entry{
+            font-weight:bold;
+            margin-bottom: 5px;
+        }
+        .admin-filter-variants .btn-submenu {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .admin-filter-variants .nav{
+            margin-left:10px;
+            margin-right:10px;
+        }
+        .admin-filter-variants .tree-opener{
+            font-weight:bold;
+            font-size:20px;
+            border:solid black 1px;
+            line-height:14px;
+            width:15px;
+            height:15px;
+            text-align:center;
+            position:absolute;
+            top:5px;
+            left:-18px;
+            background:#ccc;
+            cursor:pointer;
+            display: none;
+        }
+        .admin-filter-variants .nav.nav-list.tree .nav.nav-list.tree{
+
+        }
+        .admin-filter-variants .nav-tree-main{
+            margin: 10px 10px 20px 10px;
+            padding-bottom: 30px;
+        }
+        .admin-filter-variants .panel{
+            margin-bottom: 30px !important;
+        }
+        /* Use this css end */
+    </style>
+{% endblock %}
+
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
@@ -15,6 +67,182 @@
 {% block content %}
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-pencil"></i> Variants of "{{ product.name }}"</h1>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.panel-on').click(function () {
+                var el = $(this);
+                var container = '[data-container="'+el.parent().data('controledcontainer')+'"]';
+                $( container+' input').prop('checked', true).trigger("change");
+            });
+            $('.panel-off').click(function () {
+                var el = $(this);
+                var container = '[data-container="'+el.parent().data('controledcontainer')+'"]';
+                $( container+' input').prop('checked', false).trigger("change");
+            });
+            $('.panel-inv').click(function () {
+                var el = $(this);
+                var container = '[data-container="'+el.parent().data('controledcontainer')+'"]';
+                $( container+' input').each(function(){
+                    var el = $(this);
+                    el.prop( 'checked', !el.prop('checked') ).trigger("change");
+                })
+            });
+            
+            //Sync option values
+            $('[name="group_variant_edit_type[OptionValues][]"]').change(function(){
+                var el = $(this);
+                $('input[data-optionvalueid="'+el.prop('value')+'"]').prop( 'checked', el.prop('checked') );
+            });
+            $('[name="option_value_control[]"]').change(function(){
+                var el = $(this);
+                $('#group_variant_edit_type_OptionValues_'+el.data('optionvalueid')).prop( 'checked', el.prop('checked') );
+            });
+            
+            //Sync sku option values
+            $('[name="group_variant_edit_type[skuOptionsValues][]"]').change(function(){
+                var el = $(this);
+                $('input[data-optionskuvalueid="'+el.prop('value')+'"]').prop( 'checked', el.prop('checked') );
+            });
+            $('[name="option_sku_value_control[]"]').change(function(){
+                var el = $(this);
+                $('#group_variant_edit_type_skuOptionsValues_'+el.data('optionskuvalueid')).prop( 'checked', el.prop('checked') );
+            });
+            
+            //Sync product part material
+            $('[name="product_part_material_option_value_control[]"]').change(function(){
+                var el = $(this);
+                var selector = '[data-productpart="'+el.data('part')+'"][data-materialvalue_'+el.data('valueid')+'="'+el.data('valueid')+'"] input';
+                $(selector).prop( 'checked', el.prop('checked') );
+            });
+            $('[name="product_part_material_tree_control[]"]').click(function(){
+                var el = $(this);
+                el.parents('li').first().find('ul input').prop( 'checked', el.prop('checked') ).trigger("change");
+            });
+            {% set index = 0 %}
+            {% for productPart in product.productParts  %}
+            $('[name="group_variant_edit_type[productPartMaterialVariants][{{ index }}][productPartMaterialVariants][]"]').change(function(){
+                {% set index = index + 1 %}
+                var el = $(this);
+                if( el.prop('checked') == false ){
+                    var td = el.parents('td').first();
+                    for( data in td.data()){
+                        data = data.split('_');
+                        console.log(data);
+                        if(data[0] == 'materialvalue'){
+                            var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
+                            matval.prop('checked', el.prop('checked'));
+                            matval.parents('ul li').find('input:first').prop('checked', el.prop('checked'));
+                        }
+                    }
+                }
+            })
+            {% endfor %}
+        });
+    </script>
+    <div class="row admin-filter-variants">
+        {% if product.hasOptions() %}
+            {% for option in  product.options %}
+                <div data-container="option_panel_{{ option.id }}" class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ option.name }}
+                            {#<div data-controledcontainer="option_panel_{{ option.id }}" style="float:right">
+                                <span class="label label-success panel-on">On</span>
+                                <span class="label label-danger panel-off">Off</span>
+                                <span class="label label-info panel-inv">Inv</span>
+                            </div>#}
+                        </div>
+                        <ul class="list-group">
+                            {% for value in option.values %}
+                                <li class="list-group-item">
+                                    <label class="checkbox-entry">
+                                        <input name="option_value_control[]" data-optionvalueid="{{ value.id }}" type="checkbox"> <span class="check"></span>{{ value.value }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if product.hasSkuOptionVariants() %}
+            {% for skuOptionGroup in product.getSkuOptionVariantsGrouped() %}
+                <div class="col-md-3" data-container="sku_option_panel_{{ skuOptionGroup[0].id }}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ skuOptionGroup[0].name }}
+                            {#<div data-controledcontainer="sku_option_panel_{{ skuOptionGroup[0].id }}" style="float:right">
+                                <span class="label label-success panel-on">On</span>
+                                <span class="label label-danger panel-off">Off</span>
+                                <span class="label label-info panel-inv">Inv</span>
+                            </div>#}
+                        </div>
+                        <ul class="list-group">
+                            {% for skuValue in skuOptionGroup %}
+                                <li class="list-group-item">
+                                    <label class="checkbox-entry">
+                                        <input name="option_sku_value_control[]" data-optionskuvalueid="{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if product.hasProductParts() %}
+            {% for productPart in  product.productParts %}
+                <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ productPart.label }}
+                            {#<div style="float:right" data-controledcontainer="product_part_panel_{{ productPart.id }}">
+                                <span class="label label-success panel-on">On</span>
+                                <span class="label label-danger panel-off">Off</span>
+                                <span class="label label-info panel-inv">Inv</span>
+                            </div>#}
+                        </div>
+
+                        <ul class="nav nav-list nav-tree-main">
+                            {% for material in productPart.productPartMaterials %}
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input name="product_part_material_tree_control[]" type="checkbox"> <span class="check"></span>{{ material.name }}
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        {% for grouped in  material.getGroupedOptionValues() %}
+                                            <li>
+                                                <label class="checkbox-entry">
+                                                    <input name="product_part_material_tree_control[]" 
+                                                           data-part="{{ productPart.id }}" 
+                                                           data-materialoption="{{ grouped.option.id }}" 
+                                                           type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
+                                                </label>
+                                                <ul class="nav nav-list tree">
+                                                {% for value in grouped.values %}
+                                                    <label class="tree-toggle nav-header checkbox-entry">
+                                                        <input 
+                                                            name="product_part_material_option_value_control[]" 
+                                                            data-part="{{ productPart.id }}" 
+                                                            data-materialoption="{{ grouped.option.id }}"  
+                                                            data-valueid="{{ value.id }}" 
+                                                            type="checkbox"> 
+                                                        <span class="check"></span> {{ value.value }}
+                                                    </lable>
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -75,11 +303,7 @@
                                     <tr>
                                         <td>
                                             - {{ cur_option }}
-                                        </td><td>
-                                            <a href="#" data-group=".sku_option_value_{{ cur_option }}" class="select_all_option_values">Select</a>/
-                                            <a href="#" data-group=".sku_option_value_{{ cur_option }}" class="unselect_all_option_values">Unselect</a>
-                                            all
-                                        </td>
+                                        </td><td>                                        </td>
                                     </tr>    
                                 {% endif %}
                                 <tr class="sku_option_value_{{ cur_option }}" >
@@ -110,27 +334,30 @@
                                     <td>
                                         <b> - {{ part.vars.value.productPart.label }}</b>
                                     </td><td>
-                                        <a href="#" data-group=".{{ part_class }}" class="select_all_option_values">Select</a>/
-                                        <a href="#" data-group=".{{ part_class }}" class="unselect_all_option_values">Unselect</a>
-                                        all
+                                        
                                     </td>
                                 </tr>
                                 {% for mvariant in part.productPartMaterialVariants %}
+                                    {% set variant = part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data %}
                                     {% set material_class = 'pp_m_'+part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.material.id %}
                                     {% if cur_material_class != material_class %}
                                         {% set cur_material_class = material_class %}
                                         <tr>
                                             <td>
-                                                - - {{ part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.material.name }}
+                                                - - {{ variant.material.name }}
                                             </td><td>
-                                                <a href="#" data-group=".{{ part_class }}.{{ cur_material_class }}" class="select_all_option_values">Select</a>/
-                                                <a href="#" data-group=".{{ part_class }}.{{ cur_material_class }}" class="unselect_all_option_values">Unselect</a>
-                                                all
+                                                
                                             </td>
                                         </tr>    
                                     {% endif %}
-                                    <tr class="{{ part_class }} {{ cur_material_class }}" >
-                                        <td>
+                                    <tr>
+                                        <td 
+                                            data-productpart="{{ part.vars.value.productPart.id }}" 
+                                            data-productmaterial="{{ variant.id }}"
+                                            {% for vValue in variant.values %}
+                                                data-materialvalue_{{ vValue.id }}="{{ vValue.id }}"
+                                            {% endfor %}
+                                            >
                                             {{ form_widget(mvariant) }}
                                         </td><td>
                                             {{ part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.name }}
@@ -154,35 +381,9 @@
             </div>
         </div>
         <div class="col-md-6">
-            
         </div>
     </div>
 
     {{ update() }}
     {{ form_end(form) }}
-    <script>
-        $(document).ready(function () {
-            $('.select_all_option_values').click(function () {
-                var el = $(this);
-                console.log(el.data('group') + ' input');
-                $(el.data('group') + ' input').prop('checked', true);
-                return false;
-            });
-            $('.unselect_all_option_values').click(function () {
-                var el = $(this);
-                console.log(el.data('group') + ' input');
-                $(el.data('group') + ' input').prop('checked', false);
-                return false;
-            })
-        });
-    </script>
-    {#
-        {{ form_errors(form) }}
-    
-        <form action="{{ path('sylius_backend_product_variant_group_edit', {'id': product.id}) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }} novalidate>
-            <input type="hidden" name="_method" value="POST">
-            {{ form_widget(form._token) }}
-            {{ update() }}
-        </form>
-        #}
 {% endblock %}
