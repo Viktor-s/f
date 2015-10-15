@@ -60,7 +60,7 @@
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
         <li><a href="{{ path('sylius_backend_product_index') }}">{{ 'sylius.breadcrumb.product.index'|trans }}</a></li>
         <li><a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
-        <li>{{ 'sylius.breadcrumb.generate'|trans }} variants</li>
+        <li>{{ 'sylius.breadcrumb.edit'|trans }} variants</li>
     </ol>
 {% endblock %}
 
@@ -90,23 +90,23 @@
             });
             
             //Sync option values
-            $('[name="group_variant_edit_type[OptionValues][]"]').change(function(){
+            $('[name="group_variant_filter_type[OptionValues][]"]').change(function(){
                 var el = $(this);
                 $('input[data-optionvalueid="'+el.prop('value')+'"]').prop( 'checked', el.prop('checked') );
             });
             $('[name="option_value_control[]"]').change(function(){
                 var el = $(this);
-                $('#group_variant_edit_type_OptionValues_'+el.data('optionvalueid')).prop( 'checked', el.prop('checked') );
+                $('#group_variant_filter_type_OptionValues_'+el.data('optionvalueid')).prop( 'checked', el.prop('checked') );
             });
             
             //Sync sku option values
-            $('[name="group_variant_edit_type[skuOptionsValues][]"]').change(function(){
+            $('[name="group_variant_filter_type[skuOptionsValues][]"]').change(function(){
                 var el = $(this);
                 $('input[data-optionskuvalueid="'+el.prop('value')+'"]').prop( 'checked', el.prop('checked') );
             });
             $('[name="option_sku_value_control[]"]').change(function(){
                 var el = $(this);
-                $('#group_variant_edit_type_skuOptionsValues_'+el.data('optionskuvalueid')).prop( 'checked', el.prop('checked') );
+                $('#group_variant_filter_type_skuOptionsValues_'+el.data('optionskuvalueid')).prop( 'checked', el.prop('checked') );
             });
             
             //Sync product part material
@@ -117,11 +117,13 @@
             });
             $('[name="product_part_material_tree_control[]"]').click(function(){
                 var el = $(this);
+                var data = el.data('product_part_material_control').split('_');
+                $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') );
                 el.parents('li').first().find('ul input').prop( 'checked', el.prop('checked') ).trigger("change");
             });
             {% set index = 0 %}
             {% for productPart in product.productParts  %}
-            $('[name="group_variant_edit_type[productPartMaterialVariants][{{ index }}][productPartMaterialVariants][]"]').change(function(){
+            $('[name="group_variant_filter_type[productPartMaterialVariants][{{ index }}][productPartMaterialVariants][]"]').change(function(){
                 {% set index = index + 1 %}
                 var el = $(this);
                 if( el.prop('checked') == false ){
@@ -133,6 +135,8 @@
                             var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
                             matval.prop('checked', el.prop('checked'));
                             matval.parents('ul li').find('input:first').prop('checked', el.prop('checked'));
+                        }else if(data[0] == 'productmaterial'){
+                            $('[data-product_part_material_control="{{ productPart.id }}_'+td.data('productmaterial')+'"]').prop('checked', el.prop('checked'));  
                         }
                     }
                 }
@@ -209,7 +213,7 @@
                                 <li>
                                     <div class="tree-opener">+</div>
                                     <label class="tree-toggle nav-header checkbox-entry">
-                                        <input name="product_part_material_tree_control[]" type="checkbox"> <span class="check"></span>{{ material.name }}
+                                        <input name="product_part_material_tree_control[]" data-product_part_material_control="{{ productPart.id }}_{{ material.id }}" type="checkbox"> <span class="check"></span>{{ material.name }}
                                     </label>
                                     <ul class="nav nav-list tree">
                                         {% for grouped in  material.getGroupedOptionValues() %}
@@ -353,7 +357,7 @@
                                     <tr>
                                         <td 
                                             data-productpart="{{ part.vars.value.productPart.id }}" 
-                                            data-productmaterial="{{ variant.id }}"
+                                            data-productmaterial="{{ variant.material.id }}"
                                             {% for vValue in variant.values %}
                                                 data-materialvalue_{{ vValue.id }}="{{ vValue.id }}"
                                             {% endfor %}

@@ -117,6 +117,8 @@
             });
             $('[name="product_part_material_tree_control[]"]').click(function(){
                 var el = $(this);
+                var data = el.data('product_part_material_control').split('_');
+                $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') );
                 el.parents('li').first().find('ul input').prop( 'checked', el.prop('checked') ).trigger("change");
             });
             {% set index = 0 %}
@@ -133,6 +135,8 @@
                             var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
                             matval.prop('checked', el.prop('checked'));
                             matval.parents('ul li').find('input:first').prop('checked', el.prop('checked'));
+                        }else if(data[0] == 'productmaterial'){
+                            $('[data-product_part_material_control="{{ productPart.id }}_'+td.data('productmaterial')+'"]').prop('checked', el.prop('checked'));  
                         }
                     }
                 }
@@ -209,7 +213,7 @@
                                 <li>
                                     <div class="tree-opener">+</div>
                                     <label class="tree-toggle nav-header checkbox-entry">
-                                        <input name="product_part_material_tree_control[]" type="checkbox"> <span class="check"></span>{{ material.name }}
+                                        <input name="product_part_material_tree_control[]" data-product_part_material_control="{{ productPart.id }}_{{ material.id }}" type="checkbox"> <span class="check"></span>{{ material.name }}
                                     </label>
                                     <ul class="nav nav-list tree">
                                         {% for grouped in  material.getGroupedOptionValues() %}
@@ -353,7 +357,7 @@
                                     <tr>
                                         <td 
                                             data-productpart="{{ part.vars.value.productPart.id }}" 
-                                            data-productmaterial="{{ variant.id }}"
+                                            data-productmaterial="{{ variant.material.id }}"
                                             {% for vValue in variant.values %}
                                                 data-materialvalue_{{ vValue.id }}="{{ vValue.id }}"
                                             {% endfor %}
