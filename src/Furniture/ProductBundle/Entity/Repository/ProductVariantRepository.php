@@ -6,6 +6,7 @@ use Doctrine\ORM\NoResultException;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository as BaseProductVariantRepository;
+use Furniture\ProductBundle\Model\GroupVaraintEdit;
 
 class ProductVariantRepository extends BaseProductVariantRepository
 {
@@ -32,9 +33,18 @@ class ProductVariantRepository extends BaseProductVariantRepository
         try {
             $result = $query->getSingleScalarResult();
 
-            return (bool) $result;
+            return (bool)$result;
         } catch (NoResultException $e) {
             return false;
         }
+    }
+
+    protected function getCollectionQueryBuilder()
+    {
+        return parent::getCollectionQueryBuilder()
+            ->leftJoin($this->getAlias().'.skuOptions', 'skuOption')
+            ->addSelect('skuOption')
+            ->leftJoin($this->getAlias().'.productPartVariantSelections', 'productPartVariantSelection')
+            ->addSelect('productPartVariantSelection');
     }
 }

@@ -73,7 +73,7 @@ class ProductPartMaterialVariant
      *
      * @return ProductPartMaterial
      */
-    public function setExtension(ProductPartMaterial $material)
+    public function setMaterial(ProductPartMaterial $material)
     {
         $this->material = $material;
 
@@ -84,7 +84,7 @@ class ProductPartMaterialVariant
      *
      * @return ProductPartMaterial
      */
-    public function getExtension()
+    public function getMaterial()
     {
         return $this->material;
     }

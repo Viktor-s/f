@@ -107,7 +107,7 @@ class LoadProductPartMaterialData extends DataFixture {
         $roductPartMaterialVariant = $this->get('furniture.repository.product_part_material_variant')->createNew();
         $roductPartMaterialVariant->setDescriptionalName($itemName);
         $roductPartMaterialVariant->setDescriptionalCode($itemCode);
-        $roductPartMaterialVariant->setExtension($extension);
+        $roductPartMaterialVariant->setMaterial($extension);
         
         foreach($roductPartMaterialValues as $valueReference){
             $roductPartMaterialVariant->addValue( $this->getReference($valueReference) );
