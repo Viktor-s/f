@@ -130,7 +130,8 @@
                         data = data.split('_');
                         console.log(data);
                         if(data[0] == 'materialvalue'){
-                            var matval = $('[data-valueid="'+data[1]+'"]');
+                            var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
+                            console.log('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
                             matval.prop('checked', el.prop('checked'));
                             matval.parents('ul li').find('input:first').prop('checked', el.prop('checked'));
                         }
@@ -193,7 +194,7 @@
         {% endif %}
         {% if product.hasProductParts() %}
             {% for productPart in  product.productParts %}
-                <div class="col-md-3" data-container="product_part_panel_{{ productPart.id }}">
+                <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             {{ productPart.label }}
