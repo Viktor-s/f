@@ -1,0 +1,15 @@
+Furniture\FactoryBundle\Entity\FactoryContactTranslation:
+    type: entity
+    table: factory_contact_translation
+
+    id:
+        id:
+            name: id
+            type: integer
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name

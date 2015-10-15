@@ -175,6 +175,15 @@ post:
         factory: Factory
         slug: Slug
 
+factory_contact:
+    form:
+        name: Name
+        department_name: Department
+        address: Address
+        sites: Sites
+        phones: Phones
+        emails: Emails
+
 sylius:
     product:
         show_deleted_variants: Show deleted

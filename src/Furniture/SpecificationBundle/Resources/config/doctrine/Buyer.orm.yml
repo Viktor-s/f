@@ -53,5 +53,5 @@ Furniture\SpecificationBundle\Entity\Buyer:
     oneToOne:
         image:
             targetEntity: Furniture\SpecificationBundle\Entity\BuyerImage
-            inversedBy: buyer
+            mappedBy: buyer
             cascade: [ persist ]

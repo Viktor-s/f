@@ -24,6 +24,11 @@ class ProductQuery
     private $contentUser;
 
     /**
+     * @var bool
+     */
+    private $onlyAvailable = true;
+
+    /**
      * With taxon
      *
      * @param Taxon $taxon
@@ -167,5 +172,39 @@ class ProductQuery
     public function getContentUser()
     {
         return $this->contentUser;
+    }
+
+    /**
+     * With only available products
+     *
+     * @return ProductQuery
+     */
+    public function withOnlyAvailable()
+    {
+        $this->onlyAvailable = true;
+
+        return $this;
+    }
+
+    /**
+     * Without only available
+     *
+     * @return ProductQuery
+     */
+    public function withoutOnlyAvailable()
+    {
+        $this->onlyAvailable = false;
+
+        return $this;
+    }
+
+    /**
+     * Is only available?
+     *
+     * @return bool
+     */
+    public function isOnlyAvailable()
+    {
+        return $this->onlyAvailable;
     }
 }

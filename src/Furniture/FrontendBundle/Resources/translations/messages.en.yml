@@ -78,6 +78,7 @@ frontend:
     downlod_file_with_number: "Download file #:number"
 
     title:
+        contacts: Contacts
         index: Furniture
         homepage: Homepage
         factories: Factories

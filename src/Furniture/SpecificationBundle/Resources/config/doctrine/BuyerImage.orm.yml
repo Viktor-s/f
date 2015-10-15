@@ -4,8 +4,8 @@ Furniture\SpecificationBundle\Entity\BuyerImage:
 
     oneToOne:
         buyer:
-            targetEntity: Furniture\SpecificationBundle\Entity\BuyerImage
-            inversedBy: buyer
+            targetEntity: Furniture\SpecificationBundle\Entity\Buyer
+            inversedBy: image
             joinColumn:
                 name: buyer_id
                 referencedColumnName: id

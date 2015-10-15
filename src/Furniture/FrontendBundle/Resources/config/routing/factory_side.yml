@@ -39,3 +39,10 @@ factory_side_circular:
     requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
     defaults:
         _controller: frontend.controller.factory_section:post
+
+factory_side_contacts:
+    path: /{factory}/contacts
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.factory_section:contacts

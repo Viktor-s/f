@@ -1,0 +1,25 @@
+#sylius_product_productParts .row.collection-list
+{
+    clear: both;
+    padding: 20px;
+}
+
+#sylius_product_productParts .row.collection-list .collection-item
+{
+    float: left;
+    width: 50%;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #a1a1a1;
+}
+
+#sylius_product_productParts .row.collection-list .collection-item label.control-label
+{
+    width:auto;
+    float:none;
+    clear:both;
+    display:block;
+
+    text-align: left;
+    margin: 5px 0 15px 0;
+}

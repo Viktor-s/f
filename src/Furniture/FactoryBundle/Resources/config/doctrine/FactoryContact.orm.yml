@@ -1,0 +1,41 @@
+Furniture\FactoryBundle\Entity\FactoryContact:
+    type: entity
+    table: factory_contact
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: contacts
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    fields:
+        departmentName:
+            type: string
+            name: department_name
+
+        address:
+            type: string
+            name: address
+
+        phones:
+            type: json_array
+            name: phones
+
+        emails:
+            type: json_array
+            name: emails
+
+        sites:
+            type: json_array
+            name: sites
