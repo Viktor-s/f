@@ -41,6 +41,12 @@ Furniture\FactoryBundle\Entity\Factory:
             targetEntity: Furniture\CommonBundle\Entity\User
             mappedBy: factory
 
+        contacts:
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryContact
+            cascade: [ persist ]
+            orphanRemoval: true
+            mappedBy: factory
+
     oneToOne:
         defaultRelation:
             targetEntity: Furniture\FactoryBundle\Entity\FactoryDefaultRelation

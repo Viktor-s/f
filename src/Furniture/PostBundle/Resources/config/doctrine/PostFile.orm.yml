@@ -5,7 +5,7 @@ Furniture\PostBundle\Entity\PostFile:
     manyToOne:
         post:
             targetEntity: Furniture\PostBundle\Entity\Post
-            inversedBy: images
+            inversedBy: files
             joinColumn:
                 name: post_id
                 referencedColumnName: id

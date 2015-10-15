@@ -76,3 +76,61 @@
 {
     line-height: 1.8em;
 }
+
+.factory-contacts
+{
+}
+
+.factory-contacts .contact
+{
+    float: left;
+    width: 30%;
+    margin: 10px 15px;
+    padding: 15px;
+    border: 1px solid #e1e1e1;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.factory-contacts .contact .header
+{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1e1e1;
+    line-height: 1.4em;
+}
+
+.factory-contacts .contact .header .name
+{
+    color: #222;
+    font-weight: normal;
+    padding-bottom: 4px;
+}
+
+.factory-contacts .contact .header .department
+{
+    font-size: 0.8em;
+    color: #999;
+}
+
+.factory-contacts .contact .body
+{
+    padding: 10px 0 0 10px;
+    line-height: 2em;
+}
+
+.factory-contacts .contact .body a
+{
+    color: #333;
+    text-decoration: none;
+}
+
+.factory-contacts .contact .body a:hover
+{
+    text-decoration: underline;
+}
+
+.factory-contacts .contact .body .fa::after
+{
+    content: "\00a0\00a0";
+}

@@ -269,7 +269,7 @@ class FrontendMenuBuilder
         ]);
         
         $menu->addChild('contacts', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('factory_side_contacts', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.contacts')
         ]);
         

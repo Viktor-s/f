@@ -149,6 +149,32 @@ class FactoryController
     }
 
     /**
+     * View factory contacts
+     *
+     * @param int $factory
+     *
+     * @return Response
+     */
+    public function contacts($factory)
+    {
+        $factory = $this->findFactory($factory);
+
+        if (!$factory) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found factory with identifier "%s".',
+                $factory
+            ));
+        }
+
+        $content = $this->twig->render('FrontendBundle:FactorySide:contacts.html.twig', [
+            'factory' => $factory,
+            'contacts' => $factory->getContacts()
+        ]);
+
+        return new Response($content);
+    }
+
+    /**
      * Find factory by identifier
      *
      * @param int $factory

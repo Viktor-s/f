@@ -7,6 +7,7 @@ use Furniture\ProductBundle\Entity\Product;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Factory extends AbstractTranslatable
 {
@@ -16,8 +17,10 @@ class Factory extends AbstractTranslatable
     protected $id;
 
     /**
-     *
      * @var string
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     protected $name;
     
@@ -57,6 +60,13 @@ class Factory extends AbstractTranslatable
     protected $defaultRelation;
 
     /**
+     * @var Collection|FactoryContact[]
+     *
+     * @Assert\Valid()
+     */
+    private $contacts;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -69,6 +79,7 @@ class Factory extends AbstractTranslatable
         $this->userRelations = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->defaultRelation = new FactoryDefaultRelation($this);
+        $this->contacts = new ArrayCollection();
     }
     
     /**
@@ -468,6 +479,75 @@ class Factory extends AbstractTranslatable
     public function getDefaultRelation()
     {
         return $this->defaultRelation;
+    }
+
+    /**
+     * Set contacts
+     *
+     * @param Collection|FactoryContact[] $contacts
+     *
+     * @return Factory
+     */
+    public function setContacts(Collection $contacts)
+    {
+        $this->contacts = $contacts;
+
+        return $this;
+    }
+
+    /**
+     * Get contacts
+     *
+     * @return Collection|FactoryContact[]
+     */
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * Has contact?
+     *
+     * @param FactoryContact $contact
+     *
+     * @return bool
+     */
+    public function hasContact(FactoryContact $contact)
+    {
+        return $this->contacts->contains($contact);
+    }
+
+    /**
+     * Add contact
+     *
+     * @param FactoryContact $contact
+     *
+     * @return Factory
+     */
+    public function addContact(FactoryContact $contact)
+    {
+        if (!$this->hasContact($contact)) {
+            $contact->setFactory($this);
+            $this->contacts->add($contact);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove contact
+     *
+     * @param FactoryContact $contact
+     *
+     * @return Factory
+     */
+    public function removeContact(FactoryContact $contact)
+    {
+        if ($this->hasContact($contact)) {
+            $this->contacts->removeElement($contact);
+        }
+
+        return $this;
     }
 
     /**

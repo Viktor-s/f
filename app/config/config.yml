@@ -178,6 +178,14 @@ sylius_resource:
                     model: Furniture\FactoryBundle\Entity\FactoryTranslation
                     mapping: ~
 
+        furniture.factory_contact:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryContact
+                translation:
+                    model: Furniture\FactoryBundle\Entity\FactoryContactTranslation
+                    mapping: ~
+
         Furniture.sku_option:
             driver: doctrine/orm
             classes:
