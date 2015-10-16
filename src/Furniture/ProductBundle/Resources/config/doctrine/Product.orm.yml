@@ -20,7 +20,7 @@ Furniture\ProductBundle\Entity\Product:
             targetEntity: Furniture\FactoryBundle\Entity\Factory
             inversedBy: products
             joinColumn:
-                name: product_id
+                name: factory_id
                 referencedColumnName: id
                 onDelete: "SET NULL"
                 nullable: true

@@ -5,7 +5,7 @@
 {% block content %}
     <div class="information-blocks">
         <div class="row">
-            <div class="col-md-12 information-entry">
+            <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4 information-entry">
                 <div class="blog-landing-box type-3 columns-1">
                     {% for factory in factries %}
                         <div class="blog-entry">
@@ -23,6 +23,30 @@
                             </div>
                         </div>
                     {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+                <div class="information-blocks">
+                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.select_style'| trans }}</div>
+
+                    <select class="form-control" name="style" live-form>
+                        <option value=""></option>
+                        {% for style in styles %}
+                            <option value="{{ style.id }}"{% if selected_style and selected_style.id == style.id %} selected="selected"{% endif %}>{{ style.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="information-blocks">
+                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.select_category'| trans }}</div>
+
+                    <select class="form-control" name="category" live-form>
+                        <option value=""></option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}"{% if selected_category and selected_category.id == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
         </div>

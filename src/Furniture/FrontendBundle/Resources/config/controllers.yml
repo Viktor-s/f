@@ -116,4 +116,6 @@ services:
             - @twig
             - @frontend.repository.factory
             - @frontend.repository.post
+            - @sylius.repository.taxonomy
+            - @sylius.repository.taxon
             - @security.token_storage

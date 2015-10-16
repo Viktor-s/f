@@ -76,6 +76,8 @@ frontend:
     default_relation: Default relation
     taxonomy: Categories
     downlod_file_with_number: "Download file #:number"
+    select_style: Select style
+    select_category: Select category
 
     title:
         contacts: Contacts
@@ -85,7 +87,7 @@ frontend:
         news: News
         circulars: Circulars
         navigation: Navigation
-        buyers: Buyers
+        buyers: Clients
         specifications: Specifications
         products: Products
         catalog: Catalog
@@ -147,11 +149,11 @@ frontend:
 
         header:
             homepage: Home
-            factories: Factory
+            factories: Brands
             products: Products
             catalog: Catalog
             compositions: Compositions
-            specifications: Specification
+            specifications: Specifications
             specification_buyers: Client
 
     login:

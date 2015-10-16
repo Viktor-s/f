@@ -5,6 +5,8 @@ namespace Furniture\FrontendBundle\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
+use Furniture\ProductBundle\Entity\Product;
+use Sylius\Component\Taxonomy\Model\Taxon;
 
 class FactoryRepository
 {
@@ -54,6 +56,33 @@ class FactoryRepository
                 ->setParameter('ids', $query->getIds());
         }
 
+        if ($query->hasTaxons()) {
+            $orWhere = $qb->expr()->orX();
+
+            foreach ($query->getTaxons() as $key => $taxon) {
+                $taxonOrExpr = $qb->expr()->orX();
+
+                $taxons = $this->getChilsForTaxon($taxon);
+
+                foreach ($taxons as $childKey => $childTaxon) {
+                    $paramName = sprintf('taxon_%s_%s', $key, $childKey);
+
+                    $taxonOrExpr->add('t.id = :' . $paramName);
+                    $qb->setParameter($paramName, $childTaxon->getId());
+                }
+
+                $orWhere->add($taxonOrExpr);
+            }
+
+            $qb
+                ->groupBy('f.id')
+                ->innerJoin(Product::class, 'p', 'WITH', 'p.factory = f.id')
+                ->leftJoin('p.taxons', 't')
+                ->andWhere($orWhere)
+                ->having('COUNT(f.id) = :count_taxons')
+                ->setParameter('count_taxons', count($query->getTaxons()));
+        }
+
         return $qb
             ->getQuery()
             ->getResult();
@@ -87,5 +116,29 @@ class FactoryRepository
     public function findAll()
     {
         return $this->findBy(new FactoryQuery());
+    }
+
+    /**
+     * Get all childs for taxon
+     *
+     * @param Taxon $taxon
+     *
+     * @return Taxon[]
+     */
+    private function getChilsForTaxon(Taxon $taxon)
+    {
+        $taxons = [$taxon];
+
+        $childs = function (Taxon $taxon, &$taxons) use (&$childs) {
+            foreach ($taxon->getChildren() as $childTaxon) {
+                $taxons[] = $childTaxon;
+
+                $childs($childTaxon, $taxons);
+            }
+        };
+
+        $childs($taxon, $taxons);
+
+        return $taxons;
     }
 }

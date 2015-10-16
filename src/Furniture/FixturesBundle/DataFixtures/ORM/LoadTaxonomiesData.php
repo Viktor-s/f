@@ -8,9 +8,106 @@ use Sylius\Component\Taxonomy\Model\TaxonInterface;
 use Sylius\Component\Taxonomy\Model\TaxonomyInterface;
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadTaxonomiesData as BaseLoadTaxonomiesData;
 
-class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
+class LoadTaxonomiesData extends BaseLoadTaxonomiesData
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        foreach ($this->getHierarchy() as $taxonomy) {
+            $t = $this->createTaxonomy($taxonomy);
+            $manager->persist($t);
+        }
 
-    protected function getHierarchy() {
+        $manager->flush();
+    }
+
+    /**
+     * Create taxonomy
+     *
+     * @param array $description
+     *
+     * @return object
+     */
+    protected function createTaxonomy(array $description)
+    {
+        /* @var $taxonomy TaxonomyInterface */
+        $taxonomy = $this->getTaxonomyRepository()->createNew();
+
+        foreach ($description['taxonomy'] as $locale => $name) {
+            $taxonomy->setCurrentLocale($locale);
+            $taxonomy->setFallbackLocale($locale);
+            $taxonomy->setName($name);
+
+            if ($this->defaultLocale === $locale) {
+                //echo 'Taxonomy:' . $name;
+                $this->setReference('Sylius.Taxonomy.' . $name, $taxonomy);
+            }
+        }
+
+        if (array_key_exists('taxons', $description)) {
+            foreach ($description['taxons'] as $taxon_description) {
+                $this->createTaxon($taxon_description, $taxonomy);
+            }
+        }
+
+        return $taxonomy;
+    }
+
+    /**
+     * Create taxon
+     *
+     * @param array       $taxonDescription
+     * @param             $taxonomy
+     * @param bool|false $parent
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function createTaxon(array $taxonDescription, $taxonomy, $parent = false)
+    {
+        if (count($taxonDescription) > 2) {
+            throw new \Exception('Taxonomy description Error', 100500);
+        }
+
+        $taxon = $this->getTaxonRepository()->createNew();
+
+        $taxonomy->addTaxon($taxon);
+        foreach ($taxonDescription['taxon'] as $locale => $name) {
+            $taxon->setCurrentLocale($locale);
+            $taxon->setFallbackLocale($locale);
+            $taxon->setName($name);
+
+            if ($this->defaultLocale === $locale) {
+                $this->setReference('Sylius.Taxon.' . $name, $taxon);
+            }
+        }
+        
+        if($parent){
+            $parent->addChild($taxon);
+            $taxon->setPermalink($parent->getName().'/'.$taxon->getName());
+        }
+
+        if (array_key_exists('childs', $taxonDescription)) {
+            foreach ($taxonDescription['childs'] as $child_taxon_description) {
+                $childTaxon = $this->createTaxon($child_taxon_description, $taxonomy, $taxon);
+            }
+        }
+
+        return $taxon;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrder()
+    {
+        return 10;
+    }
+
+    protected function getHierarchy()
+    {
         return [
             [
                 'taxonomy' => [$this->defaultLocale => 'Category'],
@@ -220,20 +317,20 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
                             [
                                 'taxon' => [$this->defaultLocale => 'bedroom_Furniture'],
                                 'childs' =>
-                                [
                                     [
-                                        'taxon' => [$this->defaultLocale => 'Beds'],
-                                    ],
-                                    [
-                                        'taxon' => [$this->defaultLocale => 'Daybeds'],
-                                    ],
-                                    [
-                                        'taxon' => [$this->defaultLocale => 'Dressers'],
-                                    ],
-                                    [
-                                        'taxon' => [$this->defaultLocale => 'Bedside Tables'],
-                                    ],
-                                ]
+                                        [
+                                            'taxon' => [$this->defaultLocale => 'Beds'],
+                                        ],
+                                        [
+                                            'taxon' => [$this->defaultLocale => 'Daybeds'],
+                                        ],
+                                        [
+                                            'taxon' => [$this->defaultLocale => 'Dressers'],
+                                        ],
+                                        [
+                                            'taxon' => [$this->defaultLocale => 'Bedside Tables'],
+                                        ],
+                                    ]
                             ],
                             [
                                 'taxon' => [$this->defaultLocale => 'bedroom_Accents'],
@@ -692,85 +789,87 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData {
                     ]
                 ]
             ],
+
+            [
+                'taxonomy' => [$this->defaultLocale => 'Style'],
+                'taxons' => [
+                    [
+                        'taxon' => [$this->defaultLocale => 'Contemporary']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Classic']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Eclectic']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Modern']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Traditional']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Asian']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Beach Style']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Craftsman']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Farmhouse']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Industrial']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Mediterranean']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Midcentury']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Rustic']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Scandinavian']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Shabby-Chic Style']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Southwestern']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Transitional']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Tropical']
+                    ],
+
+                    [
+                        'taxon' => [$this->defaultLocale => 'Victorian']
+                    ]
+                ]
+            ]
         ];
-    }
-
-    protected $manager;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager) {
-
-        foreach ($this->getHierarchy() as $taxonomy) {
-            $t = $this->createTaxonomy($taxonomy);
-            $manager->persist($t);
-        }
-
-        $manager->flush();
-    }
-
-    protected function createTaxonomy(array $description) {
-        /* @var $taxonomy TaxonomyInterface */
-        $taxonomy = $this->getTaxonomyRepository()->createNew();
-
-        foreach ($description['taxonomy'] as $locale => $name) {
-            $taxonomy->setCurrentLocale($locale);
-            $taxonomy->setFallbackLocale($locale);
-            $taxonomy->setName($name);
-
-            if ($this->defaultLocale === $locale) {
-                //echo 'Taxonomy:' . $name;
-                $this->setReference('Sylius.Taxonomy.' . $name, $taxonomy);
-            }
-        }
-
-        if (array_key_exists('taxons', $description)) {
-            foreach ($description['taxons'] as $taxon_description) {
-                $this->createTaxon($taxon_description, $taxonomy);
-            }
-        }
-
-        return $taxonomy;
-    }
-
-    protected function createTaxon(array $taxon_description, $taxonomy, $parent = false) {
-        if (count($taxon_description) > 2) {
-            throw new \Exception('Taxonomy description Error', 100500);
-        }
-
-        $taxon = $this->getTaxonRepository()->createNew();
-
-        $taxonomy->addTaxon($taxon);
-        foreach ($taxon_description['taxon'] as $locale => $name) {
-            $taxon->setCurrentLocale($locale);
-            $taxon->setFallbackLocale($locale);
-            $taxon->setName($name);
-
-            if ($this->defaultLocale === $locale) {
-                $this->setReference('Sylius.Taxon.' . $name, $taxon);
-            }
-        }
-        
-        if($parent){
-            $parent->addChild($taxon);
-            $taxon->setPermalink($parent->getName().'/'.$taxon->getName());
-        }
-
-        if (array_key_exists('childs', $taxon_description)) {
-            foreach ($taxon_description['childs'] as $child_taxon_description) {
-                $child_taxon = $this->createTaxon($child_taxon_description, $taxonomy, $taxon);
-            }
-        }
-
-        return $taxon;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder()
-    {
-        return 10;
     }
 }

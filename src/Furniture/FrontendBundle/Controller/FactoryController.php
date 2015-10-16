@@ -2,8 +2,13 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
+use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
+use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
+use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
+use Sylius\Component\Core\Model\Taxon;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +31,16 @@ class FactoryController
      * @var PostRepository
      */
     private $postRepository;
+
+    /**
+     * @var TaxonomyRepository
+     */
+    private $taxonomyRepository;
+
+    /**
+     * @var TaxonRepository
+     */
+    private $taxonRepository;
     
     /**
      * @var TokenStorageInterface
@@ -38,26 +53,81 @@ class FactoryController
      * @param \Twig_Environment     $twig
      * @param FactoryRepository     $factoryRepository
      * @param PostRepository        $postRepository
+     * @param TaxonomyRepository    $taxonomyRepository
+     * @param TaxonRepository       $taxonRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         \Twig_Environment $twig,
         FactoryRepository $factoryRepository,
         PostRepository $postRepository,
+        TaxonomyRepository $taxonomyRepository,
+        TaxonRepository $taxonRepository,
         TokenStorageInterface $tokenStorage
     ){
         $this->twig = $twig;
         $this->factoryRepository = $factoryRepository;
         $this->postRepository = $postRepository;
+        $this->taxonomyRepository = $taxonomyRepository;
+        $this->taxonRepository = $taxonRepository;
         $this->tokenStorage = $tokenStorage;
     }
-    
+
+    /**
+     * View factories
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function factories(Request $request)
     {
-        $factories = $this->factoryRepository->findAll();
+        $styles = $this->getStyles();
+        $categories = $this->getCategories();
+
+        // Resolve selected style
+        $selectedStyle = null;
+
+        if ($request->query->has('style')) {
+            foreach ($styles as $style) {
+                if ($style->getId() == $request->query->get('style')) {
+                    $selectedStyle = $style;
+                    break;
+                }
+            }
+        }
+
+        // Resolve selected category
+        $selectedCategory = null;
+
+        if ($request->query->has('category')) {
+            foreach ($categories as $category) {
+                if ($category->getId() == $request->query->get('category')) {
+                    $selectedCategory = $category;
+                    break;
+                }
+            }
+        }
+
+        // Create and populate query for search factories
+        $query = new FactoryQuery();
+
+        if ($selectedStyle) {
+            $query->withTaxon($selectedStyle);
+        }
+
+        if ($selectedCategory) {
+            $query->withTaxon($selectedCategory);
+        }
+
+        $factories = $this->factoryRepository->findBy($query);
         
         $content = $this->twig->render('FrontendBundle:FactorySide:factories.html.twig', [
-            'factries' => $factories
+            'factries' => $factories,
+            'styles' => $styles,
+            'selected_style' => $selectedStyle,
+            'categories' => $categories,
+            'selected_category' => $selectedCategory
         ]);
 
         return new Response($content);
@@ -195,5 +265,50 @@ class FactoryController
         }
 
         return $factory;
+    }
+
+    /**
+     * Get styles
+     *
+     * @return array|\Sylius\Component\Core\Model\Taxon[]
+     */
+    private function getStyles()
+    {
+        /** @var \Sylius\Component\Core\Model\Taxonomy $styleTaxonomy */
+        $styleTaxonomy = $this->taxonomyRepository->findOneBy([
+            'name' => 'Style'
+        ]);
+
+        /** @var \Sylius\Component\Core\Model\Taxon[] $styles */
+        $styles = $this->taxonRepository->findBy([
+            'taxonomy' => $styleTaxonomy
+        ]);
+
+        // Filter style (Without root)
+        $styles = array_filter($styles, function (Taxon $taxon) use ($styleTaxonomy) {
+            return $taxon->getId() != $styleTaxonomy->getRoot()->getId();
+        });
+
+        return $styles;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return array|\Sylius\Component\Core\Model\Taxon[]
+     */
+    private function getCategories()
+    {
+        /** @var \Sylius\Component\Core\Model\Taxonomy $categoryTaxonomy */
+        $categoryTaxonomy = $this->taxonomyRepository->findOneBy([
+            'name' => 'Category'
+        ]);
+
+        $categories = $this->taxonRepository->findBy([
+            'taxonomy' => $categoryTaxonomy,
+            'parent' => $categoryTaxonomy->getRoot()
+        ]);
+
+        return $categories;
     }
 }
