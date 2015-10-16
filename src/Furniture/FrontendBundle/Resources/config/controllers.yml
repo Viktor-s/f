@@ -110,8 +110,8 @@ services:
             - @router
             - @form.factory
 
-    frontend.controller.factory_section:
-        class: Furniture\FrontendBundle\Controller\FactoryController
+    frontend.controller.factory_side:
+        class: Furniture\FrontendBundle\Controller\FactorySideController
         arguments:
             - @twig
             - @frontend.repository.factory
