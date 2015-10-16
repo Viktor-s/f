@@ -234,6 +234,7 @@
                                                 </label>
                                                 <ul class="nav nav-list tree">
                                                 {% for value in grouped.values %}
+                                                    <li>
                                                     <label class="tree-toggle checkbox-entry">
                                                         <input 
                                                             name="product_part_material_option_value_control[]" 
@@ -243,6 +244,7 @@
                                                             type="checkbox"> 
                                                         <span class="check"></span> {{ value.value }}
                                                     </label>
+                                                    </li>
                                                 {% endfor %}
                                                 </ul>
                                             </li>
