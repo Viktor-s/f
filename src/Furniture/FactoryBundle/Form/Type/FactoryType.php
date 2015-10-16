@@ -4,7 +4,6 @@ namespace Furniture\FactoryBundle\Form\Type;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryImage;
-use Furniture\FactoryBundle\Entity\FactoryTranslation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,7 +31,7 @@ class FactoryType extends AbstractType
     {
         $builder
             ->add('translations', 'a2lix_translationsForms', [
-                'form_type' => new FactoryTranslationType(FactoryTranslation::class)
+                'form_type' => new FactoryTranslationType()
             ])
             ->add('name', 'text', [
                 'required' => true

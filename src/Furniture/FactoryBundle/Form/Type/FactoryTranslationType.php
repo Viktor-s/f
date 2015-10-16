@@ -2,12 +2,23 @@
 
 namespace Furniture\FactoryBundle\Form\Type;
 
-use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-
+use Furniture\FactoryBundle\Entity\FactoryTranslation;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FactoryTranslationType extends AbstractResourceType
+class FactoryTranslationType extends AbstractType
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => FactoryTranslation::class
+        ]);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -16,7 +27,7 @@ class FactoryTranslationType extends AbstractResourceType
         $builder
             ->add('description', 'textarea', array('attr' => array('class' => 'ckeditor')) )
             ->add('shortDescription', 'textarea')
-            ;
+            ->add('address');
     }
 
     /**

@@ -7,3 +7,38 @@
 
     <a href="#">{{ 'frontend.title.general'|trans }}</a>
 {% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-info">
+        <div class="factory-cover">
+            {% if factory.images|length > 0 %}
+                {% set image = factory.images.first %}
+                <img src="/media/image/{{ image.path }}" height="350" alt="{{ factory.name }}" />
+            {% else %}
+                <img src="http://dummyimage.com/1200x350" height="350" alt="{{ factory.name }}" />
+            {% endif %}
+
+            <div class="logo">
+                {% if factory.logoImage %}
+                    <img src="{{ factory.logoImage.path }}" width="160" height="160" alt="{{ factory.name }}" />
+                {% else %}
+                    <img src="http://dummyimage.com/160/cccccc/000000" width="160" height="160" alt="{{ factory.name }}" />
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="factory-title">
+            <h3>{{ factory.name }}</h3>
+
+            {% if factory.translate.address %}
+                <div class="address">
+                    <i class="fa fa-location-arrow"></i>
+                    {{ factory.translate.address }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="short-description">{{ factory.translate.shortDescription|raw }}</div>
+        <div class="description">{{ factory.translate.description|raw }}</div>
+    </div>
+{% endblock %}

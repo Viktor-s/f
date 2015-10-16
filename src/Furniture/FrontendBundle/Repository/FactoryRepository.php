@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Product;
-use Sylius\Component\Taxonomy\Model\Taxon;
+use Sylius\Component\Core\Model\Taxon;
 
 class FactoryRepository
 {
@@ -50,37 +50,30 @@ class FactoryRepository
             ->from(Factory::class, 'f')
             ->select('f');
 
+        if ($query->hasTaxons()) {
+            $factoryIdsByTaxon = [];
+            $factoryAllIds = [1];
+
+            foreach ($query->getTaxons() as $taxon) {
+                $ids = $this->findFactoryIdsByTaxon($taxon);
+                $factoryAllIds = array_merge($factoryAllIds, $ids);
+                $factoryIdsByTaxon[] = $ids;
+            }
+
+            $arguments = array_merge([$factoryAllIds], $factoryIdsByTaxon);
+            $ids = call_user_func_array('array_intersect', $arguments);
+
+            if (!count($ids)) {
+                return [];
+            }
+
+            $query->withIds($ids);
+        }
+
         if ($query->hasIds()) {
             $qb
                 ->andWhere('f.id IN (:ids)')
                 ->setParameter('ids', $query->getIds());
-        }
-
-        if ($query->hasTaxons()) {
-            $orWhere = $qb->expr()->orX();
-
-            foreach ($query->getTaxons() as $key => $taxon) {
-                $taxonOrExpr = $qb->expr()->orX();
-
-                $taxons = $this->getChilsForTaxon($taxon);
-
-                foreach ($taxons as $childKey => $childTaxon) {
-                    $paramName = sprintf('taxon_%s_%s', $key, $childKey);
-
-                    $taxonOrExpr->add('t.id = :' . $paramName);
-                    $qb->setParameter($paramName, $childTaxon->getId());
-                }
-
-                $orWhere->add($taxonOrExpr);
-            }
-
-            $qb
-                ->groupBy('f.id')
-                ->innerJoin(Product::class, 'p', 'WITH', 'p.factory = f.id')
-                ->leftJoin('p.taxons', 't')
-                ->andWhere($orWhere)
-                ->having('COUNT(f.id) = :count_taxons')
-                ->setParameter('count_taxons', count($query->getTaxons()));
         }
 
         return $qb
@@ -119,13 +112,65 @@ class FactoryRepository
     }
 
     /**
+     * Get factory IDs by taxon
+     *
+     * @param Taxon $taxon
+     *
+     * @return array
+     */
+    private function findFactoryIdsByTaxon(Taxon $taxon)
+    {
+        $taxons = $this->getChildsForTaxon($taxon);
+        $taxonIds = array_map(function (Taxon $taxon) {
+            return $taxon->getId();
+        }, $taxons);
+
+        $in  = [];
+        $taxonIdsParameters = [];
+
+        foreach ($taxonIds as $index => $taxonId) {
+            $paramName = 't_' . $taxon->getId() . '_' . $index;
+            $taxonIdsParameters[$paramName] = $taxonId;
+            $in[] = ':' . $paramName;
+        }
+
+        $inStr = implode(', ', $in);
+
+        $factoryTableName = $this->em->getClassMetadata(Factory::class)->table['name'];
+        $productTableName = $this->em->getClassMetadata(Product::class)->table['name'];
+        $taxonTableName = $this->em->getClassMetadata(Taxon::class)->table['name'];
+        $productTaxonInfo = $this->em->getClassMetadata(Product::class)
+            ->associationMappings['taxons']['joinTable'];
+
+        $productTaxonTableName = $productTaxonInfo['name'];
+
+        $sql = "SELECT DISTINCT f.id FROM {$factoryTableName} f \n" .
+            "INNER JOIN {$productTableName} p ON f.id= p.factory_id \n" .
+            "INNER JOIN {$productTaxonTableName} pt ON p.id = pt.product_id \n" .
+            "INNER JOIN {$taxonTableName} t ON t.id = pt.taxon_id \n" .
+            "WHERE \n" .
+            "t.id IN ($inStr)"
+        ;
+
+        $connection = $this->em->getConnection();
+        $stm = $connection->prepare($sql);
+        $stm->execute($taxonIdsParameters);
+
+        $result = $stm->fetchAll();
+
+        return array_map(function ($data) {
+            return $data['id'];
+        }, $result);
+    }
+
+    /**
      * Get all childs for taxon
      *
      * @param Taxon $taxon
      *
      * @return Taxon[]
      */
-    private function getChilsForTaxon(Taxon $taxon)
+    private function getChildsForTaxon(Taxon $taxon)
     {
         $taxons = [$taxon];
 

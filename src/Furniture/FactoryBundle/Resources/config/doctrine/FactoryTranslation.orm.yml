@@ -4,16 +4,19 @@ Furniture\FactoryBundle\Entity\FactoryTranslation:
     table: factory_translation
     id:
         id:
-             type: integer
-             nullable: false
-             unsigned: false
-             id: true
-             generator:
-                 strategy: AUTO
+            name: id
+            type: integer
+            generator:
+                strategy: AUTO
     fields:
         description:
             type: text
             nullable: true
+
         shortDescription:
             type: text
+            nullable: true
+
+        address:
+            type: string
             nullable: true
