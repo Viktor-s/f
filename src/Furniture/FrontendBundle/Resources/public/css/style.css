@@ -3296,3 +3296,9 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
     transition: background .5s ease-out;
     transition-delay: .2s;
 }
+
+
+.price, .total-price
+{
+    white-space: nowrap;
+}

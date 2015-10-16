@@ -1,5 +1,6 @@
 parameters:
     stof_doctrine_extensions.listener.softdeleteable.class: Furniture\CommonBundle\Gedmo\SoftDeletable\SoftDeletableListener
+    sylius.templating.helper.money.class: Furniture\CommonBundle\Templating\MoneyHelper
 
 services:
     doctrine.subscriber.uplodable:
