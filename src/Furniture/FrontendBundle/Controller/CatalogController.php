@@ -166,7 +166,7 @@ class CatalogController
         }
         
         /* Create product paginator */
-        $products = $this->productRepository->findBy($productQuery);
+        $products = $this->productRepository->findBy($productQuery, $request->get('page', 1));
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
             'products' => $products, //Paginator object
