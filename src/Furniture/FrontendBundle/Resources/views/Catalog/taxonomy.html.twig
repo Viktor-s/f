@@ -4,7 +4,7 @@
 
 {% block breadcrumb %}
     <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
-    <a href="#">{{ 'frontend.title.taxonomy' }}</a>
+    <a href="#">{{ 'frontend.title.taxonomy'|trans }}</a>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
         <div class="mozaic-banners-wrapper type-2">
 
             {% for taxon in category.taxons %}
-                <div class="banner-column col-sm-6">
+                <div class="banner-column col-sm-4">
                     <a href="{{ path('products', {category: taxon.permalink}) }}"
                        {% if taxon.path|length > 0 %}
                        style="; background-image: url({{ taxon.path|imagine_filter('s425x200') }}); background-size: cover;" class="mozaic-banner-entry type-3"
