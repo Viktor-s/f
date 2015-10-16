@@ -116,6 +116,13 @@ class ProductController
             ));
         }
 
+        if (!$product->isAvailable()) {
+            throw new NotFoundHttpException(sprintf(
+                'The product with id "%s" is not available.',
+                $product->getId()
+            ));
+        }
+
         $quantity = 1;
 
         // Get active variant
