@@ -17,6 +17,13 @@
             font-weight:bold;
             margin-bottom: 5px;
         }
+        .admin-filter-variants .tree-toggle.checkbox-entry, .checkbox-entry-filter-items{
+            font-weight:normal;
+        }
+        .admin-filter-variants .checkbox-entry:hover, .checkbox-entry-filter-items:hover{
+            font-weight:normal;
+            background-color:#B4CFEC;
+        }
         .admin-filter-variants .btn-submenu {
             position: absolute;
             top: 0;
@@ -145,6 +152,7 @@
         });
     </script>
     <div class="row admin-filter-variants">
+        <form name="blablaba">
         {% if product.hasOptions() %}
             {% for option in  product.options %}
                 <div data-container="option_panel_{{ option.id }}" class="col-md-3">
@@ -218,7 +226,7 @@
                                     <ul class="nav nav-list tree">
                                         {% for grouped in  material.getGroupedOptionValues() %}
                                             <li>
-                                                <label class="checkbox-entry">
+                                                <label class="checkbox-entry tree-toggle ">
                                                     <input name="product_part_material_tree_control[]" 
                                                            data-part="{{ productPart.id }}" 
                                                            data-materialoption="{{ grouped.option.id }}" 
@@ -226,7 +234,8 @@
                                                 </label>
                                                 <ul class="nav nav-list tree">
                                                 {% for value in grouped.values %}
-                                                    <label class="tree-toggle nav-header checkbox-entry">
+                                                    <li>
+                                                    <label class="tree-toggle checkbox-entry">
                                                         <input 
                                                             name="product_part_material_option_value_control[]" 
                                                             data-part="{{ productPart.id }}" 
@@ -234,7 +243,8 @@
                                                             data-valueid="{{ value.id }}" 
                                                             type="checkbox"> 
                                                         <span class="check"></span> {{ value.value }}
-                                                    </lable>
+                                                    </label>
+                                                    </li>
                                                 {% endfor %}
                                                 </ul>
                                             </li>
@@ -247,6 +257,7 @@
                 </div>
             {% endfor %}
         {% endif %}
+        </form>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -281,10 +292,10 @@
                                 {% endif %}
                                 <tr class="option_value_{{ cur_option }}" >
                                     <td>
+                                    <label class="checkbox-entry-filter-items">
                                         {{ form_widget(option) }}
-                                    </td><td>
                                         {{ form.OptionValues.vars.choices[option.vars.value].data.value }}
-                                    </td>
+                                    </label>
                                 </tr>
                             {% endfor %}
                         </table>
@@ -312,10 +323,10 @@
                                 {% endif %}
                                 <tr class="sku_option_value_{{ cur_option }}" >
                                     <td>
+                                    <label class="checkbox-entry-filter-items">
                                         {{ form_widget(option) }}
-                                    </td><td>
                                         {{ form.skuOptionsValues.vars.choices[option.vars.value].data.value }}
-                                    </td>
+                                    </label>
                                 </tr>
                             {% endfor %}
                         </table>
@@ -362,9 +373,10 @@
                                                 data-materialvalue_{{ vValue.id }}="{{ vValue.id }}"
                                             {% endfor %}
                                             >
+                                            <label class="checkbox-entry-filter-items">
                                             {{ form_widget(mvariant) }}
-                                        </td><td>
                                             {{ part.productPartMaterialVariants.vars.choices[mvariant.vars.value].data.name }}
+                                            </label>
                                         </td>
                                     </tr>
                                 {% endfor %}
