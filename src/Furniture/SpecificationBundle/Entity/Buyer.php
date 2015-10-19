@@ -286,6 +286,10 @@ class Buyer
      */
     public function setImage(BuyerImage $image = null)
     {
+        if ($image) {
+            $image->setBuyer($this);
+        }
+
         $this->image = $image;
 
         return $this;

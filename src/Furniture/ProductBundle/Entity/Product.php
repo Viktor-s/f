@@ -4,6 +4,8 @@ namespace Furniture\ProductBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -487,7 +489,45 @@ class Product extends BaseProduct
             return $variant->isDeleted() && !$variant->isMaster();
         });
     }
-    
+
+    /**
+     * Get paginated deleted variants
+     *
+     * @param int $page
+     * @param int $limit
+     *
+     * @return Pagerfanta|ProductVariant[]
+     */
+    public function getPaginatedDeletedVariants($page = 1, $limit = 50)
+    {
+        $variants = $this->getDeletedVariants();
+        $paginator = new Pagerfanta(new ArrayAdapter($variants->toArray()));
+
+        $paginator->setCurrentPage($page);
+        $paginator->setMaxPerPage($limit);
+
+        return $paginator;
+    }
+
+    /**
+     * Get paginated variants
+     *
+     * @param int $page
+     * @param int $limit
+     *
+     * @return Pagerfanta|ProductVariant[]
+     */
+    public function getPaginatedVariants($page = 1, $limit = 50)
+    {
+        $variants = $this->getVariants();
+        $paginator = new Pagerfanta(new ArrayAdapter($variants->toArray()));
+
+        $paginator->setCurrentPage($page);
+        $paginator->setMaxPerPage($limit);
+
+        return $paginator;
+    }
+
     /**
      * Return translation model class.
      *

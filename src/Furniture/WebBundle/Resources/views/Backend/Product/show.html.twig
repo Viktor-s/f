@@ -292,9 +292,9 @@
 {% endif %}
 
 {% if app.request.query.get('sdv') %}
-    {{ list_variants(product.deletedVariants, true) }}
+    {{ list_variants(product.paginatedDeletedVariants(app.request.query.get('page', 1), app.request.query.get('limit', 100)), true) }}
 {% else %}
-    {{ list_variants(product.variants) }}
+    {{ list_variants(product.paginatedVariants(app.request.query.get('page', 1), app.request.query.get('limit', 100))) }}
 {% endif %}
 
 {% endblock %}

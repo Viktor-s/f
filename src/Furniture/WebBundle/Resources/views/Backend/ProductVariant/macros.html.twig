@@ -2,97 +2,102 @@
 
 {% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
 {% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
 
 {% if variants|length > 0 %}
-<table class="table" id="variants">
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>{{ 'sylius.variant.sku'|trans }}</th>
-            <th></th>
-            <th>{{ 'sylius.variant.availability'|trans }}</th>
-            <th>{{ 'sylius.variant.last_update'|trans }}</th>
-            <th>{{ 'sylius.variant.options'|trans }}</th>
-            <th>{{ 'sylius.variant.available_on_demand'|trans }}</th>
-            <th>{{ 'sylius.variant.stock'|trans }}</th>
-            <th>{{ 'sylius.variant.price'|trans }}</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for variant in variants %}
-        {% set product = variant.product %}
-        <tr id="{{ variant.id }}">
-            <td>{{ variant.id }}</td>
-            <td>{{ variant.sku ?: '-' }}</td>
+    {{ pagination(variants) }}
 
-            <td>
-                {% if variant.images.count > 0 %}
-                    <img class="img-polaroid" src="{{ variant.images.offsetGet(0).path|imagine_filter('sylius_small') }}" />
-                {% endif %}
-            </td>
+    <table class="table" id="variants">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>{{ 'sylius.variant.sku'|trans }}</th>
+                <th></th>
+                <th>{{ 'sylius.variant.availability'|trans }}</th>
+                <th>{{ 'sylius.variant.last_update'|trans }}</th>
+                <th>{{ 'sylius.variant.options'|trans }}</th>
+                <th>{{ 'sylius.variant.available_on_demand'|trans }}</th>
+                <th>{{ 'sylius.variant.stock'|trans }}</th>
+                <th>{{ 'sylius.variant.price'|trans }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for variant in variants %}
+            {% set product = variant.product %}
+            <tr id="{{ variant.id }}">
+                <td>{{ variant.id }}</td>
+                <td>{{ variant.sku ?: '-' }}</td>
 
-            <td>
-                <span class="label label-{{ variant.available ? 'success' : 'important' }}">
-                    {{ variant.availableOn|date }}
-                </span>
-            </td>
-
-            <td>{{ product.updatedAt|date }}</td>
-
-            <td>
-                <ul>
-                    {% for option in variant.options %}
-                        <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
-                    {% endfor %}
-
-                    {% if variant.skuOptions is defined and variant.skuOptions|length > 0 %}
-                        <hr/>
+                <td>
+                    {% if variant.images.count > 0 %}
+                        <img class="img-polaroid" src="{{ variant.images.offsetGet(0).path|imagine_filter('sylius_small') }}" />
                     {% endif %}
+                </td>
 
-                    {% for sku_option in variant.SkuOptions %}
-                        <li><strong>{{ sku_option.name }}</strong>: {{ sku_option.value }}</li>
-                    {% endfor %}
-                    
-                    {% for p_material_selection in variant.productPartVariantSelections %}
-                        <li><strong>{{ p_material_selection.productPart.label }}</strong>: {{ p_material_selection.productPartMaterialVariant.name }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
+                <td>
+                    <span class="label label-{{ variant.available ? 'success' : 'important' }}">
+                        {{ variant.availableOn|date }}
+                    </span>
+                </td>
 
-            <td>
-                <span class="label label-{{ variant.availableOnDemand ? 'success' : 'warning'}}">
-                    {{ variant.availableOnDemand ? 'sylius.yes'|trans : 'sylius.no'|trans }}
-                </span>
-            </td>
+                <td>{{ product.updatedAt|date }}</td>
 
-            <td>
-                <span class="label label-{{ variant.inStock ? 'success' : 'important' }}">
-                    {{ variant.onHand }}
-                </span>
-            </td>
+                <td>
+                    <ul>
+                        {% for option in variant.options %}
+                            <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
+                        {% endfor %}
 
-            <td>{{ variant.price|sylius_price }}</td>
+                        {% if variant.skuOptions is defined and variant.skuOptions|length > 0 %}
+                            <hr/>
+                        {% endif %}
 
-            <td>
-                <div class="pull-right">
-                    {% if not variant.deleted %}
-                        {{ buttons.edit(path('sylius_backend_product_variant_update', {'productId': product.id, id: variant.id})) }}
-                        {{ buttons.delete(path('sylius_backend_product_variant_delete', {'productId': product.id, id: variant.id})) }}
-                    {% else %}
-                        <a href="{{ path('sylius_backend_product_variant_restore', {productId: product.id, id: variant.id, _from: app.request.requestUri}) }}" class="btn btn-primary">
-                            <i class="glyphicon glyphicon-pencil"></i>
-                            Restore
-                        </a>
+                        {% for sku_option in variant.SkuOptions %}
+                            <li><strong>{{ sku_option.name }}</strong>: {{ sku_option.value }}</li>
+                        {% endfor %}
 
-                        {{ buttons.delete(path('sylius_backend_product_variant_delete', {productId: product.id, id: variant.id, _from: app.request.requestUri, hard: 1})) }}
-                    {% endif %}
-                </div>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                        {% for p_material_selection in variant.productPartVariantSelections %}
+                            <li><strong>{{ p_material_selection.productPart.label }}</strong>: {{ p_material_selection.productPartMaterialVariant.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+
+                <td>
+                    <span class="label label-{{ variant.availableOnDemand ? 'success' : 'warning'}}">
+                        {{ variant.availableOnDemand ? 'sylius.yes'|trans : 'sylius.no'|trans }}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="label label-{{ variant.inStock ? 'success' : 'important' }}">
+                        {{ variant.onHand }}
+                    </span>
+                </td>
+
+                <td>{{ variant.price|sylius_price }}</td>
+
+                <td>
+                    <div class="pull-right">
+                        {% if not variant.deleted %}
+                            {{ buttons.edit(path('sylius_backend_product_variant_update', {'productId': product.id, id: variant.id})) }}
+                            {{ buttons.delete(path('sylius_backend_product_variant_delete', {'productId': product.id, id: variant.id})) }}
+                        {% else %}
+                            <a href="{{ path('sylius_backend_product_variant_restore', {productId: product.id, id: variant.id, _from: app.request.requestUri}) }}" class="btn btn-primary">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                Restore
+                            </a>
+
+                            {{ buttons.delete(path('sylius_backend_product_variant_delete', {productId: product.id, id: variant.id, _from: app.request.requestUri, hard: 1})) }}
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ pagination(variants) }}
 {% else %}
     {{ alerts.info('sylius.variant.no_results'|trans) }}
 {% endif %}
