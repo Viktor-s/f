@@ -14,7 +14,7 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
         public:
-            pattern:  ^/(css|images|js|media )/
+            pattern:  ^/(css|images|js|media)/
             security: false
         administration:
             switch_user: true
