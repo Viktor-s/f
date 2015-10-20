@@ -1,0 +1,57 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li><a href="{{ path('sylius_backend_product_index') }}">{{ 'sylius.breadcrumb.product.index'|trans }}</a></li>
+        <li><a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+        <li>{{ 'sylius.breadcrumb.edit'|trans }} PDP</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-pencil"></i> PDP of "{{ product.name }}"</h1>
+    </div>
+
+    <div class="row">
+        {{ form_start(form) }}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Position</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                {{ form_widget(form.inputs) }}
+            </tbody>
+        </table>
+        {{ form_rest(form) }}
+
+        <div class="text-center">
+            <input type="submit" class="btn btn-success" value="Save" />
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+{% block collection_widget %}
+    {% for child in form %}
+        {{ form_widget(child) }}
+    {% endfor %}
+{% endblock %}
+
+{% block product_pdp_input_widget %}
+    <tr>
+        <td>{{ form.vars.value.humanName }}</td>
+        <td>
+            {{ form_widget(form.position) }}
+        </td>
+    </tr>
+{% endblock %}

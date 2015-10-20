@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
+use Furniture\ProductBundle\Form\Type\ProductPdpConfigType;
 use Sylius\Bundle\CoreBundle\Controller\ProductController as BaseProductController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -88,6 +89,46 @@ class ProductController extends BaseProductController
         $em->getFilters()->enable('softdeleteable');
 
         return $this->createRedirectResponse($request);
+    }
+
+    /**
+     * Show/Edit PDP config
+     *
+     * @param Request $request
+     *
+     * @return object
+     */
+    public function editPdpConfig(Request $request)
+    {
+        $product = $this->findOr404($request);
+        $config = $product->getPdpConfig();
+
+        $form = $this->createForm(new ProductPdpConfigType(), $config);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($config);
+            $em->flush();
+
+            $url = $this->generateUrl('sylius_backend_product_show', [
+                'id' => $product->getId()
+            ]);
+
+            return new RedirectResponse($url);
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('update.html'))
+            ->setData(array(
+                $this->config->getResourceName() => $product,
+                'product'                        => $product,
+                'form'                           => $form->createView(),
+            ));
+
+        return $this->handleView($view);
     }
     
     /**
@@ -187,7 +228,15 @@ class ProductController extends BaseProductController
         return $this->handleView($view);
     }
 
-    public function autoCompleteActionNoneBundle(Request $request) {
+    /**
+     * Autocomplete for bundle
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteActionNoneBundle(Request $request)
+    {
         $response = [];
 
         if ($term = (string) $request->get('term')) {
@@ -204,8 +253,15 @@ class ProductController extends BaseProductController
         return new JsonResponse($response);
     }
 
-    public function autoCompleteAction(Request $request) {
-
+    /**
+     * Action for product autocomplete
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteAction(Request $request)
+    {
         $response = [];
 
         if ($term = (string) $request->get('term')) {

@@ -54,6 +54,13 @@ class ProductType extends BaseProductType
                 'allow_delete' => true,
                 'by_reference' => false,
             ]);
+
+        // Replace taxons field for create a custom format
+        $builder->remove('taxons');
+
+        $builder->add('taxons', 'sylius_taxon_selection', [
+            'expanded' => true
+        ]);
     }
     
     /**

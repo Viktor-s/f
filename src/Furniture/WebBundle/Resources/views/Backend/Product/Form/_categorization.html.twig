@@ -2,6 +2,30 @@
 
 <div class="tab-pane" id="categorization">
 {% for taxonomyForm in form.taxons %}
-    {{ form_row(taxonomyForm) }}
+    <div class="form-group">
+        {{ form_label(taxonomyForm) }}
+
+        <div class="col-lg-10">
+            {% set level = 1 %}
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for taxonForm in taxonomyForm %}
+                    {% set currentLevel = taxonomyForm.vars.choices[loop.index0].data.level %}
+
+                    <li>
+                        {% if currentLevel != level %}
+                            </ul>
+                            <ul class="hierarchy-node list-unstyled level-{{ currentLevel }}" data-level="{{ currentLevel }}" style="width: 100%; margin-left: {{ currentLevel * 20 }}px">
+                            {% set level = currentLevel %}
+                        {% endif %}
+
+                        {{ form_widget(taxonForm) }}
+                        {{ taxonomyForm.vars.choices[loop.index0].data.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
 {% endfor %}
 </div>

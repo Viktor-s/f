@@ -23,7 +23,7 @@ class Product extends BaseProduct
     protected $bundleProducts;
     
     /**
-     * @var Collection
+     * @var Collection|\Furniture\SkuOptionBundle\Entity\SkuOptionVariant[]
      */
     protected $skuOptionVariants;
 
@@ -44,11 +44,14 @@ class Product extends BaseProduct
     protected $factory;
     
     /**
-     *
      * @var Collection|ProductPart[]
      */
     protected $productParts;
 
+    /**
+     * @var ProductPdpConfig
+     */
+    protected $pdpConfig;
 
     /**
      * Constructor.
@@ -329,6 +332,26 @@ class Product extends BaseProduct
     }
 
     /**
+     * Get SKU option types
+     *
+     * @return Collection|\Furniture\SkuOptionBundle\Entity\SkuOptionType[]
+     */
+    public function getSkuOptionTypes()
+    {
+        $types = new ArrayCollection();
+
+        foreach ($this->skuOptionVariants as $skuOptionVariant) {
+            $type = $skuOptionVariant->getSkuOptionType();
+
+            if (!$types->contains($type)) {
+                $types->add($type);
+            }
+        }
+
+        return $types;
+    }
+
+    /**
      * Get grouped SKU option variants
      *
      * @return array
@@ -529,6 +552,23 @@ class Product extends BaseProduct
     }
 
     /**
+     * Get PDP config
+     *
+     * @return ProductPdpConfig
+     */
+    public function getPdpConfig()
+    {
+        if (!$this->pdpConfig) {
+            $this->pdpConfig = new ProductPdpConfig();
+            $this->pdpConfig->setProduct($this);
+        }
+
+        $this->fixPdpConfig();
+
+        return $this->pdpConfig;
+    }
+
+    /**
      * Return translation model class.
      *
      * @return string
@@ -546,5 +586,47 @@ class Product extends BaseProduct
     public function __toString()
     {
         return $this->getName() ?: '';
+    }
+
+    /**
+     * Fix PDP config
+     */
+    private function fixPdpConfig()
+    {
+        // Add product parts
+        foreach ($this->getProductParts() as $productPart) {
+            $input = $this->pdpConfig->findInputForProductPart($productPart);
+
+            if (!$input) {
+                $input = new ProductPdpInput();
+                $input->setProductPart($productPart);
+                $input->setPosition(0);
+                $this->pdpConfig->addInput($input);
+            }
+        }
+
+        // Add sku option types
+        foreach ($this->getSkuOptionTypes() as $skuOptionType) {
+            $input = $this->pdpConfig->findInputForSkuOption($skuOptionType);
+
+            if (!$input) {
+                $input = new ProductPdpInput();
+                $input->setSkuOption($skuOptionType);
+                $input->setPosition(0);
+                $this->pdpConfig->addInput($input);
+            }
+        }
+
+        // Add options
+        foreach ($this->getOptions() as $option) {
+            $input = $this->pdpConfig->findInputForOption($option);
+
+            if (!$input) {
+                $input = new ProductPdpInput();
+                $input->setOption($option);
+                $input->setPosition(0);
+                $this->pdpConfig->addInput($input);
+            }
+        }
     }
 }

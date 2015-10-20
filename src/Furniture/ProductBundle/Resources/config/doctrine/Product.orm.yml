@@ -1,14 +1,16 @@
 Furniture\ProductBundle\Entity\Product:
     type: entity
     table: furniture_product
+
     oneToMany:
         skuOptionVariants:
-          targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
-          cascade: [persist]
-          mappedBy: product
-          orphanRemoval: true
-          OrderBy:
-            - skuOptionType: ASCZA
+            targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
+            cascade: [persist]
+            mappedBy: product
+            orphanRemoval: true
+            OrderBy:
+            skuOptionType: ASC
+
         productParts:
             targetEntity: ProductPart
             cascade: [persist]
@@ -44,18 +46,6 @@ Furniture\ProductBundle\Entity\Product:
             targetEntity: Product
             mappedBy: subProducts
 
-#        extensions:
-#            targetEntity: Furniture\ProductBundle\Entity\ProductExtension
-#            orphanRemoval: true
-#            joinTable:
-#                name: product_extension_relation
-#                joinColumns:
-#                    product_id:
-#                        referencedColumnName: id
-#                inverseJoinColumns:
-#                    product_extension_id:
-#                        referencedColumnName: id
-
         compositeCollections:
             targetEntity: Furniture\CompositionBundle\Entity\CompositeCollection
             orphanRemoval: true
@@ -68,6 +58,12 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     composite_collection_id:
                         referencedColumnName: id
+
+    oneToOne:
+        pdpConfig:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPdpConfig
+            mappedBy: product
+            cascade: [ persist ]
 
     indexes:
         factoryCode_index:

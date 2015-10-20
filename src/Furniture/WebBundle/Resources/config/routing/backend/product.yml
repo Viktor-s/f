@@ -115,3 +115,14 @@ sylius_backend_product_variant_group_edit:
         _sylius:
             template: SyliusWebBundle:Backend/Product:variantGroupEdit.html.twig
             redirect: sylius_backend_product_show
+
+furniture_backend_product_pdp_config:
+    path: /{id}/pdp
+    methods: [ GET, POST ]
+    defaults:
+        _controller: sylius.controller.product:editPdpConfig
+        _sylius:
+            template: SyliusWebBundle:Backend/Product:pdpConfigEdit.html.twig
+            redirect:
+                route: sylius_backend_product_show
+                parameter: { id: $id }

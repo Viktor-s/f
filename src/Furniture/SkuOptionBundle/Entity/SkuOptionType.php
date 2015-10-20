@@ -4,46 +4,55 @@ namespace Furniture\SkuOptionBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 
-class SkuOptionType extends AbstractTranslatable {
-    
+class SkuOptionType extends AbstractTranslatable
+{
     /**
-     *
      * @var integer
      */
     protected $id;
     
     /**
-     *
      * @var string
      */
     protected $typeCode;
-    
-    public function __construct(){
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         parent::__construct();
     }
     
     /**
-     * 
+     * Get id
+     *
      * @return integer
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
     
     /**
-     * 
+     * Get name
+     *
      * @return string
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->translate()->getName();
     }
     
     /**
-     * 
+     * Set name
+     *
      * @param string $name
-     * @return \Furniture\SkuOptionBundle\Entity\SkuOptionType
+     *
+     * @return SkuOptionType
      */
-    public function setName($name){
+    public function setName($name)
+    {
         $this->translate()->setName($name);
         return $this;
     }
@@ -55,7 +64,6 @@ class SkuOptionType extends AbstractTranslatable {
      */
     public static function getTranslationClass()
     {
-        return get_called_class().'Translation';
+        return get_called_class() . 'Translation';
     }
-    
 }

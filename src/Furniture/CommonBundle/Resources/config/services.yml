@@ -2,6 +2,7 @@ parameters:
     stof_doctrine_extensions.listener.softdeleteable.class: Furniture\CommonBundle\Gedmo\SoftDeletable\SoftDeletableListener
     stof_doctrine_extensions.listener.loggable.class: Furniture\CommonBundle\Gedmo\Loggable\LoggableListener
     sylius.templating.helper.money.class: Furniture\CommonBundle\Templating\MoneyHelper
+    sylius.form.type.taxon_selection.class: Furniture\CommonBundle\Form\Type\TaxonSelectionType
 
 services:
     doctrine.subscriber.uplodable:
@@ -9,3 +10,4 @@ services:
         arguments: [ @sylius.image_uploader ]
         tags:
             - { name: doctrine.event_subscriber }
+

@@ -1,0 +1,28 @@
+Furniture\ProductBundle\Entity\ProductPdpConfig:
+    type: entity
+    table: product_pdp_config
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    oneToMany:
+        inputs:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPdpInput
+            mappedBy: config
+            cascade: [ persist ]
+            order:
+                position: ASC
+
+    oneToOne:
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            inversedBy: pdpConfig
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
