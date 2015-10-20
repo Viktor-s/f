@@ -82,6 +82,7 @@ class VariantGenerator extends ContainerAware {
         //die();
         $product = $variant_filter->getProduct();
         
+        $generated = [];
         foreach ($permutations as $permutation) {
             $variant = $this->variantRepository->createNew();
             $variant->setObject($product);
@@ -140,8 +141,10 @@ class VariantGenerator extends ContainerAware {
                 }
             }
             $product->addVariant($variant);
+            $generated[] = $variant;
         }
         $this->process($product, $variant);
+        return $generated;
     }
     
     /**
