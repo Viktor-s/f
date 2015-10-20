@@ -25,7 +25,7 @@
 
                 <div class="tabs-entry">
                     <div class="products-swiper">
-                        {{ sonata_block_render({type: 'frontend.block.products'}) }}
+                        {{ sonata_block_render({type: 'frontend.block.products'}, {user: app.user}) }}
                     </div>
                 </div>
             </div>
