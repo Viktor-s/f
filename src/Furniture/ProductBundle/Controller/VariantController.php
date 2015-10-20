@@ -128,11 +128,13 @@ class VariantController extends BaseVariantController
         
         if ($form->isValid()) {
             $filter = $form->getData();
-            $this->getGenerator()->generateByFilter($filter);
+            $generated = $this->getGenerator()->generateByFilter($filter);
             $manager = $this->get('sylius.manager.product');
             $manager->persist($filter->getProduct());
             $manager->flush();
-            $this->flashHelper->setFlash('success', 'generate');
+            $this->flashHelper->setFlash(
+                        'success', 'Generated '.count($generated)
+                );
         }
 
         $view = $this
