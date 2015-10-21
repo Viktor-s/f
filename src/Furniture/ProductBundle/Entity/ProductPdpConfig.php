@@ -123,7 +123,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getOption() && $input->getOption()->getId() == $option->getId()) {
-                return $option;
+                return $input;
             }
         }
 
@@ -141,7 +141,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getSkuOption() && $input->getSkuOption()->getId() == $skuOption->getId()) {
-                return $skuOption;
+                return $input;
             }
         }
 
@@ -159,7 +159,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getProductPart() && $input->getProductPart()->getId() == $productPart->getId()) {
-                return $productPart;
+                return $input;
             }
         }
 
