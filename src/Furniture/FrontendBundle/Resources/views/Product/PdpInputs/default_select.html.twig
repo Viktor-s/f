@@ -1,0 +1,28 @@
+<div class="detail-info-entry">
+    <div class="detail-info-entry-title">{{ input.humanName }}</div>
+    {% if input.option %}
+        <div class="simple-drop-down simple-field">
+            <select>
+                {% for optionValue in input.optionValues() %}
+                    <option>{{ optionValue.value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% elseif input.skuOption %}
+        <div class="simple-drop-down simple-field">
+            <select>
+                {% for skuOptionVariant in input.skuOptionVariants() %}
+                    <option>{{ skuOptionVariant.value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% elseif input.productPart %}
+        <div class="simple-drop-down simple-field">
+            <select>
+                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                    <option>{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+</div>

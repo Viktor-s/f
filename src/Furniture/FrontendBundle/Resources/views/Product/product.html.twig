@@ -98,7 +98,18 @@
                     </div>
 
                     <div id="skuoption" class="options-selector detail-info-entry">
-
+                        {% for input in product.PdpConfig.inputs %}
+                            {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
+                                default::
+                                {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
+                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
+                                INLINE::
+                                {% include 'FrontendBundle:Product/PdpInputs:inline_select.html.twig' with {'input':input} %}
+                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') %}
+                                POPUP::
+                                {% include 'FrontendBundle:Product/PdpInputs:popup_select.html.twig' with {'input':input} %}
+                            {% endif %}
+                        {% endfor %}
                     </div>
 
                     <div class="quantity-selector detail-info-entry">
@@ -158,9 +169,9 @@
             },{% endfor %} ];
                     var variants_container = new variant_data_container(sku_matrix);
 
-            var variant = $('#skuoption').variant({
-                data_container: variants_container
-            });
+            //var variant = $('#skuoption').variant({
+            //    data_container: variants_container
+            //});
 
 
             var low_max_price = function () {

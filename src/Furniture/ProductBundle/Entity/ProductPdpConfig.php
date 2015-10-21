@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
+use Doctrine\Common\Collections\Criteria;
 
 class ProductPdpConfig
 {
@@ -81,15 +82,19 @@ class ProductPdpConfig
     }
 
     /**
-     * Get inputs
+     * Get inputs ordered by position
      *
      * @return Collection|ProductPdpInput[] $inputs
      */
     public function getInputs()
     {
-        return $this->inputs;
+        $order = new Criteria();
+        $order->orderBy(Array(
+            'position' => Criteria::ASC
+        ));
+        return $this->inputs->matching($order);;
     }
-
+    
     /**
      * Add input
      *

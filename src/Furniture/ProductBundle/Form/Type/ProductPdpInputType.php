@@ -28,7 +28,17 @@ class ProductPdpInputType extends AbstractType
     {
         $builder->add('position', 'integer', [
             'label' => 'Position'
-        ]);
+        ])
+            ->add('type', 'choice', [
+            'label' => 'Input type',
+            'required' => true,
+            'choices' => [ 
+                ProductPdpInput::SELECT_DEFAULT_TYPE => 'Default',
+                ProductPdpInput::SELECT_INLINE_TYPE => 'Inline',
+                ProductPdpInput::SELECT_POPUP_TYPE => 'Popup'
+                ]
+        ])
+            ;
     }
 
     /**
