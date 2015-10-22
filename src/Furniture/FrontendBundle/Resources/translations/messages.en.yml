@@ -155,7 +155,7 @@ frontend:
             catalog: Catalog
             compositions: Compositions
             specifications: Specifications
-            specification_buyers: Client
+            specification_buyers: Clients
 
     login:
         username: Username
