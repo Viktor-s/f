@@ -72,6 +72,20 @@ class ProductRepository
 
         return $pagination;
     }
+    
+    /**
+     * Find latest product by with limit
+     * 
+     * @param ProductQuery $query
+     * @param type $limit
+     */
+    public function fundLatestBy(ProductQuery $query, $limit = 5)
+    {
+        $qb = $this->createQueryBuilderForProductQuery($query);
+        $qb->orderBy('p.availableOn', 'desc');
+        $qb->setMaxResults($limit);
+        return $qb->getQuery()->getResult();
+    }
 
     /**
      * Create query builder for product query

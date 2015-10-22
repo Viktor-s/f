@@ -42,7 +42,16 @@ var variant_data_container = function (variants) {
             $(document).trigger("filter:update");
             return this;
         },
-        getFilter: function () {
+        getFilteredWithFilterValue: function(filter, value){
+            var res = [];
+            options.filtered.forEach(function (el) {
+                if(el.options[filter] && el.options[filter] == value){
+                    res.push(el);
+                }
+            });
+            return res;
+        },
+        getFilters: function () {
             return options.filters;
         }
     };

@@ -13,6 +13,11 @@ Furniture\ProductBundle\Entity\ProductPdpInput:
         position:
             type: integer
             name: position
+        type:
+            type: integer
+            name: type
+            options:
+                default: 0
 
     manyToOne:
         config:

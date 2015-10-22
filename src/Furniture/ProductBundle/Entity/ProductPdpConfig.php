@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
+use Doctrine\Common\Collections\Criteria;
 
 class ProductPdpConfig
 {
@@ -81,15 +82,19 @@ class ProductPdpConfig
     }
 
     /**
-     * Get inputs
+     * Get inputs ordered by position
      *
      * @return Collection|ProductPdpInput[] $inputs
      */
     public function getInputs()
     {
-        return $this->inputs;
+        $order = new Criteria();
+        $order->orderBy(Array(
+            'position' => Criteria::ASC
+        ));
+        return $this->inputs->matching($order);;
     }
-
+    
     /**
      * Add input
      *
@@ -118,7 +123,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getOption() && $input->getOption()->getId() == $option->getId()) {
-                return $option;
+                return $input;
             }
         }
 
@@ -136,7 +141,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getSkuOption() && $input->getSkuOption()->getId() == $skuOption->getId()) {
-                return $skuOption;
+                return $input;
             }
         }
 
@@ -154,7 +159,7 @@ class ProductPdpConfig
     {
         foreach ($this->inputs as $input) {
             if ($input->getProductPart() && $input->getProductPart()->getId() == $productPart->getId()) {
-                return $productPart;
+                return $input;
             }
         }
 

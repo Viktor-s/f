@@ -1,0 +1,24 @@
+<div data-input-container="popup-select" data-input-id="{{ input.id }}" class="detail-info-entry">
+    <a class="button style-12 open-input" data-popup-id="input-popup-{{ input.id }}">{{ input.humanName }}</a>
+    <div id="input-popup-{{ input.id }}" class="overlay-popup">
+        <div class="overflow">
+            <div class="table-view">
+                <div class="cell-view">
+                    <div class="close-layer"></div>
+                    <div class="popup-container">
+                        {% if input.option %}
+
+                        {% elseif input.skuOption %}
+
+                        {% elseif input.productPart %}
+                            {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                                <div data-input-variant="{{ productPartVariantSelection.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="close-popup"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

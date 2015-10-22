@@ -4,9 +4,25 @@ namespace Furniture\ProductBundle\Entity;
 
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
+use Doctrine\Common\Collections\Criteria;
 
 class ProductPdpInput
 {
+    /**
+     * input type select
+     */
+    const SELECT_DEFAULT_TYPE = 0;
+
+    /**
+     * input select inline form
+     */
+    const SELECT_INLINE_TYPE = 1;
+    
+    /**
+     * input select popup form
+     */
+    const SELECT_POPUP_TYPE = 2;
+    
     /**
      * @var int
      */
@@ -37,6 +53,12 @@ class ProductPdpInput
      */
     private $position = 0;
 
+    /**
+     *
+     * @var int
+     */
+    private $type;
+    
     /**
      * Get id
      *
@@ -97,6 +119,25 @@ class ProductPdpInput
     }
 
     /**
+     * 
+     * Get option values which exists on product variants
+     * 
+     * @return array
+     */
+    public function getOptionValues() {
+        $criteria = new Criteria();
+        $criteria->andWhere($criteria->expr()->eq('option', $this->getOption()));
+        
+        $values = [];
+        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+            $value = $variant->getOptions()->matching($criteria)->first();
+            $values[$value->getId()] = $value;
+        }
+        return $values;
+    }
+    
+    /**
      * Set product part
      *
      * @param ProductPart $productPart
@@ -119,6 +160,21 @@ class ProductPdpInput
     {
         return $this->productPart;
     }
+
+    public function getProductPartMaterialsVariantSelections()
+    {
+        $criteria = new Criteria();
+        $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
+        
+        $variantSelections = [];
+        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+            $variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first();
+            $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+        }
+        return $variantSelections;
+    }
+
 
     /**
      * Set sku option
@@ -146,6 +202,25 @@ class ProductPdpInput
     }
 
     /**
+     * 
+     * Get sku option variants which exists on product variants
+     * 
+     * @return array
+     */
+    public function getSkuOptionVariants() {
+        $criteria = new Criteria();
+        $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
+        
+        $variants = [];
+        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+            $variant = $variant->getSkuOptions()->matching($criteria)->first();
+            $variants[$variant->getId()] = $variant;
+        }
+        return $variants;
+    }
+    
+    /**
      * Set position
      *
      * @param int $position
@@ -170,6 +245,26 @@ class ProductPdpInput
     }
 
     /**
+     * 
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * 
+     * @param int $type
+     * @return \Furniture\ProductBundle\Entity\ProductPdpInput
+     */
+    public function  setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+    
+    /**
      * Get human name
      *
      * @return string
@@ -186,7 +281,7 @@ class ProductPdpInput
             );
         } else if ($this->skuOption) {
             return sprintf(
-                'SKU Option: %s',
+                'Option: %s',
                 $this->skuOption->getName()
             );
         } else if ($this->option) {

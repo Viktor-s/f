@@ -117,8 +117,8 @@ class PricingExtension extends \Twig_Extension
     public function money($amount)
     {
         $currency = $this->currencyContext->getCurrency();
-
-        return $this->moneyHelper->formatAmount($amount, $currency);
+        $amount = str_replace(' ', '', $this->moneyHelper->formatAmount($amount, $currency));
+        return $amount;
     }
 
     /**

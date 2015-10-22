@@ -166,26 +166,21 @@ class ProductController
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
            $item = [
                'options' => [],
-               'variant' => $variant,
-               'options_labels' => []
+               'variant' => $variant
            ];
            
            foreach($variant->getOptions() as $option){
-               $item['options']['option_'.$option->getName()] = $option->getValue();
-               $item['options_labels']['option_'.$option->getName()] = $option->getName();
+               $item['options'][$product->getPdpConfig()->findInputForOption($option->getOption())->getId()] = $option->getId();
            }
            
            foreach($variant->getSkuOptions() as $option){
-               $item['options']['skuoption_'.$option->getName()] = $option->getValue();
-               $item['options_labels']['skuoption_'.$option->getName()] = $option->getName();
+               $item['options'][$product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId()] = $option->getId();
            }
            
-           foreach ($variant->getProductPartVariantSelections() as $variant_selection)
+           foreach ($variant->getProductPartVariantSelections() as $variantSelection)
            {
-               $item['options']['productpart_'.$variant_selection->getProductPart()->getLabel()] 
-                       = $variant_selection->getProductPartMaterialVariant()->getName();
-               $item['options_labels']['productpart_'.$variant_selection->getProductPart()->getLabel()]
-                       = $variant_selection->getProductPart()->getLabel();
+               $item['options'][$product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId()] 
+                       = $variantSelection->getId();
            }
            
            if($activeVariant && $variant == $activeVariant){

@@ -1,0 +1,17 @@
+<div data-input-container="inline-select" data-input-id="{{ input.id }}" class="size-selector detail-info-entry">
+    <div class="detail-info-entry-title">{{ input.humanName }}</div>
+    {% if input.option %}
+        {% for optionValue in input.optionValues() %}
+            <div data-input-variant="{{ optionValue.id }}" class="entry">{{ optionValue.value|slice(0,4) }}</div>
+        {% endfor %}
+    {% elseif input.skuOption %}
+        {% for skuOptionVariant in input.skuOptionVariants() %}
+            <div data-input-variant="{{ skuOptionVariant.id }}" class="entry">{{ skuOptionVariant.value|slice(0,4) }}</div>
+        {% endfor %}
+    {% elseif input.productPart %}
+        {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+            <div data-input-variant="{{ productPartVariantSelection.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="spacer"></div>
+</div>

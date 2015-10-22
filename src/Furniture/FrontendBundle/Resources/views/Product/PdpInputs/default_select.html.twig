@@ -1,0 +1,20 @@
+<div class="detail-info-entry">
+    <div class="detail-info-entry-title">{{ input.humanName }}</div>
+    <div class="simple-drop-down simple-field">
+        <select data-input-container="default-select" data-input-id="{{ input.id }}" >
+            {% if input.option %}
+                {% for optionValue in input.optionValues() %}
+                    <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
+                {% endfor %}
+            {% elseif input.skuOption %}
+                {% for skuOptionVariant in input.skuOptionVariants() %}
+                    <option data-input-variant="{{ skuOptionVariant.id }}" >{{ skuOptionVariant.value }}</option>
+                {% endfor %}
+            {% elseif input.productPart %}
+                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                    <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+    </div>
+</div>

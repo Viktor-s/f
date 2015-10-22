@@ -5,7 +5,7 @@
                 <img src="{{ product.image.path|imagine_filter('s200x250') }}" alt="" />
             {% endif %}
             <div class="bottom-line">
-                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" ><i class="fa fa-try"></i> {{ 'frontend.detailed' | trans }}</a>
+                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
             </div>
         </div>
             {#
