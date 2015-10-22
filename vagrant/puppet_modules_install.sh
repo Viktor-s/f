@@ -6,6 +6,7 @@ puppet module install saz-ssh
 puppet module install jfryman-nginx
 puppet module install puppetlabs-postgresql
 puppet module install saz-ssh
+puppet module install saz-memcached
 puppet module install puppetlabs-git
 puppet module install example42-yum
 puppet module install Slashbunny-phpfpm
