@@ -80,3 +80,21 @@ $.widget('furniture.pdp_inline_select', {
          
      }
  });
+ 
+ $.widget('furniture.pdp_popup_select', {
+    options: {
+        data_container: {},
+    },
+     _create: function () {
+         var data_container = this.options.data_container;
+         var element = this.element;
+         
+         element.find('.open-input').click(function(){
+            var opener = $(this);
+            $('#'+opener.data('popup-id')).addClass('visible active');;
+            initSwiper();
+            return false;
+         });
+         
+     }
+ });
