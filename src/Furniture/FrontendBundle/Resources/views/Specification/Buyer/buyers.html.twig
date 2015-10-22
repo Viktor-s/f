@@ -10,8 +10,9 @@
 
 {% block content %}
     <div class="information-blocks">
-        <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
-
+        <div class="line-entry">
+            <a class="btn" href="{{ path('specification_buyer_create') }}"><span>{{ 'frontend.create'|trans }}</span></a>
+        </div>
         <table class="table table-bordered">
             <thead>
             <tr>
