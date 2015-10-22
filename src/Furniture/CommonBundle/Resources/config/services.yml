@@ -11,3 +11,5 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    session.handler.native:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler

@@ -19,7 +19,8 @@ framework:
     templating:      { engines: ['twig'] }
     default_locale:  "%sylius.locale%"
     trusted_proxies: ~
-    session:         ~
+    session:
+        handler_id: session.handler.native
 
 sonata_block:
     blocks:
