@@ -27,6 +27,7 @@ class ExcelResponse extends Response
 
         $this->writer = $writer;
         $this->headers->set('Content-Disposition',  'attachment; filename="' . $fileName . '"');
+        $this->headers->set('Content-Type', 'application/vnd.ms-excel');
     }
 
     /**
