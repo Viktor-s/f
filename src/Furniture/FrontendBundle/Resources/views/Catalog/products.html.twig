@@ -59,13 +59,15 @@
                 {# Catalog space selector #}
                 <div class="information-blocks">
                     <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.catalog.space_selector'| trans }}</div>
-                    <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
-                        {% for taxon in category.taxons %}
-                            <option  value="{{ path('products', {category: taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category'] %} selected="selected" {% endif %}>
-                                {{ taxon.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <div class="simple-drop-down simple-field">
+                        <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
+                            {% for taxon in category.taxons %}
+                                <option  value="{{ path('products', {category: taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category'] %} selected="selected" {% endif %}>
+                                    {{ taxon.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 {# Catalog category selector #}
                 <div class="information-blocks categories-border-wrapper">
