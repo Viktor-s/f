@@ -16,12 +16,12 @@ web/css
 web/js
 web/assets/compiled
 web/media
-!web/vendor
 
 bin/*
 !bin/install
 !bin/sylius-cs-fixer
 vendor
+!web/vendor
 
 /.idea/
 .DS_Store
