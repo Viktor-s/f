@@ -3326,7 +3326,7 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
     content: ""; 
     opacity: 0;
 }
-.material-selector .material-entry.active:after{opacity: 1; border: 3px #262626 solid;}
+.material-selector .material-entry.active:after{opacity: 1; border: 2px #262626 solid;}
 .material-selector .material-entry:hover:after{opacity: 1;}
 
 

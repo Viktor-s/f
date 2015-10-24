@@ -60,7 +60,7 @@ $.widget('furniture.pdp_inline_select', {
             }
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
-         })
+         });
          
          $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
@@ -88,13 +88,6 @@ $.widget('furniture.pdp_inline_select', {
      _create: function () {
          var data_container = this.options.data_container;
          var element = this.element;
-
-        $(element).find('.material-selector .material-entry').on('click', function () {
-            var el = $(this);
-            $(this).parent().find('.active').removeClass('active');
-            el.addClass('active');
-        });
-         
          
          element.find('.open-input').click(function(){
             var opener = $(this);
@@ -102,6 +95,39 @@ $.widget('furniture.pdp_inline_select', {
             initSwiper();
             return false;
          });
+        
+         element.find('.material-selector .material-entry').on('click', function () {
+            var el = $(this);
+            $(this).parent().find('.active').removeClass('active');
+            el.addClass('active');
+        });
+         
+        element.find('.material-entry').click(function(){
+            var el = $(this);
+            var selectedInput = element.data('input-id');
+            var selectedVariant = el.data('input-variant');
+            filters = {};
+            if( data_container.getFilteredWithFilterValue(selectedInput, selectedVariant).length > 0 ){
+                var filters = data_container.getFilters();
+            }
+            filters[selectedInput] = selectedVariant;
+            data_container.setFilters(filters);
+         });
+         
+         $(document).on('filter:update', function (event) {
+            var selectInput = element.data('input-id');
+            if( !data_container.getFilters()[selectInput] ){
+                element.find('.material-entry.active').removeClass('active');
+            }
+            element.find(".material-entry").each(function(){
+                var selectVariant = $(this).data('input-variant');
+                if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
+                    $(this).css('background','#E0E0E0');
+                }else{
+                    $(this).css('background','white');
+                }
+            });
+        });
          
      }
  });
