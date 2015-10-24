@@ -90,7 +90,8 @@
         "coduo/php-matcher":                    "~1.0",
         "phpspec/phpspec":                      "~2.1",
         "phpunit/phpunit":                      "~4.1",
-        "sensio/generator-bundle": "~2.5"
+        "sensio/generator-bundle": "~2.5",
+        "beelab/bowerphp": "0.3.*@beta"
     },
     "replace": {
         "sylius/addressing":         "0.15.x-dev",
