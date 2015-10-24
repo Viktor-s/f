@@ -6,15 +6,36 @@
                 <div class="cell-view">
                     <div class="close-layer"></div>
                     <div class="popup-container">
-                        {% if input.option %}
+                        <h3 class="block-title">{{ input.humanName }}</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Filter block
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="accordeon">
+                                    <h3>Fabrics:</h3>
+                                    <div class="accordeon-title"><h4>VERMONT <small>category 2 | fabric type A4</small></h4></div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1">
+                                            {% if input.option %}
 
-                        {% elseif input.skuOption %}
+                                            {% elseif input.skuOption %}aaa
 
-                        {% elseif input.productPart %}
-                            {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                                <div data-input-variant="{{ productPartVariantSelection.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
-                            {% endfor %}
-                        {% endif %}
+                                            {% elseif input.productPart %}
+                                                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                                                    <div class="material-entry" data-input-variant="{{ productPartVariantSelection.id }}">
+                                                        <div class="image">
+                                                            <img src="http://5.45.125.211/media/cache/s100x100/c3/3d/e8b8a76be5615c1b7e70b17d0f0e.jpeg" alt="">
+                                                        </div>
+                                                        <div class="caption">{{ productPartVariantSelection.productPartMaterialVariant.name }}</div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="close-popup"></div>
                     </div>
                 </div>
