@@ -1,6 +1,6 @@
 <div data-input-container="popup-select" data-input-id="{{ input.id }}" class="detail-info-entry">
     <a class="button style-12 open-input" data-popup-id="input-popup-{{ input.id }}">{{ input.humanName }}</a>
-    <div id="input-popup-{{ input.id }}" class="overlay-popup">
+    <div id="input-popup-{{ input.id }}" class="overlay-popup agenta-popup">
         <div class="overflow">
             <div class="table-view">
                 <div class="cell-view">
@@ -13,8 +13,7 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="accordeon">
-                                    <h3>Fabrics:</h3>
-                                    <div class="accordeon-title"><h4>VERMONT <small>category 2 | fabric type A4</small></h4></div>
+                                    <div class="accordeon-title"><h4>Materials</h4></div>
                                     <div class="accordeon-entry">
                                         <div class="article-container style-1">
                                             {% if input.option %}
@@ -25,7 +24,11 @@
                                                 {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
                                                     <div class="material-entry" data-input-variant="{{ productPartVariantSelection.id }}">
                                                         <div class="image">
-                                                            <img src="http://5.45.125.211/media/cache/s100x100/c3/3d/e8b8a76be5615c1b7e70b17d0f0e.jpeg" alt="">
+                                                            {% if productPartVariantSelection.productPartMaterialVariant.image %}
+                                                                <img src="{{ productPartVariantSelection.productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
+                                                            {% else %}
+                                                                <img src="/img/100x100.png" alt="">
+                                                            {% endif %}
                                                         </div>
                                                         <div class="caption">{{ productPartVariantSelection.productPartMaterialVariant.name }}</div>
                                                     </div>
