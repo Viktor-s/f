@@ -180,7 +180,7 @@ class ProductController
            foreach ($variant->getProductPartVariantSelections() as $variantSelection)
            {
                $item['options'][$product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId()] 
-                       = $variantSelection->getId();
+                       = $variantSelection->getProductPartMaterialVariant()->getId();
            }
            
            if($activeVariant && $variant == $activeVariant){

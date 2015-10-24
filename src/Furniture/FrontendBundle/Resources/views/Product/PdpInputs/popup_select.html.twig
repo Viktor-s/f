@@ -22,7 +22,7 @@
 
                                             {% elseif input.productPart %}
                                                 {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                                                    <div class="material-entry" data-input-variant="{{ productPartVariantSelection.id }}">
+                                                    <div class="material-entry" data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}">
                                                         <div class="image">
                                                             {% if productPartVariantSelection.productPartMaterialVariant.image %}
                                                                 <img src="{{ productPartVariantSelection.productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">

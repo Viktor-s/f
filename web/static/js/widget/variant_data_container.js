@@ -20,12 +20,7 @@ var variant_data_container = function (variants) {
         },
         setFilters: function (filters) {
             options.filtered = [];
-            options.filters = filters;
-
-            $(this).on('filter:update', function (event) {
-                //console.log('event');
-            });
-            
+            options.filters = filters;            
             options.variants.forEach(function (el) {
                 var ok = true;
                 $.each(options.filters, function (index, value) {

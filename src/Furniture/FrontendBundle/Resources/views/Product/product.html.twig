@@ -161,6 +161,7 @@
                     'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                     'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
             },{% endfor %} ];
+            console.log(sku_matrix);
             var variants_container = new variant_data_container(sku_matrix);
 
             $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': variants_container });
