@@ -88,6 +88,13 @@ $.widget('furniture.pdp_inline_select', {
      _create: function () {
          var data_container = this.options.data_container;
          var element = this.element;
+
+        $(element).find('.material-selector .material-entry').on('click', function () {
+            var el = $(this);
+            $(this).parent().find('.active').removeClass('active');
+            el.addClass('active');
+        });
+         
          
          element.find('.open-input').click(function(){
             var opener = $(this);
