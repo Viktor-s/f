@@ -12,6 +12,7 @@ $.widget('furniture.pdp_default_select', {
         
          var data_container = this.options.data_container;
          var element = this.element;
+         element.prop('selectedIndex', -1);
          element.change(function(e){
             var el = $(this);
             var selectedInput = el.data('input-id');
