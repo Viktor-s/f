@@ -220,7 +220,7 @@
 
                     if (variants_container.getFiltered().length == 1) {
                         quantity = parseInt($('.quantity-selector .entry.number').text());
-                        var url = '{{ path('specification_api_specification_add_item') }}',
+                        var url = '{{ path('specification_api_specification_sku_item_add') }}',
                                 data = {
                                     id: variants_container.getFiltered()[0].id,
                                     quantity: quantity,
@@ -250,7 +250,7 @@
 
                         quantity = parseInt($('.quantity-selector .entry.number').text());
 
-                        var url = '{{ path('specification_api_specification_item_edit', {item: specification_item.id}) }}',
+                        var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}',
                                 data = {
                                     id: variants_container.getFiltered()[0].id,
                                     quantity: quantity

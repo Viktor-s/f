@@ -90,39 +90,6 @@ class SpecificationController
     }
 
     /**
-     * Add item to specification
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function addItem(Request $request)
-    {
-        $specificationItem = new SpecificationItem();
-
-        $form = $this->formFactory->createNamed('', new SpecificationItemSingleType($this->em), $specificationItem, [
-            'csrf_protection' => false
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            // @todo: add check granted for add option to this specification
-            $this->em->persist($specificationItem);
-            $this->em->flush();
-
-            return new JsonResponse([
-                'status' => true
-            ]);
-        }
-
-        return new JsonResponse([
-            'status' => false,
-            'errors' => $this->convertFormErrorsToArray($form)
-        ], 400);
-    }
-
-    /**
      * Edit item
      *
      * @param Request $request

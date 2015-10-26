@@ -7,7 +7,7 @@ use Furniture\ProductBundle\Entity\ProductVariant;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class ProductVariantSkuModelTransformer implements DataTransformerInterface
+class ProductVariantModelTransformer implements DataTransformerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -40,7 +40,7 @@ class ProductVariantSkuModelTransformer implements DataTransformerInterface
             ));
         }
 
-        return $value->getSku();
+        return $value->getId();
     }
 
     /**

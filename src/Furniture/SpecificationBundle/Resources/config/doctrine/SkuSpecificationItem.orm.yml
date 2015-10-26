@@ -1,0 +1,36 @@
+Furniture\SpecificationBundle\Entity\SkuSpecificationItem:
+    type: entity
+    table: sku_specification_item
+    
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+                
+    manyToOne:
+        productVariant:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariant
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT
+
+        composite:
+            targetEntity: Furniture\CompositionBundle\Entity\Composite
+            joinColumn:
+                name: composite_id
+                referencedColumnName: id
+                onDelete: RESTRICT
+                
+    oneToOne:
+        specificationItem:
+            targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
+            inversedBy: skuItem
+            joinColumn:
+                name: speicifcation_item_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

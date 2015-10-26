@@ -4,8 +4,9 @@ namespace Furniture\SpecificationBundle\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CompositionBundle\Form\DataTransformer\CompositeIdModelTransformer;
-use Furniture\ProductBundle\Form\DataTransformer\ProductVariantSkuModelTransformer;
+use Furniture\ProductBundle\Form\DataTransformer\ProductVariantModelTransformer;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
+use Furniture\SpecificationBundle\Entity\SkuSpecificationItem;
 use Furniture\SpecificationBundle\Form\DataTransformer\SpecificationIdModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
-class SpecificationItemSingleType extends AbstractType
+class SkuSpecificationItemSingleType extends AbstractType
 {
     /**
      * @var EntityManagerInterface
@@ -50,17 +51,18 @@ class SpecificationItemSingleType extends AbstractType
                 'invalid_message' => 'Invalid specification.'
             ])
             ->add('id', 'integer', [
-                'property_path' => 'productVariant',
+                'property_path' => 'skuItem.productVariant',
                 'invalid_message' => 'Invalid SKU id'
             ])
             ->add('composite', 'integer', [
+                'property_path' => 'skuItem.composite',
                 'invalid_message' => 'Invalid composite'
             ])
             ->add('quantity', 'integer')
             ->add('note', 'textarea');
 
         $builder->get('specification')->addModelTransformer(new SpecificationIdModelTransformer($this->em));
-        $builder->get('id')->addModelTransformer(new ProductVariantSkuModelTransformer($this->em));
+        $builder->get('id')->addModelTransformer(new ProductVariantModelTransformer($this->em));
         $builder->get('composite')->addModelTransformer(new CompositeIdModelTransformer($this->em));
     }
 

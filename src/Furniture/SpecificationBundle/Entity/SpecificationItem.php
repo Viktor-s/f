@@ -21,18 +21,6 @@ class SpecificationItem
     private $specification;
 
     /**
-     * @var ProductVariant
-     *
-     * @Assert\NotBlank()
-     */
-    private $productVariant;
-
-    /**
-     * @var Composite
-     */
-    private $composite;
-
-    /**
      * @var string
      */
     private $note;
@@ -61,6 +49,12 @@ class SpecificationItem
      */
     private $updatedAt;
 
+    /**
+     *
+     * @var \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     */
+    private $skuItem;
+    
     /**
      * Construct
      */
@@ -101,54 +95,6 @@ class SpecificationItem
     public function getSpecification()
     {
         return $this->specification;
-    }
-
-    /**
-     * Set product variant
-     *
-     * @param ProductVariant $productVariant
-     *
-     * @return SpecificationItem
-     */
-    public function setProductVariant(ProductVariant $productVariant)
-    {
-        $this->productVariant = $productVariant;
-
-        return $this;
-    }
-
-    /**
-     * Get product variant
-     *
-     * @return ProductVariant
-     */
-    public function getProductVariant()
-    {
-        return $this->productVariant;
-    }
-
-    /**
-     * Set composition
-     *
-     * @param Composite $composite
-     *
-     * @return SpecificationItem
-     */
-    public function setComposition(Composite $composite)
-    {
-        $this->composite = $composite;
-
-        return $this;
-    }
-
-    /**
-     * Get composite
-     *
-     * @return Composite
-     */
-    public function getComposite()
-    {
-        return $this->composite;
     }
 
     /**
@@ -250,7 +196,22 @@ class SpecificationItem
      */
     public function getTotalPrice()
     {
-        return $this->productVariant->getPrice() * $this->quantity;
+        return $this->getPrice() * $this->quantity;
+    }
+    
+    /**
+     * Get item price
+     * 
+     * @return int
+     */
+    public function getPrice()
+    {
+        if($this->getSkuItem())
+        {
+            return $this->getSkuItem()->getProductVariant()->getPrice();
+        }
+        
+        return 0;
     }
 
     /**
@@ -260,4 +221,35 @@ class SpecificationItem
     {
         $this->updatedAt = new \DateTime();
     }
+    
+    /**
+     * 
+     * @param \Furniture\SpecificationBundle\Entity\SkuSpecificationItem $skuItem
+     * @return \Furniture\SpecificationBundle\Entity\SpecificationItem
+     */
+    public function setSkuItem(SkuSpecificationItem $skuItem)
+    {
+        $this->clearMappingFields();
+        $this->skuItem = $skuItem;
+        $this->skuItem->setSpecificationItem($this);
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     */
+    public function getSkuItem()
+    {
+        return $this->skuItem;
+    }
+    
+    /**
+     * Clear mapping fields
+     */
+    private function clearMappingFields()
+    {
+        $this->skuItem = null;
+    }
+    
 }
