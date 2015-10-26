@@ -240,7 +240,7 @@ class SpecificationController
         // @todo: add check granted for export this specification (via security voter in Symfony)
 
         // Group items
-        $groupedItemsByFactory = $specification->getGroupedItemsByFactory();
+        $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
 
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
             'specification' => $specification,

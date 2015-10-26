@@ -184,26 +184,28 @@ class Specification
      *
      * @return Collection|GroupedItemsByFactory[]
      */
-    public function getGroupedItemsByFactory()
+    public function getGroupedVariantItemsByFactory()
     {
         $grouped = [];
 
         foreach ($this->items as $item) {
-            $variant = $item->getProductVariant();
-            /** @var \Furniture\ProductBundle\Entity\Product $product */
-            $product = $variant->getProduct();
-            $factory = $product->getFactory();
+            if($skuVariant = $item->getSkuItem()){
+                $variant = $skuVariant->getProductVariant();
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $variant->getProduct();
+                $factory = $product->getFactory();
 
-            if (!isset($grouped[$factory->getId()])) {
-                $grouped[$factory->getId()] = [
-                    'factory' => $factory,
-                    'items' => new ArrayCollection()
-                ];
+                if (!isset($grouped[$factory->getId()])) {
+                    $grouped[$factory->getId()] = [
+                        'factory' => $factory,
+                        'items' => new ArrayCollection()
+                    ];
+                }
+
+                /** @var Collection $items */
+                $items = $grouped[$factory->getId()]['items'];
+                $items->add($item);
             }
-
-            /** @var Collection $items */
-            $items = $grouped[$factory->getId()]['items'];
-            $items->add($item);
         }
 
         $result = new ArrayCollection();

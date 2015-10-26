@@ -91,7 +91,7 @@
             </tr>
             </thead>
 
-            <tbody>
+            <tbody id="Specification" >
             {% for specification_item in specification.items %}
                 {%if specification_item.skuItem %}
                     {% include 'FrontendBundle:Specification/edit:_sku_table_item.html.twig' with {'specification_item':specification_item} %}
@@ -129,6 +129,12 @@
     {{ parent() }}
 
     {% if specification.id %}
+        <script type="text/javascript">
+            (function ($){
+                
+            })(jQuery);
+        </script>
+        
         <script type="text/javascript">
             (function ($){
                 var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
