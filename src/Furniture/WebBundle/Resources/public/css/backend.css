@@ -584,3 +584,7 @@ input[type="file"] {
 .content-block-overview i {
     font-size: 24px;
 }
+
+.fade.in {
+    display: block;
+}

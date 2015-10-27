@@ -29,3 +29,7 @@
 {
     height: 300px;
 }
+
+.fade.in {
+    display: block;
+}
