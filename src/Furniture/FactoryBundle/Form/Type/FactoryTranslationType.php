@@ -27,7 +27,19 @@ class FactoryTranslationType extends AbstractType
         $builder
             ->add('description', 'textarea', array('attr' => array('class' => 'ckeditor')) )
             ->add('shortDescription', 'textarea')
-            ->add('address');
+            ->add('address')
+            ->add('workInfoContent', 'textarea', [
+                'label' => 'Work info',
+                'attr' => [
+                    'class' => 'ckeditor'
+                ]
+            ])
+            ->add('collectionContent', 'textarea', [
+                'label' => 'Collections',
+                'attr' => [
+                    'class' => 'ckeditor'
+                ]
+            ]);
     }
 
     /**

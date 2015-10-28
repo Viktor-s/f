@@ -30,6 +30,16 @@ class FactoryTranslation extends AbstractTranslation
      * @var string
      */
     protected $address;
+
+    /**
+     * @var string
+     */
+    private $collectionContent;
+
+    /**
+     * @var string
+     */
+    private $workInfoContent;
     
     /**
      * Get id
@@ -135,5 +145,53 @@ class FactoryTranslation extends AbstractTranslation
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Set collection content
+     *
+     * @param string $collectionContent
+     *
+     * @return Factory
+     */
+    public function setCollectionContent($collectionContent)
+    {
+        $this->collectionContent = $collectionContent;
+
+        return $this;
+    }
+
+    /**
+     * Get collection content
+     *
+     * @return string
+     */
+    public function getCollectionContent()
+    {
+        return $this->collectionContent;
+    }
+
+    /**
+     * Set work info content
+     *
+     * @param string $workInfoContent
+     *
+     * @return Factory
+     */
+    public function setWorkInfoContent($workInfoContent)
+    {
+        $this->workInfoContent = $workInfoContent;
+
+        return $this;
+    }
+
+    /**
+     * Get work info content
+     *
+     * @return string
+     */
+    public function getWorkInfoContent()
+    {
+        return $this->workInfoContent;
     }
 }

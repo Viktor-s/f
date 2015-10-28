@@ -82,6 +82,8 @@ frontend:
 
     title:
         contacts: Contacts
+        work_info: Work info
+        collections: Collections
         index: Furniture
         homepage: Homepage
         factories: Factories
