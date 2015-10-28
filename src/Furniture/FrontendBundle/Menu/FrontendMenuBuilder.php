@@ -259,12 +259,12 @@ class FrontendMenuBuilder
         ]);
         
         $menu->addChild('collections', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('factory_side_collections', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.collections')
         ]);
         
         $menu->addChild('work_info', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
         ]);
         

@@ -46,3 +46,17 @@ factory_side_contacts:
     requirements: { _locale: %available_locales%, factory: \d+ }
     defaults:
         _controller: frontend.controller.factory_side:contacts
+
+factory_side_work_info:
+    path: /{factory}/work-info
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.factory_side:workInfo
+
+factory_side_collections:
+    path: /{factory}/collections
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.factory_side:collections

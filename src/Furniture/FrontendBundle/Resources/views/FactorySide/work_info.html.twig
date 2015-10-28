@@ -1,0 +1,13 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.work_info'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.work_info'|trans }}</a>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-work-info">{{ work_info|raw }}</div>
+{% endblock %}

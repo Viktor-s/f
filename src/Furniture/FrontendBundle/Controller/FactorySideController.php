@@ -229,16 +229,53 @@ class FactorySideController
     {
         $factory = $this->findFactory($factory);
 
-        if (!$factory) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found factory with identifier "%s".',
-                $factory
-            ));
-        }
-
         $content = $this->twig->render('FrontendBundle:FactorySide:contacts.html.twig', [
             'factory' => $factory,
             'contacts' => $factory->getContacts()
+        ]);
+
+        return new Response($content);
+    }
+
+    /**
+     * View work info
+     *
+     * @param int $factory
+     *
+     * @return Response
+     */
+    public function workInfo($factory)
+    {
+        $factory = $this->findFactory($factory);
+
+        /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
+        $translate = $factory->translate();
+
+        $content = $this->twig->render('FrontendBundle:FactorySide:work_info.html.twig', [
+            'factory' => $factory,
+            'work_info' => $translate->getWorkInfoContent()
+        ]);
+
+        return new Response($content);
+    }
+
+    /**
+     * View collections
+     *
+     * @param int $factory
+     *
+     * @return Response
+     */
+    public function collections($factory)
+    {
+        $factory = $this->findFactory($factory);
+
+        /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
+        $translate = $factory->translate();
+
+        $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
+            'factory' => $factory,
+            'collection_content' => $translate->getCollectionContent()
         ]);
 
         return new Response($content);
