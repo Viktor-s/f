@@ -1,20 +1,44 @@
 <div data-input-container="popup-select" data-input-id="{{ input.id }}" class="detail-info-entry">
     <a class="button style-12 open-input" data-popup-id="input-popup-{{ input.id }}">{{ input.humanName }}</a>
-    <div id="input-popup-{{ input.id }}" class="overlay-popup">
+    <div id="input-popup-{{ input.id }}" class="overlay-popup agenta-popup">
         <div class="overflow">
             <div class="table-view">
                 <div class="cell-view">
                     <div class="close-layer"></div>
                     <div class="popup-container">
-                        {% if input.option %}
+                        <h3 class="block-title">{{ input.humanName }}</h3>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Filter block
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="accordeon">
+                                    <div class="accordeon-title"><h4>Materials</h4></div>
+                                    <div class="accordeon-entry">
+                                        <div class="article-container style-1 material-selector">
+                                            {% if input.option %}
 
-                        {% elseif input.skuOption %}
+                                            {% elseif input.skuOption %}aaa
 
-                        {% elseif input.productPart %}
-                            {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                                <div data-input-variant="{{ productPartVariantSelection.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
-                            {% endfor %}
-                        {% endif %}
+                                            {% elseif input.productPart %}
+                                                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                                                    <div class="material-entry" data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}">
+                                                        <div class="image">
+                                                            {% if productPartVariantSelection.productPartMaterialVariant.image %}
+                                                                <img src="{{ productPartVariantSelection.productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
+                                                            {% else %}
+                                                                <img src="/img/100x100.png" alt="">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="caption">{{ productPartVariantSelection.productPartMaterialVariant.name }}</div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="close-popup"></div>
                     </div>
                 </div>

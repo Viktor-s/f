@@ -79,48 +79,50 @@
 
                         <tbody>
                         {% for item in specification.items %}
-                            {% set productVariant = item.productVariant %}
-                            {% set product = productVariant.product %}
+                            {% if item.getSkuItem %}
+                                {% set productVariant = item.getSkuItem.productVariant %}
+                                {% set product = productVariant.product %}
 
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ product.factory.name }}</td>
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ product.factory.name }}</td>
 
-                                <td>
-                                    {% if product.images|length > 0 %}
-                                        <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
-                                    {% endif %}
-                                </td>
+                                    <td>
+                                        {% if product.images|length > 0 %}
+                                            <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
+                                        {% endif %}
+                                    </td>
 
-                                <td>{{ product.name }}</td>
-                                <td>{{ productVariant.sku }}</td>
-                                <td>{{ productVariant.humanSize }}</td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ productVariant.sku }}</td>
+                                    <td>{{ productVariant.humanSize }}</td>
 
-                                <td>
-                                    <ul>
-                                        {% for option in productVariant.options %}
-                                            <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                        {% endfor %}
+                                    <td>
+                                        <ul>
+                                            {% for option in productVariant.options %}
+                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
+                                            {% endfor %}
 
-                                        {% for option in productVariant.skuOptions %}
-                                            <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                        {% endfor %}
+                                            {% for option in productVariant.skuOptions %}
+                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
+                                            {% endfor %}
 
-                                        {% for part_variant_selection in item.productVariant.productPartVariantSelections %}
-                                            <li>
-                                                <strong>{{ part_variant_selection.productPart.label }}:</strong>
-                                                {{ part_variant_selection.productPartMaterialVariant.name }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </td>
+                                            {% for part_variant_selection in productVariant.productPartVariantSelections %}
+                                                <li>
+                                                    <strong>{{ part_variant_selection.productPart.label }}:</strong>
+                                                    {{ part_variant_selection.productPartMaterialVariant.name }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
 
-                                <td></td>
+                                    <td></td>
 
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ productVariant|sku_price|money }}</td>
-                                <td>{{ item|specification_item_total_price|money }}</td>
-                            </tr>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ productVariant|sku_price|money }}</td>
+                                    <td>{{ item|specification_item_total_price|money }}</td>
+                                </tr>
+                                {% endif %}
                         {% endfor %}
                         </tbody>
 
@@ -177,7 +179,7 @@
 
                             <tbody>
                             {% for item in grouped_item.items %}
-                                {% set productVariant = item.productVariant %}
+                                {% set productVariant = item.skuItem.productVariant %}
                                 {% set product = productVariant.product %}
 
                                 <tr>
@@ -187,7 +189,7 @@
                                             <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
                                         {% endif %}
                                     </td>
-                                    <td>{{ item.productVariant.sku }}</td>
+                                    <td>{{ productVariant.sku }}</td>
                                     <td>{{ item.note }}</td>
                                     <td>{{ productVariant.humanSize }}</td>
                                     <td>{{ item.quantity }}</td>

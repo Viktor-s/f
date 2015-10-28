@@ -180,7 +180,7 @@ class ProductController
            foreach ($variant->getProductPartVariantSelections() as $variantSelection)
            {
                $item['options'][$product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId()] 
-                       = $variantSelection->getId();
+                       = $variantSelection->getProductPartMaterialVariant()->getId();
            }
            
            if($activeVariant && $variant == $activeVariant){
@@ -190,20 +190,6 @@ class ProductController
            $skuMatrix[] = $item;
         }
 
-        // Get min and max prices
-        $pricesMap = [];
-
-        $product->getVariants()->forAll(function ($key, ProductVariant $productVariant) use (&$pricesMap) {
-            $pricesMap[] = $productVariant->getPrice();
-
-            return true;
-        });
-
-        $prices = [
-            'min' => min($pricesMap),
-            'max' => max($pricesMap)
-        ];
-
         $specifications = $this->specificationRepository->findForUser($user);
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
@@ -211,7 +197,6 @@ class ProductController
             'sku_matrix' => $skuMatrix,
             'active_variant_matrix' => $activeVariantMatrix,
             'options' => $options,
-            'prices' => $prices,
             'specifications' => $specifications,
             'specification_item' => $specificationItem,
             'update_specification_item' => $updateSpecificationItem,

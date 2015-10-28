@@ -11,8 +11,8 @@
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.css" type="text/css" />
             {% stylesheets output='assets/compiled/backend.css' filter='cssrewrite'
+                '@WebBundle/Resources/public/css/bootstrap3.0.1.min.css'
                 'bundles/syliusweb/css/blueimp-gallery.css'
                 'bundles/syliusweb/css/select2.css'
                 'bundles/syliusweb/css/datepicker3.css'
@@ -29,14 +29,19 @@
             {% endstylesheets %}
         {% endblock %}
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-        <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        {% javascripts output='admin/js/*.js'
+            'static/js/jquery/jquery.min.js'
+            'vendor/jquery-ui/ui/minified/jquery-ui.min.js'
+            '@WebBundle/Resources/public/js/bootstrap.min.js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+            <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
+            <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        {% endjavascripts %}
 
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->

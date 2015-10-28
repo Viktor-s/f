@@ -91,9 +91,14 @@ class PriceCalculator
      */
     public function calculateForSpecificationItem(SpecificationItem $specificationItem)
     {
-        $productVariant = $specificationItem->getProductVariant();
+        /* Calculate amount for specific item type */
+        if($specificationItem->getSkuItem()){
+            $productVariant = $specificationItem->getSkuItem()->getProductVariant();
 
-        $amount = $this->calculateForProductVariant($productVariant);
+            $amount = $this->calculateForProductVariant($productVariant);
+        }
+        
+        
         $buyer = $specificationItem->getSpecification()->getBuyer();
 
         if ($buyer && $buyer->hasSale()) {

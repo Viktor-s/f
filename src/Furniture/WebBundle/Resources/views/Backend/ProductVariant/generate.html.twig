@@ -125,7 +125,11 @@
             $('[name="product_part_material_tree_control[]"]').click(function(){
                 var el = $(this);
                 var data = el.data('product_part_material_control').split('_');
-                $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') );
+                if(data.length == 3){
+                    
+                }else{
+                    $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') );
+                }
                 el.parents('li').first().find('ul input').prop( 'checked', el.prop('checked') ).trigger("change");
             });
             {% set index = 0 %}
@@ -221,15 +225,17 @@
                                 <li>
                                     <div class="tree-opener">+</div>
                                     <label class="tree-toggle nav-header checkbox-entry">
-                                        <input name="product_part_material_tree_control[]" data-product_part_material_control="{{ productPart.id }}_{{ material.id }}" type="checkbox"> <span class="check"></span>{{ material.name }}
+                                        <input name="product_part_material_tree_control[]" 
+                                               data-product_part_material_control="{{ productPart.id }}_{{ material.id }}" 
+                                               type="checkbox"> <span class="check"></span>{{ material.name }}
                                     </label>
                                     <ul class="nav nav-list tree">
                                         {% for grouped in  material.getGroupedOptionValues() %}
                                             <li>
                                                 <label class="checkbox-entry tree-toggle ">
                                                     <input name="product_part_material_tree_control[]" 
+                                                           data-product_part_material_control="{{ productPart.id }}_{{ material.id }}_group"
                                                            data-part="{{ productPart.id }}" 
-                                                           data-materialoption="{{ grouped.option.id }}" 
                                                            type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
                                                 </label>
                                                 <ul class="nav nav-list tree">
@@ -359,7 +365,7 @@
                                         {% set cur_material_class = material_class %}
                                         <tr>
                                             <td>
-                                                - - {{ variant.material.name }}
+                                                <i><b>- - - - - - - - - - - - {{ variant.material.name }}</b></i>
                                             </td><td>
                                                 
                                             </td>

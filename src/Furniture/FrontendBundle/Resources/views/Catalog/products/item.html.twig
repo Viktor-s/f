@@ -21,10 +21,15 @@
             {% endfor %}
         {% endif %}
         #}
-        <a class="title" href="{{ path('product', {'product':product.id}) }}">{{ product.name }}</a>
-        <div class="article-container style-1">
-            <p>{{ product.shortDescription }}</p>
-        </div>
+        
+        <h4 class="pgp-product-title"><a class="title" href="{{ path('product', {'product':product.id}) }}">
+            {% if product.factoryCode != '' %}
+                <small>{{ product.factoryCode }}</small> 
+            {% endif %}
+            {{ product.name }}</a>
+        </h4>
+        <h6 class="pgp-product-factory">{{ product.factory.name }}</h6>
+
         <div class="price">
             <div class="current">
                 {% if is_granted('VIEW_PRICE', product) %}

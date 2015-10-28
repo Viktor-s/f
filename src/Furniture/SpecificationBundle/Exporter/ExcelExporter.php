@@ -103,68 +103,70 @@ class ExcelExporter implements ExporterInterface
         $rowIndex = 5;
         $numberOfRecords = 1;
         foreach ($specification->getItems() as $item) {
-            $productVariant = $item->getProductVariant();
-            /** @var \Furniture\ProductBundle\Entity\Product $product */
-            $product = $productVariant->getProduct();
-            $cellIndex = 1;
+            if( $skuItem = $item->getSkuItem() ){
+                $productVariant = $skuItem->getProductVariant();
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $productVariant->getProduct();
+                $cellIndex = 1;
 
-            if ($fieldMap->hasFieldNumber()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $numberOfRecords++);
+                if ($fieldMap->hasFieldNumber()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $numberOfRecords++);
+                }
+
+                if ($fieldMap->hasFieldFactory()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $factory = $product->getFactory();
+                    $activeSheet->setCellValue($key, $factory->getName());
+                }
+
+                if ($fieldMap->hasFieldPhoto()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                }
+
+                if ($fieldMap->hasFieldName()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $product->getName());
+                }
+
+                if ($fieldMap->hasFieldArticle()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $productVariant->getSku());
+                }
+
+                if ($fieldMap->hasFieldSize()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $productVariant->getHumanSize());
+                }
+
+                if ($fieldMap->hasFieldCharacteristics()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $this->generateVariantCharacteristics($productVariant));
+                }
+
+                if ($fieldMap->hasFieldFinishes()) {
+                    $cellIndex++;
+                }
+
+                if ($fieldMap->hasFieldQuantity()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $item->getQuantity());
+                }
+
+                if ($fieldMap->hasFieldPrice()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $price = $this->priceCalculator->calculateForProductVariant($productVariant);
+                    $activeSheet->setCellValue($key, $price . ' EUR');
+                }
+
+                if ($fieldMap->hasFieldTotalPrice()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $price = $this->priceCalculator->calculateForSpecificationItem($item);
+                    $activeSheet->setCellValue($key, $price . ' EUR');
+                }
+
+                $rowIndex++;
             }
-
-            if ($fieldMap->hasFieldFactory()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $factory = $product->getFactory();
-                $activeSheet->setCellValue($key, $factory->getName());
-            }
-
-            if ($fieldMap->hasFieldPhoto()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-            }
-
-            if ($fieldMap->hasFieldName()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $product->getName());
-            }
-
-            if ($fieldMap->hasFieldArticle()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $productVariant->getSku());
-            }
-
-            if ($fieldMap->hasFieldSize()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $productVariant->getHumanSize());
-            }
-
-            if ($fieldMap->hasFieldCharacteristics()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $this->generateVariantCharacteristics($productVariant));
-            }
-
-            if ($fieldMap->hasFieldFinishes()) {
-                $cellIndex++;
-            }
-
-            if ($fieldMap->hasFieldQuantity()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $activeSheet->setCellValue($key, $item->getQuantity());
-            }
-
-            if ($fieldMap->hasFieldPrice()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $price = $this->priceCalculator->calculateForProductVariant($productVariant);
-                $activeSheet->setCellValue($key, $price . ' EUR');
-            }
-
-            if ($fieldMap->hasFieldTotalPrice()) {
-                $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                $price = $this->priceCalculator->calculateForSpecificationItem($item);
-                $activeSheet->setCellValue($key, $price . ' EUR');
-            }
-
-            $rowIndex++;
         }
 
         // Add header

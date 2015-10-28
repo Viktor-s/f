@@ -65,33 +65,35 @@
         <tbody>
         {% for specification_item in specification.items %}
             <tr>
-                <td>
-                    <a href="#">{{ specification_item.productVariant.product.factory.name }}</a>
-                </td>
+                {% if specification_item.skuItem %}
+                    <td>
+                        <a href="#">{{ specification_item.skuItem.productVariant.product.factory.name }}</a>
+                    </td>
 
-                <td>
-                    <ul>
-                        {% for option in specification_item.productVariant.options %}
-                            <li>
-                                <strong>{{ option.name }}:</strong>
-                                {{ option.value }}
-                            </li>
-                        {% endfor %}
+                    <td>
+                        <ul>
+                            {% for option in specification_item.skuItem.productVariant.options %}
+                                <li>
+                                    <strong>{{ option.name }}:</strong>
+                                    {{ option.value }}
+                                </li>
+                            {% endfor %}
 
-                        {% for option in specification_item.productVariant.skuOptions %}
-                            <li>
-                                <strong>{{ option.name }}:</strong>
-                                {{ option.value }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </td>
+                            {% for option in specification_item.skuItem.productVariant.skuOptions %}
+                                <li>
+                                    <strong>{{ option.name }}:</strong>
+                                    {{ option.value }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                {% endif %}
 
                 <td>{{ specification_item.note|default('None') }}</td>
 
                 <td>{{ specification_item.quantity }}</td>
 
-                <td class="price">{{ (specification_item.productVariant.price / 100)|round(2) }} EUR</td>
+                <td class="price">{{ (specification_item.price / 100)|round(2) }} EUR</td>
                 <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }} EUR</td>
             </tr>
         {% endfor %}

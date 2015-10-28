@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
+use Furniture\SpecificationBundle\Entity\SkuSpecificationItem;
 
 class LoadSpecificationItemData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -39,12 +40,18 @@ class LoadSpecificationItemData extends AbstractFixture implements OrderedFixtur
                     $note = null;
                 }
 
+                $skuSpecificationItem = new SkuSpecificationItem();
+                $skuSpecificationItem->setProductVariant($variant)
+                        ;
+                
+                
                 $specificationItem = new SpecificationItem();
                 $specificationItem
+                    ->setSkuItem($skuSpecificationItem)
                     ->setSpecification($specification)
-                    ->setProductVariant($variant)
                     ->setQuantity($quantity)
-                    ->setNote($note);
+                    ->setNote($note)
+                        ;
 
                 $manager->persist($specificationItem);
             }

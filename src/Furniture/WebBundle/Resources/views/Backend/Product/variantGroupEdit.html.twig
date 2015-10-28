@@ -125,7 +125,11 @@
             $('[name="product_part_material_tree_control[]"]').click(function(){
                 var el = $(this);
                 var data = el.data('product_part_material_control').split('_');
-                $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') );
+                if(data.length == 3){
+                    
+                }else{
+                    $('[data-productpart="'+data[0]+'"][data-productmaterial="'+data[1]+'"] input').prop( 'checked', el.prop('checked') ).trigger("change");
+                }
                 el.parents('li').first().find('ul input').prop( 'checked', el.prop('checked') ).trigger("change");
             });
             {% set index = 0 %}
@@ -137,7 +141,6 @@
                     var td = el.parents('td').first();
                     for( data in td.data()){
                         data = data.split('_');
-                        console.log(data);
                         if(data[0] == 'materialvalue'){
                             var matval = $('[data-part="product_part_panel_{{ productPart.id }}"] [data-valueid="'+data[1]+'"]');
                             matval.prop('checked', el.prop('checked'));
@@ -150,6 +153,9 @@
             })
             {% endfor %}
         });
+        $('body').bind('beforeunload',function(){
+            
+        })
     </script>
 
     <div class="row admin-filter-variants">
@@ -229,6 +235,7 @@
                                             <li>
                                                 <label class="tree-toggle checkbox-entry">
                                                     <input name="product_part_material_tree_control[]" 
+                                                           data-product_part_material_control="{{ productPart.id }}_{{ material.id }}_group"
                                                            data-part="{{ productPart.id }}" 
                                                            data-materialoption="{{ grouped.option.id }}" 
                                                            type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
@@ -363,7 +370,7 @@
                                         {% set cur_material_class = material_class %}
                                         <tr>
                                             <td>
-                                                - - {{ variant.material.name }}
+                                                <i><b>- - - - - - - - - - - - {{ variant.material.name }}</b></i>
                                             </td><td>
                                                 
                                             </td>

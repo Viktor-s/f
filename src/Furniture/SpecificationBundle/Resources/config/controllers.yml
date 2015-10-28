@@ -5,3 +5,9 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+    specification.controller.api.specification.sku_Item:
+        class: Furniture\SpecificationBundle\Controller\Api\SkuSpecificationItemController
+        arguments:
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
