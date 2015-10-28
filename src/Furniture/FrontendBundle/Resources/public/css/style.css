@@ -3361,3 +3361,15 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .accordeon h3{
     font-size: 24px;
 }
+.pgp-product-title {
+    margin-bottom: 5px;
+}
+.pgp-product-factory {
+    margin-bottom: 5px;
+    color: #696969;
+    font-size: 12px;
+    line-height: 12px;
+} 
+header.fixed-header nav {
+    text-align: left; 
+}

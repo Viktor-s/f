@@ -87,8 +87,12 @@
 
             <div class="col-sm-6 information-entry">
                 <div class="product-detail-box">
-                    <h1 class="product-title">{{ product.name }}</h1>
-                    <h3 class="product-subtitle">{{ product.shortDescription }}</h3>
+                    <h1 class="product-title block-title">
+                        {% if product.factoryCode != '' %}
+                            <small>{{ product.factoryCode }}</small> 
+                        {% endif %} 
+                        {{ product.name }} <small>{{ product.factory.name }}</small>
+                    </h1>
 
                     <div class="product-description detail-info-entry">{{ product.description }}</div>
 
@@ -121,9 +125,9 @@
                         </div>
                     {% else %}
                         <div class="add-to-specification detail-info-entry">
-                            <div class="btn-group">
-                                <button type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.add_to_specification'|trans }}</button>
-                                <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;width:50px;min-width:50px;">
+                            <div class="btn-group" style="width:300px;">
+                                <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;max-width:280px;width:280px;">
+                                    {{ 'frontend.add_to_specification'|trans }}
                                     <span class="caret"></span>
                                 </button>
 

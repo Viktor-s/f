@@ -4,7 +4,7 @@
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
-    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
     <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
     <a href="{{ path('products', {category: current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
     {% if sub_category %}
