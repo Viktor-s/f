@@ -7,14 +7,14 @@
                         <a class="product-image hover-class-1" href="#">
                             <div style="width: 201px; height: 203px;">
                             {% if factory.logoImage %}
-                            <img src="{{ factory.logoImage.path|imagine_filter('s201x123') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
+                                <img src="{{ factory.logoImage.path|imagine_filter('s201x123') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% else %}
-                            <img src="{{ '/img/201x203.png' }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
+                                <img src="{{ '/img/201x203.png' }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% endif %}
                             </div>
                         </a>
 
-                        <a class="subtitle" href="#">{{ factory.name ? factory.name : 'Unknown' }}</a>
+                        <a class="subtitle" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name ? factory.name : 'Unknown' }}</a>
                         <div class="date">{{ 'frontend.factory.posted'|trans({':created': factory.createdAt.format('d M Y')}) }}</div>
                     </div>
                 </div>
