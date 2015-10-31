@@ -3,11 +3,6 @@
 <tr data-id="{{ specification_item.id }}" class="specification-item-info{% if active_item_id == specification_item.id %} info{% endif %}" data-price="{{ product_variant.price }}">
     <td>
         <div class="factory-info">
-            {% if product_variant.product.factory.primaryImage %}
-                <div class="image">
-                    <img src="{{ product_variant.product.factory.primaryImage.path|imagine_filter('s150x150') }}" width="150" height="150" />
-                </div>
-            {% endif %}
             <div class="factory-name">
                 <a href="#">{{ product_variant.product.factory.name }}</a>
             </div>

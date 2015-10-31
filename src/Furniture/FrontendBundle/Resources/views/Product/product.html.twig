@@ -24,6 +24,7 @@
 
 {% block content %}
     <div class="information-blocks">
+        <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
         <div class="row">
             <div class="col-sm-6 information-entry">
                 <div class="tabs-container">
@@ -230,13 +231,17 @@
                                     quantity: quantity,
                                     specification: parseInt($(this).attr('data-specification-id'))
                                 };
+                        var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , data.specification);
 
                         $.ajax({
                             url: url,
                             data: data,
                             method: 'POST',
                             success: function () {
-                                alert('Successfully add product to specification.');
+                                //alert('Successfully add product to specification.');
+                                $('#specification-added')
+                                    .html('Product was successfully added to <a href="'+ specification_edit_path +'">Specification</a>')
+                                    .show();
                                 addSpecificationProcessed = false;
                             },
                             error: function () {

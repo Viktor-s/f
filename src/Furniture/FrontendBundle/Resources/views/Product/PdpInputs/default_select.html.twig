@@ -1,20 +1,40 @@
 <div class="detail-info-entry">
+
     <div class="detail-info-entry-title">{{ input.humanName }}</div>
-    <div class="simple-drop-down simple-field">
-        <select data-input-container="default-select" data-input-id="{{ input.id }}" >
-            {% if input.option %}
-                {% for optionValue in input.optionValues() %}
-                    <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
-                {% endfor %}
-            {% elseif input.skuOption %}
-                {% for skuOptionVariant in input.skuOptionVariants() %}
-                    <option data-input-variant="{{ skuOptionVariant.id }}" >{{ skuOptionVariant.value }}</option>
-                {% endfor %}
-            {% elseif input.productPart %}
-                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                    <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
-                {% endfor %}
-            {% endif %}
-        </select>
-    </div>
+
+    {% if input.skuOption and input.skuOptionVariants()|length == 1 %}
+
+        {% for skuOptionVariant in input.skuOptionVariants() %}
+            <ul class="list">
+                <li>
+                    {{ skuOptionVariant.value }}
+                    <input type="hidden" data-input-container="default-select" data-input-id="{{ input.id }}" data-input-variant="{{ skuOptionVariant.id }}">
+                </li>
+            </ul>
+        {% endfor %}
+
+    {% else %}
+
+        <div class="simple-drop-down simple-field">
+            <select data-input-container="default-select" data-input-id="{{ input.id }}" >
+                {% if input.option %}
+                    {% for optionValue in input.optionValues() %}
+                        <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
+                    {% endfor %}
+                {% elseif input.skuOption %}
+                    {% for skuOptionVariant in input.skuOptionVariants() %}
+                        <option data-input-variant="{{ skuOptionVariant.id }}" >{{ skuOptionVariant.value }}</option>
+                    {% endfor %}
+                {% elseif input.productPart %}
+                    {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                        <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+
+    {% endif %}
 </div>
+
+
+
