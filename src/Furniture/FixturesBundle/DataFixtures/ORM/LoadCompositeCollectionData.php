@@ -56,17 +56,11 @@ class LoadCompositeCollectionData extends DataFixture
      */
     private function createCollection($name)
     {
-        $compositeCollection = new CompositeCollection();
+        $compositeCollection = $this->get('furniture.repository.composite_collection')->createNew();;
         $compositeCollection->setName($name);
-
-        $translation = new CompositeCollectionTranslation();
-        $translation
-            ->setPresentation($name)
-            ->setTranslatable($compositeCollection)
-            ->setLocale($this->defaultLocale);
-
-        $compositeCollection->addTranslation($translation);
-        
+        $compositeCollection->setCurrentLocale($this->defaultLocale);
+        $compositeCollection->setPresentation('presentation: '.$name);
+        $compositeCollection->setDescription('description: '.$name);
         $this->setReference('Furniture.composite_collection.'.$name, $compositeCollection);
         
         return $compositeCollection;
