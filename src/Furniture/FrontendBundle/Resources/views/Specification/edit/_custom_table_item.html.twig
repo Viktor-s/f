@@ -1,0 +1,27 @@
+{% set customItem = specification_item.customItem %}
+<tr data-price="{{ customItem.price }}" data-cusotm-id="{{ customItem.id }}" data-id="{{ specification_item.id }}">
+    <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ customItem.factoryName }}</td>
+    <td>
+        Image
+    </td>
+
+    <td data-index="name" data-type="text" data-server-type="custom-item">{{ customItem.name }}</td>
+
+    <td>
+       
+    </td>
+
+    <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
+
+    <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
+
+    <td data-index="price" data-type="price" data-server-type="custom-item">{{ customItem.price|money }}</td>
+    <td>{{ specification_item|specification_item_total_price|money }}</td>
+
+    <td>
+        <a class="btn btn-danger btn-xs remove" href="#">
+            <i class="fa fa-trash-o"></i>
+            {{ 'frontend.remove'|trans }}
+        </a>
+    </td>
+</tr>

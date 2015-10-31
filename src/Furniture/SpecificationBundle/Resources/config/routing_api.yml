@@ -11,6 +11,13 @@ specification_api_specification_editable:
     defaults:
         _controller: specification.controller.api.specification:editable
 
+specification_api_specification_info:
+    path: /specification/{itemId}/info/{index}
+    methods: [ GET ]
+    requirements: { itemId: \d+  }
+    defaults:
+        _controller: specification.controller.api.specification:info
+
 specification_api_specification_item_editable:
     path: /item/{item}/editable
     methods: [ POST ]
@@ -30,16 +37,36 @@ specification_api_specification_buyers:
     methods: [ GET ]
     defaults:
         _controller: specification.controller.api.specification:buyers
-        
+#SKU specification item       
 specification_api_specification_sku_item_add:
-    path: /item/add
+    path: /catalog/item/add
     methods: [ POST ]
     defaults:
         _controller: specification.controller.api.specification.sku_Item:add
 
 specification_api_specification_sku_item_edit:
-    path: /item/{item}/edit
+    path: /catalog/item/{item}/edit
     methods: [ POST ]
     requirements: { item: \d+ }
     defaults:
         _controller: specification.controller.api.specification.sku_Item:edit
+#Custom specification item
+specification_api_specification_custom_Item_add:
+    path: /custom/item/add
+    methods: [ POST ]
+    defaults:
+        _controller: specification.controller.api.specification.custom_Item:add
+
+specification_api_specification_custom_Item_editable:
+    path: /custom/item/{item}/editable
+    methods: [ POST ]
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification.custom_Item:editableItem
+        
+specification_api_specification_custom_Item_info:
+    path: /custom/item/{itemId}/info/{index}
+    methods: [ GET ]
+    requirements: { itemId: \d+  }
+    defaults:
+        _controller: specification.controller.api.specification.custom_Item:info

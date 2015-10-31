@@ -26,7 +26,7 @@ frontend:
     opened: Opened
     finished: Finished
     price: Price
-    total_price: Total price
+    total_price: Total
     last_modified: Last modified
     quantity: Quantity
     finish: Finish
@@ -36,6 +36,7 @@ frontend:
     options: Options
     note: Note
     are_you_sure_remove_specification_item: Are you sure remote specification item?
+    are_you_sure_remove_specification: Are you sure remote specification?
     export: Export
     full: Full
     by_company: By company

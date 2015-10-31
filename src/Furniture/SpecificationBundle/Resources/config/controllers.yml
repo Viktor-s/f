@@ -5,9 +5,21 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+            - @pricing.calculator
+            - @pricing.twig_extension
     specification.controller.api.specification.sku_Item:
         class: Furniture\SpecificationBundle\Controller\Api\SkuSpecificationItemController
         arguments:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+            - @pricing.calculator
+            - @pricing.twig_extension
+    specification.controller.api.specification.custom_Item:
+        class: Furniture\SpecificationBundle\Controller\Api\CustomSpecificationItemController
+        arguments:
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @pricing.calculator
+            - @pricing.twig_extension

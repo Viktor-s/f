@@ -1,10 +1,13 @@
-define(function() {
+define([
+	"./support"
+], function( support ) {
 
 // We have to close these tags to support XHTML (#13200)
 var wrapMap = {
-
-	// Support: IE9
 	option: [ 1, "<select multiple='multiple'>", "</select>" ],
+
+	// Support: IE8
+	param: [ 1, "<object>", "</object>" ],
 
 	thead: [ 1, "<table>", "</table>" ],
 
@@ -22,10 +25,12 @@ var wrapMap = {
 	// Auto-insert "tbody" and "tr" elements
 	td: [ 3, "<table>", "</table>" ],
 
-	_default: [ 0, "", "" ]
+	// IE8 can't serialize link, script, style, or any html5 (NoScope) tags,
+	// unless wrapped in a div with non-breaking characters in front of it.
+	_default: support.htmlSerialize ? [ 0, "", "" ] : [ 1, "X<div>", "</div>" ]
 };
 
-// Support: IE9
+// Support: IE8-IE9
 wrapMap.optgroup = wrapMap.option;
 
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;

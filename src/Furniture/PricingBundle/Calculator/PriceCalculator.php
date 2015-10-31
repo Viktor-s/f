@@ -96,6 +96,8 @@ class PriceCalculator
             $productVariant = $specificationItem->getSkuItem()->getProductVariant();
 
             $amount = $this->calculateForProductVariant($productVariant);
+        }elseif($specificationItem->getCustomItem()){
+            $amount = $specificationItem->getCustomItem()->getPrice();
         }
         
         
