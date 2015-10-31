@@ -433,12 +433,12 @@
                                 ;
                                 row.find('td:eq(5)')
                                         .data('index', 'quantity')
-                                        .data('type', 'number')
+                                        .data('type', 'integer')
                                         .data('server-type', 'specification-item')
                                 ;
                                 row.find('td:eq(6)')
                                         .data('index', 'price')
-                                        .data('type', 'number')
+                                        .data('type', 'price')
                                         .data('server-type', 'custom-item')
                                 ;
                                 tableEdit.row(row).draw();
