@@ -20,7 +20,7 @@
 
             <div class="logo">
                 {% if factory.logoImage %}
-                    <img src="{{ factory.logoImage.path }}" width="160" height="160" alt="{{ factory.name }}" />
+                    <img src="/media/image/{{ factory.logoImage.path }}" width="160" height="160" alt="{{ factory.name }}" />
                 {% else %}
                     <img src="http://dummyimage.com/160/cccccc/000000" width="160" height="160" alt="{{ factory.name }}" />
                 {% endif %}

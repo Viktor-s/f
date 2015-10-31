@@ -1,0 +1,37 @@
+furniture_backend_product_type:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: furniture.controller.product_type:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductType:index.html.twig
+            paginate: 9999
+
+furniture_backend_product_type_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_type:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductType:create.html.twig
+            form: Furniture\ProductBundle\Form\Type\TypeType
+            redirect: furniture_backend_product_type
+
+furniture_backend_product_type_update:
+    path: /{id}/update
+    methods: [ GET, POST ]
+    defaults:
+        _controller: furniture.controller.product_type:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductType:update.html.twig
+            form: Furniture\ProductBundle\Form\Type\TypeType
+            redirect: furniture_backend_product_type
+
+furniture_backend_product_type_delete:
+    path: /{id}/delete
+    methods: [ DELETE ]
+    defaults:
+        _controller: furniture.controller.product_type:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_product_type

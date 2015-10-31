@@ -1,0 +1,38 @@
+Furniture\ProductBundle\Entity\Space:
+    type: entity
+    table: product_space
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        slug:
+            type: string
+            name: slug
+
+        position:
+            type: integer
+            name: position
+
+    manyToOne:
+        parent:
+            targetEntity: Furniture\ProductBundle\Entity\Space
+            inversedBy: children
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE
+
+    oneToMany:
+        children:
+            targetEntity: Furniture\ProductBundle\Entity\Space
+            mappedBy: parent
+
+    uniqueConstraints:
+        product_space_slug_unique:
+            columns: [ slug ]

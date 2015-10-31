@@ -3,13 +3,17 @@
 namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
+use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Entity\Space;
+use Furniture\ProductBundle\Entity\Style;
+use Furniture\ProductBundle\Entity\Type;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Component\Core\Model\Taxon;
 
 class ProductRepository
 {
@@ -77,13 +81,16 @@ class ProductRepository
      * Find latest product by with limit
      * 
      * @param ProductQuery $query
-     * @param type $limit
+     * @param integer      $limit
+     *
+     * @return Product[]
      */
     public function fundLatestBy(ProductQuery $query, $limit = 5)
     {
         $qb = $this->createQueryBuilderForProductQuery($query);
         $qb->orderBy('p.availableOn', 'desc');
         $qb->setMaxResults($limit);
+
         return $qb->getQuery()->getResult();
     }
 
@@ -101,16 +108,63 @@ class ProductRepository
             ->select('p')
             ->innerJoin('p.factory', 'f');
 
-        // Filtering by taxons
-        if ($query->hasTaxons()) {
-            $taxonIds = array_map(function (Taxon $taxon) {
-                return $taxon->getId();
-            }, $query->getTaxons());
+        // Filtering by space
+        if ($query->hasSpaces()) {
+            $spaceIds = array_map(function (Space $space) {
+                return $space->getId();
+            }, $query->getSpaces());
 
             $qb
-                ->innerJoin('p.taxons', 't')
-                ->andWhere('t.id IN (:taxons)')
-                ->setParameter('taxons', $taxonIds);
+                ->innerJoin('p.spaces', 'psp')
+                ->andWhere('psp.id IN (:spaces)')
+                ->setParameter('spaces', $spaceIds);
+        }
+
+        // Filtering by categories
+        if ($query->hasCategories()) {
+            $categoryIds = array_map(function (Category $category) {
+                return $category->getId();
+            }, $query->getCategories());
+
+            $qb
+                ->innerJoin('p.categories', 'pc')
+                ->andWhere('pc.id IN (:categories)')
+                ->setParameter('categories', $categoryIds);
+        }
+
+        // Filtering by types
+        if ($query->hasTypes()) {
+            $typeIds = array_map(function (Type $type) {
+                return $type->getId();
+            }, $query->getTypes());
+
+            $qb
+                ->innerJoin('p.types', 'pt')
+                ->andWhere('pt.id IN (:types)')
+                ->setParameter('types', $typeIds);
+        }
+
+        // Filtering by styles
+        if ($query->hasStyles()) {
+            $styleIds = array_map(function (Style $style) {
+                return $style->getId();
+            }, $query->getStyles());
+
+            $qb
+                ->innerJoin('p.styles', 'pst')
+                ->andWhere('pst.id IN (:styles)')
+                ->setParameter('styles', $styleIds);
+        }
+
+        if ($query->hasCompositeCollections()) {
+            $compositeCollectionIds = array_map(function (CompositeCollection $compositeCollection) {
+                return $compositeCollection->getId();
+            }, $query->getCompositeCollections());
+
+            $qb
+                ->innerJoin('p.compositeCollections', 'cc')
+                ->andWhere('cc.id IN (:composite_collections)')
+                ->setParameter('composite_collections', $compositeCollectionIds);
         }
 
         // Filtered by factories

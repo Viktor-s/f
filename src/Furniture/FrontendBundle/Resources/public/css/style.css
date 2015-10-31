@@ -3373,3 +3373,35 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 header.fixed-header nav {
     text-align: left; 
 }
+.list {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding-left: 15px;
+    margin-top: 15px;
+}
+.list li{
+
+}
+
+.add-to-specification .dropdown-menu{
+    width:280px;
+    border-radius:0 ;
+    top:42px;
+}
+.add-to-specification .dropdown-menu a{
+    font-size: 16px;
+}
+.add-to-specification .dropdown-menu .divider{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.specification-added{
+    display: none;
+}
+.specification-edit-head .editable{
+    padding-top: 6px;
+}
+.specification-edit-head .editable form{
+    margin-top: -6px;
+}

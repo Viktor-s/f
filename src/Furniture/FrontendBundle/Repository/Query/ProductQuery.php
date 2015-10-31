@@ -3,20 +3,44 @@
 namespace Furniture\FrontendBundle\Repository\Query;
 
 use Furniture\CommonBundle\Entity\User;
+use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\FactoryBundle\Entity\Factory;
-use Sylius\Component\Core\Model\Taxon;
+use Furniture\ProductBundle\Entity\Category;
+use Furniture\ProductBundle\Entity\Space;
+use Furniture\ProductBundle\Entity\Style;
+use Furniture\ProductBundle\Entity\Type;
 
 class ProductQuery
 {
     /**
-     * @var array|Taxon[]
+     * @var array|Space[]
      */
-    private $taxons = [];
+    private $spaces = [];
+
+    /**
+     * @var array|Category[]
+     */
+    private $categories = [];
+
+    /**
+     * @var array|Type[]
+     */
+    private $types = [];
+
+    /**
+     * @var array|Style[]
+     */
+    private $styles = [];
 
     /**
      * @var array|Factory[]
      */
     private $factories = [];
+
+    /**
+     * @var array|CompositeCollection[]
+     */
+    private $compositeCollections = [];
 
     /**
      * @var User
@@ -31,53 +55,261 @@ class ProductQuery
     /**
      * With taxon
      *
-     * @param Taxon $taxon
+     * @param Space $space
      *
      * @return ProductQuery
      */
-    public function withTaxon(Taxon $taxon)
+    public function withSpace(Space $space)
     {
-        $this->taxons[spl_object_hash($taxon)] = $taxon;
+        $this->spaces[spl_object_hash($space)] = $space;
 
         return $this;
     }
 
     /**
-     * With many taxons
+     * With many spaces
      *
-     * @param array|Taxon[] $taxons
+     * @param array|Space[] $spaces
      *
      * @return ProductQuery
      */
-    public function withTaxons(array $taxons)
+    public function withSpaces(array $spaces)
     {
-        $this->taxons = [];
+        $this->spaces = [];
 
-        foreach ($taxons as $taxon) {
-            $this->withTaxon($taxon);
+        foreach ($spaces as $space) {
+            $this->withSpace($space);
         }
 
         return $this;
     }
 
     /**
-     * Has taxons?
+     * Has spaces?
      *
      * @return bool
      */
-    public function hasTaxons()
+    public function hasSpaces()
     {
-        return count($this->taxons) > 0;
+        return count($this->spaces) > 0;
     }
 
     /**
-     * Get taxons
+     * Get spaces
      *
-     * @return array|Taxon[]
+     * @return array|Space[]
      */
-    public function getTaxons()
+    public function getSpaces()
     {
-        return array_values($this->taxons);
+        return array_values($this->spaces);
+    }
+
+    /**
+     * With category
+     *
+     * @param Category $category
+     *
+     * @return ProductQuery
+     */
+    public function withCategory(Category $category)
+    {
+        $this->categories[$category->getId()] = $category;
+
+        return $this;
+    }
+
+    /**
+     * With categories
+     *
+     * @param array|Category[] $categories
+     *
+     * @return ProductQuery
+     */
+    public function withCategories(array $categories)
+    {
+        $this->categories = [];
+
+        foreach ($categories as $category) {
+            $this->withCategory($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has categories?
+     *
+     * @return bool
+     */
+    public function hasCategories()
+    {
+        return count($this->categories) > 0;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return array|Category[]
+     */
+    public function getCategories()
+    {
+        return array_values($this->categories);
+    }
+
+    /**
+     * With type
+     *
+     * @param Type $type
+     *
+     * @return ProductQuery
+     */
+    public function withType(Type $type)
+    {
+        $this->types[$type->getId()] = $type;
+
+        return $this;
+    }
+
+    /**
+     * With types
+     *
+     * @param array|Type[] $types
+     *
+     * @return ProductQuery
+     */
+    public function withTypes(array $types)
+    {
+        $this->types = [];
+
+        foreach ($types as $type) {
+            $this->withType($type);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has types?
+     *
+     * @return bool
+     */
+    public function hasTypes()
+    {
+        return count($this->types) > 0;
+    }
+
+    /**
+     * Get types
+     *
+     * @return Type[]
+     */
+    public function getTypes()
+    {
+        return array_values($this->types);
+    }
+
+    /**
+     * With style
+     *
+     * @param Style $style
+     *
+     * @return ProductQuery
+     */
+    public function withStyle(Style $style)
+    {
+        $this->styles[$style->getId()] = $style;
+
+        return $this;
+    }
+
+    /**
+     * With styles
+     *
+     * @param array|Style[] $styles
+     *
+     * @return ProductQuery
+     */
+    public function withStyles(array $styles)
+    {
+        $this->styles = [];
+
+        foreach ($styles as $style) {
+            $this->withStyle($style);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has styles?
+     *
+     * @return bool
+     */
+    public function hasStyles()
+    {
+        return count($this->styles) > 0;
+    }
+
+    /**
+     * Get styles
+     *
+     * @return Style[]
+     */
+    public function getStyles()
+    {
+        return array_values($this->styles);
+    }
+
+    /**
+     * With composite collection
+     *
+     * @param CompositeCollection $compositeCollection
+     *
+     * @return ProductQuery
+     */
+    public function withCompositeCollection(CompositeCollection $compositeCollection)
+    {
+        $this->compositeCollections[$compositeCollection->getId()] = $compositeCollection;
+
+        return $this;
+    }
+
+    /**
+     * With composite collections
+     *
+     * @param array|CompositeCollection[] $compositeCollections
+     *
+     * @return ProductQuery
+     */
+    public function withCompositeCollections(array $compositeCollections)
+    {
+        $this->compositeCollections = [];
+
+        foreach ($compositeCollections as $compositeCollection) {
+            $this->withCompositeCollection($compositeCollection);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has composite collection?
+     *
+     * @return bool
+     */
+    public function hasCompositeCollections()
+    {
+        return count($this->compositeCollections) > 0;
+    }
+
+    /**
+     * Get composite collections
+     *
+     * @return CompositeCollection[]
+     */
+    public function getCompositeCollections()
+    {
+        return $this->compositeCollections;
     }
 
     /**

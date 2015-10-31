@@ -8,11 +8,14 @@ services:
         arguments:
             - @twig
             - @frontend.repository.product
+            - @frontend.repository.product_category
+            - @frontend.repository.product_space
+            - @frontend.repository.product_style
+            - @frontend.repository.product_type
             - @frontend.repository.factory
-            - @sylius.repository.taxon
-            - @sylius.repository.taxonomy
             - @frontend.repository.specification
             - @frontend.repository.specification_item
+            - @frontend.repository.composite_collection
             - @security.token_storage
 
     frontend.controller.product:
@@ -116,6 +119,6 @@ services:
             - @twig
             - @frontend.repository.factory
             - @frontend.repository.post
-            - @sylius.repository.taxonomy
-            - @sylius.repository.taxon
+            - @frontend.repository.product_style
+            - @frontend.repository.product_category
             - @security.token_storage

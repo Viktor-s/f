@@ -20,3 +20,13 @@ Furniture\FactoryBundle\Entity\FactoryTranslation:
         address:
             type: string
             nullable: true
+
+        workInfoContent:
+            type: text
+            nullable: true
+            name: work_info_content
+
+        collectionContent:
+            type: text
+            nullable: true
+            name: collection_content

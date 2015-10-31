@@ -1,0 +1,13 @@
+{% extends 'FrontendBundle:FactorySide:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.collections'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.collections'|trans }}</a>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-collections">{{ collection_content|raw }}</div>
+{% endblock %}

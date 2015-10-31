@@ -11,6 +11,22 @@ services:
             - @doctrine.orm.default_entity_manager
             - 'Furniture\ProductBundle\Entity\Product'
 
+    frontend.repository.product_category:
+        class: Furniture\FrontendBundle\Repository\ProductCategoryRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.product_space:
+        class: Furniture\FrontendBundle\Repository\ProductSpaceRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.product_type:
+        class: Furniture\FrontendBundle\Repository\ProductTypeRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.product_style:
+        class: Furniture\FrontendBundle\Repository\ProductStyleRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     frontend.repository.specification:
         class: Furniture\FrontendBundle\Repository\SpecificationRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
@@ -33,4 +49,8 @@ services:
 
     frontend.repository.post:
         class: Furniture\FrontendBundle\Repository\PostRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.composite_collection:
+        class: Furniture\FrontendBundle\Repository\CompositeCollectionRepository
         arguments: [ @doctrine.orm.default_entity_manager ]

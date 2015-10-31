@@ -2,6 +2,8 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
+use Furniture\ProductBundle\Entity\Category;
+use Furniture\ProductBundle\Entity\Style;
 use Sylius\Component\Core\Model\Taxon;
 
 class FactoryQuery
@@ -12,9 +14,14 @@ class FactoryQuery
     private $ids = [];
 
     /**
-     * @var array|Taxon[]
+     * @var array|Style[]
      */
-    private $taxons = [];
+    private $styles = [];
+
+    /**
+     * @var array|Category[]
+     */
+    private $categories = [];
 
     /**
      * With id
@@ -69,47 +76,47 @@ class FactoryQuery
     }
 
     /**
-     * With taxon
+     * With style
      *
-     * @param Taxon $taxon
+     * @param Style $style
      *
      * @return FactoryQuery
      */
-    public function withTaxon(Taxon $taxon)
+    public function withStyle(Style $style)
     {
-        if (!isset($this->taxons[$taxon->getId()])) {
-            $this->taxons[$taxon->getId()] = $taxon;
+        if (!isset($this->styles[$style->getId()])) {
+            $this->styles[$style->getId()] = $style;
         }
 
         return $this;
     }
 
     /**
-     * With taxons
+     * With styles
      *
-     * @param array|Taxon[] $taxons
+     * @param array|Style[] $styles
      *
      * @return FactoryQuery
      */
-    public function withTaxons(array $taxons)
+    public function withStyles(array $styles)
     {
-        $this->taxons = [];
+        $this->styles = [];
 
-        foreach ($taxons as $taxon) {
-            $this->withTaxon($taxon);
+        foreach ($styles as $taxon) {
+            $this->withStyle($taxon);
         }
 
         return $this;
     }
 
     /**
-     * Has taxons?
+     * Has styles?
      *
      * @return bool
      */
-    public function hasTaxons()
+    public function hasStyles()
     {
-        return count($this->taxons) > 0;
+        return count($this->styles) > 0;
     }
 
     /**
@@ -117,8 +124,60 @@ class FactoryQuery
      *
      * @return array|Taxon[]
      */
-    public function getTaxons()
+    public function getStyles()
     {
-        return array_values($this->taxons);
+        return array_values($this->styles);
+    }
+
+    /**
+     * With category
+     *
+     * @param Category $category
+     *
+     * @return FactoryQuery
+     */
+    public function withCategory(Category $category)
+    {
+        $this->categories[$category->getId()] = $category;
+
+        return $this;
+    }
+
+    /**
+     * With categories
+     *
+     * @param array|Category[] $categories
+     *
+     * @return FactoryQuery
+     */
+    public function withCategories(array $categories)
+    {
+        $this->categories = [];
+
+        foreach ($categories as $category) {
+            $this->withCategory($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has categories?
+     *
+     * @return bool
+     */
+    public function hasCategories()
+    {
+        return count($this->categories) > 0;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return Category[]
+     */
+    public function getCategories()
+    {
+        return array_values($this->categories);
     }
 }

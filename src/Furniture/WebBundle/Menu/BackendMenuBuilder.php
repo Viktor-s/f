@@ -110,10 +110,46 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'sylius_backend_product_index',
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-th-list'),
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.products', $section)));
+
             $child->addChild('inventory', array(
                 'route' => 'sylius_backend_inventory_index',
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-tasks'),
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.stockables', $section)));
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.product_category.index')) {
+            $child->addChild('product_categories', [
+                'route' => 'furniture_backend_product_category',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
+            ])->setLabel('Product: Categories');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.product_type.index')) {
+            $child->addChild('product_types', [
+                'route' => 'furniture_backend_product_type',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
+            ])->setLabel('Product: Types');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.product_space.index')) {
+            $child->addChild('product_spaces', [
+                'route' => 'furniture_backend_product_space',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
+            ])->setLabel('Product: Spaces');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.product_style.index')) {
+            $child->addChild('product_styles', [
+                'route' => 'furniture_backend_product_style',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
+            ])->setLabel('Product: Styles');
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.product_readiness.index')) {
+            $child->addChild('product_readiness', [
+                'route' => 'furniture_backend_product_readiness',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
+            ])->setLabel('Product: Readiness');
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_option.index')) {
