@@ -3,14 +3,13 @@
 namespace Furniture\FrontendBundle\Menu;
 
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\FrontendBundle\Repository\ProductSpaceRepository;
 use Knp\Menu\FactoryInterface;
 use Sylius\Component\Rbac\Authorization\AuthorizationCheckerInterface as RbacAuthorizationCheckerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as SymfonyAuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 
 class FrontendMenuBuilder
 {
@@ -45,15 +44,9 @@ class FrontendMenuBuilder
     private $tokenStorage;
     
     /**
-     *
-     * @var TaxonRepository
+     * @var ProductSpaceRepository
      */
-    private $taxonRepository;
-
-    /**
-     * @var TaxonomyRepository
-     */
-    private $taxonomyRepository;
+    private $productSpaceRepository;
     
     /**
      * Construct
@@ -64,8 +57,7 @@ class FrontendMenuBuilder
      * @param RbacAuthorizationCheckerInterface    $rbacAuthorizationChecker
      * @param UrlGeneratorInterface                $urlGenerator
      * @param TokenStorageInterface                $tokenStorage
-     * @param TaxonRepository                      $taxonRepository
-     * @param TaxonomyRepository                   $taxonomyRepository
+     * @param ProductSpaceRepository               $productSpaceRepository
      */
     public function __construct(
         FactoryInterface $factory,
@@ -74,8 +66,7 @@ class FrontendMenuBuilder
         RbacAuthorizationCheckerInterface $rbacAuthorizationChecker,
         UrlGeneratorInterface $urlGenerator,
         TokenStorageInterface $tokenStorage,
-        TaxonRepository $taxonRepository,
-        TaxonomyRepository $taxonomyRepository
+        ProductSpaceRepository $productSpaceRepository
     ) {
         $this->factory = $factory;
         $this->translator = $translator;
@@ -83,8 +74,7 @@ class FrontendMenuBuilder
         $this->rbacAuthorizationChecker = $rbacAuthorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
-        $this->taxonRepository = $taxonRepository;
-        $this->taxonomyRepository = $taxonomyRepository;
+        $this->productSpaceRepository = $productSpaceRepository;
     }
 
     /**
@@ -108,33 +98,25 @@ class FrontendMenuBuilder
             ]);
 
         if($user->isContentUser()) {
-            $factories = $menu->addChild('factories', [
+            $menu->addChild('factories', [
                 'uri' => $this->urlGenerator->generate('factory_side_list'),
                 'label' => $this->translator->trans('frontend.menu_items.header.factories')
             ]);
         }
         
         $products = $menu->addChild('products', [
-            'uri' => $this->urlGenerator->generate('taxonomy'),
+            'uri' => $this->urlGenerator->generate('catalog'),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
 
-        /** @var \Sylius\Component\Core\Model\Taxon[] $taxons */
-        $taxons = $this->taxonomyRepository
-            ->findOneBy(['name' => 'Category'])
-            ->getTaxons();
+        $spaces = $this->productSpaceRepository->findAllOnlyRoot();
         
-        foreach ($taxons as $taxon){
-            $products->addChild('taxon_'.$taxon->getName(), [
-                'uri' => $this->urlGenerator->generate('products', ['category' => $taxon->getPermalink()]),
-                'label' => $taxon->getName()
+        foreach ($spaces as $space){
+            $products->addChild('taxon_'. $space->getId(), [
+                'uri' => $this->urlGenerator->generate('products', ['space' => [$space->getId()]]),
+                'label' => (string) $space
             ]);
         }
-        
-        /*$catalog = $menu->addChild('Compositions', [
-            'uri' => 'compositions',
-            'label' => $this->translator->trans('frontend.menu_items.header.compositions')
-        ]);*/
 
         if ($user->isContentUser()) {
             $menu->addChild('specifications', [

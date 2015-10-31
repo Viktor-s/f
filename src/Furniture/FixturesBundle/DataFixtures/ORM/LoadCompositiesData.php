@@ -12,8 +12,10 @@ class LoadCompositiesData extends DataFixture {
         return 51;
     }
     
-    public function load(ObjectManager $manager) {
-        
+    public function load(ObjectManager $manager)
+    {
+        // We have a error after migrate to own categorization
+        return;
         for ($i = 1; $i <= 5; $i++) {
             $compositeTemplate = $this->createRandomCompositeTemplate();
             $manager->persist($compositeTemplate);

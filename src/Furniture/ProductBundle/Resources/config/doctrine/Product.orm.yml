@@ -27,6 +27,14 @@ Furniture\ProductBundle\Entity\Product:
                 onDelete: "SET NULL"
                 nullable: true
 
+        readiness:
+            targetEntity: Furniture\ProductBundle\Entity\Readiness
+            joinColumn:
+                name: readiness_id
+                referencedColumnName: id
+                onDelete: "SET NULL"
+                nullable: true
+
     manyToMany:
         subProducts:
             targetEntity: Product
@@ -58,6 +66,62 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     composite_collection_id:
                         referencedColumnName: id
+
+        categories:
+            targetEntity: Furniture\ProductBundle\Entity\Category
+            joinTable:
+                name: product_categories
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        spaces:
+            targetEntity: Furniture\ProductBundle\Entity\Space
+            joinTable:
+                name: product_spaces
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    space_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        types:
+            targetEntity: Furniture\ProductBundle\Entity\Type
+            joinTable:
+                name: product_types
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    type_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        styles:
+            targetEntity: Furniture\ProductBundle\Entity\Style
+            joinTable:
+                name: product_styles
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    style_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
 
     oneToOne:
         pdpConfig:

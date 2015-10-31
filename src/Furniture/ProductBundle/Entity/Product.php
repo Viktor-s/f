@@ -54,6 +54,31 @@ class Product extends BaseProduct
     protected $pdpConfig;
 
     /**
+     * @var Collection|Category[]
+     */
+    protected $categories;
+
+    /**
+     * @var Collection|Type[]
+     */
+    protected $types;
+
+    /**
+     * @var Collection|Space[]
+     */
+    protected $spaces;
+
+    /**
+     * @var Collection|Style[]
+     */
+    protected $styles;
+
+    /**
+     * @var Readiness
+     */
+    private $readiness;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -68,6 +93,11 @@ class Product extends BaseProduct
         $this->skuOptionVariants = new ArrayCollection();
         $this->compositeCollections = new ArrayCollection();
         $this->productParts = new ArrayCollection();
+
+        $this->categories = new ArrayCollection();
+        $this->types = new ArrayCollection();
+        $this->spaces = new ArrayCollection();
+        $this->styles = new ArrayCollection();
     }
     
     /**
@@ -566,6 +596,254 @@ class Product extends BaseProduct
         $this->fixPdpConfig();
 
         return $this->pdpConfig;
+    }
+
+    /**
+     * Set readiness
+     *
+     * @param Readiness $readiness
+     *
+     * @return Product
+     */
+    public function setReadiness(Readiness $readiness = null)
+    {
+        $this->readiness = $readiness;
+
+        return $this;
+    }
+
+    /**
+     * Get readiness
+     *
+     * @return Readiness
+     */
+    public function getReadiness()
+    {
+        return $this->readiness;
+    }
+
+    /**
+     * Get categories
+     *
+     * @return Collection|Category[]
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Has category?
+     *
+     * @param Category $category
+     *
+     * @return bool
+     */
+    public function hasCategory(Category $category)
+    {
+        return $this->categories->exists(function ($key, Category $item) use ($category) {
+            return $category->getId() == $item->getId();
+        });
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category $category
+     *
+     * @return Product
+     */
+    public function removeCategory(Category $category)
+    {
+        if ($this->hasCategory($category)) {
+            $this->categories->removeElement($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add category
+     *
+     * @param Category $category
+     *
+     * @return Product
+     */
+    public function addCategory(Category $category)
+    {
+        if (!$this->hasCategory($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get spaces
+     *
+     * @return Collection|Space[]
+     */
+    public function getSpaces()
+    {
+        return $this->spaces;
+    }
+
+    /**
+     * Has space
+     *
+     * @param Space $space
+     *
+     * @return bool
+     */
+    public function hasSpace(Space $space)
+    {
+        return $this->spaces->exists(function ($key, Space $item) use ($space) {
+            return $item->getId() == $space->getId();
+        });
+    }
+
+    /**
+     * Remove space
+     *
+     * @param Space $space
+     *
+     * @return Product
+     */
+    public function removeSpace(Space $space)
+    {
+        if ($this->hasSpace($space)) {
+            $this->spaces->removeElement($space);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add space
+     *
+     * @param Space $space
+     *
+     * @return Product
+     */
+    public function addSpace(Space $space)
+    {
+        if (!$this->hasSpace($space)) {
+            $this->spaces->add($space);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get styles
+     *
+     * @return Collection|Style[]
+     */
+    public function getStyles()
+    {
+        return $this->styles;
+    }
+
+    /**
+     * Has style?
+     *
+     * @param Style $style
+     *
+     * @return Product
+     */
+    public function hasStyle(Style $style)
+    {
+        return $this->styles->exists(function ($key, Style $item) use ($style) {
+            return $item->getId() == $style->getId();
+        });
+    }
+
+    /**
+     * Remove style
+     *
+     * @param Style $style
+     *
+     * @return Product
+     */
+    public function removeStyle(Style $style)
+    {
+        if ($this->hasStyle($style)) {
+            $this->styles->removeElement($style);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add style
+     *
+     * @param Style $style
+     *
+     * @return Product
+     */
+    public function addStyle(Style $style)
+    {
+        if (!$this->hasStyle($style)) {
+            $this->styles->add($style);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get types
+     *
+     * @return Collection|Type[]
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * Has type?
+     *
+     * @param Type $type
+     *
+     * @return bool
+     */
+    public function hasType(Type $type)
+    {
+        return $this->types->exists(function ($key, Type $item) use ($type) {
+            return $type->getId() == $item->getId();
+        });
+    }
+
+    /**
+     * Remove type
+     *
+     * @param Type $type
+     *
+     * @return Product
+     */
+    public function removeType(Type $type)
+    {
+        if ($this->hasType($type)) {
+            $this->types->removeElement($type);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add type
+     *
+     * @param Type $type
+     *
+     * @return Product
+     */
+    public function addType(Type $type)
+    {
+        if (!$this->hasType($type)) {
+            $this->types->add($type);
+        }
+
+        return $this;
     }
 
     /**

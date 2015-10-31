@@ -2,18 +2,24 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
+use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
 use Furniture\FrontendBundle\Repository\ProductRepository;
+use Furniture\FrontendBundle\Repository\ProductSpaceRepository;
+use Furniture\FrontendBundle\Repository\ProductStyleRepository;
+use Furniture\FrontendBundle\Repository\ProductTypeRepository;
+use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
+use Furniture\FrontendBundle\Repository\Query\ProductCategoryQuery;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
+use Furniture\FrontendBundle\Repository\Query\ProductSpaceQuery;
+use Furniture\FrontendBundle\Repository\Query\ProductStyleQuery;
+use Furniture\FrontendBundle\Repository\Query\ProductTypeQuery;
 use Furniture\FrontendBundle\Repository\SpecificationItemRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
-use Sylius\Component\Core\Model\Taxon;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CatalogController
@@ -29,6 +35,26 @@ class CatalogController
     private $productRepository;
 
     /**
+     * @var ProductCategoryRepository
+     */
+    private $productCategoryRepository;
+
+    /**
+     * @var ProductSpaceRepository
+     */
+    private $productSpaceRepository;
+
+    /**
+     * @var ProductTypeRepository
+     */
+    private $productTypeRepository;
+
+    /**
+     * @var ProductStyleRepository
+     */
+    private $productStyleRepository;
+
+    /**
      * @var SpecificationRepository
      */
     private $specificationRepository;
@@ -39,20 +65,14 @@ class CatalogController
     private $specificationItemRepository;
 
     /**
-     *
-     * @var TaxonRepository
-     */
-    private $taxonRepository;
-
-    /**
-     * @var TaxonomyRepository
-     */
-    private $taxonomyRepository;
-
-    /**
      * @var FactoryRepository
      */
     private $factoryRepository;
+
+    /**
+     * @var CompositeCollectionRepository
+     */
+    private $compositeCollectionRepository;
 
     /**
      * @var TokenStorageInterface
@@ -62,32 +82,41 @@ class CatalogController
     /**
      * Construct
      *
-     * @param \Twig_Environment           $twig
-     * @param ProductRepository           $productRepository
-     * @param FactoryRepository           $factoryRepository
-     * @param TaxonRepository             $taxonRepository
-     * @param TaxonomyRepository          $taxonomyRepository
-     * @param SpecificationRepository     $specificationRepository
-     * @param SpecificationItemRepository $specificationItemRepository
-     * @param TokenStorageInterface       $tokenStorage
+     * @param \Twig_Environment             $twig
+     * @param ProductRepository             $productRepository
+     * @param ProductCategoryRepository     $productCategoryRepository
+     * @param ProductSpaceRepository        $productSpaceRepository
+     * @param ProductStyleRepository        $productStyleRepository
+     * @param ProductTypeRepository         $productTypeRepository
+     * @param FactoryRepository             $factoryRepository
+     * @param SpecificationRepository       $specificationRepository
+     * @param SpecificationItemRepository   $specificationItemRepository
+     * @param CompositeCollectionRepository $compositeCollectionRepository
+     * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         \Twig_Environment $twig,
         ProductRepository $productRepository,
+        ProductCategoryRepository $productCategoryRepository,
+        ProductSpaceRepository $productSpaceRepository,
+        ProductStyleRepository $productStyleRepository,
+        ProductTypeRepository $productTypeRepository,
         FactoryRepository $factoryRepository,
-        TaxonRepository $taxonRepository,
-        TaxonomyRepository $taxonomyRepository,
         SpecificationRepository $specificationRepository,
         SpecificationItemRepository $specificationItemRepository,
+        CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage
     ) {
         $this->twig = $twig;
         $this->productRepository = $productRepository;
+        $this->productSpaceRepository = $productSpaceRepository;
+        $this->productCategoryRepository = $productCategoryRepository;
+        $this->productTypeRepository = $productTypeRepository;
+        $this->productStyleRepository = $productStyleRepository;
         $this->factoryRepository = $factoryRepository;
-        $this->taxonRepository = $taxonRepository;
-        $this->taxonomyRepository = $taxonomyRepository;
         $this->specificationRepository = $specificationRepository;
         $this->specificationItemRepository = $specificationItemRepository;
+        $this->compositeCollectionRepository = $compositeCollectionRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -97,12 +126,12 @@ class CatalogController
      *
      * @return Response
      */
-    public function taxonomy()
+    public function catalog()
     {
-        $category = $this->getCategoryTaxonomy();
+        $spaces = $this->productSpaceRepository->findAllOnlyRoot();
         
-        $content = $this->twig->render('FrontendBundle:Catalog:taxonomy.html.twig', [
-            'category' => $category,
+        $content = $this->twig->render('FrontendBundle:Catalog:catalog.html.twig', [
+            'spaces' => $spaces,
         ]);
 
         return new Response($content);
@@ -112,50 +141,103 @@ class CatalogController
      * Search products
      *
      * @param Request $request
-     * @param string  $category The category permalink
      *
      * @return Response
      */
-    public function products(Request $request, $category)
+    public function products(Request $request)
     {
-        /** @var Taxon $rootTaxon */
-        $rootTaxon = $this->taxonRepository->findOneBy([
-            'permalink' => $category
-        ]);
-
-        if (!$rootTaxon) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found taxon with permalink "%s",',
-                $category
-            ));
-        }
-
         $productQuery = new ProductQuery();
 
-        $childTaxons = [];
-        /* if selected sub category, get products from sub category */
-        if( $subcategory = $request->get('subcategory', null) ){
-            /** @var Taxon $subcategory */
-            if($subcategory = $this->taxonRepository->find($subcategory)){
-                $childTaxons = $this->getAllChildTaxons($subcategory);
-                $childTaxons[] = $subcategory;
+        $filterIds = function ($ids) {
+            $ids = array_map(function ($i) {
+                return (int) $i;
+            }, $ids);
+
+            return array_filter($ids);
+        };
+
+        $spacesIds = [];
+        if ($request->query->has('space')) {
+            $spacesIds = (array) $request->query->get('space');
+            $spacesIds = $filterIds($spacesIds);
+
+            if ($spacesIds) {
+                $spaceQuery = new ProductSpaceQuery();
+                $spaceQuery->withIds($spacesIds);
+                $spaces = $this->productSpaceRepository->findBy($spaceQuery);
+
+                $productQuery->withSpaces($spaces);
             }
-        }else{
-            $childTaxons = $this->getAllChildTaxons($rootTaxon);
         }
 
-        $productQuery
-            ->withTaxons($childTaxons);
+        $categoryIds = [];
+        if ($request->query->has('category')) {
+            $categoryIds = (array) $request->query->get('category');
+            $categoryIds = $filterIds($categoryIds);
+
+            if ($categoryIds) {
+                $categoryQuery = new ProductCategoryQuery();
+                $categoryQuery->withIds($categoryIds);
+                $categories = $this->productCategoryRepository->findBy($categoryQuery);
+
+                $productQuery->withCategories($categories);
+            }
+        }
+
+        $typeIds = [];
+        if ($request->query->has('type')) {
+            $typeIds = (array) $request->query->get('type');
+            $typeIds = $filterIds($typeIds);
+
+            if ($typeIds) {
+                $typeQuery = new ProductTypeQuery();
+                $typeQuery->withIds($typeIds);
+                $types = $this->productTypeRepository->findBy($typeQuery);
+
+                $productQuery->withTypes($types);
+            }
+        }
+
+        $styleIds = [];
+        if ($request->query->has('style')) {
+            $styleIds = (array) $request->query->get('style');
+            $styleIds = $filterIds($styleIds);
+
+            if ($styleIds) {
+                $styleQuery = new ProductStyleQuery();
+                $styleQuery->withIds($styleIds);
+                $styles = $this->productStyleRepository->findBy($styleQuery);
+
+                $productQuery->withStyles($styles);
+            }
+        }
+
+        $compositeCollectionIds = [];
+        if ($request->query->has('cc')) {
+            $compositeCollectionIds = (array) $request->query->get('cc');
+            $compositeCollectionIds = $filterIds($compositeCollectionIds);
+
+            if ($compositeCollectionIds) {
+                $compositeCollectionQuery = new CompositeCollectionQuery();
+                $compositeCollectionQuery->withIds($compositeCollectionIds);
+                $compositeCollections = $this->compositeCollectionRepository->findBy($compositeCollectionQuery);
+
+                $productQuery->withCompositeCollections($compositeCollections);
+            }
+        }
 
         $factoryIds = [];
         if ($request->query->has('brand')) {
-            $factoryIds = $request->query->get('brand');
-            $factoryQuery = new FactoryQuery();
-            $factoryQuery->withIds($factoryIds);
-            $factories = $this->factoryRepository->findBy($factoryQuery);
+            $factoryIds = (array) $request->query->get('brand');
+            $factoryIds = $filterIds($factoryIds);
 
-            $productQuery
-                ->withFactories($factories);
+            if ($factoryIds) {
+                $factoryQuery = new FactoryQuery();
+                $factoryQuery->withIds($factoryIds);
+                $factories = $this->factoryRepository->findBy($factoryQuery);
+
+                $productQuery->withFactories($factories);
+            }
         }
 
         /** @var \Furniture\CommonBundle\Entity\User $user */
@@ -169,45 +251,22 @@ class CatalogController
         $products = $this->productRepository->findBy($productQuery, $request->get('page', 1));
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
-            'products' => $products, //Paginator object
-            'category' => $this->getCategoryTaxonomy(), //Category taxonomy onject
-            'current_root_taxon' => $rootTaxon, //Current root taxon
-            'sub_category' => $subcategory, //if selected child taxon = taxon else null
+            'products' => $products,
             'brands' => $this->factoryRepository->findAll(),
+            'spaces' => $this->productSpaceRepository->findAllOnlyRoot(),
+            'categories' => $this->productCategoryRepository->findAllOnlyRoot(),
+            'types' => $this->productTypeRepository->findAllOnlyRoot(),
+            'styles' => $this->productStyleRepository->findAllOnlyRoot(),
+            'composite_collections' => $this->compositeCollectionRepository->findAll(),
+
             'factory_ids' => $factoryIds,
+            'category_ids' => $categoryIds,
+            'space_ids' => $spacesIds,
+            'type_ids' => $typeIds,
+            'style_ids' => $styleIds,
+            'composite_collection_ids' => $compositeCollectionIds
         ]);
 
         return new Response($content);
-    }
-
-    /**
-     * Get all child taxons
-     *
-     * @param Taxon $taxon
-     *
-     * @return array
-     */
-    protected function getAllChildTaxons(Taxon $taxon)
-    {
-        $taxons = [];
-
-        foreach ($taxon->getChildren() as $child) {
-            $taxons[] = $child;
-            $taxons = array_merge($taxons, $this->getAllChildTaxons($child));
-        }
-
-        return $taxons;
-    }
-
-    /**
-     * Get category taxonomy
-     *
-     * @return \Sylius\Component\Core\Model\Taxonomy
-     */
-    private function getCategoryTaxonomy()
-    {
-        return $this->taxonomyRepository->findOneBy([
-            'name' => 'Category'
-        ]);
     }
 }

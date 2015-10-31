@@ -1,0 +1,15 @@
+Furniture\ProductBundle\Entity\SpaceTranslation:
+    type: entity
+    table: product_space_translation
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            name: name
+            type: string

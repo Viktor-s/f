@@ -80,7 +80,7 @@ class ProductController
                 'id' => $taxons
             ]);
 
-            $productQuery->withTaxons($taxons);
+            $productQuery->withSpaces($taxons);
             
         }
         

@@ -64,14 +64,17 @@
                     <td><strong>{{ 'sylius.shipment.id'|trans }}</strong></td>
                     <td>{{ product.id }}</td>
                 </tr>
+
                 <tr>
                     <td>{{ 'sylius.product.sku'|trans }}</td>
                     <td>{{ product.sku }}</td>
                 </tr>
+
                 <tr>
                     <td>{{ 'sylius.product.name'|trans }}</td>
                     <td>{{ product.name }}</td>
                 </tr>
+
                 <tr>
                     <td>Factory</td>
                     <td>
@@ -80,6 +83,43 @@
                         {% endif %}
                     </td>
                 </tr>
+
+                <tr>
+                    <td>Spaces</td>
+                    <td>
+                        {% for space in product.spaces %}
+                            {{ space }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Categories</td>
+                    <td>
+                        {% for category in product.categories %}
+                            {{ category }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Types</td>
+                    <td>
+                        {% for type in product.types %}
+                            {{ type }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Styles</td>
+                    <td>
+                        {% for style in product.styles %}
+                            {{ style }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
                 <tr>
                     <td>{{ 'sylius.product.available_on'|trans }}</td>
                     <td><span class="label label-{{ product.available ? 'success' : 'danger' }}">{{ product.availableOn|date }}</span></td>

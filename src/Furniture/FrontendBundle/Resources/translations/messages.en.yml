@@ -79,8 +79,10 @@ frontend:
     downlod_file_with_number: "Download file #:number"
     select_style: Style
     select_category: Category
+    spaces: Spaces
 
     title:
+        spaces: Spaces
         contacts: Contacts
         work_info: Work info
         collections: Collections
@@ -111,6 +113,7 @@ frontend:
         taxonomy: Categories
         factory_side: Factory
         general: General
+        brands: Brands
 
     button:
         settings: Settings
@@ -124,6 +127,12 @@ frontend:
     catalog:
         space_selector: Select space
         brand_filter: Brand
+        space_filter: Space
+        category_selector: Category
+        type_selector: Type
+        style_selector: Style
+        composite_collection_selector: Composite collection
+
     product:
         media_tab:
             title: Product media

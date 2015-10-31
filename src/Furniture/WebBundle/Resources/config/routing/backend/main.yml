@@ -190,3 +190,23 @@ furniture_backend_specification:
 furniture_backend_post:
     resource: @SyliusWebBundle/Resources/config/routing/backend/post.yml
     prefix: /post
+
+furniture_backend_product_category:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_category.yml
+    prefix: /product-category
+
+furniture_backend_product_type:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_type.yml
+    prefix: /product-type
+
+furniture_backend_product_space:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_space.yml
+    prefix: /product-space
+
+furniture_backend_product_style:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_style.yml
+    prefix: /product-style
+
+furniture_backend_product_readiness:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/product_readiness.yml
+    prefix: /product-readiness

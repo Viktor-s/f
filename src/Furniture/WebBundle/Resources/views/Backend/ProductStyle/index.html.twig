@@ -1,0 +1,48 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li>{{ 'product_style.breadcrumb.index'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{  buttons.create(path('furniture_backend_product_style_create')) }}
+        </div>
+
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_style.breadcrumb.index'|trans|raw }}</h1>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="width: 50px;"></th>
+            <th>Parent</th>
+            <th>Slug</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for style in product_styles %}
+            <tr>
+                <td></td>
+                <td>{{ style.parent ? style.parent }}</td>
+                <td>{{ style.slug }}</td>
+                <td>{{ style }}</td>
+                <td class="text-center">
+                    {{ buttons.edit(path('furniture_backend_product_style_update', {id: style.id})) }}
+                    {{ buttons.delete(path('furniture_backend_product_style_delete', {id: style.id})) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

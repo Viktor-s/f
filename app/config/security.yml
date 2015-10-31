@@ -100,6 +100,36 @@ sylius_rbac:
         Furniture.sku_option.update: update sku attribute
         Furniture.sku_option.delete: delete sku attribute
 
+        furniture.manage.product_categories: manage product categories
+        furniture.product_category.index: list product categories
+        furniture.product_category.create: create product category
+        furniture.product_category.update: update product category
+        furniture.product_category.delete: delete product category
+
+        furniture.manage.product_types: manage product types
+        furniture.product_type.index: list product types
+        furniture.product_type.create: create product type
+        furniture.product_type.update: update product type
+        furniture.product_type.delete: delete product type
+
+        furniture.manage.product_styles: manage product styles
+        furniture.product_style.index: list product styles
+        furniture.product_style.create: create product style
+        furniture.product_style.update: update product style
+        furniture.product_style.delete: delete product style
+
+        furniture.manage.product_spaces: manage product spaces
+        furniture.product_space.index: list product spaces
+        furniture.product_space.create: create product space
+        furniture.product_space.update: update product space
+        furniture.product_space.delete: delete product space
+
+        furniture.manage.product_readiness: manage product readiness
+        furniture.product_readiness.index: list product readiness
+        furniture.product_readiness.create: create product readiness
+        furniture.product_readiness.update: update product readiness
+        furniture.product_readiness.delete: delete product readiness
+
         furniture.manage.product_part_materials: manage product part materials
         furniture.product_part_material.index: list product part materials
         furniture.product_part_material.create: create product part material
@@ -193,6 +223,36 @@ sylius_rbac:
             - Furniture.sku_option.delete
             - sylius.product.variantGrouEdit
 
+        furniture.manage.product_categories:
+            - furniture.product_category.index
+            - furniture.product_category.create
+            - furniture.product_category.update
+            - furniture.product_category.delete
+
+        furniture.manage.product_types:
+            - furniture.product_type.index
+            - furniture.product_type.create
+            - furniture.product_type.update
+            - furniture.product_type.delete
+
+        furniture.manage.product_styles:
+            - furniture.product_style.index
+            - furniture.product_style.create
+            - furniture.product_style.update
+            - furniture.product_style.delete
+
+        furniture.manage.product_spaces:
+            - furniture.product_space.index
+            - furniture.product_space.create
+            - furniture.product_space.update
+            - furniture.product_space.delete
+
+        furniture.manage.product_readiness:
+            - furniture.product_readiness.index
+            - furniture.product_readiness.create
+            - furniture.product_readiness.update
+            - furniture.product_readiness.delete
+
         furniture.manage.product_part_materials:
             - furniture.product_part_material.index
             - furniture.product_part_material.create
@@ -285,6 +345,11 @@ sylius_rbac:
                 - furniture.manage.product_part_material_options
                 - furniture.manage.product_part_material_variants
                 - furniture.manage.sku_options
+                - furniture.manage.product_categories
+                - furniture.manage.product_types
+                - furniture.manage.product_styles
+                - furniture.manage.product_spaces
+                - furniture.manage.product_readiness
                 - furniture.manage.factories
                 - furniture.manage.factories.user_relations
                 - furniture.manage.specifications

@@ -147,6 +147,26 @@ specification:
         delete: Delete
         show: Show
 
+product_category:
+    breadcrumb:
+        index: Categories
+
+product_type:
+    breadcrumb:
+        index: Types
+
+product_style:
+    breadcrumb:
+        index: Style
+
+product_space:
+    breadcrumb:
+        index: Space
+
+product_readiness:
+    breadcrumb:
+        index: Readiness
+
 post:
     header:
         index: Posts

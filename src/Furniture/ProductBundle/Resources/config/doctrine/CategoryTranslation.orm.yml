@@ -1,0 +1,15 @@
+Furniture\ProductBundle\Entity\CategoryTranslation:
+    type: entity
+    table: product_category_translation
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name
