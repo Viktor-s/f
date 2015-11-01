@@ -8,16 +8,16 @@ use Sylius\Component\Core\Model\Image;
 class CustomSpecificationItemImage extends Image implements UploadableInterface
 {
     /**
-     * @var \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     * @var CustomSpecificationItem
      */
     private $customSpecificationItem;
 
     /**
-     * Set buyer
+     * Set custom specification item
      *
-     * @param \Furniture\SpecificationBundle\Entity\CustomSpecificationItem $buyer
+     * @param CustomSpecificationItem $customSpecificationItem
      *
-     * @return \Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage
+     * @return CustomSpecificationItemImage
      */
     public function setCustomSpecificationItem(CustomSpecificationItem $customSpecificationItem)
     {
@@ -27,9 +27,9 @@ class CustomSpecificationItemImage extends Image implements UploadableInterface
     }
 
     /**
-     * Get buyer
+     * Get custom specification item
      *
-     * @return \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     * @return CustomSpecificationItem
      */
     public function getCustomSpecificationItem()
     {

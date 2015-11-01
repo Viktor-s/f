@@ -42,31 +42,45 @@ specification_api_specification_sku_item_add:
     path: /catalog/item/add
     methods: [ POST ]
     defaults:
-        _controller: specification.controller.api.specification.sku_Item:add
+        _controller: specification.controller.api.specification.custom_item:add
 
 specification_api_specification_sku_item_edit:
     path: /catalog/item/{item}/edit
     methods: [ POST ]
     requirements: { item: \d+ }
     defaults:
-        _controller: specification.controller.api.specification.sku_Item:edit
+        _controller: specification.controller.api.specification.sku_item:edit
 #Custom specification item
 specification_api_specification_custom_Item_add:
     path: /custom/item/add
     methods: [ POST ]
     defaults:
-        _controller: specification.controller.api.specification.custom_Item:add
+        _controller: specification.controller.api.specification.custom_item:add
 
 specification_api_specification_custom_Item_editable:
     path: /custom/item/{item}/editable
     methods: [ POST ]
     requirements: { item: \d+ }
     defaults:
-        _controller: specification.controller.api.specification.custom_Item:editableItem
+        _controller: specification.controller.api.specification.custom_item:editableItem
         
 specification_api_specification_custom_Item_info:
     path: /custom/item/{itemId}/info/{index}
     methods: [ GET ]
     requirements: { itemId: \d+  }
     defaults:
-        _controller: specification.controller.api.specification.custom_Item:info
+        _controller: specification.controller.api.specification.custom_item:info
+
+specification_api_specification_custom_item_upload_image:
+    path: /custom/item/{item}/image/upload
+    methods: [ POST ]
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification.custom_item:imageUpload
+
+specification_api_specification_custom_item_remove_image:
+    path: /custom/item/{item}/image/remove
+    methods: [ GET ]
+    requirements: { item: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification.custom_item:imageRemove

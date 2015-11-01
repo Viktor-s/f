@@ -1,21 +1,39 @@
-{% set customItem = specification_item.customItem %}
-<tr data-price="{{ customItem.price }}" data-cusotm-id="{{ customItem.id }}" data-id="{{ specification_item.id }}">
-    <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ customItem.factoryName }}</td>
+{% set custom_item = specification_item.customItem %}
+<tr data-price="{{ custom_item.price }}" data-custom-id="{{ custom_item.id }}" data-id="{{ specification_item.id }}">
+    <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
+
     <td>
-        Image
+        <div class="image-ajax-container" data-full-name="custom[{{ custom_item.id }}][path]" data-url-upload="{{ path('specification_api_specification_custom_item_upload_image', {item: custom_item.id}) }}"{% if custom_item.image and custom_item.image.path %} data-image-path="{{ custom_item.image.path|imagine_filter('s150x150') }}"{% endif %}>
+            <div class="image-upload">
+                <img data-src="holder.js/150x150?text=Choose image" width="150" height="150" />
+            </div>
+
+            <div class="form-widget">
+                <input type="hidden" name="custom[{{ custom_item.id }}][path]" />
+            </div>
+
+            <div class="image-container">
+                <div class="image">
+                    <img width="150" height="150" src="" />
+                </div>
+
+                <a class="btn btn-danger btn-xs" href="#remove-image">
+                    <i class="fa fa-remove">Remove</i>
+                </a>
+            </div>
+        </div>
     </td>
 
-    <td data-index="name" data-type="text" data-server-type="custom-item">{{ customItem.name }}</td>
+    <td data-index="name" data-type="text" data-server-type="custom-item">{{ custom_item.name }}</td>
 
     <td>
-       
     </td>
 
     <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
     <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
-    <td data-index="price" data-type="price" data-server-type="custom-item">{{ customItem.price|money }}</td>
+    <td data-index="price" data-type="price" data-server-type="custom-item">{{ custom_item.price|money }}</td>
     <td>{{ specification_item|specification_item_total_price|money }}</td>
 
     <td>

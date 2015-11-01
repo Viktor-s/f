@@ -15,40 +15,42 @@
 
         {% block stylesheets %}
             {% stylesheets output='/css/*.min.css'
-            '@FrontendBundle/Resources/public/css/bootstrap.min.css'
-            '@FrontendBundle/Resources/public/css/idangerous.swiper.css'
-            '@FrontendBundle/Resources/public/css/font-awesome.min.css'
-            '@FrontendBundle/Resources/public/css/font-raleway.css'
-            '@FrontendBundle/Resources/public/css/factory-side.css'
-            '@FrontendBundle/Resources/public/css/style.css'
-            '@FrontendBundle/Resources/public/css/jquery.dataTables.min.css'
-            
+                '@FrontendBundle/Resources/public/css/bootstrap.min.css'
+                '@FrontendBundle/Resources/public/css/idangerous.swiper.css'
+                '@FrontendBundle/Resources/public/css/font-awesome.min.css'
+                '@FrontendBundle/Resources/public/css/font-raleway.css'
+                '@FrontendBundle/Resources/public/css/factory-side.css'
+                '@FrontendBundle/Resources/public/css/style.css'
+                '@FrontendBundle/Resources/public/css/jquery.dataTables.min.css'
             %}
-            <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
+                <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
             {% endstylesheets %}
         {% endblock %}
 
         {% block javascripts %}
             {% javascripts output='/js/*.min.js'
-            '@FrontendBundle/Resources/public/js/jquery-2.1.3.min.js'
-            '@FrontendBundle/Resources/public/js/jquery-ui.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.ui.progressbar.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.dataTables.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.mousewheel.js'
-            '@FrontendBundle/Resources/public/js/jquery.jscrollpane.min.js'
-            '@FrontendBundle/Resources/public/js/idangerous.swiper.min.js'
-            '@FrontendBundle/Resources/public/js/bootstrap.min.js'
-            '@FrontendBundle/Resources/public/js/bootbox.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.jeditable.js'
-            '@FrontendBundle/Resources/public/js/dataTables.bootstrap.min.js'
-            '@FrontendBundle/Resources/public/js/dataTables.buttons.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.validate.min.js'
-            '@FrontendBundle/Resources/public/js/jquery.dataTables.editable.min.js'
-            '@FrontendBundle/Resources/public/js/global.js'
-            '@FrontendBundle/Resources/public/js/uri.min.js'
-            '@FrontendBundle/Resources/public/js/live-form.js'
+                '@FrontendBundle/Resources/public/js/jquery-2.1.3.min.js'
+                '@FrontendBundle/Resources/public/js/jquery-ui.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.ui.progressbar.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.dataTables.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.mousewheel.js'
+                '@FrontendBundle/Resources/public/js/jquery.jscrollpane.min.js'
+                '@FrontendBundle/Resources/public/js/idangerous.swiper.min.js'
+                '@FrontendBundle/Resources/public/js/bootstrap.min.js'
+                '@FrontendBundle/Resources/public/js/bootbox.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.jeditable.js'
+                '@FrontendBundle/Resources/public/js/dataTables.bootstrap.min.js'
+                '@FrontendBundle/Resources/public/js/dataTables.buttons.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.validate.min.js'
+                '@FrontendBundle/Resources/public/js/jquery.dataTables.editable.min.js'
+                '@FrontendBundle/Resources/public/js/global.js'
+                '@FrontendBundle/Resources/public/js/holder.min.js'
+                '@FrontendBundle/Resources/public/js/image-ajax.js'
+                '@FrontendBundle/Resources/public/js/live-form.js'
+                '@FrontendBundle/Resources/public/js/fileupload/jquery.fileupload.js'
+                '@FrontendBundle/Resources/public/js/fileupload/jquery.iframe-transport.js'
             %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
+                <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock %}
 

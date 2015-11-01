@@ -129,49 +129,42 @@
     {% if specification.id %}
         <script type="text/javascript">
             (function ($) {
-                
-                function isIntoView(el){
-                    var $window = $(window);
-                    var docViewTop = $window.scrollTop();
-                    var docViewBottom = docViewTop + $window.height();
-                    var elTop = el.offset().top;
-                    var elBottom = elTop + el.height();
+                function isIntoView(el)
+                {
+                    var
+                        $window = $(window),
+                        docViewTop = $window.scrollTop(),
+                        docViewBottom = docViewTop + $window.height(),
+                        elTop = el.offset().top,
+                        elBottom = elTop + el.height();
+
                     return ((elBottom <= docViewBottom) && (elTop >= docViewTop));
                 }
-                scrollTo = function(el){
-                    $('html, body').animate({
-                        scrollTop: el.offset().top-150
-                    }, 200);
-                }
-                scrollToView = function(el){
-                    if(!isIntoView(el)){
-                        scrollTo(el);
-                    }
-                }
+
+                var
+                    scrollTo = function(el)
+                    {
+                        $('html, body').animate({
+                            scrollTop: el.offset().top-150
+                        }, 200);
+                    },
+
+                    scrollToView = function(el){
+                        if(!isIntoView(el)){
+                            scrollTo(el);
+                        }
+                    };
+
                 $.editable.addInputType('price', {
                     element : function(settings, original) {
-                    var input = $('<input type="number" step="0.01">');
+                        var input = $('<input type="number" step="0.01">');
                         $(this).append(input);
+
                         return(input);
                     },
                     submit : function (settings, original) {
                         if (isNaN($(original).val())) {
-                            alert('You must provide a number')
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                });
-                $.editable.addInputType('integer', {
-                    element : function(settings, original) {
-                    var input = $('<input type="number">');
-                        $(this).append(input);
-                        return(input);
-                    },
-                    submit : function (settings, original) {
-                        if (isNaN($(original).val())) {
-                            alert('You must provide a number')
+                            alert('You must provide a number');
                             return false;
                         } else {
                             return true;
@@ -179,275 +172,370 @@
                     }
                 });
 
-                var specificationId = '{{ specification.id }}';
+                $.editable.addInputType('integer', {
+                    element : function(settings, original) {
+                        var input = $('<input type="number">');
+                        $(this).append(input);
+                        return(input);
+                    },
+                    submit : function (settings, original) {
+                        if (isNaN($(original).val())) {
+                            alert('You must provide a number');
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                });
+
+                var specificationId = {{ specification.id }};
                 
                 $(document).ready(function () {
-                    var progressBasr = '<div class="progress progress-striped active">\
-    <div class="progress-bar"  role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Saving ...</div>\
-</div>';
+                    var progressBasr = '<div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Saving ...</div>\</div>';
                     /* Top form */
                     var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
+
                     editableParams = {
-                            width: '100%',
-                            height: '100%',
-                            tooltip: '{{ 'frontend.click_to_edit'|trans }}'
-                        };
+                        width: '100%',
+                        height: '100%',
+                        tooltip: '{{ 'frontend.click_to_edit'|trans }}'
+                    };
+
                     $('.specification-info .editable.name').editable(editableUrl, editableParams);
+
                     $('.specification-info .editable.description').editable(editableUrl, $.extend({
                         type: 'textarea'
                     }, editableParams));
+
                     $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
                         type: 'select',
                         loadurl: '{{ path('specification_api_specification_buyers') }}',
                         submit: 'Ok'
 
                     }, editableParams));
+
                     $('#remove-current-specification').click(function(){
                         var a = $(this);
+
                         bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification'|trans }}', function(result) {
-                                if(result){
-                                    window.location = a.attr('href');
-                                }
-                            });
+                            if(result){
+                                window.location = a.attr('href');
+                            }
+                        });
                         return false;
                     });
         
                     /* table code */
-                    trTotalPpriceUdater = function(tr){
-                        var url = '{{path('specification_api_specification_custom_Item_info', { itemId: 123, index: 'itemIndex' })}}'
-                                .replace( /123/, tr.data('id').toString())
-                                .replace(/itemIndex/, 'totalPrice')
-                                ;
-                        $.ajax({
-                            url: url,
-                            type: 'get',
-                            success: function (res) {
-                                tr.find('td:eq(7)').html(res);
-                            }
-                        });
-                    };
-                    
-                    var trTotalPriceSpecificationUpdater = function(){
-                        var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
-                                .replace( /123/, $('#specification-table').data('specification-id').toString())
-                                .replace(/itemIndex/, 'totalPrice')
-                                ;
-                        $.ajax({
-                            url: url,
-                            type: 'get',
-                            success: function (res) {
-                                $('#table-total-price').html(res);
-                            }
-                        });
-                    };
-                    
-                    var getTdTableEditableBaseOption = function(dataTableO, tr, td, itemCallback){
-                        var itemIndex = td.data('index');
-                        var inputType = td.data('type');
-                        var table = dataTableO;
-                        itemCallback = itemCallback ? itemCallback : function(){};
-                        return {
-                        "type": inputType,
-                        "submit": (inputType === "textarea") ? '<button type="button" class="btn btn-default" aria-label="Left Align">\
-  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>\
-</button>' : false,
-                        "onreset": function(){
-                            tr.removeClass('active');
-                        },
-                        "callback": function( sValue, y ) {
-                            var aPos = table.fnGetPosition( this );
-                            table.fnUpdate( sValue, aPos[0], aPos[1] );
-                            tr.animate({
-                                    opacity: 0.0
-                            }, 200 ).promise().then(function(){
-                                tr.animate({
-                                    opacity: 1
-                                }, 300 );
-                            });
-                                itemCallback();
-                                scrollToView(tr);
-                        },
-                        "submitdata": function ( value, settings ) {
-                            return {
-                                'id': itemIndex
-                            };
-                        },
-                    "indicator": function(){
-                        return progressBasr;
-                    },
-                    "height": "100%",
-                    "width": "100%"
-                }
-            };
-            
-            var customItemInitializer = {
-                editableRoute: '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}',
-                tdDefaultSubject: function(dataTableO, tr, td){
-                    td.unbind();
-                    itemId = tr.data('id');
-                    td.click(function(){
-                            tr.parents('table:first').find('.active').removeClass('active');
-                            tr.addClass('active');
-                        });
-                    var url = this.editableRoute.replace(/123/, itemId.toString());
-                    td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
-                },
-                trPriceSubject: function(dataTableO, tr, td){
-                    td.unbind();
-                    itemId = tr.data('id');
-                    td.click(function(){
-                            tr.parents('table:first').find('.active').removeClass('active');
-                            tr.addClass('active');
-                        });
-                    var url = this.editableRoute.replace(/123/, itemId.toString());
-                    td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
-                        trTotalPpriceUdater(tr);
-                        trTotalPriceSpecificationUpdater();
-                    }));
-                }
-            };
+                    var
+                        trTotalPriceUpdater = function(tr)
+                        {
+                            var url = '{{path('specification_api_specification_custom_Item_info', { itemId: 123, index: 'itemIndex' })}}'
+                                    .replace( /123/, tr.data('id').toString())
+                                    .replace(/itemIndex/, 'totalPrice');
 
-            var specificationItemInitializer = {
-                editableRoute: '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
-                    tdDefaultSubject: function(dataTableO, tr, td){
-                    td.unbind();
-                    itemId = tr.data('id');
-                    td.click(function(){
-                            tr.parents('table:first').find('.active').removeClass('active');
-                            tr.addClass('active');
-                        });
-                    var url = this.editableRoute.replace(/123/, itemId.toString());
-                    td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
-                },
-                tdQuantitySubject: function(dataTableO, tr, td){
-                    td.unbind();
-                    itemId = tr.data('id');
-                    td.click(function(){
-                            tr.parents('table:first').find('.active').removeClass('active');
-                            tr.addClass('active');
-                        });
-                    var url = this.editableRoute.replace(/123/, itemId.toString());
-                    td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
-                        trTotalPpriceUdater(tr);
-                        trTotalPriceSpecificationUpdater();
-                    }));
-                }
-            };
-                    
-            var table = $('#specification-table').dataTable({
-                "dom": '<"top"><"bottom"flp><"clear">',
-                "paging": false,
-                "rowCallback": function( row, data, index ) {
-                    var itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}';
-                    var customItemEditableUrl = '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}';
-                    var tr = $(row);
-                    tr.find('td').each(function(i){
-                        var td = $(this);
-                        if( !td.data('type') || !td.data('server-type') || !td.data('index') )
-                            return;
-                        if(td.data('index') === 'price'){
-                            customItemInitializer.trPriceSubject(
-                                table,
-                                tr,
-                                td);
-                        }else if(td.data('index') === 'quantity'){
-                            specificationItemInitializer.tdQuantitySubject(
-                                table,
-                                tr,
-                                td);
-                        }else if(td.data('server-type') === 'custom-item'){
-                            customItemInitializer.tdDefaultSubject(
-                                table,
-                                tr,
-                                td);
-                        }else if(td.data('server-type') === 'specification-item'){
-                            specificationItemInitializer.tdDefaultSubject(
-                                table,
-                                tr,
-                                td);
-                            return;
-                        }
-                    });
-                },
-                "columns": [{ orderable: true },
-                    { orderable: false },
-                    { orderable: false },
-                    { orderable: false },
-                    null, null, null, null,
-                    { orderable: false }
-                ]
-            });
-            var tableEdit = table.DataTable();
-            tableEdit.draw();        
-            /* Add custom row */
-            $('#add-custom-item-btn').click(function(){
-                $.ajax({
-                    url: '{{ path('specification_api_specification_custom_Item_add') }}',
-                    type: 'post',
-                        data: {
-                            specification: specificationId,
-                            factoryName: '',
-                            name: '',
-                            price: 0,
-                            quantity: 1,
-                            note: ''
+                            $.ajax({
+                                url: url,
+                                type: 'get',
+                                success: function (res) {
+                                    tr.find('td:eq(7)').html(res);
+                                }
+                            });
                         },
-                        error: function () {
-                            alert('Error adding specification item. Please try again.');
+
+                        trTotalPriceSpecificationUpdater = function()
+                        {
+                            var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
+                                    .replace( /123/, $('#specification-table').data('specification-id').toString())
+                                    .replace(/itemIndex/, 'totalPrice');
+
+                            $.ajax({
+                                url: url,
+                                type: 'get',
+                                success: function (res) {
+                                    $('#table-total-price').html(res);
+                                }
+                            });
                         },
-                        success: function (res) {
-                            var data = res.data;
-                            var rowData = [];
-                            rowData.push(data.factoryName ? data.factoryName : '' );
-                            rowData.push('');
-                            rowData.push(data.name ? data.name : '' );
-                            rowData.push('options');
-                            rowData.push(data.note ? data.note : '' );
-                            rowData.push(data.quantity+'');
-                            rowData.push('0');
-                            rowData.push('0');
-                            rowData.push('edit');
-                            var row = $(tableEdit.row.add(rowData).node());
-                            row
-                                .find('td')
-                                .last()
-                                .html('<a class="btn btn-danger btn-xs remove" href="#"><i class="fa fa-trash-o"></i>{{ 'frontend.remove'|trans }}</a>');
+
+                        getTdTableEditableBaseOption = function(dataTableO, tr, td, itemCallback)
+                        {
+                            var
+                                itemIndex = td.data('index'),
+                                inputType = td.data('type'),
+                                table = dataTableO;
+
+                            itemCallback = itemCallback ? itemCallback : function(){};
+
+                            return {
+                                "type": inputType,
+                                "submit": (inputType === "textarea") ? '<button type="button" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>' : false,
+                                "onreset": function(){
+                                    tr.removeClass('active');
+                                },
+                                "callback": function( sValue, y ) {
+                                    var aPos = table.fnGetPosition( this );
+                                    table.fnUpdate( sValue, aPos[0], aPos[1] );
+                                    tr.animate({
+                                        opacity: 0.0
+                                    }, 200 ).promise().then(function(){
+                                        tr.animate({
+                                            opacity: 1
+                                        }, 300 );
+                                    });
+
+                                    itemCallback();
+
+                                    scrollToView(tr);
+                                },
+                                "submitdata": function ( value, settings ) {
+                                    return {
+                                        id: itemIndex
+                                    };
+                                },
+                                "indicator": function(){
+                                    return progressBasr;
+                                },
+                                "height": "100%",
+                                "width": "100%"
+                            }
+                        },
+
+                        initializeUploaderForTableRow = function (tr)
+                        {
+                            tr.find('.image-ajax-container').each(function () {
+                                var q = new ImageAjax($(this), {
+                                    onRemove: function () {
+                                        tr.addClass('danger');
+
+                                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
+                                            if (result) {
+                                                $.ajax({
+                                                    url: '{{ path('specification_api_specification_custom_item_remove_image', {item: 123}) }}'.replace(/123/, tr.data('custom-id')),
+                                                    method: 'GET',
+                                                    complete: function () {
+                                                        tr.removeClass('danger');
+                                                    },
+                                                    success: function () {
+                                                        q.setImagePath('');
+                                                        q.viewImageUpload();
+                                                    },
+                                                    error: function () {
+                                                    }
+                                                });
+                                            } else {
+                                                tr.removeClass('danger');
+                                            }
+                                        });
+
+                                        return false;
+                                    }
+                                });
+                            });
+                        },
+
+                        customItemInitializer = {
+                            editableRoute: '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}',
+                            tdDefaultSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                var itemId = tr.data('id');
+                                td.click(function(){
+                                        tr.parents('table:first').find('.active').removeClass('active');
+                                        tr.addClass('active');
+                                    });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
+                            },
+                            trPriceSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                var itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
+                                    trTotalPriceUpdater(tr);
+                                    trTotalPriceSpecificationUpdater();
+                                }));
+                            }
+                        },
+
+                        specificationItemInitializer = {
+                            editableRoute: '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
+                                tdDefaultSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
+                            },
+                            tdQuantitySubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
+                                    trTotalPriceUpdater(tr);
+                                    trTotalPriceSpecificationUpdater();
+                                }));
+                            }
+                        },
+
+                        table = $('#specification-table').dataTable({
+                            "dom": '<"top"><"bottom"flp><"clear">',
+                            "paging": false,
+                            "rowCallback": function( row, data, index ) {
+                                var itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}';
+                                var customItemEditableUrl = '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}';
+                                var tr = $(row);
+                                tr.find('td').each(function(i){
+                                    var td = $(this);
+
+                                    if( !td.data('type') || !td.data('server-type') || !td.data('index')) {
+                                        return;
+                                    }
+
+                                    if(td.data('index') === 'price'){
+                                        customItemInitializer.trPriceSubject(table, tr, td);
+                                    }else if(td.data('index') === 'quantity'){
+                                        specificationItemInitializer.tdQuantitySubject(table, tr, td);
+                                    }else if(td.data('server-type') === 'custom-item'){
+                                        customItemInitializer.tdDefaultSubject(table, tr, td);
+                                    }else if(td.data('server-type') === 'specification-item'){
+                                        specificationItemInitializer.tdDefaultSubject(table, tr, td);
+                                    }
+                                });
+                            },
+                            "columns": [{ orderable: true },
+                                { orderable: false },
+                                { orderable: false },
+                                { orderable: false },
+                                null,
+                                null,
+                                null,
+                                null,
+                                { orderable: false }
+                            ]
+                        }),
+
+                        tableEdit = table.DataTable();
+
+                    tableEdit.draw();
+
+
+                    /* Add custom row */
+                    $('#add-custom-item-btn').click(function(){
+                        $.ajax({
+                            url: '{{ path('specification_api_specification_custom_Item_add') }}',
+                            type: 'post',
+                            data: {
+                                specification: specificationId,
+                                factoryName: '',
+                                name: '',
+                                price: 0,
+                                quantity: 1,
+                                note: ''
+                            },
+                            error: function () {
+                                alert('Error adding specification item. Please try again.');
+                            },
+                            success: function (res) {
+                                var
+                                    data = res.data,
+                                    rowData = [];
+
+                                rowData.push(data.factoryName ? data.factoryName : '' );
+                                rowData.push('');
+                                rowData.push(data.name ? data.name : '' );
+                                rowData.push('options');
+                                rowData.push(data.note ? data.note : '' );
+                                rowData.push(data.quantity+'');
+                                rowData.push('0');
+                                rowData.push('0');
+                                rowData.push('edit');
+
+                                var row = $(tableEdit.row.add(rowData).node());
+
+                                var imageAjaxContainer = '<div class="image-ajax-container" data-full-name="custom[__custom_id__][path]" data-url-upload="__upload_url__">\
+                                        <div class="image-upload">\
+                                            <img data-src="holder.js/150x150?text=Choose image" width="150" height="150" />\
+                                        </div>\
+                                        <div class="form-widget">\
+                                            <input type="hidden" name="custom[__custom_id__][path]" />\
+                                        </div>\
+                                        <div class="image-container">\
+                                            <div class="image">\
+                                                <img width="150" height="150" src="" />\
+                                            </div>\
+                                            <a class="btn btn-danger btn-xs" href="#remove-image">\
+                                                <i class="fa fa-remove">Remove</i>\
+                                            </a>\
+                                        </div>\
+                                    </div>';
+
+                                imageAjaxContainer = imageAjaxContainer
+                                    .replace(/__custom_id__/g, data.customId)
+                                    .replace(/__upload_url__/g, '{{ path('specification_api_specification_custom_item_upload_image', {item: 123}) }}'.replace(/123/, data.customId));
+
+                                row
+                                    .find('td').last()
+                                    .html('<a class="btn btn-danger btn-xs remove" href="#"><i class="fa fa-trash-o"></i>{{ 'frontend.remove'|trans }}</a>');
+
                                 row
                                     .data('id', data.id)
-                                    .data('custom-id', data.customId)
-                                ;
-                                row.find('td:eq(0)')
-                                        .data('index', 'factoryName')
-                                        .data('type', 'text')
-                                        .data('server-type', 'custom-item')
-                                ;
+                                    .data('custom-id', data.customId);
+
+                                row
+                                    .find('td:eq(0)')
+                                    .data('index', 'factoryName')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item');
+
+                                row
+                                    .find('td:eq(1)')
+                                    .html(imageAjaxContainer);
+
                                 row.find('td:eq(2)')
-                                        .data('index', 'name')
-                                        .data('type', 'text')
-                                        .data('server-type', 'custom-item')
-                                ;
+                                    .data('index', 'name')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item');
+
                                 row.find('td:eq(4)')
-                                        .data('index', 'note')
-                                        .data('type', 'textarea')
-                                        .data('server-type', 'specification-item')
-                                ;
+                                    .data('index', 'note')
+                                    .data('type', 'textarea')
+                                    .data('server-type', 'specification-item');
+
                                 row.find('td:eq(5)')
-                                        .data('index', 'quantity')
-                                        .data('type', 'integer')
-                                        .data('server-type', 'specification-item')
-                                ;
+                                    .data('index', 'quantity')
+                                    .data('type', 'integer')
+                                    .data('server-type', 'specification-item');
+
                                 row.find('td:eq(6)')
-                                        .data('index', 'price')
-                                        .data('type', 'price')
-                                        .data('server-type', 'custom-item')
-                                ;
+                                    .data('index', 'price')
+                                    .data('type', 'price')
+                                    .data('server-type', 'custom-item');
+
                                 tableEdit.row(row).draw();
                                 scrollToView(row);
                                 row.addClass('active');
-                        }
+                                initializeUploaderForTableRow(row);
+                                Holder.run(row.find('.image-container img').get(0));
+                            }
+                        });
+
+                        return false;
                     });
-                    return false;
-            });
+
+                    $('tr[data-custom-id]').each(function () {
+                        initializeUploaderForTableRow($(this));
+                    });
+
                     /* Delete row */
                     $(document).on('click', '#specification-table .remove', function () {
                             var a = $(this);

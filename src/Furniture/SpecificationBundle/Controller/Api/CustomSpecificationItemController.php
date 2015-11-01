@@ -3,9 +3,11 @@
 namespace Furniture\SpecificationBundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Entity\CustomSpecificationItem;
 use Furniture\SpecificationBundle\Form\Type\CustomSpecificationItemSingleType;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +19,6 @@ use Furniture\PricingBundle\Twig\PricingExtension;
 
 class CustomSpecificationItemController 
 {
-    
     use FormErrorsTrait;
     
     /**
@@ -41,10 +42,14 @@ class CustomSpecificationItemController
     private $calculator;
     
     /**
-     *
      * @var PricingExtension
      */
     private $pricingTwigExtension;
+
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
     
     /**
      * Construct
@@ -52,19 +57,24 @@ class CustomSpecificationItemController
      * @param FormFactoryInterface   $formFactory
      * @param EntityManagerInterface $em
      * @param TokenStorageInterface  $tokenStorage
+     * @param PriceCalculator        $calculator
+     * @param PricingExtension       $pricingTwigExtension
+     * @param CacheManager           $cacheManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
         TokenStorageInterface $tokenStorage,
         PriceCalculator $calculator,
-        PricingExtension $pricingTwigExtension
+        PricingExtension $pricingTwigExtension,
+        CacheManager $cacheManager
     ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
         $this->calculator = $calculator;
         $this->pricingTwigExtension = $pricingTwigExtension;
+        $this->cacheManager = $cacheManager;
     }
     
     /**
@@ -183,15 +193,96 @@ class CustomSpecificationItemController
         
         switch($index){
             case 'totalPrice':
-                return new Response( 
-                            $this->pricingTwigExtension->money(
-                                $this->calculator->calculateForSpecificationItem($specificationItem)
-                            )
-                        );
-                break;
+                $amount = $this->calculator->calculateForSpecificationItem($specificationItem);
+                $money = $this->pricingTwigExtension->money($amount);
+
+                return new Response($money);
+
+            default:
+                throw new NotFoundHttpException(sprintf(
+                    'Invalid index "%s".',
+                    $index
+                ));
         }
-        return new Response('');
     }
-    
+
+    /**
+     * Upload image for custom item
+     *
+     * @param Request $request
+     * @param int     $item
+     *
+     * @return JsonResponse
+     */
+    public function imageUpload(Request $request, $item)
+    {
+        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+        $file = $request->files->get('file');
+
+        if (!$file) {
+            throw new NotFoundHttpException('Not found "file" in FILES.');
+        }
+
+        // Load item
+        $item = $this->em->find(CustomSpecificationItem::class, $itemId = $item);
+
+        if (!$item) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found item with id "%s".',
+                $itemId
+            ));
+        }
+
+        $image = $item->getImage();
+
+        if (!$image) {
+            $image = new CustomSpecificationItemImage();
+            $image->setCustomSpecificationItem($item);
+        }
+
+        $image->setPath(null);
+        $image->setFile($file);
+
+        // @todo: validate file
+
+        $this->em->persist($image);
+        $this->em->flush();
+
+        $path = $image->getPath();
+        $path = $this->cacheManager->getBrowserPath($path, 's150x150');
+
+        return new JsonResponse([
+            'image' => $path,
+            'status' => true
+        ]);
+    }
+
+    /**
+     * Remove image
+     *
+     * @param int $item
+     *
+     * @return JsonResponse
+     */
+    public function imageRemove($item)
+    {
+        // Load item
+        $item = $this->em->find(CustomSpecificationItem::class, $itemId = $item);
+
+        if (!$item) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found item with id "%s".',
+                $itemId
+            ));
+        }
+
+        $image = $item->removeImage();
+        $this->em->remove($image);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'status' => true
+        ]);
+    }
 }
 

@@ -3405,3 +3405,8 @@ header.fixed-header nav {
 .specification-edit-head .editable form{
     margin-top: -6px;
 }
+
+.image-ajax-container .image-container{ text-align: center; }
+.image-ajax-container .image-container a.remove{ margin-top: 4px; }
+.image-ajax-container.error .image-container img,
+.image-ajax-container.error .image-upload img{ border-color: #b94a48; }

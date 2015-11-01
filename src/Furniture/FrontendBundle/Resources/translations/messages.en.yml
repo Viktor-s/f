@@ -37,6 +37,7 @@ frontend:
     note: Note
     are_you_sure_remove_specification_item: Are you sure remote specification item?
     are_you_sure_remove_specification: Are you sure remote specification?
+    are_you_sure_remove_image: Are you sure remove image?
     export: Export
     full: Full
     by_company: By company
@@ -131,7 +132,7 @@ frontend:
         space_filter: Space
         category_selector: Category
         type_selector: Type
-        style_selector: Style
+        style_selecto: Style
         composite_collection_selector: Composite collection
 
     product:
