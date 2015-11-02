@@ -231,7 +231,7 @@ class FrontendMenuBuilder
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [
-            'uri' => '#',
+            'uri' => $this->urlGenerator->generate('factory_side_general', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.general')
         ]);
 
