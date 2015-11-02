@@ -26,7 +26,7 @@ frontend:
     opened: Opened
     finished: Finished
     price: Price
-    total_price: Total price
+    total_price: Total
     last_modified: Last modified
     quantity: Quantity
     finish: Finish
@@ -36,6 +36,8 @@ frontend:
     options: Options
     note: Note
     are_you_sure_remove_specification_item: Are you sure remote specification item?
+    are_you_sure_remove_specification: Are you sure remote specification?
+    are_you_sure_remove_image: Are you sure remove image?
     export: Export
     full: Full
     by_company: By company
@@ -79,8 +81,10 @@ frontend:
     downlod_file_with_number: "Download file #:number"
     select_style: Style
     select_category: Category
+    spaces: Spaces
 
     title:
+        spaces: Spaces
         contacts: Contacts
         work_info: Work info
         collections: Collections
@@ -102,7 +106,7 @@ frontend:
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile
-        dashboard: Dashboard
+        dashboard: Settings
         factory_rates: Factory rates
         user_relations: User relations
         factory_relations: Factory relations
@@ -111,6 +115,7 @@ frontend:
         taxonomy: Categories
         factory_side: Factory
         general: General
+        brands: Brands
 
     button:
         settings: Settings
@@ -124,6 +129,12 @@ frontend:
     catalog:
         space_selector: Select space
         brand_filter: Brand
+        space_filter: Space
+        category_selector: Category
+        type_selector: Type
+        style_selecto: Style
+        composite_collection_selector: Composite collection
+
     product:
         media_tab:
             title: Product media

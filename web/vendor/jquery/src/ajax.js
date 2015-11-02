@@ -1,15 +1,13 @@
 define([
 	"./core",
-	"./var/document",
 	"./var/rnotwhite",
-	"./ajax/var/location",
 	"./ajax/var/nonce",
 	"./ajax/var/rquery",
 	"./core/init",
 	"./ajax/parseJSON",
 	"./ajax/parseXML",
 	"./deferred"
-], function( jQuery, document, rnotwhite, location, nonce, rquery ) {
+], function( jQuery, rnotwhite, nonce, rquery ) {
 
 var
 	rhash = /#.*$/,
@@ -43,6 +41,7 @@ var
 
 	// Anchor tag for parsing the document origin
 	originAnchor = document.createElement( "a" );
+
 	originAnchor.href = location.href;
 
 // Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
@@ -64,7 +63,7 @@ function addToPrefiltersOrTransports( structure ) {
 			// For each dataType in the dataTypeExpression
 			while ( (dataType = dataTypes[i++]) ) {
 				// Prepend if requested
-				if ( dataType[0] === "+" ) {
+				if ( dataType[ 0 ] === "+" ) {
 					dataType = dataType.slice( 1 ) || "*";
 					(structure[ dataType ] = structure[ dataType ] || []).unshift( func );
 
@@ -108,7 +107,7 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
 // that takes "flat" options (not to be deep extended)
 // Fixes #9887
 function ajaxExtend( target, src ) {
-	var key, deep,
+	var deep, key,
 		flatOptions = jQuery.ajaxSettings.flatOptions || {};
 
 	for ( key in src ) {
@@ -128,8 +127,7 @@ function ajaxExtend( target, src ) {
  * - returns the corresponding response
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
-
-	var ct, type, finalDataType, firstDataType,
+	var firstDataType, ct, finalDataType, type,
 		contents = s.contents,
 		dataTypes = s.dataTypes;
 
@@ -215,7 +213,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 
 		if ( current ) {
 
-		// There's only work to do if current dataType is non-auto
+			// There's only work to do if current dataType is non-auto
 			if ( current === "*" ) {
 
 				current = prev;
@@ -381,20 +379,23 @@ jQuery.extend({
 		// Force options to be an object
 		options = options || {};
 
-		var transport,
+		var
+			// Loop variable
+			i,
 			// URL without anti-cache param
 			cacheURL,
-			// Response headers
+			// Response headers as string
 			responseHeadersString,
-			responseHeaders,
 			// timeout handle
 			timeoutTimer,
 			// Url cleanup var
 			urlAnchor,
 			// To know if global events are to be dispatched
 			fireGlobals,
-			// Loop variable
-			i,
+
+			transport,
+			// Response headers
+			responseHeaders,
 			// Create the final options object
 			s = jQuery.ajaxSetup( {}, options ),
 			// Callbacks context
@@ -502,7 +503,7 @@ jQuery.extend({
 		// Extract dataTypes list
 		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( rnotwhite ) || [ "" ];
 
-		// A cross-domain request is in order when the origin doesn't match the current origin.
+		// A cross-domain request is in order when the origin doesn't match the current origin
 		if ( s.crossDomain == null ) {
 			urlAnchor = document.createElement( "a" );
 
@@ -613,7 +614,7 @@ jQuery.extend({
 			return jqXHR.abort();
 		}
 
-		// Aborting is no longer a cancellation
+		// aborting is no longer a cancellation
 		strAbort = "abort";
 
 		// Install callbacks on deferreds
@@ -642,7 +643,7 @@ jQuery.extend({
 
 			// Timeout
 			if ( s.async && s.timeout > 0 ) {
-				timeoutTimer = window.setTimeout(function() {
+				timeoutTimer = setTimeout(function() {
 					jqXHR.abort("timeout");
 				}, s.timeout );
 			}
@@ -676,7 +677,7 @@ jQuery.extend({
 
 			// Clear timeout if it exists
 			if ( timeoutTimer ) {
-				window.clearTimeout( timeoutTimer );
+				clearTimeout( timeoutTimer );
 			}
 
 			// Dereference transport for early garbage collection
@@ -731,7 +732,8 @@ jQuery.extend({
 					isSuccess = !error;
 				}
 			} else {
-				// Extract error from statusText and normalize for non-aborts
+				// We extract error from statusText
+				// then normalize statusText and status for non-aborts
 				error = statusText;
 				if ( status || !statusText ) {
 					statusText = "error";
@@ -787,7 +789,7 @@ jQuery.extend({
 
 jQuery.each( [ "get", "post" ], function( i, method ) {
 	jQuery[ method ] = function( url, data, callback, type ) {
-		// Shift arguments if data argument was omitted
+		// shift arguments if data argument was omitted
 		if ( jQuery.isFunction( data ) ) {
 			type = type || callback;
 			callback = data;

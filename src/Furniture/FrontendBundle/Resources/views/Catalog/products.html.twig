@@ -5,20 +5,16 @@
 
 {% block breadcrumb %}
     <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
-    <a href="{{ path('taxonomy') }}">{{ 'frontend.title.catalog'| trans }}</a>
-    <a href="{{ path('products', {category: current_root_taxon.permalink}) }}">{{ current_root_taxon.name }}</a>
-    {% if sub_category %}
-        <a href="{{ path('products', {category: current_root_taxon.permalink, subcategory:sub_category.id}) }}">{{ sub_category.name }}</a>
-    {% endif %}
+    <a href="{{ path('catalog') }}">{{ 'frontend.title.catalog'| trans }}</a>
 {% endblock %}
 
 {% block content %}
     <div class="information-blocks">
         <div class="row">
             <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
-
                 <div class="page-selector">
                     {{ pagination(products) }}
+
                     <div class="shop-grid-controls">
                         <div class="entry">
                             <div class="inline-text">Sorty by</div>
@@ -58,39 +54,91 @@
             <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
                 {# Catalog space selector #}
                 <div class="information-blocks">
-                    <div class="block-title size-2" style="border-bottom:0;margin-bottom:0">{{ 'frontend.catalog.space_selector'| trans }}</div>
-                    <div class="simple-drop-down simple-field">
-                        <select class="form-control" onchange="location = this.options[this.selectedIndex].value;">
-                            {% for taxon in category.taxons %}
-                                <option  value="{{ path('products', {category: taxon.permalink}) }}" {% if taxon.permalink == app.request.attributes.get('_route_params')['category'] %} selected="selected" {% endif %}>
-                                    {{ taxon.name }}
-                                </option>
+                    <div class="block-title size-2">{{ 'frontend.catalog.space_selector'| trans }}</div>
+
+                    {% set column_size = ((spaces|length) / 2)|round(0, 'ceil') %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for space in spaces %}
+                                {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+
+                                <label class="checkbox-entry">
+                                    <input{% if space_ids is iterable and space.id in space_ids %} checked{% endif %} type="checkbox" value="{{ space.id }}" live-form name="space[]" />
+                                    <span class="check"></span>
+                                    {{ space.translate.name}}
+                                </label>
+
+                                {% set k = k + 1 %}
                             {% endfor %}
-                        </select>
+                        </div>
+
+                        <div class="clearfix"></div>
                     </div>
                 </div>
-                {# Catalog category selector #}
-                <div class="information-blocks categories-border-wrapper">
-                    <div class="block-title size-3">{{ current_root_taxon.name }}</div>
-                    <div class="accordeon">
-                        {% for children_taxon_1 in current_root_taxon.children %}
-                            <div class="accordeon-title">{{ children_taxon_1.name }}</div>
-                            <div class="accordeon-entry">
-                                <div class="article-container style-1">
-                                    <ul>
-                                        {% for children_taxon_2 in  children_taxon_1.children %}
-                                            <li>
-                                                <a href="{{ path('products', {category: current_root_taxon.permalink, 'subcategory':children_taxon_2.id}) }}">
-                                                    {{ children_taxon_2.name }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        {% endfor %}
+
+                {# Category selector #}
+                <div class="information-blocks">
+                    <div class="block-title size-2">{{ 'frontend.catalog.category_selector'| trans }}</div>
+
+                    {% set column_size = ((categories|length) / 2)|round(0, 'ceil') %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for category in categories %}
+                                {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                {% set k = 1 %}
+                                {% endif %}
+
+                                <label class="checkbox-entry">
+                                    <input{% if category_ids is iterable and category.id in category_ids %} checked{% endif %} type="checkbox" value="{{ category.id }}" live-form name="category[]" />
+                                    <span class="check"></span>
+                                    {{ category.translate.name}}
+                                </label>
+
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="clearfix"></div>
                     </div>
                 </div>
+
+                {# Type selector #}
+                <div class="information-blocks">
+                    <div class="block-title size-2">{{ 'frontend.catalog.type_selector'| trans }}</div>
+
+                    {% set column_size = ((types|length) / 2)|round(0, 'ceil') %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for type in types %}
+                                {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+
+                                <label class="checkbox-entry">
+                                    <input{% if type_ids is iterable and type.id in type_ids %} checked{% endif %} type="checkbox" value="{{ type.id }}" live-form name="type[]" />
+                                    <span class="check"></span>
+                                    {{ type.translate.name}}
+                                </label>
+
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
                 {# Catalog brand selector #}
                 <div id="brand_filter" class="information-blocks">
                     {% set column_size = (brands|length)/2 %}
@@ -105,47 +153,74 @@
                                     {% set k = 1 %}
                                 {% endif %}
                                 <label class="checkbox-entry">
-                                    <input 
-                                        {% if factory_ids is iterable and factory.id in factory_ids %}
-                                            checked
-                                        {% endif %}
-                                        type="checkbox" value="{{ factory.id }}" /><span class="check"></span>{{ factory.name }}
+                                    <input{% if factory_ids is iterable and factory.id in factory_ids %} checked{% endif %} type="checkbox" value="{{ factory.id }}" live-form name="brand[]" />
+                                    <span class="check"></span>
+                                    {{ factory.name }}
                                 </label>
                                 {% set k = k + 1 %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
+
+                {# Style selector #}
+                <div class="information-blocks">
+                    <div class="block-title size-2">{{ 'frontend.catalog.style_selector'| trans }}</div>
+
+                    {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for style in styles %}
+                                {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+
+                                <label class="checkbox-entry">
+                                    <input{% if style_ids is iterable and style.id in style_ids %} checked{% endif %} type="checkbox" value="{{ style.id }}" live-form name="style[]" />
+                                    <span class="check"></span>
+                                    {{ style.translate.name}}
+                                </label>
+
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                {# Composite collection selector #}
+                <div class="information-blocks">
+                    <div class="block-title size-2">{{ 'frontend.catalog.composite_collection_selector'| trans }}</div>
+
+                    {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% set k = 1 %}
+                            {% for collection in composite_collections %}
+                                {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                    {% set k = 1 %}
+                                {% endif %}
+
+                                <label class="checkbox-entry">
+                                    <input{% if composite_collection_ids is iterable and collection.id in composite_collection_ids %} checked{% endif %} type="checkbox" value="{{ collection.id }}" live-form name="cc[]" />
+                                    <span class="check"></span>
+                                    {{ collection.translate.presentation }}
+                                </label>
+
+                                {% set k = k + 1 %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
-
-{% block footer_javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        (function ($) {
-            $(document).ready(function () {
-                var brandFilterForm = $('#brand_filter');
-        {% if sub_category %}
-                    var getUrl = "{{ path('products', {category: current_root_taxon.permalink, subcategory:sub_category.id}) }}";
-        {% else %}
-                    var getUrl = "{{ path('products', {category: current_root_taxon.permalink}) }}?";
-        {% endif %}
-
-                    brandFilterForm.find('input:checkbox').change(function () {
-                        var brandFilter = [];
-                        brandFilterForm.find('input:checkbox:checked').each(function (i, el) {
-                            var el = $(this);
-                            brandFilter.push(el.val());
-                        });
-                        if (brandFilter.length > 0) {
-                            getUrl += '&brand[]=' + brandFilter.join('&brand[]=');
-                        }
-                        window.location.href = getUrl;
-                    });
-                });
-            })(jQuery);
-    </script>
-{% endblock%}

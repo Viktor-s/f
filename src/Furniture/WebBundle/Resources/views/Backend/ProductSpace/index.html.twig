@@ -1,0 +1,48 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li>{{ 'product_space.breadcrumb.index'|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{  buttons.create(path('furniture_backend_product_space_create')) }}
+        </div>
+
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_space.breadcrumb.index'|trans|raw }}</h1>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th style="width: 50px;"></th>
+            <th>Parent</th>
+            <th>Slug</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for space in product_spaces %}
+            <tr>
+                <td></td>
+                <td>{{ space.parent ? space.parent }}</td>
+                <td>{{ space.slug }}</td>
+                <td>{{ space }}</td>
+                <td class="text-center">
+                    {{ buttons.edit(path('furniture_backend_product_space_update', {id: space.id})) }}
+                    {{ buttons.delete(path('furniture_backend_product_space_delete', {id: space.id})) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

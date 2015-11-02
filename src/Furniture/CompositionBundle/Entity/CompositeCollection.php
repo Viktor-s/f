@@ -60,6 +60,50 @@ class CompositeCollection extends AbstractTranslatable
     }
 
     /**
+     * Set translatable presentation
+     * 
+     * @param str $presentation
+     * @return CompositeCollection
+     */
+    public function setPresentation($presentation)
+    {
+        $this->translate()->setPresentation($presentation);
+        return $this;
+    }
+
+    /**
+     * Get translatable presentation
+     * 
+     * @return str
+     */
+    public function getPresentation()
+    {
+        return $this->translate()->getPresentation($presentation);
+    }
+    
+    /**
+     * Set translatable description
+     * 
+     * @param str $description
+     * @return CompositeCollection
+     */
+    public function setDescription($description)
+    {
+        $this->translate()->setDescription($description);
+        return $this;
+    }
+
+    /**
+     * Get translatable description
+     * 
+     * @return str
+     */
+    public function getDescription()
+    {
+        return $this->translate()->getDescription();
+    }
+
+    /**
      * Implement __toString
      *
      * @return string

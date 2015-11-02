@@ -1,0 +1,352 @@
+{% extends 'FrontendBundle:Specification:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% if not specification.id %}
+        {{ block('content_with_create') }}
+    {% else %}
+        {{ block('content_with_edit') }}
+    {% endif %}
+{% endblock %}
+
+{% block content_with_create %}
+    <div class="information-blocks">
+        <form action="" method="POST">
+            {{ form_widget(form) }}
+
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="{{ 'frontend.save'|trans }}" />
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block content_with_edit %}
+    <div class="row information-blocks">
+        <div class="col-sm-4 information-entry">
+            <div class="user-info">{{ app.user.username }}</div>
+            <div class="document-id">#{{ specification.id }}</div>
+        </div>
+
+        <div class="col-sm-6 information-entry">
+            <div class="information-blocks form-horizontal specification-info">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.name'|trans }}</label>
+                    <div class="col-sm-10 name editable" id="specification-name">{{ specification.name }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.description'|trans }}</label>
+                    <div class="col-sm-10 description editable" id="specification-description">{{ specification.description|default('None') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
+                    <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
+                </div>
+
+                {% if specification.buyer and specification.buyer.hasSale() %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
+                        <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
+                    <div class="col-sm-10">
+                        <a class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+
+                        {% if not specification.finished %}
+                            <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                        {% endif %}
+
+                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="information-blocks">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ 'frontend.brand'|trans }}</th>
+                    <th>{{ 'frontend.image'|trans }}</th>
+                    <th>{{ 'frontend.name'|trans }}</th>
+                    <th>{{ 'frontend.options'|trans }}</th>
+                    <th>{{ 'frontend.note'|trans }}</th>
+                    <th>{{ 'frontend.quantity'|trans }}</th>
+                    <th>{{ 'frontend.price'|trans }}</th>
+                    <th>{{ 'frontend.total_price'|trans }}</th>
+                    <th>{{ 'frontend.actions'|trans }}</th>
+                </tr>
+            </thead>
+
+            <tbody id="specification-tbody" >
+                {% for specification_item in specification.items %}
+                    {%if specification_item.skuItem %}
+                        {% include 'FrontendBundle:Specification/edit:_sku_table_item.html.twig' with {'specification_item':specification_item} %}
+                    {% elseif specification_item.customItem %}
+                        {% include 'FrontendBundle:Specification/edit:_custom_table_item.html.twig' with {'specification_item':specification_item} %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+
+            <tfoot data-sale-prototype="{{ block('specification_sale')|e }}">
+                {% for sale in specification.sales %}
+                    {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
+                {% endfor %}
+                <tr>
+                    <td colspan="7" class="text-right">{{ 'frontend.total_price'|trans }}</td>
+                    <td class="total-price">{{ specification|specification_total_price|money }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
+        <a href="#" id="add-custom-item-btn" class="btn btn-success">AddCustom</a>
+    </div>
+{% endblock %}
+
+{% block specification_sale %}
+    <tr class="specification-sale">
+        <td colspan="7"></td>
+        <td>
+            <div class="sale editable form-group" id="specification-sale" data-index="__index__">__sale__</div>
+        </td>
+        <td></td>
+    </tr>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    {% if specification.id %}
+        <script type="text/javascript">
+            (function ($) {
+                var editableUrl = '{{ path('specification_api_specification_custom_Item_editable', {'item':'000'}) }}';
+                $(document).ready(function () {
+                    var rowConfig = [
+                        'brand',
+                        'image',
+                        'name',
+                        'options',
+                        'note',
+                        'quantity',
+                        'price',
+                        'total',
+                        'actions'
+                    ];
+                    
+                    $('.custom-item-editable').each(function(i, el){
+                        var el = $(el);
+                        var itemId = parseInt(el.parents('tr').first().data('id'));
+                        var index = el.data('index');
+                        url = editableUrl.replace(/000/, itemId.toString()),
+                        itemElement = $(this);
+                        
+                        el.editable(url)
+                    });
+                    
+                    var specificationTable = $('#specification-tbody');
+                    $('#add-custom-item-btn').click(function () {
+                        var el = $(this);
+
+                        $.ajax({
+                            url: '{{ path('specification_api_specification_custom_Item_add') }}',
+                            type: 'post',
+                            data: {
+                                specification:{{ specification.id }},
+                                        factoryName: '',
+                                name: '',
+                                price: 0,
+                                quantity: 1,
+                                note: ''
+                            },
+                            complete: function () {
+
+                            },
+                            error: function () {
+                                alert('Error adding specification item. Please try again.');
+                            },
+                            success: function (data) {
+                                var newLine = specificationTable.find('tr').first().clone();
+                                newLine.find('td').each(function (i, el) {
+                                    var td = $(el);
+                                    td.html('');
+                                    switch (rowConfig[i]) {
+                                        case 'brand':
+                                            td.html(data.factoryName);
+                                            break
+                                        case 'image':
+                                            break
+                                        case 'name':
+                                            td.html(data.name);
+                                            break
+                                        case 'options':
+                                            break
+                                        case 'note':
+                                            td.html(data.note);
+                                            break
+                                        case 'quantity':
+                                            td.html(data.quantity);
+                                            break
+                                        case 'actions':
+                                            break
+                                    }
+                                });
+                                specificationTable.append(newLine);
+                            }
+                        });
+                        return false;
+                    });
+                })
+            })(jQuery);
+        </script>
+
+        <script type="text/javascript">
+            (function ($) {
+                var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
+                        itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
+                        itemRemoveUrl = '{{ path('specification_api_specification_item_remove', {item: 123}) }}',
+                        editableParams = {
+                            width: '100%',
+                            height: '100%',
+                            tooltip: '{{ 'frontend.click_to_edit'|trans }}'
+                        },
+                updateTotalAmountViaQuantity = function (id, quantity) {
+                    var itemElement = $('.specification-item-info[data-id="' + id + '"]');
+
+                    if (!itemElement.size()) {
+                        throw new Error('Not found element with id "' + id + '".');
+                    }
+
+                    var price = parseInt(itemElement.data('price')),
+                            totalPrice = price * quantity;
+
+                    itemElement.find('.total-price').text((Math.round(totalPrice / 100, 2)) + ' EUR');
+                };
+
+                $(document).ready(function () {
+                    $('.specification-info .editable.name').editable(editableUrl, editableParams);
+
+                    $('.specification-info .editable.description').editable(editableUrl, $.extend({
+                        type: 'textarea'
+                    }, editableParams));
+
+                    $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
+                        type: 'select',
+                        loadurl: '{{ path('specification_api_specification_buyers') }}',
+                        submit: 'Ok'
+
+                    }, editableParams));
+
+                    $('.specification-item-info').each(function () {
+                        var itemId = parseInt($(this).data('id')),
+                                url = itemEditableUrl.replace(/123/, itemId.toString()),
+                                itemElement = $(this);
+
+                        $(this).find('.editable.note').editable(url, editableParams);
+                        $(this).find('.editable.quantity').editable(url, $.extend({
+                            callback: function (value) {
+                                updateTotalAmountViaQuantity(itemId, value);
+                            }
+                        }, editableParams));
+
+                        $(this).find('.remove').click(function () {
+                            itemElement.addClass('danger');
+                            $(this).prop('disabled', true);
+                            var aElement = $(this);
+
+                            if (confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}')) {
+                                $.ajax({
+                                    url: itemRemoveUrl.replace(/123/, itemId.toString()),
+                                    complete: function () {
+                                        itemElement.removeClass('danger');
+                                        aElement.prop('disabled', false);
+                                    },
+                                    error: function () {
+                                        alert('Error with remove specification item. Please try again.');
+                                    },
+                                    success: function () {
+                                        itemElement.animate({
+                                            height: '0px'
+                                        }, 500, 'swing', function () {
+                                            itemElement.remove();
+                                        });
+                                    }
+                                });
+                            } else {
+                                itemElement.removeClass('danger');
+                            }
+
+                            return false;
+                        });
+                    });
+
+                    $('tr.specification-sale .editable').each(function () {
+                        var index = $(this).data('index');
+                        $(this).editable(editableUrl, {
+                            submitdata: function (value) {
+                                return {
+                                    index: index
+                                }
+                            }
+                        });
+                    });
+
+                    $('.total-price').click(function () {
+                        var sales = $('.specification-sale'),
+                                hasNotPressed = false,
+                                checkPressed = function () {
+                                    if ($(this).find('input').size() > 0) {
+                                        hasNotPressed = true;
+                                    }
+
+                                    if (!parseFloat($(this).text())) {
+                                        hasNotPressed = true;
+                                    }
+                                };
+
+                        sales.each(checkPressed);
+
+                        if (sales.size() >= 3 || hasNotPressed) {
+                            // Only 3 sales allowed or any not pressed
+                            return;
+                        }
+
+                        var tFoot = $('tfoot[data-sale-prototype]');
+                        var proto = tFoot.attr('data-sale-prototype')
+                                .replace(/__index__/, sales.size() + 1)
+                                .replace(/__sale__/, 0),
+                                e = $(proto);
+
+                        if (sales.size()) {
+                            sales.last().after(e);
+                        } else {
+                            tFoot.prepend(e);
+                        }
+
+                        e.find('.editable').editable(editableUrl, {
+                            submitdata: function (value) {
+                                return {
+                                    index: sales.size() + 1
+                                }
+                            }
+                        }).click();
+                    });
+                });
+            })(jQuery);
+        </script>
+    {% endif %}
+{% endblock %}

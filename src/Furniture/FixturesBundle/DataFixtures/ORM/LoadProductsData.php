@@ -188,7 +188,13 @@ class LoadProductsData extends BaseLoadProductsData
         $this->addMasterVariant($product);
         $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
 
-        $this->setTaxons($product, array('Side Tables', 'Сoffee Tables', 'Console Tables'));
+        foreach ($this->getRandomSpaces() as $space) {
+            $product->addSpace($space);
+        }
+
+        $types = ['Console table', 'Dressing table', 'Coffee table'];
+        $type = $types[rand(0, count($types) - 1)];
+        $product->addType($this->getReference('product.type:' . $type));
 
         $product->addOption($this->getReference('Sylius.Option.table_legs'));
         $product->addOption($this->getReference('Sylius.Option.table_tops'));
@@ -435,7 +441,7 @@ class LoadProductsData extends BaseLoadProductsData
     /**
      * Create new product instance.
      *
-     * @return ProductInterface
+     * @return \Furniture\ProductBundle\Entity\Product
      */
     protected function createProduct()
     {
@@ -464,5 +470,26 @@ class LoadProductsData extends BaseLoadProductsData
         }
 
         $product->setCurrentLocale($this->defaultLocale);
+    }
+
+    private function getRandomSpaces()
+    {
+        $spaces = LoadProductSpaceData::getSpaces();
+        $result = [];
+
+        $max = rand(1, count($spaces) - 1);
+
+        for ($i = 0; $i < $max; $i++) {
+            $item = $spaces[rand(0, count($spaces) - 1)];
+            $result[$item] = $item;
+        }
+
+        $objects = [];
+
+        foreach ($result as $item) {
+            $objects[] = $this->getReference('product.space:' . $item);
+        }
+
+        return $objects;
     }
 }

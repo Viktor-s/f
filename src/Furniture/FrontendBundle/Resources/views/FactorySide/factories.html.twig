@@ -1,13 +1,13 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% block title %}general replace to trans :: {{ parent() }}{% endblock %}
+{% block title %}{{ 'frontend.title.brands'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="information-blocks">
         <div class="row">
             <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4 information-entry">
                 <div class="blog-landing-box type-4 columns-1">
-                    {% for factory in factries %}
+                    {% for factory in factories %}
                         <div class="blog-entry">
                             {% if factory.hasImages() %}
                                 <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}"><img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" />
@@ -17,7 +17,7 @@
                                     <span class="hover-label">Show</span>
                                 </a>
                             <div class="content">
-                                <a class="title" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.translate.name }}</a>
+                                <a class="subtitle" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name }}</a>
                                 <div class="description">{{ factory.shortDescription }}</div>
                                 <a class="readmore" href="{{ path('factory_side_general', {factory: factory.id}) }}">Show</a>
                             </div>
@@ -33,7 +33,7 @@
                     <select class="form-control" name="style" live-form>
                         <option value="">-Select style-</option>
                         {% for style in styles %}
-                            <option value="{{ style.id }}"{% if selected_style and selected_style.id == style.id %} selected="selected"{% endif %}>{{ style.name }}</option>
+                            <option value="{{ style.id }}"{% if selected_style and selected_style.id == style.id %} selected="selected"{% endif %}>{{ style.translate.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -44,7 +44,7 @@
                     <select class="form-control" name="category" live-form>
                         <option value="">-Select category-</option>
                         {% for category in categories %}
-                            <option value="{{ category.id }}"{% if selected_category and selected_category.id == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                            <option value="{{ category.id }}"{% if selected_category and selected_category.id == category.id %} selected="selected"{% endif %}>{{ category.translate.name }}</option>
                         {% endfor %}
                     </select>
                 </div>

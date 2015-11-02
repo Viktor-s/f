@@ -1,0 +1,13 @@
+Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage:
+    type: entity
+    table: custom_specification_item_image
+
+    oneToOne:
+        customSpecificationItem:
+            targetEntity: Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+            inversedBy: image
+            joinColumn:
+                name: customSpecificationItem_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

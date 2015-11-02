@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Furniture\PricingBundle\Calculator\PriceCalculator;
+use Furniture\PricingBundle\Twig\PricingExtension;
 
 class SkuSpecificationItemController 
 {
@@ -33,6 +35,17 @@ class SkuSpecificationItemController
     private $tokenStorage;
 
     /**
+     * @var PriceCalculator
+     */
+    private $calculator;
+    
+    /**
+     *
+     * @var PricingExtension
+     */
+    private $pricingTwigExtension;
+    
+    /**
      * Construct
      *
      * @param FormFactoryInterface   $formFactory
@@ -42,11 +55,15 @@ class SkuSpecificationItemController
     public function __construct(
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PriceCalculator $calculator,
+        PricingExtension $pricingTwigExtension
     ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
+        $this->calculator = $calculator;
+        $this->pricingTwigExtension = $pricingTwigExtension;
     }
     
     /**

@@ -1,0 +1,19 @@
+Furniture\ProductBundle\Entity\Readiness:
+    type: entity
+    table: product_readiness
+
+    id:
+        id:
+            name: id
+            type: integer
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            name: name
+
+        position:
+            type: integer
+            name: position

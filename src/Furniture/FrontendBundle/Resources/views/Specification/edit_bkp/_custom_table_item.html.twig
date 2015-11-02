@@ -1,0 +1,39 @@
+{% set customItem = specification_item.customItem %}
+<tr data-price="{{ specification_item.price }}" data-id="{{ specification_item.id }}" class="specification-item-info{% if active_item_id == specification_item.id %} info{% endif %}">
+    <td>
+        <div class="factory-info">
+            <div class="custom-item-editable" id="factoryName">
+                {{ customItem.factoryName }}
+            </div>
+        </div>
+    </td>
+    <td>
+        Image
+    </td>
+
+    <td class="custom-item-editable" id="name" >
+        {{ customItem.name }}
+    </td>
+
+    <td>
+       
+    </td>
+
+    <td>
+        <div class="note editable form-group" id="specification-item-note">{{ specification_item.note|default('None') }}</div>
+    </td>
+
+    <td>
+        <div class="quantity editable form-group" id="specification-item-quantity">{{ specification_item.quantity }}</div>
+    </td>
+
+    <td class="custom-item-editable" id="price"  class="price">{{ customItem.price|money }}</td>
+    <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
+
+    <td>
+        <a class="btn btn-danger btn-xs remove" href="#">
+            <i class="fa fa-trash-o"></i>
+            {{ 'frontend.remove'|trans }}
+        </a>
+    </td>
+</tr>

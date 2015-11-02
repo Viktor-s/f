@@ -1,0 +1,42 @@
+Furniture\SpecificationBundle\Entity\CustomSpecificationItem:
+    type: entity
+    table: custom_specification_item
+    
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+                
+    oneToOne:
+        specificationItem:
+            targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
+            inversedBy: customItem
+            joinColumn:
+                name: speicifcation_item_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+        image:
+            targetEntity: Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage
+            mappedBy: customSpecificationItem
+            cascade: [ persist ]
+             
+             
+    
+    fields:
+        factoryName:
+            type: string
+            nullable: true
+        name:
+            type: string
+            nullable: true
+        options:
+            type: text
+            name: note
+            nullable: true
+        price:
+            type: string
+            options:
+                default: 0

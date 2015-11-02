@@ -1,0 +1,75 @@
+{% set product_variant = specification_item.skuItem.productVariant %}
+{% set product = product_variant.product %}
+<tr data-id="{{ specification_item.id }}" class="specification-item-info{% if active_item_id == specification_item.id %} info{% endif %}" data-price="{{ product_variant.price }}">
+    <td>
+        <div class="factory-info">
+            <div class="factory-name">
+                <a href="#">{{ product_variant.product.factory.name }}</a>
+            </div>
+        </div>
+    </td>
+
+    <td>
+        {% if product.image %}
+            <div class="product-image">
+                <img src="{{ product.image.path|imagine_filter('s150x150') }}" width="150" height="150" />
+            </div>
+        {% endif %}
+    </td>
+
+    <td>
+        <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
+            {{ product.translate.name }}
+        </a>
+    </td>
+
+    <td>
+        <ul>
+            {% for option in product_variant.options %}
+                <li>
+                    <strong>{{ option.name }}:</strong>
+                    {{ option.value }}
+                </li>
+            {% endfor %}
+
+            {% for option in product_variant.skuOptions %}
+                <li>
+                    <strong>{{ option.name }}:</strong>
+                    {{ option.value }}
+                </li>
+            {% endfor %}
+
+            {% for part_variant_selection in product_variant.productPartVariantSelections %}
+                <li>
+                    <strong>{{ part_variant_selection.productPart.label }}:</strong>
+                    {{ part_variant_selection.productPartMaterialVariant.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    </td>
+
+    <td>
+        <div class="note editable form-group" id="specification-item-note">{{ specification_item.note|default('None') }}</div>
+    </td>
+
+    <td>
+        <div class="quantity editable form-group" id="specification-item-quantity">{{ specification_item.quantity }}</div>
+    </td>
+
+    <td class="price">{{ product_variant|sku_price|money }}</td>
+    <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
+
+    <td>
+        <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+            <i class="fa fa-pencil"></i>
+            {{ 'frontend.edit'|trans }}
+        </a>
+
+        <br />
+
+        <a class="btn btn-danger btn-xs remove" href="#">
+            <i class="fa fa-trash-o"></i>
+            {{ 'frontend.remove'|trans }}
+        </a>
+    </td>
+</tr>

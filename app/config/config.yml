@@ -195,6 +195,43 @@ sylius_resource:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
 
+        furniture.product_category:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\Category
+                translation:
+                    model: Furniture\ProductBundle\Entity\CategoryTranslation
+                    mapping: ~
+
+        furniture.product_type:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\Type
+                translation:
+                    model: Furniture\ProductBundle\Entity\TypeTranslation
+                    mapping: ~
+
+        furniture.product_style:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\Style
+                translation:
+                    model: Furniture\ProductBundle\Entity\StyleTranslation
+                    mapping: ~
+
+        furniture.product_space:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\Space
+                translation:
+                    model: Furniture\ProductBundle\Entity\SpaceTranslation
+                    mapping: ~
+
+        furniture.product_readiness:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\Readiness
+
         furniture.product_part:
             driver: doctrine/orm
             classes:

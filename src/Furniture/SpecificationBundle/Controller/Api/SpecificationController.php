@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Furniture\PricingBundle\Calculator\PriceCalculator;
+use Furniture\PricingBundle\Twig\PricingExtension;
 
 class SpecificationController
 {
@@ -36,6 +38,17 @@ class SpecificationController
     private $tokenStorage;
 
     /**
+     * @var PriceCalculator
+     */
+    private $calculator;
+    
+    /**
+     *
+     * @var PricingExtension
+     */
+    private $pricingTwigExtension;
+    
+    /**
      * Construct
      *
      * @param FormFactoryInterface   $formFactory
@@ -45,11 +58,15 @@ class SpecificationController
     public function __construct(
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        PriceCalculator $calculator,
+        PricingExtension $pricingTwigExtension
     ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
+        $this->calculator = $calculator;
+        $this->pricingTwigExtension = $pricingTwigExtension;
     }
 
     /**
@@ -345,4 +362,29 @@ class SpecificationController
 
         return new JsonResponse($result);
     }
+    
+    public function info(Request $request, $itemId, $index)
+    {
+        /* @var $item \Furniture\SpecificationBundle\Entity\Specification */
+        $specification = $this->em->find(Specification::class, $itemId);
+        
+        if (!$specification) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found specification item with identifier "%s".',
+                $itemId
+            ));
+        }
+        
+        switch($index){
+            case 'totalPrice':
+                return new Response( 
+                        $this->pricingTwigExtension->money(
+                            $this->calculator->calculateForSpecification($specification)
+                                )
+                        );
+                break;
+        }
+        return new Response('');
+    }
+    
 }

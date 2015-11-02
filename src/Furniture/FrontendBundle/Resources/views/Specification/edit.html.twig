@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
                     <div class="col-sm-10">
-                        <a class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                        <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
 
                         {% if not specification.finished %}
                             <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
@@ -76,42 +76,40 @@
     </div>
 
     <div class="information-blocks">
-        <table class="table table-bordered">
+        <table id="specification-table" class="table" data-specification-id="{{ specification.id }}" >
             <thead>
-            <tr>
-                <th>{{ 'frontend.brand'|trans }}</th>
-                <th>{{ 'frontend.image'|trans }}</th>
-                <th>{{ 'frontend.name'|trans }}</th>
-                <th>{{ 'frontend.options'|trans }}</th>
-                <th>{{ 'frontend.note'|trans }}</th>
-                <th>{{ 'frontend.quantity'|trans }}</th>
-                <th>{{ 'frontend.price'|trans }}</th>
-                <th>{{ 'frontend.total_price'|trans }}</th>
-                <th>{{ 'frontend.actions'|trans }}</th>
-            </tr>
+                <tr>
+                    <th>{{ 'frontend.brand'|trans }}</th>
+                    <th>{{ 'frontend.image'|trans }}</th>
+                    <th>{{ 'frontend.name'|trans }}</th>
+                    <th>{{ 'frontend.options'|trans }}</th>
+                    <th>{{ 'frontend.note'|trans }}</th>
+                    <th>{{ 'frontend.quantity'|trans }}</th>
+                    <th>{{ 'frontend.price'|trans }}</th>
+                    <th>{{ 'frontend.total_price'|trans }}</th>
+                    <th>{#{{ 'frontend.actions'|trans }}#}</th>
+                </tr>
             </thead>
-
-            <tbody id="Specification" >
-            {% for specification_item in specification.items %}
-                {%if specification_item.skuItem %}
-                    {% include 'FrontendBundle:Specification/edit:_sku_table_item.html.twig' with {'specification_item':specification_item} %}
-                {% endif %}
-            {% endfor %}
+            <tbody>
+                {% for specification_item in specification.items %}
+                    {%if specification_item.skuItem %}
+                        {% include 'FrontendBundle:Specification/edit:_sku_table_item.html.twig' with {'specification_item':specification_item} %}
+                    {% elseif specification_item.customItem %}
+                        {% include 'FrontendBundle:Specification/edit:_custom_table_item.html.twig' with {'specification_item':specification_item} %}
+                    {% endif %}
+                {% endfor %}
             </tbody>
-
-            <tfoot data-sale-prototype="{{ block('specification_sale')|e }}">
-            {% for sale in specification.sales %}
-                {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
-            {% endfor %}
-            <tr>
-                <td colspan="7" class="text-right">{{ 'frontend.total_price'|trans }}</td>
-                <td class="total-price">{{ specification|specification_total_price|money }}</td>
-                <td></td>
-            </tr>
-            </tfoot>
+            <tfoot>
+                <tr>
+                    <td class="text-right" colspan="7">Total price</td>
+                    <td id="table-total-price">{{ specification|specification_total_price|money }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>     
         </table>
 
         <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
+        <a href="#" id="add-custom-item-btn" class="btn btn-success">AddCustom</a>
     </div>
 {% endblock %}
 
@@ -130,35 +128,79 @@
 
     {% if specification.id %}
         <script type="text/javascript">
-            (function ($){
+            (function ($) {
+                function isIntoView(el)
+                {
+                    var
+                        $window = $(window),
+                        docViewTop = $window.scrollTop(),
+                        docViewBottom = docViewTop + $window.height(),
+                        elTop = el.offset().top,
+                        elBottom = elTop + el.height();
+
+                    return ((elBottom <= docViewBottom) && (elTop >= docViewTop));
+                }
+
+                var
+                    scrollTo = function(el)
+                    {
+                        $('html, body').animate({
+                            scrollTop: el.offset().top-150
+                        }, 200);
+                    },
+
+                    scrollToView = function(el){
+                        if(!isIntoView(el)){
+                            scrollTo(el);
+                        }
+                    };
+
+                $.editable.addInputType('price', {
+                    element : function(settings, original) {
+                        var input = $('<input type="number" step="0.01">');
+                        $(this).append(input);
+
+                        return(input);
+                    },
+                    submit : function (settings, original) {
+                        if (isNaN($(original).val())) {
+                            alert('You must provide a number');
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                });
+
+                $.editable.addInputType('integer', {
+                    element : function(settings, original) {
+                        var input = $('<input type="number">');
+                        $(this).append(input);
+                        return(input);
+                    },
+                    submit : function (settings, original) {
+                        if (isNaN($(original).val())) {
+                            alert('You must provide a number');
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                });
+
+                var specificationId = {{ specification.id }};
                 
-            })(jQuery);
-        </script>
-        
-        <script type="text/javascript">
-            (function ($){
-                var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
-                    itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
-                    itemRemoveUrl = '{{ path('specification_api_specification_item_remove', {item: 123}) }}',
+                $(document).ready(function () {
+                    var progressBasr = '<div class="progress progress-striped active"><div class="progress-bar"  role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Saving ...</div>\</div>';
+                    /* Top form */
+                    var editableUrl = '{{ path('specification_api_specification_editable', {specification: specification.id}) }}',
+
                     editableParams = {
                         width: '100%',
                         height: '100%',
                         tooltip: '{{ 'frontend.click_to_edit'|trans }}'
-                    },
-                    updateTotalAmountViaQuantity = function (id, quantity) {
-                        var itemElement = $('.specification-item-info[data-id="' + id + '"]');
-
-                        if (!itemElement.size()) {
-                            throw new Error('Not found element with id "' + id + '".');
-                        }
-
-                        var price = parseInt(itemElement.data('price')),
-                            totalPrice = price * quantity;
-
-                        itemElement.find('.total-price').text((Math.round(totalPrice / 100, 2)) + ' EUR');
                     };
 
-                $(document).ready(function (){
                     $('.specification-info .editable.name').editable(editableUrl, editableParams);
 
                     $('.specification-info .editable.description').editable(editableUrl, $.extend({
@@ -172,101 +214,370 @@
 
                     }, editableParams));
 
-                    $('.specification-item-info').each(function (){
-                        var itemId = parseInt($(this).data('id')),
-                            url = itemEditableUrl.replace(/123/, itemId.toString()),
-                            itemElement = $(this);
+                    $('#remove-current-specification').click(function(){
+                        var a = $(this);
 
-                        $(this).find('.editable.note').editable(url, editableParams);
-                        $(this).find('.editable.quantity').editable(url, $.extend({
-                            callback: function (value) {
-                                updateTotalAmountViaQuantity(itemId, value);
+                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification'|trans }}', function(result) {
+                            if(result){
+                                window.location = a.attr('href');
                             }
-                        }, editableParams));
+                        });
+                        return false;
+                    });
+        
+                    /* table code */
+                    var
+                        trTotalPriceUpdater = function(tr)
+                        {
+                            var url = '{{path('specification_api_specification_custom_Item_info', { itemId: 123, index: 'itemIndex' })}}'
+                                    .replace( /123/, tr.data('id').toString())
+                                    .replace(/itemIndex/, 'totalPrice');
 
-                        $(this).find('.remove').click(function () {
-                            itemElement.addClass('danger');
-                            $(this).prop('disabled', true);
-                            var aElement = $(this);
+                            $.ajax({
+                                url: url,
+                                type: 'get',
+                                success: function (res) {
+                                    tr.find('td:eq(7)').html(res);
+                                }
+                            });
+                        },
 
-                            if (confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}')) {
-                                $.ajax({
-                                    url: itemRemoveUrl.replace(/123/, itemId.toString()),
-                                    complete: function () {
-                                        itemElement.removeClass('danger');
-                                        aElement.prop('disabled', false);
-                                    },
-                                    error: function () {
-                                        alert('Error with remove specification item. Please try again.');
-                                    },
-                                    success: function () {
-                                        itemElement.animate({
-                                            height: '0px'
-                                        }, 500, 'swing', function () {
-                                            itemElement.remove();
+                        trTotalPriceSpecificationUpdater = function()
+                        {
+                            var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
+                                    .replace( /123/, $('#specification-table').data('specification-id').toString())
+                                    .replace(/itemIndex/, 'totalPrice');
+
+                            $.ajax({
+                                url: url,
+                                type: 'get',
+                                success: function (res) {
+                                    $('#table-total-price').html(res);
+                                }
+                            });
+                        },
+
+                        getTdTableEditableBaseOption = function(dataTableO, tr, td, itemCallback)
+                        {
+                            var
+                                itemIndex = td.data('index'),
+                                inputType = td.data('type'),
+                                table = dataTableO;
+
+                            itemCallback = itemCallback ? itemCallback : function(){};
+
+                            return {
+                                "type": inputType,
+                                "submit": (inputType === "textarea") ? '<button type="button" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>' : false,
+                                "onreset": function(){
+                                    tr.removeClass('active');
+                                },
+                                "callback": function( sValue, y ) {
+                                    var aPos = table.fnGetPosition( this );
+                                    table.fnUpdate( sValue, aPos[0], aPos[1] );
+                                    tr.animate({
+                                        opacity: 0.0
+                                    }, 200 ).promise().then(function(){
+                                        tr.animate({
+                                            opacity: 1
+                                        }, 300 );
+                                    });
+
+                                    itemCallback();
+
+                                    scrollToView(tr);
+                                },
+                                "submitdata": function ( value, settings ) {
+                                    return {
+                                        id: itemIndex
+                                    };
+                                },
+                                "indicator": function(){
+                                    return progressBasr;
+                                },
+                                "height": "100%",
+                                "width": "100%"
+                            }
+                        },
+
+                        initializeUploaderForTableRow = function (tr)
+                        {
+                            tr.find('.image-ajax-container').each(function () {
+                                var q = new ImageAjax($(this), {
+                                    onRemove: function () {
+                                        tr.addClass('danger');
+
+                                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
+                                            if (result) {
+                                                $.ajax({
+                                                    url: '{{ path('specification_api_specification_custom_item_remove_image', {item: 123}) }}'.replace(/123/, tr.data('custom-id')),
+                                                    method: 'GET',
+                                                    complete: function () {
+                                                        tr.removeClass('danger');
+                                                    },
+                                                    success: function () {
+                                                        q.setImagePath('');
+                                                        q.viewImageUpload();
+                                                    },
+                                                    error: function () {
+                                                    }
+                                                });
+                                            } else {
+                                                tr.removeClass('danger');
+                                            }
                                         });
+
+                                        return false;
                                     }
                                 });
-                            } else {
-                                itemElement.removeClass('danger');
-                            }
+                            });
+                        },
 
+                        customItemInitializer = {
+                            editableRoute: '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}',
+                            tdDefaultSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                var itemId = tr.data('id');
+                                td.click(function(){
+                                        tr.parents('table:first').find('.active').removeClass('active');
+                                        tr.addClass('active');
+                                    });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
+                            },
+                            trPriceSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                var itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
+                                    trTotalPriceUpdater(tr);
+                                    trTotalPriceSpecificationUpdater();
+                                }));
+                            }
+                        },
+
+                        specificationItemInitializer = {
+                            editableRoute: '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
+                                tdDefaultSubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td) );
+                            },
+                            tdQuantitySubject: function(dataTableO, tr, td){
+                                td.unbind();
+                                itemId = tr.data('id');
+                                td.click(function(){
+                                    tr.parents('table:first').find('.active').removeClass('active');
+                                    tr.addClass('active');
+                                });
+                                var url = this.editableRoute.replace(/123/, itemId.toString());
+                                td.editable( url, getTdTableEditableBaseOption(dataTableO, tr, td, function(){
+                                    trTotalPriceUpdater(tr);
+                                    trTotalPriceSpecificationUpdater();
+                                }));
+                            }
+                        },
+
+                        table = $('#specification-table').dataTable({
+                            "dom": '<"top"><"bottom"flp><"clear">',
+                            "paging": false,
+                            "rowCallback": function( row, data, index ) {
+                                var itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}';
+                                var customItemEditableUrl = '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}';
+                                var tr = $(row);
+                                tr.find('td').each(function(i){
+                                    var td = $(this);
+
+                                    if( !td.data('type') || !td.data('server-type') || !td.data('index')) {
+                                        return;
+                                    }
+
+                                    if(td.data('index') === 'price'){
+                                        customItemInitializer.trPriceSubject(table, tr, td);
+                                    }else if(td.data('index') === 'quantity'){
+                                        specificationItemInitializer.tdQuantitySubject(table, tr, td);
+                                    }else if(td.data('server-type') === 'custom-item'){
+                                        customItemInitializer.tdDefaultSubject(table, tr, td);
+                                    }else if(td.data('server-type') === 'specification-item'){
+                                        specificationItemInitializer.tdDefaultSubject(table, tr, td);
+                                    }
+                                });
+                            },
+                            "columns": [{ orderable: true },
+                                { orderable: false },
+                                { orderable: false },
+                                { orderable: false },
+                                null,
+                                null,
+                                null,
+                                null,
+                                { orderable: false }
+                            ]
+                        }),
+
+                        tableEdit = table.DataTable();
+
+                    tableEdit.draw();
+
+
+                    /* Add custom row */
+                    $('#add-custom-item-btn').click(function(){
+                        $.ajax({
+                            url: '{{ path('specification_api_specification_custom_Item_add') }}',
+                            type: 'post',
+                            data: {
+                                specification: specificationId,
+                                factoryName: '',
+                                name: '',
+                                price: 0,
+                                quantity: 1,
+                                note: ''
+                            },
+                            error: function () {
+                                alert('Error adding specification item. Please try again.');
+                            },
+                            success: function (res) {
+                                var
+                                    data = res.data,
+                                    rowData = [];
+
+                                rowData.push(data.factoryName ? data.factoryName : '' );
+                                rowData.push('');
+                                rowData.push(data.name ? data.name : '' );
+                                rowData.push(data.options ? data.options : '' );
+                                rowData.push(data.note ? data.note : '' );
+                                rowData.push(data.quantity+'');
+                                rowData.push('0');
+                                rowData.push('0');
+                                rowData.push('edit');
+
+                                var row = $(tableEdit.row.add(rowData).node());
+
+                                var imageAjaxContainer = '<div class="image-ajax-container" data-full-name="custom[__custom_id__][path]" data-url-upload="__upload_url__">\
+                                        <div class="image-upload">\
+                                            <img data-src="holder.js/150x150?text=Choose image" width="150" height="150" />\
+                                        </div>\
+                                        <div class="form-widget">\
+                                            <input type="hidden" name="custom[__custom_id__][path]" />\
+                                        </div>\
+                                        <div class="image-container">\
+                                            <div class="image">\
+                                                <img width="150" height="150" src="" />\
+                                            </div>\
+                                            <a class="btn btn-danger btn-xs" href="#remove-image">\
+                                                <i class="fa fa-remove">Remove</i>\
+                                            </a>\
+                                        </div>\
+                                    </div>';
+
+                                imageAjaxContainer = imageAjaxContainer
+                                    .replace(/__custom_id__/g, data.customId)
+                                    .replace(/__upload_url__/g, '{{ path('specification_api_specification_custom_item_upload_image', {item: 123}) }}'.replace(/123/, data.customId));
+
+                                row
+                                    .find('td').last()
+                                    .html('<a class="btn btn-danger btn-xs remove" href="#"><i class="fa fa-trash-o"></i>{{ 'frontend.remove'|trans }}</a>');
+
+                                row
+                                    .data('id', data.id)
+                                    .data('custom-id', data.customId);
+
+                                row
+                                    .find('td:eq(0)')
+                                    .data('index', 'factoryName')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item');
+
+                                row
+                                    .find('td:eq(1)')
+                                    .html(imageAjaxContainer);
+
+                                row.find('td:eq(2)')
+                                    .data('index', 'name')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item');
+                            
+                                row.find('td:eq(3)')
+                                    .data('index', 'options')
+                                    .data('type', 'textarea')
+                                    .data('server-type', 'custom-item');
+
+                                row.find('td:eq(4)')
+                                    .data('index', 'note')
+                                    .data('type', 'textarea')
+                                    .data('server-type', 'specification-item');
+
+                                row.find('td:eq(5)')
+                                    .data('index', 'quantity')
+                                    .data('type', 'integer')
+                                    .data('server-type', 'specification-item');
+
+                                row.find('td:eq(6)')
+                                    .data('index', 'price')
+                                    .data('type', 'price')
+                                    .data('server-type', 'custom-item');
+
+                                tableEdit.row(row).draw();
+                                scrollToView(row);
+                                row.addClass('active');
+                                initializeUploaderForTableRow(row);
+                                Holder.run(row.find('.image-container img').get(0));
+                            }
+                        });
+
+                        return false;
+                    });
+
+                    $('tr[data-custom-id]').each(function () {
+                        initializeUploaderForTableRow($(this));
+                    });
+
+                    /* Delete row */
+                    $(document).on('click', '#specification-table .remove', function () {
+                            var a = $(this);
+                            var td = a.parents('td').first();
+                            var tr = td.parents('tr').first();
+                            var itemId = tr.data('id');
+                            tr.addClass('danger');
+                            bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}', function(result) {
+                                if(result){
+                                    td.html(progressBasr);
+                                    $.ajax({
+                                        url: '{{ path('specification_api_specification_item_remove', {item: 123}) }}'.replace(/123/, itemId.toString()),
+                                        complete: function () {
+                                            tr.removeClass('danger');
+                                            a.prop('disabled', false);
+                                        },
+                                        error: function () {
+                                            alert('Error with remove specification item. Please try again.');
+                                        },
+                                        success: function () {
+                                            tr.animate({
+                                                height: '0px'
+                                            }, 50, 'swing', function () {
+                                                tableEdit
+                                                        .row(tr)
+                                                        .remove()
+                                                        .draw();
+                                            });
+                                        }
+                                    });
+                                }else{
+                                    tr.removeClass('danger');
+                                }
+                            }); 
                             return false;
-                        });
-                    });
-
-                    $('tr.specification-sale .editable').each(function (){
-                        var index = $(this).data('index');
-                        $(this).editable(editableUrl, {
-                            submitdata: function (value) {
-                                return {
-                                    index: index
-                                }
-                            }
-                        });
-                    });
-
-                    $('.total-price').click(function () {
-                        var sales = $('.specification-sale'),
-                            hasNotPressed = false,
-                            checkPressed = function () {
-                                if ($(this).find('input').size() > 0) {
-                                    hasNotPressed = true;
-                                }
-
-                                if (!parseFloat($(this).text())) {
-                                    hasNotPressed = true;
-                                }
-                            };
-
-                        sales.each(checkPressed);
-
-                        if (sales.size() >= 3 || hasNotPressed) {
-                            // Only 3 sales allowed or any not pressed
-                            return;
-                        }
-
-                        var tFoot = $('tfoot[data-sale-prototype]');
-                        var proto = tFoot.attr('data-sale-prototype')
-                                .replace(/__index__/, sales.size() + 1)
-                                .replace(/__sale__/, 0),
-                            e = $(proto);
-
-                        if (sales.size()) {
-                            sales.last().after(e);
-                        } else {
-                            tFoot.prepend(e);
-                        }
-
-                        e.find('.editable').editable(editableUrl, {
-                            submitdata: function (value) {
-                                return {
-                                    index: sales.size() + 1
-                                }
-                            }
-                        }).click();
-                    });
-                });
+                    });                    
+                })
             })(jQuery);
         </script>
     {% endif %}

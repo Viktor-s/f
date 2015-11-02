@@ -56,6 +56,13 @@ class SpecificationItem
     private $skuItem;
     
     /**
+     *
+     * @var \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     */
+    private $customItem;
+
+
+    /**
      * Construct
      */
     public function __construct()
@@ -244,6 +251,29 @@ class SpecificationItem
         return $this->skuItem;
     }
     
+    /**
+     * 
+     * @param \Furniture\SpecificationBundle\Entity\CustomSpecificationItem $customItem
+     * @return \Furniture\SpecificationBundle\Entity\SpecificationItem
+     */
+    public function setCustomItem(CustomSpecificationItem $customItem)
+    {
+        $this->clearMappingFields();
+        $this->customItem = $customItem;
+        $customItem->setSpecificationItem($this);
+        return $this;
+    }
+
+    /**
+     * 
+     * @return \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     */
+    public function getCustomItem()
+    {
+        return $this->customItem;
+    }
+
+
     /**
      * Clear mapping fields
      */
