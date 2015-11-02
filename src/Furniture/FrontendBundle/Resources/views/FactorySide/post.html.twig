@@ -20,7 +20,7 @@
 
         {% if post.images|length > 0 %}
             <div class="images">
-                <img src="{{ factory.images.first }}" width="150" height="150" />
+                <img src="{{ factory.images.first.path }}" width="150" height="150" />
                 {#
                 {% for image in post.images %}
                     <img src="{{ image.path|imagine_filter('s150x150') }}" width="150" height="150" />
