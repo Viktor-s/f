@@ -1,8 +1,123 @@
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
 <div class="tab-pane" id="categorization">
-    {{ form_row(form.spaces) }}
-    {{ form_row(form.types) }}
-    {{ form_row(form.categories) }}
-    {{ form_row(form.styles) }}
+    <div class="form-group">
+        {{ form_label(form.spaces) }}
+
+        <div class="col-lg-10">
+            {% set level = 1 %}
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for space in form.spaces %}
+                    {% set currentLevel = form.spaces.vars.choices[space.vars.value].data.level %}
+                    <li>
+                        {% if currentLevel != level %}
+                            </ul>
+                            <ul class="hierarchy-node list-unstyled level-{{ currentLevel }}" data-level="{{ currentLevel }}" style="width: 100%; margin-left: {{ currentLevel * 20 }}px">
+                            {% set level = currentLevel %}
+                        {% endif %}
+
+                        {{ form_widget(space) }}
+                        {{ form.spaces.vars.choices[space.vars.value].data.translate.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.types) }}
+
+        <div class="col-lg-10">
+            {% set level = 1 %}
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for type in form.types %}
+                    {% set currentLevel = form.types.vars.choices[type.vars.value].data.level %}
+                    <li>
+                        {% if currentLevel != level %}
+                            </ul>
+                            <ul class="hierarchy-node list-unstyled level-{{ currentLevel }}" data-level="{{ currentLevel }}" style="width: 100%; margin-left: {{ currentLevel * 20 }}px">
+                            {% set level = currentLevel %}
+                        {% endif %}
+
+                        {{ form_widget(type) }}
+                        {{ form.types.vars.choices[type.vars.value].data.translate.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.categories) }}
+
+        <div class="col-lg-10">
+            {% set level = 1 %}
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for category in form.categories %}
+                    {% set currentLevel = form.categories.vars.choices[category.vars.value].data.level %}
+                    <li>
+                        {% if currentLevel != level %}
+                            </ul>
+                            <ul class="hierarchy-node list-unstyled level-{{ currentLevel }}" data-level="{{ currentLevel }}" style="width: 100%; margin-left: {{ currentLevel * 20 }}px">
+                            {% set level = currentLevel %}
+                        {% endif %}
+
+                        {{ form_widget(category) }}
+                        {{ form.categories.vars.choices[category.vars.value].data.translate.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.styles) }}
+
+        <div class="col-lg-10">
+            {% set level = 1 %}
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for style in form.styles %}
+                    {% set currentLevel = form.styles.vars.choices[style.vars.value].data.level %}
+                    <li>
+                        {% if currentLevel != level %}
+                            </ul>
+                            <ul class="hierarchy-node list-unstyled level-{{ currentLevel }}" data-level="{{ currentLevel }}" style="width: 100%; margin-left: {{ currentLevel * 20 }}px">
+                            {% set level = currentLevel %}
+                        {% endif %}
+
+                        {{ form_widget(style) }}
+                        {{ form.styles.vars.choices[style.vars.value].data.translate.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.styles) }}
+
+        <div class="col-lg-10">
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for readiness in form.readinesses %}
+                    <li>
+                        {{ form_widget(readiness) }}
+                        {{ form.readinesses.vars.choices[readiness.vars.value].data.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+
+    {{ form_row(form.readinesses) }}
 </div>

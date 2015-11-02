@@ -74,9 +74,9 @@ class Product extends BaseProduct
     protected $styles;
 
     /**
-     * @var Readiness
+     * @var Collection|Readiness[]
      */
-    private $readiness;
+    private $readinesses;
 
     /**
      * Constructor.
@@ -98,6 +98,7 @@ class Product extends BaseProduct
         $this->types = new ArrayCollection();
         $this->spaces = new ArrayCollection();
         $this->styles = new ArrayCollection();
+        $this->readinesses = new ArrayCollection();
     }
     
     /**
@@ -599,27 +600,59 @@ class Product extends BaseProduct
     }
 
     /**
-     * Set readiness
+     * Has readiness?
+     *
+     * @param Readiness $readiness
+     *
+     * @return bool
+     */
+    public function hasReadiness(Readiness $readiness)
+    {
+        return $this->readinesses->exists(function ($key, Readiness $item) use ($readiness) {
+            return $readiness->getId() == $item->getId();
+        });
+    }
+
+    /**
+     * Add readiness
      *
      * @param Readiness $readiness
      *
      * @return Product
      */
-    public function setReadiness(Readiness $readiness = null)
+    public function addReadiness(Readiness $readiness)
     {
-        $this->readiness = $readiness;
+        if (!$this->hasReadiness($readiness)) {
+            $this->readinesses->add($readiness);
+        }
 
         return $this;
     }
 
     /**
-     * Get readiness
+     * Remove readiness
+     *
+     * @param Readiness $readiness
+     *
+     * @return Product
+     */
+    public function removeReadiness(Readiness $readiness)
+    {
+        if ($this->hasReadiness($readiness)) {
+            $this->readinesses->removeElement($readiness);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get readinesses
      *
      * @return Readiness
      */
-    public function getReadiness()
+    public function getReadinesses()
     {
-        return $this->readiness;
+        return $this->readinesses;
     }
 
     /**

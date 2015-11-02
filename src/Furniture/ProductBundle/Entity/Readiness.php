@@ -76,4 +76,14 @@ class Readiness
     {
         return $this->position;
     }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName() ?: '';
+    }
 }

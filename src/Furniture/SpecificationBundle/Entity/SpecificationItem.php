@@ -50,17 +50,14 @@ class SpecificationItem
     private $updatedAt;
 
     /**
-     *
-     * @var \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     * @var SkuSpecificationItem
      */
     private $skuItem;
     
     /**
-     *
-     * @var \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     * @var CustomSpecificationItem
      */
     private $customItem;
-
 
     /**
      * Construct
@@ -213,8 +210,7 @@ class SpecificationItem
      */
     public function getPrice()
     {
-        if($this->getSkuItem())
-        {
+        if ($this->getSkuItem()) {
             return $this->getSkuItem()->getProductVariant()->getPrice();
         }
         
@@ -230,21 +226,25 @@ class SpecificationItem
     }
     
     /**
-     * 
-     * @param \Furniture\SpecificationBundle\Entity\SkuSpecificationItem $skuItem
-     * @return \Furniture\SpecificationBundle\Entity\SpecificationItem
+     * Set SKU item
+     *
+     * @param SkuSpecificationItem $skuItem
+     *
+     * @return SpecificationItem
      */
     public function setSkuItem(SkuSpecificationItem $skuItem)
     {
         $this->clearMappingFields();
         $this->skuItem = $skuItem;
         $this->skuItem->setSpecificationItem($this);
+
         return $this;
     }
     
     /**
-     * 
-     * @return \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     * Get SKU item
+     *
+     * @return SkuSpecificationItem
      */
     public function getSkuItem()
     {
@@ -252,27 +252,30 @@ class SpecificationItem
     }
     
     /**
-     * 
-     * @param \Furniture\SpecificationBundle\Entity\CustomSpecificationItem $customItem
-     * @return \Furniture\SpecificationBundle\Entity\SpecificationItem
+     * Set custom item
+     *
+     * @param CustomSpecificationItem $customItem
+     *
+     * @return SpecificationItem
      */
     public function setCustomItem(CustomSpecificationItem $customItem)
     {
         $this->clearMappingFields();
         $this->customItem = $customItem;
         $customItem->setSpecificationItem($this);
+
         return $this;
     }
 
     /**
-     * 
-     * @return \Furniture\SpecificationBundle\Entity\CustomSpecificationItem
+     * Get custom item
+     *
+     * @return CustomSpecificationItem
      */
     public function getCustomItem()
     {
         return $this->customItem;
     }
-
 
     /**
      * Clear mapping fields
@@ -281,5 +284,4 @@ class SpecificationItem
     {
         $this->skuItem = null;
     }
-    
 }

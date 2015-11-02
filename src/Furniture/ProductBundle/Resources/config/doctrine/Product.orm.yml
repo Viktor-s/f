@@ -27,14 +27,6 @@ Furniture\ProductBundle\Entity\Product:
                 onDelete: "SET NULL"
                 nullable: true
 
-        readiness:
-            targetEntity: Furniture\ProductBundle\Entity\Readiness
-            joinColumn:
-                name: readiness_id
-                referencedColumnName: id
-                onDelete: "SET NULL"
-                nullable: true
-
     manyToMany:
         subProducts:
             targetEntity: Product
@@ -120,6 +112,20 @@ Furniture\ProductBundle\Entity\Product:
 
                 inverseJoinColumns:
                     style_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        readinesses:
+            targetEntity: Furniture\ProductBundle\Entity\Readiness
+            joinTable:
+                name: product_readiness_relation
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    readiness_id:
                         referencedColumnName: id
                         onDelete: CASCADE
 

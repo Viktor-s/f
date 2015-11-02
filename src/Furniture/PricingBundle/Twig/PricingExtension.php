@@ -92,7 +92,7 @@ class PricingExtension extends \Twig_Extension
      */
     public function specificationItemTotalPrice(SpecificationItem $specificationItem)
     {
-        return $this->calculator->calculateForSpecificationItem($specificationItem);
+        return $this->calculator->calculateTotalForSpecificationItem($specificationItem);
     }
 
     /**

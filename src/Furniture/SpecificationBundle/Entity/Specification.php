@@ -5,6 +5,7 @@ namespace Furniture\SpecificationBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 use Furniture\SpecificationBundle\Model\GroupedItemsByFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -189,7 +190,7 @@ class Specification
         $grouped = [];
 
         foreach ($this->items as $item) {
-            if($skuVariant = $item->getSkuItem()){
+            if ($skuVariant = $item->getSkuItem()){
                 $variant = $skuVariant->getProductVariant();
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
                 $product = $variant->getProduct();
@@ -212,6 +213,47 @@ class Specification
 
         foreach ($grouped as $groupInfo) {
             $result->add(new GroupedItemsByFactory($groupInfo['factory'], $groupInfo['items']));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get grouped custom items by factory
+     *
+     * @return Collection|GroupedCustomItemsByFactory[]
+     */
+    public function getGroupedCustomItemsByFactory()
+    {
+        $grouped = [];
+
+        foreach ($this->items as $item) {
+            if ($customItem = $item->getCustomItem()) {
+                $factoryName = $customItem->getFactoryName();
+
+                if (!$factoryName) {
+                    $factoryName = 'Without name';
+                }
+
+                $key = strtolower($factoryName);
+
+                if (!isset($grouped[$key])) {
+                    $grouped[$key] = [
+                        'factory_name' => $factoryName,
+                        'items' => new ArrayCollection()
+                    ];
+                }
+
+                /** @var Collection $items */
+                $items = $grouped[$key]['items'];
+                $items->add($item);
+            }
+        }
+
+        $result = new ArrayCollection();
+
+        foreach ($grouped as $groupInfo) {
+            $result->add(new GroupedCustomItemsByFactory($groupInfo['factory_name'], $groupInfo['items']));
         }
 
         return $result;

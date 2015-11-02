@@ -6,6 +6,10 @@ use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
+use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ExcelExporter implements ExporterInterface
@@ -21,15 +25,31 @@ class ExcelExporter implements ExporterInterface
     private $priceCalculator;
 
     /**
+     * @var DataManager
+     */
+    private $imagineDataManager;
+
+    /**
+     * @var FilterManager
+     */
+    private $filterManager;
+
+    /**
      * Construct
      *
      * @param TranslatorInterface $translator
      * @param PriceCalculator     $priceCalculator
      */
-    public function __construct(TranslatorInterface $translator, PriceCalculator $priceCalculator)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        PriceCalculator $priceCalculator,
+        DataManager $imagineDataManager,
+        FilterManager $filterManager
+    ) {
         $this->translator = $translator;
         $this->priceCalculator = $priceCalculator;
+        $this->imagineDataManager = $imagineDataManager;
+        $this->filterManager = $filterManager;
     }
 
     /**
@@ -103,11 +123,12 @@ class ExcelExporter implements ExporterInterface
         $rowIndex = 5;
         $numberOfRecords = 1;
         foreach ($specification->getItems() as $item) {
-            if( $skuItem = $item->getSkuItem() ){
+            $cellIndex = 1;
+
+            if ($skuItem = $item->getSkuItem()) {
                 $productVariant = $skuItem->getProductVariant();
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
                 $product = $productVariant->getProduct();
-                $cellIndex = 1;
 
                 if ($fieldMap->hasFieldNumber()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
@@ -122,6 +143,13 @@ class ExcelExporter implements ExporterInterface
 
                 if ($fieldMap->hasFieldPhoto()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
+
+                    $image = $item->getSkuItem()->getProductVariant()->getImage();
+
+                    if ($image && $image->getPath()) {
+                        $obj = $this->createImageForExcel($image->getPath(), $key);
+                        $obj->setWorksheet($activeSheet);
+                    }
                 }
 
                 if ($fieldMap->hasFieldName()) {
@@ -161,12 +189,72 @@ class ExcelExporter implements ExporterInterface
 
                 if ($fieldMap->hasFieldTotalPrice()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
-                    $price = $this->priceCalculator->calculateForSpecificationItem($item);
+                    $price = $this->priceCalculator->calculateTotalForSpecificationItem($item);
+                    $activeSheet->setCellValue($key, $price . ' EUR');
+                }
+            } else if ($customItem = $item->getCustomItem()) {
+                if ($fieldMap->hasFieldNumber()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $numberOfRecords++);
+                }
+
+                if ($fieldMap->hasFieldFactory()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $customItem->getFactoryName());
+                }
+
+                if ($fieldMap->hasFieldPhoto()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+
+                    $image = $customItem->getImage();
+
+                    if ($image && $image->getPath()) {
+                        $obj = $this->createImageForExcel($image->getPath(), $key);
+                        $obj->setWorksheet($activeSheet);
+                    }
+                }
+
+                if ($fieldMap->hasFieldName()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $customItem->getName());
+                }
+
+                if ($fieldMap->hasFieldArticle()) {
+                    $cellIndex++;
+                }
+
+                if ($fieldMap->hasFieldSize()) {
+                    $cellIndex++;
+                }
+
+                if ($fieldMap->hasFieldCharacteristics()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $customItem->getOptions());
+                }
+
+                if ($fieldMap->hasFieldFinishes()) {
+                    $cellIndex++;
+                }
+
+                if ($fieldMap->hasFieldQuantity()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $activeSheet->setCellValue($key, $item->getQuantity());
+                }
+
+                if ($fieldMap->hasFieldPrice()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $price = $customItem->getPrice();
                     $activeSheet->setCellValue($key, $price . ' EUR');
                 }
 
-                $rowIndex++;
+                if ($fieldMap->hasFieldTotalPrice()) {
+                    $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                    $price = $this->priceCalculator->calculateTotalForSpecificationItem($item);
+                    $activeSheet->setCellValue($key, $price . ' EUR');
+                }
             }
+
+            $rowIndex++;
         }
 
         // Add header
@@ -236,7 +324,11 @@ class ExcelExporter implements ExporterInterface
         $numberOfRecords = 1;
 
         foreach ($specification->getItems() as $item) {
-            $productVariant = $item->getProductVariant();
+            if (!$item->getSkuItem()) {
+                continue;
+            }
+
+            $productVariant = $item->getSkuItem()->getProductVariant();
             /** @var \Furniture\ProductBundle\Entity\Product $product */
             $product = $productVariant->getProduct();
             $productFactory = $product->getFactory();
@@ -254,6 +346,13 @@ class ExcelExporter implements ExporterInterface
 
             if ($fieldMap->hasFieldPhoto()) {
                 $key = $this->generateCellKey($cellIndex++, $rowIndex);
+
+                $image = $item->getSkuItem()->getProductVariant()->getImage();
+
+                if ($image && $image->getPath()) {
+                    $obj = $this->createImageForExcel($image->getPath(), $key);
+                    $obj->setWorksheet($activeSheet);
+                }
             }
 
             if ($fieldMap->hasFieldSku()) {
@@ -308,6 +407,105 @@ class ExcelExporter implements ExporterInterface
 
         return $writer;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function exportForCustom(
+        Specification $specification,
+        FieldMapForCustom $fieldMap,
+        GroupedCustomItemsByFactory $grouped
+    )
+    {
+        $excel = $this->createPhpExcel($specification);
+        $excel->setActiveSheetIndex(0);
+        $activeSheet = $excel->getActiveSheet();
+
+        $index = 1;
+        if ($fieldMap->hasFieldNumber()) {
+            $key = $this->generateCellKey($index++, 6);
+            $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.number'));
+        }
+
+        if ($fieldMap->hasFieldPhoto()) {
+            $key = $this->generateCellKey($index++, 6);
+            $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.photo'));
+        }
+
+        if ($fieldMap->hasFieldName()) {
+            $key = $this->generateCellKey($index++, 6);
+            $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.name'));
+        }
+
+        if ($fieldMap->hasFieldQuantity()) {
+            $key = $this->generateCellKey($index++, 6);
+            $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.quantity'));
+        }
+
+        $countColumns = $index;
+        $rowIndex = 7;
+        $numberOfRecords = 1;
+
+        foreach ($grouped->getItems() as $item) {
+            $cellIndex = 1;
+
+            if ($fieldMap->hasFieldNumber()) {
+                $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                $activeSheet->setCellValue($key, $numberOfRecords++);
+            }
+
+            if ($fieldMap->hasFieldPhoto()) {
+                $key = $this->generateCellKey($cellIndex++, $rowIndex);
+
+                if ($item->getCustomItem()->getImage() && $item->getCustomItem()->getImage()->getPath()) {
+                    $obj = $this->createImageForExcel($item->getCustomItem()->getImage()->getPath(), $key);
+                    $obj->setWorksheet($activeSheet);
+                }
+            }
+
+            if ($fieldMap->hasFieldName()) {
+                $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                $activeSheet->setCellValue($key, $item->getCustomItem()->getName());
+            }
+
+            if ($fieldMap->hasFieldQuantity()) {
+                $key = $this->generateCellKey($cellIndex++, $rowIndex);
+                $activeSheet->setCellValue($key, $item->getQuantity());
+            }
+
+            $rowIndex++;
+        }
+
+        // Add header
+        $startCell = $this->generateCellKey(1, 1);
+        $endCell = $this->generateCellKey($countColumns, 1);
+        $activeSheet->mergeCells($startCell . ':' . $endCell);
+        $activeSheet->setCellValue($startCell, 'SPECIFICATION HEADER');
+
+        $startCell = $this->generateCellKey(1, 2);
+        $endCell = $this->generateCellKey($countColumns, 2);
+        $activeSheet->mergeCells($startCell . ':' . $endCell);
+        $activeSheet->setCellValue($startCell, sprintf(
+            '#%d %s %s',
+            $specification->getId(),
+            $specification->getName(),
+            $specification->getCreatedAt()->format('Y/m/d H:i')
+        ));
+
+        $startCell = $this->generateCellKey(1, 3);
+        $endCell = $this->generateCellKey($countColumns, 3);
+        $activeSheet->mergeCells($startCell . ':' . $endCell);
+        $activeSheet->setCellValue($startCell, sprintf(
+            '%s: %s',
+            $this->translator->trans('specification.excel.factory'),
+            $grouped->getFactoryName()
+        ));
+
+        $writer = new \PHPExcel_Writer_Excel2007($excel);
+
+        return $writer;
+    }
+
 
     /**
      * Generate characteristic
@@ -388,5 +586,48 @@ class ExcelExporter implements ExporterInterface
         $excel->getProperties()->setDescription($specification->getDescription());
 
         return $excel;
+    }
+
+    /**
+     * Get image resource with filter
+     *
+     * @param string $path
+     *
+     * @return \Liip\ImagineBundle\Binary\BinaryInterface|null
+     */
+    private function getImageResourceWithFilter($path)
+    {
+        try {
+            $binary = $this->imagineDataManager->find('s100x100', $path);
+        } catch (NotLoadableException $e) {
+            return null;
+        }
+
+        $binary = $this->filterManager->applyFilter($binary, 's100x100');
+
+        return $binary;
+    }
+
+    /**
+     * Create image for excel
+     *
+     * @param string $path
+     * @param string $coordinate
+     *
+     * @return \PHPExcel_Worksheet_MemoryDrawing
+     */
+    private function createImageForExcel($path, $coordinate)
+    {
+        $binary = $this->getImageResourceWithFilter($path);
+
+        $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
+        $objDrawing->setHeight(100);
+        $objDrawing->setWidth(100);
+
+        $imageResource = imagecreatefromstring($binary->getContent());
+        $objDrawing->setImageResource($imageResource);
+        $objDrawing->setCoordinates($coordinate);
+
+        return $objDrawing;
     }
 }
