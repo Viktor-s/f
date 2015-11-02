@@ -3361,9 +3361,6 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .accordeon h3{
     font-size: 24px;
 }
-.pgp-product-title {
-    margin-bottom: 5px;
-}
 .pgp-product-factory {
     margin-bottom: 5px;
     color: #696969;
@@ -3404,4 +3401,13 @@ header.fixed-header nav {
 }
 .specification-edit-head .editable form{
     margin-top: -6px;
+}
+
+.pgp-product-title {
+    margin-bottom: 5px;
+}
+.product-title--factory{
+    border-bottom: 1px #ebebeb solid;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
