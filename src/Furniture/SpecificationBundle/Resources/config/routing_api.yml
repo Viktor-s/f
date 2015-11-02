@@ -42,7 +42,7 @@ specification_api_specification_sku_item_add:
     path: /catalog/item/add
     methods: [ POST ]
     defaults:
-        _controller: specification.controller.api.specification.custom_item:add
+        _controller: specification.controller.api.specification.sku_item:add
 
 specification_api_specification_sku_item_edit:
     path: /catalog/item/{item}/edit
