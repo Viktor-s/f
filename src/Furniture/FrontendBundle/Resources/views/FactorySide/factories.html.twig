@@ -9,13 +9,14 @@
                 <div class="blog-landing-box type-4 columns-1">
                     {% for factory in factories %}
                         <div class="blog-entry">
-                            {% if factory.hasImages() %}
-                                <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}"><img src="{{ factory.primaryImage.path|imagine_filter('s201x123') }}" alt="{{ factory.translate.name }}" />
+                            <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}">
+                            {% if factory.logoImage %}
+                                <img src="{{ factory.logoImage.path|imagine_filter('s201x123') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% else %}
-                                <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}"><img src="{{ '/img/201x203.png' }}" alt="{{ factory.translate.name }}" />
+                                <img class="image hover-class-1" src="{{ '/img/201x203.png' }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% endif %}
-                                    <span class="hover-label">Show</span>
-                                </a>
+                                <span class="hover-label">Show</span>
+                            </a>
                             <div class="content">
                                 <a class="subtitle" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name }}</a>
                                 <div class="description">{{ factory.shortDescription }}</div>
