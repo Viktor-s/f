@@ -13,3 +13,8 @@ services:
 
     session.handler.native:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler
+
+    twig.extension.common:
+        class: Furniture\CommonBundle\Twig\CommonExtension
+        tags:
+            - { name: twig.extension }

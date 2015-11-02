@@ -6,8 +6,8 @@ use Furniture\CompositionBundle\Entity\Composite;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class SkuSpecificationItem {
-    
+class SkuSpecificationItem
+{
     /**
      * @var int
      */
@@ -26,15 +26,10 @@ class SkuSpecificationItem {
     private $composite;
     
     /**
-     *
      * @var \Furniture\SpecificationBundle\Entity\SpecificationItem
      */
     private $specificationItem;
-    
-    public function __construct() {
-        ;
-    }
-    
+
     /**
      * Get id
      *
@@ -46,9 +41,11 @@ class SkuSpecificationItem {
     }
     
     /**
-     * Set ProductVariant
-     * @param \Furniture\ProductBundle\Entity\ProductVariant $productVariant
-     * @return \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     * Set product variant
+     *
+     * @param ProductVariant $productVariant
+     *
+     * @return SkuSpecificationItem
      */
     public function setProductVariant(ProductVariant $productVariant)
     {
@@ -58,8 +55,9 @@ class SkuSpecificationItem {
     }
 
     /**
-     * Get ProductVariant
-     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     * Get product variant
+     *
+     * @return ProductVariant
      */
     public function getProductVariant()
     {
@@ -67,9 +65,11 @@ class SkuSpecificationItem {
     }
 
     /**
-     * 
-     * @param \Furniture\CompositionBundle\Entity\Composite $composite
-     * @return \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     * Set composition
+     *
+     * @param Composite $composite
+     *
+     * @return SkuSpecificationItem
      */
     public function setComposition(Composite $composite)
     {
@@ -79,8 +79,9 @@ class SkuSpecificationItem {
     }
 
     /**
-     * 
-     * @return \Furniture\CompositionBundle\Entity\Composite
+     * Get composite
+     *
+     * @return Composite
      */
     public function getComposite()
     {
@@ -88,13 +89,16 @@ class SkuSpecificationItem {
     }
     
     /**
-     * 
-     * @param \Furniture\SpecificationBundle\Entity\SpecificationItem $specificationItem
-     * @return \Furniture\SpecificationBundle\Entity\SkuSpecificationItem
+     * Set specification item
+     *
+     * @param SpecificationItem $specificationItem
+     *
+     * @return SkuSpecificationItem
      */
     public function setSpecificationItem(SpecificationItem $specificationItem)
     {
         $this->specificationItem = $specificationItem;
+
         return $this;
     }
     

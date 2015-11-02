@@ -5,9 +5,10 @@ services:
 
     specification.exporter.excel:
         class: Furniture\SpecificationBundle\Exporter\ExcelExporter
-        arguments: [ @translator, @pricing.calculator ]
+        arguments: [ @translator, @pricing.calculator, @liip_imagine.data.manager, @liip_imagine.filter.manager ]
 
     specification.event_subscriber.modified:
         class: Furniture\SpecificationBundle\EventListener\Doctrine\SpecificationModifiedSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+

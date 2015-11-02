@@ -135,6 +135,24 @@ class Category extends AbstractTranslatable
     }
 
     /**
+     * Get level
+     *
+     * @return int
+     */
+    public function getLevel()
+    {
+        $level = 0;
+
+        $parent = $this;
+
+        while ($parent = $parent->getParent()) {
+            $level++;
+        }
+
+        return $level;
+    }
+
+    /**
      * Implement __toString
      *
      * @return string

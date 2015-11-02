@@ -89,18 +89,18 @@ class PriceCalculator
      *
      * @return int
      */
-    public function calculateForSpecificationItem(SpecificationItem $specificationItem)
+    public function calculateTotalForSpecificationItem(SpecificationItem $specificationItem)
     {
         /* Calculate amount for specific item type */
-        if($specificationItem->getSkuItem()){
+        if ($specificationItem->getSkuItem()){
             $productVariant = $specificationItem->getSkuItem()->getProductVariant();
-
             $amount = $this->calculateForProductVariant($productVariant);
-        }elseif($specificationItem->getCustomItem()){
+        } else if($specificationItem->getCustomItem()){
             $amount = $specificationItem->getCustomItem()->getPrice();
+        } else {
+            throw new \RuntimeException('Can not resolve amount. Unavailable mode.');
         }
-        
-        
+
         $buyer = $specificationItem->getSpecification()->getBuyer();
 
         if ($buyer && $buyer->hasSale()) {
@@ -124,7 +124,7 @@ class PriceCalculator
         $price = 0;
 
         foreach ($specification->getItems() as $item) {
-            $price += $this->calculateForSpecificationItem($item);
+            $price += $this->calculateTotalForSpecificationItem($item);
         }
 
         foreach ($specification->getSales() as $sale) {

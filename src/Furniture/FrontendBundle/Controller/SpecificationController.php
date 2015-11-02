@@ -9,6 +9,7 @@ use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\ExporterInterface;
 use Furniture\SpecificationBundle\Exporter\FieldMapForClient;
+use Furniture\SpecificationBundle\Exporter\FieldMapForCustom;
 use Furniture\SpecificationBundle\Exporter\FieldMapForFactory;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -241,10 +242,12 @@ class SpecificationController
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
+        $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
             'specification' => $specification,
-            'grouped_items_by_factory' => $groupedItemsByFactory
+            'grouped_items_by_factory' => $groupedItemsByFactory,
+            'grouped_custom_items_by_factory' => $groupedCustomItemsByFactory
         ]);
 
         return new Response($content);
@@ -285,8 +288,12 @@ class SpecificationController
             // Search factory
             $factory = null;
             foreach ($specification->getItems() as $item) {
+                if (!$item->getSkuItem()) {
+                    continue;
+                }
+
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
-                $product = $item->getProductVariant()->getProduct();
+                $product = $item->getSkuItem()->getProductVariant()->getProduct();
                 $itemFactory = $product->getFactory();
 
                 if ($itemFactory->getId() == $factoryId) {
@@ -308,6 +315,36 @@ class SpecificationController
             $writer = $this->exporter->exportForFactory($specification, $fieldMap, $factory);
 
             return new ExcelResponse($writer, $factory->getName() . '.xlsx');
+        } else if ($request->query->get('mode') == 'custom') {
+            if (!$factoryName = $request->query->get('factory_name')) {
+                throw new NotFoundHttpException('Missing "factory_name" parameter.');
+            }
+
+            $groupedCustomItems = $specification->getGroupedCustomItemsByFactory();
+
+            // Search by factory name
+            $groupedItem = null;
+            foreach ($groupedCustomItems as $gItem) {
+                if (strtolower($gItem->getFactoryName()) == strtolower($factoryName)) {
+                    $groupedItem = $gItem;
+                    break;
+                }
+            }
+
+            if (!$groupedItem) {
+                throw new NotFoundHttpException(sprintf(
+                    'Not found factory with name "%s" for specification "%s [%d]".',
+                    $factoryName,
+                    $specification->getName(),
+                    $specification->getId()
+                ));
+            }
+
+            $fieldMap = new FieldMapForCustom($request->query->get('fields', []));
+            $writer = $this->exporter->exportForCustom($specification, $fieldMap, $groupedItem);
+
+            return new ExcelResponse($writer, $groupedItem->getFactoryName() . '.xlsx');
+
         } else {
             throw new NotFoundHttpException(sprintf(
                 'Invalid mode "%s".',

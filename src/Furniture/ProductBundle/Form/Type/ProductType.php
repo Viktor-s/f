@@ -6,6 +6,7 @@ use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\ProductBundle\Entity\Readiness;
 use Furniture\ProductBundle\Entity\Space;
 use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
@@ -60,19 +61,28 @@ class ProductType extends BaseProductType
             ])
             ->add('categories', 'entity', [
                 'class' => Category::class,
-                'multiple' => true
+                'multiple' => true,
+                'expanded' => true
             ])
             ->add('types', 'entity', [
                 'class' => Type::class,
-                'multiple' => true
+                'multiple' => true,
+                'expanded' => true
             ])
             ->add('styles', 'entity', [
                 'class' => Style::class,
-                'multiple' => true
+                'multiple' => true,
+                'expanded' => true
             ])
             ->add('spaces', 'entity', [
                 'class' => Space::class,
-                'multiple' => true
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('readinesses', 'entity', [
+                'class' => Readiness::class,
+                'multiple' => true,
+                'expanded' => true
             ]);
 
         // Replace taxons

@@ -30,7 +30,6 @@ class CustomSpecificationItem
     private $name;
     
     /**
-     *
      * @var string
      */
     private $options;
@@ -193,7 +192,7 @@ class CustomSpecificationItem
      */
     public function setPrice($price)
     {
-        $this->price = (int)$price;
+        $this->price = (int) $price;
 
         return $this;
     }

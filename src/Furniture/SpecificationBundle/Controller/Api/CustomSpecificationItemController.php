@@ -197,7 +197,7 @@ class CustomSpecificationItemController
         
         switch($index){
             case 'totalPrice':
-                $amount = $this->calculator->calculateForSpecificationItem($specificationItem);
+                $amount = $this->calculator->calculateTotalForSpecificationItem($specificationItem);
                 $money = $this->pricingTwigExtension->money($amount);
 
                 return new Response($money);
