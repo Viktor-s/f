@@ -108,6 +108,7 @@ class CustomSpecificationItemController
                     'specification' => $specificationItem->getSpecification()->getId(),
                     'factoryName' => $specificationItem->getCustomItem()->getFactoryName(),
                     'name' => $specificationItem->getCustomItem()->getName(),
+                    'options' => $specificationItem->getCustomItem()->getOptions(),
                     'price' => $specificationItem->getCustomItem()->getPrice(),
                     'quantity' => $specificationItem->getQuantity(),
                     'note' => $specificationItem->getNote()
@@ -163,6 +164,9 @@ class CustomSpecificationItemController
 
             case 'name':
                 $item->getCustomItem()->setName($value);
+                break;
+            case 'options':
+                $item->getCustomItem()->setOptions($value);
                 break;
             case 'price':
                  $item->getCustomItem()->setPrice($value*100);

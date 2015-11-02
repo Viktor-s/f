@@ -32,6 +32,10 @@ Furniture\SpecificationBundle\Entity\CustomSpecificationItem:
         name:
             type: string
             nullable: true
+        options:
+            type: text
+            name: note
+            nullable: true
         price:
             type: string
             options:

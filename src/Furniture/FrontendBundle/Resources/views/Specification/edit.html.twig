@@ -453,7 +453,7 @@
                                 rowData.push(data.factoryName ? data.factoryName : '' );
                                 rowData.push('');
                                 rowData.push(data.name ? data.name : '' );
-                                rowData.push('options');
+                                rowData.push(data.options ? data.options : '' );
                                 rowData.push(data.note ? data.note : '' );
                                 rowData.push(data.quantity+'');
                                 rowData.push('0');
@@ -504,6 +504,11 @@
                                 row.find('td:eq(2)')
                                     .data('index', 'name')
                                     .data('type', 'text')
+                                    .data('server-type', 'custom-item');
+                            
+                                row.find('td:eq(3)')
+                                    .data('index', 'options')
+                                    .data('type', 'textarea')
                                     .data('server-type', 'custom-item');
 
                                 row.find('td:eq(4)')

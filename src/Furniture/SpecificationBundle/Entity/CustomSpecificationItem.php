@@ -30,6 +30,12 @@ class CustomSpecificationItem
     private $name;
     
     /**
+     *
+     * @var string
+     */
+    private $options;
+    
+    /**
      * @var int
      */
     private $price;
@@ -152,6 +158,30 @@ class CustomSpecificationItem
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set options
+     *
+     * @param string $options
+     *
+     * @return CustomSpecificationItem
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+    
+    /**
+     * Get options
+     *
+     * @return string
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
     
     /**
