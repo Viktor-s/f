@@ -106,7 +106,7 @@ frontend:
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile
-        dashboard: Dashboard
+        dashboard: Settings
         factory_rates: Factory rates
         user_relations: User relations
         factory_relations: Factory relations

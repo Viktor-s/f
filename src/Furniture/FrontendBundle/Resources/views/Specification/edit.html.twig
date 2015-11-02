@@ -556,6 +556,7 @@
                                         complete: function () {
                                             tr.removeClass('danger');
                                             a.prop('disabled', false);
+                                            trTotalPriceSpecificationUpdater();
                                         },
                                         error: function () {
                                             alert('Error with remove specification item. Please try again.');

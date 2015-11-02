@@ -37,7 +37,7 @@
 <div class="information-blocks">
     <div class="row">
 
-        <div class="col-md-2 col-md-push-10">
+        <div class="col-md-2 col-md-push-10" style="display:none;">
             <div class="sidebar-navigation">
                 <div class="title">Special offers:<i class="fa fa-angle-down"></i></div>
                 <div class="list">
@@ -52,55 +52,21 @@
             </div>
         </div>
 
-        <div class="col-md-10 col-md-pull-2">
+        <div class="col-md-12">
 
             <div class="navigation-banner-swiper">
-                <div class="swiper-container" data-autoplay="5000" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
+                <div class="swiper-container" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide active" data-val="0">
-                            <div class="navigation-banner-wrapper light-text align-1" style="background-image: url(/content/specials/aliante.jpg);">
+                            <div class="navigation-banner-wrapper light-text align-1" style="background-image: url(/content/specials/news.jpg); background-position: right -100px;">
                                 <div class="navigation-banner-content">
                                     <div class="cell-view">
                                         <div class="cell-view-inner">
-                                            <h2 class="subtitle">Antonelloitalia ALIANTE</h2>
-                                            <h1 class="title">-50%</h1>
-                                            <div class="description">12 available. Till 21/05/16</div>
+                                            <h2 class="subtitle">ЗЕЛЕНЫЙ, СИНИЙ, ГОЛУБОЙ - КАКОЙ? БИРЮЗОВЫЙ!</h2>
+                                            
+                                            <div class="description" style="font-family: sans-serif; ">Тенденции последних лет ведут к упрощению колористики в интерьере, цвета становятся более пастельными, «выстиранными».</div>
                                             <div class="info">
-                                                <a class="button style-1" href="#">More details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide" data-val="1">
-                            <div class="navigation-banner-wrapper light-text align-2" style="background-image: url(/content/specials/david03.jpg);">
-                                <div class="navigation-banner-content">
-                                    <div class="cell-view">
-                                        <div class="cell-view-inner">
-                                            <h2 class="subtitle">Antonelloitalia DAVID</h2>
-                                            <h1 class="title">-30%</h1>
-                                            <div class="description">Available till 01/02/16</div>
-                                            <div class="info">
-                                                <a class="button style-1" href="#">More details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide" data-val="2">
-                            <div class="navigation-banner-wrapper light-text align-1" style="background-image: url(/content/specials/igor04.jpg);">
-                                <div class="navigation-banner-content">
-                                    <div class="cell-view">
-                                        <div class="cell-view-inner">
-                                            <h2 class="subtitle">Antonelloitalia IGOR</h2>
-                                            <h1 class="title">-30%</h1>
-                                            <div class="description">Available till 01/02/16</div>
-                                            <div class="info">
-                                                <a class="button style-1" href="#">More details</a>
+                                                <a class="button style-1" href="{{ path('factory_side_news_view', { factory: 6, slug: 'colors'}) }}">Читать далее</a>
                                             </div>
                                         </div>
                                     </div>

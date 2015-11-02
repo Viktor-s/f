@@ -3361,9 +3361,6 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .accordeon h3{
     font-size: 24px;
 }
-.pgp-product-title {
-    margin-bottom: 5px;
-}
 .pgp-product-factory {
     margin-bottom: 5px;
     color: #696969;
@@ -3406,7 +3403,18 @@ header.fixed-header nav {
     margin-top: -6px;
 }
 
+<<<<<<< HEAD
+.pgp-product-title {
+    margin-bottom: 5px;
+}
+.product-title--factory{
+    border-bottom: 1px #ebebeb solid;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+=======
 .image-ajax-container .image-container{ text-align: center; }
 .image-ajax-container .image-container a.remove{ margin-top: 4px; }
 .image-ajax-container.error .image-container img,
 .image-ajax-container.error .image-upload img{ border-color: #b94a48; }
+>>>>>>> 0940dc75fd0ab18b3e32f372670687674af2f4a8

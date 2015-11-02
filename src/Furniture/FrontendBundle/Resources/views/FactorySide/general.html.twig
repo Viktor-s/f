@@ -13,9 +13,9 @@
         <div class="factory-cover">
             {% if factory.images|length > 0 %}
                 {% set image = factory.images.first %}
-                <img src="/media/image/{{ image.path }}" height="350" alt="{{ factory.name }}" />
+                <img src="{{ image.path|imagine_filter('s1200x350') }}" height="350" alt="{{ factory.name }}" />
             {% else %}
-                <img src="http://dummyimage.com/1200x350" height="350" alt="{{ factory.name }}" />
+                <img src="/img/1200x350.png" height="350" alt="{{ factory.name }}" />
             {% endif %}
 
             <div class="logo">

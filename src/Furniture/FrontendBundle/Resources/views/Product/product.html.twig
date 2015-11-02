@@ -24,7 +24,6 @@
 
 {% block content %}
     <div class="information-blocks">
-        <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
         <div class="row">
             <div class="col-sm-6 information-entry">
                 <div class="tabs-container">
@@ -88,12 +87,14 @@
 
             <div class="col-sm-6 information-entry">
                 <div class="product-detail-box">
-                    <h1 class="product-title block-title">
+                    <h1 class="product-title">
                         {% if product.factoryCode != '' %}
                             <small>{{ product.factoryCode }}</small> 
                         {% endif %} 
-                        {{ product.name }} <small>{{ product.factory.name }}</small>
+                        {{ product.name }}
                     </h1>
+                    <h3 class="product-title--factory"><a href="#">{{ product.factory.name }}</a> <span style="margin:0 5px;display:none">></span> <a href="#" style="display:none;">Chair</a></h3>
+
 
                     <div class="product-description detail-info-entry">{{ product.description }}</div>
 
@@ -146,6 +147,7 @@
                                     {% endfor %}
                                 </ul>
                             </div>
+                            <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
                         </div>
                     {% endif %}
                 </div>
@@ -240,8 +242,9 @@
                             success: function () {
                                 //alert('Successfully add product to specification.');
                                 $('#specification-added')
-                                    .html('Product was successfully added to <a href="'+ specification_edit_path +'">Specification</a>')
+                                    .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
                                     .show();
+                                $('.add-to-specification button').dropdown('toggle');
                                 addSpecificationProcessed = false;
                             },
                             error: function () {
@@ -250,6 +253,7 @@
                             }
                         });
                     }
+                    return false;
                 });
         {% else %}
                 $('.update-specification-item button').click(function () {
