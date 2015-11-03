@@ -1,0 +1,37 @@
+#Factory admin routes
+furniture_backend_retailer_profile_index:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: Furniture.controller.retailer_profile:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/RetailerProfile:index.html.twig
+            
+furniture_backend_retailer_profile_create:
+    path: /new
+    methods: [ GET, POST ]
+    defaults:
+        _controller: Furniture.controller.retailer_profile:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/RetailerProfile:create.html.twig
+            redirect: furniture_backend_retailer_profile_index
+            form: Furniture\RetailerBundle\Form\Type\RetailerProfileType
+            
+furniture_backend_retailer_profile_update:
+    path: /{id}/edit
+    methods: [GET, PUT]
+    defaults:
+        _controller: Furniture.controller.retailer_profile:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/RetailerProfile:update.html.twig
+            form: Furniture\RetailerBundle\Form\Type\RetailerProfileType
+            redirect: furniture_backend_retailer_profile_index
+            
+furniture_backend_retailer_profile_delete:
+    path: /{id}
+    methods: [DELETE]
+    defaults:
+        _controller: Furniture.controller.retailer_profile:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: furniture_backend_retailer_profile_index

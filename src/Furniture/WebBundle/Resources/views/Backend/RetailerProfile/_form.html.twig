@@ -1,0 +1,23 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+<div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#main" data-toggle="tab">Main</a></li>
+        <li><a href="#images" data-toggle="tab">Images</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="main">
+            {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
+            {{ form_row(form.address, {'attr': {'class': 'input-lg'}}) }}
+            {{ form_row(form.phones, {'attr': {'class': 'input-lg'}}) }}
+            {{ form_row(form.emails, {'attr': {'class': 'input-lg'}}) }}
+        </div>
+
+        <div class="tab-pane" id="images">
+            {{ form_row( form.logoImage ) }}
+        </div>
+    </div>
+</div>
+
+{{ form_rest(form) }}

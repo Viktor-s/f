@@ -7,6 +7,7 @@ use Sylius\Bundle\CoreBundle\Form\Type\UserType as BaseUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -24,7 +25,14 @@ class UserType extends BaseUserType
                 'class' => Factory::class,
                 'multiple' => false,
                 'required' => false
-            ]);
+            ])
+            ->add('retailerProfile', 'entity', [
+                'class' => RetailerProfile::class,
+                'choice_label' => 'name',
+                'multiple' => false,
+                'required' => false
+            ])
+                ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var User $user */

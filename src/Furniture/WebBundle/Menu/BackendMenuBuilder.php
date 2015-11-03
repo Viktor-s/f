@@ -38,14 +38,6 @@ class BackendMenuBuilder extends MenuBuilder
         $this->addContentMenu($menu, $childOptions, 'main');
         $this->addConfigurationMenu($menu, $childOptions, 'main');
 
-        //$menu->addChild('homepage', array(
-        //    'route' => 'homepage'
-        //))->setLabel($this->translate('sylius.backend.menu.main.homepage'));
-
-        //$menu->addChild('logout', array(
-        //    'route' => 'sylius_user_security_logout'
-        //))->setLabel($this->translate('sylius.backend.logout'));
-
         $this->eventDispatcher->dispatch(MenuBuilderEvent::BACKEND_MAIN, new MenuBuilderEvent($this->factory, $menu));
 
         return $menu;
@@ -186,6 +178,11 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'furniture_backend_factory_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel('Factory');
+            
+            $child->addChild('retailer_profile_index', [
+                'route' => 'furniture_backend_retailer_profile_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel('retailer_profile');
         }
 
         if ($this->authorizationChecker->isGranted('furniture.composite_collection.index')) {

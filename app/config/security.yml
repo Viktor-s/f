@@ -163,6 +163,12 @@ sylius_rbac:
         Furniture.factory.update: update factory data
         Furniture.factory.delete: delete factory data
         
+        furniture.manage.retailer_profile: manage retailer profiles
+        Furniture.retailer_profile.index: show retailers profiles
+        Furniture.retailer_profile.create: create new retailer profile
+        Furniture.retailer_profile.update: update retailer profile
+        Furniture.retailer_profile.delete: delete retailer profile
+        
         furniture.manage.factories.user_relations: manage factory user relations
         Furniture.factory_user_relation.index: users list
         Furniture.factory_user_relation.show: show detail page
@@ -208,6 +214,12 @@ sylius_rbac:
             - Furniture.factory.create
             - Furniture.factory.update
             - Furniture.factory.delete
+            
+        furniture.manage.retailer_profile:
+            - Furniture.retailer_profile.index
+            - Furniture.retailer_profile.create
+            - Furniture.retailer_profile.update
+            - Furniture.retailer_profile.delete
             
         furniture.manage.factories.user_relations:
             - Furniture.factory_user_relation.show
@@ -354,5 +366,6 @@ sylius_rbac:
                 - furniture.manage.factories.user_relations
                 - furniture.manage.specifications
                 - furniture.manage.posts
+                - furniture.manage.retailer_profile
 
             security_roles: [ ROLE_ADMINISTRATION_ACCESS ]

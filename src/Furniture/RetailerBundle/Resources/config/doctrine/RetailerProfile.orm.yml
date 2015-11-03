@@ -1,0 +1,35 @@
+Furniture\RetailerBundle\Entity\RetailerProfile:
+    type: entity
+    table: furniture_retailer_profile
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+                
+    oneToMany:
+        users:
+            targetEntity: Furniture\CommonBundle\Entity\User
+            mappedBy: retailerProfile
+         
+    oneToOne:
+        logoImage:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerProfileLogoImage
+            mappedBy: retailerProfile
+            cascade: [ persist ]
+            
+    fields:
+        name:
+            type: string
+            nullable: true
+        address:
+            type: string
+            name: address
+            nullable: true
+        phones:
+            type: json_array
+            name: phones
+        emails:
+            type: json_array
+            name: emails

@@ -1,0 +1,26 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% from 'SyliusWebBundle:Backend/RetailerProfile:macros.html.twig' import list %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li>Retailers</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="actions-menu">
+        {{ buttons.create(path('furniture_backend_retailer_profile_create'), 'Create retailer profile') }}
+    </div>
+    <h1><i class="glyphicon glyphicon-list-alt"></i> Retailer profiles</h1>
+</div>
+
+{{ pagination(retailer_profiles) }}
+{{ list(retailer_profiles) }}
+{{ pagination(retailer_profiles) }}
+
+{% endblock %}

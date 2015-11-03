@@ -170,6 +170,11 @@ sylius_resource:
                 model: Furniture\FactoryBundle\Entity\FactoryUserRelation
                 controller: Furniture\WebBundle\Controller\FactoryUserRelationController
 
+        Furniture.retailer_profile:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\RetailerBundle\Entity\RetailerProfile
+
         Furniture.factory:
             driver: doctrine/orm
             classes:

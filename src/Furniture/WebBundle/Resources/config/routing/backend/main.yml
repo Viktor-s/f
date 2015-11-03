@@ -183,6 +183,10 @@ furniture_backend_factory:
     resource: @SyliusWebBundle/Resources/config/routing/backend/factory.yml
     prefix: /factory
 
+furniture_backend_retailer_profile:
+    resource: @SyliusWebBundle/Resources/config/routing/backend/retailer_profile.yml
+    prefix: /retailer/profile
+
 furniture_backend_specification:
     resource: @SyliusWebBundle/Resources/config/routing/backend/specification.yml
     prefix: /specification

@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new \Furniture\SkuOptionBundle\SkuOptionBundle(),
             new \Furniture\CompositionBundle\CompositionBundle(),
             new \Furniture\FactoryBundle\FurnitureFactoryBundle(),
+            new \Furniture\RetailerBundle\RetailerBundle(),
             new \Furniture\FrontendBundle\FrontendBundle(),
             new \Furniture\SpecificationBundle\SpecificationBundle(),
             new \Furniture\PostBundle\PostBundle(),

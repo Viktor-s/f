@@ -1,0 +1,27 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% block javascripts %}
+{{ parent() }}
+{% endblock %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import create %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factory_index') }}">Retailer profile</a></li>
+    <li>Create new</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="glyphicon glyphicon-plus-sign"></i> Create</h1>
+</div>
+
+{{ form_errors(form) }}
+
+<form action="{{ path('furniture_backend_retailer_profile_create') }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+    {% include 'SyliusWebBundle:Backend/RetailerProfile:_form.html.twig' %}
+    {{ create() }}
+</form>
+{% endblock %}

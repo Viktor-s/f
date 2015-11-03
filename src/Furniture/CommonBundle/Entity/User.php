@@ -7,6 +7,7 @@ use Sylius\Component\Core\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\FactoryBundle\Entity\FactoryUserRelation;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class User extends BaseUser 
 {
@@ -24,6 +25,13 @@ class User extends BaseUser
      * @var Collection
      */
     protected $factoryRelations;
+
+    /**
+     *
+     * @var Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    protected $retailerProfile;
+
 
     /**
      * Construct
@@ -44,8 +52,8 @@ class User extends BaseUser
      */
     public function setFactory(Factory $factory = null)
     {
+        $this->resetProfile();
         $this->factory = $factory;
-
         return $this;
     }
 
@@ -149,6 +157,27 @@ class User extends BaseUser
     }
 
     /**
+     * 
+     * @param \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile
+     * @return \Furniture\CommonBundle\Entity\User
+     */
+    public function setRetailerProfile(RetailerProfile $retailerProfile)
+    {
+        $this->resetProfile();
+        $this->retailerProfile = $retailerProfile;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function getRetailerProfile()
+    {
+        return $this->retailerProfile;
+    }
+
+    /**
      * Is this content user?
      *
      * @return bool
@@ -157,6 +186,13 @@ class User extends BaseUser
     {
         return $this->hasRole(self::ROLE_CONTENT_USER);
     }
+
+    protected function resetProfile()
+    {
+        $this->factory = null;
+        $this->retailerProfile = null;
+    }
+
 
     /**
      * Is this factory admin user?
