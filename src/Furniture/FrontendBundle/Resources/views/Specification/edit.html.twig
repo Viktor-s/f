@@ -70,7 +70,7 @@
                 {% if specification.buyer and specification.buyer.hasSale() %}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
-                        <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
+                        <div class="col-sm-10">{{ specification.buyer.sale }}%</div>
                     </div>
                 {% endif %}
             </div>
@@ -592,7 +592,14 @@
                     $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
                         type: 'select',
                         loadurl: '{{ path('specification_api_specification_buyers') }}',
-                        submit: 'Ok'
+                        submit: 'Ok',
+                        'callback': function(){
+                            bootbox.dialog({
+                                title: "",
+                                message: "<h3>{{ 'frontend.specficatior.page_reload_alert'|trans }}</h3>",
+                            });
+                            location.reload();
+                        }
 
                     }, editableParams));
 

@@ -86,6 +86,7 @@ frontend:
     specficatior:
         specification_label: Specification
         description_lable: Additional info
+        page_reload_alert: Processing, wait ...
 
     title:
         spaces: Spaces
