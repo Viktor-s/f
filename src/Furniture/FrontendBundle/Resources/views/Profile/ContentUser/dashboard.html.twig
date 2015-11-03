@@ -10,11 +10,17 @@
 
 {% block page_content %}
     <div class="article-container style-1">
-        <h5>{{ app.user.username }}</h5>
-        <p>8808 Ave Dermentum, Onsectetur Adipiscing<br>
-            Tortor Sagittis, CA 880986,<br>
-            United States<br>
-            CA 90896<br> 
-            United States<br></p>
+        {% if app.user.getRetailerProfile() %}
+            <h3>Retiler {{ app.user.retailerProfile.name }}</h3>
+            <h2>User {{ app.user.username }}</h2>
+            <br/>
+            Address:<br/>
+            <p>{{ app.user.retailerProfile.address }}<br>
+                <b>Phones:</b>
+                {% for phone in app.user.retailerProfile.phones %}
+                    {{ phone }} 
+                {% endfor %}
+                </p>
+        {% endif %}
     </div>
 {% endblock %}
