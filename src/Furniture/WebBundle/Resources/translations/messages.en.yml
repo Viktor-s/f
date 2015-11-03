@@ -204,6 +204,11 @@ factory_contact:
         phones: Phones
         emails: Emails
 
+furniture_retailer_profile:
+    form:
+        phones: Contact phones
+        emails: Contact emails
+
 sylius:
     product:
         show_deleted_variants: Show deleted

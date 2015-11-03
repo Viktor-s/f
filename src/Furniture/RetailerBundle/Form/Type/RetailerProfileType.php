@@ -44,7 +44,7 @@ class RetailerProfileType extends AbstractType
                 'label' => 'furniture_retailer_profile.form.phones'
                 ])
                 ->add('emails', 'text', [
-                'label' => 'furniture_retailer_profile.form.phones'
+                'label' => 'furniture_retailer_profile.form.emails'
                 ])
                 ;
         
