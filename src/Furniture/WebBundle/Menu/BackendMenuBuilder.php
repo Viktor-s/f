@@ -98,13 +98,6 @@ class BackendMenuBuilder extends MenuBuilder
             ->setLabel($this->translate(sprintf('sylius.backend.menu.%s.assortment', $section)))
         ;
 
-        if ($this->authorizationChecker->isGranted('sylius.taxonomy.index')) {
-            $child->addChild('taxonomies', array(
-                'route' => 'sylius_backend_taxonomy_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-folder-close'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.taxonomies', $section)));
-        }
-
         if ($this->authorizationChecker->isGranted('sylius.product.index')) {
             $child->addChild('products', array(
                 'route' => 'sylius_backend_product_index',
