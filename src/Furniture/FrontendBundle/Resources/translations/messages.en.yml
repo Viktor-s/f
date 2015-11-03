@@ -83,6 +83,10 @@ frontend:
     select_category: Category
     spaces: Spaces
 
+    specficatior:
+        specification_label: Specification
+        description_lable: Additional info
+
     title:
         spaces: Spaces
         contacts: Contacts

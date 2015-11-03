@@ -30,35 +30,20 @@
 
 {% block content_with_edit %}
     <div class="row information-blocks specification-edit-head">
-        <div class="col-sm-4 information-entry">
-            <div class="user-info">{{ app.user.username }}</div>
-            <div class="document-id">#{{ specification.id }}</div>
-        </div>
-
-        <div class="col-sm-6 information-entry">
+        <div class="col-sm-12 information-entry">
             <div class="information-blocks form-horizontal specification-info">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.name'|trans }}</label>
+                    <label class="col-sm-2 control-label">{{ 'frontend.specficatior.specification_label'|trans }}</label>
                     <div class="col-sm-10 name editable" id="specification-name">{{ specification.name }}</div>
                 </div>
-
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.description'|trans }}</label>
-                    <div class="col-sm-10 description editable" id="specification-description">{{ specification.description|default('None') }}</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
-                    <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
-                </div>
-
-                {% if specification.buyer and specification.buyer.hasSale() %}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
-                        <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
+                    <label class="col-sm-2 control-label">{{ 'frontend.specficatior.description_lable'|trans }}</label>
+                    <div class="col-sm-10">
+                        <p class="description editable" id="specification-description">
+                        {{ specification.description|default('None') }}
+                        </p>
                     </div>
-                {% endif %}
-
+                </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
                     <div class="col-sm-10">
@@ -73,6 +58,44 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row specification-edit-head">
+        <div class="col-sm-3 information-entry">
+            <div class="information-blocks form-horizontal specification-info">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
+                    <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
+                </div>
+
+                {% if specification.buyer and specification.buyer.hasSale() %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
+                        <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer.sale }}%</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-sm-4 information-entry">
+            <div class="information-blocks form-horizontal specification-info">
+                <img src="{{ app.user.retailerProfile.logoImage ? app.user.retailerProfile.logoImage.path|imagine_filter('s201x123') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
+            </div>
+        </div>
+                    
+            <div class="col-sm-5 information-entry">
+                <h3 class="block-title main-heading">{{ app.user.retailerProfile.name }}</h3>
+                <div class="article-container style-1">
+                    <h5>Manager</h5>
+                    <p>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }}<br/>
+                        {{ app.user.customer.email }}
+                    </p>
+                    <h5>Company address</h5>
+                    <p>{{ app.user.retailerProfile.address }}</p>
+                    <h5>Contact Informations</h5>
+                    <p>Retailer Email: {{ app.user.retailerProfile.emails|join(', ') }}<br>
+                        Toll-free: {{ app.user.retailerProfile.phones|join(', ') }}</p>
+                </div>
+            </div>
     </div>
 
     <div class="information-blocks">
@@ -198,32 +221,11 @@
                     editableParams = {
                         width: '100%',
                         height: '100%',
-                        tooltip: '{{ 'frontend.click_to_edit'|trans }}'
+                        tooltip: '{{ 'frontend.click_to_edit'|trans }}',
+                        "indicator": function(){
+                                    return progressBasr;
+                                },
                     };
-
-                    $('.specification-info .editable.name').editable(editableUrl, editableParams);
-
-                    $('.specification-info .editable.description').editable(editableUrl, $.extend({
-                        type: 'textarea'
-                    }, editableParams));
-
-                    $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
-                        type: 'select',
-                        loadurl: '{{ path('specification_api_specification_buyers') }}',
-                        submit: 'Ok'
-
-                    }, editableParams));
-
-                    $('#remove-current-specification').click(function(){
-                        var a = $(this);
-
-                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification'|trans }}', function(result) {
-                            if(result){
-                                window.location = a.attr('href');
-                            }
-                        });
-                        return false;
-                    });
         
                     /* table code */
                     var
@@ -578,6 +580,32 @@
                             }); 
                             return false;
                     });                    
+                    
+                    /*Other editable element*/
+                    $('.specification-info .editable.name').editable(editableUrl, editableParams);
+
+                    $('.specification-info .editable.description').editable(editableUrl, $.extend({
+                        type: 'textarea',
+                        "submit": '<button type="button" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>',
+                    }, editableParams));
+
+                    $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
+                        type: 'select',
+                        loadurl: '{{ path('specification_api_specification_buyers') }}',
+                        submit: 'Ok'
+
+                    }, editableParams));
+
+                    $('#remove-current-specification').click(function(){
+                        var a = $(this);
+
+                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification'|trans }}', function(result) {
+                            if(result){
+                                window.location = a.attr('href');
+                            }
+                        });
+                        return false;
+                    });
                 })
             })(jQuery);
         </script>
