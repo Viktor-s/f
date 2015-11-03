@@ -9,18 +9,25 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="article-container style-1">
-        {% if app.user.getRetailerProfile() %}
-            <h3>Retiler {{ app.user.retailerProfile.name }}</h3>
-            <h2>User {{ app.user.username }}</h2>
-            <br/>
-            Address:<br/>
-            <p>{{ app.user.retailerProfile.address }}<br>
-                <b>Phones:</b>
-                {% for phone in app.user.retailerProfile.phones %}
-                    {{ phone }} 
-                {% endfor %}
-                </p>
-        {% endif %}
-    </div>
+    {% if app.user.getRetailerProfile() %}
+        <div class="row">
+            <div class="col-md-3">
+              <img src="{{ app.user.retailerProfile.logoImage ? app.user.retailerProfile.logoImage.path|imagine_filter('s201x123') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />  
+            </div>
+            <div class="col-md-9">
+                <div class="article-container style-1">
+                    <h3>Retiler {{ app.user.retailerProfile.name }}</h3>
+                    <h2>User {{ app.user.username }}</h2>
+                    <br/>
+                    Address:<br/>
+                    <p>{{ app.user.retailerProfile.address }}<br>
+                        <b>Phones:</b>
+                        {% for phone in app.user.retailerProfile.phones %}
+                            {{ phone }} 
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
