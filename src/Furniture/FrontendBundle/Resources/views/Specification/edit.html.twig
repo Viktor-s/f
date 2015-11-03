@@ -61,12 +61,15 @@
     </div>
     <div class="row specification-edit-head">
         <div class="col-sm-3 information-entry">
-            <div class="information-blocks form-horizontal specification-info">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.buyer'|trans }}</label>
+            <div class="information-blocks form-horizontal specification-info">                
+                <div class="article-container style-1">
+                    <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
                     <div class="col-sm-10 editable buyer" id="specification-buyer">{{ specification.buyer|default('None') }}</div>
+                    <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
+                    <p>{{ specification.buyer.email }}<br/>
+                    {{ specification.buyer.phone }}
+                    </p>
                 </div>
-
                 {% if specification.buyer and specification.buyer.hasSale() %}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>

@@ -87,6 +87,8 @@ frontend:
         specification_label: Specification
         description_lable: Additional info
         page_reload_alert: Processing, wait ...
+        client_lable: Client
+        client_contact_lable: Contact information
 
     title:
         spaces: Spaces
