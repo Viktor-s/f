@@ -16,6 +16,8 @@ specification:
         sale: Sale
 
     excel:
+        creation_date: Date
+        client_name: Client
         number: "#"
         factory: Factory
         name: Name

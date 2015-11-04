@@ -63,68 +63,80 @@ class ExcelExporter implements ExporterInterface
 
         // Create headers
         $index = 1;
+        
+        $theadIndex = 13;
+        $activeSheet
+                ->getStyle('A'.$theadIndex.':L'.$theadIndex)->getFill()
+                ->applyFromArray(array(
+                    'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                    'startcolor' => array(
+                    'rgb' => 'A9A9A9'
+                    )
+                ));
         if ($fieldMap->hasFieldNumber()) {
-            $key = $this->generateCellKey($index++, 4);
-            $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.number'));
+            $key = $this->generateCellKey($index++, $theadIndex);
+            //$activeSheet->setCellValue($key, $this->translator->trans('specification.excel.number'));
         }
 
         if ($fieldMap->hasFieldFactory()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.factory'));
         }
 
         if ($fieldMap->hasFieldPhoto()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.photo'));
         }
 
         if ($fieldMap->hasFieldName()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.name'));
         }
 
         if ($fieldMap->hasFieldArticle()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.article'));
         }
 
         if ($fieldMap->hasFieldSize()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.size'));
         }
 
         if ($fieldMap->hasFieldFinishes()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.finishes'));
         }
 
         if ($fieldMap->hasFieldCharacteristics()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.characteristics'));
         }
 
         if ($fieldMap->hasFieldQuantity()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.quantity'));
         }
 
         if ($fieldMap->hasFieldPrice()) {
-            $key = $this->generateCellKey($index++, 4);
+            $key = $this->generateCellKey($index++, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.price'));
         }
 
         if ($fieldMap->hasFieldTotalPrice()) {
-            $key = $this->generateCellKey($index, 4);
+            $key = $this->generateCellKey($index, $theadIndex);
             $activeSheet->setCellValue($key, $this->translator->trans('specification.excel.total_price'));
         }
 
         $countColumns = $index;
 
-        $rowIndex = 5;
+        $rowIndex = 14;
         $numberOfRecords = 1;
+        $activeSheet->getColumnDimension('C')->setWidth(18);
+        $activeSheet->getColumnDimension('G')->setWidth(20);
         foreach ($specification->getItems() as $item) {
             $cellIndex = 1;
-
+            $rowIndex ++;
             if ($skuItem = $item->getSkuItem()) {
                 $productVariant = $skuItem->getProductVariant();
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
@@ -147,6 +159,7 @@ class ExcelExporter implements ExporterInterface
                     $image = $item->getSkuItem()->getProductVariant()->getImage();
 
                     if ($image && $image->getPath()) {
+                        $activeSheet->getRowDimension($rowIndex)->setRowHeight(80);
                         $obj = $this->createImageForExcel($image->getPath(), $key);
                         $obj->setWorksheet($activeSheet);
                     }
@@ -205,10 +218,9 @@ class ExcelExporter implements ExporterInterface
 
                 if ($fieldMap->hasFieldPhoto()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
-
                     $image = $customItem->getImage();
-
                     if ($image && $image->getPath()) {
+                        $activeSheet->getRowDimension($rowIndex)->setRowHeight(80);
                         $obj = $this->createImageForExcel($image->getPath(), $key);
                         $obj->setWorksheet($activeSheet);
                     }
@@ -253,25 +265,53 @@ class ExcelExporter implements ExporterInterface
                     $activeSheet->setCellValue($key, $price . ' EUR');
                 }
             }
-
-            $rowIndex++;
         }
 
         // Add header
-        $startCell = $this->generateCellKey(1, 1);
-        $endCell = $this->generateCellKey($countColumns, 1);
-        $activeSheet->mergeCells($startCell . ':' . $endCell);
-        $activeSheet->setCellValue($startCell, 'SPECIFICATION HEADER');
-
-        $startCell = $this->generateCellKey(1, 2);
-        $endCell = $this->generateCellKey($countColumns, 2);
-        $activeSheet->mergeCells($startCell . ':' . $endCell);
-        $activeSheet->setCellValue($startCell, sprintf(
-            '#%d %s %s',
-            $specification->getId(),
-            $specification->getName(),
-            $specification->getCreatedAt()->format('Y/m/d H:i')
-        ));
+        
+        /*Header Info*/
+        if($retailerProfile = $specification->getUser()->getRetailerProfile()){
+            /*Set Logo*/
+            if ($logoImage = $retailerProfile->getLogoImage()) {
+                if ($logoImage->getPath()) {
+                    $activeSheet->mergeCells('A1:B6');
+                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1');
+                    $obj->setWorksheet($activeSheet);
+                }
+            }
+            /*Set retailer name*/
+            $activeSheet->mergeCells('G1:I1');
+            $activeSheet->setCellValue('G1', $retailerProfile->getName());
+            /*Manager name*/
+            $activeSheet->mergeCells('G2:I2');
+            $activeSheet->setCellValue('G2', $specification->getUser()->getCustomer()->getFirstName().' '.$specification->getUser()->getCustomer()->getLastName());
+            /*Retailer address*/
+            $activeSheet->mergeCells('G3:I3');
+            $activeSheet->setCellValue('G1', $retailerProfile->getAddress());
+            /*Retailer phone*/
+            $activeSheet->mergeCells('G4:I4');
+            $activeSheet->setCellValue('G4', implode( ',', $retailerProfile->getPhones()), true)->getStyle()->getAlignment()->setWrapText(true);
+            /*Manager email address*/
+            $activeSheet->mergeCells('G5:I5');
+            $activeSheet->setCellValue('G4', $specification->getUser()->getCustomer()->getEmail());
+            /*Specification creation date*/
+            $activeSheet->setCellValue('B7', $this->translator->trans('specification.excel.creation_date').': '.$specification->getCreatedAt()->format('Y-m-d'));
+            /*Specification client*/
+            if($client = $specification->getBuyer()){
+                /*Client name*/
+                $activeSheet->mergeCells('B8:C8');
+                $activeSheet->setCellValue('B8', $this->translator->trans('specification.excel.client_name').': '.$client);
+                /*Client address*/
+                $activeSheet->mergeCells('B9:C9');
+                $activeSheet->setCellValue('B9', $client->getAddress());
+                /*Client phone*/
+                $activeSheet->mergeCells('B10:C10');
+                $activeSheet->setCellValue('B10', $client->getPhone());
+            }
+            /*Specification description*/
+            $activeSheet->mergeCells('B11:D12');
+            $activeSheet->setCellValue('B11', $specification->getDescription());
+        }
 
         $writer = new \PHPExcel_Writer_Excel2007($excel);
 
@@ -621,10 +661,9 @@ class ExcelExporter implements ExporterInterface
         $binary = $this->getImageResourceWithFilter($path);
 
         $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
-        $objDrawing->setHeight(100);
-        $objDrawing->setWidth(100);
-
+        
         $imageResource = imagecreatefromstring($binary->getContent());
+        
         $objDrawing->setImageResource($imageResource);
         $objDrawing->setCoordinates($coordinate);
 
