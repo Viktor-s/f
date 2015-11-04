@@ -275,7 +275,7 @@ class ExcelExporter implements ExporterInterface
             if ($logoImage = $retailerProfile->getLogoImage()) {
                 if ($logoImage->getPath()) {
                     $activeSheet->mergeCells('A1:B6');
-                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1');
+                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1', 's201x123');
                     $obj->setWorksheet($activeSheet);
                 }
             }
@@ -635,10 +635,10 @@ class ExcelExporter implements ExporterInterface
      *
      * @return \Liip\ImagineBundle\Binary\BinaryInterface|null
      */
-    private function getImageResourceWithFilter($path)
+    private function getImageResourceWithFilter($path, $filter)
     {
         try {
-            $binary = $this->imagineDataManager->find('s100x100', $path);
+            $binary = $this->imagineDataManager->find($filter, $path);
         } catch (NotLoadableException $e) {
             return null;
         }
@@ -656,9 +656,9 @@ class ExcelExporter implements ExporterInterface
      *
      * @return \PHPExcel_Worksheet_MemoryDrawing
      */
-    private function createImageForExcel($path, $coordinate)
+    private function createImageForExcel($path, $coordinate, $filter = 's100x100')
     {
-        $binary = $this->getImageResourceWithFilter($path);
+        $binary = $this->getImageResourceWithFilter($path, $filter);
 
         $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
         
