@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="information-blocks">
-        <div class="line-entry">
+        <div class="line-entry" style="text-align:right; padding-bottom:10px;">
             <a class="btn" href="{{ path('specification_buyer_create') }}"><span>{{ 'frontend.create'|trans }}</span></a>
         </div>
         <table class="table table-bordered">
@@ -18,7 +18,6 @@
             <tr>
                 <th>{{ 'frontend.photo'|trans }}</th>
                 <th>{{ 'frontend.name'|trans }}</th>
-                <th>{{ 'frontend.created_at'|trans }}</th>
                 <th>{{ 'frontend.contact'|trans }}</th>
                 <th>{{ 'frontend.address'|trans }}</th>
                 <th>{{ 'frontend.sale'|trans }}</th>
@@ -37,10 +36,6 @@
 
                     <td>
                         {{ buyer }}
-                    </td>
-
-                    <td>
-                        {{ buyer.createdAt.format('d M Y H:i') }}
                     </td>
 
                     <td>

@@ -10,8 +10,8 @@ frontend:
     description: Description
     actions: Actions
     created_at: Created at
-    buyers_not_found: Buyers not found.
-    buyer: Buyer
+    buyers_not_found: Clients not found.
+    buyer: Client
     specfications_not_found: Specifications not found.
     update_specification: Update specification
     add_to_specification: Add to specification
@@ -52,11 +52,12 @@ frontend:
     sku: SKU
     factory_profile: Factory profile
     content_user_profile: User profile
-    factory_rates: Factory rates
-    you_not_have_factory_rates: You not have factory rates.
+    factory_rates: Factory conditions
+    factory: Brand
+    you_not_have_factory_rates: You not have factory conditions.
     coefficient: Coefficient
-    dumping: Dumping
-    sale: Sale
+    dumping: Extra discount
+    sale: Personal discount
     contact: Contact
     address: Address
     retailer_relations: User relations
@@ -118,7 +119,7 @@ frontend:
         specifications: Specifications
         products: Products
         catalog: Catalog
-        buyers: Buyers
+        buyers: Clients
         list: List
         create: Create
         edit: Edit
@@ -128,7 +129,7 @@ frontend:
         content_user_profile: User profile
         retailer_profile: Retailer profile
         dashboard: Settings
-        factory_rates: Factory rates
+        factory_rates: Factory conditions
         user_relations: User relations
         retailer_relations: Retailer relations
         factory_relations: Factory relations
