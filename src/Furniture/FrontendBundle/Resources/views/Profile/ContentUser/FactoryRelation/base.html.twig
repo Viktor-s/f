@@ -1,9 +1,0 @@
-{% extends 'FrontendBundle:Profile/ContentUser:base.html.twig' %}
-
-{% block title %}{{ 'frontend.title.factory_relations'|trans }} :: {{ parent() }}{% endblock %}
-
-{% block breadcrumb %}
-    {{ parent() }}
-
-    <a href="{{ path('content_user_profile_factory_relations') }}">{{ 'frontend.title.factory_relations'|trans }}</a>
-{% endblock %}

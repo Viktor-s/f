@@ -164,18 +164,18 @@ sylius_user:
 
 sylius_resource:
     resources:
-        Furniture.factory_user_relation:
+        furniture.factory_user_relation:
             driver: doctrine/orm
             classes:
-                model: Furniture\FactoryBundle\Entity\FactoryUserRelation
-                controller: Furniture\WebBundle\Controller\FactoryUserRelationController
+                model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
+                controller: Furniture\WebBundle\Controller\FactoryRetailerRelationController
 
-        Furniture.retailer_profile:
+        furniture.retailer_profile:
             driver: doctrine/orm
             classes:
                 model: Furniture\RetailerBundle\Entity\RetailerProfile
 
-        Furniture.factory:
+        furniture.factory:
             driver: doctrine/orm
             classes:
                 model: Furniture\FactoryBundle\Entity\Factory
@@ -192,7 +192,7 @@ sylius_resource:
                     model: Furniture\FactoryBundle\Entity\FactoryContactTranslation
                     mapping: ~
 
-        Furniture.sku_option:
+        furniture.sku_option:
             driver: doctrine/orm
             classes:
                 model: Furniture\SkuOptionBundle\Entity\SkuOptionType
@@ -322,6 +322,11 @@ liip_imagine:
         s100x100:
             filters:
                 thumbnail: { size: [100, 100], mode: outbound }
+
         s1200x350:
             filters:
                 thumbnail: { size: [1200, 350], mode: outbound }
+
+        s200x200:
+            filters:
+                thumbnail: { size: [200, 200], mode: outbound }

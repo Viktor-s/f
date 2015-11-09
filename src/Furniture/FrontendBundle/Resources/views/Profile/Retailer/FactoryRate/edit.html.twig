@@ -1,0 +1,15 @@
+{% extends 'FrontendBundle:Profile/Retailer/FactoryRate:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (rate.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ ('frontend.title.' ~ (rate.id ? 'edit' : 'create'))|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

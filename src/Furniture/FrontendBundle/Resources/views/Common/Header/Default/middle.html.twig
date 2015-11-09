@@ -35,8 +35,8 @@
 
     <div class="right-entries product-header-content">
         <div class="line-entry">
-            {% if is_granted('ROLE_CONTENT_USER') %}
-                <a class="header-functionality-entry" href="{{ path('content_user_profile') }}">
+            {% if app.user and app.user.retailerAdmin %}
+                <a class="header-functionality-entry" href="{{ path('retailer_profile') }}">
                     <i class="fa fa-user"></i><span>{{ 'frontend.button.settings'|trans }}</span>
                 </a>
             {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}

@@ -4,17 +4,17 @@ namespace Furniture\CommonBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Furniture\FactoryBundle\Entity\FactoryUserRelation;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class User extends BaseUser 
 {
-    const ROLE_CONTENT_USER   = 'ROLE_CONTENT_USER';
+    const ROLE_CONTENT_USER   = 'ROLE_CONTENT_USER'; // @todo: remove this role?
     const ROLE_FACTORY_ADMIN  = 'ROLE_FACTORY_ADMIN';
     const ROLE_FACTORY_USER   = 'ROLE_FACTORY_USER';
     const ROLE_PUBLIC_CONTENT = 'ROLE_PUBLIC_CONTENT';
+
+    const RETAILER_ADMIN    = 1;
+    const RETAILER_EMPLOYEE = 2;
 
     /**
      * @var Factory
@@ -22,16 +22,14 @@ class User extends BaseUser
     protected $factory;
 
     /**
-     * @var Collection
-     */
-    protected $factoryRelations;
-
-    /**
-     *
-     * @var Furniture\RetailerBundle\Entity\RetailerProfile
+     * @var RetailerProfile
      */
     protected $retailerProfile;
 
+    /**
+     * @var int
+     */
+    private $retailerMode = self::RETAILER_EMPLOYEE;
 
     /**
      * Construct
@@ -39,8 +37,6 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-
-        $this->factoryRelations = new ArrayCollection();
     }
 
     /**
@@ -54,6 +50,7 @@ class User extends BaseUser
     {
         $this->resetProfile();
         $this->factory = $factory;
+
         return $this;
     }
 
@@ -76,101 +73,26 @@ class User extends BaseUser
     {
         return $this->factory ? true : false;
     }
-    
+
     /**
-     * Is has factory relations?
+     * Set retail profile
      *
-     * @return bool
-     */
-    public function hasFactoryRelations()
-    {
-        return (bool)!$this->factoryRelations->isEmpty();
-    }
-    
-    /**
-     * Get factory relations
-     *
-     * @return Collection
-     */
-    public function getFactoryRelations()
-    {
-        return $this->factoryRelations;
-    }
-    
-    /**
-     * Set factory relations
-     *
-     * @param Collection $factoryRelations
+     * @param RetailerProfile $retailerProfile
      *
      * @return User
-     */
-    public function setFactoryRelations(Collection $factoryRelations)
-    {
-        $this->factoryRelations = $factoryRelations;
-
-        return $this;
-    }
-    
-    /**
-     * Is has factory relation?
-     *
-     * @param FactoryUserRelation $factoryRelations
-     *
-     * @return bool
-     */
-    public function hasFactoryRelation(FactoryUserRelation $factoryRelations)
-    {
-        return $this->factoryRelations->contains($factoryRelations);
-    }
-    
-    /**
-     * Add factory relation
-     *
-     * @param FactoryUserRelation $factoryRelations
-     *
-     * @return User
-     */
-    public function addFactoryRelation(FactoryUserRelation $factoryRelations)
-    {
-        if(!$this->hasFactoryRelation($factoryRelations)){
-            $factoryRelations->setFactory($this);
-            $this->factoryRelations->add($factoryRelations);
-        }
-
-        return $this;
-    }
-    
-    /**
-     * Remove factory relation
-     *
-     * @param FactoryUserRelation $factoryRelations
-     *
-     * @return User
-     */
-    public function removeFactoryRelation(FactoryUserRelation $factoryRelations)
-    {
-        if($this->hasUserRelation($factoryRelations)){
-            $this->factoryRelations->removeElement($factoryRelations);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 
-     * @param \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile
-     * @return \Furniture\CommonBundle\Entity\User
      */
     public function setRetailerProfile(RetailerProfile $retailerProfile)
     {
         $this->resetProfile();
         $this->retailerProfile = $retailerProfile;
+
         return $this;
     }
 
     /**
-     * 
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Get retail profile
+     *
+     * @return RetailerProfile
      */
     public function getRetailerProfile()
     {
@@ -187,13 +109,6 @@ class User extends BaseUser
         return $this->hasRole(self::ROLE_CONTENT_USER);
     }
 
-    protected function resetProfile()
-    {
-        $this->factory = null;
-        $this->retailerProfile = null;
-    }
-
-
     /**
      * Is this factory admin user?
      *
@@ -202,5 +117,68 @@ class User extends BaseUser
     public function isFactoryAdmin()
     {
         return $this->hasRole(self::ROLE_FACTORY_ADMIN);
+    }
+
+    /**
+     * Set retailer mode
+     *
+     * @param int $retailerMode
+     *
+     * @return User
+     */
+    public function setRetailerMode($retailerMode)
+    {
+        $this->retailerMode = $retailerMode;
+
+        return $this;
+    }
+
+    /**
+     * Get retailer mode
+     *
+     * @return int
+     */
+    public function getRetailerMode()
+    {
+        return $this->retailerMode;
+    }
+
+    /**
+     * Is retailer?
+     *
+     * @return bool
+     */
+    public function isRetailer()
+    {
+        return $this->retailerProfile ? true : false;
+    }
+
+    /**
+     * Is retailer admin?
+     *
+     * @return bool
+     */
+    public function isRetailerAdmin()
+    {
+        return $this->retailerMode == self::RETAILER_ADMIN;
+    }
+
+    /**
+     * Is retail employee
+     *
+     * @return bool
+     */
+    public function isRetailerEmployee()
+    {
+        return $this->retailerMode == self::RETAILER_EMPLOYEE;
+    }
+
+    /**
+     * Reset profile
+     */
+    protected function resetProfile()
+    {
+        $this->factory = null;
+        $this->retailerProfile = null;
     }
 }

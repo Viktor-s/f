@@ -38,6 +38,7 @@ frontend:
     are_you_sure_remove_specification_item: Are you sure remote specification item?
     are_you_sure_remove_specification: Are you sure remote specification?
     are_you_sure_remove_image: Are you sure remove image?
+    are_you_sure_remove_logo: Are you sire remove logo?
     export: Export
     full: Full
     by_company: By company
@@ -58,17 +59,17 @@ frontend:
     sale: Sale
     contact: Contact
     address: Address
-    user_relations: User relations
-    user_requests: User requests
-    to_user_requests: Requests to user
+    retailer_relations: User relations
+    retailer_requests: Retailer requests
+    to_retailer_requests: Requests to retailers
     authorized_users: Authorized users
     username: Username
     products_view: View products
     product_prices_view: Prices view
     discount: Discount
-    create_to_user_relation: Relate to user
+    create_to_retailer_relation: Relate to retailer
     create_to_factory_relation: Relate to factory
-    are_you_sure_remove_user_relation: Are you sure remove user relation?
+    are_you_sure_remove_retailer_relation: Are you sure remove retailer relation?
     are_you_sure_remove_factory_relation: Are you sure remove factory relation?
     approve: Approve
     factory_relations: Factory relations
@@ -76,12 +77,24 @@ frontend:
     to_factory_requests: Requests to factory
     authorized_factories: Authorized factories
     user: User
+    admin: Admin
+    email: Email
+    access: Access
+    created: Created
     default_relation: Default relation
     taxonomy: Categories
     downlod_file_with_number: "Download file #:number"
     select_style: Style
     select_category: Category
     spaces: Spaces
+    employees: Employees
+    employee: Employee
+    retailer_profile: Retailer profile
+    retailer: Retailer
+    password: Password
+    last_name: Last name
+    first_name: First name
+    mode: Mode
 
     specficatior:
         specification_label: Specification
@@ -113,9 +126,11 @@ frontend:
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile
+        retailer_profile: Retailer profile
         dashboard: Settings
         factory_rates: Factory rates
         user_relations: User relations
+        retailer_relations: Retailer relations
         factory_relations: Factory relations
         default_relation: Default relation
         view: View
@@ -123,6 +138,7 @@ frontend:
         factory_side: Factory
         general: General
         brands: Brands
+        employees: Employees
 
     button:
         settings: Settings

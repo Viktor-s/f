@@ -1,13 +1,12 @@
 Furniture\CommonBundle\Entity\User:
     type: entity
     table: furniture_user
-    
-    oneToMany:
-        factoryRelations:
-            cascade: [persist]
-            orphanRemoval: true
-            targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
-            mappedBy: user
+
+    fields:
+        retailerMode:
+            type: smallint
+            name: retailer_mode
+            nullable: true
 
     manyToOne:
         factory:
@@ -18,6 +17,7 @@ Furniture\CommonBundle\Entity\User:
                 referencedColumnName: id
                 nullable: true
                 onDelete: SET NULL
+
         retailerProfile:
             targetEntity: Furniture\RetailerBundle\Entity\RetailerProfile
             inversedBy: users

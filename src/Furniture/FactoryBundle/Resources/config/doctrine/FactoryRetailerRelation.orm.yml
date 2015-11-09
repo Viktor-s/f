@@ -1,0 +1,69 @@
+Furniture\FactoryBundle\Entity\FactoryRetailerRelation:
+    type: entity
+    table: factory_user_relation
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        factory:
+            cascade: [persist]
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            inversedBy: retailerRelations
+            joinColumn:
+                cascade: [persist]
+                name: factory_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+
+        retailer:
+            cascade: [persist]
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerProfile
+            joinColumn:
+                name: retailer_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+
+    indexes:
+        unique_relation_index:            
+            columns:
+                - factory_id
+                - retailer_id
+            options:
+                unique: true
+
+    fields:
+        active:
+            type: boolean
+            default: false
+            name: active
+
+        accessProducts:
+            type: boolean
+            default: false
+            name: access_products
+
+        accessProductsPrices:
+            type: boolean
+            nullable: false
+            name: access_product_prices
+
+        discount:
+            type: integer
+            name: discount
+
+        retailerAccept:
+            type: boolean
+            name: retailer_accept
+
+        factoryAccept:
+            type: boolean
+            name: factory_accept
+
+            

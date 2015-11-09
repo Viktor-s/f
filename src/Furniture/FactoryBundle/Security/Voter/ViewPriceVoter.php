@@ -5,7 +5,6 @@ namespace Furniture\FactoryBundle\Security\Voter;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\ProductBundle\Entity\Product;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ViewPriceVoter extends AbstractVoter
 {
@@ -37,14 +36,14 @@ class ViewPriceVoter extends AbstractVoter
 
         $factory = $object->getFactory();
 
-        if (!$user->isContentUser()) {
-            // This is a no content user. Check by defaults for factory
+        if (!$user->isRetailer()) {
+            // This is a no retailer. Check by defaults for factory
             return $factory->getDefaultRelation()
                 ->isAccessProductsPrices();
         }
 
         // Search relation between factory and user
-        $userRelation = $object->getFactory()->getUserRelationByUser($user);
+        $retailerRelation = $object->getFactory()->getRetailerRelationByRetailer($user->getRetailerProfile());
 
         $accessInDefaults = $factory->getDefaultRelation()->isAccessProductsPrices();
 
@@ -52,8 +51,8 @@ class ViewPriceVoter extends AbstractVoter
             return true;
         }
 
-        if ($userRelation) {
-            return $userRelation->isAccessProductsPrices();
+        if ($retailerRelation) {
+            return $retailerRelation->isAccessProductsPrices();
         }
 
         return $accessInDefaults;

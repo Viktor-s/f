@@ -123,9 +123,9 @@ factory_side:
     prefix: /{_locale}/factory
 
 # Content user profile
-content_user_profile:
-    resource: @FrontendBundle/Resources/config/routing/content_user_profile.yml
-    prefix: /{_locale}/profile/user
+retailer_profile:
+    resource: @FrontendBundle/Resources/config/routing/retailer_profile.yml
+    prefix: /{_locale}/profile/retailer
 
 # Security
 security_login:

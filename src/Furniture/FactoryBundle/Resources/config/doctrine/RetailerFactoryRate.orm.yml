@@ -1,0 +1,37 @@
+Furniture\FactoryBundle\Entity\RetailerFactoryRate:
+    type: entity
+    table: retailer_factory_rates
+    repositoryClass: Furniture\FactoryBundle\Entity\Repository\RetailerFactoryRateRepository
+
+    id:
+        id:
+            type: integer
+            name: id
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        retailer:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerProfile
+            joinColumn:
+                name: retailer_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    fields:
+        coefficient:
+            name: coefficient
+            type: float
+
+        dumping:
+            name: dumping
+            type: float

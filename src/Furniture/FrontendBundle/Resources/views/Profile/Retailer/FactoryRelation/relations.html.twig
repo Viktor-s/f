@@ -1,0 +1,171 @@
+{% extends 'FrontendBundle:Profile/Retailer/FactoryRelation:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.list'|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="information-blocks">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#user-requests" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.factory_requests'|trans }}</a>
+            </li>
+
+            <li role="presentation">
+                <a href="#to-user-requests" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.to_factory_requests'|trans }}</a>
+            </li>
+
+            <li role="presentation">
+                <a href="#authorized-users" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.authorized_factories'|trans }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="user-requests">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for relation in factory_requests %}
+                        <tr class="text-center">
+                            <td>{{ relation.factory.name }}</td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                {{ relation.discount|default('0') }} %
+                            </td>
+
+                            <td>
+                                <a href="{{ path('retailer_profile_factory_relation_approve', {relation: relation.id}) }}" class="btn btn-success btn-xs">{{ 'frontend.approve'|trans }}</a>
+
+                                <br />
+
+                                <a href="{{ path('retailer_profile_factory_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
+
+                                <br />
+
+                                <a
+                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_factory_relation'|trans }});"
+                                        >{{ 'frontend.remove'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="to-user-requests">
+                <div class="pull-right">
+                    <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for relation in requests_to_factories %}
+                        <tr class="text-center">
+                            <td>{{ relation.factory.name }}</td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                {{ relation.discount|default('0') }} %
+                            </td>
+
+                            <td>
+                                <a href="{{ path('retailer_profile_factory_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
+
+                                <br />
+
+                                <a
+                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_user_relation'|trans }});"
+                                        >{{ 'frontend.remove'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="authorized-users">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
+                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for relation in authorized_relations %}
+                        <tr class="text-center">
+                            <td>{{ relation.factory.name }}</td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
+                            </td>
+
+                            <td>
+                                {{ relation.discount|default('0') }} %
+                            </td>
+
+                            <td>
+                                <a
+                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                        class="btn btn-danger btn-xs"
+                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_user_relation'|trans }});"
+                                        >{{ 'frontend.remove'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

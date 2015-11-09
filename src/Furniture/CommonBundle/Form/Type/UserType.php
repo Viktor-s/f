@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -32,7 +33,14 @@ class UserType extends BaseUserType
                 'multiple' => false,
                 'required' => false
             ])
-                ;
+            ->add('retailerMode', 'choice', [
+                'label' => 'Retailer mode',
+                'required' => false,
+                'choices' => [
+                    User::RETAILER_ADMIN => 'Admin',
+                    User::RETAILER_EMPLOYEE => 'Employee'
+                ]
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var User $user */
@@ -73,6 +81,16 @@ class UserType extends BaseUserType
                 $user->addRole(User::ROLE_CONTENT_USER);
             } else if ($role == User::ROLE_FACTORY_ADMIN) {
                 $user->addRole(User::ROLE_FACTORY_ADMIN);
+            }
+
+            if ($user->getRetailerProfile()) {
+                if (!$user->getRetailerMode()) {
+                    $event->getForm()->get('retailerMode')->addError(new FormError(
+                        'This value should be not blank'
+                    ));
+                }
+            } else {
+                $user->setRetailerMode(null);
             }
         });
     }

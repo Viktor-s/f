@@ -50,7 +50,7 @@ furniture_backend_factory_user_relation_index:
     defaults:
         _controller: Furniture.controller.factory_user_relation:indexAction
         _sylius:
-            template: SyliusWebBundle:Backend/FactoryUserRelation:index.html.twig
+            template: SyliusWebBundle:Backend/FactoryRetailerRelation:index.html.twig
             criteria: { factory: $id }
             
 furniture_backend_factory_user_relation_create:
@@ -59,11 +59,11 @@ furniture_backend_factory_user_relation_create:
     defaults:
         _controller: Furniture.controller.factory_user_relation:createAction
         _sylius:
-            template: SyliusWebBundle:Backend/FactoryUserRelation:create.html.twig
+            template: SyliusWebBundle:Backend/FactoryRetailerRelation:create.html.twig
             redirect: 
                 route: furniture_backend_factory_user_relation_index
                 parameters: { id: $id }
-            form: Furniture\FactoryBundle\Form\Type\FactoryUserRelationType
+            form: Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationType
             
 furniture_backend_factory_user_relation_update:
     path: /{id}/edit/{rid}
@@ -71,8 +71,8 @@ furniture_backend_factory_user_relation_update:
     defaults:
         _controller: Furniture.controller.factory_user_relation:updateAction
         _sylius:
-            template: SyliusWebBundle:Backend/FactoryUserRelation:update.html.twig
-            form: Furniture\FactoryBundle\Form\Type\FactoryUserRelationType
+            template: SyliusWebBundle:Backend/FactoryRetailerRelation:update.html.twig
+            form: Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationType
             redirect: 
                 route: furniture_backend_factory_user_relation_index
                 parameters: { id: $id }

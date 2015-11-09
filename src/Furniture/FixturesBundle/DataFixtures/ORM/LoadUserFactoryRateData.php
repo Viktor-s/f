@@ -5,7 +5,7 @@ namespace Furniture\FixturesBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Furniture\FactoryBundle\Entity\UserFactoryRate;
+use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 
 class LoadUserFactoryRateData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -14,14 +14,14 @@ class LoadUserFactoryRateData extends AbstractFixture implements OrderedFixtureI
      */
     public function load(ObjectManager $manager)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
-        $user = $this->getReference('user:content:1');
+        /** @var \Furniture\RetailerBundle\Entity\RetailerProfile $retailer */
+        $retailer = $this->getReference('retailer_profile:stol_i_stul');
         $factories = $this->getFactories();
 
         foreach ($factories as $factory) {
-            $rate = new UserFactoryRate();
+            $rate = new RetailerFactoryRate();
             $rate
-                ->setUser($user)
+                ->setRetailer($retailer)
                 ->setFactory($factory)
                 ->setCoefficient(1 + (rand(0, 20) / 100))
                 ->setDumping(rand(0, 1) ? rand(1, 10) : 0);

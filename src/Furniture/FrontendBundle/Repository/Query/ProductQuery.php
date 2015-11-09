@@ -9,6 +9,7 @@ use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Space;
 use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class ProductQuery
 {
@@ -45,7 +46,7 @@ class ProductQuery
     /**
      * @var User
      */
-    private $contentUser;
+    private $retailer;
 
     /**
      * @var bool
@@ -365,23 +366,15 @@ class ProductQuery
     }
 
     /**
-     * With content user.
-     * Attention: Allowed only users with ROLE_CONTENT_USER role!
+     * With retailer profile.
      *
-     * @param User $user
+     * @param RetailerProfile $retailer
      *
      * @return ProductQuery
      */
-    public function withContentUser(User $user)
+    public function withRetailer(RetailerProfile $retailer)
     {
-        if (!$user->hasRole(User::ROLE_CONTENT_USER)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Can not use user "%s", because here not have a CONTENT_USER role.',
-                $user->getUsername()
-            ));
-        }
-
-        $this->contentUser = $user;
+        $this->retailer = $retailer;
 
         return $this;
     }
@@ -391,9 +384,9 @@ class ProductQuery
      *
      * @return bool
      */
-    public function hasContentUser()
+    public function hasRetailer()
     {
-        return (bool) $this->contentUser;
+        return (bool) $this->retailer;
     }
 
     /**
@@ -401,9 +394,9 @@ class ProductQuery
      *
      * @return User
      */
-    public function getContentUser()
+    public function getRetailer()
     {
-        return $this->contentUser;
+        return $this->retailer;
     }
 
     /**

@@ -1,0 +1,106 @@
+{% extends 'FrontendBundle:Profile/Retailer:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.dashboard'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ 'frontend.title.dashboard'|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    {% if app.user.getRetailerProfile() %}
+        <div class="row">
+            <div class="pull-right">
+                <a href="{{ path('retailer_profile_edit') }}" class="btn btn-success">
+                    <i class="fa fa-edit"></i>
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                {% if is_granted('RETAILER_EDIT', retailer) %}
+                    <div class="image-ajax-container" data-full-name="logo[path]" data-url-upload="{{ path('retailer_profile_logo_upload') }}"{% if retailer.logoImage and retailer.logoImage.path %} data-image-path="{{ retailer.logoImage.path|imagine_filter('s200x200') }}"{% endif %}>
+                        <div class="image-upload">
+                            <img data-src="holder.js/200x200?text=Choose image" width="200" height="200" />
+                        </div>
+
+                        <div class="form-widget">
+                            <input type="hidden" name="logo[path]" />
+                        </div>
+
+                        <div class="image-container">
+                            <div class="image">
+                                <img width="200" height="200" src="" />
+                            </div>
+
+                            <a class="btn btn-danger btn-xs" href="#remove-image">
+                                <i class="fa fa-remove">Remove</i>
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    {% if retailer.logoImage and retailer.logoImage.path %}
+                        <img src="{{ retailer.logoImage.path|imagine_filter('s200x200') }}" width="200" height="200" />
+                    {% else %}
+                        <img data-src="holder.js/200x200?text=Logo" width="200" height="200" />
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="article-container style-1">
+                    <h3>Retailer: {{ app.user.retailerProfile.name }}</h3>
+                    <h2>User: {{ app.user.username }}</h2>
+
+                    <div class="address">
+                        Address: {{ app.user.retailerProfile.address }}
+                    </div>
+
+                    <div class="phones">
+                        <b>Phones:</b>
+                        {% for phone in app.user.retailerProfile.phones %}
+                            <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="emails">
+                        <b>Emails:</b>
+                        {% for email in app.user.retailerProfile.emails %}
+                            <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            var q = new ImageAjax($('.image-ajax-container'), {
+                onRemove: function () {
+                    bootbox.confirm('{{ 'frontend.are_you_sure_remove_logo'|trans }}', function(result) {
+                        if (result) {
+                            $.ajax({
+                                url: '{{ path('retailer_profile_logo_remove') }}',
+                                method: 'POST',
+                                success: function () {
+                                    q.setImagePath('');
+                                    q.viewImageUpload();
+                                }
+                            });
+                        }
+                    });
+
+                    return false;
+                }
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

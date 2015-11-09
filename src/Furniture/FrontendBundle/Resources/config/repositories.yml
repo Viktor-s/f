@@ -39,12 +39,12 @@ services:
         class: Furniture\FrontendBundle\Repository\SpecificationItemRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
 
-    frontend.repository.user_factory_rate:
-        class: Furniture\FrontendBundle\Repository\UserFactoryRateRepository
+    frontend.repository.retailer_factory_rate:
+        class: Furniture\FrontendBundle\Repository\RetailerFactoryRateRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
 
-    frontend.repository.factory_user_relation:
-        class: Furniture\FrontendBundle\Repository\FactoryUserRelationRepository
+    frontend.repository.factory_retailer_relation:
+        class: Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
 
     frontend.repository.post:
@@ -53,4 +53,8 @@ services:
 
     frontend.repository.composite_collection:
         class: Furniture\FrontendBundle\Repository\CompositeCollectionRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    frontend.repository.retailer_employee:
+        class: Furniture\FrontendBundle\Repository\RetailerEmployeeRepository
         arguments: [ @doctrine.orm.default_entity_manager ]

@@ -4,38 +4,55 @@ namespace Furniture\RetailerBundle\Entity;
 use Furniture\CommonBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
 
 class RetailerProfile
 {
     /**
-     *
      * @var int
      */
     private $id;
-    
+
+    /**
+     * @var Collection|User[]
+     */
     private $users;
-    
+
+    /**
+     * @var string
+     */
     private $name;
-    
+
+    /**
+     * @var string
+     */
     private $address;
-    
+
+    /**
+     * @var array
+     */
     private $phones = [];
-    
+
+    /**
+     * @var array
+     */
     private $emails = [];
     
     /**
-     *
-     * @var \Furniture\RetailerBundle\Entity\RetailerProfileLogoImage
+     * @var RetailerProfileLogoImage
      */
     private $logoImage;
-    
-    function __construct() {
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
         $this->users = new ArrayCollection();
     }
     
     /**
-     * 
+     * Get id
+     *
      * @return int
      */
     public function getId()
@@ -44,8 +61,9 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @return \Doctrine\Common\Collections\Collection
+     * Get users
+     *
+     * @return Collection|User[]
      */
     public function getUsers()
     {
@@ -53,18 +71,22 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @param \Doctrine\Common\Collections\Collection $users
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Set users
+     *
+     * @param Collection|User[] $users
+     *
+     * @return RetailerProfile
      */
     public function setUsers(Collection $users)
     {
         $this->users = $users;
+
         return $this;
     }
     
     /**
-     * 
+     * Has users?
+     *
      * @return bool
      */
     public function hasUsers()
@@ -73,8 +95,10 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @param \Furniture\CommonBundle\Entity\User $user
+     * Has user?
+     *
+     * @param User $user
+     *
      * @return bool
      */
     public function hasUser(User $user)
@@ -84,46 +108,56 @@ class RetailerProfile
 
 
     /**
-     * 
-     * @param  \Furniture\CommonBundle\Entity\User $user
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Add user
+     *
+     * @param  User $user
+     *
+     * @return RetailerProfile
      */
-    public function setUser(User $user)
+    public function addUser(User $user)
     {
         if(!$this->hasUser($user)){
             $user->setRetailerProfile($this);
             $this->users->add($user);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param \Furniture\CommonBundle\Entity\User $user
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Remove user
+     *
+     * @param User $user
+     *
+     * @return RetailerProfile
      */
     public function removeUser(User $user)
     {
         if($this->hasUser($user)){
             $this->users->removeElement($user);
         }
+
         return $this;
     }
     
     /**
-     * 
-     * @param str $name
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return RetailerProfile
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
     
     /**
-     * 
-     * @return str
+     * Get name
+     *
+     * @return string
      */
     public function getName()
     {
@@ -131,19 +165,23 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @param str $address
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return RetailerProfile
      */
     public function setAddress($address)
     {
         $this->address = $address;
+
         return $this;
     }
     
     /**
-     * 
-     * @return str
+     * Get address
+     *
+     * @return string
      */
     public function getAddress()
     {
@@ -151,19 +189,23 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @param str $phone
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Set phones
+     *
+     * @param array $phones
+     *
+     * @return RetailerProfile
      */
-    public function setPhones(array $phone)
+    public function setPhones(array $phones)
     {
-        $this->phones = $phone;
+        $this->phones = $phones;
+
         return $this;
     }
     
     /**
-     * 
-     * @return str
+     * Get phones
+     *
+     * @return string
      */
     public function getPhones()
     {
@@ -171,18 +213,22 @@ class RetailerProfile
     }
     
     /**
-     * 
+     * Set emails
+     *
      * @param array $emails
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     *
+     * @return RetailerProfile
      */
     public function setEmails(array $emails)
     {
         $this->emails = $emails;
+
         return $this;
     }
     
     /**
-     * 
+     * Get emails
+     *
      * @return array
      */
     public function getEmails()
@@ -191,25 +237,50 @@ class RetailerProfile
     }
     
     /**
-     * 
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfileLogoImage
+     * Get logo image
+     *
+     * @return RetailerProfileLogoImage
      */
     public function getLogoImage()
     {
         return $this->logoImage;
     }
+
+    /**
+     * Remove logo image
+     *
+     * @return RetailerProfileLogoImage
+     */
+    public function removeLogoImage()
+    {
+        $logoImage = $this->logoImage;
+        $this->logoImage = null;
+
+        return $logoImage;
+    }
     
     /**
-     * 
-     * @param \Furniture\RetailerBundle\Entity\RetailerProfileLogoImage $logoImage
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Set logo image
+     *
+     * @param RetailerProfileLogoImage $logoImage
+     *
+     * @return RetailerProfile
      */
     public function setLogoImage(RetailerProfileLogoImage $logoImage)
     {
         $logoImage->setRetailerProfile($this);
         $this->logoImage = $logoImage;
+
         return $this;
     }
-    
-}
 
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName() ?: '';
+    }
+}

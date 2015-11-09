@@ -1,0 +1,28 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% from 'SyliusWebBundle:Backend/FactoryRetailerRelation:macros.html.twig' import list %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factory_index') }}" >factory</a></li>
+    <li><a href="{{ path('furniture_backend_factory_show', { id: factory.id }) }}" >"{{ factory.name }}"</a></li>
+    <li>user relations</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="actions-menu">
+        {{ buttons.create(path('furniture_backend_factory_user_relation_create', { id: factory.id }), 'Create new relation') }}
+    </div>
+    <h1><i class="glyphicon glyphicon-list-alt"></i> Manage relation for "{{ factory.name }}"</h1>
+</div>
+
+{{ pagination(factory_user_relations) }}
+{{ list(factory_user_relations) }}
+{{ pagination(factory_user_relations) }}
+
+{% endblock %}

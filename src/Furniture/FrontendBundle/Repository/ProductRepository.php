@@ -5,7 +5,7 @@ namespace Furniture\FrontendBundle\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\FactoryBundle\Entity\FactoryUserRelation;
+use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
@@ -182,21 +182,21 @@ class ProductRepository
         $qb
             ->innerJoin('f.defaultRelation', 'fdr');
 
-        if ($query->hasContentUser()) {
+        if ($query->hasRetailer()) {
             $qb
-                ->leftJoin(FactoryUserRelation::class, 'fur', 'WITH', 'fur.factory = f.id AND fur.user = :content_user AND fur.userAccept = :user_accept AND fur.factoryAccept = :factory_accept')
-                ->setParameter('content_user', $query->getContentUser())
-                ->setParameter('user_accept', true)
+                ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
+                ->setParameter('retailer', $query->getRetailer())
+                ->setParameter('retailer_accept', true)
                 ->setParameter('factory_accept', true);
 
             $orExpr = $qb->expr()->orX();
             $orExpr
-                ->add('fur.accessProducts = :content_user_access_products')
+                ->add('frr.accessProducts = :retailer_access_products')
                 ->add('fdr.accessProducts = :default_access_products');
 
             $qb
                 ->andWhere($orExpr)
-                ->setParameter('content_user_access_products', true)
+                ->setParameter('retailer_access_products', true)
                 ->setParameter('default_access_products', true);
         } else {
             $qb

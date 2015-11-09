@@ -1,2 +1,21 @@
 services:
-    
+    # Security voters
+    security.voter.retailer_employee_list:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerEmployeeListVoter
+        tags:
+            - { name: security.voter }
+
+    security.voter.retailer_employee_create:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerEmployeeCreateVoter
+        tags:
+            - { name: security.voter }
+
+    security.voter.retailer_employee:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerEmployeeVoter
+        tags:
+            - { name: security.voter }
+
+    security.voter.retailer:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerVoter
+        tags:
+            - { name: security.voter }

@@ -1,0 +1,34 @@
+{% extends 'FrontendBundle:Profile/Retailer/Employee:base.html.twig' %}
+
+{% block title %}{{ employee.id ? 'frontend.edit'|trans : 'frontend.create'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    {% if employee.id %}
+        <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}">{{ 'frontend.edit'|trans }}</a>
+    {% else %}
+        <a href="{{ path('retailer_profile_employee_create') }}">{{ 'frontend.create'|trans }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block page_content %}
+    <form class="form" method="POST" action="">
+        {% if form.vars.errors|length %}
+                {{ form_errors(form) }}
+        {% endif %}
+
+        {{ form_row(form.customer.firstName) }}
+        {{ form_row(form.customer.lastName) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.customer.email) }}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.retailerMode) }}
+
+        <div class="form-group text-center">
+            <input type="submit" value="{{ employee.id ? 'Save' : 'Create' }}" class="btn btn-success" />
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
+{% endblock %}

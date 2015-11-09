@@ -23,13 +23,16 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
         name:
             type: string
             nullable: true
+
         address:
             type: string
             name: address
             nullable: true
+
         phones:
             type: json_array
             name: phones
+
         emails:
             type: json_array
             name: emails

@@ -3403,7 +3403,6 @@ header.fixed-header nav {
     margin-top: -6px;
 }
 
-<<<<<<< HEAD
 .pgp-product-title {
     margin-bottom: 5px;
 }
@@ -3412,9 +3411,28 @@ header.fixed-header nav {
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
-=======
+
 .image-ajax-container .image-container{ text-align: center; }
 .image-ajax-container .image-container a.remove{ margin-top: 4px; }
 .image-ajax-container.error .image-container img,
 .image-ajax-container.error .image-upload img{ border-color: #b94a48; }
->>>>>>> 0940dc75fd0ab18b3e32f372670687674af2f4a8
+
+.datetime
+{
+    text-align: center;
+    color: #888;
+    font-size: 0.85em;
+}
+
+.datetime .time
+{
+    color: #999;
+    font-size: 0.8em;
+}
+
+.retailer-employees .username,
+retailer-employees .full-name
+{
+    font-size:0.8em;
+    color: #777;
+}

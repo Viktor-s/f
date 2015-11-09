@@ -1,0 +1,118 @@
+retailer_profile:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.dashboard:dashboard
+
+retailer_profile_edit:
+    path: /edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.profile:edit
+
+retailer_profile_logo_upload:
+    path: /logo/upload
+    methods: [ POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.profile:logoUpload
+
+retailer_profile_logo_remove:
+    path: /logo/remove
+    methods: [ POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.profile:logoRemove
+
+retailer_profile_factory_rates:
+    path: /factory/rates
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_rates:rates
+
+retailer_profile_factory_rate_create:
+    path: /factory/rates/create
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_rates:edit
+
+retailer_profile_factory_rate_edit:
+    path: /factory/rates/{rate}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, rate: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.factory_rates:edit
+
+retailer_profile_factory_rate_remove:
+    path: /factory/rate/{rate}/remove
+    methods: [ GET ]
+    requirements: { _locale, %available_locales%, rate: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.factory_rates:remove
+
+retailer_profile_factory_relations:
+    path: /factory-relations
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_relation:factoryRelations
+
+retailer_profile_factory_relation_create:
+    path: /factory-relation/new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_relation:edit
+
+retailer_profile_factory_relation_edit:
+    path: /factory-relation/{relation}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_relation:edit
+
+retailer_profile_factory_relation_remove:
+    path: /factory-relation/{relation}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.factory_relation:remove
+
+retailer_profile_factory_relation_approve:
+    path: /factory-relation/{relation}/approve
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, relation: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.factory_relation:approve
+
+retailer_profile_employees:
+    path: /employees
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.employee:employees
+
+retailer_profile_employee_create:
+    path: /employee/new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.employee:edit
+
+retailer_profile_employee_edit:
+    path: /employee/{employee}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.employee:edit
+
+retailer_profile_employee_remove:
+    path: /employee/{employee}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.employee:remove

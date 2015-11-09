@@ -1,7 +1,6 @@
 Furniture\RetailerBundle\Entity\RetailerProfileLogoImage:
     type: entity
     table: retailer_profile_logo_image
-    inheritanceType: SINGLE_TABLE
     
     oneToOne:
         retailerProfile:

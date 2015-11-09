@@ -60,11 +60,11 @@ services:
             - @twig
             - @sylius.authorization_checker
 
-    frontend.controller.factory.user_relation:
-        class: Furniture\FrontendBundle\Controller\Profile\Factory\UserRelationController
+    frontend.controller.factory.retailer_relation:
+        class: Furniture\FrontendBundle\Controller\Profile\Factory\RetailerRelationController
         arguments:
             - @twig
-            - @frontend.repository.factory_user_relation
+            - @frontend.repository.factory_retailer_relation
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
             - @router
@@ -78,7 +78,7 @@ services:
             - @security.token_storage
             - @router
             - @form.factory
-            
+
     frontend.controller.factory.user_map:
         class: Furniture\FrontendBundle\Controller\Profile\Factory\UserMapController
         arguments:
@@ -86,32 +86,55 @@ services:
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
 
-    # Content user profile controllers
-    frontend.controller.content_user.dashboard:
-        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\DashboardController
+    # Retailer profile controllers
+    frontend.controller.retailer.dashboard:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\DashboardController
         arguments:
             - @twig
             - @security.token_storage
 
-    frontend.controller.content_user.factory_rates:
-        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\FactoryRatesController
+    frontend.controller.retailer.factory_rates:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRatesController
         arguments:
             - @twig
             - @security.token_storage
-            - @frontend.repository.user_factory_rate
+            - @frontend.repository.retailer_factory_rate
             - @doctrine.orm.default_entity_manager
             - @form.factory
             - @router
 
-    frontend.controller.content_user.factory_relation:
-        class: Furniture\FrontendBundle\Controller\Profile\ContentUser\FactoryRelationController
+    frontend.controller.retailer.factory_relation:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRelationController
         arguments:
             - @twig
-            - @frontend.repository.factory_user_relation
+            - @frontend.repository.factory_retailer_relation
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
             - @router
             - @form.factory
+
+    frontend.controller.retailer.profile:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\RetailerProfileController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @security.authorization_checker
+            - @form.factory
+            - @router
+            - @liip_imagine.cache.manager
+
+    frontend.controller.retailer.employee:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\EmployeeController
+        arguments:
+            - @twig
+            - @frontend.repository.retailer_employee
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @security.authorization_checker
+            - @form.factory
+            - @sylius.user.password_updater
+            - @router
 
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController

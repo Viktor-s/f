@@ -1,0 +1,9 @@
+{% extends 'FrontendBundle:Profile/Factory:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.retailer_relations'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="{{ path('factory_profile_retailer_relations') }}">{{ 'frontend.title.retailer_relations'|trans }}</a>
+{% endblock %}

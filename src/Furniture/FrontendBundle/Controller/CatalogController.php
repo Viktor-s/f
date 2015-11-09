@@ -243,8 +243,8 @@ class CatalogController
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if ($user->isContentUser()) {
-            $productQuery->withContentUser($user);
+        if ($user->isRetailer()) {
+            $productQuery->withRetailer($user->getRetailerProfile());
         }
         
         /* Create product paginator */

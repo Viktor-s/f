@@ -5,7 +5,7 @@ namespace Furniture\PricingBundle\Calculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\FactoryBundle\Entity\UserFactoryRate;
+use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
@@ -50,9 +50,9 @@ class PriceCalculator
     {
         $user = $this->getActiveUser();
 
-        if ($user && $user->hasRole(User::ROLE_CONTENT_USER)) {
+        if ($user && $user->isRetailer()) {
             // Calculate for content user
-            return $this->calculateForContentUserByFactory($product->getFactory(), $user, $product->getPrice());
+            return $this->calculateForRetailerByFactory($product->getFactory(), $user, $product->getPrice());
         }
 
         return $product->getPrice();
@@ -76,7 +76,7 @@ class PriceCalculator
             // Calculate for content user
             $factory = $product->getFactory();
 
-            return $this->calculateForContentUserByFactory($factory, $user, $productVariant->getPrice());
+            return $this->calculateForRetailerByFactory($factory, $user, $productVariant->getPrice());
         }
 
         return $productVariant->getPrice();
@@ -168,19 +168,19 @@ class PriceCalculator
      *
      * @return integer
      */
-    private function calculateForContentUserByFactory(Factory $factory, User $user, $amount)
+    private function calculateForRetailerByFactory(Factory $factory, User $user, $amount)
     {
-        /** @var \Furniture\FactoryBundle\Entity\Repository\UserFactoryRateRepository $userFactoryRateRepository */
-        $userFactoryRateRepository = $this->em->getRepository(UserFactoryRate::class);
-        $userFactoryRate = $userFactoryRateRepository->findByFactoryAndUser($factory, $user);
+        /** @var \Furniture\FactoryBundle\Entity\Repository\RetailerFactoryRateRepository $retailerFactoryRateRepository */
+        $retailerFactoryRateRepository = $this->em->getRepository(RetailerFactoryRate::class);
+        $retailerFactoryRate = $retailerFactoryRateRepository->findByFactoryAndRetailer($factory, $user->getRetailerProfile());
 
-        if ($userFactoryRate) {
+        if ($retailerFactoryRate) {
             // First step: Add coefficient
-            $amount = $amount * $userFactoryRate->getCoefficient();
+            $amount = $amount * $retailerFactoryRate->getCoefficient();
 
             // Second stem: Subtract dumping
-            if ($userFactoryRate->getDumping()) {
-                $amount = $amount - ($amount * ($userFactoryRate->getDumping() / 100));
+            if ($retailerFactoryRate->getDumping()) {
+                $amount = $amount - ($amount * ($retailerFactoryRate->getDumping() / 100));
             }
         }
 

@@ -85,6 +85,7 @@ class FrontendMenuBuilder
     public function createHeaderMenu()
     {
         $menu = $this->factory->createItem('root');
+        /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user) {
@@ -185,8 +186,8 @@ class FrontendMenuBuilder
         $menu = $this->factory->createItem('root');
 
         $menu->addChild('user_relations', [
-            'uri' => $this->urlGenerator->generate('factory_profile_user_relations'),
-            'label' => $this->translator->trans('frontend.user_relations')
+            'uri' => $this->urlGenerator->generate('factory_profile_retailer_relations'),
+            'label' => $this->translator->trans('frontend.retailer_relations')
         ]);
 
         $menu->addChild('default_relation', [
@@ -198,22 +199,27 @@ class FrontendMenuBuilder
     }
 
     /**
-     * Create menu for factory profile
+     * Create menu for retailer profile
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createContentUserProfileMenu()
+    public function createRetailerAdminProfileMenu()
     {
         $menu = $this->factory->createItem('root');
 
         $menu->addChild('factory_rates', [
-            'uri' => $this->urlGenerator->generate('content_user_profile_factory_rates'),
+            'uri' => $this->urlGenerator->generate('retailer_profile_factory_rates'),
             'label' => $this->translator->trans('frontend.factory_rates')
         ]);
 
         $menu->addChild('factory_relations', [
-            'uri' => $this->urlGenerator->generate('content_user_profile_factory_relations'),
+            'uri' => $this->urlGenerator->generate('retailer_profile_factory_relations'),
             'label' => $this->translator->trans('frontend.factory_relations')
+        ]);
+
+        $menu->addChild('employees', [
+            'uri' => $this->urlGenerator->generate('retailer_profile_employees'),
+            'label' => $this->translator->trans('frontend.employees')
         ]);
 
         return $menu;

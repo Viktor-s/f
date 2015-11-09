@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Form\Type;
 
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\FactoryBundle\Entity\UserFactoryRate;
+use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +16,7 @@ class UserFactoryRateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserFactoryRate::class,
+            'data_class' => RetailerFactoryRate::class,
         ]);
     }
 

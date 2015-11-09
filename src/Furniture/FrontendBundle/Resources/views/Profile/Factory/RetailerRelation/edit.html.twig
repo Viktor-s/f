@@ -1,0 +1,17 @@
+{% extends 'FrontendBundle:Profile/Factory/RetailerRelation:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (relation.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ ('frontend.title.' ~ (relation.id ? 'edit' : 'create'))|trans }}</a>
+{% endblock %}
+
+{% block page_content %}
+    <div class="information-blocks">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

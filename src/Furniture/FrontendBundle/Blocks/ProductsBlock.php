@@ -3,12 +3,12 @@
 namespace Furniture\FrontendBundle\Blocks;
 
 use Furniture\FrontendBundle\Repository\ProductRepository;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
-use Furniture\CommonBundle\Entity\User;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProductsBlock extends BaseBlockService
@@ -52,8 +52,10 @@ class ProductsBlock extends BaseBlockService
         
         $pQuery = new ProductQuery();
         $pQuery->withOnlyAvailable();
-        if($settings['user'] instanceof User)
-            $pQuery->withContentUser($settings['user']);
+
+        if($settings['retailer'] instanceof RetailerProfile) {
+            $pQuery->withRetailer($settings['retailer']);
+        }
         
         $products = $this->productRepository->fundLatestBy($pQuery, $settings['limit']);
         

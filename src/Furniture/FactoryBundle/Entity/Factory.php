@@ -2,8 +2,8 @@
 
 namespace Furniture\FactoryBundle\Entity;
 
-use Furniture\CommonBundle\Entity\User;
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -45,9 +45,9 @@ class Factory extends AbstractTranslatable
     protected $products;
     
     /**
-     * @var Collection|FactoryUserRelation[]
+     * @var Collection|FactoryRetailerRelation[]
      */
-    protected $userRelations;
+    protected $retailerRelations;
 
     /**
      * @var Collection|\Furniture\CommonBundle\Entity\User[]
@@ -76,7 +76,7 @@ class Factory extends AbstractTranslatable
         $this->createdAt = new \DateTime();
         $this->images = new ArrayCollection();
         $this->products = new ArrayCollection();
-        $this->userRelations = new ArrayCollection();
+        $this->retailerRelations = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->defaultRelation = new FactoryDefaultRelation($this);
         $this->contacts = new ArrayCollection();
@@ -365,37 +365,37 @@ class Factory extends AbstractTranslatable
     }
     
     /**
-     * Has user relations
+     * Has retailer relations
      *
      * @return bool
      */
-    public function hasUserRelations()
+    public function hasRetailerRelations()
     {
-        return (bool)!$this->userRelations->isEmpty();
+        return (bool)!$this->retailerRelations->isEmpty();
     }
     
     /**
-     * Get user relations
+     * Get retailer relations
      *
      * @return Collection
      */
-    public function getUserRelations()
+    public function getRetailerRelations()
     {
-        return $this->userRelations;
+        return $this->retailerRelations;
     }
 
     /**
-     * Get users relation by user
+     * Get retailer relation by user
      *
-     * @param User $user
+     * @param RetailerProfile $retailer
      *
-     * @return FactoryUserRelation|null
+     * @return FactoryRetailerRelation|null
      */
-    public function getUserRelationByUser(User $user)
+    public function getRetailerRelationByRetailer(RetailerProfile $retailer)
     {
-        foreach ($this->userRelations as $userRelation) {
-            if ($userRelation->getUser()->getId() == $user->getId()) {
-                return $userRelation;
+        foreach ($this->retailerRelations as $relation) {
+            if ($relation->getRetailer()->getId() == $retailer->getId()) {
+                return $relation;
             }
         }
 
@@ -403,59 +403,59 @@ class Factory extends AbstractTranslatable
     }
     
     /**
-     * Set user relations
+     * Set retailer relations
      *
-     * @param Collection $userRelations
+     * @param Collection $retailerRelations
      *
      * @return Factory
      */
-    public function setUserRelations(Collection $userRelations)
+    public function setRetailerRelations(Collection $retailerRelations)
     {
-        $this->userRelations = $userRelations;
+        $this->retailerRelations = $retailerRelations;
 
         return $this;
     }
     
     /**
-     * Has user relation?
+     * Has retailer relation?
      *
-     * @param FactoryUserRelation $userRelation
+     * @param FactoryRetailerRelation $userRelation
      *
      * @return bool
      */
-    public function hasUserRelation(FactoryUserRelation $userRelation)
+    public function hasRetailerRelation(FactoryRetailerRelation $userRelation)
     {
-        return $this->userRelations->contains($userRelation);
+        return $this->retailerRelations->contains($userRelation);
     }
     
     /**
-     * Add user relation
+     * Add retailer relation
      *
-     * @param FactoryUserRelation $userRelation
+     * @param FactoryRetailerRelation $userRelation
      *
      * @return Factory
      */
-    public function addUserRelation(FactoryUserRelation $userRelation)
+    public function addRetailerRelation(FactoryRetailerRelation $userRelation)
     {
-        if(!$this->hasUserRelation($userRelation)){
+        if(!$this->hasRetailerRelation($userRelation)){
             $userRelation->setFactory($this);
-            $this->userRelations->add($userRelation);
+            $this->retailerRelations->add($userRelation);
         }
 
         return $this;
     }
     
     /**
-     * Remove user relation
+     * Remove retailer relation
      *
-     * @param FactoryUserRelation $userRelation
+     * @param FactoryRetailerRelation $userRelation
      *
      * @return Factory
      */
-    public function removeUserRelation(FactoryUserRelation $userRelation)
+    public function removeRetailerRelation(FactoryRetailerRelation $userRelation)
     {
-        if($this->hasUserRelation($userRelation)){
-            $this->userRelations->removeElement($userRelation);
+        if($this->hasRetailerRelation($userRelation)){
+            $this->retailerRelations->removeElement($userRelation);
         }
 
         return $this;

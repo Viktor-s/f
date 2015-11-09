@@ -31,12 +31,12 @@ services:
         tags:
             - { name: knp_menu.menu, alias: frontend.factory_profile }
 
-    frontend.menu.content_user_profile:
+    frontend.menu.retailer_admin_profile:
         class: Knp\Menu\MenuItem
         factory_service: frontend.menu_builder
-        factory_method: createContentUserProfileMenu
+        factory_method: createRetailerAdminProfileMenu
         tags:
-            - { name: knp_menu.menu, alias: frontend.content_user_profile }
+            - { name: knp_menu.menu, alias: frontend.retailer_admin_profile }
             
     frontend.menu.factory_side:
         class: Knp\Menu\MenuItem

@@ -18,10 +18,10 @@ Furniture\FactoryBundle\Entity\Factory:
             name: created_at
 
     oneToMany:
-        userRelations:
+        retailerRelations:
             cascade: [persist]
             orphanRemoval: true
-            targetEntity: Furniture\FactoryBundle\Entity\FactoryUserRelation
+            targetEntity: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
             mappedBy: factory
 
         images:
