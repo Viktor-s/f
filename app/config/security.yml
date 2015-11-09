@@ -95,10 +95,10 @@ security:
 sylius_rbac:
     permissions:
         furniture.manage.sku_options: manage sku attributes
-        Furniture.sku_option.index: list sku attributes
-        Furniture.sku_option.create: create new sku attribute
-        Furniture.sku_option.update: update sku attribute
-        Furniture.sku_option.delete: delete sku attribute
+        furniture.sku_option.index: list sku attributes
+        furniture.sku_option.create: create new sku attribute
+        furniture.sku_option.update: update sku attribute
+        furniture.sku_option.delete: delete sku attribute
 
         furniture.manage.product_categories: manage product categories
         furniture.product_category.index: list product categories
@@ -157,24 +157,24 @@ sylius_rbac:
         furniture.product_part_material_variant.generate: generate a product part material variants
         
         furniture.manage.factories: manage factories
-        Furniture.factory.show: show details page
-        Furniture.factory.index: show factories manage page
-        Furniture.factory.create: edit factory data
-        Furniture.factory.update: update factory data
-        Furniture.factory.delete: delete factory data
+        furniture.factory.show: show details page
+        furniture.factory.index: show factories manage page
+        furniture.factory.create: edit factory data
+        furniture.factory.update: update factory data
+        furniture.factory.delete: delete factory data
         
         furniture.manage.retailer_profile: manage retailer profiles
-        Furniture.retailer_profile.index: show retailers profiles
-        Furniture.retailer_profile.create: create new retailer profile
-        Furniture.retailer_profile.update: update retailer profile
-        Furniture.retailer_profile.delete: delete retailer profile
+        furniture.retailer_profile.index: show retailers profiles
+        furniture.retailer_profile.create: create new retailer profile
+        furniture.retailer_profile.update: update retailer profile
+        furniture.retailer_profile.delete: delete retailer profile
         
         furniture.manage.factories.user_relations: manage factory user relations
-        Furniture.factory_user_relation.index: users list
-        Furniture.factory_user_relation.show: show detail page
-        Furniture.factory_user_relation.create: create new relation
-        Furniture.factory_user_relation.update: update current relation
-        Furniture.factory_user_relation.delete: delete relation
+        furniture.factory_user_relation.index: users list
+        furniture.factory_user_relation.show: show detail page
+        furniture.factory_user_relation.create: create new relation
+        furniture.factory_user_relation.update: update current relation
+        furniture.factory_user_relation.delete: delete relation
 
         furniture.manage.composite_collections: manage composite collection
         furniture.composite_collection.index: list composite collections
@@ -209,30 +209,30 @@ sylius_rbac:
         sylius.product.variantGrouEdit: variants group update
     permissions_hierarchy:
         furniture.manage.factories:
-            - Furniture.factory.show
-            - Furniture.factory.index
-            - Furniture.factory.create
-            - Furniture.factory.update
-            - Furniture.factory.delete
+            - furniture.factory.show
+            - furniture.factory.index
+            - furniture.factory.create
+            - furniture.factory.update
+            - furniture.factory.delete
             
         furniture.manage.retailer_profile:
-            - Furniture.retailer_profile.index
-            - Furniture.retailer_profile.create
-            - Furniture.retailer_profile.update
-            - Furniture.retailer_profile.delete
+            - furniture.retailer_profile.index
+            - furniture.retailer_profile.create
+            - furniture.retailer_profile.update
+            - furniture.retailer_profile.delete
             
         furniture.manage.factories.user_relations:
-            - Furniture.factory_user_relation.show
-            - Furniture.factory_user_relation.index
-            - Furniture.factory_user_relation.create
-            - Furniture.factory_user_relation.update
-            - Furniture.factory_user_relation.delete
+            - furniture.factory_user_relation.show
+            - furniture.factory_user_relation.index
+            - furniture.factory_user_relation.create
+            - furniture.factory_user_relation.update
+            - furniture.factory_user_relation.delete
         
         furniture.manage.sku_options: 
-            - Furniture.sku_option.index
-            - Furniture.sku_option.create
-            - Furniture.sku_option.update
-            - Furniture.sku_option.delete
+            - furniture.sku_option.index
+            - furniture.sku_option.create
+            - furniture.sku_option.update
+            - furniture.sku_option.delete
             - sylius.product.variantGrouEdit
 
         furniture.manage.product_categories:
