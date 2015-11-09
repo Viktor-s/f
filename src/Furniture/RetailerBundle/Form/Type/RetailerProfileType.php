@@ -31,9 +31,6 @@ class RetailerProfileType extends AbstractType
             ->add('name', 'text', [
                     'required' => true
             ])
-            ->add('logoImage', new ImageType(RetailerProfileLogoImage::class), [
-                'required' => false
-            ])
             ->add('address', 'text', [
                 'required' => true
             ])
