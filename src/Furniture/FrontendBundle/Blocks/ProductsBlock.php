@@ -38,7 +38,7 @@ class ProductsBlock extends BaseBlockService
     {
         $resolver->setDefaults([
             'limit' => 5,
-            'user' => null,
+            'retailer' => null,
             'template' => 'FrontendBundle:Blocks:products.html.twig'
         ]);
     }
