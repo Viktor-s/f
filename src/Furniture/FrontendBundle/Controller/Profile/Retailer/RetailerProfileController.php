@@ -5,7 +5,7 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
-use Furniture\RetailerBundle\Form\Type\RetailerProfileType;
+use Furniture\FrontendBundle\Form\Type\RetailerProfileType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
