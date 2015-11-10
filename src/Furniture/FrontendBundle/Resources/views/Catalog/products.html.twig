@@ -193,6 +193,7 @@
                 </div>
 
                 {# Composite collection selector #}
+                {% if composite_collections != false %}
                 <div class="information-blocks">
                     <div class="block-title size-2">{{ 'frontend.catalog.composite_collection_selector'| trans }}</div>
 
@@ -220,6 +221,7 @@
                         <div class="clearfix"></div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -156,8 +156,8 @@ frontend:
         space_filter: Space
         category_selector: Category
         type_selector: Type
-        style_selecto: Style
-        composite_collection_selector: Composite collection
+        style_selector: Styles
+        composite_collection_selector: Collections
 
     product:
         media_tab:
