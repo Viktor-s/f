@@ -33,7 +33,7 @@
         <div class="price">
             <div class="current">
                 {% if is_granted('VIEW_PRICE', product) %}
-                    {{ product|product_price|money }}
+                    {{ product|product_price|money(0) }}
                 {% endif %}
             </div>
         </div>
