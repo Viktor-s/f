@@ -25,7 +25,7 @@
 
                 <div class="tabs-entry">
                     <div class="products-swiper">
-                        {{ sonata_block_render({type: 'frontend.block.products'}, {retailer: app.user.retailerProfile}) }}
+                        {{ sonata_block_render({type: 'frontend.block.products'}, {retailer: app.user.retailerProfile, limit: 4}) }}
                     </div>
                 </div>
             </div>
