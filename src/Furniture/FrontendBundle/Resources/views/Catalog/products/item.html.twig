@@ -2,7 +2,7 @@
     <div class="product-slide-entry">
         <div class="product-image">
             {% if product.getImage() %}
-                <img src="{{ product.image.path|imagine_filter('s200x250') }}" alt="" />
+                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="" />
             {% endif %}
             <div class="bottom-line">
                 <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
