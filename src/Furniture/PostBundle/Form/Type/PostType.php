@@ -8,6 +8,7 @@ use Furniture\PostBundle\Entity\Post;
 use Furniture\PostBundle\Entity\PostFile;
 use Furniture\PostBundle\Entity\PostImage;
 use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
+use Furniture\PostBundle\Form\Type\FileType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -76,7 +77,7 @@ class PostType extends AbstractType
                 'allow_delete' => true
             ])
             ->add('files', 'collection', [
-                'type' => new ImageType(PostFile::class),
+                'type' => new FileType(PostFile::class),
                 'allow_add' => true,
                 'allow_delete' => true
             ])

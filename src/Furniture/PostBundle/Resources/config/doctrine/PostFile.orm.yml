@@ -2,6 +2,12 @@ Furniture\PostBundle\Entity\PostFile:
     type: entity
     table: post_file
 
+    fields:
+        name:
+            type: string
+            name: name
+            nullable: true
+
     manyToOne:
         post:
             targetEntity: Furniture\PostBundle\Entity\Post
@@ -11,3 +17,6 @@ Furniture\PostBundle\Entity\PostFile:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+    
+    lifecycleCallbacks:
+        prePersist: [doSetOriginName]

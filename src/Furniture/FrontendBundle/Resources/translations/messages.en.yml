@@ -84,7 +84,7 @@ frontend:
     created: Created
     default_relation: Default relation
     taxonomy: Categories
-    downlod_file_with_number: "Download file #:number"
+    downlod_file_with_number: "Download :number"
     select_style: Style
     select_category: Category
     spaces: Spaces
