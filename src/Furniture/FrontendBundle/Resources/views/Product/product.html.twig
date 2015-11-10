@@ -183,13 +183,13 @@
                     variants.forEach(function (variant) {
                         if (
                                 min == 0 ||
-                                parseInt(variant.price.substr(1)) < parseInt(min.substr(1))
+                                parseFloat(variant.price) < parseFloat(min)
                                 ) {
                             min = variant.price;
                         }
                         if (
                                 max == 0 ||
-                                parseInt(variant.price.substr(1)) > parseInt(max.substr(1))
+                                parseFloat(variant.price) > parseFloat(max)
                                 ) {
                             max = variant.price;
                         }
