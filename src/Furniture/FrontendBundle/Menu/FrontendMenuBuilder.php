@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as SymfonyAuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class FrontendMenuBuilder
 {
@@ -49,6 +50,12 @@ class FrontendMenuBuilder
     private $productSpaceRepository;
     
     /**
+     *
+     * @var \Symfony\Component\HttpFoundation\RequestStack
+     */
+    private $requestStack;
+    
+    /**
      * Construct
      *
      * @param FactoryInterface                     $factory
@@ -58,6 +65,7 @@ class FrontendMenuBuilder
      * @param UrlGeneratorInterface                $urlGenerator
      * @param TokenStorageInterface                $tokenStorage
      * @param ProductSpaceRepository               $productSpaceRepository
+     * @param RequestStack $requestStack
      */
     public function __construct(
         FactoryInterface $factory,
@@ -66,7 +74,8 @@ class FrontendMenuBuilder
         RbacAuthorizationCheckerInterface $rbacAuthorizationChecker,
         UrlGeneratorInterface $urlGenerator,
         TokenStorageInterface $tokenStorage,
-        ProductSpaceRepository $productSpaceRepository
+        ProductSpaceRepository $productSpaceRepository,
+        RequestStack $requestStack
     ) {
         $this->factory = $factory;
         $this->translator = $translator;
@@ -75,6 +84,7 @@ class FrontendMenuBuilder
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
         $this->productSpaceRepository = $productSpaceRepository;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -131,6 +141,29 @@ class FrontendMenuBuilder
             ]);
         }
 
+        switch($this->requestStack->getMasterRequest()->get('_route')){
+            case 'homepage':
+                $menu->getChild('home')->setCurrent('true');
+                break;
+            case 'factory_side_list':
+                $menu->getChild('factories')->setCurrent('true');
+                break;
+            case 'catalog':
+                $menu->getChild('products')->setCurrent('true');
+                break;
+            case 'products':
+                $menu->getChild('products')->setCurrent('true');
+                break;
+            case 'specifications':
+                $menu->getChild('specifications')->setCurrent('true');
+                break;
+            case 'specification_buyers':
+                $menu->getChild('buyers')->setCurrent('true');
+                break;
+                
+        }
+        
+        
         return $menu;
     }
 
@@ -265,6 +298,31 @@ class FrontendMenuBuilder
             'uri' => $this->urlGenerator->generate('factory_side_circulars', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
         ]);
+        
+        switch($this->requestStack->getMasterRequest()->get('_route')){
+            case 'factory_side_general':
+                $menu->getChild('general')->setCurrent('true');
+                break;
+            case 'factory_side_news':
+                $menu->getChild('news')->setCurrent('true');
+                break;
+            case 'factory_side_collections':
+                $menu->getChild('collections')->setCurrent('true');
+                break;
+            case 'factory_side_work_info':
+                $menu->getChild('work_info')->setCurrent('true');
+                break;
+            case 'factory_side_contacts':
+                $menu->getChild('contacts')->setCurrent('true');
+                break;
+            case 'factory_side_circulars':
+                $menu->getChild('circulars')->setCurrent('true');
+                break;
+                
+        }
+        
+        
+        return $menu;
         
         return $menu;
     }

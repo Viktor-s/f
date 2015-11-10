@@ -5,7 +5,9 @@
         <div class="title">Select</div>
         <div class="list">
         {% for child in item.children %}
-            <a href="{{ child.uri }}">{{ child.label }}</a>
+            <a {% if child.isCurrent() %} class="active" {% endif %} href="{{ child.uri }}">
+                {{ child.label }}
+            </a>
         {% endfor %}
         </div>
     </div>
