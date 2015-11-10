@@ -5,6 +5,8 @@ namespace Furniture\FixturesBundle\DataFixtures\ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Bundle\FixturesBundle\DataFixtures\DataFixture;
+use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Entity\ProductPdpInput;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Model\AttributeValueInterface;
 use Sylius\Component\Taxation\Model\TaxCategoryInterface;
@@ -40,6 +42,7 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->persist($e);
                     $manager->flush();
                     $this->generateVariants($e);
+                    $this->createPDP($e);
                     $manager->flush();
                     break;
 
@@ -48,6 +51,7 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->persist($e);
                     $manager->flush();
                     $this->generateVariants($e);
+                    $this->createPDP($e);
                     $manager->flush();
                     break;
 
@@ -56,6 +60,7 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->persist($e);
                     $manager->flush();
                     $this->generateVariants($e);
+                    $this->createPDP($e);
                     $manager->flush();
                     break;
 
@@ -81,6 +86,28 @@ class LoadProductsData extends BaseLoadProductsData
     {
         return 50;
     }
+
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Entity\Product $product
+     */
+    private function createPDP(Product $product)
+    {
+        $pdpConfig = $product->getPdpConfig();
+        foreach($pdpConfig->getInputs() as $pdpInput){
+            if( $pdpInput->getOption() ){
+                $pdpInput->setPosition(0);
+                $pdpInput->setType(ProductPdpInput::SELECT_DEFAULT_TYPE);
+            }elseif($pdpInput->getSkuOption()){
+                $pdpInput->setPosition(1);
+                $pdpInput->setType(ProductPdpInput::SELECT_INLINE_TYPE);
+            }elseif($pdpInput->getProductPart()){
+                $pdpInput->setPosition(2);
+                $pdpInput->setType(ProductPdpInput::SELECT_POPUP_TYPE);
+            }
+        }
+    }
+
 
     /**
      * Creates chair product.
