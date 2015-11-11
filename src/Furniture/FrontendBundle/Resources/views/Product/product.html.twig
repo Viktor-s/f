@@ -87,22 +87,21 @@
 
             <div class="col-sm-6 information-entry">
                 <div class="product-detail-box">
-                    <h1 class="product-title">
+                    <h1 class="product-title" style="margin-bottom: 7px;">
                         {% if product.factoryCode != '' %}
                             <small>{{ product.factoryCode }}</small> 
                         {% endif %}
                         {{ product.name }}
                     </h1>
-                    {% if not product.types.isEmpty() %}
-                    <h3 class="product-subtitle">
-                        <a href="{{ path('products', {type: [product.types.first.id]}) }}">
-                        {{ product.types.first }}
-                        </a>
-                    </h3>
-                    {% endif %}
-                    <h3 class="product-title--factory">
+                    <h3 class="product-title--factory" style="padding-bottom: 10px;">
                         <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a> 
-                        <span style="margin:0 5px;display:none">></span> <a href="#" style="display:none;">Chair</a></h3>
+                        {% if not product.types.isEmpty() %}
+                            <span style="margin:0 5px;">></span> 
+                            <a href="{{ path('products', {type: [product.types.first.id]}) }}">
+                            {{ product.types.first }}
+                            </a>
+                        {% endif %}
+                    </h3>
 
 
                     <div class="product-description detail-info-entry">{{ product.description }}</div>
