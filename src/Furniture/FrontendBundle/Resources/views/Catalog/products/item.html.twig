@@ -2,7 +2,7 @@
     <div class="product-slide-entry">
         <div class="product-image">
             {% if product.getImage() %}
-                <img src="{{ product.image.path|imagine_filter('s200x250') }}" alt="" />
+                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="" />
             {% endif %}
             <div class="bottom-line">
                 <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
@@ -28,12 +28,13 @@
             {% endif %}
             {{ product.name }}</a>
         </h4>
+        <h6 class="pgp-product-factory">{{ product.types.first }}</h6>
         <h6 class="pgp-product-factory">{{ product.factory.name }}</h6>
 
         <div class="price">
             <div class="current">
                 {% if is_granted('VIEW_PRICE', product) %}
-                    {{ product|product_price|money }}
+                    {{ product|product_price|money(0) }}
                 {% endif %}
             </div>
         </div>

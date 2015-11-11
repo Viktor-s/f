@@ -13,6 +13,19 @@ class PostFile extends Image implements UploadableInterface
     private $post;
 
     /**
+     *
+     * @var string
+     */
+    private $name;
+    
+    public function doSetOriginName()
+    {
+        if($this->getFile() instanceof \SplFileInfo ){
+            $this->setName($this->getFile()->getFilename());
+        }
+    }
+    
+    /**
      * Set post
      *
      * @param Post $post
@@ -35,4 +48,25 @@ class PostFile extends Image implements UploadableInterface
     {
         return $this->post;
     }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return \Furniture\PostBundle\Entity\PostFile
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+    
 }

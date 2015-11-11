@@ -10,6 +10,11 @@ class CompositeCollectionQuery
     private $ids;
 
     /**
+     * @var array|int
+     */
+    private $factories;
+    
+    /**
      * With id
      *
      * @param int $id
@@ -59,5 +64,34 @@ class CompositeCollectionQuery
     public function getIds()
     {
         return array_values($this->ids);
+    }
+    
+    /**
+     * 
+     * @param array $factories
+     * @return \Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery
+     */
+    public function withFactories(array $factories)
+    {
+        $this->factories = $factories;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function hasFactories()
+    {
+        return count($this->factories) > 0;
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getFactories()
+    {
+        return $this->factories;
     }
 }

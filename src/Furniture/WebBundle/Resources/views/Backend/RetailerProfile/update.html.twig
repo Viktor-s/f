@@ -16,7 +16,7 @@
 
 {{ form_errors(form) }}
 
-<form action="{{ path('furniture_backend_factory_update', {'id': retailer_profile.id}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+<form action="{{ path('furniture_backend_retailer_profile_update', {'id': retailer_profile.id}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
     <input type="hidden" name="_method" value="PUT">
     {% include 'SyliusWebBundle:Backend/RetailerProfile:_form.html.twig' %}
     {{ update() }}

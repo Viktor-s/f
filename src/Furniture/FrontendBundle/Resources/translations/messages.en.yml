@@ -2,8 +2,8 @@ frontend:
     all_right_reserved: All right reserved
     agenta_solution: AgentA Solution
     new_arrivals: New arrivals
-    new_factories: New factories
-    factories: Factories
+    new_factories: New Brands
+    factories: Brands
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     products: Products
     name: Name
@@ -77,7 +77,7 @@ frontend:
     factory_relations: Factory relations
     factory_requests: Factory requests
     to_factory_requests: Requests to factory
-    authorized_factories: Authorized factories
+    authorized_factories: Authorized brands
     user: User
     admin: Admin
     email: Email
@@ -85,7 +85,7 @@ frontend:
     created: Created
     default_relation: Default relation
     taxonomy: Categories
-    downlod_file_with_number: "Download file #:number"
+    downlod_file_with_number: "Download :number"
     select_style: Style
     select_category: Category
     spaces: Spaces
@@ -112,14 +112,14 @@ frontend:
         collections: Collections
         index: Furniture
         homepage: Homepage
-        factories: Factories
+        factories: Brands
         news: News
         circulars: Circulars
         navigation: Navigation
         buyers: Clients
         specifications: Specifications
         products: Products
-        catalog: Catalog
+        catalog: Products
         buyers: Clients
         list: List
         create: Create
@@ -157,8 +157,8 @@ frontend:
         space_filter: Space
         category_selector: Category
         type_selector: Type
-        style_selecto: Style
-        composite_collection_selector: Composite collection
+        style_selector: Styles
+        composite_collection_selector: Collections
 
     product:
         media_tab:

@@ -227,6 +227,7 @@ class CatalogController
         }
 
         $factoryIds = [];
+        $composite_collections = false;
         if ($request->query->has('brand')) {
             $factoryIds = (array) $request->query->get('brand');
             $factoryIds = $filterIds($factoryIds);
@@ -235,7 +236,11 @@ class CatalogController
                 $factoryQuery = new FactoryQuery();
                 $factoryQuery->withIds($factoryIds);
                 $factories = $this->factoryRepository->findBy($factoryQuery);
-
+                if(count($factories) == 1){
+                    $ccQuery = new CompositeCollectionQuery();
+                    $ccQuery->withFactories($factories);
+                    $composite_collections = $this->compositeCollectionRepository->findBy($ccQuery);
+                }
                 $productQuery->withFactories($factories);
             }
         }
@@ -257,7 +262,7 @@ class CatalogController
             'categories' => $this->productCategoryRepository->findAllOnlyRoot(),
             'types' => $this->productTypeRepository->findAllOnlyRoot(),
             'styles' => $this->productStyleRepository->findAllOnlyRoot(),
-            'composite_collections' => $this->compositeCollectionRepository->findAll(),
+            'composite_collections' => $composite_collections,
 
             'factory_ids' => $factoryIds,
             'category_ids' => $categoryIds,

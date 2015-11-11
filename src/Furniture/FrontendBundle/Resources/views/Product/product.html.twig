@@ -90,10 +90,19 @@
                     <h1 class="product-title">
                         {% if product.factoryCode != '' %}
                             <small>{{ product.factoryCode }}</small> 
-                        {% endif %} 
+                        {% endif %}
                         {{ product.name }}
                     </h1>
-                    <h3 class="product-title--factory"><a href="#">{{ product.factory.name }}</a> <span style="margin:0 5px;display:none">></span> <a href="#" style="display:none;">Chair</a></h3>
+                    {% if not product.types.isEmpty() %}
+                    <h3 class="product-subtitle">
+                        <a href="{{ path('products', {type: [product.types.first.id]}) }}">
+                        {{ product.types.first }}
+                        </a>
+                    </h3>
+                    {% endif %}
+                    <h3 class="product-title--factory">
+                        <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a> 
+                        <span style="margin:0 5px;display:none">></span> <a href="#" style="display:none;">Chair</a></h3>
 
 
                     <div class="product-description detail-info-entry">{{ product.description }}</div>
@@ -134,9 +143,9 @@
                                 </button>
 
                                 <ul class="dropdown-menu">
-                                    <li>
+                                    {# <li>
                                         <a href="#" class="new-specification">{{ 'frontend.new_specification'|trans }}</a>
-                                    </li>
+                                    </li> #}
 
                                     <li role="separator" class="divider"></li>
 
@@ -183,13 +192,13 @@
                     variants.forEach(function (variant) {
                         if (
                                 min == 0 ||
-                                parseInt(variant.price.substr(1)) < parseInt(min.substr(1))
+                                parseFloat(variant.price) < parseFloat(min)
                                 ) {
                             min = variant.price;
                         }
                         if (
                                 max == 0 ||
-                                parseInt(variant.price.substr(1)) > parseInt(max.substr(1))
+                                parseFloat(variant.price) > parseFloat(max)
                                 ) {
                             max = variant.price;
                         }

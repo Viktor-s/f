@@ -9,6 +9,7 @@ services:
             - @router
             - @security.token_storage
             - @frontend.repository.product_space
+            - @request_stack
 
     frontend.menu.header:
         class: Knp\Menu\MenuItem

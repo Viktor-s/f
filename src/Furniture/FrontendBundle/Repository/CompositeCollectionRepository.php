@@ -56,6 +56,9 @@ class CompositeCollectionRepository
                 ->setParameter('ids', $query->getIds());
         }
 
+        if($query->hasFactories()) {
+            /* Доделаем после того как переделаем связи! */
+        }
         return $qb
             ->getQuery()
             ->getResult();

@@ -39,7 +39,7 @@
             <div class="files">
                 {% for file in post.files %}
                     <div class="file">
-                        <a href="/media/image/{{ file.path }}">{{ 'frontend.downlod_file_with_number'|trans({':number': loop.index}) }}</a>
+                        <a href="/media/image/{{ file.path }}" download="{{ file.name }}">{{ 'frontend.downlod_file_with_number'|trans({':number': file.name}) }}</a>
                     </div>
                 {% endfor %}
             </div>

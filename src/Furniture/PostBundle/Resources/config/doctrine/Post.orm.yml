@@ -56,11 +56,13 @@ Furniture\PostBundle\Entity\Post:
             targetEntity: Furniture\PostBundle\Entity\PostImage
             mappedBy: post
             cascade: [ persist ]
+            orphanRemoval: true
 
         files:
             targetEntity: Furniture\PostBundle\Entity\PostFile
             mappedBy: post
             cascade: [ persist ]
+            orphanRemoval: true
 
     lifecycleCallbacks:
         preUpdate: [ onUpdate ]
