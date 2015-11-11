@@ -5,9 +5,9 @@
                 <div class="paddings-container">
                     <div class="product-slide-entry">
                         <a class="product-image hover-class-1" href="#">
-                            <div style="width: 201px; height: 203px;">
+                            <div style="">
                             {% if factory.logoImage %}
-                                <img src="{{ factory.logoImage.path|imagine_filter('s201x123') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
+                                <img src="{{ factory.logoImage.path|imagine_filter('s201x203') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% else %}
                                 <img src="{{ '/img/201x203.png' }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
                             {% endif %}

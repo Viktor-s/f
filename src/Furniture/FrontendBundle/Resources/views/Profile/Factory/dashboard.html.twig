@@ -21,7 +21,7 @@
     {% if ( is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') ) and app.user.factory %}
         <div class="product-slide-entry">
             {% if app.user.factory.hasImages() %}
-                <img src="{{ app.user.factory.primaryImage.path|imagine_filter('s201x123') }}">
+                <img src="{{ app.user.factory.primaryImage.path|imagine_filter('s201x203') }}">
             {% endif %}
             <a href="#" class="title">{{ app.user.factory.name }}</a>
         </div>

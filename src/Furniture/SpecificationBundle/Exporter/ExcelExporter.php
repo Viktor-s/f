@@ -275,7 +275,7 @@ class ExcelExporter implements ExporterInterface
             if ($logoImage = $retailerProfile->getLogoImage()) {
                 if ($logoImage->getPath()) {
                     $activeSheet->mergeCells('A1:B6');
-                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1', 's201x123');
+                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1', 's201x203');
                     $obj->setWorksheet($activeSheet);
                 }
             }
