@@ -1,0 +1,14 @@
+Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage:
+    type: entity
+    table: composite_collection_logo_image
+    inheritanceType: SINGLE_TABLE
+    
+    oneToOne:
+        compositeCollection:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeCollection
+            inversedBy: logoImage
+            joinColumn:
+                name: composite_collection_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false

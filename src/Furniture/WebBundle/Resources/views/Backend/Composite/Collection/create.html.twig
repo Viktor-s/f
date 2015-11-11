@@ -20,7 +20,7 @@
 
     {{ form_errors(form) }}
 
-    <form action="{{ path('furniture_backend_composite_collection_create') }}" method="post" class="form-horizontal" novalidate>
+    <form action="{{ path('furniture_backend_composite_collection_create') }}" method="post" class="form-horizontal" novalidate {{ form_enctype(form) }}>
         {{ form_widget(form) }}
 
         {{ create() }}
