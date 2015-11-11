@@ -29,10 +29,7 @@ class FactoryTranslationType extends AbstractType
             ->add('shortDescription', 'textarea')
             ->add('address')
             ->add('workInfoContent', 'textarea', [
-                'label' => 'Work info',
-                'attr' => [
-                    'class' => 'ckeditor'
-                ]
+                'label' => 'Work info'
             ])
             ->add('collectionContent', 'textarea', [
                 'label' => 'Collections',
