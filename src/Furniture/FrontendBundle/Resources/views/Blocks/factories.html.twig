@@ -15,7 +15,7 @@
                         </a>
 
                         <a class="subtitle" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name ? factory.name : 'Unknown' }}</a>
-                        <div class="date">{{ 'frontend.factory.posted'|trans({':created': factory.createdAt.format('d M Y')}) }}</div>
+                        {# <div class="date">{{ 'frontend.factory.posted'|trans({':created': factory.createdAt.format('d M Y')}) }}</div> #}
                     </div>
                 </div>
             </div>
