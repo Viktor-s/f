@@ -9,13 +9,16 @@
 {% endblock %}
 
 {% block javascripts %}
+    {#
+    For 3D
+    'static/js/3d/three.js'
+    'static/js/3d/OBJLoader.js'
+    'static/js/3d/Projector.js'
+    #}
     {{ parent() }}
     {% javascripts output='static/js/widget/.*.js'
                         'static/js/widget/variant_data_container.js'
                         'static/js/widget/variant_buy_btn.js'
-                        'static/js/3d/three.js'
-                        'static/js/3d/OBJLoader.js'
-                        'static/js/3d/Projector.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     <script type="text/javascript" src="/static/js/widget/pdp.js"></script>
@@ -31,7 +34,7 @@
                         <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
                         <div class="list">
                             <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
-                            <a class="block-title tab-switcher">{{ 'frontend.product.media_tab.model'|trans }}</a>
+                            <a class="block-title">{{ 'frontend.product.media_tab.model'|trans }}</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -293,6 +296,7 @@
         {% endif %}
             })(jQuery);
     </script>
+    {# For 3D viewer
     <script>
         (function ($) {
             $(document).ready(function () {
@@ -425,4 +429,5 @@
             });
         })(jQuery);
     </script>
+    #}
 {% endblock %}
