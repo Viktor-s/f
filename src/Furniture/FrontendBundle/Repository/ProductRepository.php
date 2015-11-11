@@ -14,7 +14,6 @@ use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Doctrine\ORM\QueryBuilder;
 
 class ProductRepository
 {
@@ -32,15 +31,7 @@ class ProductRepository
     {
         $this->em = $em;
     }
-
-    protected function appendCommonFiltering(QueryBuilder $qb)
-    {
-        $qb
-                ->andWhere('p.availableForSale = true');
-        return $qb;
-    }
-
-
+    
     /**
      * Find product by identifier
      *
@@ -50,13 +41,10 @@ class ProductRepository
      */
     public function find($product)
     {
-         $qb = $this->appendCommonFiltering(
-                 $this->em->createQueryBuilder()
-                    ->from(Product::class, 'p')
-                    ->select('p')
-                 );
-        
-        return $qb->andWhere('p.id = :product')
+        return $this->em->createQueryBuilder()
+            ->from(Product::class, 'p')
+            ->select('p')
+            ->andWhere('p.id = :product')
             ->setParameter('product', $product)
             ->getQuery()
             ->getOneOrNullResult();
@@ -73,7 +61,7 @@ class ProductRepository
      */
     public function findBy(ProductQuery $query, $page = 1, $limit = 12)
     {
-        $qb = $this->appendCommonFiltering($this->createQueryBuilderForProductQuery($query));
+        $qb = $this->createQueryBuilderForProductQuery($query);
 
         if ($page === null) {
             // Not use pagination
@@ -99,7 +87,7 @@ class ProductRepository
      */
     public function findLatestBy(ProductQuery $query, $limit = 5)
     {
-        $qb = $this->appendCommonFiltering($this->createQueryBuilderForProductQuery($query));
+        $qb = $this->createQueryBuilderForProductQuery($query);
         $qb->orderBy('p.availableOn', 'desc');
         $qb->setMaxResults($limit);
 
@@ -115,10 +103,10 @@ class ProductRepository
      */
     private function createQueryBuilderForProductQuery(ProductQuery $query)
     {
-        $qb = $this->appendCommonFiltering($this->em->createQueryBuilder()
+        $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
-            ->innerJoin('p.factory', 'f'));
+            ->innerJoin('p.factory', 'f');
 
         // Filtering by space
         if ($query->hasSpaces()) {
@@ -219,6 +207,7 @@ class ProductRepository
         if ($query->isOnlyAvailable()) {
             $qb
                 ->andWhere('p.availableOn <= :now')
+                ->andWhere('p.availableForSale = true')
                 ->setParameter('now', new \DateTime());
         }
 

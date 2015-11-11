@@ -93,6 +93,7 @@ class LoadProductsData extends BaseLoadProductsData
      */
     private function createPDP(Product $product)
     {
+        $product->setAvailableForSale(true);
         $pdpConfig = $product->getPdpConfig();
         foreach($pdpConfig->getInputs() as $pdpInput){
             if( $pdpInput->getOption() ){
