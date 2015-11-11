@@ -276,17 +276,17 @@ class ProductPdpInput
             $translation = $this->productPart->translate();
 
             return sprintf(
-                'Product part: %s',
+                '%s',
                 $translation->getLabel()
             );
         } else if ($this->skuOption) {
             return sprintf(
-                'Option: %s',
+                '%s',
                 $this->skuOption->getName()
             );
         } else if ($this->option) {
             return sprintf(
-                'Option: %s',
+                '%s',
                 $this->option->getName()
             );
         } else {

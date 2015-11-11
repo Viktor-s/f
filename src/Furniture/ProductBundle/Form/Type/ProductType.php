@@ -34,6 +34,7 @@ class ProductType extends BaseProductType
                 'multiple' => true
             ])
             ->add('factoryCode')
+            ->add('availableForSale')
             ->add('skuOptionVariants', 'collection', [
                 'type' => new SkuOptionVariantFormType(),
                 'required'  => false,

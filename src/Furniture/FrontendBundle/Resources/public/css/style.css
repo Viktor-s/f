@@ -244,7 +244,7 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 /*form elements*/
 .checkbox, .radio{margin-top: 0;}
 .checkbox-entry{margin-bottom: 15px;}
-.checkbox-entry{display: block; font-size: 13px; line-height: 14px; font-weight: 500; position: relative;}
+.checkbox-entry{display: block; font-size: 13px; line-height: 14px; font-weight: 500; position: relative; padding-left: 22px;}
 .checkbox-entry b{font-weight: 600!important; color: #313131!important;}
 .checkbox-entry input + span{cursor: pointer; display: inline-block; border: 1px #d9d9d9 solid; width: 12px; height: 12px;  vertical-align: middle; color: #333232; position: relative; top: -1px; margin-right: 7px; position: absolute; left: 0; top: 6px;}
 .checkbox-entry.radio input + span{width: 15px; height: 15px; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
