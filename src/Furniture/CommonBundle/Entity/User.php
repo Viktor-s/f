@@ -154,6 +154,16 @@ class User extends BaseUser
     }
 
     /**
+     * Is no retailer?
+     *
+     * @return bool
+     */
+    public function isNoRetailer()
+    {
+        return !$this->isRetailer();
+    }
+
+    /**
      * Is retailer admin?
      *
      * @return bool

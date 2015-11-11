@@ -26,3 +26,5 @@ services:
             - @pricing.calculator
             - @pricing.twig_extension
             - @liip_imagine.cache.manager
+            - @validator
+            - @security.authorization_checker

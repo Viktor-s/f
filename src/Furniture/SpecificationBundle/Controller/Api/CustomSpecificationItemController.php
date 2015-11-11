@@ -3,6 +3,7 @@
 namespace Furniture\SpecificationBundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Entity\CustomSpecificationItem;
@@ -16,11 +17,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\PricingBundle\Twig\PricingExtension;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CustomSpecificationItemController 
+class CustomSpecificationItemController
 {
     use FormErrorsTrait;
-    
+
     /**
      * @var FormFactoryInterface
      */
@@ -40,7 +44,7 @@ class CustomSpecificationItemController
      * @var PriceCalculator
      */
     private $calculator;
-    
+
     /**
      * @var PricingExtension
      */
@@ -50,16 +54,28 @@ class CustomSpecificationItemController
      * @var CacheManager
      */
     private $cacheManager;
-    
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
     /**
      * Construct
      *
-     * @param FormFactoryInterface   $formFactory
-     * @param EntityManagerInterface $em
-     * @param TokenStorageInterface  $tokenStorage
-     * @param PriceCalculator        $calculator
-     * @param PricingExtension       $pricingTwigExtension
-     * @param CacheManager           $cacheManager
+     * @param FormFactoryInterface          $formFactory
+     * @param EntityManagerInterface        $em
+     * @param TokenStorageInterface         $tokenStorage
+     * @param PriceCalculator               $calculator
+     * @param PricingExtension              $pricingTwigExtension
+     * @param CacheManager                  $cacheManager
+     * @param ValidatorInterface            $validator
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -67,16 +83,21 @@ class CustomSpecificationItemController
         TokenStorageInterface $tokenStorage,
         PriceCalculator $calculator,
         PricingExtension $pricingTwigExtension,
-        CacheManager $cacheManager
-    ) {
+        CacheManager $cacheManager,
+        ValidatorInterface $validator,
+        AuthorizationCheckerInterface $authorizationChecker
+    )
+    {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
         $this->calculator = $calculator;
         $this->pricingTwigExtension = $pricingTwigExtension;
         $this->cacheManager = $cacheManager;
+        $this->validator = $validator;
+        $this->authorizationChecker = $authorizationChecker;
     }
-    
+
     /**
      * Add item to specification
      *
@@ -89,39 +110,42 @@ class CustomSpecificationItemController
         $specificationItem = new SpecificationItem();
         $specificationItem->setCustomItem(new CustomSpecificationItem());
 
+        if (!$this->authorizationChecker->isGranted('CREATE', $specificationItem->getCustomItem())) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->formFactory->createNamed('', new CustomSpecificationItemSingleType($this->em), $specificationItem, [
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // @todo: add check granted for add option to this specification
             $this->em->persist($specificationItem);
             $this->em->flush();
 
             return new JsonResponse([
                 'status' => true,
-                'data' => [
-                    'id' => $specificationItem->getId(),
-                    'customId' => $specificationItem->getCustomItem()->getId(),
+                'data'   => [
+                    'id'            => $specificationItem->getId(),
+                    'customId'      => $specificationItem->getCustomItem()->getId(),
                     'specification' => $specificationItem->getSpecification()->getId(),
-                    'factoryName' => $specificationItem->getCustomItem()->getFactoryName(),
-                    'name' => $specificationItem->getCustomItem()->getName(),
-                    'options' => $specificationItem->getCustomItem()->getOptions(),
-                    'price' => $specificationItem->getCustomItem()->getPrice(),
-                    'quantity' => $specificationItem->getQuantity(),
-                    'note' => $specificationItem->getNote()
-                ]
+                    'factoryName'   => $specificationItem->getCustomItem()->getFactoryName(),
+                    'name'          => $specificationItem->getCustomItem()->getName(),
+                    'options'       => $specificationItem->getCustomItem()->getOptions(),
+                    'price'         => $specificationItem->getCustomItem()->getPrice(),
+                    'quantity'      => $specificationItem->getQuantity(),
+                    'note'          => $specificationItem->getNote(),
+                ],
             ]);
         }
 
         return new JsonResponse([
             'status' => false,
-            'errors' => $this->convertFormErrorsToArray($form)
+            'errors' => $this->convertFormErrorsToArray($form),
         ], 400);
     }
-    
+
     /**
      * Editable item
      *
@@ -142,7 +166,9 @@ class CustomSpecificationItemController
             ));
         }
 
-        // @todo: add check granted for edit this item (via security voter in symfony)
+        if (!$this->authorizationChecker->isGranted('EDIT', $item)) {
+            throw new AccessDeniedException();
+        }
 
         $id = $request->request->get('id');
         $value = $request->request->get('value');
@@ -169,7 +195,7 @@ class CustomSpecificationItemController
                 $item->getCustomItem()->setOptions($value);
                 break;
             case 'price':
-                 $item->getCustomItem()->setPrice($value*100);
+                $item->getCustomItem()->setPrice($value * 100);
                 break;
             default:
                 throw new NotFoundHttpException(sprintf(
@@ -182,20 +208,32 @@ class CustomSpecificationItemController
 
         return new Response($value);
     }
-    
-    public function info(Request $request, $itemId, $index)
+
+    /**
+     * View info about specification item
+     *
+     * @param int    $itemId
+     * @param string $index
+     *
+     * @return Response
+     */
+    public function info($itemId, $index)
     {
         /* @var $item \Furniture\SpecificationBundle\Entity\SpecificationItem */
         $specificationItem = $this->em->find(SpecificationItem::class, $itemId);
-        
+
         if (!$specificationItem) {
             throw new NotFoundHttpException(sprintf(
                 'Not found specification item with identifier "%s".',
                 $itemId
             ));
         }
-        
-        switch($index){
+
+        if (!$this->authorizationChecker->isGranted('VIEW', $specificationItem)) {
+            throw new AccessDeniedException();
+        }
+
+        switch ($index) {
             case 'totalPrice':
                 $amount = $this->calculator->calculateTotalForSpecificationItem($specificationItem);
                 $money = $this->pricingTwigExtension->money($amount);
@@ -237,6 +275,10 @@ class CustomSpecificationItemController
             ));
         }
 
+        if (!$this->authorizationChecker->isGranted('EDIT', $item)) {
+            throw new AccessDeniedException();
+        }
+
         $image = $item->getImage();
 
         if (!$image) {
@@ -247,7 +289,16 @@ class CustomSpecificationItemController
         $image->setPath(null);
         $image->setFile($file);
 
-        // @todo: validate file
+        $violations = $this->validator->validateProperty($image, 'file');
+
+        if (count($violations)) {
+            $errors = ViolationListUtils::convertToArrayWithoutPath($violations);
+
+            return new JsonResponse([
+                'status' => false,
+                'errors' => $errors,
+            ], 400);
+        }
 
         $this->em->persist($image);
         $this->em->flush();
@@ -256,8 +307,8 @@ class CustomSpecificationItemController
         $path = $this->cacheManager->getBrowserPath($path, 's150x150');
 
         return new JsonResponse([
-            'image' => $path,
-            'status' => true
+            'image'  => $path,
+            'status' => true,
         ]);
     }
 
@@ -280,12 +331,16 @@ class CustomSpecificationItemController
             ));
         }
 
+        if (!$this->authorizationChecker->isGranted('EDIT', $item)) {
+            throw new AccessDeniedException();
+        }
+
         $image = $item->removeImage();
         $this->em->remove($image);
         $this->em->flush();
 
         return new JsonResponse([
-            'status' => true
+            'status' => true,
         ]);
     }
 }

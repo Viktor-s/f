@@ -3,9 +3,11 @@
 
     /**
      * Image ajax
+     *
      * @param container
      * @param options
      * @param uploaderOptions
+     *
      * @constructor
      */
     function ImageAjax(container, options, uploaderOptions)
@@ -200,6 +202,17 @@
                 $this.successUpload.apply($this, [data]);
             },
             error: function(d) {
+                if (d.status == 400) {
+                    if (d.hasOwnProperty('responseJSON')) {
+                        var json = d.responseJSON;
+
+                        if (json.hasOwnProperty('status') && json.status == false && json.hasOwnProperty('errors')) {
+                            $this.successUpload.apply($this, [json]);
+                            return;
+                        }
+                    }
+                }
+
                 alert('Critical error with upload file. Please try again.\nResponse: ' + d.statusText);
             },
             start: function () {
@@ -249,20 +262,25 @@
      */
     ImageAjax.prototype.processErrorUpload = function(errors)
     {
-        var hash = Math.random();
-        var container = this.options.errorContainer.call(this),
+        var
+            hash = Math.random(),
+            $this = this,
+            container = this.options.errorContainer.call(this),
             message = '<div class="error-container" data-hash="' + hash + '">' +
                 this.options.errorFormatter.call(this, errors) +
                 '</div>';
-        container.prepend(message);
+        container.append(message);
+
+        this.container.addClass('error');
 
         setTimeout(function(){
             $('[data-hash="' + hash + '"]').animate({
                 opacity: 0
             }, 500, function(){
-                $(this).remove()
+                $(this).remove();
+                $this.container.removeClass('error');
             });
-        }, 4000);
+        }, 10000);
     };
 
     /**
@@ -270,6 +288,7 @@
      */
     ImageAjax.prototype.formatterErrors = function(errors)
     {
+        return errors.join(' ');
     };
 
     /**

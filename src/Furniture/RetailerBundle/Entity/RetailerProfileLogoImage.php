@@ -1,21 +1,27 @@
 <?php
+
 namespace Furniture\RetailerBundle\Entity;
 
 use Sylius\Component\Core\Model\Image;
-use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\CommonBundle\Uploadable\UploadableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RetailerProfileLogoImage extends Image implements UploadableInterface
 {
     /**
+     * @var \SplFileInfo
      *
-     * @var \Furniture\RetailerBundle\Entity\RetailerProfile 
+     * @Assert\Image()
+     */
+    protected $file;
+
+    /**
+     * @var RetailerProfile
      */
     private $retailerProfile;
     
     /**
-     * 
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * @return RetailerProfile
      */
     public function getRetailerProfile()
     {
@@ -23,15 +29,16 @@ class RetailerProfileLogoImage extends Image implements UploadableInterface
     }
     
     /**
-     * 
-     * @param \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfileLogoImage
+     * Set retailer profile
+     *
+     * @param RetailerProfile $retailerProfile
+     *
+     * @return RetailerProfileLogoImage
      */
     public function setRetailerProfile(RetailerProfile $retailerProfile)
     {
         $this->retailerProfile = $retailerProfile;
+
         return $this;
     }
-    
 }
-

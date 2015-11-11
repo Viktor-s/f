@@ -85,7 +85,7 @@ class ProductRepository
      *
      * @return Product[]
      */
-    public function fundLatestBy(ProductQuery $query, $limit = 5)
+    public function findLatestBy(ProductQuery $query, $limit = 5)
     {
         $qb = $this->createQueryBuilderForProductQuery($query);
         $qb->orderBy('p.availableOn', 'desc');

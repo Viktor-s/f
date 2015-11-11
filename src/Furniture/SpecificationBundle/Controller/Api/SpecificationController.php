@@ -7,7 +7,7 @@ use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Entity\SpecificationSale;
-use Furniture\SpecificationBundle\Form\Type\SpecificationItemSingleType;
+use Furniture\SpecificationBundle\Form\Type\SkuSpecificationItemSingleType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\PricingBundle\Twig\PricingExtension;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SpecificationController
 {
@@ -41,32 +42,42 @@ class SpecificationController
      * @var PriceCalculator
      */
     private $calculator;
-    
+
     /**
-     *
      * @var PricingExtension
      */
     private $pricingTwigExtension;
-    
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
     /**
      * Construct
      *
-     * @param FormFactoryInterface   $formFactory
-     * @param EntityManagerInterface $em
-     * @param TokenStorageInterface  $tokenStorage
+     * @param FormFactoryInterface          $formFactory
+     * @param EntityManagerInterface        $em
+     * @param TokenStorageInterface         $tokenStorage
+     * @param PriceCalculator               $calculator
+     * @param PricingExtension              $pricingTwigExtension
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
         TokenStorageInterface $tokenStorage,
         PriceCalculator $calculator,
-        PricingExtension $pricingTwigExtension
-    ) {
+        PricingExtension $pricingTwigExtension,
+        AuthorizationCheckerInterface $authorizationChecker
+    )
+    {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
         $this->calculator = $calculator;
         $this->pricingTwigExtension = $pricingTwigExtension;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -85,7 +96,7 @@ class SpecificationController
         $specification->setUser($user);
 
         $form = $this->formFactory->createNamed('', new SpecificationType(), $specification, [
-            'csrf_protection' => false
+            'csrf_protection' => false,
         ]);
 
         $form->handleRequest($request);
@@ -96,13 +107,13 @@ class SpecificationController
 
             return new JsonResponse([
                 'status' => true,
-                'id' => $specification->getId(),
+                'id'     => $specification->getId(),
             ]);
         }
 
         return new JsonResponse([
             'status' => false,
-            'errors' => $this->convertFormErrorsToArray($form)
+            'errors' => $this->convertFormErrorsToArray($form),
         ], 400);
     }
 
@@ -127,9 +138,9 @@ class SpecificationController
 
         // @todo: check granted for edit item (via security voter in Symfony)
 
-        $form = $this->formFactory->createNamed('', new SpecificationItemSingleType($this->em), $item, [
+        $form = $this->formFactory->createNamed('', new SkuSpecificationItemSingleType($this->em), $item, [
             'csrf_protection' => false,
-            'method' => 'PATCH'
+            'method'          => 'PATCH',
         ]);
 
         $form->submit($request, false);
@@ -138,13 +149,13 @@ class SpecificationController
             $this->em->flush();
 
             return new JsonResponse([
-                'status' => true
+                'status' => true,
             ]);
         }
 
         return new JsonResponse([
             'status' => false,
-            'errors' => $this->convertFormErrorsToArray($form)
+            'errors' => $this->convertFormErrorsToArray($form),
         ], 400);
     }
 
@@ -227,7 +238,7 @@ class SpecificationController
         $this->em->flush();
 
         return new JsonResponse([
-            'status' => true
+            'status' => true,
         ]);
     }
 
@@ -291,13 +302,13 @@ class SpecificationController
                     // @todo: add check granted for use this buyer (via security voter in Symfony)
                     $specification->setBuyer($buyer);
 
-                    $value = (string) $buyer;
+                    $value = (string)$buyer;
                 }
 
                 break;
 
             case 'sale':
-                if(!$index = $request->request->get('index')) {
+                if (!$index = $request->request->get('index')) {
                     throw new NotFoundHttpException('Missing "index" parameter.');
                 }
 
@@ -362,29 +373,29 @@ class SpecificationController
 
         return new JsonResponse($result);
     }
-    
+
     public function info(Request $request, $itemId, $index)
     {
         /* @var $item \Furniture\SpecificationBundle\Entity\Specification */
         $specification = $this->em->find(Specification::class, $itemId);
-        
+
         if (!$specification) {
             throw new NotFoundHttpException(sprintf(
                 'Not found specification item with identifier "%s".',
                 $itemId
             ));
         }
-        
-        switch($index){
+
+        switch ($index) {
             case 'totalPrice':
-                return new Response( 
-                        $this->pricingTwigExtension->money(
-                            $this->calculator->calculateForSpecification($specification)
-                                )
-                        );
+                return new Response(
+                    $this->pricingTwigExtension->money(
+                        $this->calculator->calculateForSpecification($specification)
+                    )
+                );
                 break;
         }
+
         return new Response('');
     }
-    
 }

@@ -5,6 +5,7 @@ namespace Furniture\FrontendBundle\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\SpecificationBundle\Entity\Specification;
 
 class SpecificationRepository
@@ -65,7 +66,7 @@ class SpecificationRepository
             $qb
                 ->innerJoin('s.user', 'u')
                 ->andWhere('u.id IN (:user_ids)')
-                ->setParameter('user_ids', implode(',', $ids));
+                ->setParameter('user_ids', $ids);
         }
 
         if ($query->hasState()) {
@@ -84,6 +85,40 @@ class SpecificationRepository
     }
 
     /**
+     * Find opened specifications for retailer
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return Specification[]
+     */
+    public function findOpenedForRetailer(RetailerProfile $retailer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withRetailer($retailer)
+            ->opened();
+
+        return $this->findBy($query);
+    }
+
+    /**
+     * Find finished for retailer
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return Specification[]
+     */
+    public function findFinishedForRetailer(RetailerProfile $retailer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withRetailer($retailer)
+            ->finished();
+
+        return $this->findBy($query);
+    }
+
+    /**
      * Find opened specifications for user
      *
      * @param User $user
@@ -94,7 +129,7 @@ class SpecificationRepository
     {
         $query = new SpecificationQuery();
         $query
-            ->forUser($user)
+            ->withUser($user)
             ->opened();
 
         return $this->findBy($query);
@@ -111,7 +146,7 @@ class SpecificationRepository
     {
         $query = new SpecificationQuery();
         $query
-            ->forUser($user)
+            ->withUser($user)
             ->finished();
 
         return $this->findBy($query);
@@ -128,7 +163,7 @@ class SpecificationRepository
     {
         $query = new SpecificationQuery();
         $query
-            ->forUser($user);
+            ->withUser($user);
 
         return $this->findBy($query);
     }

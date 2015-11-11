@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Repository\Query;
 
 use Furniture\CommonBundle\Entity\User;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class SpecificationQuery
 {
@@ -26,9 +27,27 @@ class SpecificationQuery
      *
      * @return SpecificationQuery
      */
-    public function forUser(User $user)
+    public function withUser(User $user)
     {
         $this->users[spl_object_hash($user)] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Search for users
+     *
+     * @param User[] $users
+     *
+     * @return SpecificationQuery
+     */
+    public function withUsers(array $users)
+    {
+        $this->users = [];
+
+        foreach ($users as $user) {
+            $this->withUser($user);
+        }
 
         return $this;
     }
@@ -50,7 +69,24 @@ class SpecificationQuery
      */
     public function getUsers()
     {
-        return $this->users;
+        return array_values($this->users);
+    }
+
+    /**
+     * Search with retailer.
+     * Attention: clear all users, and sets users from retailer profile
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return SpecificationQuery
+     */
+    public function withRetailer(RetailerProfile $retailer)
+    {
+        $users = $retailer->getUsers();
+
+        $this->withUsers($users->toArray());
+
+        return $this;
     }
 
     /**

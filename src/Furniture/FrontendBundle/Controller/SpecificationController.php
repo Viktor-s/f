@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SpecificationController
 {
@@ -48,6 +50,11 @@ class SpecificationController
     private $em;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -60,13 +67,14 @@ class SpecificationController
     /**
      * Construct
      *
-     * @param \Twig_Environment       $twig
-     * @param SpecificationRepository $specificationRepository
-     * @param TokenStorageInterface   $tokenStorage
-     * @param FormFactoryInterface    $formFactory
-     * @param EntityManagerInterface  $em
-     * @param UrlGeneratorInterface   $urlGenerator
-     * @param ExporterInterface       $exporter
+     * @param \Twig_Environment             $twig
+     * @param SpecificationRepository       $specificationRepository
+     * @param TokenStorageInterface         $tokenStorage
+     * @param FormFactoryInterface          $formFactory
+     * @param EntityManagerInterface        $em
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param UrlGeneratorInterface         $urlGenerator
+     * @param ExporterInterface             $exporter
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -74,14 +82,17 @@ class SpecificationController
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
+        AuthorizationCheckerInterface $authorizationChecker,
         UrlGeneratorInterface $urlGenerator,
         ExporterInterface $exporter
-    ) {
+    )
+    {
         $this->twig = $twig;
         $this->specificationRepository = $specificationRepository;
         $this->tokenStorage = $tokenStorage;
         $this->formFactory = $formFactory;
         $this->em = $em;
+        $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->exporter = $exporter;
     }
@@ -93,14 +104,29 @@ class SpecificationController
      */
     public function specifications()
     {
+        if (!$this->authorizationChecker->isGranted('SPECIFICATION_LIST')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view specifications.',
+                $this->tokenStorage->getToken()->getUsername()
+            ));
+        }
+
+        /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $openedSpecifications = $this->specificationRepository->findOpenedForUser($user);
-        $finishedSpecifications = $this->specificationRepository->findFinishedForUser($user);
+        if ($user->isRetailerAdmin()) {
+            $retailer = $user->getRetailerProfile();
+
+            $openedSpecifications = $this->specificationRepository->findOpenedForRetailer($retailer);
+            $finishedSpecifications = $this->specificationRepository->findFinishedForRetailer($retailer);
+        } else {
+            $openedSpecifications = $this->specificationRepository->findOpenedForUser($user);
+            $finishedSpecifications = $this->specificationRepository->findFinishedForUser($user);
+        }
 
         $content = $this->twig->render('FrontendBundle:Specification:specifications.html.twig', [
-            'opened_specifications' => $openedSpecifications,
-            'finished_specifications' =>  $finishedSpecifications
+            'opened_specifications'   => $openedSpecifications,
+            'finished_specifications' => $finishedSpecifications,
         ]);
 
         return new Response($content);
@@ -136,7 +162,7 @@ class SpecificationController
         }
 
         $form = $this->formFactory->create(new SpecificationType(), $specification, [
-            'owner' => $user
+            'owner' => $user,
         ]);
 
         $form->handleRequest($request);
@@ -151,9 +177,9 @@ class SpecificationController
         }
 
         $content = $this->twig->render('FrontendBundle:Specification:edit.html.twig', [
-            'specification' => $specification,
-            'form' => $form->createView(),
-            'active_item_id' => $request->get('item')
+            'specification'  => $specification,
+            'form'           => $form->createView(),
+            'active_item_id' => $request->get('item'),
         ]);
 
         return new Response($content);
@@ -245,9 +271,9 @@ class SpecificationController
         $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
-            'specification' => $specification,
-            'grouped_items_by_factory' => $groupedItemsByFactory,
-            'grouped_custom_items_by_factory' => $groupedCustomItemsByFactory
+            'specification'                   => $specification,
+            'grouped_items_by_factory'        => $groupedItemsByFactory,
+            'grouped_custom_items_by_factory' => $groupedCustomItemsByFactory,
         ]);
 
         return new Response($content);
