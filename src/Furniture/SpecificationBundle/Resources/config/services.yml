@@ -12,7 +12,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-
     # Security voters
     security.voter.specification_custom_item:
         class: Furniture\SpecificationBundle\Security\Voter\CustomSpecificationItemVoter
@@ -26,5 +25,10 @@ services:
 
     security.voter.specification:
         class: Furniture\SpecificationBundle\Security\Voter\SpecificationVoter
+        tags:
+            - { name: security.voter }
+
+    security.voter.specification_buyer:
+        class: Furniture\SpecificationBundle\Security\Voter\BuyerVoter
         tags:
             - { name: security.voter }

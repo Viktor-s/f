@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CompositionBundle\Entity\CompositeCollection;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 
 class CompositeCollectionRepository
@@ -57,8 +58,16 @@ class CompositeCollectionRepository
         }
 
         if($query->hasFactories()) {
-            /* Доделаем после того как переделаем связи! */
+            $factoryIds = array_map(function (Factory $factory) {
+                return $factory->getId();
+            }, $query->getFactories());
+
+            $qb
+                ->innerJoin('cc.factory', 'f')
+                ->andWhere('f.id IN (:factory_ids)')
+                ->setParameter('factory_ids', $factoryIds);
         }
+
         return $qb
             ->getQuery()
             ->getResult();

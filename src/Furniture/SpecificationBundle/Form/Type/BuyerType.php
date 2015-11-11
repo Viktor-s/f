@@ -3,8 +3,6 @@
 namespace Furniture\SpecificationBundle\Form\Type;
 
 use Furniture\SpecificationBundle\Entity\Buyer;
-use Furniture\SpecificationBundle\Entity\BuyerImage;
-use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +31,6 @@ class BuyerType extends AbstractType
             ->add('secondName', 'text', [
                 'label' => 'specification.buyer.form.second_name'
             ])
-            ->add('image', new ImageType(BuyerImage::class))
             ->add('phone', 'text', [
                 'label' => 'specification.buyer.form.phone',
                 'required' => false

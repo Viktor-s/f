@@ -84,33 +84,9 @@ specification_export:
         _controller: frontend.controller.specification:export
 
 # Specification buyers
-specification_buyers:
-    path: /{_locale}/specifications/buyers
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.specification_buyer:buyers
-
-specification_buyer_create:
-    path: /{_locale}/specification/buyers/new
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.specification_buyer:edit
-
-specification_buyer_edit:
-    path: /{_locale}/specification/buyers/{buyer}/edit
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales%, buyer: \d+ }
-    defaults:
-        _controller: frontend.controller.specification_buyer:edit
-
-specification_buyer_remove:
-    path: /{_locale}/specification/buyers/{buyer}/remove
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, buyer: \d+ }
-    defaults:
-        _controller: frontend.controller.specification_buyer:remove
+specificaiton_buyers:
+    prefix: /{_locale}/specification/buyers
+    resource: @FrontendBundle/Resources/config/routing/buyer.yml
 
 # Factory profile
 factory_profile:

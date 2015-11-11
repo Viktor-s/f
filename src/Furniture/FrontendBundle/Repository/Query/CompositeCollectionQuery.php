@@ -2,6 +2,8 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
+use Furniture\FactoryBundle\Entity\Factory;
+
 class CompositeCollectionQuery
 {
     /**
@@ -65,20 +67,38 @@ class CompositeCollectionQuery
     {
         return array_values($this->ids);
     }
-    
+
     /**
-     * 
-     * @param array $factories
-     * @return \Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery
+     * With factory
+     *
+     * @param Factory $factory
+     *
+     * @return CompositeCollectionQuery
      */
-    public function withFactories(array $factories)
+    public function withFactory(Factory $factory)
     {
-        $this->factories = $factories;
+        $this->factories[$factory->getId()] = $factory;
+
         return $this;
     }
     
     /**
-     * 
+     * With factories
+     *
+     * @param array|Factory[] $factories
+     *
+     * @return CompositeCollectionQuery
+     */
+    public function withFactories(array $factories)
+    {
+        $this->factories = $factories;
+
+        return $this;
+    }
+    
+    /**
+     * Has factories?
+     *
      * @return bool
      */
     public function hasFactories()
@@ -92,6 +112,6 @@ class CompositeCollectionQuery
      */
     public function getFactories()
     {
-        return $this->factories;
+        return array_values($this->factories);
     }
 }

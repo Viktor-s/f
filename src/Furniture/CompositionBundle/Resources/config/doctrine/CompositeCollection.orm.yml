@@ -13,3 +13,12 @@ Furniture\CompositionBundle\Entity\CompositeCollection:
         name:
             type: string
             name: name
+
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: SET NULL

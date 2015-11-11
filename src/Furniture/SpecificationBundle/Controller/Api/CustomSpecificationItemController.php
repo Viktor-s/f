@@ -336,8 +336,11 @@ class CustomSpecificationItemController
         }
 
         $image = $item->removeImage();
-        $this->em->remove($image);
-        $this->em->flush();
+
+        if ($image) {
+            $this->em->remove($image);
+            $this->em->flush();
+        }
 
         return new JsonResponse([
             'status' => true,

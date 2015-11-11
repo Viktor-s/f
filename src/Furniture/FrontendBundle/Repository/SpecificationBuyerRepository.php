@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\SpecificationBundle\Entity\Buyer;
 
 class SpecificationBuyerRepository
@@ -45,19 +46,24 @@ class SpecificationBuyerRepository
     /**
      * Find buyers for user
      *
-     * @param User $creator
+     * @param RetailerProfile $retailer
      *
-     * @return Buyer
+     * @return Buyer[]
      *
      * @todo: add pagination
      */
-    public function findByUser(User $creator)
+    public function findByRetailer(RetailerProfile $retailer)
     {
+        $creators = $retailer->getUsers();
+        $ids = array_map(function (User $user) {
+            return $user->getId();
+        }, $creators->toArray());
+
         return $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')
             ->select('b')
-            ->andWhere('b.creator = :creator')
-            ->setParameter('creator', $creator)
+            ->andWhere('b.creator IN (:creators)')
+            ->setParameter('creators', $ids)
             ->getQuery()
             ->getResult();
     }

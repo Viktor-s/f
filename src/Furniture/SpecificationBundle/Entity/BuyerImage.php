@@ -4,9 +4,17 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Furniture\CommonBundle\Uploadable\UploadableInterface;
 use Sylius\Component\Core\Model\Image;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class BuyerImage extends Image implements UploadableInterface
 {
+    /**
+     * @var \SplFileInfo
+     *
+     * @Assert\Image()
+     */
+    protected $file;
+
     /**
      * @var Buyer
      */

@@ -1,0 +1,41 @@
+specification_buyers:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification_buyer:buyers
+
+specification_buyer_create:
+    path: /new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification_buyer:edit
+
+specification_buyer_edit:
+    path: /{buyer}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:edit
+
+specification_buyer_remove:
+    path: /{buyer}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:remove
+
+specification_buyer_image_upload:
+    path: /{buyer}/image/upload
+    methods: [ POST ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:imageUpload
+
+specification_buyer_image_remove:
+    path: /{buyer}/image/remove
+    methods: [ POST ]
+    requirements: { _locale: %available_locales%, buyer: \d+ }
+    defaults:
+        _controller: frontend.controller.specification_buyer:imageRemove

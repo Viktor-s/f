@@ -4,6 +4,7 @@ namespace Furniture\CompositionBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\ORM\Mapping as ORM;
+use Furniture\FactoryBundle\Entity\Factory;
 
 class CompositeCollection extends AbstractTranslatable
 {
@@ -11,6 +12,11 @@ class CompositeCollection extends AbstractTranslatable
      * @var int
      */
     protected $id;
+
+    /**
+     * @var Factory
+     */
+    private $factory;
 
     /**
      * @var string
@@ -33,6 +39,30 @@ class CompositeCollection extends AbstractTranslatable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set factory
+     *
+     * @param Factory $factory
+     *
+     * @return CompositeCollection
+     */
+    public function setFactory(Factory $factory = null)
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Get factory
+     *
+     * @return Factory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
     }
 
     /**
@@ -62,41 +92,45 @@ class CompositeCollection extends AbstractTranslatable
     /**
      * Set translatable presentation
      * 
-     * @param str $presentation
+     * @param string $presentation
+     *
      * @return CompositeCollection
      */
     public function setPresentation($presentation)
     {
         $this->translate()->setPresentation($presentation);
+
         return $this;
     }
 
     /**
      * Get translatable presentation
      * 
-     * @return str
+     * @return string
      */
     public function getPresentation()
     {
-        return $this->translate()->getPresentation($presentation);
+        return $this->translate()->getPresentation();
     }
     
     /**
      * Set translatable description
      * 
-     * @param str $description
+     * @param string $description
+     *
      * @return CompositeCollection
      */
     public function setDescription($description)
     {
         $this->translate()->setDescription($description);
+
         return $this;
     }
 
     /**
      * Get translatable description
      * 
-     * @return str
+     * @return string
      */
     public function getDescription()
     {

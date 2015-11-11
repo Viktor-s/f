@@ -308,8 +308,15 @@ class Buyer
     /**
      * Remove image
      *
-     * @return Buyer
+     * @return BuyerImage
      */
+    public function removeImage()
+    {
+        $image = $this->image;
+        $this->image = null;
+
+        return $image;
+    }
 
     /**
      * Implement __toString

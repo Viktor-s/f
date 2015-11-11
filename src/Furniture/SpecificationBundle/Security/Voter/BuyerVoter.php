@@ -3,11 +3,11 @@
 namespace Furniture\SpecificationBundle\Security\Voter;
 
 use Furniture\CommonBundle\Entity\User;
-use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Entity\Buyer;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class SpecificationVoter implements VoterInterface
+class BuyerVoter implements VoterInterface
 {
     /**
      * {@inheritDoc}
@@ -15,12 +15,10 @@ class SpecificationVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, [
-            'SPECIFICATION_LIST',
-            'SPECIFICATION_CREATE',
+            'SPECIFICATION_BUYER_CREATE',
+            'SPECIFICATION_BUYER_LIST',
             'EDIT',
-            'REMOVE',
-            'FINISH',
-            'EXPORT'
+            'REMOVE'
         ]);
     }
 
@@ -43,29 +41,30 @@ class SpecificationVoter implements VoterInterface
         }
 
         if (!$user->isRetailer()) {
+            // Access only for retailers
             return self::ACCESS_ABSTAIN;
         }
 
-        if (in_array('SPECIFICATION_LIST', $attributes) || in_array('SPECIFICATION_CREATE', $attributes)) {
+        if (in_array('SPECIFICATION_BUYER_LIST', $attributes) || in_array('SPECIFICATION_BUYER_LIST', $attributes)) {
             return self::ACCESS_GRANTED;
         }
 
-        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes)) {
+        if (!$object instanceof Buyer) {
+            return self::ACCESS_ABSTAIN;
+        }
+
+        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes)) {
             if ($user->isRetailerAdmin()) {
                 return self::ACCESS_GRANTED;
             }
 
-            if (!$object || !$object instanceof Specification) {
-                return self::ACCESS_ABSTAIN;
-            }
+            $creator = $object->getCreator();
 
-            $owner = $object->getCreator();
-
-            if($owner->getId() == $user->getId()) {
+            if ($creator->getId() == $user->getId()) {
                 return self::ACCESS_GRANTED;
+            } else {
+                return self::ACCESS_DENIED;
             }
-
-            return self::ACCESS_DENIED;
         }
 
         return self::ACCESS_ABSTAIN;

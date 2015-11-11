@@ -53,6 +53,9 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @router
+            - @security.authorization_checker
+            - @liip_imagine.cache.manager
+            - @validator
 
     # Factory profile controllers
     frontend.controller.factory.dashboard:
