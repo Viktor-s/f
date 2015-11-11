@@ -143,3 +143,6 @@ Furniture\ProductBundle\Entity\Product:
         factoryCode:
             type: string
             nullable: true
+        availableForSale:
+            type: boolean
+            nullable: true

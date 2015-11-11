@@ -79,6 +79,13 @@ class Product extends BaseProduct
     private $readinesses;
 
     /**
+     *
+     * @var bool
+     */
+    private $availableForSale;
+
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -879,6 +886,26 @@ class Product extends BaseProduct
         return $this;
     }
 
+    /**
+     * 
+     * @return bool
+     */
+    public function getAvailableForSale()
+    {
+        return (bool)$this->availableForSale;
+    }
+
+    /**
+     * 
+     * @param bool $availableForSale
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setAvailableForSale($availableForSale)
+    {
+        $this->availableForSale = (bool)$availableForSale;
+        return $this;
+    }
+    
     /**
      * Return translation model class.
      *
