@@ -39,3 +39,7 @@ Furniture\FactoryBundle\Entity\FactoryContact:
         sites:
             type: json_array
             name: sites
+        
+        position:
+            type: integer
+            name: position

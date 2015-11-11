@@ -8,6 +8,7 @@ use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\Criteria;
 
 class Factory extends AbstractTranslatable
 {
@@ -502,7 +503,11 @@ class Factory extends AbstractTranslatable
      */
     public function getContacts()
     {
-        return $this->contacts;
+        $order = new Criteria();
+        $order->orderBy(Array(
+            'position' => Criteria::ASC
+        ));
+        return $this->contacts->matching($order);;
     }
 
     /**

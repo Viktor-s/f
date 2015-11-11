@@ -46,6 +46,8 @@ class FactoryContactType extends AbstractType
             ])
             ->add('sites', 'text', [
                 'label' => 'factory_contact.form.sites'
+            ])->add('position', 'integer', [
+                'label' => 'factory_contact.form.position'
             ]);
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));

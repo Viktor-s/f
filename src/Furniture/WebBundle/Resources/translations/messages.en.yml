@@ -203,6 +203,7 @@ factory_contact:
         sites: Sites
         phones: Phones
         emails: Emails
+        position: Order position
 
 furniture_retailer_profile:
     form:
