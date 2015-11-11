@@ -102,8 +102,22 @@ class Specification
      * Get user
      *
      * @return User
+     *
+     * @deprecated Please use getOwner method
      */
     public function getUser()
+    {
+        trigger_error('The method "getUser" is deprecated and will be removed. Please use "getCreator" method.');
+
+        return $this->user;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return User
+     */
+    public function getCreator()
     {
         return $this->user;
     }

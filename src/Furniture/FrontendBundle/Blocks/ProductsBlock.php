@@ -50,14 +50,14 @@ class ProductsBlock extends BaseBlockService
     {
         $settings = $blockContext->getSettings();
         
-        $pQuery = new ProductQuery();
-        $pQuery->withOnlyAvailable();
+        $productQuery = new ProductQuery();
+        $productQuery->withOnlyAvailable();
 
         if($settings['retailer'] instanceof RetailerProfile) {
-            $pQuery->withRetailer($settings['retailer']);
+            $productQuery->withRetailer($settings['retailer']);
         }
         
-        $products = $this->productRepository->fundLatestBy($pQuery, $settings['limit']);
+        $products = $this->productRepository->findLatestBy($productQuery, $settings['limit']);
         
         return $this->renderResponse($settings['template'], [
             'products' => $products

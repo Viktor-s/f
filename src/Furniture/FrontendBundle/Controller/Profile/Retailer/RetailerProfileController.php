@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RetailerProfileController
 {
@@ -56,6 +58,11 @@ class RetailerProfileController
     private $cacheManager;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment             $twig
@@ -65,6 +72,7 @@ class RetailerProfileController
      * @param FormFactoryInterface          $formFactory
      * @param UrlGeneratorInterface         $urlGenerator
      * @param CacheManager                  $cacheManager
+     * @param ValidatorInterface            $validator
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -73,7 +81,8 @@ class RetailerProfileController
         AuthorizationCheckerInterface $authorizationChecker,
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        ValidatorInterface $validator
     )
     {
         $this->twig = $twig;
@@ -83,6 +92,7 @@ class RetailerProfileController
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
         $this->cacheManager = $cacheManager;
+        $this->validator = $validator;
     }
 
     /**
@@ -181,7 +191,16 @@ class RetailerProfileController
         $image->setPath(null);
         $image->setFile($file);
 
-        // @todo: validate file
+        $violations = $this->validator->validateProperty($image, 'file');
+
+        if (count($violations)) {
+            $errors = ViolationListUtils::convertToArrayWithoutPath($violations);
+
+            return new JsonResponse([
+                'status' => false,
+                'errors' => $errors
+            ]);
+        }
 
         $this->em->persist($image);
         $this->em->flush();

@@ -62,10 +62,6 @@
         return query;
     }
 
-    function buildUrlQuery(query, name)
-    {
-    }
-
     function liveForm(element, event, options)
     {
         var name = element.attr('name'),
