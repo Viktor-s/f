@@ -68,6 +68,8 @@ class CompositeCollectionRepository
                 ->setParameter('factory_ids', $factoryIds);
         }
 
+        $qb->orderBy('cc.position', 'ASC');
+        
         return $qb
             ->getQuery()
             ->getResult();

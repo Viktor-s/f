@@ -24,6 +24,13 @@ class CompositeCollection extends AbstractTranslatable
     protected $name;
 
     /**
+     *
+     * @var int
+     */
+    protected $position;
+
+
+    /**
      * Construct
      */
     public function __construct()
@@ -135,6 +142,26 @@ class CompositeCollection extends AbstractTranslatable
     public function getDescription()
     {
         return $this->translate()->getDescription();
+    }
+
+    /**
+     * 
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * 
+     * @param int $position
+     * @return \Furniture\CompositionBundle\Entity\CompositeCollection
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
     }
 
     /**

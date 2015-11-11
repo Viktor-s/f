@@ -13,6 +13,10 @@ Furniture\CompositionBundle\Entity\CompositeCollection:
         name:
             type: string
             name: name
+        position:
+            type: integer
+            name: position
+            nullable: true
 
     manyToOne:
         factory:

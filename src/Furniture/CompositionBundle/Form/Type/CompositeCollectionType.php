@@ -28,6 +28,9 @@ class CompositeCollectionType extends AbstractType
             ->add('name', 'text', [
                 'label' => 'composite_collection.form.name',
             ])
+            ->add('position', 'integer', [
+                'label' => 'composite_collection.form.position',
+            ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new CompositeCollectionTranslationType()
             ]);
