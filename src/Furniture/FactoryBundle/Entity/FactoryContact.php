@@ -57,6 +57,12 @@ class FactoryContact extends AbstractTranslatable
     private $sites = [];
 
     /**
+     *
+     * @var int
+     */
+    private $position;
+    
+    /**
      * Construct
      */
     public function __construct()
@@ -212,5 +218,25 @@ class FactoryContact extends AbstractTranslatable
     public function setSites(array $sites)
     {
         $this->sites = $sites;
+    }
+    
+    /**
+     * 
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+    
+    /**
+     * 
+     * @param int $position
+     * @return \Furniture\FactoryBundle\Entity\FactoryContact
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
     }
 }

@@ -907,6 +907,14 @@ class Product extends BaseProduct
     }
     
     /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        return ( new \DateTime() >= $this->availableOn && $this->getAvailableForSale() );
+    }
+    
+    /**
      * Return translation model class.
      *
      * @return string

@@ -116,18 +116,19 @@ class FrontendMenuBuilder
         }
         
         $products = $menu->addChild('products', [
-            'uri' => $this->urlGenerator->generate('catalog'),
+            //'uri' => $this->urlGenerator->generate('catalog'),
+            'uri' => $this->urlGenerator->generate('products', []),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
 
-        $spaces = $this->productSpaceRepository->findAllOnlyRoot();
+        /*$spaces = $this->productSpaceRepository->findAllOnlyRoot();
         
         foreach ($spaces as $space){
             $products->addChild('taxon_'. $space->getId(), [
                 'uri' => $this->urlGenerator->generate('products', ['space' => [$space->getId()]]),
                 'label' => (string) $space
             ]);
-        }
+        }*/
 
         if ($user->isContentUser()) {
             $menu->addChild('specifications', [
