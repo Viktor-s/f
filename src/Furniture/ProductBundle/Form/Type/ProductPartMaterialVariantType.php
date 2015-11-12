@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\Type\BackendImageType;
 use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage;
@@ -45,7 +46,7 @@ class ProductPartMaterialVariantType extends AbstractType
             ->add('available', 'checkbox', [
                 'label' => 'Available'
             ])
-            ->add('image', new ImageType(ProductPartMaterialVariantImage::class), [
+            ->add('image', new BackendImageType(ProductPartMaterialVariantImage::class), [
                 'required' => false
             ]);
 

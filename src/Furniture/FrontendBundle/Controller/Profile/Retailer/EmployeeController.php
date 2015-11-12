@@ -4,7 +4,6 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
-use Furniture\FrontendBundle\Form\Type\RetailerEmployeeType;
 use Furniture\FrontendBundle\Repository\RetailerEmployeeRepository;
 use Sylius\Component\User\Security\PasswordUpdater;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -163,7 +162,7 @@ class EmployeeController
             }
         }
 
-        $form = $this->formFactory->create(new RetailerEmployeeType(), $employee);
+        $form = $this->formFactory->create('retailer_employee', $employee);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

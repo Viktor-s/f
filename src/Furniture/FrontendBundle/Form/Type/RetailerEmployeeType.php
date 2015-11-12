@@ -6,9 +6,25 @@ use Furniture\CommonBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class RetailerEmployeeType extends AbstractType
 {
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * Construct
+     *
+     * @param TokenStorageInterface $tokenStorage
+     */
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -24,6 +40,18 @@ class RetailerEmployeeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var \Furniture\CommonBundle\Entity\User $employee */
+        $employee = $builder->getData();
+        /** @var \Furniture\CommonBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $disabledMode = false;
+
+        if ($employee && $activeUser) {
+            if ($employee->getId() == $activeUser->getId()) {
+                $disabledMode = true;
+            }
+        }
+
         $builder
             ->add('username', 'text', [
                 'label' => 'frontend.username',
@@ -33,6 +61,7 @@ class RetailerEmployeeType extends AbstractType
             ])
             ->add('retailerMode', 'choice', [
                 'label' => 'frontend.mode',
+                'disabled' => $disabledMode,
                 'choices' => [
                     User::RETAILER_ADMIN => 'Admin',
                     User::RETAILER_EMPLOYEE => 'Employee',

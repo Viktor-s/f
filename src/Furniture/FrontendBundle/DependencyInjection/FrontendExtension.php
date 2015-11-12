@@ -22,5 +22,6 @@ class FrontendExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('menus.yml');
         $loader->load('blocks.yml');
+        $loader->load('forms.yml');
     }
 }

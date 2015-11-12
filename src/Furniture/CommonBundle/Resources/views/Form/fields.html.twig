@@ -1,5 +1,4 @@
 {% block AutocompleteEntity_widget %}
-
     {% spaceless %}
         <div fullname="{{ full_name }}" {{ block('widget_container_attributes') }} source="{{ path(source) }}" class="add-entity-widget">
             <div class="form-inline">
@@ -30,5 +29,31 @@
             </div>
         </div>
     {% endspaceless %}
+{% endblock %}
 
+{% block backend_image_rest %}
+    <div class="backend-image{% if form.vars.path %} path-exist{% endif %}">
+        <div class="path-input">
+            {{ form_widget(form.path) }}
+        </div>
+
+        <div class="image-input">
+            {{ form_widget(form.file) }}
+        </div>
+
+        <div class="image-container">
+            {% if form.vars.path %}
+                <img src="{{ form.vars.filter ? form.vars.path|imagine_filter(form.vars.filter) : form.vars.path }}" width="{{ form.vars.width }}" height="{{ form.vars.height }}" />
+
+                <div class="buttons">
+                    {% if form.vars.allow_delete %}
+                        <a class="btn btn-danger btn-xs backend-image-delete">
+                            <i class="fa fa-remove"></i>
+                            Remove
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
