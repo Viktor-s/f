@@ -33,3 +33,26 @@
 .fade.in {
     display: block;
 }
+
+
+.backend-image
+{
+    display: block;
+}
+
+.backend-image.path-exist .image-input
+{
+    display: none;
+}
+
+.backend-image .image-container
+{
+    display: inline-block;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+.backend-image .image-container .buttons
+{
+    margin-top: 10px;
+}

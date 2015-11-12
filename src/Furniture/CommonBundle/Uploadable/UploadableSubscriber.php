@@ -3,7 +3,9 @@
 namespace Furniture\CommonBundle\Uploadable;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Sylius\Component\Core\Uploader\ImageUploaderInterface;
 
@@ -25,36 +27,44 @@ class UploadableSubscriber implements EventSubscriber
     }
 
     /**
-     * On pre persist event
+     * On flush
      *
-     * @param LifecycleEventArgs $event
+     * @
      */
-    public function prePersist(LifecycleEventArgs $event)
+    public function onFlush(OnFlushEventArgs $event)
     {
-        $object = $event->getObject();
-        $this->upload($object);
-    }
+        $em = $event->getEntityManager();
+        $uow = $em->getUnitOfWork();
 
-    /**
-     * On pre update event
-     *
-     * @param LifecycleEventArgs $event
-     */
-    public function preUpdate(LifecycleEventArgs $event)
-    {
-        $object = $event->getObject();
-        $this->upload($object);
+        foreach ($uow->getScheduledEntityInsertions() as $entity) {
+            $this->uploadOrRemove($em, $entity);
+        }
+
+        foreach ($uow->getScheduledEntityUpdates() as $entity) {
+            $this->uploadOrRemove($em, $entity);
+        }
     }
 
     /**
      * Upload for entities
      *
-     * @param object $entity
+     * @param EntityManagerInterface $em
+     * @param object                 $entity
      */
-    private function upload($entity)
+    private function uploadOrRemove(EntityManagerInterface $em, $entity)
     {
         if ($entity instanceof UploadableInterface) {
-            $this->imageUploader->upload($entity);
+            $uow = $em->getUnitOfWork();
+            if (!$entity->getPath() && !$entity->getFile()) {
+                // Remove
+                $uow->clearEntityChangeSet(spl_object_hash($entity));
+                $em->remove($entity);
+            } else {
+                // Upload
+                $this->imageUploader->upload($entity);
+                $classMetadata = $em->getClassMetadata(get_class($entity));
+                $uow->recomputeSingleEntityChangeSet($classMetadata, $entity);
+            }
         }
     }
 
@@ -64,8 +74,7 @@ class UploadableSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::prePersist,
-            Events::preUpdate
+            Events::onFlush
         ];
     }
 }

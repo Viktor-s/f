@@ -9,6 +9,10 @@
         <meta charset="UTF-8">
 
         <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/skins/sonata/style.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/markdown/style.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/html/style.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/textile/style.css') }}" type="text/css" media="all" />
 
         {% block stylesheets %}
             {% stylesheets output='assets/compiled/backend.css' filter='cssrewrite'
@@ -20,29 +24,28 @@
                 'bundles/syliusresource/css/form-collection.css'
                 '@WebBundle/Resources/public/css/furniture_backend.css'
             %}
-            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/skins/sonata/style.css') }}" type="text/css" media="all" />
-            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/markdown/style.css') }}" type="text/css" media="all" />
-            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/html/style.css') }}" type="text/css" media="all" />
-            <link rel="stylesheet" href="{{ asset('bundles/sonataformatter/markitup/sets/textile/style.css') }}" type="text/css" media="all" />
 
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
             {% endstylesheets %}
         {% endblock %}
+
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
         {% javascripts output='admin/js/*.js'
             'static/js/jquery/jquery.min.js'
             'vendor/jquery-ui/ui/minified/jquery-ui.min.js'
             '@WebBundle/Resources/public/js/bootstrap.min.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
-            <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
-            <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
-            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         {% endjavascripts %}
 
+        <script src="{{ asset('bundles/ivoryckeditor/ckeditor.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/vendor/markitup-markitup/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/markdown/set.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/html/set.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/sonataformatter/markitup/sets/textile/set.js') }}" type="text/javascript"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
@@ -96,18 +99,19 @@
     {# javascripts... #}
     {% block javascripts %}
         {% javascripts output='assets/compiled/backend.js'
-                'bundles/syliusreport/js/chart.js'
-                'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
-                'bundles/syliusweb/js/confirm-modal.js'
-                'bundles/syliusweb/js/form-collection.js'
-                'bundles/syliusweb/js/form-spinner.js'
-                'bundles/syliusweb/js/select2.js'
-                'bundles/syliusweb/js/bootstrap-datepicker.js'
-                'bundles/syliusweb/js/backend.js'
-                'bundles/syliusresource/js/form-collection.js'
-                'bundles/common/js/formtype.js'
+            'bundles/syliusreport/js/chart.js'
+            'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
+            'bundles/syliusweb/js/confirm-modal.js'
+            'bundles/syliusweb/js/form-collection.js'
+            'bundles/syliusweb/js/form-spinner.js'
+            'bundles/syliusweb/js/select2.js'
+            'bundles/syliusweb/js/bootstrap-datepicker.js'
+            'bundles/syliusresource/js/form-collection.js'
+
+            '@CommonBundle/Resources/public/js/formtype.js'
+            '@WebBundle/Resources/public/js/backend.js'
         %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+            <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
 </html>

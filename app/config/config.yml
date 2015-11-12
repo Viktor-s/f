@@ -73,6 +73,7 @@ twig:
             - SyliusResourceBundle::forms.html.twig
             - CmfMediaBundle:Form:fields.html.twig
             - SonataFormatterBundle:Form:formatter.html.twig
+
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     paths:

@@ -1,19 +1,20 @@
-$(document).ready(function(){
-    $( document ).on( 'click', '.add-entity-widget .add-entity-widget-delete', function(){
-        var el = $(this);
-        el.parent().parent().remove();
-        return false;
-    });
-    
-    $('.add-entity-widget').each(function(id, el){
-        el = $(el);
-        var input_name = el.attr('fullname');
-        var list_table_body = el.parent().find('tbody');
-        el.find('.add-entity-widget-name').autocomplete({
-            source: el.attr('source'),
-            select: function( event, ui ) {
-                var item = ui.item;
-                list_table_body.append('\
+;(function ($) {
+    $(document).ready(function(){
+        $( document ).on( 'click', '.add-entity-widget .add-entity-widget-delete', function(){
+            var el = $(this);
+            el.parent().parent().remove();
+            return false;
+        });
+
+        $('.add-entity-widget').each(function(id, el){
+            el = $(el);
+            var input_name = el.attr('fullname');
+            var list_table_body = el.parent().find('tbody');
+            el.find('.add-entity-widget-name').autocomplete({
+                source: el.attr('source'),
+                select: function( event, ui ) {
+                    var item = ui.item;
+                    list_table_body.append('\
                                 <tr>\
                                     <td>'+item.value+'</td>\
                                     <td>'+item.label+'</td>\
@@ -22,9 +23,23 @@ $(document).ready(function(){
                                     </td>\
                                 </tr>\
                 ');
-                $(this).val('');
-                return false;
-            }
+                    $(this).val('');
+                    return false;
+                }
+            });
         });
-    })
-});
+
+        $('.backend-image').each(function () {
+            var
+                inputPath = $(this).find('.path-input input[type="hidden"]'),
+                imageContainer = $(this).find('.image-container'),
+                $this = $(this);
+
+            $(this).find('.backend-image-delete').click(function () {
+                inputPath.val('');
+                $this.removeClass('path-exist');
+                imageContainer.remove();
+            });
+        });
+    });
+})(jQuery);

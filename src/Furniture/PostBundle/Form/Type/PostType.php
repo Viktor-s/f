@@ -3,6 +3,7 @@
 namespace Furniture\PostBundle\Form\Type;
 
 use Behat\Transliterator\Transliterator;
+use Furniture\CommonBundle\Form\Type\BackendImageType;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\PostBundle\Entity\Post;
 use Furniture\PostBundle\Entity\PostFile;
@@ -72,9 +73,12 @@ class PostType extends AbstractType
                 'label' => 'post.form.factory'
             ])
             ->add('images', 'collection', [
-                'type' => new ImageType(PostImage::class),
+                'type' => new BackendImageType(PostImage::class),
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'options' => [
+                    'allow_delete' => false
+                ],
             ])
             ->add('files', 'collection', [
                 'type' => new FileType(PostFile::class),

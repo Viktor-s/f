@@ -58,14 +58,14 @@
                 </td>
 
                 <td nowrap>
-                    {% if employee.id != app.user.id %}
-                        {% if is_granted('RETAILER_EMPLOYEE_EDIT', employee) %}
-                            <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}" class="btn btn-info btn-xs">
-                                <i class="fa fa-edit"></i>
-                                Edit
-                            </a>
-                        {% endif %}
+                    {% if is_granted('RETAILER_EMPLOYEE_EDIT', employee) %}
+                        <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}" class="btn btn-info btn-xs">
+                            <i class="fa fa-edit"></i>
+                            Edit
+                        </a>
+                    {% endif %}
 
+                    {% if employee.id != app.user.id %}
                         {% if is_granted('RETAILER_EMPLOYEE_REMOVE', employee) %}
                             <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs">
                                 <i class="fa fa-remove"></i>
