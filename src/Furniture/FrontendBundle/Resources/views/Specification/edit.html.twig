@@ -35,7 +35,7 @@
                 <div class="article-container style-1">
                     <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
 
-                    <div class="editable buyer" id="specification-buyer" style="padding-top:0;">
+                    <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
                         {{ specification.buyer|default('None') }}
                     </div>
 
@@ -46,10 +46,10 @@
                     </p>
 
                     <h5>Description</h5>
-                    <div class="name editable" style="padding-top:0;" id="specification-name">{{ specification.name }}</div>
+                    <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
 
                     <h5>{{ 'frontend.specficatior.description_lable'|trans }}</h5>
-                    <div class="description editable" id="specification-description">
+                    <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">
                         {{ specification.description|default('None') }}
                     </div>
 
@@ -83,11 +83,11 @@
             </div>
     </div>
 
-    <div class="information-blocks" style="position: relative">
+    <div class="information-blocks" style="position: relative; padding-top: 40px;">
         <div class="specification-pretable-controls">
             <div class="form-group">
-                <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
-                <div class="col-sm-10">
+                <label class="control-label">{{ 'frontend.actions'|trans }}
+                
                     <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
 
                     {% if not specification.finished %}
@@ -95,7 +95,8 @@
                     {% endif %}
 
                     <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
-                </div>
+               
+                </label>
             </div>
         </div>
         <table id="specification-table" class="table" data-specification-id="{{ specification.id }}" >
