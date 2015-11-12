@@ -7,6 +7,8 @@ use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
 use Furniture\FrontendBundle\Repository\ProductStyleRepository;
+use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
+use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
@@ -45,6 +47,11 @@ class FactorySideController
     private $productCategoryRepository;
     
     /**
+     * @var CompositeCollectionRepository
+     */
+    private $compositeCollectionRepository;
+
+    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -57,6 +64,7 @@ class FactorySideController
      * @param PostRepository            $postRepository
      * @param ProductStyleRepository    $productStyleRepository
      * @param ProductCategoryRepository $productCategoryRepository
+     * @param CompositeCollectionRepository $compositeCollectionRepository
      * @param TokenStorageInterface     $tokenStorage
      */
     public function __construct(
@@ -65,6 +73,7 @@ class FactorySideController
         PostRepository $postRepository,
         ProductStyleRepository $productStyleRepository,
         ProductCategoryRepository $productCategoryRepository,
+        CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage
     ){
         $this->twig = $twig;
@@ -72,6 +81,7 @@ class FactorySideController
         $this->postRepository = $postRepository;
         $this->productStyleRepository = $productStyleRepository;
         $this->productCategoryRepository = $productCategoryRepository;
+        $this->compositeCollectionRepository = $compositeCollectionRepository;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -271,13 +281,12 @@ class FactorySideController
     public function collections($factory)
     {
         $factory = $this->findFactory($factory);
-
+        $ccQuery = new CompositeCollectionQuery();
+        $ccQuery->withFactory($factory);
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
-        $translate = $factory->translate();
-
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
             'factory' => $factory,
-            'collection_content' => $translate->getCollectionContent()
+            'composite_collections' => $this->compositeCollectionRepository->findBy($ccQuery)
         ]);
 
         return new Response($content);

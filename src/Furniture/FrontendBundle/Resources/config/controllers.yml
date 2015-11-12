@@ -149,4 +149,5 @@ services:
             - @frontend.repository.post
             - @frontend.repository.product_style
             - @frontend.repository.product_category
+            - @frontend.repository.composite_collection
             - @security.token_storage

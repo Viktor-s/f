@@ -1,0 +1,24 @@
+{% spaceless %}
+    <div class="col-sm-4 portfolio-entry">
+        <div class="factory-collections" style="margin-bottom: 30px;">
+            <div class="image">
+                <img alt="" src="{{ composite_collection.logoImage ? composite_collection.logoImage.path|imagine_filter('s360x360') : '/img/360x360.png' }}">
+                <div class="hover-layer">
+                    <div class="info">
+                        <div class="actions">
+                            <a class="action-button" href="{{ path('products', {brand: [factory.id], cc: [composite_collection.id]}) }}">
+                                <i class="fa fa-link"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="title" href="{{ path('products', {brand: [factory.id], cc: [composite_collection.id]}) }}">{{ composite_collection.presentation }}</a>
+            <div class="description">
+                <a href="{{ path('products', {brand: [factory.id], cc: [composite_collection.id]}) }}">
+                    {{ composite_collection.description }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endspaceless %}
