@@ -191,7 +191,7 @@ class CompositeCollection extends AbstractTranslatable
         return $this;
     }
 
-        /**
+    /**
      * Implement __toString
      *
      * @return string

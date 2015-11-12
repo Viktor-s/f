@@ -31,7 +31,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block backend_image_rest %}
+{% block backend_image_widget %}
     <div class="backend-image{% if form.vars.path %} path-exist{% endif %}">
         <div class="path-input">
             {{ form_widget(form.path) }}
