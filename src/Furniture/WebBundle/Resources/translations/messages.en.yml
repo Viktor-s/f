@@ -51,6 +51,7 @@ composite_collection:
         name: Name
         presentation: Presentation
         description: Description
+        position: Order position
 
     breadcrumb:
         index: Composite collections

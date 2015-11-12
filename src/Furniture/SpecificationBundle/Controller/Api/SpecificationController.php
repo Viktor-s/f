@@ -354,14 +354,19 @@ class SpecificationController
      */
     public function buyers()
     {
+        /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
-
+        $retailerProfile = null;
+        if($retailerProfile = $user->getRetailerProfile()){
+            
+        }
+        
         $buyers = $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')
             ->select('b.id, b.firstName, b.secondName')
-            ->andWhere('b.creator = :creator')
-            ->setParameter('creator', $user)
+            ->andWhere('b.creator IN (:creator)')
+            ->setParameter('creator', $retailerProfile ? $retailerProfile->getUsers() : [])
             ->getQuery()
             ->getResult();
 

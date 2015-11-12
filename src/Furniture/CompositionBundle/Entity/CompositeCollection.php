@@ -5,6 +5,7 @@ namespace Furniture\CompositionBundle\Entity;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\ORM\Mapping as ORM;
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage;
 
 class CompositeCollection extends AbstractTranslatable
 {
@@ -22,6 +23,18 @@ class CompositeCollection extends AbstractTranslatable
      * @var string
      */
     protected $name;
+
+    /**
+     *
+     * @var int
+     */
+    protected $position;
+
+    /**
+     *
+     * @var \Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage
+     */
+    protected $logoImage;
 
     /**
      * Construct
@@ -138,6 +151,47 @@ class CompositeCollection extends AbstractTranslatable
     }
 
     /**
+     * 
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * 
+     * @param int $position
+     * @return \Furniture\CompositionBundle\Entity\CompositeCollection
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return \Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage
+     */
+    public function getLogoImage()
+    {
+        return $this->logoImage;
+    }
+
+    /**
+     * 
+     * @param \Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage $logoImage
+     * @return \Furniture\CompositionBundle\Entity\CompositeCollection
+     */
+    public function setLogoImage(CompositeCollectionLogoImage $logoImage)
+    {
+        $this->logoImage = $logoImage;
+        $logoImage->setCompositeCollection($this);
+        return $this;
+    }
+
+        /**
      * Implement __toString
      *
      * @return string

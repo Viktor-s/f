@@ -13,6 +13,10 @@ Furniture\CompositionBundle\Entity\CompositeCollection:
         name:
             type: string
             name: name
+        position:
+            type: integer
+            name: position
+            nullable: true
 
     manyToOne:
         factory:
@@ -22,3 +26,9 @@ Furniture\CompositionBundle\Entity\CompositeCollection:
                 referencedColumnName: id
                 nullable: true
                 onDelete: SET NULL
+                
+    oneToOne:
+        logoImage:
+            targetEntity: Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage
+            mappedBy: compositeCollection
+            cascade: [ persist ]
