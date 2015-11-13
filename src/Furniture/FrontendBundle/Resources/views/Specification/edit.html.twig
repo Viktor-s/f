@@ -29,59 +29,35 @@
 {% endblock %}
 
 {% block content_with_edit %}
-    <div class="row information-blocks specification-edit-head">
-        <div class="col-sm-12 information-entry">
-            <div class="information-blocks form-horizontal specification-info">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.specficatior.specification_label'|trans }}</label>
-                    <div class="col-sm-10 name editable" id="specification-name">{{ specification.name }}</div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.specficatior.description_lable'|trans }}</label>
-                    <div class="col-sm-10">
-                        <p class="description editable" id="specification-description">
-                        {{ specification.description|default('None') }}
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">{{ 'frontend.actions'|trans }}</label>
-                    <div class="col-sm-10">
-                        <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
-
-                        {% if not specification.finished %}
-                            <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
-                        {% endif %}
-
-                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row specification-edit-head">
         <div class="col-sm-3 information-entry">
             <div class="information-blocks form-horizontal specification-info">                
                 <div class="article-container style-1">
                     <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
 
-                    <div class="col-sm-10 editable buyer" id="specification-buyer">
-                        {{ specification.buyer|default('None') }}
+                    <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
+                        {{ specification.buyer|default('None') }} 
                     </div>
 
                     <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
                     <p>
                         {{ specification.buyer ? specification.buyer.email }}<br/>
-                        {{ specification.buyer ? specification.buyer.phone }}
+                        {{ specification.buyer ? specification.buyer.phone }} 
                     </p>
-                </div>
 
-                {% if specification.buyer and specification.buyer.hasSale() %}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">{{ 'frontend.sale'|trans }}</label>
-                        <div class="col-sm-10">{{ specification.buyer.sale }}%</div>
+                    <h5>Description</h5>
+                    <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
+
+                    <h5>{{ 'frontend.specficatior.description_lable'|trans }}</h5>
+                    <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">
+                        {{ specification.description|default('None') }}
                     </div>
-                {% endif %}
+
+                    {% if specification.buyer and specification.buyer.hasSale() %}
+                        <h5>{{ 'frontend.sale'|trans }}</h5>
+                        <p>{{ specification.buyer.sale }}%</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
@@ -107,7 +83,22 @@
             </div>
     </div>
 
-    <div class="information-blocks">
+    <div class="information-blocks" style="position: relative; padding-top: 40px;">
+        <div class="specification-pretable-controls">
+            <div class="form-group">
+                <label class="control-label">{{ 'frontend.actions'|trans }}
+                
+                    <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+
+                    {% if not specification.finished %}
+                        <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                    {% endif %}
+
+                    <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+               
+                </label>
+            </div>
+        </div>
         <table id="specification-table" class="table" data-specification-id="{{ specification.id }}" >
             <thead>
                 <tr>

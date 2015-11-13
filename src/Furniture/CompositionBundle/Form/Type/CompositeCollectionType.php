@@ -29,7 +29,8 @@ class CompositeCollectionType extends AbstractType
         $builder
             ->add('name', 'text', [
                 'label' => 'composite_collection.form.name',
-            ])
+            ]) 
+            ->add('factory')
             ->add('position', 'integer', [
                 'label' => 'composite_collection.form.position',
             ])

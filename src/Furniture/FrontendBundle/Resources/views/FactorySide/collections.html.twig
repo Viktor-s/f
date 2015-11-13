@@ -9,5 +9,9 @@
 {% endblock %}
 
 {% block factory_side_content %}
-    <div class="factory-collections">{{ collection_content|raw }}</div>
+    <div class="factory-collections">
+        {% for composite_collection in composite_collections %}
+            {% include 'FrontendBundle:FactorySide/Common:composite_collection_item.html.twig' with {composite_collection: composite_collection} %}
+        {% endfor %}
+    </div>
 {% endblock %}

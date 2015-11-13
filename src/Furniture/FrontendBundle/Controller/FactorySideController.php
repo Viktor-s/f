@@ -6,6 +6,8 @@ use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
 use Furniture\FrontendBundle\Repository\ProductStyleRepository;
+use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
+use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +44,11 @@ class FactorySideController
     private $productCategoryRepository;
 
     /**
+     * @var CompositeCollectionRepository
+     */
+    private $compositeCollectionRepository;
+
+    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -59,6 +66,7 @@ class FactorySideController
      * @param PostRepository                $postRepository
      * @param ProductStyleRepository        $productStyleRepository
      * @param ProductCategoryRepository     $productCategoryRepository
+     * @param CompositeCollectionRepository $compositeCollectionRepository
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
@@ -68,6 +76,7 @@ class FactorySideController
         PostRepository $postRepository,
         ProductStyleRepository $productStyleRepository,
         ProductCategoryRepository $productCategoryRepository,
+        CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     )
@@ -77,6 +86,7 @@ class FactorySideController
         $this->postRepository = $postRepository;
         $this->productStyleRepository = $productStyleRepository;
         $this->productCategoryRepository = $productCategoryRepository;
+        $this->compositeCollectionRepository = $compositeCollectionRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
@@ -284,6 +294,7 @@ class FactorySideController
     public function collections($factory)
     {
         $factory = $this->findFactory($factory);
+<<<<<<< HEAD
 
         if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
             throw new AccessDeniedException(sprintf(
@@ -294,12 +305,19 @@ class FactorySideController
             ));
         }
 
+=======
+        $ccQuery = new CompositeCollectionQuery();
+        $ccQuery->withFactory($factory);
+>>>>>>> e05ec26f71a9ef9c64c357e99d4374318905a864
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
-        $translate = $factory->translate();
-
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
+<<<<<<< HEAD
             'factory'            => $factory,
             'collection_content' => $translate->getCollectionContent(),
+=======
+            'factory' => $factory,
+            'composite_collections' => $this->compositeCollectionRepository->findBy($ccQuery)
+>>>>>>> e05ec26f71a9ef9c64c357e99d4374318905a864
         ]);
 
         return new Response($content);

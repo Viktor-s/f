@@ -3438,3 +3438,20 @@ header.fixed-header nav {
     font-size:0.8em;
     color: #777;
 }
+
+#specification-table_wrapper{
+
+}
+#specification-table_filter{
+
+}
+
+.specification-pretable-controls{
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+.specification-edit-head{
+    margin-bottom: 30px;
+}
