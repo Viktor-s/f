@@ -294,7 +294,6 @@ class FactorySideController
     public function collections($factory)
     {
         $factory = $this->findFactory($factory);
-<<<<<<< HEAD
 
         if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
             throw new AccessDeniedException(sprintf(
@@ -305,19 +304,13 @@ class FactorySideController
             ));
         }
 
-=======
         $ccQuery = new CompositeCollectionQuery();
         $ccQuery->withFactory($factory);
->>>>>>> e05ec26f71a9ef9c64c357e99d4374318905a864
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
-<<<<<<< HEAD
-            'factory'            => $factory,
-            'collection_content' => $translate->getCollectionContent(),
-=======
-            'factory' => $factory,
+            'factory'               => $factory,
+            'collection_content'    => $translate->getCollectionContent(),
             'composite_collections' => $this->compositeCollectionRepository->findBy($ccQuery)
->>>>>>> e05ec26f71a9ef9c64c357e99d4374318905a864
         ]);
 
         return new Response($content);
