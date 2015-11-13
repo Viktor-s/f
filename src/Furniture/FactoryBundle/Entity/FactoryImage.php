@@ -3,8 +3,9 @@
 namespace Furniture\FactoryBundle\Entity;
 
 use Sylius\Component\Core\Model\Image;
+use Furniture\CommonBundle\Uploadable\UploadableInterface;
 
-class FactoryImage extends Image 
+class FactoryImage extends Image implements UploadableInterface
 {
     /**
      *
