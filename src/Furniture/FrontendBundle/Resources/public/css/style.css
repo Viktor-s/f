@@ -3455,3 +3455,14 @@ header.fixed-header nav {
 .specification-edit-head{
     margin-bottom: 30px;
 }
+
+dl {}
+.dl-horizontal dl {}
+dt {
+    font-weight: bold;
+    line-height: 23px !important;
+}
+dd {
+    line-height: 23px !important;
+    margin-bottom: 10px;
+}
