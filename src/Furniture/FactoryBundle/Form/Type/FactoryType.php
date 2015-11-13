@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
+use Furniture\CommonBundle\Form\Type\BackendImageType;
 use Furniture\FactoryBundle\Entity\FactoryLogoImage;
 
 class FactoryType extends AbstractType
@@ -42,7 +43,7 @@ class FactoryType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('logoImage', new ImageType(FactoryLogoImage::class), [
+            ->add('logoImage', new BackendImageType(FactoryLogoImage::class), [
                 'required' => false
             ])
             ->add('contacts', 'collection', [
