@@ -227,7 +227,7 @@ class CatalogController
         }
 
         $factoryIds = [];
-        $composite_collections = false;
+        $compositeСollections = false;
         if ($request->query->has('brand')) {
             $factoryIds = (array) $request->query->get('brand');
             $factoryIds = $filterIds($factoryIds);
@@ -239,7 +239,7 @@ class CatalogController
                 if(count($factories) == 1){
                     $ccQuery = new CompositeCollectionQuery();
                     $ccQuery->withFactories($factories);
-                    $composite_collections = $this->compositeCollectionRepository->findBy($ccQuery);
+                    $compositeСollections = $this->compositeCollectionRepository->findBy($ccQuery);
                 }
                 $productQuery->withFactories($factories);
             }
@@ -254,15 +254,21 @@ class CatalogController
         
         /* Create product paginator */
         $products = $this->productRepository->findBy($productQuery, $request->get('page', 1));
+
+        // Create a brands query
+        $brandsQuery= new FactoryQuery();
+        if ($user->isRetailer()) {
+            $brandsQuery->withRetailer($user->getRetailerProfile());
+        }
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
             'products' => $products,
-            'brands' => $this->factoryRepository->findAll(),
+            'brands' => $this->factoryRepository->findBy($brandsQuery),
             'spaces' => $this->productSpaceRepository->findAllOnlyRoot(),
             'categories' => $this->productCategoryRepository->findAllOnlyRoot(),
             'types' => $this->productTypeRepository->findAllOnlyRoot(),
             'styles' => $this->productStyleRepository->findAllOnlyRoot(),
-            'composite_collections' => $composite_collections,
+            'composite_collections' => $compositeСollections,
 
             'factory_ids' => $factoryIds,
             'category_ids' => $categoryIds,

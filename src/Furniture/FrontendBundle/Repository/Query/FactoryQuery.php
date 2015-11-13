@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Repository\Query;
 
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Style;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Sylius\Component\Core\Model\Taxon;
 
 class FactoryQuery
@@ -22,6 +23,11 @@ class FactoryQuery
      * @var array|Category[]
      */
     private $categories = [];
+
+    /**
+     * @var RetailerProfile
+     */
+    private $retailer;
 
     /**
      * With id
@@ -179,5 +185,39 @@ class FactoryQuery
     public function getCategories()
     {
         return array_values($this->categories);
+    }
+
+    /**
+     * With retailer
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return FactoryQuery
+     */
+    public function withRetailer(RetailerProfile $retailer)
+    {
+        $this->retailer = $retailer;
+
+        return $this;
+    }
+
+    /**
+     * Has retailer?
+     *
+     * @return bool
+     */
+    public function hasRetailer()
+    {
+        return (bool) $this->retailer;
+    }
+
+    /**
+     * Get retailer
+     *
+     * @return RetailerProfile
+     */
+    public function getRetailer()
+    {
+        return $this->retailer;
     }
 }

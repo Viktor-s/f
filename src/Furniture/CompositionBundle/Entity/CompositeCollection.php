@@ -5,7 +5,7 @@ namespace Furniture\CompositionBundle\Entity;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\ORM\Mapping as ORM;
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CompositeCollection extends AbstractTranslatable
 {
@@ -21,18 +21,18 @@ class CompositeCollection extends AbstractTranslatable
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     protected $name;
 
     /**
-     *
      * @var int
      */
     protected $position;
 
     /**
-     *
-     * @var \Furniture\CompositionBundle\Entity\CompositeCollectionLogoImage
+     * @var CompositeCollectionLogoImage
      */
     protected $logoImage;
 

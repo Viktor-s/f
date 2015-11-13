@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
@@ -83,6 +84,31 @@ class FactoryRepository
             $qb
                 ->andWhere('f.id IN (:ids)')
                 ->setParameter('ids', $query->getIds());
+        }
+
+        // Check granted to access
+        $qb->innerJoin('f.defaultRelation', 'fdr');
+
+        if ($query->hasRetailer()) {
+            $qb
+                ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
+                ->setParameter('retailer', $query->getRetailer())
+                ->setParameter('retailer_accept', true)
+                ->setParameter('factory_accept', true);
+
+            $orExpr = $qb->expr()->orX();
+            $orExpr
+                ->add('frr.accessProducts = :retailer_access_products')
+                ->add('fdr.accessProducts = :default_access_products');
+
+            $qb
+                ->andWhere($orExpr)
+                ->setParameter('retailer_access_products', true)
+                ->setParameter('default_access_products', true);
+        } else {
+            $qb
+                ->andWhere('fdr.accessProducts = :default_access_products')
+                ->setParameter('default_access_products', true);
         }
 
         return $qb

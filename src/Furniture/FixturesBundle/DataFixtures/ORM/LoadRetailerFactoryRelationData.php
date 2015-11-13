@@ -28,6 +28,8 @@ class LoadRetailerFactoryRelationData extends AbstractFixture implements Ordered
         $this->createRelation('stol_i_stul', 'Kartell', true, false, true, false, 0);
         $this->createRelation('stol_i_stul', 'Arceos', true, true, false, true, 15);
         $this->createRelation('stol_i_stul', 'Passini', true, false, false, true, 10);
+
+        $this->createRelation('dubok', 'Selva', false, false, true, true, 0);
     }
 
     /**

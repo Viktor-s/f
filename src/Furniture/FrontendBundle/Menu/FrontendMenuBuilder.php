@@ -279,11 +279,13 @@ class FrontendMenuBuilder
             'uri' => $this->urlGenerator->generate('factory_side_news', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.news')
         ]);
-        
-        $menu->addChild('collections', [
-            'uri' => $this->urlGenerator->generate('factory_side_collections', ['factory' => $factory->getId()]),
-            'label' => $this->translator->trans('frontend.factory_side.menu.collections')
-        ]);
+
+        if ($this->sfAuthorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
+            $menu->addChild('collections', [
+                'uri'   => $this->urlGenerator->generate('factory_side_collections', ['factory' => $factory->getId()]),
+                'label' => $this->translator->trans('frontend.factory_side.menu.collections')
+            ]);
+        }
         
         $menu->addChild('work_info', [
             'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
@@ -299,32 +301,41 @@ class FrontendMenuBuilder
             'uri' => $this->urlGenerator->generate('factory_side_circulars', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
         ]);
+
+        $setActiveForMenuItem = function ($item) use ($menu)
+        {
+            if ($child = $menu->getChild($item)) {
+                $child->setCurrent(true);
+            }
+        };
         
         switch($this->requestStack->getMasterRequest()->get('_route')){
             case 'factory_side_general':
-                $menu->getChild('general')->setCurrent('true');
+                $setActiveForMenuItem('general');
                 break;
+
             case 'factory_side_news':
-                $menu->getChild('news')->setCurrent('true');
+                $setActiveForMenuItem('news');
                 break;
+
             case 'factory_side_collections':
-                $menu->getChild('collections')->setCurrent('true');
+                $setActiveForMenuItem('collections');
                 break;
+
             case 'factory_side_work_info':
-                $menu->getChild('work_info')->setCurrent('true');
+                $setActiveForMenuItem('work_info');
                 break;
+
             case 'factory_side_contacts':
-                $menu->getChild('contacts')->setCurrent('true');
+                $setActiveForMenuItem('contacts');
                 break;
+
             case 'factory_side_circulars':
-                $menu->getChild('circulars')->setCurrent('true');
+                $setActiveForMenuItem('circulars');
                 break;
                 
         }
-        
-        
-        return $menu;
-        
+
         return $menu;
     }
 }

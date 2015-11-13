@@ -51,6 +51,13 @@ class LoadRetailerProfileData extends AbstractFixture implements OrderedFixtureI
                 'address' => 'Ukraine, Kyiv, Naberezhna str., apartment #2',
                 'phones' => ['+380971086503', '+380986519343'],
                 'emails' => ['mail@stolistul.com.ua'],
+            ],
+
+            'dubok' => [
+                'name' => 'Dubok',
+                'address' => 'Ukraine, Lviv, Tarasa Shevchenka str., apartment #331',
+                'phones' => ['+380937854565'],
+                'emails' => ['dubok.mebel@ukr.net']
             ]
         ];
     }

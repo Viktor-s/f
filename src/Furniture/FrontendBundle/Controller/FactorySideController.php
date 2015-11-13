@@ -2,20 +2,17 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
 use Furniture\FrontendBundle\Repository\ProductStyleRepository;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonomyRepository;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
-use Sylius\Component\Core\Model\Taxon;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FactorySideController
 {
@@ -23,7 +20,7 @@ class FactorySideController
      * @var \Twig_Environment
      */
     private $twig;
-    
+
     /**
      * @var FactoryRepository
      */
@@ -43,21 +40,27 @@ class FactorySideController
      * @var ProductCategoryRepository
      */
     private $productCategoryRepository;
-    
+
     /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * Construct
      *
-     * @param \Twig_Environment         $twig
-     * @param FactoryRepository         $factoryRepository
-     * @param PostRepository            $postRepository
-     * @param ProductStyleRepository    $productStyleRepository
-     * @param ProductCategoryRepository $productCategoryRepository
-     * @param TokenStorageInterface     $tokenStorage
+     * @param \Twig_Environment             $twig
+     * @param FactoryRepository             $factoryRepository
+     * @param PostRepository                $postRepository
+     * @param ProductStyleRepository        $productStyleRepository
+     * @param ProductCategoryRepository     $productCategoryRepository
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -65,14 +68,17 @@ class FactorySideController
         PostRepository $postRepository,
         ProductStyleRepository $productStyleRepository,
         ProductCategoryRepository $productCategoryRepository,
-        TokenStorageInterface $tokenStorage
-    ){
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
+    )
+    {
         $this->twig = $twig;
         $this->factoryRepository = $factoryRepository;
         $this->postRepository = $postRepository;
         $this->productStyleRepository = $productStyleRepository;
         $this->productCategoryRepository = $productCategoryRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -123,24 +129,31 @@ class FactorySideController
         }
 
         $factories = $this->factoryRepository->findBy($query);
-        
+
         $content = $this->twig->render('FrontendBundle:FactorySide:factories.html.twig', [
-            'factories' => $factories,
-            'styles' => $styles,
-            'selected_style' => $selectedStyle,
-            'categories' => $categories,
-            'selected_category' => $selectedCategory
+            'factories'         => $factories,
+            'styles'            => $styles,
+            'selected_style'    => $selectedStyle,
+            'categories'        => $categories,
+            'selected_category' => $selectedCategory,
         ]);
 
         return new Response($content);
     }
-    
-    public function general(Request $request, $factory)
+
+    /**
+     * General info about factory
+     *
+     * @param $factory
+     *
+     * @return Response
+     */
+    public function general($factory)
     {
         $factory = $this->findFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:general.html.twig', [
-            'factory' => $factory
+            'factory' => $factory,
         ]);
 
         return new Response($content);
@@ -160,9 +173,9 @@ class FactorySideController
         $posts = $this->postRepository->findNewsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:posts.html.twig', [
-            'posts' => $posts,
-            'factory' => $factory,
-            'circulars' => false
+            'posts'     => $posts,
+            'factory'   => $factory,
+            'circulars' => false,
         ]);
 
         return new Response($content);
@@ -182,9 +195,9 @@ class FactorySideController
         $posts = $this->postRepository->findCircularsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:posts.html.twig', [
-            'posts' => $posts,
-            'factory' => $factory,
-            'circulars' => true
+            'posts'     => $posts,
+            'factory'   => $factory,
+            'circulars' => true,
         ]);
 
         return new Response($content);
@@ -213,8 +226,8 @@ class FactorySideController
         }
 
         $content = $this->twig->render('FrontendBundle:FactorySide:post.html.twig', [
-            'post' => $post,
-            'factory' => $factory
+            'post'    => $post,
+            'factory' => $factory,
         ]);
 
         return new Response($content);
@@ -232,8 +245,8 @@ class FactorySideController
         $factory = $this->findFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:contacts.html.twig', [
-            'factory' => $factory,
-            'contacts' => $factory->getContacts()
+            'factory'  => $factory,
+            'contacts' => $factory->getContacts(),
         ]);
 
         return new Response($content);
@@ -254,8 +267,8 @@ class FactorySideController
         $translate = $factory->translate();
 
         $content = $this->twig->render('FrontendBundle:FactorySide:work_info.html.twig', [
-            'factory' => $factory,
-            'work_info' => $translate->getWorkInfoContent()
+            'factory'   => $factory,
+            'work_info' => $translate->getWorkInfoContent(),
         ]);
 
         return new Response($content);
@@ -272,12 +285,21 @@ class FactorySideController
     {
         $factory = $this->findFactory($factory);
 
+        if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
+            throw new AccessDeniedException(sprintf(
+                'The active user "%s" not have rights for view collections for factory "%s [%d]".',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName(),
+                $factory->getId()
+            ));
+        }
+
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $translate = $factory->translate();
 
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
-            'factory' => $factory,
-            'collection_content' => $translate->getCollectionContent()
+            'factory'            => $factory,
+            'collection_content' => $translate->getCollectionContent(),
         ]);
 
         return new Response($content);

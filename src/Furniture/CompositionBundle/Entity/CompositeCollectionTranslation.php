@@ -3,6 +3,7 @@
 namespace Furniture\CompositionBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CompositeCollectionTranslation extends AbstractTranslation
 {
@@ -13,11 +14,15 @@ class CompositeCollectionTranslation extends AbstractTranslation
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     protected $presentation;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     protected $description;
 

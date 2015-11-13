@@ -44,7 +44,7 @@ class ProductQuery
     private $compositeCollections = [];
 
     /**
-     * @var User
+     * @var RetailerProfile
      */
     private $retailer;
 

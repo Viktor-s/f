@@ -3,9 +3,7 @@
 namespace Furniture\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
 use Furniture\CommonBundle\Entity\User;
-use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadUsersData as BaseLoadUserData;
 
 class LoadUserData extends BaseLoadUserData
@@ -56,6 +54,12 @@ class LoadUserData extends BaseLoadUserData
                 $retailerProfile = $this->getReference('retailer_profile:stol_i_stul');
                 $user->setRetailerProfile($retailerProfile);
                 $user->setRetailerMode(User::RETAILER_EMPLOYEE);
+            } else if ($i == 3) {
+                // Set the retailer profile
+                /** @var \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile */
+                $retailerProfile = $this->getReference('retailer_profile:dubok');
+                $user->setRetailerProfile($retailerProfile);
+                $user->setRetailerMode(User::RETAILER_ADMIN);
             }
 
             $manager->persist($user);
