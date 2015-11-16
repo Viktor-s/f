@@ -53,9 +53,9 @@ class RetailerEmployeeType extends AbstractType
         }
 
         $builder
-            ->add('username', 'text', [
+            /*->add('username', 'text', [
                 'label' => 'frontend.username',
-            ])
+            ])*/
             ->add('plainPassword', 'password', [
                 'label' => 'frontend.password'
             ])
