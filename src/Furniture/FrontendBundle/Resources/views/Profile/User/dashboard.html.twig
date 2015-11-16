@@ -1,0 +1,67 @@
+{% extends 'FrontendBundle:Profile/User:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.dashboard'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        {% if app.user.getRetailerProfile() %}
+            <div class="col-md-3">
+                {% if app.user.retailerProfile.logoImage and app.user.retailerProfile.logoImage.path %}
+                    <img src="{{ app.user.retailerProfile.logoImage.path|imagine_filter('s200x200') }}" width="200" height="200" />
+                {% else %}
+                    <img data-src="holder.js/200x200?text=Logo" width="200" height="200" />
+                {% endif %}
+            </div>
+
+            <div class="col-md-9">
+                <div class="article-container style-1">
+                    <h3>Retailer: {{ app.user.retailerProfile.name }}</h3>
+
+                    <div class="address">
+                        Address: {{ app.user.retailerProfile.address }}
+                    </div>
+
+                    <div class="phones">
+                        <b>Phones:</b>
+                        {% for phone in app.user.retailerProfile.phones %}
+                            <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="emails">
+                        <b>Emails:</b>
+                        {% for email in app.user.retailerProfile.emails %}
+                            <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% elseif app.user.factory %}
+            <div class="col-md-12">
+                <div class="product-slide-entry">
+                    {% if app.user.factory.hasImages() %}
+                        <img src="{{ app.user.factory.primaryImage.path|imagine_filter('s201x203') }}">
+                    {% endif %}
+                    <a href="#" class="title">{{ app.user.factory.name }}</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <br/>
+            <hr/>
+            <div class="article-container style-1">
+                <h5>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }} </h5>
+                <div class="emails">
+                    <b>Email:</b>
+                    <span class="item">{{ app.user.customer.email }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

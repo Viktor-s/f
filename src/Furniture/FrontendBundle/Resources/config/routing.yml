@@ -102,6 +102,11 @@ factory_side:
 retailer_profile:
     resource: @FrontendBundle/Resources/config/routing/retailer_profile.yml
     prefix: /{_locale}/profile/retailer
+    
+# Content user profile
+user_profile:
+    resource: @FrontendBundle/Resources/config/routing/user_profile.yml
+    prefix: /{_locale}/profile/user
 
 # Security
 security_login:
