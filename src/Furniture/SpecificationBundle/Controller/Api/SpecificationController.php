@@ -320,7 +320,7 @@ class SpecificationController
                 $index = $index - 1;
 
                 $sales = $specification->getSales();
-
+                
                 if (isset($sales[$index])) {
                     $sales[$index]->setSale($value);
                 } else {
@@ -332,6 +332,12 @@ class SpecificationController
                     $this->em->persist($sale);
                 }
 
+                foreach($sales as $sale){
+                    if($sale->getSale() <= 0){
+                        $sales->removeElement($sales);
+                    }
+                }
+                
                 break;
 
 

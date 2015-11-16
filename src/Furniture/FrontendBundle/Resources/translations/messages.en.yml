@@ -27,7 +27,7 @@ frontend:
     opened: Opened
     finished: Finished
     price: Price
-    total_price: Total
+    total_price: Total price
     last_modified: Last modified
     quantity: Quantity
     finish: Finish
