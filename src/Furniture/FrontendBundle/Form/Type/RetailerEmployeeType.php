@@ -57,7 +57,8 @@ class RetailerEmployeeType extends AbstractType
                 'label' => 'frontend.username',
             ])*/
             ->add('plainPassword', 'password', [
-                'label' => 'frontend.password'
+                'label' => 'frontend.password',
+                'required' => false
             ])
             ->add('retailerMode', 'choice', [
                 'label' => 'frontend.mode',
