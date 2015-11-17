@@ -63,22 +63,22 @@
 
         <div class="col-sm-4 information-entry">
             <div class="information-blocks form-horizontal specification-info pull-right">
-                <img src="{{ app.user.retailerProfile.logoImage ? app.user.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
+                <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
             </div>
         </div>
                     
             <div class="col-sm-5 information-entry">
-                <h3 class="block-title main-heading">{{ app.user.retailerProfile.name }}</h3>
+                <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
                 <div class="article-container style-1">
                     <h5>Manager</h5>
-                    <p>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }}<br/>
-                        {{ app.user.customer.email }}
+                    <p>{{ specification.creator.customer.firstName }} {{ specification.creator.customer.lastName }}<br/>
+                        {{ specification.creator.customer.email }}
                     </p>
                     <h5>Company address</h5>
-                    <p>{{ app.user.retailerProfile.address }}</p>
+                    <p>{{ specification.creator.retailerProfile.address }}</p>
                     <h5>Contact Informations</h5>
-                    <p>Retailer Email: {{ app.user.retailerProfile.emails|join(', ') }}<br>
-                        Toll-free: {{ app.user.retailerProfile.phones|join(', ') }}</p>
+                    <p>Retailer Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                        Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}</p>
                 </div>
             </div>
     </div>
