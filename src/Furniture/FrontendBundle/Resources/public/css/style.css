@@ -3467,7 +3467,7 @@ dd {
 }
 
 .text-center th {
-    border-bottom: none !important;
+    border-bottom: none !important; 
 }
 .table__title th {
     border-top: none !important;
