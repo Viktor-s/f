@@ -57,8 +57,8 @@
                         <tr class="text-center">
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="factory" checked /><span class="check"></span></label></th>
-                            <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label></th>
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
+                            <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label></th>
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="article" checked /><span class="check"></span></label></th>
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="size" checked /><span class="check"></span></label></th>
                             <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="finishes" checked /><span class="check"></span></label></th>
@@ -189,6 +189,7 @@
                             <tr class="text-center">
                                 <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
                                 <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label></th>
+                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
                                 <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="sku" checked /><span class="check"></span></label></th>
                                 <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="note" checked /><span class="check"></span></label></th>
                                 <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="size" checked /><span class="check"></span></label></th>
@@ -198,6 +199,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>{{ 'frontend.photo'|trans }}</th>
+                                <th>{{ 'frontend.name'|trans }}</th>
                                 <th>{{ 'frontend.sku'|trans }}</th>
                                 <th>{{ 'frontend.note'|trans }}</th>
                                 <th>{{ 'frontend.product_size'|trans }}</th>
@@ -217,6 +219,7 @@
                                             <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
                                         {% endif %}
                                     </td>
+                                    <td>{{ productVariant.product.name }}</td>
                                     <td>{{ productVariant.sku }}</td>
                                     <td>{{ item.note }}</td>
                                     <td>{{ productVariant.humanSize }}</td>

@@ -12,6 +12,7 @@ class FieldMapForFactory
     private static $availableFields = [
         'number',
         'photo',
+        'name',
         'sku',
         'note',
         'size',
@@ -73,6 +74,16 @@ class FieldMapForFactory
     public function hasFieldSku()
     {
         return in_array('sku', $this->fields);
+    }
+    
+    /**
+     * Has field sku
+     *
+     * @return bool
+     */
+    public function hasFieldName()
+    {
+        return in_array('name', $this->fields);
     }
 
     /**
