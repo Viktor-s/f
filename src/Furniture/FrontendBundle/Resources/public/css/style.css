@@ -3465,3 +3465,10 @@ dd {
     line-height: 23px !important;
     margin-bottom: 10px;
 }
+
+.text-center th {
+    border-bottom: none !important;
+}
+.table__title th {
+    border-top: none !important;
+}
