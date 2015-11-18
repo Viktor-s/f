@@ -136,6 +136,7 @@ body{font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 14px; line
 .content-center, .position-center{max-width: 1310px; margin: 0 auto; background: #fff; padding: 0 70px; position: relative;}
 .position-center{background: none;}
 .wide-center{max-width: 1760px; margin: 0 auto; padding: 0 30px;}
+
 @media (max-width: 767px) {
     .wide-center{padding: 0 15px;}    
 }
@@ -3278,6 +3279,13 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
  * AgentA Solution styles
  */
 
+.text-center th {
+    border-bottom: none !important;
+}
+.table-title th {
+    border-top: none!important;
+}
+
 .cell-view-inner{
     padding: 20px;
     float: left;
@@ -3466,9 +3474,4 @@ dd {
     margin-bottom: 10px;
 }
 
-.text-center th {
-    border-bottom: none !important; 
-}
-.table__title th {
-    border-top: none !important;
-}
+
