@@ -253,11 +253,8 @@ class CatalogController
         }
         
         /* Create product paginator */
-        $currentPage = $request->get('page', 1);
-        $products = $this->productRepository->findBy($productQuery);
-        if( $products->getNbPages() < $currentPage){
-            $products->setCurrentPage($currentPage);
-        }
+        $products = $this->productRepository->findBy($productQuery, $request->get('page', 1));
+
         // Create a brands query
         $brandsQuery= new FactoryQuery();
         if ($user->isRetailer()) {
