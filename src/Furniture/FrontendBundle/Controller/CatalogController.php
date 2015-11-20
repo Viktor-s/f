@@ -256,7 +256,7 @@ class CatalogController
         $currentPage = $request->get('page', 1);
         $products = $this->productRepository->findBy($productQuery);
         if( $products->getNbPages() < $currentPage){
-            $products->setCurrentPage(1);
+            $products->setCurrentPage($currentPage);
         }
         // Create a brands query
         $brandsQuery= new FactoryQuery();
