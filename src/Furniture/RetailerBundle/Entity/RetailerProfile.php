@@ -43,6 +43,25 @@ class RetailerProfile
     private $logoImage;
 
     /**
+     *
+     * @var str
+     */
+    private $website;
+    
+    /**
+     *
+     * @var str
+     */
+    private $subtitle;
+        
+    /**
+     *
+     * @var str
+     */
+    private $description;
+
+
+    /**
      * Construct
      */
     public function __construct()
@@ -271,6 +290,66 @@ class RetailerProfile
         $logoImage->setRetailerProfile($this);
         $this->logoImage = $logoImage;
 
+        return $this;
+    }
+
+    /**
+     * 
+     * @return str
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * 
+     * @param str $website
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return str
+     */
+    public function getSubtitle()
+    {
+        return $this->subtitle;
+    }
+
+    /**
+     * 
+     * @param str $subtitle
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return str
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * 
+     * @param str $description
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 
