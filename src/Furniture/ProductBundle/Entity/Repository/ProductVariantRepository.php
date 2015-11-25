@@ -25,7 +25,8 @@ class ProductVariantRepository extends BaseProductVariantRepository
             ->from(SpecificationItem::class, 'si')
             ->select('1')
             ->distinct()
-            ->innerJoin('si.productVariant', 'pv')
+            ->innerJoin('si.skuItem', 'ssi')
+            ->innerJoin('ssi.productVariant', 'pv')
             ->andWhere('pv.id = :variant')
             ->setParameter('variant', $variant->getId())
             ->getQuery();
