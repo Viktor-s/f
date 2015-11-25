@@ -35,9 +35,12 @@
 
     <div class="right-entries product-header-content">
         <div class="line-entry">
+                <a class="header-functionality-entry" href="{{ path('user_profile') }}">
+                    <i class="fa fa-user"></i><span>{{ 'frontend.button.user_profile'|trans }}</span>
+                </a>
             {% if app.user and app.user.retailerAdmin %}
                 <a class="header-functionality-entry" href="{{ path('retailer_profile') }}">
-                    <i class="fa fa-user"></i><span>{{ 'frontend.button.settings'|trans }}</span>
+                    <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
                 </a>
             {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
                 <a class="header-functionality-entry" href="{{ path('factory_profile') }}">

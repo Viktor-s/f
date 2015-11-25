@@ -23,7 +23,19 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
         name:
             type: string
             nullable: true
-
+            
+        website:
+            type: string
+            nullable: true
+            
+        subtitle:
+            type: string
+            nullable: true
+            
+        description:
+            type: text
+            nullable: true
+            
         address:
             type: string
             name: address

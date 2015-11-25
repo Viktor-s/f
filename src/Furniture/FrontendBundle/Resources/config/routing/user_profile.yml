@@ -1,0 +1,18 @@
+user_profile:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.user.profile:dashboard
+user_profile_update:
+    path: /update/
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.user.profile:updateInformation
+user_password_update:
+    path: /password/change/
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.user.profile:upatePassword

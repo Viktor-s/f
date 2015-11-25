@@ -309,7 +309,6 @@ class FactorySideController
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
             'factory'               => $factory,
-            'collection_content'    => $translate->getCollectionContent(),
             'composite_collections' => $this->compositeCollectionRepository->findBy($ccQuery)
         ]);
 

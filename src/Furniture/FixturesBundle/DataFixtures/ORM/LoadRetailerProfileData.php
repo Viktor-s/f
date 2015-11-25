@@ -54,7 +54,7 @@ class LoadRetailerProfileData extends AbstractFixture implements OrderedFixtureI
             ],
 
             'dubok' => [
-                'name' => 'Dubok',
+                'name' => 'dubok',
                 'address' => 'Ukraine, Lviv, Tarasa Shevchenka str., apartment #331',
                 'phones' => ['+380937854565'],
                 'emails' => ['dubok.mebel@ukr.net']

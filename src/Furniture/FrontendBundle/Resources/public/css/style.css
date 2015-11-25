@@ -136,6 +136,7 @@ body{font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 14px; line
 .content-center, .position-center{max-width: 1310px; margin: 0 auto; background: #fff; padding: 0 70px; position: relative;}
 .position-center{background: none;}
 .wide-center{max-width: 1760px; margin: 0 auto; padding: 0 30px;}
+
 @media (max-width: 767px) {
     .wide-center{padding: 0 15px;}    
 }
@@ -2278,7 +2279,6 @@ select{background: #fff!important;}
 .blog-sidebar .color-selector{margin-right: -10px;}
 .blog-sidebar .color-selector .entry{width: 36px; height: 36px; margin-right: 10px; margin-bottom: 14px; vertical-align: top;}
 /**/
-.shop-grid-item:nth-child(4n+1){clear: both;}
 .shop-grid-controls{margin-right: 200px; font-size: 14px; font-weight: 600; margin-bottom: -15px;}
 #content-block .shop-grid-controls .entry{line-height: 30px; padding-right: 16px; float: left; border-right: 1px #ebebeb solid; margin-bottom: 15px!important; margin-right: 16px; min-height: 30px;}
 #content-block .shop-grid-controls .entry:last-child{border: none;}
@@ -2292,7 +2292,7 @@ select{background: #fff!important;}
 .sort-button:before{content: "\f063";}
 .sort-button.active:before{content: "\f062";}
 .view-button{float: left; width: 30px; position: relative; margin-right: 10px; text-align: center; color: #b5b5b5; cursor: pointer;}
-.view-button.list{margin-top: 10px;}
+.view-button.list{padding-left: 0; margin-top: 0; }
 .view-button:last-child{margin-right: 0;}
 .view-button:after{border: 1px #ebebeb solid; position: absolute; left: 0; top: 0; width: 100%; height: 100%; content: "";}
 .view-button.active{color: #262626;}
@@ -3279,6 +3279,13 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
  * AgentA Solution styles
  */
 
+.text-center th {
+    border-bottom: none !important;
+}
+.table-title th {
+    border-top: none!important;
+}
+
 .cell-view-inner{
     padding: 20px;
     float: left;
@@ -3466,3 +3473,5 @@ dd {
     line-height: 23px !important;
     margin-bottom: 10px;
 }
+
+

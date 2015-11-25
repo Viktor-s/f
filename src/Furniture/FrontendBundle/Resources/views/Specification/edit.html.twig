@@ -63,22 +63,22 @@
 
         <div class="col-sm-4 information-entry">
             <div class="information-blocks form-horizontal specification-info pull-right">
-                <img src="{{ app.user.retailerProfile.logoImage ? app.user.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
+                <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
             </div>
         </div>
                     
             <div class="col-sm-5 information-entry">
-                <h3 class="block-title main-heading">{{ app.user.retailerProfile.name }}</h3>
+                <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
                 <div class="article-container style-1">
                     <h5>Manager</h5>
-                    <p>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }}<br/>
-                        {{ app.user.customer.email }}
+                    <p>{{ specification.creator.customer.firstName }} {{ specification.creator.customer.lastName }}<br/>
+                        {{ specification.creator.customer.email }}
                     </p>
                     <h5>Company address</h5>
-                    <p>{{ app.user.retailerProfile.address }}</p>
+                    <p>{{ specification.creator.retailerProfile.address }}</p>
                     <h5>Contact Informations</h5>
-                    <p>Retailer Email: {{ app.user.retailerProfile.emails|join(', ') }}<br>
-                        Toll-free: {{ app.user.retailerProfile.phones|join(', ') }}</p>
+                    <p>Retailer Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                        Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}</p>
                 </div>
             </div>
     </div>
@@ -123,12 +123,29 @@
                 {% endfor %}
             </tbody>
             <tfoot>
+                <tr class="specification-sale">
+                    <td colspan="5"></td>
+                    <td colspan="4">
+                        <span>Extra %</span>
+                        {% set sales_count = specification.sales|length %}
+                        {% if sales_count > 0 %}
+                            {% for sale in specification.sales %}
+                                {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
+                            {% endfor %}
+                        {% else %}
+                            {#{{ block('specification_sale')|replace({__index__: 1, __sale__: 0})|raw }}#}
+                        {% endif %}
+                        <a href="#" id="add-extra-sale">
+                            <i class="fa fa-plus-square"></i>
+                        </a>
+                    </td>
+                </tr>
                 <tr>
-                    <td class="text-right" colspan="7">Total price</td>
+                    <td class="text-right" colspan="7">{{ 'frontend.total_price'|trans }}</td>
                     <td id="table-total-price">{{ specification|specification_total_price|money }}</td>
                     <td></td>
                 </tr>
-            </tfoot>     
+            </tfoot>        
         </table>
 
         <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
@@ -137,13 +154,7 @@
 {% endblock %}
 
 {% block specification_sale %}
-    <tr class="specification-sale">
-        <td colspan="7"></td>
-        <td>
-            <div class="sale editable form-group" id="specification-sale" data-index="__index__">__sale__</div>
-        </td>
-        <td></td>
-    </tr>
+    <span class="sale editable form-group" id="specification-sale" data-index="__index__">__sale__</span>
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -589,6 +600,60 @@
                         "submit": '<button type="button" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>',
                     }, editableParams));
 
+                    function updateExtrasale(){
+                        var extraSales = $('.sale.editable.form-group');
+                        extraSales.each(function(){
+                            var el = $(this);
+                            if(parseFloat(el.html()) <= 0){
+                                el.remove();
+                            }
+                        });
+                        
+                        if( $('.sale.editable.form-group').length >= 3 ){
+                            $('#add-extra-sale').hide();
+                        }else{
+                            $('#add-extra-sale').show();
+                        }
+                    }
+
+                    var saleInitialize = function (el) {
+                        var index = $(el).data('index');
+                        $(el).editable(editableUrl, {
+                            width: '48px',
+                            style: 'display: inline',
+                            height: '100%',
+                            submitdata: function (value) {
+                                return {
+                                    index: index
+                                }
+                            },
+                            "callback": function( sValue, y ) {
+                                trTotalPriceSpecificationUpdater();
+                                updateExtrasale();
+                            }
+                        });
+                    }
+                    
+                    $('#add-extra-sale').click(function(){
+                        var el = $(this);
+                        var line = '{{ block('specification_sale')|trim|raw }}';
+                        var index = $('.sale.editable.form-group').length+1;
+                        line = line
+                         .replace( /__index__/ , index)
+                         .replace( /__sale__/ , 1);
+                        var new_sale = $(line);
+                        el.before( new_sale );
+                        saleInitialize(new_sale);
+                        updateExtrasale();
+                        return false;
+                    });
+                    
+                    updateExtrasale();
+                    
+                    $('tr.specification-sale .editable').each(function(){
+                        saleInitialize(this);
+                    });
+
                     $('.specification-info .editable.buyer').editable(editableUrl, $.extend({
                         type: 'select',
                         loadurl: '{{ path('specification_api_specification_buyers') }}',
@@ -613,6 +678,7 @@
                         });
                         return false;
                     });
+                    
                 })
             })(jQuery);
         </script>

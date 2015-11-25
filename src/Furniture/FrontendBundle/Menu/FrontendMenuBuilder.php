@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Furniture\CommonBundle\Entity\User;
 
 class FrontendMenuBuilder
 {
@@ -254,6 +255,30 @@ class FrontendMenuBuilder
         $menu->addChild('employees', [
             'uri' => $this->urlGenerator->generate('retailer_profile_employees'),
             'label' => $this->translator->trans('frontend.employees')
+        ]);
+
+        return $menu;
+    }
+    
+    /**
+     * Create menu for retailer profile
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createUserProfileMenu()
+    {
+        /** @var \Furniture\CommonBundle\Entity\User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('user_info_update', [
+            'uri' => $this->urlGenerator->generate('user_profile_update'),
+            'label' => $this->translator->trans('frontend.user_profile_side.update')
+        ]);
+
+        $menu->addChild('user_password_update', [
+            'uri' => $this->urlGenerator->generate('user_password_update'),
+            'label' => $this->translator->trans('frontend.user_profile_side.password_upadate')
         ]);
 
         return $menu;
