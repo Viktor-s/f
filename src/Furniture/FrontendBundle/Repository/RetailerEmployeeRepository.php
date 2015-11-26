@@ -5,6 +5,7 @@ namespace Furniture\FrontendBundle\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class RetailerEmployeeRepository
 {
@@ -35,7 +36,7 @@ class RetailerEmployeeRepository
         return $this->em->createQueryBuilder()
             ->from(User::class, 'u')
             ->select('u')
-            ->andWhere('u.retailerProfile IS NOT NULL')
+            ->innerJoin('u.retailerUserProfile', 'rup')
             ->andWhere('u.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -54,7 +55,8 @@ class RetailerEmployeeRepository
         return $this->em->createQueryBuilder()
             ->from(User::class, 'u')
             ->select('u')
-            ->andWhere('u.retailerProfile = :retailer_profile')
+            ->innerJoin('u.retailerUserProfile', 'rup')
+            ->andWhere('rup.retailerProfile = :retailer_profile')
             ->setParameter('retailer_profile', $retailerProfile)
             ->orderBy('u.createdAt', 'DESC')
             ->getQuery()

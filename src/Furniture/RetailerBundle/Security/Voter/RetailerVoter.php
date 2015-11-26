@@ -33,12 +33,12 @@ class RetailerVoter extends AbstractVoter
             return false;
         }
 
-        if (!$user->getRetailerProfile()) {
+        if(!$user->isRetailer()){
             // Only for retailers granted
             return false;
         }
-
-        if (!$user->isRetailerAdmin()) {
+        
+        if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {
             // Only for admin granted
             return false;
         }
@@ -47,7 +47,7 @@ class RetailerVoter extends AbstractVoter
             return false;
         }
 
-        if ($object->getId() == $user->getRetailerProfile()->getId()) {
+        if ($object->getId() == $user->getRetailerUserProfile()->getRetailerProfile()->getId()) {
             // Is owner of profile
             return true;
         }

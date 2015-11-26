@@ -118,14 +118,14 @@ class RetailerProfileController
             ));
         }
 
-        if (!$user->isRetailerAdmin()) {
+        if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {
             throw new AccessDeniedException(sprintf(
                 'The active user "%s" is no admin.',
                 $user->getUsername()
             ));
         }
 
-        $profile = $user->getRetailerProfile();
+        $profile = $user->getRetailerUserProfile()->getRetailerProfile();
         $form = $this->formFactory->create(new RetailerProfileType(), $profile);
 
         $form->handleRequest($request);
@@ -164,7 +164,7 @@ class RetailerProfileController
 
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        $retailer = $user->getRetailerProfile();
+        $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         if (!$retailer) {
             throw new NotFoundHttpException(sprintf(
@@ -223,7 +223,7 @@ class RetailerProfileController
     {
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        $retailer = $user->getRetailerProfile();
+        $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         if (!$retailer) {
             throw new NotFoundHttpException(sprintf(

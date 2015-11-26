@@ -44,7 +44,7 @@
                     {% for specification in opened_specifications %}
                     <tr>
                         <td>{{ specification.id }}</td>
-                        <td>{{ specification.creator.username }}</td>
+                        <td>{{ specification.creator.user.username }}</td>
                         <td>{{ specification.name }}</td>
                         <td>{{ specification.buyer }}</td>
                         <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>

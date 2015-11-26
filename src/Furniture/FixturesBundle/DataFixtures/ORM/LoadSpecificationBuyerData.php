@@ -19,11 +19,11 @@ class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtu
 
         /** @var \Furniture\CommonBundle\Entity\User $administer */
         $administer = $this->getReference('Sylius.User-Administrator');
-
+        $administer->getRetailerUserProfile()->getId();
         for ($i = 0; $i < 5; $i++) {
             $buyer = new Buyer();
             $buyer
-                ->setCreator($administer)
+                ->setCreator($administer->getRetailerUserProfile())
                 ->setFirstName($faker->firstName)
                 ->setSecondName($faker->lastName)
                 ->setSale(rand(0, 10));

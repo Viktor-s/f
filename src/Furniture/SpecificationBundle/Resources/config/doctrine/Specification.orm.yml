@@ -33,10 +33,10 @@ Furniture\SpecificationBundle\Entity\Specification:
             nullable: true
 
     manyToOne:
-        user:
-            targetEntity: Furniture\CommonBundle\Entity\User
+        creator:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile
             joinColumn:
-                name: user_id
+                name: creator
                 referencedColumnName: id
                 onDelete: CASCADE
                 nullable: false
@@ -46,7 +46,7 @@ Furniture\SpecificationBundle\Entity\Specification:
             joinColumn:
                 name: buyer_id
                 referencedColumnName: id
-                onDelete: RESTRICT
+                onDelete: SET NULL
                 nullable: true
 
     oneToMany:

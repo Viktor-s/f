@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Furniture\CommonBundle\Entity\User;
 
 class ProductsBlock extends BaseBlockService
 {
@@ -38,7 +39,7 @@ class ProductsBlock extends BaseBlockService
     {
         $resolver->setDefaults([
             'limit' => 5,
-            'retailer' => null,
+            'user' => null,
             'template' => 'FrontendBundle:Blocks:products.html.twig'
         ]);
     }
@@ -53,11 +54,17 @@ class ProductsBlock extends BaseBlockService
         $productQuery = new ProductQuery();
         $productQuery->withOnlyAvailable();
 
-        if($settings['retailer'] instanceof RetailerProfile) {
-            $productQuery->withRetailer($settings['retailer']);
+        $products = [];
+        if($settings['user'] instanceof User){
+            if( $settings['user']->isRetailer() ){
+                $productQuery->withRetailer(
+                        $settings['user']
+                            ->getRetailerUserProfile()
+                            ->getRetailerProfile()
+                        );
+                $products = $this->productRepository->findLatestBy($productQuery, $settings['limit']);
+            }
         }
-        
-        $products = $this->productRepository->findLatestBy($productQuery, $settings['limit']);
         
         return $this->renderResponse($settings['template'], [
             'products' => $products

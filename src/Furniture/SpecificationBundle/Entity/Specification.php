@@ -8,6 +8,7 @@ use Furniture\CommonBundle\Entity\User;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 use Furniture\SpecificationBundle\Model\GroupedItemsByFactory;
 use Symfony\Component\Validator\Constraints as Assert;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class Specification
 {
@@ -17,9 +18,9 @@ class Specification
     private $id;
 
     /**
-     * @var User
+     * @var RetailerUserProfile
      */
-    private $user;
+    private $creator;
 
     /**
      * @var string
@@ -85,41 +86,24 @@ class Specification
     }
 
     /**
-     * Set user
-     *
-     * @param User $user
-     *
-     * @return Specification
+     * 
+     * @param \Furniture\RetailerBundle\Entity\RetailerUserProfile $creator
+     * @return \Furniture\SpecificationBundle\Entity\Specification
      */
-    public function setUser(User $user)
+    public function setCreator(RetailerUserProfile $creator)
     {
-        $this->user = $user;
+        $this->creator = $creator;
 
         return $this;
     }
 
     /**
-     * Get user
-     *
-     * @return User
-     *
-     * @deprecated Please use getOwner method
-     */
-    public function getUser()
-    {
-        trigger_error('The method "getUser" is deprecated and will be removed. Please use "getCreator" method.');
-
-        return $this->user;
-    }
-
-    /**
-     * Get creator
-     *
-     * @return User
+     * 
+     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
     public function getCreator()
     {
-        return $this->user;
+        return $this->creator;
     }
 
     /**

@@ -114,8 +114,8 @@ class SpecificationController
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if ($user->isRetailerAdmin()) {
-            $retailer = $user->getRetailerProfile();
+        if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+            $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
             $openedSpecifications = $this->specificationRepository->findOpenedForRetailer($retailer);
             $finishedSpecifications = $this->specificationRepository->findFinishedForRetailer($retailer);
@@ -158,7 +158,7 @@ class SpecificationController
             // @todo: check grant for edit item (via security voter in Symfony)
         } else {
             $specification = new Specification();
-            $specification->setUser($user);
+            $specification->setCreator($user->getRetailerUserProfile());
         }
 
         $form = $this->formFactory->create(new SpecificationType(), $specification, [

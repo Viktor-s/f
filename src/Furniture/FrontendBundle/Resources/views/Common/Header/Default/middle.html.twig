@@ -38,7 +38,7 @@
                 <a class="header-functionality-entry" href="{{ path('user_profile') }}">
                     <i class="fa fa-user"></i><span>{{ 'frontend.button.user_profile'|trans }}</span>
                 </a>
-            {% if app.user and app.user.retailerAdmin %}
+            {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
                 <a class="header-functionality-entry" href="{{ path('retailer_profile') }}">
                     <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
                 </a>

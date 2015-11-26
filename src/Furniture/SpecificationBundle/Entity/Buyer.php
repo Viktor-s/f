@@ -4,6 +4,7 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Furniture\CommonBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class Buyer
 {
@@ -13,7 +14,7 @@ class Buyer
     private $id;
 
     /**
-     * @var User
+     * @var RetailerUserProfile
      */
     private $creator;
 
@@ -92,13 +93,13 @@ class Buyer
     /**
      * Set creator
      *
-     * @param User $user
+     * @param \Furniture\RetailerBundle\Entity\RetailerUserProfile $creator
      *
      * @return Buyer
      */
-    public function setCreator(User $user)
+    public function setCreator(RetailerUserProfile $creator)
     {
-        $this->creator = $user;
+        $this->creator = $creator;
 
         return $this;
     }
@@ -106,7 +107,7 @@ class Buyer
     /**
      * Get creator
      *
-     * @return User
+     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
     public function getCreator()
     {

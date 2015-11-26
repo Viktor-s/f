@@ -4,7 +4,7 @@ namespace Furniture\CommonBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
-use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class User extends BaseUser 
 {
@@ -13,23 +13,17 @@ class User extends BaseUser
     const ROLE_FACTORY_USER   = 'ROLE_FACTORY_USER';
     const ROLE_PUBLIC_CONTENT = 'ROLE_PUBLIC_CONTENT';
 
-    const RETAILER_ADMIN    = 1;
-    const RETAILER_EMPLOYEE = 2;
-
     /**
      * @var Factory
      */
     protected $factory;
 
     /**
-     * @var RetailerProfile
+     *
+     * @var \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
-    protected $retailerProfile;
+    protected $retailerUserProfile;
 
-    /**
-     * @var int
-     */
-    private $retailerMode = self::RETAILER_EMPLOYEE;
 
     /**
      * Construct
@@ -75,29 +69,27 @@ class User extends BaseUser
     }
 
     /**
-     * Set retail profile
-     *
-     * @param RetailerProfile $retailerProfile
-     *
-     * @return User
+     * 
+     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
-    public function setRetailerProfile(RetailerProfile $retailerProfile)
+    public function getRetailerUserProfile()
+    {
+        return $this->retailerUserProfile;
+    }
+    
+    /**
+     * 
+     * @param \Furniture\RetailerBundle\Entity\RetailerUserProfile
+     * @return \Furniture\CommonBundle\Entity\User
+     */
+    public function setRetailerUserProfile(RetailerUserProfile $retailerUserProfile)
     {
         $this->resetProfile();
-        $this->retailerProfile = $retailerProfile;
-
+        $retailerUserProfile->setUser($this);
+        $this->retailerUserProfile = $retailerUserProfile;
         return $this;
     }
 
-    /**
-     * Get retail profile
-     *
-     * @return RetailerProfile
-     */
-    public function getRetailerProfile()
-    {
-        return $this->retailerProfile;
-    }
 
     /**
      * Is this content user?
@@ -120,37 +112,13 @@ class User extends BaseUser
     }
 
     /**
-     * Set retailer mode
-     *
-     * @param int $retailerMode
-     *
-     * @return User
-     */
-    public function setRetailerMode($retailerMode)
-    {
-        $this->retailerMode = $retailerMode;
-
-        return $this;
-    }
-
-    /**
-     * Get retailer mode
-     *
-     * @return int
-     */
-    public function getRetailerMode()
-    {
-        return $this->retailerMode;
-    }
-
-    /**
      * Is retailer?
      *
      * @return bool
      */
     public function isRetailer()
     {
-        return $this->retailerProfile ? true : false;
+        return $this->retailerUserProfile ? true : false;
     }
 
     /**
@@ -161,27 +129,7 @@ class User extends BaseUser
     public function isNoRetailer()
     {
         return !$this->isRetailer();
-    }
-
-    /**
-     * Is retailer admin?
-     *
-     * @return bool
-     */
-    public function isRetailerAdmin()
-    {
-        return $this->retailerMode == self::RETAILER_ADMIN;
-    }
-
-    /**
-     * Is retail employee
-     *
-     * @return bool
-     */
-    public function isRetailerEmployee()
-    {
-        return $this->retailerMode == self::RETAILER_EMPLOYEE;
-    }
+    }   
 
     /**
      * Reset profile
@@ -189,6 +137,6 @@ class User extends BaseUser
     protected function resetProfile()
     {
         $this->factory = null;
-        $this->retailerProfile = null;
+        $this->retailerUserProfile = null;
     }
 }

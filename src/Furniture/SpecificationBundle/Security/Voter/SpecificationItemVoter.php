@@ -38,7 +38,7 @@ class SpecificationItemVoter extends AbstractVoter
             return true;
         }
 
-        if ($user->isRetailerAdmin()) {
+        if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
             return true;
         }
 

@@ -4,6 +4,7 @@ namespace Furniture\RetailerBundle\Entity;
 use Furniture\CommonBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class RetailerProfile
 {
@@ -13,9 +14,9 @@ class RetailerProfile
     private $id;
 
     /**
-     * @var Collection|User[]
+     * @var Collection|RetailerUserProfile[]
      */
-    private $users;
+    private $retailerUserProfiles;
 
     /**
      * @var string
@@ -82,62 +83,58 @@ class RetailerProfile
     /**
      * Get users
      *
-     * @return Collection|User[]
+     * @return Collection|RetailerUserProfile[]
      */
-    public function getUsers()
+    public function getRetailerUserProfiles()
     {
-        return $this->users;
+        return $this->retailerUserProfiles;
     }
     
     /**
-     * Set users
-     *
-     * @param Collection|User[] $users
-     *
-     * @return RetailerProfile
+     * 
+     * @param Collection $retailerUserProfiles
+     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
-    public function setUsers(Collection $users)
+    public function setRetailerUserProfiles(Collection $retailerUserProfiles)
     {
-        $this->users = $users;
+        $this->retailerUserProfiles = $retailerUserProfiles;
 
         return $this;
     }
     
     /**
-     * Has users?
+     * Has retailerUserProfiles?
      *
      * @return bool
      */
-    public function hasUsers()
+    public function hasRetailerUserProfiles()
     {
-        return (bool)!$this->users->isEmpty();
+        return (bool)!$this->retailerUserProfiles->isEmpty();
     }
     
     /**
-     * Has user?
+     * Has RetailerProfile?
      *
-     * @param User $user
+     * @param \Furniture\RetailerBundle\Entity\RetailerUserProfile $retailerUserProfiles
      *
      * @return bool
      */
-    public function hasUser(User $user)
+    public function hasRetailerUserProfile(RetailerUserProfile $retailerUserProfiles)
     {
-        return $this->users->contains($user);
+        return $this->retailerUserProfiles->contains($retailerUserProfiles);
     }
 
 
     /**
-     * Add user
-     *
-     * @param  User $user
-     *
-     * @return RetailerProfile
+     * 
+     * @param \Furniture\RetailerBundle\Entity\RetailerProfile $retailerUserProfiles
+     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
-    public function addUser(User $user)
+    public function addRetailerUserProfile(RetailerUserProfile $retailerUserProfiles)
     {
-        if(!$this->hasUser($user)){
-            $user->setRetailerProfile($this);
-            $this->users->add($user);
+        if(!$this->hasRetailerUserProfile($retailerUserProfiles)){
+            $retailerUserProfiles->setRetailerProfile($this);
+            $this->retailerUserProfiles->add($retailerUserProfiles);
         }
 
         return $this;
@@ -150,10 +147,10 @@ class RetailerProfile
      *
      * @return RetailerProfile
      */
-    public function removeUser(User $user)
+    public function removeRetailerUserProfile(RetailerUserProfile $retailerUserProfiles)
     {
-        if($this->hasUser($user)){
-            $this->users->removeElement($user);
+        if($this->hasRetailerUserProfile($retailerUserProfiles)){
+            $this->retailerUserProfiles->removeElement($retailerUserProfiles);
         }
 
         return $this;

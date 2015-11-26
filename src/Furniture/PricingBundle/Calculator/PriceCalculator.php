@@ -172,7 +172,7 @@ class PriceCalculator
     {
         /** @var \Furniture\FactoryBundle\Entity\Repository\RetailerFactoryRateRepository $retailerFactoryRateRepository */
         $retailerFactoryRateRepository = $this->em->getRepository(RetailerFactoryRate::class);
-        $retailerFactoryRate = $retailerFactoryRateRepository->findByFactoryAndRetailer($factory, $user->getRetailerProfile());
+        $retailerFactoryRate = $retailerFactoryRateRepository->findByFactoryAndRetailer($factory, $user->getRetailerUserProfile()->getRetailerProfile());
 
         if ($retailerFactoryRate) {
             // First step: Add coefficient

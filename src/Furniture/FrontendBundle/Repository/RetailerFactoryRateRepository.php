@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class RetailerFactoryRateRepository
 {
@@ -49,15 +50,15 @@ class RetailerFactoryRateRepository
      *
      * @return RetailerFactoryRate[]
      */
-    public function findByUser(User $user)
+    public function findByRetailerUserProfile(RetailerUserProfile $retailerUserProfile)
     {
         return $this->em->createQueryBuilder()
             ->from(RetailerFactoryRate::class, 'rfr')
             ->select('rfr')
             ->innerJoin('rfr.retailer', 'r')
-            ->innerJoin('r.users', 'u')
-            ->andWhere('u.id = :user')
-            ->setParameter('user', $user->getId())
+            ->innerJoin('r.retailerUserProfiles', 'rup')
+            ->andWhere('rup.id = :retailerUserProfile')
+            ->setParameter('retailerUserProfile', $retailerUserProfile->getId())
             ->getQuery()
             ->getResult();
     }

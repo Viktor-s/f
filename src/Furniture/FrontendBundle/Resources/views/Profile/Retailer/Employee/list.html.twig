@@ -47,9 +47,9 @@
 
                 <td>
                     <span class="label label-success">
-                        {% if employee.retailerAdmin %}
+                        {% if employee.isRetailer() and employee.retailerUserProfile.isRetailerAdmin() %}
                             {{ 'frontend.admin'|trans }}
-                        {% elseif employee.retailerEmployee %}
+                        {% elseif employee.isRetailer() %}
                             {{ 'frontend.employee'|trans }}
                         {% else %}
                             Undefined

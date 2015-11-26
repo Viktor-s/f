@@ -364,15 +364,15 @@ class SpecificationController
         $user = $this->tokenStorage->getToken()
             ->getUser();
         $retailerProfile = null;
-        if($retailerProfile = $user->getRetailerProfile()){
+        if($retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile()){
             
         }
         
         $buyers = $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')
             ->select('b.id, b.firstName, b.secondName')
-            ->andWhere('b.creator IN (:creator)')
-            ->setParameter('creator', $retailerProfile ? $retailerProfile->getUsers() : [])
+            ->innerJoin('b.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
+            ->setParameter('rp', $retailerProfile)
             ->getQuery()
             ->getResult();
 

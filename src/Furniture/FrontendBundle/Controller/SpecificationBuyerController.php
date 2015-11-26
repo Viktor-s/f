@@ -117,7 +117,7 @@ class SpecificationBuyerController
 
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        $retailer = $user->getRetailerProfile();
+        $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $buyers = $this->buyerRepository->findByRetailer($retailer);
 
@@ -161,7 +161,7 @@ class SpecificationBuyerController
             }
         } else {
             $buyer = new Buyer();
-            $buyer->setCreator($user);
+            $buyer->setCreator($user->getRetailerUserProfile());
 
             if ($this->authorizationChecker->isGranted('SPECIFICATION_BUYER_CREATE')) {
                 throw new AccessDeniedException(sprintf(

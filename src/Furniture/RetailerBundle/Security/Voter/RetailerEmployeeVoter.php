@@ -32,23 +32,23 @@ class RetailerEmployeeVoter extends AbstractVoter
             return false;
         }
 
-        if (!$user->getRetailerProfile()) {
+        if (!$user->isRetailer()) {
             // Only for retailers granted
             return false;
         }
 
-        if (!$user->isRetailerAdmin()) {
+        if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {
             // Only for admin granted
             return false;
         }
 
-        if (!$object || !$object instanceof User) {
+        if (!$object || !$object instanceof User || !$object->isRetailer()) {
             return false;
         }
 
-        $retailerProfile = $user->getRetailerProfile();
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
 
-        if ($retailerProfile->hasUser($object)) {
+        if ( $retailerProfile->hasRetailerUserProfile($object->getRetailerUserProfile())) {
             return true;
         }
 

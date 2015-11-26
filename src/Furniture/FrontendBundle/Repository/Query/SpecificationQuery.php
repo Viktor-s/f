@@ -21,6 +21,13 @@ class SpecificationQuery
     private $users = [];
 
     /**
+     *
+     * @var \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    private $retailer;
+
+
+    /**
      * Search for user
      *
      * @param User $user
@@ -82,12 +89,29 @@ class SpecificationQuery
      */
     public function withRetailer(RetailerProfile $retailer)
     {
-        $users = $retailer->getUsers();
-
-        $this->withUsers($users->toArray());
-
+        $this->retailer = $retailer;
+        
         return $this;
     }
+
+    /**
+     * 
+     * @return bool
+     */
+    public function hasRetailer()
+    {
+        return (bool)$this->retailer;
+    }
+
+    /**
+     * 
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function getRetailer()
+    {
+        return $this->retailer;
+    }
+
 
     /**
      * Only opened

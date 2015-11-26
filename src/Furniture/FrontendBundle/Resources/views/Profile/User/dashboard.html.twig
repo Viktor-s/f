@@ -8,10 +8,10 @@
 
 {% block page_content %}
     <div class="row">
-        {% if app.user.getRetailerProfile() %}
+        {% if app.user.isRetailer() %}
             <div class="col-md-3">
-                {% if app.user.retailerProfile.logoImage and app.user.retailerProfile.logoImage.path %}
-                    <img src="{{ app.user.retailerProfile.logoImage.path|imagine_filter('s200x200') }}" width="200" height="200" />
+                {% if app.user.retailerUserProfile.retailerProfile.logoImage and app.user.retailerUserProfile.retailerProfile.logoImage.path %}
+                    <img src="{{ app.user.retailerUserProfile.retailerProfile.logoImage.path|imagine_filter('s200x200') }}" width="200" height="200" />
                 {% else %}
                     <img data-src="holder.js/200x200?text=Logo" width="200" height="200" />
                 {% endif %}
@@ -19,22 +19,22 @@
 
             <div class="col-md-9">
                 <div class="article-container style-1">
-                    <h3>Retailer: {{ app.user.retailerProfile.name }}</h3>
+                    <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
 
                     <div class="address">
-                        Address: {{ app.user.retailerProfile.address }}
+                        Address: {{ app.user.retailerUserProfile.retailerProfile.address }}
                     </div>
 
                     <div class="phones">
                         <b>Phones:</b>
-                        {% for phone in app.user.retailerProfile.phones %}
+                        {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
                             <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
                         {% endfor %}
                     </div>
 
                     <div class="emails">
                         <b>Emails:</b>
-                        {% for email in app.user.retailerProfile.emails %}
+                        {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                             <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
                         {% endfor %}
                     </div>

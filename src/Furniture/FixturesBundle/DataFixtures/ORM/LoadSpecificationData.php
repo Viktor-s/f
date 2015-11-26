@@ -37,7 +37,7 @@ class LoadSpecificationData extends AbstractFixture implements OrderedFixtureInt
 
             $specification = new Specification();
             $specification
-                ->setUser($user)
+                ->setCreator($user->getRetailerUserProfile())
                 ->setBuyer($buyer)
                 ->setName($faker->words(rand(2, 4), true))
                 ->setDescription($description);

@@ -1,0 +1,37 @@
+Furniture\RetailerBundle\Entity\RetailerUserProfile:
+    type: entity
+    table: furniture_retailer_user_profile
+    
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            
+    fields:
+        retailerMode:
+            type: smallint
+            name: retailer_mode
+            nullable: true
+                
+    oneToOne:
+        user:
+            targetEntity: Furniture\CommonBundle\Entity\User
+            inversedBy: retailerUserProfile
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                nullable: false
+            
+    manyToOne:
+        retailerProfile:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerProfile
+            inversedBy: retailerUserProfiles
+            cascade: [ persist ]
+            joinColumn:
+                name: retailer_profile_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: SET NULL

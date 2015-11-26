@@ -23,7 +23,7 @@
                             <div class="categories-list">
                                 <div class="block-title size-3">{{ 'frontend.retailer_profile'|trans }}</div>
 
-                                {% if app.user and app.user.retailerAdmin %}
+                                {% if app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
                                     {{ knp_menu_render('frontend.retailer_admin_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
                                 {% endif %}
                             </div>

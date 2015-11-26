@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\FrontendBundle\Repository\RetailerEmployeeRepository;
 use Sylius\Component\User\Security\PasswordUpdater;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -106,7 +107,7 @@ class EmployeeController
 
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        $retailerProfile = $user->getRetailerProfile();
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $employees = $this->retailerEmployeeRepository->findForRetailer($retailerProfile);
 
@@ -151,7 +152,9 @@ class EmployeeController
             }
         } else {
             $employee = new User();
-            $employee->setRetailerProfile($user->getRetailerProfile());
+            $retailerUserProfile = new RetailerUserProfile();
+            $retailerUserProfile->setRetailerProfile($user->getRetailerUserProfile()->getRetailerProfile());
+            $employee->setRetailerUserProfile($retailerUserProfile);
             $employee->setEnabled(true);
 
             if (!$this->authorizationChecker->isGranted('RETAILER_EMPLOYEE_CREATE')) {

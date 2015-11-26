@@ -84,7 +84,7 @@ class FactoryRelationController
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
-        $retailer = $user->getRetailerProfile();
+        $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $factoryRequests = $this->factoryRetailerRelationRepository->findFactoryRequestsForRetailer($retailer);
         $requestsToFactories = $this->factoryRetailerRelationRepository->findRequestsToFactoriesForRetailer($retailer);
@@ -127,7 +127,7 @@ class FactoryRelationController
         } else {
             $relation = new FactoryRetailerRelation();
             $relation
-                ->setRetailer($user->getRetailerProfile())
+                ->setRetailer($user->getRetailerUserProfile()->getRetailerProfile())
                 ->setRetailerAccept(true)
                 ->setFactoryAccept(false);
         }

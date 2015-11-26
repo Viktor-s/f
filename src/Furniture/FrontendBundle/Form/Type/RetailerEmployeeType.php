@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class RetailerEmployeeType extends AbstractType
 {
@@ -61,11 +62,12 @@ class RetailerEmployeeType extends AbstractType
                 'required' => false
             ])
             ->add('retailerMode', 'choice', [
+                'property_path' => 'retailerUserProfile.retailerMode',
                 'label' => 'frontend.mode',
                 'disabled' => $disabledMode,
                 'choices' => [
-                    User::RETAILER_ADMIN => 'Admin',
-                    User::RETAILER_EMPLOYEE => 'Employee',
+                    RetailerUserProfile::RETAILER_ADMIN => 'Admin',
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee',
                 ]
             ])
             ->add('customer', new RetailerEmployeeCustomerType());

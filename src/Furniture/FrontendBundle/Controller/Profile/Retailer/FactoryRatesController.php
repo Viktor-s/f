@@ -82,7 +82,7 @@ class FactoryRatesController
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
-        $rates = $this->userFactoryRateRepository->findByUser($user);
+        $rates = $this->userFactoryRateRepository->findByRetailerUserProfile($user->getRetailerUserProfile());
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRate:list.html.twig', [
             'rates' => $rates
@@ -121,7 +121,7 @@ class FactoryRatesController
         } else {
             // @todo: check granted for create rate (via security voter in Symfony 2)
             $rate = new RetailerFactoryRate();
-            $rate->setRetailer($user->getRetailerProfile());
+            $rate->setRetailer($user->getRetailerUserProfile()->getRetailerProfile());
         }
 
         $form = $this->formFactory->create(new UserFactoryRateType(), $rate);

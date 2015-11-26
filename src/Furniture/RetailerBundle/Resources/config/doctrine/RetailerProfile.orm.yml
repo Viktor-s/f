@@ -9,9 +9,10 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
                 strategy: AUTO
                 
     oneToMany:
-        users:
-            targetEntity: Furniture\CommonBundle\Entity\User
+        retailerUserProfiles:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile
             mappedBy: retailerProfile
+            cascade: [ persist ]
          
     oneToOne:
         logoImage:

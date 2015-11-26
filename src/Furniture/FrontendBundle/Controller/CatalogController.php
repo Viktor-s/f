@@ -249,7 +249,10 @@ class CatalogController
         $user = $this->tokenStorage->getToken()->getUser();
 
         if ($user->isRetailer()) {
-            $productQuery->withRetailer($user->getRetailerProfile());
+            $productQuery->withRetailer($user
+                    ->getRetailerUserProfile()
+                    ->getRetailerProfile()
+                    );
         }
         
         /* Create product paginator */
@@ -264,7 +267,10 @@ class CatalogController
         // Create a brands query
         $brandsQuery= new FactoryQuery();
         if ($user->isRetailer()) {
-            $brandsQuery->withRetailer($user->getRetailerProfile());
+            $brandsQuery->withRetailer($user
+                    ->getRetailerUserProfile()
+                    ->getRetailerProfile()
+                    );
         }
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [

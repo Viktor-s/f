@@ -38,7 +38,7 @@ class DashboardController
     {
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
-        $retailer = $user->getRetailerProfile();
+        $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer:dashboard.html.twig', [
             'retailer' => $retailer

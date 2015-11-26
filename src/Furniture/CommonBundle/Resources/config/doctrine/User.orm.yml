@@ -2,27 +2,19 @@ Furniture\CommonBundle\Entity\User:
     type: entity
     table: furniture_user
 
-    fields:
-        retailerMode:
-            type: smallint
-            name: retailer_mode
-            nullable: true
-
     manyToOne:
         factory:
             targetEntity: Furniture\FactoryBundle\Entity\Factory
             inversedBy: users
+            cascade: [ persist ]
             joinColumn:
                 name: factory_id
                 referencedColumnName: id
                 nullable: true
                 onDelete: SET NULL
 
-        retailerProfile:
-            targetEntity: Furniture\RetailerBundle\Entity\RetailerProfile
-            inversedBy: users
-            joinColumn:
-                name: retailer_profile_id
-                referencedColumnName: id
-                nullable: true
-                onDelete: SET NULL
+    oneToOne:
+        retailerUserProfile:
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile
+            mappedBy: user
+            cascade: [ persist ]

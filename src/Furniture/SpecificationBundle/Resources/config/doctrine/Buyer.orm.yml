@@ -43,12 +43,11 @@ Furniture\SpecificationBundle\Entity\Buyer:
 
     manyToOne:
         creator:
-            targetEntity: Furniture\CommonBundle\Entity\User
+            targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile
             joinColumn:
                 name: creator
                 referencedColumnName: id
-                nullable: false
-                onDelete: CASCADE
+                nullable: true
 
     oneToOne:
         image:

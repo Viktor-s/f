@@ -57,16 +57,25 @@ class SpecificationRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Specification::class, 's')
             ->select('s');
+        
+        if ($query->hasRetailer()) {
+            
+            $qb
+                ->innerJoin('s.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
+                ->setParameter('rp', $query->getRetailer());
+        }
 
         if ($query->hasUsers()) {
             $ids = array_map(function (User $user) {
-                return $user->getId();
+                if(!$user->isRetailer()){
+                    throw new Exception('Only retailer users can be asign to Specification objects');
+                }
+                return $user->getRetailerUserProfile()->getId();
             }, $query->getUsers());
 
             $qb
-                ->innerJoin('s.user', 'u')
-                ->andWhere('u.id IN (:user_ids)')
-                ->setParameter('user_ids', $ids);
+                ->andWhere('s.creator IN (:rup_ids)')
+                ->setParameter('rup_ids', $ids);
         }
 
         if ($query->hasState()) {

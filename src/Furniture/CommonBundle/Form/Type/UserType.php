@@ -7,10 +7,11 @@ use Sylius\Bundle\CoreBundle\Form\Type\UserType as BaseUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+
+use Furniture\RetailerBundle\Form\Type\RetailerUserProfileType;
 
 class UserType extends BaseUserType 
 {
@@ -27,20 +28,7 @@ class UserType extends BaseUserType
                 'multiple' => false,
                 'required' => false
             ])
-            ->add('retailerProfile', 'entity', [
-                'class' => RetailerProfile::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'required' => false
-            ])
-            ->add('retailerMode', 'choice', [
-                'label' => 'Retailer mode',
-                'required' => false,
-                'choices' => [
-                    User::RETAILER_ADMIN => 'Admin',
-                    User::RETAILER_EMPLOYEE => 'Employee'
-                ]
-            ]);
+            ->add('retailerUserProfile', new RetailerUserProfileType());
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var User $user */
@@ -83,14 +71,17 @@ class UserType extends BaseUserType
                 $user->addRole(User::ROLE_FACTORY_ADMIN);
             }
 
-            if ($user->getRetailerProfile()) {
-                if (!$user->getRetailerMode()) {
-                    $event->getForm()->get('retailerMode')->addError(new FormError(
+            if ($user->getRetailerUserProfile()) {
+                if (!$user->getRetailerUserProfile()->getRetailerMode()) {
+                    $event->getForm()->get('retailerUserProfile.retailerMode')->addError(new FormError(
                         'This value should be not blank'
                     ));
                 }
-            } else {
-                $user->setRetailerMode(null);
+                if(!$user->getRetailerUserProfile()->getRetailerProfile()){
+                    $event->getForm()->get('retailerUserProfile.retailerMode')->addError(new FormError(
+                        'This value should be not blank'
+                    ));
+                }
             }
         });
     }

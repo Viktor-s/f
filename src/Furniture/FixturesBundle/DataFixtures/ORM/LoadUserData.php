@@ -5,6 +5,7 @@ namespace Furniture\FixturesBundle\DataFixtures\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Furniture\CommonBundle\Entity\User;
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadUsersData as BaseLoadUserData;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class LoadUserData extends BaseLoadUserData
 {
@@ -42,25 +43,21 @@ class LoadUserData extends BaseLoadUserData
             $user->addAuthorizationRole($this->get('sylius.repository.role')->findOneBy(array('code' => 'content_user')));
             $this->setReference('user:content:' . $i, $user);
 
+            $retialerProfile = new RetailerUserProfile();
             if ($i == 1) {
                 // Set the retailer profile
-                /** @var \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile */
-                $retailerProfile = $this->getReference('retailer_profile:stol_i_stul');
-                $user->setRetailerProfile($retailerProfile);
-                $user->setRetailerMode(User::RETAILER_ADMIN);
+                $retialerProfile->setRetailerProfile($this->getReference('retailer_profile:stol_i_stul'));
+                $retialerProfile->setRetailerMode(RetailerUserProfile::RETAILER_ADMIN);
             } else if ($i == 2) {
                 // Set the retailer profile
-                /** @var \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile */
-                $retailerProfile = $this->getReference('retailer_profile:stol_i_stul');
-                $user->setRetailerProfile($retailerProfile);
-                $user->setRetailerMode(User::RETAILER_EMPLOYEE);
+                $retialerProfile->setRetailerProfile($this->getReference('retailer_profile:stol_i_stul'));
+                $retialerProfile->setRetailerMode(RetailerUserProfile::RETAILER_EMPLOYEE);
             } else if ($i == 3) {
                 // Set the retailer profile
-                /** @var \Furniture\RetailerBundle\Entity\RetailerProfile $retailerProfile */
-                $retailerProfile = $this->getReference('retailer_profile:dubok');
-                $user->setRetailerProfile($retailerProfile);
-                $user->setRetailerMode(User::RETAILER_ADMIN);
+                $retialerProfile->setRetailerProfile($this->getReference('retailer_profile:dubok'));
+                $retialerProfile->setRetailerMode(RetailerUserProfile::RETAILER_ADMIN);
             }
+            $user->setRetailerUserProfile($retialerProfile);
 
             $manager->persist($user);
         }
@@ -126,6 +123,10 @@ class LoadUserData extends BaseLoadUserData
         );
         $user->addAuthorizationRole($this->get('sylius.repository.role')->findOneBy(array('code' => 'administrator')));
 
+        $retialerProfile = new RetailerUserProfile();
+        $retialerProfile->setRetailerProfile($this->getReference('retailer_profile:stol_i_stul'));
+        $retialerProfile->setRetailerMode(RetailerUserProfile::RETAILER_ADMIN);
+        $user->setRetailerUserProfile($retialerProfile);
         $manager->persist($user);
         $manager->flush();
 

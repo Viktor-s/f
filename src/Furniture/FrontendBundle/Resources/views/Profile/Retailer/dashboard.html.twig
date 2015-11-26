@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_content %}
-    {% if app.user.getRetailerProfile() %}
+    {% if app.user.isRetailer() %}
         <div class="row">
             <div class="pull-right">
                 <a href="{{ path('retailer_profile_edit') }}" class="btn btn-success">
@@ -52,23 +52,23 @@
 
             <div class="col-md-9">
                 <div class="article-container style-1">
-                    <h3>Retailer: {{ app.user.retailerProfile.name }}</h3>
+                    <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
                     <h2>User: {{ app.user.username }}</h2>
 
                     <div class="address">
-                        Address: {{ app.user.retailerProfile.address }}
+                        Address: {{ app.user.retailerUserProfile.retailerProfile.address }}
                     </div>
 
                     <div class="phones">
                         <b>Phones:</b>
-                        {% for phone in app.user.retailerProfile.phones %}
+                        {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
                             <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
                         {% endfor %}
                     </div>
 
                     <div class="emails">
                         <b>Emails:</b>
-                        {% for email in app.user.retailerProfile.emails %}
+                        {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                             <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
                         {% endfor %}
                     </div>

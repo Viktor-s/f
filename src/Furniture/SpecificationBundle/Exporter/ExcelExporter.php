@@ -55,7 +55,7 @@ class ExcelExporter implements ExporterInterface
     private function setHeader(Specification $specification, \PHPExcel_Worksheet $activeSheet)
     {
         /*Header Info*/
-        if($retailerProfile = $specification->getCreator()->getRetailerProfile()){
+        if($retailerProfile = $specification->getCreator()->getRetailerUserProfile()->getRetailerProfile()){
             /*Set Logo*/
             if ($logoImage = $retailerProfile->getLogoImage()) {
                 if ($logoImage->getPath()) {

@@ -37,7 +37,7 @@ class RetailerEmployeeCreateVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        if ($user->getRetailerProfile() && $user->isRetailerAdmin()) {
+        if ($user->isRetailer() && $user->getRetailerUserProfile()->isRetailerAdmin()) {
             return self::ACCESS_GRANTED;
         }
 

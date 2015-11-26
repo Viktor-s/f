@@ -54,16 +54,11 @@ class SpecificationBuyerRepository
      */
     public function findByRetailer(RetailerProfile $retailer)
     {
-        $creators = $retailer->getUsers();
-        $ids = array_map(function (User $user) {
-            return $user->getId();
-        }, $creators->toArray());
-
         return $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')
             ->select('b')
-            ->andWhere('b.creator IN (:creators)')
-            ->setParameter('creators', $ids)
+            ->innerJoin('b.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
+            ->setParameter('rp', $retailer)
             ->getQuery()
             ->getResult();
     }

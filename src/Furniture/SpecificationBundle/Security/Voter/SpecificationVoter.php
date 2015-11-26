@@ -51,7 +51,7 @@ class SpecificationVoter implements VoterInterface
         }
 
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes)) {
-            if ($user->isRetailerAdmin()) {
+            if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
                 return self::ACCESS_GRANTED;
             }
 
