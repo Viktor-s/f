@@ -157,6 +157,13 @@ sylius_variation:
 
 sylius_user:
     classes:
+        customer:
+            model: Sylius\Component\User\Model\Customer
+            controller: Furniture\CommonBundle\Controller\CustomerController
+            repository: Furniture\CommonBundle\Entity\Repository\CustomerRepository
+            form:
+                default: Furniture\CommonBundle\Form\Type\CustomerType
+
         user:
             model: Furniture\CommonBundle\Entity\User
             form:

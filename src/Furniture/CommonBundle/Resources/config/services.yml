@@ -3,6 +3,7 @@ parameters:
     stof_doctrine_extensions.listener.loggable.class: Furniture\CommonBundle\Gedmo\Loggable\LoggableListener
     sylius.templating.helper.money.class: Furniture\CommonBundle\Templating\MoneyHelper
     sylius.form.type.taxon_selection.class: Furniture\CommonBundle\Form\Type\TaxonSelectionType
+    sylius.form.type.customer_filter.class: Furniture\CommonBundle\Form\Type\CustomerFilterType
 
 services:
     doctrine.subscriber.uplodable:

@@ -16,6 +16,7 @@
         {% for retailer_profile in retailer_profiles %}
             <tr id="{{ retailer_profile.id }}">
                 <td>{{ retailer_profile.name }}</td>
+
                 <td class="info" >
                      <div class="media">
                         <div class="media-body">
@@ -29,8 +30,10 @@
                         </div>
                     </div>
                 </td>
+
                 <td>
                     <div class="pull-right">
+                    {{ buttons.show(path('sylius_backend_customer_index', {criteria: {retailerId: retailer_profile.id}}), 'Users') }}
                     {{ buttons.edit(path('furniture_backend_retailer_profile_update', {'id': retailer_profile.id})) }}
                     {{ buttons.delete(path('furniture_backend_retailer_profile_delete', {'id': retailer_profile.id})) }}
                    </div>

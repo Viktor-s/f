@@ -15,7 +15,7 @@
     <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'sylius.customer.create_header'|trans|raw }}</h1>
 </div>
 
-<form action="{{ path('sylius_backend_customer_create') }}" method="post" class="form-horizontal" novalidate>
+<form action="" method="post" class="form-horizontal" novalidate>
     {% include 'SyliusWebBundle:Backend/Customer:_form.html.twig' %}
     {{ create() }}
 </form>

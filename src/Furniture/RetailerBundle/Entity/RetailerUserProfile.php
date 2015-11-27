@@ -9,7 +9,6 @@ use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class RetailerUserProfile 
 {
-    
     const RETAILER_ADMIN    = 1;
     const RETAILER_EMPLOYEE = 2;
     
@@ -29,7 +28,6 @@ class RetailerUserProfile
     private $retailerMode = self::RETAILER_EMPLOYEE;
     
     /**
-     *
      * @var \Furniture\CommonBundle\Entity\User
      */
     private $user;

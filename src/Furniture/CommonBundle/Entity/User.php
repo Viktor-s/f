@@ -19,11 +19,9 @@ class User extends BaseUser
     protected $factory;
 
     /**
-     *
      * @var \Furniture\RetailerBundle\Entity\RetailerUserProfile
      */
     protected $retailerUserProfile;
-
 
     /**
      * Construct

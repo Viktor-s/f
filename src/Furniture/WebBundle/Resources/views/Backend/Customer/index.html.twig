@@ -13,7 +13,9 @@
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
+        {{ buttons.create(path('sylius_backend_customer_create', {mode: 'retailer'})) }}
         {{ buttons.create(path('sylius_backend_customer_create'), 'sylius.customer.create'|trans) }}
+
         {% if app.request.query.get('deleted') %}
             <a href="{{ path('sylius_backend_customer_index', {'deleted': false}) }}" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> {{ 'sylius.hide_deleted'|trans }}</a>
         {% else %}

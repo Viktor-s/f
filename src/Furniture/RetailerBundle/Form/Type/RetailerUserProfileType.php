@@ -40,8 +40,7 @@ class RetailerUserProfileType extends AbstractType
                 'class' => RetailerProfile::class,
                 'multiple' => false,
                 'required' => false
-            ])
-                ;
+            ]);
     }
     
     /**
