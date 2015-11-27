@@ -73,6 +73,14 @@ class Buyer
     private $image;
 
     /**
+     * @var integer
+     *
+     * @internal This is a internal field. For use this field, please use methods: setCountSpecifications and
+     *           getCountSpecifications
+     */
+    private $countSpecifications;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -317,6 +325,30 @@ class Buyer
         $this->image = null;
 
         return $image;
+    }
+
+    /**
+     * Set count specifications
+     *
+     * @param int $countSpecifications
+     *
+     * @return Buyer
+     */
+    public function setCountSpecifications($countSpecifications)
+    {
+        $this->countSpecifications = $countSpecifications;
+
+        return $this;
+    }
+
+    /**
+     * Get count specifications
+     *
+     * @return integer
+     */
+    public function getCountSpecifications()
+    {
+        return $this->countSpecifications;
     }
 
     /**

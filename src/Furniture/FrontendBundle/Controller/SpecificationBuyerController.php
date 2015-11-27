@@ -119,7 +119,8 @@ class SpecificationBuyerController
         $user = $this->tokenStorage->getToken()->getUser();
         $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
-        $buyers = $this->buyerRepository->findByRetailer($retailer);
+        $buyers = $this->buyerRepository->findByRetailer($retailer, true);
+        //$buyersHasSpecifications = $this->buyerRepository->hasSpecificationsForBuyers($buyers, true);
 
         $content = $this->twig->render('FrontendBundle:Specification/Buyer:buyers.html.twig', [
             'buyers' => $buyers,

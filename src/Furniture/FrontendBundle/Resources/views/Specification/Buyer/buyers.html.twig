@@ -79,7 +79,11 @@
                         <br />
 
                         {% if is_granted('REMOVE', buyer) %}
-                            <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
+                            {% if buyer.countSpecifications == 0 %}
+                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
+                            {% else %}
+                                <span class="text-warning">Has specifications</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
