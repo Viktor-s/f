@@ -55,7 +55,7 @@ class ExcelExporter implements ExporterInterface
     private function setHeader(Specification $specification, \PHPExcel_Worksheet $activeSheet)
     {
         /*Header Info*/
-        if($retailerProfile = $specification->getCreator()->getRetailerUserProfile()->getRetailerProfile()){
+        if($retailerProfile = $specification->getCreator()->getRetailerProfile()){
             /*Set Logo*/
             if ($logoImage = $retailerProfile->getLogoImage()) {
                 if ($logoImage->getPath()) {
@@ -69,7 +69,7 @@ class ExcelExporter implements ExporterInterface
             $activeSheet->setCellValue('G1', $retailerProfile->getName());
             /*Manager name*/
             $activeSheet->mergeCells('G2:I2');
-            $activeSheet->setCellValue('G2', $specification->getCreator()->getCustomer()->getFirstName().' '.$specification->getCreator()->getCustomer()->getLastName());
+            $activeSheet->setCellValue('G2', $specification->getCreator()->getUser()->getCustomer()->getFirstName().' '.$specification->getCreator()->getCustomer()->getLastName());
             /*Retailer address*/
             $activeSheet->mergeCells('G3:I3');
             $activeSheet->setCellValue('G1', $retailerProfile->getAddress());
