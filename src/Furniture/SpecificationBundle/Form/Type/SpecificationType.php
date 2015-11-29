@@ -41,7 +41,7 @@ class SpecificationType extends AbstractType
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('b')
                         ->andWhere('b.creator = :owner')
-                        ->setParameter('owner', $options['owner']);
+                        ->setParameter('owner', $options['owner']->getRetailerUserProfile());
                 }
             ])
             ->add('name', 'text', [
