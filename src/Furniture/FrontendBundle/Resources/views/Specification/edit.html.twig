@@ -628,6 +628,7 @@
                                 }
                             }).done(function() {
                                 updateExtraSaleIndexes();
+                                trTotalPriceSpecificationUpdater();
                                 el.remove();
                             });
                             return false;
@@ -651,7 +652,6 @@
                             $('#extra-sale-td').append(new_sale);
                         }
                         updateExtraSaleIndexes();
-                        console.log(new_sale);
                         new_sale.children().hide();
                         new_sale.append(progressBasr);
                         $.ajax({
