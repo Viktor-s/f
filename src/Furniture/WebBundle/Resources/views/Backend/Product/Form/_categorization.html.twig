@@ -1,5 +1,6 @@
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
+{% if form.spaces is defined or form.types is defined or form.categories is defined or form.styles is defined or form.readinesses is defined %}
 <div class="tab-pane" id="categorization">
     <div class="form-group">
         {{ form_label(form.spaces) }}
@@ -102,7 +103,7 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.styles) }}
+        {{ form_label(form.readinesses) }}
 
         <div class="col-lg-10">
             <ul class="list-unstyled" id="hierarchy-root">
@@ -121,3 +122,4 @@
 
     {{ form_row(form.readinesses) }}
 </div>
+{% endif %}

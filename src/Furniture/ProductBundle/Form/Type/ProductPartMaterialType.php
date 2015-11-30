@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Furniture\ProductBundle\Entity\ProductPartMaterialOptionValue;
 use Symfony\Component\Form\AbstractType;
@@ -33,6 +34,10 @@ class ProductPartMaterialType extends AbstractType
         $builder
             ->add('name', 'text', [
                 'label' => 'product_part_material.form.name'
+            ])
+            ->add('factory', 'entity', [
+                'class' => Factory::class,
+                'required' => false,
             ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new ProductPartMaterialTranslationType()

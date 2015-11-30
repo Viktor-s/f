@@ -33,9 +33,9 @@
 
 
         {% javascripts output='admin/js/*.js'
-            'static/js/jquery/jquery.min.js'
+            '@WebBundle/Resources/public/js/jquery-2.1.4.js'
+            '@WebBundle/Resources/public/js/bootstrap.js'
             'vendor/jquery-ui/ui/minified/jquery-ui.min.js'
-            '@WebBundle/Resources/public/js/bootstrap.min.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

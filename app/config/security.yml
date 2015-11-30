@@ -29,7 +29,7 @@ security:
                 use_forward:  false
                 use_referer:  true
             logout:
-                path:   /logout
+                path:   /administration/logout
                 target: /administration/login
             anonymous: true
 

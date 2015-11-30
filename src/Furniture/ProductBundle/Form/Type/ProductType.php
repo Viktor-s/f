@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
@@ -13,8 +14,10 @@ use Furniture\ProductBundle\Entity\Type;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Furniture\CommonBundle\Form\Type\AutocompleteEntityType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProductType extends BaseProductType
 {
@@ -25,83 +28,114 @@ class ProductType extends BaseProductType
     {
         parent::buildForm($builder, $options);
 
+        if ($options['mode'] == 'full') {
+            $builder
+                ->add('categories', 'entity', [
+                    'class' => Category::class,
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+                ->add('types', 'entity', [
+                    'class' => Type::class,
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+                ->add('styles', 'entity', [
+                    'class' => Style::class,
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+                ->add('spaces', 'entity', [
+                    'class' => Space::class,
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+                ->add('readinesses', 'entity', [
+                    'class' => Readiness::class,
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+                ->add('skuOptionVariants', 'collection', [
+                    'type' => new SkuOptionVariantFormType(),
+                    'required'  => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+                ->add('subProducts', new AutocompleteEntityType(), [
+                    'class' =>  Product::class,
+                    'property' => 'name',
+                    'source' => 'furniture_autocomplete_for_none_bundle',
+                    'placeholder' => 'Start type product name',
+                    'multiple' => true
+                ]);
+
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                /** @var Product $product */
+                $product = $event->getData();
+                $factory = $product->getFactory();
+
+                $event->getForm()
+                    ->add('productParts', 'collection', [
+                        'type' => new ProductPartFormType($factory),
+                        'required'  => false,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'by_reference' => false,
+                    ])
+                    ->add('compositeCollections', 'entity', [
+                        'class' => CompositeCollection::class,
+                        'query_builder' => function (EntityRepository $er) use ($factory) {
+                            if ($factory) {
+                                return $er->createQueryBuilder('cc')
+                                    ->leftJoin('cc.factory', 'f')
+                                    ->andWhere('f.id IS NULL OR f.id = :factory')
+                                    ->setParameter('factory', $factory->getId());
+                            } else {
+                                return $er->createQueryBuilder('cc');
+                            }
+                        },
+                        'multiple' => true,
+                        'expanded' => false
+                    ]);
+            });
+
+        } else if ($options['mode'] == 'small') {
+            $builder
+                ->remove('options')
+                ->remove('attributes');
+        }
+
         $builder
-            ->add('subProducts', new AutocompleteEntityType(), [
-                'class' =>  Product::class,
-                'property' => 'name',
-                'source' => 'furniture_autocomplete_for_none_bundle',
-                'placeholder' => 'Start type product name',
-                'multiple' => true
-            ])
             ->add('factoryCode')
-            ->add('availableForSale')
-            ->add('skuOptionVariants', 'collection', [
-                'type' => new SkuOptionVariantFormType(),
-                'required'  => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('compositeCollections', 'entity', [
-                'class' => CompositeCollection::class,
-                'multiple' => true,
-                'expanded' => false
+            ->add('availableForSale', 'checkbox', [
+                'required' => false
             ])
             ->add('factory', 'entity', [
-                'required' => true,
+                'required' => false,
                 'class'    => Factory::class,
                 'multiple' => false,
                 'property' => 'name',
-            ])
-            ->add('productParts', 'collection', [
-                'type' => new ProductPartFormType(),
-                'required'  => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('categories', 'entity', [
-                'class' => Category::class,
-                'multiple' => true,
-                'expanded' => true
-            ])
-            ->add('types', 'entity', [
-                'class' => Type::class,
-                'multiple' => true,
-                'expanded' => true
-            ])
-            ->add('styles', 'entity', [
-                'class' => Style::class,
-                'multiple' => true,
-                'expanded' => true
-            ])
-            ->add('spaces', 'entity', [
-                'class' => Space::class,
-                'multiple' => true,
-                'expanded' => true
-            ])
-            ->add('readinesses', 'entity', [
-                'class' => Readiness::class,
-                'multiple' => true,
-                'expanded' => true
+                'disabled' => $options['mode'] == 'full'
             ]);
 
-        // Replace taxons
+        // Remove taxons
         $builder->remove('taxons');
-
-//        $builder->add('taxons', 'sylius_taxon_selection', [
-//            'expanded' => true
-//        ]);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => $this->dataClass,
-            'validation_groups' => $this->validationGroups,
+            'validation_groups' => array_merge($this->validationGroups, ['Default']),
+            'mode' => 'full'
         ));
+
+        $resolver->setAllowedValues([
+            'mode' => ['small', 'full']
+        ]);
     }
 }

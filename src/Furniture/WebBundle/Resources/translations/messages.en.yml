@@ -41,6 +41,11 @@ product_extension_option_value:
         option: Option
         value: Value
 
+product_part_material:
+    form:
+        name: Name
+        presentation: Presentation
+
 composite_collection:
     button:
         create: Create collection

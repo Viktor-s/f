@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Controller;
 use Doctrine\ORM\EntityRepository;
 use Furniture\ProductBundle\Form\Type\ProductPdpConfigType;
 use Sylius\Bundle\CoreBundle\Controller\ProductController as BaseProductController;
+use Sylius\Component\Resource\Event\ResourceEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +15,46 @@ use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Model\GroupVaraintEdit;
 
 use Furniture\ProductBundle\Form\Type\GroupVariantEditType;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProductController extends BaseProductController
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function createAction(Request $request)
+    {
+        $this->isGrantedOr403('create');
+
+        $resource = $this->createNew();
+        $form = $this->getForm($resource);
+
+        if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
+            $resource = $this->domainManager->create($form->getData());
+
+            $url = $this->generateUrl('sylius_backend_product_update', [
+                'id' => $resource->getId()
+            ]);
+
+            return $this->redirect($url);
+        }
+
+        if ($this->config->isApiRequest()) {
+            return $this->handleView($this->view($form, 400));
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('create.html'))
+            ->setData(array(
+                $this->config->getResourceName() => $resource,
+                'form'                           => $form->createView(),
+            ))
+        ;
+
+        return $this->handleView($view);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -304,6 +342,21 @@ class ProductController extends BaseProductController
         }
 
         return $product;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getForm($resource = null, array $options = [])
+    {
+        /** @var \Furniture\ProductBundle\Entity\Product $resource */
+        if (!$resource->getId()) {
+            $options['mode'] = 'small';
+        } else {
+            $options['mode'] = 'full';
+        }
+
+        return parent::getForm($resource, $options);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Furniture\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FiveLab\Component\Exception\UnexpectedTypeException;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Model\ProductPartMaterialOptionValueGrouped;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +43,11 @@ class ProductPartMaterial extends AbstractTranslatable
      * @var Collection|ProductPartMaterialVariant[]
      */
     protected $variants;
+
+    /**
+     * @var \Furniture\FactoryBundle\Entity\Factory
+     */
+    private $factory;
 
     /**
      * Construct
@@ -247,6 +253,30 @@ class ProductPartMaterial extends AbstractTranslatable
     public function getVariants()
     {
         return $this->variants;
+    }
+
+    /**
+     * Set factory
+     *
+     * @param Factory $factory
+     *
+     * @return ProductPartMaterial
+     */
+    public function setFactory(Factory $factory = null)
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Get factory
+     *
+     * @return Factory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
     }
 
     /**

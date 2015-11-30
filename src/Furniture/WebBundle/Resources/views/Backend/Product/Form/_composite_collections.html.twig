@@ -1,5 +1,7 @@
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
-<div class="tab-pane" id="composite-collections">
-    {{ form_row(form.compositeCollections) }}
-</div>
+{% if form.compositeCollections is defined %}
+    <div class="tab-pane" id="composite-collections">
+        {{ form_row(form.compositeCollections) }}
+    </div>
+{% endif %}

@@ -9,6 +9,7 @@ use Pagerfanta\Pagerfanta;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Product extends BaseProduct
 {
@@ -38,8 +39,9 @@ class Product extends BaseProduct
     protected $factoryCode;
     
     /**
-     *
      * @var \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @Assert\NotBlank()
      */
     protected $factory;
     
@@ -79,7 +81,6 @@ class Product extends BaseProduct
     private $readinesses;
 
     /**
-     *
      * @var bool
      */
     private $availableForSale;
@@ -911,7 +912,9 @@ class Product extends BaseProduct
      */
     public function isAvailable()
     {
-        return ( new \DateTime() >= $this->availableOn && $this->getAvailableForSale() );
+        $now = new \DateTime();
+
+        return ($now >= $this->availableOn && $this->getAvailableForSale());
     }
     
     /**

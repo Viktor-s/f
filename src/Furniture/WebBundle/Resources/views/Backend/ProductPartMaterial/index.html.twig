@@ -27,6 +27,7 @@
             <thead>
             <tr>
                 <th>{{ sylius_resource_sort('name', 'product_part_material.name'|trans) }}</th>
+                <th>Factory</th>
                 <th>{{ 'product_part_material.option_values'|trans }}</th>
                 <th></th>
             </tr>
@@ -35,6 +36,11 @@
             {% for product_part_material in product_part_materials %}
                 <tr id="{{ product_part_material.id }}">
                     <td>{{ product_part_material.name }}</td>
+                    <td>
+                        {% if product_part_material.factory %}
+                            {{ product_part_material.factory.name }}
+                        {% endif %}
+                    </td>
                     <td>
                         <ul>
                             {% for grouped in product_part_material.getGroupedOptionValues() %}
