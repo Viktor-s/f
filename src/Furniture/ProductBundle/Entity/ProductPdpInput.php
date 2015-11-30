@@ -264,6 +264,32 @@ class ProductPdpInput
         return $this;
     }
     
+    public function getHumanNameDetailed(){
+        if ($this->productPart) {
+            /** @var ProductPartTranslation $translation */
+            $translation = $this->productPart->translate();
+
+            return sprintf(
+                '%s (%d)',
+                $translation->getLabel(),
+                $this->productPart->getProductPartType() ? 
+                    $this->productPart->getProductPartType()->getCode() : 'None'
+            );
+        } else if ($this->skuOption) {
+            return sprintf(
+                '%s',
+                $this->skuOption->getName()
+            );
+        } else if ($this->option) {
+            return sprintf(
+                '%s',
+                $this->option->getName()
+            );
+        } else {
+            return 'Undefined';
+        }
+    }
+    
     /**
      * Get human name
      *
@@ -276,10 +302,8 @@ class ProductPdpInput
             $translation = $this->productPart->translate();
 
             return sprintf(
-                '%s (%d)',
-                $translation->getLabel(),
-                $this->productPart->getProductPartType() ? 
-                    $this->productPart->getProductPartType()->getCode() : 'None'
+                '%s',
+                $translation->getLabel()
             );
         } else if ($this->skuOption) {
             return sprintf(
