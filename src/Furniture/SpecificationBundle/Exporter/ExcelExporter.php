@@ -69,7 +69,8 @@ class ExcelExporter implements ExporterInterface
             $activeSheet->setCellValue('G1', $retailerProfile->getName());
             /*Manager name*/
             $activeSheet->mergeCells('G2:I2');
-            $activeSheet->setCellValue('G2', $specification->getCreator()->getUser()->getCustomer()->getFirstName().' '.$specification->getCreator()->getCustomer()->getLastName());
+            $activeSheet->setCellValue('G2', $specification->getCreator()->getUser()->getCustomer()->getFirstName()
+                    .' '.$specification->getCreator()->getUser()->getCustomer()->getLastName());
             /*Retailer address*/
             $activeSheet->mergeCells('G3:I3');
             $activeSheet->setCellValue('G1', $retailerProfile->getAddress());
@@ -78,7 +79,7 @@ class ExcelExporter implements ExporterInterface
             $activeSheet->setCellValue('G4', implode( ',', $retailerProfile->getPhones()), true)->getStyle()->getAlignment()->setWrapText(true);
             /*Manager email address*/
             $activeSheet->mergeCells('G5:I5');
-            $activeSheet->setCellValue('G4', $specification->getCreator()->getCustomer()->getEmail());
+            $activeSheet->setCellValue('G4', $specification->getCreator()->getUser()->getCustomer()->getEmail());
             /*Specification creation date*/
             $activeSheet->setCellValue('B7', $this->translator->trans('specification.excel.creation_date').': '.$specification->getCreatedAt()->format('Y-m-d'));
             /*Specification client*/
@@ -610,7 +611,7 @@ class ExcelExporter implements ExporterInterface
      */
     private function createPhpExcel(Specification $specification)
     {
-        $user = $specification->getCreator();
+        $user = $specification->getCreator()->getUser();
 
         $excel = new \PHPExcel();
         $excel->getProperties()->setCreator($user->getUsername());
