@@ -150,6 +150,13 @@ class SpecificationController {
                 ], 400);
     }
 
+    /**
+     * 
+     * @param Request $request
+     * @param type $specification
+     * @return JsonResponse
+     * @throws NotFoundHttpException
+     */
     public function removeExtraSale(Request $request, $specification) {
 
         $specification = $this->em->find(Specification::class, $specification);
