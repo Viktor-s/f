@@ -217,11 +217,15 @@ furniture_retailer_profile:
         emails: Contact emails
 
 sylius:
+    customer:
+        create_retailer: Retailer customer
+        create: customer
     product:
         show_deleted_variants: Show deleted
         hide_deleted: Hide deleted
         clear_deleted: Clear deleted
         no_extensions:  There are no extensions for this product
+        factory_code: Factory code
         tabs:
             extensions: Extensions
             composite_collections: Collections

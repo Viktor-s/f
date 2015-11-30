@@ -264,6 +264,27 @@ class ProductPdpInput
         return $this;
     }
     
+    public function getHumanNameDetailed(){
+        if ($this->productPart) {
+            /** @var ProductPartTranslation $translation */
+            $translation = $this->productPart->translate();
+
+            return $translation->getLabel().' ('.$this->productPart->getProductPartType()->getCode().')';
+        } else if ($this->skuOption) {
+            return sprintf(
+                '%s',
+                $this->skuOption->getName()
+            );
+        } else if ($this->option) {
+            return sprintf(
+                '%s',
+                $this->option->getName()
+            );
+        } else {
+            return 'Undefined';
+        }
+    }
+    
     /**
      * Get human name
      *

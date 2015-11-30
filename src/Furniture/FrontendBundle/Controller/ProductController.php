@@ -190,7 +190,7 @@ class ProductController
            $skuMatrix[] = $item;
         }
 
-        $specifications = $this->specificationRepository->findForUser($user);
+        $specifications = $this->specificationRepository->findOpenedForUser($user);
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
             'product' => $product,

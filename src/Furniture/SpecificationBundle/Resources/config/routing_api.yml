@@ -11,6 +11,14 @@ specification_api_specification_editable:
     defaults:
         _controller: specification.controller.api.specification:editable
 
+specification_api_specification_item_remove_extra_sale:
+    path: /item/{specification}/sale/remove
+    methods: [ POST ]
+    requirements: { specification: \d+ }
+    defaults:
+        _controller: specification.controller.api.specification:removeExtraSale
+
+
 specification_api_specification_info:
     path: /specification/{itemId}/info/{index}
     methods: [ GET ]
