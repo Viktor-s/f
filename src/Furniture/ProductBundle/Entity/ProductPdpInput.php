@@ -271,9 +271,8 @@ class ProductPdpInput
 
             return sprintf(
                 '%s (%d)',
-                $translation->getLabel(),
-                $this->productPart->getProductPartType() ? 
-                    $this->productPart->getProductPartType()->getCode() : 'None'
+                $translation->getLabel(), 
+                $this->productPart->getProductPartType()->getCode()
             );
         } else if ($this->skuOption) {
             return sprintf(
