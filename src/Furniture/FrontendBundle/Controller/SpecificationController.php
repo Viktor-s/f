@@ -155,7 +155,19 @@ class SpecificationController
                 ));
             }
 
-            // @todo: check grant for edit item (via security voter in Symfony)
+            if (!$this->authorizationChecker->isGranted('EDIT', $specification)) {
+                throw new AccessDeniedException(sprintf(
+                    'The active user "%s" not have rights for edit specification.',
+                    $this->tokenStorage->getToken()->getUsername()
+                ));
+            }
+
+            if ($specification->isFinished()) {
+                throw new NotFoundHttpException(sprintf(
+                    'The specification with id "%s" is finished.',
+                    $specification->getId()
+                ));
+            }
         } else {
             $specification = new Specification();
             $specification->setCreator($user->getRetailerUserProfile());
@@ -204,7 +216,16 @@ class SpecificationController
             ));
         }
 
-        // @todo: add check granted for remove item (via security voter in symfony)
+        if (!$this->authorizationChecker->isGranted('REMOVE', $specification)) {
+            throw new AccessDeniedException(sprintf(
+                'The active user "%s" not have rights for remove specification.',
+                $this->tokenStorage->getToken()->getUsername()
+            ));
+        }
+
+        if ($specification->isFinished()) {
+            throw new NotFoundHttpException('Can not remove finished specification.');
+        }
 
         $this->em->remove($specification);
         $this->em->flush();
@@ -234,7 +255,9 @@ class SpecificationController
             ));
         }
 
-        // @todo: add check granted for finish specification (via security voter in Symfony)
+        if (!$this->authorizationChecker->isGranted('FINISH', $specification)) {
+            throw new AccessDeniedException();
+        }
 
         $specification->finish();
 
@@ -264,7 +287,9 @@ class SpecificationController
             ));
         }
 
-        // @todo: add check granted for export this specification (via security voter in Symfony)
+        if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
+            throw new AccessDeniedException();
+        }
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
@@ -298,7 +323,9 @@ class SpecificationController
             ));
         }
 
-        // @todo: add check granted for export this specification (via security voter in Symfony)
+        if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
+            throw new AccessDeniedException();
+        }
 
         // Attention: Now we work only with excel exporter
         if ($request->query->get('mode') == 'full') {

@@ -15,6 +15,7 @@ services:
             - @form.factory
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+            - @security.authorization_checker
             - @pricing.calculator
             - @pricing.twig_extension
 

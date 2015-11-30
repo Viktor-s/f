@@ -17,6 +17,7 @@ class SpecificationVoter implements VoterInterface
         return in_array($attribute, [
             'SPECIFICATION_LIST',
             'SPECIFICATION_CREATE',
+            'VIEW',
             'EDIT',
             'REMOVE',
             'FINISH',
@@ -50,7 +51,7 @@ class SpecificationVoter implements VoterInterface
             return self::ACCESS_GRANTED;
         }
 
-        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes)) {
+        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes) || in_array('VIEW', $attributes)) {
             if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
                 return self::ACCESS_GRANTED;
             }
