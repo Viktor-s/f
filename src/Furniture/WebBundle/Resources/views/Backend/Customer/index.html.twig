@@ -13,7 +13,7 @@
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
-        {{ buttons.create(path('sylius_backend_customer_create', {mode: 'retailer'})) }}
+        {{ buttons.create(path('sylius_backend_customer_create', {mode: 'retailer'}), 'sylius.customer.create_retailer'|trans) }}
         {{ buttons.create(path('sylius_backend_customer_create'), 'sylius.customer.create'|trans) }}
 
         {% if app.request.query.get('deleted') %}
