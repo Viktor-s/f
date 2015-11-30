@@ -220,6 +220,7 @@ sylius:
         hide_deleted: Hide deleted
         clear_deleted: Clear deleted
         no_extensions:  There are no extensions for this product
+        factory_code: Factory code
         tabs:
             extensions: Extensions
             composite_collections: Collections
