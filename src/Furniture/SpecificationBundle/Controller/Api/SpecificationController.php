@@ -19,8 +19,8 @@ use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\PricingBundle\Twig\PricingExtension;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class SpecificationController
-{
+class SpecificationController {
+
     use FormErrorsTrait;
 
     /**
@@ -64,14 +64,8 @@ class SpecificationController
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        FormFactoryInterface $formFactory,
-        EntityManagerInterface $em,
-        TokenStorageInterface $tokenStorage,
-        PriceCalculator $calculator,
-        PricingExtension $pricingTwigExtension,
-        AuthorizationCheckerInterface $authorizationChecker
-    )
-    {
+    FormFactoryInterface $formFactory, EntityManagerInterface $em, TokenStorageInterface $tokenStorage, PriceCalculator $calculator, PricingExtension $pricingTwigExtension, AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->tokenStorage = $tokenStorage;
@@ -87,10 +81,9 @@ class SpecificationController
      *
      * @return JsonResponse
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $user = $this->tokenStorage->getToken()
-            ->getUser();
+                ->getUser();
 
         $specification = new Specification();
         $specification->setUser($user);
@@ -107,14 +100,14 @@ class SpecificationController
 
             return new JsonResponse([
                 'status' => true,
-                'id'     => $specification->getId(),
+                'id' => $specification->getId(),
             ]);
         }
 
         return new JsonResponse([
             'status' => false,
             'errors' => $this->convertFormErrorsToArray($form),
-        ], 400);
+                ], 400);
     }
 
     /**
@@ -125,14 +118,12 @@ class SpecificationController
      *
      * @return JsonResponse
      */
-    public function editItem(Request $request, $item)
-    {
+    public function editItem(Request $request, $item) {
         $item = $this->em->find(SpecificationItem::class, $itemId = $item);
 
         if (!$item) {
             throw new NotFoundHttpException(sprintf(
-                'Not found specification item with id "%s".',
-                $itemId
+                    'Not found specification item with id "%s".', $itemId
             ));
         }
 
@@ -140,7 +131,7 @@ class SpecificationController
 
         $form = $this->formFactory->createNamed('', new SkuSpecificationItemSingleType($this->em), $item, [
             'csrf_protection' => false,
-            'method'          => 'PATCH',
+            'method' => 'PATCH',
         ]);
 
         $form->submit($request, false);
@@ -156,7 +147,42 @@ class SpecificationController
         return new JsonResponse([
             'status' => false,
             'errors' => $this->convertFormErrorsToArray($form),
-        ], 400);
+                ], 400);
+    }
+
+    public function removeExtraSale(Request $request, $specification) {
+
+        $specification = $this->em->find(Specification::class, $specification);
+
+        if (!$specification) {
+            throw new NotFoundHttpException(sprintf(
+                    'Not found specification item with identifier "%s".', $itemId
+            ));
+        }
+
+        $index = $request->request->get('index');
+        if ($index === false) {
+            throw new NotFoundHttpException('Specification item extrasale index required');
+        }
+
+        if ($index > 3) {
+            throw new NotFoundHttpException('Invalid "index" parameter.');
+        }
+
+        // Fix index for work with collection
+        $index = $index - 1;
+
+        $sales = $specification->getSales();
+
+        if ($saleElement = $sales->get($index)) {
+            $this->em->remove($saleElement);
+        }
+        
+        $this->em->flush();
+
+        return new JsonResponse([
+            'status' => true,
+        ]);
     }
 
     /**
@@ -167,14 +193,12 @@ class SpecificationController
      *
      * @return Response
      */
-    public function editableItem(Request $request, $item)
-    {
+    public function editableItem(Request $request, $item) {
         $item = $this->em->find(SpecificationItem::class, $itemId = $item);
 
         if (!$item) {
             throw new NotFoundHttpException(sprintf(
-                'Not found specification item with identifier "%s".',
-                $itemId
+                    'Not found specification item with identifier "%s".', $itemId
             ));
         }
 
@@ -204,8 +228,7 @@ class SpecificationController
 
             default:
                 throw new NotFoundHttpException(sprintf(
-                    'Undefined identifier "%s".',
-                    $id
+                        'Undefined identifier "%s".', $id
                 ));
         }
 
@@ -221,14 +244,12 @@ class SpecificationController
      *
      * @return JsonResponse
      */
-    public function remove($item)
-    {
+    public function remove($item) {
         $item = $this->em->find(SpecificationItem::class, $itemId = $item);
 
         if (!$item) {
             throw new NotFoundHttpException(sprintf(
-                'Not found specification item with identifier "%s".',
-                $itemId
+                    'Not found specification item with identifier "%s".', $itemId
             ));
         }
 
@@ -250,14 +271,12 @@ class SpecificationController
      *
      * @return Response
      */
-    public function editable(Request $request, $specification)
-    {
+    public function editable(Request $request, $specification) {
         $specification = $this->em->find(Specification::class, $specificationId = $specification);
 
         if (!$specification) {
             throw new NotFoundHttpException(sprintf(
-                'Not found specification with identifier "%s".',
-                $specificationId
+                    'Not found specification with identifier "%s".', $specificationId
             ));
         }
 
@@ -294,15 +313,14 @@ class SpecificationController
 
                     if (!$buyer) {
                         throw new NotFoundHttpException(sprintf(
-                            'Not found buyer with identifier "%s".',
-                            $value
+                                'Not found buyer with identifier "%s".', $value
                         ));
                     }
 
                     // @todo: add check granted for use this buyer (via security voter in Symfony)
                     $specification->setBuyer($buyer);
 
-                    $value = (string)$buyer;
+                    $value = (string) $buyer;
                 }
 
                 break;
@@ -320,31 +338,24 @@ class SpecificationController
                 $index = $index - 1;
 
                 $sales = $specification->getSales();
-                
+
                 if (isset($sales[$index])) {
                     $sales[$index]->setSale($value);
                 } else {
                     $sale = new SpecificationSale();
                     $sale
-                        ->setSpecification($specification)
-                        ->setSale($value);
+                            ->setSpecification($specification)
+                            ->setSale($value);
 
                     $this->em->persist($sale);
                 }
 
-                foreach($sales as $sale){
-                    if($sale->getSale() <= 0){
-                        $sales->removeElement($sales);
-                    }
-                }
-                
                 break;
 
 
             default:
                 throw new NotFoundHttpException(sprintf(
-                    'Undefined identifier "%s".',
-                    $id
+                        'Undefined identifier "%s".', $id
                 ));
         }
 
@@ -358,23 +369,22 @@ class SpecificationController
      *
      * @return JsonResponse
      */
-    public function buyers()
-    {
+    public function buyers() {
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
-            ->getUser();
+                ->getUser();
         $retailerProfile = null;
-        if($retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile()){
+        if ($retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile()) {
             
         }
-        
+
         $buyers = $this->em->createQueryBuilder()
-            ->from(Buyer::class, 'b')
-            ->select('b.id, b.firstName, b.secondName')
-            ->innerJoin('b.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
-            ->setParameter('rp', $retailerProfile)
-            ->getQuery()
-            ->getResult();
+                ->from(Buyer::class, 'b')
+                ->select('b.id, b.firstName, b.secondName')
+                ->innerJoin('b.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
+                ->setParameter('rp', $retailerProfile)
+                ->getQuery()
+                ->getResult();
 
         $result = [''];
 
@@ -385,28 +395,27 @@ class SpecificationController
         return new JsonResponse($result);
     }
 
-    public function info(Request $request, $itemId, $index)
-    {
+    public function info(Request $request, $itemId, $index) {
         /* @var $item \Furniture\SpecificationBundle\Entity\Specification */
         $specification = $this->em->find(Specification::class, $itemId);
 
         if (!$specification) {
             throw new NotFoundHttpException(sprintf(
-                'Not found specification item with identifier "%s".',
-                $itemId
+                    'Not found specification item with identifier "%s".', $itemId
             ));
         }
 
         switch ($index) {
             case 'totalPrice':
                 return new Response(
-                    $this->pricingTwigExtension->money(
-                        $this->calculator->calculateForSpecification($specification)
-                    )
+                        $this->pricingTwigExtension->money(
+                                $this->calculator->calculateForSpecification($specification)
+                        )
                 );
                 break;
         }
 
         return new Response('');
     }
+
 }
