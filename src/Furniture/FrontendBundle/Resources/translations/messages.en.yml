@@ -150,6 +150,7 @@ frontend:
         general: General
         brands: Brands
         employees: Employees
+        managers: Managers
 
     button:
         settings: Settings

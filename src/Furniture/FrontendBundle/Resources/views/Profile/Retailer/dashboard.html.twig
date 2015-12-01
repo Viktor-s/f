@@ -55,23 +55,30 @@
                     <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
                     <h2>User: {{ app.user.username }}</h2>
 
-                    <div class="address">
-                        Address: {{ app.user.retailerUserProfile.retailerProfile.address }}
-                    </div>
+                    {% if app.user.retailerUserProfile.retailerProfile.address %}
+                        <div class="address">
+                            <b>Address:</b>
+                            {{ app.user.retailerUserProfile.retailerProfile.address }}
+                        </div>
+                    {% endif %}
 
-                    <div class="phones">
-                        <b>Phones:</b>
-                        {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
-                            <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
-                        {% endfor %}
-                    </div>
+                    {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
+                        <div class="phones">
+                            <b>Phones:</b>
+                            {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
+                                <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-                    <div class="emails">
-                        <b>Emails:</b>
-                        {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
-                            <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
-                        {% endfor %}
-                    </div>
+                    {% if app.user.retailerUserProfile.retailerProfile|length > 0 %}
+                        <div class="emails">
+                            <b>Emails:</b>
+                            {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
+                                <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
