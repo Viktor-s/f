@@ -10,7 +10,7 @@ specification:
             photo: Photo
 
     form:
-        buyer: Buyer
+        buyer: Customer
         name: Name
         description: Description
         sale: Sale

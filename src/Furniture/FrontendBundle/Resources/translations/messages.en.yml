@@ -90,6 +90,7 @@ frontend:
     select_category: Category
     spaces: Spaces
     employees: Employees
+    managers: Managers
     employee: Employee
     retailer_profile: Retailer profile
     retailer: Retailer

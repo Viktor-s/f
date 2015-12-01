@@ -254,7 +254,7 @@ class FrontendMenuBuilder
 
         $menu->addChild('employees', [
             'uri' => $this->urlGenerator->generate('retailer_profile_employees'),
-            'label' => $this->translator->trans('frontend.employees')
+            'label' => $this->translator->trans('frontend.managers')
         ]);
 
         return $menu;
