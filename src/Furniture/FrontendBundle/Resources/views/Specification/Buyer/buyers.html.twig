@@ -109,7 +109,7 @@
                 $('[data-buyer-id]').each(function () {
                     var id = $(this).data('buyer-id');
 
-                    new ImageAjax($(this).find('.image-ajax-container'), {
+                    var q = new ImageAjax($(this).find('.image-ajax-container'), {
                         onRemove: function () {
                             bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
                                 if (result) {
