@@ -90,28 +90,28 @@ retailer_profile_factory_relation_approve:
         _controller: frontend.controller.retailer.factory_relation:approve
 
 retailer_profile_employees:
-    path: /employees
+    path: /managers
     methods: [ GET ]
     requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.retailer.employee:employees
 
 retailer_profile_employee_create:
-    path: /employee/new
+    path: /manager/new
     methods: [ GET, POST ]
     requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.retailer.employee:edit
 
 retailer_profile_employee_edit:
-    path: /employee/{employee}/edit
+    path: /manager/{employee}/edit
     methods: [ GET, POST ]
     requirements: { _locale: %available_locales% }
     defaults:
         _controller: frontend.controller.retailer.employee:edit
 
 retailer_profile_employee_remove:
-    path: /employee/{employee}/remove
+    path: /manager/{employee}/remove
     methods: [ GET ]
     requirements: { _locale: %available_locales% }
     defaults:

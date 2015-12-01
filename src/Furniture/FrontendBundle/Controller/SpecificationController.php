@@ -287,6 +287,13 @@ class SpecificationController
             ));
         }
 
+        if (!count($specification->getItems())) {
+            throw new NotFoundHttpException(sprintf(
+                'Can not export empty specification with identifier "%s".',
+                $specification->getId()
+            ));
+        }
+
         if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
             throw new AccessDeniedException();
         }
@@ -320,6 +327,13 @@ class SpecificationController
             throw new NotFoundHttpException(sprintf(
                 'Not found specification with identifier "%s".',
                 $specificationId
+            ));
+        }
+
+        if (!count($specification->getItems())) {
+            throw new NotFoundHttpException(sprintf(
+                'Can not export empty specification with identifier "%s".',
+                $specification->getId()
             ));
         }
 

@@ -31,7 +31,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>{{ 'frontend.creator'|trans }}</th>
+                        <th>{{ 'frontend.manager'|trans }}</th>
                         <th>{{ 'frontend.name'|trans }}</th>
                         <th>{{ 'frontend.buyer'|trans }}</th>
                         <th>{{ 'frontend.last_modified'|trans }}</th>
@@ -44,7 +44,7 @@
                     {% for specification in opened_specifications %}
                     <tr>
                         <td>{{ specification.id }}</td>
-                        <td>{{ specification.creator.user.username }}</td>
+                        <td>{{ specification.creator.user.fullName }}</td>
                         <td>{{ specification.name }}</td>
                         <td>{{ specification.buyer }}</td>
                         <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>
@@ -55,14 +55,14 @@
                             {% endif %}
 
                             {% if is_granted('REMOVE', specification) %}
-                                <a class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                                <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure remove specification?" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
                             {% endif %}
 
                             {% if is_granted('FINISH', specification) %}
                                 <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                             {% endif %}
 
-                            {% if is_granted('EXPORT', specification) %}
+                            {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
                                 <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                             {% endif %}
                         </td>
@@ -107,4 +107,3 @@
         </div>
     </div>
 {% endblock %}
-

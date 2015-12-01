@@ -5,7 +5,7 @@
 {% block breadcrumb %}
     {{ parent() }}
 
-    <span>{{ 'frontend.title.list'|trans }}</span>
+    <a href="{{ path('specification_buyers') }}">{{ 'frontend.title.list'|trans }}</a>
 {% endblock %}
 
 {% block content %}
@@ -80,7 +80,7 @@
 
                         {% if is_granted('REMOVE', buyer) %}
                             {% if buyer.countSpecifications == 0 %}
-                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
+                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" data-remove data-message="Are you sure remove client?" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
                             {% else %}
                                 <span class="text-warning">Has specifications</span>
                             {% endif %}
@@ -109,7 +109,7 @@
                 $('[data-buyer-id]').each(function () {
                     var id = $(this).data('buyer-id');
 
-                    new ImageAjax($(this).find('.image-ajax-container'), {
+                    var q = new ImageAjax($(this).find('.image-ajax-container'), {
                         onRemove: function () {
                             bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
                                 if (result) {

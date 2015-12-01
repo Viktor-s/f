@@ -85,8 +85,8 @@ specification_export:
 
 # Specification buyers
 specificaiton_buyers:
-    prefix: /{_locale}/specification/buyers
-    resource: @FrontendBundle/Resources/config/routing/buyer.yml
+    prefix: /{_locale}/clients
+    resource: @FrontendBundle/Resources/config/routing/clients.yml
 
 # Factory profile
 factory_profile:
