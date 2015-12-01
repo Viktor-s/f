@@ -49,6 +49,6 @@ class SpecificationItemVoter extends AbstractVoter
             return false;
         }
 
-        return $user->getId() == $owner->getId();
+        return $user->getRetailerUserProfile()->getId() == $owner->getId();
     }
 }

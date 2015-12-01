@@ -49,6 +49,6 @@ class CustomSpecificationItemVoter extends AbstractVoter
         /** @var CustomSpecificationItem $object */
         $owner = $object->getSpecificationItem()->getSpecification()->getCreator();
 
-        return $user->getId() == $owner->getId();
+        return $user->getRetailerUserProfile()->getId() == $owner->getId();
     }
 }
