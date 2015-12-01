@@ -59,7 +59,8 @@ class SkuSpecificationItemSingleType extends AbstractType
                 'invalid_message' => 'Invalid composite'
             ])
             ->add('quantity', 'integer')
-            ->add('note', 'textarea');
+            ->add('note', 'textarea')
+            ->add('position', 'text');
 
         $builder->get('specification')->addModelTransformer(new SpecificationIdModelTransformer($this->em));
         $builder->get('id')->addModelTransformer(new ProductVariantModelTransformer($this->em));

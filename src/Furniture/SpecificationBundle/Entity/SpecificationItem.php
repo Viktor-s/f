@@ -60,6 +60,11 @@ class SpecificationItem
     private $customItem;
 
     /**
+     * @var string
+     */
+    private $position;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -275,6 +280,30 @@ class SpecificationItem
     public function getCustomItem()
     {
         return $this->customItem;
+    }
+
+    /**
+     * Set position
+     *
+     * @param string $position
+     *
+     * @return SpecificationItem
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 
     /**

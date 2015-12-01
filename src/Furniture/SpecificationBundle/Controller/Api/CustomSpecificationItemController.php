@@ -191,12 +191,19 @@ class CustomSpecificationItemController
             case 'name':
                 $item->getCustomItem()->setName($value);
                 break;
+
             case 'options':
                 $item->getCustomItem()->setOptions($value);
                 break;
+
             case 'price':
                 $item->getCustomItem()->setPrice($value * 100);
                 break;
+
+            case 'position':
+                $item->setPosition($value);
+                break;
+
             default:
                 throw new NotFoundHttpException(sprintf(
                     'Undefined identifier "%s".',

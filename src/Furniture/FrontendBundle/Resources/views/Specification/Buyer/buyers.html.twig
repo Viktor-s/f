@@ -106,27 +106,36 @@
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
+                var
+                    initializeImageAjax = function (c) {
+                        var q = new ImageAjax($(this).find('.image-ajax-container'), {
+                            onRemove: function () {
+                                bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
+                                    if (result) {
+                                        $.ajax({
+                                            url: '{{ path('specification_buyer_image_remove', {buyer: 123}) }}'.replace(/123/, id),
+                                            method: 'POST',
+                                            success: function () {
+                                                q.setImagePath('');
+                                                q.viewImageUpload();
+                                            }
+                                        });
+                                    }
+                                });
+
+                                return false;
+                            }
+                        });
+                    };
+
                 $('[data-buyer-id]').each(function () {
-                    var id = $(this).data('buyer-id');
+                    var
+                        id = $(this).data('buyer-id'),
+                        imageAjax = $(this).find('.image-ajax-container');
 
-                    var q = new ImageAjax($(this).find('.image-ajax-container'), {
-                        onRemove: function () {
-                            bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
-                                if (result) {
-                                    $.ajax({
-                                        url: '{{ path('specification_buyer_image_remove', {buyer: 123}) }}'.replace(/123/, id),
-                                        method: 'POST',
-                                        success: function () {
-                                            q.setImagePath('');
-                                            q.viewImageUpload();
-                                        }
-                                    });
-                                }
-                            });
-
-                            return false;
-                        }
-                    });
+                    if (imageAjax.size() > 0) {
+                        initializeImageAjax(imageAjax);
+                    }
                 });
             });
         })(jQuery);

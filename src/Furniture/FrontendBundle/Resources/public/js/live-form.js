@@ -3,7 +3,7 @@
 
     function parseUrlQuery()
     {
-        var url = window.location.href,
+        var url = decodeURIComponent(window.location.href),
             urlParts = url.split('?');
 
         if (urlParts.length == 1) {
@@ -28,7 +28,7 @@
                     itemParts.push('');
                 }
 
-                itemName = decodeURIComponent(itemParts[0]);
+                itemName = itemParts[0];
                 itemValue = itemParts[1];
 
                 if (itemName.substr(itemName.length - 2) == '[]') {
@@ -55,6 +55,14 @@
                     }
                 } else {
                     query[itemName] = itemValue;
+                }
+            }
+        }
+
+        for (i in query) {
+            if (query.hasOwnProperty(i)) {
+                if (!i) {
+                    delete query[i];
                 }
             }
         }
@@ -105,7 +113,7 @@
                                     if (query[name].length == 1) {
                                         delete query[name];
                                     } else {
-                                        query[name] = query[name].splice(index, 1);
+                                        query[name].splice(index, 1);
                                     }
                                 }
                             } else {

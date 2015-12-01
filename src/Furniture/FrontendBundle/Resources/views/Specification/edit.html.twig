@@ -111,6 +111,7 @@
         <table id="specification-table" class="table" data-specification-id="{{ specification.id }}" >
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>{{ 'frontend.brand'|trans }}</th>
                     <th class="text-center">{{ 'frontend.image'|trans }}</th>
                     <th>{{ 'frontend.name'|trans }}</th>
@@ -131,9 +132,10 @@
                     {% endif %}
                 {% endfor %}
             </tbody>
+
             <tfoot>
                 <tr class="specification-sale">
-                    <td colspan="5"></td>
+                    <td colspan="6"></td>
                     <td colspan="4" id="extra-sale-td">
                         {% set sales_count = specification.sales|length %}
                         {% if sales_count > 0 %}
@@ -143,8 +145,9 @@
                         {% endif %}
                     </td>
                 </tr>
+
                 <tr>
-                    <td class="text-right" id="add-extra-sale" style="cursor: pointer;" colspan="7">{{ 'frontend.total_price'|trans }}</td>
+                    <td class="text-right" id="add-extra-sale" style="cursor: pointer;" colspan="8">{{ 'frontend.total_price'|trans }}</td>
                     <td id="table-total-price">{{ specification|specification_total_price|money }}</td>
                     <td></td>
                 </tr>
@@ -434,7 +437,9 @@
                                     }
                                 });
                             },
-                            columns: [{ orderable: true },
+                            columns: [
+                                { orderable: true },
+                                { orderable: true },
                                 { orderable: false },
                                 { orderable: false },
                                 { orderable: false },
@@ -472,6 +477,7 @@
                                     data = res.data,
                                     rowData = [];
 
+                                rowData.push('');
                                 rowData.push(data.factoryName ? data.factoryName : '' );
                                 rowData.push('');
                                 rowData.push(data.name ? data.name : '' );
@@ -515,35 +521,42 @@
 
                                 row
                                     .find('td:eq(0)')
+                                    .data('index', 'position')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item')
+                                    .addClass('text-center');
+
+                                row
+                                    .find('td:eq(1)')
                                     .data('index', 'factoryName')
                                     .data('type', 'text')
                                     .data('server-type', 'custom-item');
 
                                 row
-                                    .find('td:eq(1)')
+                                    .find('td:eq(2)')
                                     .html(imageAjaxContainer);
 
-                                row.find('td:eq(2)')
+                                row.find('td:eq(3)')
                                     .data('index', 'name')
                                     .data('type', 'text')
                                     .data('server-type', 'custom-item');
                             
-                                row.find('td:eq(3)')
+                                row.find('td:eq(4)')
                                     .data('index', 'options')
                                     .data('type', 'textarea')
                                     .data('server-type', 'custom-item');
 
-                                row.find('td:eq(4)')
+                                row.find('td:eq(5)')
                                     .data('index', 'note')
                                     .data('type', 'textarea')
                                     .data('server-type', 'specification-item');
 
-                                row.find('td:eq(5)')
+                                row.find('td:eq(6)')
                                     .data('index', 'quantity')
                                     .data('type', 'integer')
                                     .data('server-type', 'specification-item');
 
-                                row.find('td:eq(6)')
+                                row.find('td:eq(7)')
                                     .data('index', 'price')
                                     .data('type', 'price')
                                     .data('server-type', 'custom-item');
@@ -611,9 +624,9 @@
                     
                     var updateExtraSaleIndexes = function(){
                         $('#extra-sale-td').find('.edit').each(function(index, el){
-                                    index++;
-                                    $(el).data('index', index);
-                                });
+                            index++;
+                            $(el).data('index', index);
+                        });
                     };
                     
                     var saleInitialize = function (el) {

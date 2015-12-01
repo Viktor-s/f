@@ -1,5 +1,6 @@
 {% set custom_item = specification_item.customItem %}
 <tr data-price="{{ custom_item.price }}" data-custom-id="{{ custom_item.id }}" data-id="{{ specification_item.id }}">
+    <td class="text-center" data-index="position" data-server-type="custom-item" data-type="text">{{ specification_item.position }}</td>
     <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
 
     <td>

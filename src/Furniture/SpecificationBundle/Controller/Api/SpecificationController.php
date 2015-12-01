@@ -275,6 +275,10 @@ class SpecificationController
                 $item->setQuantity($value);
                 break;
 
+            case 'position':
+                $item->setPosition($value);
+                break;
+
             default:
                 throw new NotFoundHttpException(sprintf(
                     'Undefined identifier "%s".', $id

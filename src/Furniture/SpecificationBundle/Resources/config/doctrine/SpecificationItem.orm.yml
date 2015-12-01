@@ -53,5 +53,10 @@ Furniture\SpecificationBundle\Entity\SpecificationItem:
             name: updated_at
             nullable: true
 
+        position:
+            type: string
+            name: position
+            nullable: true
+
     lifecycleCallbacks:
         preUpdate: [ onUpdate ]
