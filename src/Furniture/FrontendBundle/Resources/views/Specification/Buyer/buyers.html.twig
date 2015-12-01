@@ -5,7 +5,7 @@
 {% block breadcrumb %}
     {{ parent() }}
 
-    <span>{{ 'frontend.title.list'|trans }}</span>
+    <a href="{{ path('specification_buyers') }}">{{ 'frontend.title.list'|trans }}</a>
 {% endblock %}
 
 {% block content %}
