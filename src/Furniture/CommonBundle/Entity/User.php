@@ -137,4 +137,18 @@ class User extends BaseUser
         $this->factory = null;
         $this->retailerUserProfile = null;
     }
+
+    /**
+     * Get full name
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return sprintf(
+            '%s %s',
+            $this->customer->getFirstName(),
+            $this->customer->getLastName()
+        );
+    }
 }
