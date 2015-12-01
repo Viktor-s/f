@@ -68,6 +68,9 @@ class ProductType extends BaseProductType
                     'source' => 'furniture_autocomplete_for_none_bundle',
                     'placeholder' => 'Start type product name',
                     'multiple' => true
+                ])
+                ->add('availableForSale', 'checkbox', [
+                    'required' => false
                 ]);
 
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -102,15 +105,16 @@ class ProductType extends BaseProductType
 
         } else if ($options['mode'] == 'small') {
             $builder
+                ->add('availableForSale', 'checkbox', [
+                    'required' => false,
+                    'disabled' => true
+                ])
                 ->remove('options')
                 ->remove('attributes');
         }
 
         $builder
             ->add('factoryCode')
-            ->add('availableForSale', 'checkbox', [
-                'required' => false
-            ])
             ->add('factory', 'entity', [
                 'required' => false,
                 'class'    => Factory::class,
