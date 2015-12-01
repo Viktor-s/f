@@ -60,7 +60,7 @@ class BuyerVoter implements VoterInterface
 
             $creator = $object->getCreator();
 
-            if ($creator->getId() == $user->getId()) {
+            if ($creator->getId() == $user->getRetailerUserProfile()->getId()) {
                 return self::ACCESS_GRANTED;
             } else {
                 return self::ACCESS_DENIED;

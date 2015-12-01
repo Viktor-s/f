@@ -62,7 +62,7 @@ class SpecificationVoter implements VoterInterface
 
             $owner = $object->getCreator();
 
-            if($owner->getId() == $user->getId()) {
+            if($owner->getId() == $user->getRetailerUserProfile()->getId()) {
                 return self::ACCESS_GRANTED;
             }
 
