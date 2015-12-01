@@ -67,50 +67,59 @@
             </div>
         </div>
                     
-            <div class="col-sm-5 information-entry">
-                <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
-                <div class="article-container style-1">
-                    <h5>Manager</h5>
-                    <p>{{ specification.creator.user.customer.firstName }} {{ specification.creator.user.customer.lastName }}<br/>
-                        {{ specification.creator.user.customer.email }}
-                    </p>
-                    <h5>Company address</h5>
-                    <p>{{ specification.creator.retailerProfile.address }}</p>
-                    <h5>Contact Informations</h5>
-                    <p>Retailer Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                        Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}</p>
-                </div>
+        <div class="col-sm-5 information-entry">
+            <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
+
+            <div class="article-container style-1">
+                <h5>Manager</h5>
+                <p>
+                    {{ specification.creator.user.fullName }}<br />
+                    {{ specification.creator.user.customer.email }}
+                </p>
+
+                <h5>Company address</h5>
+                <p>{{ specification.creator.retailerProfile.address }}</p>
+
+                <h5>Contact Informations</h5>
+                <p>
+                    Retailer Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                    Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
+                </p>
             </div>
+        </div>
     </div>
 
     <div class="information-blocks" style="position: relative; padding-top: 40px;">
         <div class="specification-pretable-controls">
             <div class="form-group">
-                <label class="control-label">{{ 'frontend.actions'|trans }}
-                
+                <div class="pull-right">
                     <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
 
-                    {% if not specification.finished %}
+                    {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
                         <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                     {% endif %}
 
-                    <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
-               
-                </label>
+                    {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                    {% endif %}
+                </div>
+
+                <label class="control-label pull-right" style="margin-right: 10px;">{{ 'frontend.actions'|trans }}</label>
             </div>
         </div>
+
         <table id="specification-table" class="table" data-specification-id="{{ specification.id }}" >
             <thead>
                 <tr>
                     <th>{{ 'frontend.brand'|trans }}</th>
-                    <th>{{ 'frontend.image'|trans }}</th>
+                    <th class="text-center">{{ 'frontend.image'|trans }}</th>
                     <th>{{ 'frontend.name'|trans }}</th>
                     <th>{{ 'frontend.options'|trans }}</th>
                     <th>{{ 'frontend.note'|trans }}</th>
                     <th>{{ 'frontend.quantity'|trans }}</th>
-                    <th>{{ 'frontend.price'|trans }}</th>
-                    <th>{{ 'frontend.total_price'|trans }}</th>
-                    <th>{#{{ 'frontend.actions'|trans }}#}</th>
+                    <th class="text-center">{{ 'frontend.price'|trans }}</th>
+                    <th class="text-center">{{ 'frontend.total_price'|trans }}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -142,7 +151,10 @@
             </tfoot>        
         </table>
 
-        <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
+        {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+            <a href="{{ path('specification_export_preview', { specification: specification.id}) }}" class="btn btn-success">Export</a>
+        {% endif %}
+
         <a href="#" id="add-custom-item-btn" class="btn btn-success">AddCustom</a>
     </div>
 {% endblock %}
@@ -227,9 +239,9 @@
                         width: '100%',
                         height: '100%',
                         tooltip: '{{ 'frontend.click_to_edit'|trans }}',
-                        "indicator": function(){
-                                    return progressBasr;
-                                },
+                        indicator: function(){
+                            return progressBasr;
+                        }
                     };
         
                     /* table code */
@@ -395,9 +407,12 @@
                         },
 
                         table = $('#specification-table').dataTable({
-                            "dom": '<"top"><"bottom"flp><"clear">',
-                            "paging": false,
-                            "rowCallback": function( row, data, index ) {
+                            language: {
+                                search: 'Search in this specification:'
+                            },
+                            dom: '<"top"><"bottom"flp><"clear">',
+                            paging: false,
+                            rowCallback: function( row, data, index ) {
                                 var itemEditableUrl = '{{ path('specification_api_specification_item_editable', {item: 123}) }}';
                                 var customItemEditableUrl = '{{ path('specification_api_specification_custom_Item_editable', { item:123}) }}';
                                 var tr = $(row);
@@ -419,7 +434,7 @@
                                     }
                                 });
                             },
-                            "columns": [{ orderable: true },
+                            columns: [{ orderable: true },
                                 { orderable: false },
                                 { orderable: false },
                                 { orderable: false },

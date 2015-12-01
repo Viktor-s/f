@@ -255,6 +255,13 @@ class SpecificationController
             ));
         }
 
+        if (!count($specification->getItems())) {
+            throw new NotFoundHttpException(sprintf(
+                'Can not finish empty specification with identifier "%s".',
+                $specification->getId()
+            ));
+        }
+
         if (!$this->authorizationChecker->isGranted('FINISH', $specification)) {
             throw new AccessDeniedException();
         }

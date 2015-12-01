@@ -58,7 +58,7 @@
                                 <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure remove specification?" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
                             {% endif %}
 
-                            {% if is_granted('FINISH', specification) %}
+                            {% if is_granted('FINISH', specification) and specification.items|length > 0 %}
                                 <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                             {% endif %}
 

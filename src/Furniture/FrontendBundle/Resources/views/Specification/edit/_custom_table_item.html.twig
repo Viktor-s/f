@@ -36,9 +36,11 @@
     <td>{{ specification_item|specification_item_total_price|money }}</td>
 
     <td>
-        <a class="btn btn-danger btn-xs remove" href="#">
-            <i class="fa fa-trash-o"></i>
-            {{ 'frontend.remove'|trans }}
-        </a>
+        <div class="btn-block">
+            <a class="btn btn-danger btn-xs remove" href="#">
+                <i class="fa fa-trash-o"></i>
+                {{ 'frontend.remove'|trans }}
+            </a>
+        </div>
     </td>
 </tr>

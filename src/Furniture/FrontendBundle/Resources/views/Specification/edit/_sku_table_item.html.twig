@@ -17,10 +17,24 @@
         {% endif %}
     </td>
 
-    <td>
-        <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
-            {{ product.translate.name }}
-        </a>
+    <td class="product-info">
+        <div>
+            <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
+                {{ product.translate.name }}
+            </a>
+        </div>
+
+        {% if product.factoryCode %}
+            <div>
+                {{ product.factoryCode }}
+            </div>
+        {% endif %}
+
+        {% if product.types|length %}
+            <div>
+                {{ (product.types|first).translate.name }}
+            </div>
+        {% endif %}
     </td>
 
     <td>
@@ -52,20 +66,20 @@
 
     <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
-    <td class="price">{{ product_variant|sku_price|money }}</td>
-    <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
+    <td class="price text-center">{{ product_variant|sku_price|money }}</td>
+    <td class="total-price text-center">{{ specification_item|specification_item_total_price|money }}</td>
 
     <td>
-        <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
-            <i class="fa fa-pencil"></i>
-            {{ 'frontend.edit'|trans }}
-        </a>
+        <div class="btn-block">
+            <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+                <i class="fa fa-pencil"></i>
+                {{ 'frontend.edit'|trans }}
+            </a>
 
-        <br />
-
-        <a class="btn btn-danger btn-xs remove" href="#">
-            <i class="fa fa-trash-o"></i>
-            {{ 'frontend.remove'|trans }}
-        </a>
+            <a class="btn btn-danger btn-xs remove" href="#">
+                <i class="fa fa-trash-o"></i>
+                {{ 'frontend.remove'|trans }}
+            </a>
+        </div>
     </td>
 </tr>

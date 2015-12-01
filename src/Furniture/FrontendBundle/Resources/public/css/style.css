@@ -3475,3 +3475,13 @@ dd {
 }
 
 
+.btn-block .btn
+{
+    display: block;
+    margin-bottom: 5px;
+}
+
+.btn-block .btn:last-child
+{
+    margin-bottom: 0;
+}
