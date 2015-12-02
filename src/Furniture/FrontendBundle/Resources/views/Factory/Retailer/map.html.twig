@@ -44,12 +44,7 @@
 {% block footer_javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        var mapRetailerMarkers = [
-            {
-                address: 'Васильковский переулок, Киев, город Киев',
-                name: 'Reatiler Name'
-            }
-        ];
+        var mapRetailerMarkers = {{mapRetailerMarkers|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
         
         var geocoder;
         var map;
@@ -61,24 +56,31 @@
             });
             geocoder = new google.maps.Geocoder();
             
-            /*var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                title: 'Hello World!'
-            });*/
-            
-            mapRetailerMarkers.forEach(function(retailer){                
-                geocoder.geocode( { 'address': retailer.address}, function(data, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        var marker = new google.maps.Marker({
+            mapRetailerMarkers.forEach(function(retailer){
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<div>\
+                        <div class="article-container style-1">\
+                            <div class="cell-view">\
+                                <h4 class="block-title main-heading">'+retailer.name+'</h4>\
+                                <h5>Company address</h5>\
+                                <p>'+retailer.address+'<br>\
+                                <h5>Contact Informations</h5>\
+                                <p>Email: '+retailer.emails+'<br>\
+                                Phones: '+retailer.phones+'</p>\
+                            </div>\
+                        </div>\
+                    </div>'
+                });
+                var marker = new google.maps.Marker({
+                            icon: '/img/marker.png',
                             map: map,
-                            position: data[0].geometry.location,
+                            position: retailer.location,
                             title: retailer.name
                         });
-                    } else {
-                      alert('Geocode was not successful for the following reason: ' + status);
-                    }
-                });                
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
             });
         }
 

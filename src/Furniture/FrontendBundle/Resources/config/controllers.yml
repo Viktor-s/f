@@ -110,6 +110,7 @@ services:
             - @security.token_storage
             - @router
             - @frontend.repository.factory
+            - @frontend.repository.retailer_profile
 
     # Retailer profile controllers
     frontend.controller.retailer.dashboard:
