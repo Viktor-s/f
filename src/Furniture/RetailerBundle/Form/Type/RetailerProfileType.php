@@ -44,6 +44,7 @@ class RetailerProfileType extends AbstractType
                 'required' => false
             ])
             ->add('address', 'text', [
+                'attr' => array('class'=>'google-address-autocomplete'),
                 'required' => true
             ])
             ->add('phones', 'text', [
