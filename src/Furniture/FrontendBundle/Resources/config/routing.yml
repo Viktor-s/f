@@ -91,7 +91,7 @@ specificaiton_buyers:
 # Factory routes
 factory:
     resource: @FrontendBundle/Resources/config/routing/factory.yml
-    prefix: /{_locale}/factory
+    prefix: /{_locale}/factory/room
 
 # Factory profile
 factory_profile:
