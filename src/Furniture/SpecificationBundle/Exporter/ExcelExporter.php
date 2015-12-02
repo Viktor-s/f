@@ -11,6 +11,8 @@ use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Translation\TranslatorInterface;
+use Sylius\Bundle\CurrencyBundle\Templating\Helper\MoneyHelper;
+use Sylius\Component\Currency\Context\CurrencyContextInterface;
 
 class ExcelExporter implements ExporterInterface
 {
@@ -35,6 +37,16 @@ class ExcelExporter implements ExporterInterface
     private $filterManager;
 
     /**
+     * @var MoneyHelper
+     */
+    protected $moneyHelper;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+    
+    /**
      * Construct
      *
      * @param TranslatorInterface $translator
@@ -44,14 +56,25 @@ class ExcelExporter implements ExporterInterface
         TranslatorInterface $translator,
         PriceCalculator $priceCalculator,
         DataManager $imagineDataManager,
-        FilterManager $filterManager
+        FilterManager $filterManager,
+        CurrencyContextInterface $currencyContext,
+        MoneyHelper $moneyHelper
     ) {
         $this->translator = $translator;
         $this->priceCalculator = $priceCalculator;
         $this->imagineDataManager = $imagineDataManager;
         $this->filterManager = $filterManager;
+        $this->currencyContext = $currencyContext;
+        $this->moneyHelper = $moneyHelper;
     }
 
+    private function moneyFormat($amount)
+    {
+        $currency = $this->currencyContext->getCurrency();
+        $amount = str_replace(' ', '', $this->moneyHelper->formatAmount($amount, $currency));
+        return $amount;
+    }
+    
     private function setHeader(Specification $specification, \PHPExcel_Worksheet $activeSheet)
     {
         /*Header Info*/
@@ -248,13 +271,13 @@ class ExcelExporter implements ExporterInterface
                 if ($fieldMap->hasFieldPrice()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
                     $price = $this->priceCalculator->calculateForProductVariant($productVariant);
-                    $activeSheet->setCellValue($key, $price . ' EUR');
+                    $activeSheet->setCellValue($key, $this->moneyFormat($price));
                 }
 
                 if ($fieldMap->hasFieldTotalPrice()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
                     $price = $this->priceCalculator->calculateTotalForSpecificationItem($item);
-                    $activeSheet->setCellValue($key, $price . ' EUR');
+                    $activeSheet->setCellValue($key, $this->moneyFormat($price));
                 }
             } else if ($customItem = $item->getCustomItem()) {
                 if ($fieldMap->hasFieldNumber()) {
@@ -307,13 +330,13 @@ class ExcelExporter implements ExporterInterface
                 if ($fieldMap->hasFieldPrice()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
                     $price = $customItem->getPrice();
-                    $activeSheet->setCellValue($key, $price . ' EUR');
+                    $activeSheet->setCellValue($key, $this->moneyFormat($price));
                 }
 
                 if ($fieldMap->hasFieldTotalPrice()) {
                     $key = $this->generateCellKey($cellIndex++, $rowIndex);
                     $price = $this->priceCalculator->calculateTotalForSpecificationItem($item);
-                    $activeSheet->setCellValue($key, $price . ' EUR');
+                    $activeSheet->setCellValue($key, $this->moneyFormat($price));
                 }
             }
         }
