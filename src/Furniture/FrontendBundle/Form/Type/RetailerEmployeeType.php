@@ -53,13 +53,15 @@ class RetailerEmployeeType extends AbstractType
             }
         }
 
+        $passwordRequired = (bool)!$employee->getID();
+        
         $builder
             /*->add('username', 'text', [
                 'label' => 'frontend.username',
             ])*/
             ->add('plainPassword', 'password', [
                 'label' => 'frontend.password',
-                'required' => false
+                'required' => $passwordRequired
             ])
             ->add('retailerMode', 'choice', [
                 'property_path' => 'retailerUserProfile.retailerMode',
