@@ -39,7 +39,7 @@ frontend:
     are_you_sure_remove_specification_item: Are you sure remote specification item?
     are_you_sure_remove_specification: Are you sure remote specification?
     are_you_sure_remove_image: Are you sure remove image?
-    are_you_sure_remove_logo: Are you sire remove logo?
+    are_you_sure_remove_logo: Are you sure you want to remove logo?
     export: Export
     full: Full
     by_company: By company
