@@ -118,7 +118,7 @@ frontend:
         contacts: Contacts
         work_info: Work info
         collections: Collections
-        index: Furniture
+        index: Agenta
         homepage: Homepage
         factories: Brands
         news: News
@@ -176,10 +176,10 @@ frontend:
             title: Product media
             images: Images
             model: 3d model
-    factory:
-        posted: Joined :created
 
     factory_side:
+        main_statistic:
+            page: Statistic
         menu:
             general: General
             collections: Collections

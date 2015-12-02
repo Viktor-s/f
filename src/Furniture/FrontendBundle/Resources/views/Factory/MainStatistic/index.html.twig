@@ -1,0 +1,229 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} :: {{ app.user.factory.name }} :: {{ 'frontend.factory_side.main_statistic.page'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('factory') }}">{{ 'frontend.factory_side.main_statistic.page'|trans }}</a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets output='/css/*.min.css'
+        '@FrontendBundle/Resources/public/css/jquery.jqplot.min.css'
+    %}
+    <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts output='/js/*.min.js'
+        '@FrontendBundle/Resources/public/js/jquery.jqplot.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.cursor.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.barRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.pieRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.pointLabels.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.dateAxisRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.categoryAxisRenderer.min.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-sm-8 information-entry">
+                <h3 class="block-title">Attendance your products</h3>
+                <div style="min-height: 280px; min-width: 300px; position: relative;" id="month-click" class="jqplot-target"></div>
+                <div class="article-container style-3">
+                    This graph shows the frequency of your company's products visiting during the last month.
+                </div>
+            </div>
+            <div class="col-sm-4 information-entry">
+                <h3 class="block-title">Top 5</h3>
+                <div id="top-five" class="jqplot-target"></div>
+                <div class="article-container style-3">
+                    This graph shows the number of visits to the five most popular products in comparison with the rest.
+                </div>
+            </div>
+        </div>
+        <h3 class="block-title">Retailers and specifications</h3>
+        <div class="row">
+            <div class="col-sm-4 information-entry">
+                <div id="added-to-spec-6-month" class="jqplot-target"></div>
+                <div class="article-container style-3">
+                    This graph shows how many of your products have been added to new specifications during last four months
+                </div>
+            </div>
+            <div class="col-sm-4 information-entry">
+                <div id="added-to-close-spec-6-month" class="jqplot-target"></div>
+                <div class="article-container style-3">
+                    This graph shows how many of your products have been added to specifications that were closed during last four months
+                </div>
+            </div>
+            <div class="col-sm-4 information-entry">
+                <div id="added-and-close-spec-6-month" class="jqplot-target"></div>
+                <div class="article-container style-3">
+                    This graph shows the ratio of the product that have been added to new and closed specifications during last 4 month
+                </div>
+            </div>
+        </div>
+        <h3 class="block-title">Taxonomy rates</h3>
+        <div class="row">
+            <div class="col-sm-4 information-entry">
+                <div id="popular-style" class="jqplot-target"></div>
+            </div>
+            <div class="col-sm-4 information-entry">
+                <div id="popular-type" class="jqplot-target"></div>
+            </div>
+            <div class="col-sm-4 information-entry">
+                <div id="popular-space" class="jqplot-target"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    
+    <script type="text/javascript">
+        var monthShow = {{monthShow|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+        
+        $(document).ready(function () {
+            $.jqplot.config.enablePlugins = true;
+             var monthClickPlot = $.jqplot('month-click', [monthShow], { 
+                title: '{{ app.user.factory.name }}', 
+                series: [{ 
+                    label: '', 
+                    neighborThreshold: -1 
+                }], 
+                axes: { 
+                    xaxis: { 
+                        renderer: $.jqplot.DateAxisRenderer,
+                        tickInterval: '4 day'
+                    }, 
+                    yaxis: { 
+                        tickOptions:{ prefix: '' } 
+                    } 
+                }, 
+                cursor:{ 
+                  show: true,
+                  zoom:true, 
+                  showTooltip:false
+                } 
+            });
+
+            var topFive = $.jqplot('top-five', [[["rest", 45],["3471",25],["1025", 30],["3171",25],["4421",25],["701",25]]], {
+                seriesDefaults:{
+                    renderer:$.jqplot.PieRenderer, 
+                    rendererOptions:{ sliceMargin: 0 }
+                },
+                legend:{ show: true }      
+            });
+            
+            var addedToSpec = {{addedToSpec|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            plot1 = $.jqplot('added-to-spec-6-month', [addedToSpec.values], {
+                animate: !$.jqplot.use_excanvas,
+                seriesDefaults:{
+                    renderer:$.jqplot.BarRenderer,
+                    pointLabels: { show: true }
+                },
+                axes: {
+                    xaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer,
+                        ticks: addedToSpec.dates
+                    }
+                },
+                highlighter: { show: false }
+            });
+            
+            var addedToCloseSpec = {{addedToCloseSpec|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            plot2 = $.jqplot('added-to-close-spec-6-month', [addedToCloseSpec.values], {
+                animate: !$.jqplot.use_excanvas,
+                seriesDefaults:{
+                    renderer:$.jqplot.BarRenderer,
+                    pointLabels: { show: true }
+                },
+                axes: {
+                    xaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer,
+                        ticks: addedToCloseSpec.dates
+                    }
+                },
+                highlighter: { show: false }
+            });
+            
+            var addedClosedSpec = {{addedClosedSpec|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            var plot3 = $.jqplot('added-and-close-spec-6-month', [addedClosedSpec], {
+                seriesDefaults:{
+                    renderer:$.jqplot.PieRenderer, 
+                    rendererOptions:{ sliceMargin: 0 }
+                },
+                legend:{ show: true }      
+            });
+            
+            var popularStyle = {{popularStyle|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            var plot4 = $.jqplot('popular-style', [popularStyle], {
+                title: '{{ app.user.factory.name }} Style', 
+                seriesDefaults: {
+                    renderer:$.jqplot.BarRenderer,
+                    pointLabels: { show: true, location: 'e', edgeTolerance: -15 },
+                    shadowAngle: 135,
+                    rendererOptions: {
+                        barDirection: 'horizontal'
+                    }
+                },
+                axes: {
+                    yaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer
+                    }
+                }
+            });
+            
+            var popularType = {{popularType|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            var plot5 = $.jqplot('popular-type', [popularType], {
+                title: '{{ app.user.factory.name }} Type', 
+                seriesDefaults: {
+                    renderer:$.jqplot.BarRenderer,
+                    pointLabels: { show: true, location: 'e', edgeTolerance: -15 },
+                    shadowAngle: 135,
+                    rendererOptions: {
+                        barDirection: 'horizontal'
+                    }
+                },
+                axes: {
+                    yaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer
+                    }
+                }
+            });
+            
+            var popularSpace = {{popularSpace|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+            
+            var plot6 = $.jqplot('popular-space', [popularSpace], {
+                title: '{{ app.user.factory.name }} Space', 
+                seriesDefaults: {
+                    renderer:$.jqplot.BarRenderer,
+                    pointLabels: { show: true, location: 'e', edgeTolerance: -15 },
+                    shadowAngle: 135,
+                    rendererOptions: {
+                        barDirection: 'horizontal'
+                    }
+                },
+                axes: {
+                    yaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer
+                    }
+                }
+            });
+            
+        });
+    </script>
+    
+{% endblock %}

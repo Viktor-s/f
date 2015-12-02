@@ -1,0 +1,12 @@
+services:
+    google_service.maps.geocoding:
+        class: Furniture\GoogleServicesBundle\Api\Maps\Geocoding
+        arguments:
+            - %google_services.maps_access_key%
+            - @request_stack
+        
+    google_service.maps.geocoding.addressing_subscriber:
+        class: Furniture\GoogleServicesBundle\Entity\Subscribers\AddressMarkerSubscriber
+        arguments: [ @google_service.maps.geocoding ]
+        tags:
+            - { name: doctrine.event_subscriber }

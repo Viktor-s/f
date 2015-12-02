@@ -49,3 +49,13 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
         emails:
             type: json_array
             name: emails
+            
+        lat:
+            type: float
+            name: latitude
+            nullable: true
+            
+        lng:
+            type: float
+            name: longtitude
+            nullable: true

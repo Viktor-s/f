@@ -88,6 +88,11 @@ specificaiton_buyers:
     prefix: /{_locale}/clients
     resource: @FrontendBundle/Resources/config/routing/clients.yml
 
+# Factory routes
+factory:
+    resource: @FrontendBundle/Resources/config/routing/factory.yml
+    prefix: /{_locale}/factory
+
 # Factory profile
 factory_profile:
     resource: @FrontendBundle/Resources/config/routing/factory_profile.yml

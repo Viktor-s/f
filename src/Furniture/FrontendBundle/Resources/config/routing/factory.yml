@@ -1,0 +1,13 @@
+factory:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory.main_statistic:index
+        
+retailer_map:
+    path: /retailer/map
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.factory.retailer:map
