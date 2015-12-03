@@ -352,6 +352,16 @@ class Buyer
     }
 
     /**
+     * Get full name
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return (string) $this;
+    }
+
+    /**
      * Implement __toString
      *
      * @return string

@@ -206,4 +206,14 @@ class CustomSpecificationItem
     {
         return $this->price;
     }
+
+    /**
+     * Get total price
+     *
+     * @return int
+     */
+    public function getTotalPrice()
+    {
+        return $this->price * $this->specificationItem->getQuantity();
+    }
 }

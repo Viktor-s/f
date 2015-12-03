@@ -36,12 +36,14 @@ frontend:
     brand: Brand
     options: Options
     note: Note
+    notes: Notes
     are_you_sure_remove_specification_item: Are you sure remote specification item?
     are_you_sure_remove_specification: Are you sure remote specification?
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sire remove logo?
     export: Export
     full: Full
+    all: All
     by_company: By company
     photo: Photo
     product_article: Article
