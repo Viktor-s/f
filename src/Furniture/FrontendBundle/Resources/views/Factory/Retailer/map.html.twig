@@ -1,0 +1,93 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} :: {{ app.user.factory.name }} :: {{ 'frontend.factory_side.retailer.map_page'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('factory') }}">{{ 'frontend.factory_side.retailer.map_page'|trans }}</a>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets output='/css/*.min.css'
+        '@FrontendBundle/Resources/public/css/jquery.jqplot.min.css'
+    %}
+    <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts output='/js/*.min.js'
+        '@FrontendBundle/Resources/public/js/jquery.jqplot.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.cursor.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.barRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.pieRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.pointLabels.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.dateAxisRenderer.min.js'
+        '@FrontendBundle/Resources/public/js/jqplot.categoryAxisRenderer.min.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <div class="row">
+            <div class="col-sm-12 information-entry">
+                <div style="min-height: 450px;" id="map"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var mapRetailerMarkers = {{mapRetailerMarkers|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+        
+        var geocoder;
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 43.899223, lng: 20.060437},
+                zoom: 5,
+                mapTypeControl: false
+            });
+            geocoder = new google.maps.Geocoder();
+            
+            mapRetailerMarkers.forEach(function(retailer){
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<div>\
+                        <div class="article-container style-1">\
+                            <div class="cell-view">\
+                                <h4 class="block-title main-heading">'+retailer.name+'</h4>\
+                                <h5>Company address</h5>\
+                                <p>'+retailer.address+'<br>\
+                                <h5>Contact Informations</h5>\
+                                <p>Email: '+retailer.emails+'<br>\
+                                Phones: '+retailer.phones+'</p>\
+                            </div>\
+                        </div>\
+                    </div>'
+                });
+                var marker = new google.maps.Marker({
+                            icon: '/img/marker.png',
+                            map: map,
+                            position: retailer.location,
+                            title: retailer.name
+                        });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+            });
+        }
+
+        
+        $(document).ready(function () {            
+        });
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtfFR1y2sFVhzLwxvoeX6g_FUofzQakxA&callback=initMap" async defer></script>
+{% endblock %}
+    

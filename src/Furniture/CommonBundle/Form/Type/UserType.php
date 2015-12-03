@@ -47,9 +47,8 @@ class UserType extends BaseUserType
                 'required' => false
             ]);
 
-
+        $builder->add('retailerUserProfile', new RetailerUserProfileType());
         if ($options['mode'] == 'retailer') {
-            $builder->add('retailerUserProfile', new RetailerUserProfileType());
             $builder->remove('authorizationRoles');
             $builder->remove('factory');
 

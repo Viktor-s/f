@@ -5,8 +5,9 @@ use Furniture\CommonBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
+use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
 
-class RetailerProfile
+class RetailerProfile implements AddressMarkerInterface
 {
     /**
      * @var int
@@ -61,6 +62,17 @@ class RetailerProfile
      */
     private $description;
 
+    /**
+     *
+     * @var float
+     */
+    private $lat;
+    
+    /**
+     *
+     * @var float
+     */
+    private $lng;
 
     /**
      * Construct
@@ -359,4 +371,41 @@ class RetailerProfile
     {
         return $this->getName() ?: '';
     }
+
+    /**
+     * 
+     * @return float
+     */
+    public function getLat() {
+        return $this->lat;
+    }
+
+    /**
+     * 
+     * @return float
+     */
+    public function getLng() {
+        return $this->lng;
+    }
+
+    /**
+     * 
+     * @param float $latitude
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setLat($latitude) {
+        $this->lat = $latitude;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param float $longtitude
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setLng($longtitude) {
+        $this->lng = $longtitude;
+        return $this;
+    }
+
 }

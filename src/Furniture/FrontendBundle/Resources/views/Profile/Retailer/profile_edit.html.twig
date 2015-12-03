@@ -17,3 +17,19 @@
         </div>
     </form>
 {% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+                function initAutocomplete() {
+                    $('.google-address-autocomplete').each(function(){
+                        autocomplete = new google.maps.places.Autocomplete(
+                            (this),
+                            {types: ['geocode']}
+                        );
+                    });
+                }
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_api_maps_key }}&signed_in=true&libraries=places&callback=initAutocomplete" >
+    </script>
+{% endblock %}

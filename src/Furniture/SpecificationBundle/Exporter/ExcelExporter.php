@@ -13,6 +13,8 @@ use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Translation\TranslatorInterface;
+use Sylius\Bundle\CurrencyBundle\Templating\Helper\MoneyHelper;
+use Sylius\Component\Currency\Context\CurrencyContextInterface;
 
 class ExcelExporter implements ExporterInterface
 {
@@ -37,6 +39,16 @@ class ExcelExporter implements ExporterInterface
     protected $filterManager;
 
     /**
+     * @var MoneyHelper
+     */
+    protected $moneyHelper;
+
+    /**
+     * @var CurrencyContextInterface
+     */
+    protected $currencyContext;
+    
+    /**
      * Construct
      *
      * @param TranslatorInterface $translator
@@ -57,54 +69,6 @@ class ExcelExporter implements ExporterInterface
         $this->filterManager = $filterManager;
     }
 
-    private function setHeader(Specification $specification, \PHPExcel_Worksheet $activeSheet)
-    {
-        /*Header Info*/
-        if($retailerProfile = $specification->getCreator()->getRetailerProfile()){
-            /*Set Logo*/
-            if ($logoImage = $retailerProfile->getLogoImage()) {
-                if ($logoImage->getPath()) {
-                    $activeSheet->mergeCells('A1:B6');
-                    $obj = $this->createImageForExcel($logoImage->getPath(), 'A1', 's201x203');
-                    $obj->setWorksheet($activeSheet);
-                }
-            }
-            /*Set retailer name*/
-            $activeSheet->mergeCells('G1:I1');
-            $activeSheet->setCellValue('G1', $retailerProfile->getName());
-            /*Manager name*/
-            $activeSheet->mergeCells('G2:I2');
-            $activeSheet->setCellValue('G2', $specification->getCreator()->getUser()->getCustomer()->getFirstName()
-                    .' '.$specification->getCreator()->getUser()->getCustomer()->getLastName());
-            /*Retailer address*/
-            $activeSheet->mergeCells('G3:I3');
-            $activeSheet->setCellValue('G1', $retailerProfile->getAddress());
-            /*Retailer phone*/
-            $activeSheet->mergeCells('G4:I4');
-            $activeSheet->setCellValue('G4', implode( ',', $retailerProfile->getPhones()), true)->getStyle()->getAlignment()->setWrapText(true);
-            /*Manager email address*/
-            $activeSheet->mergeCells('G5:I5');
-            $activeSheet->setCellValue('G4', $specification->getCreator()->getUser()->getCustomer()->getEmail());
-            /*Specification creation date*/
-            $activeSheet->setCellValue('B7', $this->translator->trans('specification.excel.creation_date').': '.$specification->getCreatedAt()->format('Y-m-d'));
-            /*Specification client*/
-            if($client = $specification->getBuyer()){
-                /*Client name*/
-                $activeSheet->mergeCells('B8:C8');
-                $activeSheet->setCellValue('B8', $this->translator->trans('specification.excel.client_name').': '.$client);
-                /*Client address*/
-                $activeSheet->mergeCells('B9:C9');
-                $activeSheet->setCellValue('B9', $client->getAddress());
-                /*Client phone*/
-                $activeSheet->mergeCells('B10:C10');
-                $activeSheet->setCellValue('B10', $client->getPhone());
-            }
-            /*Specification description*/
-            $activeSheet->mergeCells('B11:D12');
-            $activeSheet->setCellValue('B11', $specification->getDescription());
-        }
-    }
-    
     /**
      * {@inheritDoc}
      */

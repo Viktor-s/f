@@ -58,3 +58,7 @@ services:
     frontend.repository.retailer_employee:
         class: Furniture\FrontendBundle\Repository\RetailerEmployeeRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+        
+    frontend.repository.retailer_profile:
+        class: Furniture\FrontendBundle\Repository\RetailerProfileRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]

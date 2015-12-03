@@ -5,7 +5,7 @@ services:
 
     specification.exporter.excel:
         class: Furniture\SpecificationBundle\Exporter\ExcelExporter
-        arguments: [ @translator, @pricing.calculator, @liip_imagine.data.manager, @liip_imagine.filter.manager ]
+        arguments: [ @translator, @pricing.calculator, @liip_imagine.data.manager, @liip_imagine.filter.manager, @sylius.context.currency, @sylius.templating.helper.money ]
 
     specification.event_subscriber.modified:
         class: Furniture\SpecificationBundle\EventListener\Doctrine\SpecificationModifiedSubscriber

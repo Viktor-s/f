@@ -41,6 +41,7 @@ class BuyerType extends AbstractType
             ])
             ->add('address', 'text', [
                 'label' => 'specification.buyer.form.address',
+                'attr' => array('class'=>'google-address-autocomplete'),
                 'required' => false
             ])
             ->add('sale', 'number', [

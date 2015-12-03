@@ -109,7 +109,7 @@ class FrontendMenuBuilder
                 'label' => $this->translator->trans('frontend.menu_items.header.homepage')
             ]);
 
-        if($user->isContentUser()) {
+        if($user->isRetailer()) {
             $menu->addChild('factories', [
                 'uri' => $this->urlGenerator->generate('factory_side_list'),
                 'label' => $this->translator->trans('frontend.menu_items.header.factories')
@@ -131,7 +131,7 @@ class FrontendMenuBuilder
             ]);
         }*/
 
-        if ($user->isContentUser()) {
+        if ($user->isRetailer()) {
             $menu->addChild('specifications', [
                 'uri' => $this->urlGenerator->generate('specifications'),
                 'label' => $this->translator->trans('frontend.menu_items.header.specifications')

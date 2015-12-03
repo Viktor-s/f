@@ -65,6 +65,10 @@ sonata_formatter:
             service: sonata.formatter.text.twigengine
             extensions: [] # Twig formatter cannot have extensions
 
+#Server key!
+google_services:
+        maps_access_key: AIzaSyB7w4kpPyNfgeUU67t-7FbHtt_1M1YgVK8
+
 twig:
     form:
         resources:
@@ -75,6 +79,9 @@ twig:
             - SonataFormatterBundle:Form:formatter.html.twig
 
     debug:            %kernel.debug%
+    globals:
+        #Browser key
+        google_api_maps_key: AIzaSyAtfFR1y2sFVhzLwxvoeX6g_FUofzQakxA
     strict_variables: %kernel.debug%
     paths:
         %kernel.root_dir%/../vendor/payum/payum/src/Payum/Core/Resources/views: PayumCore

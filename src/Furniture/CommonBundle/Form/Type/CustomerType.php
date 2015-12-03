@@ -33,7 +33,7 @@ class CustomerType extends BaseCustomerType
 
         // Replace user form
         $builder
-            ->remove('sylius_user')
+       //     ->remove('sylius_user')
             ->add('user', 'sylius_user', [
                 'mode' => $options['mode']
             ]);

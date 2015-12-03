@@ -90,6 +90,28 @@ services:
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
 
+    frontend.controller.factory.main_statistic:
+        class: Furniture\FrontendBundle\Controller\Factory\MainStatisticController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @router
+            - @frontend.repository.factory
+            - @frontend.repository.product_style
+            - @frontend.repository.product_type
+            - @frontend.repository.product_space
+            
+    frontend.controller.factory.retailer:
+        class: Furniture\FrontendBundle\Controller\Factory\RetailerController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.token_storage
+            - @router
+            - @frontend.repository.factory
+            - @frontend.repository.retailer_profile
+
     # Retailer profile controllers
     frontend.controller.retailer.dashboard:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\DashboardController

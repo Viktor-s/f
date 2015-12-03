@@ -45,6 +45,7 @@ class AppKernel extends Kernel
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),
             new Furniture\PricingBundle\PricingBundle(),
+            new Furniture\GoogleServicesBundle\GoogleServicesBundle(),
         );
 
         if (in_array($this->environment, array('dev', 'test'))) {

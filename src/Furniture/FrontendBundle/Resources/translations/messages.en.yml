@@ -40,7 +40,7 @@ frontend:
     are_you_sure_remove_specification_item: Are you sure remote specification item?
     are_you_sure_remove_specification: Are you sure remote specification?
     are_you_sure_remove_image: Are you sure remove image?
-    are_you_sure_remove_logo: Are you sire remove logo?
+    are_you_sure_remove_logo: Are you sure you want to remove logo?
     export: Export
     full: Full
     all: All
@@ -120,7 +120,7 @@ frontend:
         contacts: Contacts
         work_info: Work info
         collections: Collections
-        index: Furniture
+        index: Agenta
         homepage: Homepage
         factories: Brands
         news: News
@@ -178,10 +178,10 @@ frontend:
             title: Product media
             images: Images
             model: 3d model
-    factory:
-        posted: Joined :created
 
     factory_side:
+        main_statistic:
+            page: Statistic
         menu:
             general: General
             collections: Collections
