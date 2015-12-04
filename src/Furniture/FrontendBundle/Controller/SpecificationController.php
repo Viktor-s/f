@@ -8,7 +8,7 @@ use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\ExporterInterface;
-use Furniture\SpecificationBundle\Exporter\FieldMapForClient;
+use Furniture\SpecificationBundle\Exporter\Client\FieldMap as FieldMapForClient;
 use Furniture\SpecificationBundle\Exporter\FieldMapForCustom;
 use Furniture\SpecificationBundle\Exporter\FieldMapForFactory;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
@@ -350,10 +350,8 @@ class SpecificationController
 
         // Attention: Now we work only with excel exporter
         if ($request->query->get('mode') == 'full') {
-            $fieldMap = new FieldMapForClient($request->query->get('fields', []));
-            $writer = $this->exporter->exportForClient($specification, $fieldMap);
+            return $this->doExportForClient($specification, $request);
 
-            return new ExcelResponse($writer, 'specification.xlsx');
         } else if ($request->query->get('mode') == 'factory') {
             if (!$factoryId = $request->query->get('factory_id')) {
                 throw new NotFoundHttpException('Missing "factory_id" parameter.');
@@ -425,5 +423,21 @@ class SpecificationController
                 $request->query->get('mode')
             ));
         }
+    }
+
+    /**
+     * Export for client
+     *
+     * @param Specification $specification
+     * @param Request       $request
+     *
+     * @return ExcelResponse
+     */
+    private function doExportForClient(Specification $specification, Request $request)
+    {
+        $fieldMap = new FieldMapForClient($request->query->get('fields', []));
+        $writer = $this->exporter->exportForClient($specification, $fieldMap);
+
+        return new ExcelResponse($writer, 'specification.xlsx');
     }
 }

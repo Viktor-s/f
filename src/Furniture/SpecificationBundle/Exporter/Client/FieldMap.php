@@ -1,26 +1,24 @@
 <?php
 
-namespace Furniture\SpecificationBundle\Exporter;
+namespace Furniture\SpecificationBundle\Exporter\Client;
 
 use Furniture\SpecificationBundle\Exporter\Exception\UnavailableFieldException;
 
 /**
  * Field map for full exports
  */
-class FieldMapForClient
+class FieldMap
 {
     /**
      * @var array
      */
     private static $availableFields = [
-        'number',
-        'factory',
+        'position',
         'photo',
+        'brand',
         'name',
-        'article',
-        'size',
-        'finishes',
-        'characteristics',
+        'options',
+        'notes',
         'quantity',
         'price',
         'total_price'
@@ -60,7 +58,7 @@ class FieldMapForClient
      */
     public function hasFieldNumber()
     {
-        return in_array('number', $this->fields);
+        return in_array('position', $this->fields);
     }
 
     /**
@@ -68,9 +66,9 @@ class FieldMapForClient
      *
      * @return bool
      */
-    public function hasFieldFactory()
+    public function hasFieldBrand()
     {
-        return in_array('factory', $this->fields);
+        return in_array('brand', $this->fields);
     }
 
     /**
@@ -94,33 +92,13 @@ class FieldMapForClient
     }
 
     /**
-     * Has field article
-     *
-     * @return bool
-     */
-    public function hasFieldArticle()
-    {
-        return in_array('article', $this->fields);
-    }
-
-    /**
-     * Has field size
-     *
-     * @return bool
-     */
-    public function hasFieldSize()
-    {
-        return in_array('size', $this->fields);
-    }
-
-    /**
      * Has field finishes
      *
      * @return bool
      */
-    public function hasFieldFinishes()
+    public function hasFieldOptions()
     {
-        return in_array('finishes', $this->fields);
+        return in_array('options', $this->fields);
     }
 
     /**
@@ -128,9 +106,9 @@ class FieldMapForClient
      *
      * @return bool
      */
-    public function hasFieldCharacteristics()
+    public function hasFieldNotes()
     {
-        return in_array('characteristics', $this->fields);
+        return in_array('notes', $this->fields);
     }
 
     /**

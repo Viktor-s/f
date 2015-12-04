@@ -18,16 +18,21 @@ specification:
     excel:
         creation_date: Date
         client_name: Client
+        contacts: Contacts
         number: "#"
-        factory: Factory
+        factory: Brand
         name: Name
         photo: Photo
-        article: Article
-        size: Size
-        finishes: Finishes
-        characteristics: Characteristics
+        options: Options
+        notes: Notes
         quantity: Quantity
         price: Price
         total_price: Total price
         description: Description
+        manager: Manager
+        address: Address
+        contact_info: Contact informations
         sku: Sku
+        total: Total
+        final: Final
+        discount: "Discount :sale%"

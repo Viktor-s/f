@@ -4,6 +4,7 @@ namespace Furniture\SpecificationBundle\Exporter;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SpecificationBundle\Entity\Specification;
+use Furniture\SpecificationBundle\Exporter\Client\FieldMap;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 
 /**
@@ -14,12 +15,12 @@ interface ExporterInterface
     /**
      * Export full specification
      *
-     * @param Specification     $specification
-     * @param FieldMapForClient $fieldMap
+     * @param Specification $specification
+     * @param FieldMap      $fieldMap
      *
      * @return mixed
      */
-    public function exportForClient(Specification $specification, FieldMapForClient $fieldMap);
+    public function exportForClient(Specification $specification, FieldMap $fieldMap);
 
     /**
      * Export for factory
