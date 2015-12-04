@@ -155,11 +155,45 @@
 
                         <tfoot>
                         <tr>
-                            <td colspan="6" class="text-right">{{ 'frontend.total_quantities'|trans }}</td>
-                            <td>{{ specification.countItems }}</td>
-                            <td class="text-right">{{ 'frontend.total_price'|trans }}</td>
-                            <td>{{ specification|specification_total_price|money }}</td>
+                            <td class="text-right" colspan="3">
+                                <strong>{{ 'frontend.volume'|trans }}</strong>
+                            </td>
+
+                            <td class="text-left">{{ specification.volume }}</td>
+
+                            <td class="text-right">
+                                <strong>{{ 'frontend.weight'|trans }}</strong>
+                            </td>
+
+                            <td class="text-left">{{ specification.weight }}</td>
+
+                            <td class="text-right" colspan="2">
+                                <strong>{{ 'frontend.total_price'|trans }}</strong>
+                            </td>
+
+                            <td>{{ specification|specification_total_price(false)|money }}</td>
                         </tr>
+
+                        {% if specification.sales|length > 0 %}
+                            {% set price = specification|specification_total_price(false) %}
+
+                            {% for sale in specification.sales %}
+                                <tr>
+                                    <td class="text-right" colspan="8">
+                                        {{ 'frontend.discount_value'|trans({':discount': sale.sale}) }}
+                                    </td>
+
+                                    <td>{{ ((price / 100) * sale.sale)|money }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td colspan="8" class="text-right">
+                                    <strong>{{ 'frontend.final_price'|trans }}</strong>
+                                </td>
+                                <td>{{ specification|specification_total_price|money }}</td>
+                            </tr>
+                        {% endif %}
 
                         <tr>
                             <td colspan="9">

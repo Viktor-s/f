@@ -32,6 +32,16 @@ Furniture\SpecificationBundle\Entity\Specification:
             name: finished_at
             nullable: true
 
+        weight:
+            type: string
+            name: weight
+            nullable: true
+
+        volume:
+            type: string
+            name: volume
+            nullable: true
+
     manyToOne:
         creator:
             targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile

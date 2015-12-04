@@ -45,6 +45,14 @@ class ClientExcelExporter extends AbstractExporter
             }
         }
 
+        if ($fieldMap->hasFieldName()) {
+            $this->createVolumeCell($sheet, $specification, $positions['name'], $row);
+        }
+
+        if ($fieldMap->hasFieldNotes()) {
+            $this->createWeightCell($sheet, $specification, $positions['notes'], $row);
+        }
+
         // Generate total
         if ($fieldMap->hasFieldTotalPrice()) {
             $this->createTotalRows($sheet, $specification, $positions['total_price'], $row);
@@ -261,6 +269,52 @@ class ClientExcelExporter extends AbstractExporter
         $this->formatSpecificationItemRowData($sheet, $column, $row);
 
         $row++;
+    }
+
+    /**
+     * Create weight cell
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param Specification       $specification
+     * @param int                 $position
+     * @param int                 $row
+     */
+    private function createWeightCell(\PHPExcel_Worksheet $sheet, Specification $specification, $position, $row)
+    {
+        if ($position > 1) {
+            $key = $this->generateCellKey($position - 1, $row);
+            $cell = $sheet->getCell($key);
+            $cell->setValue($this->translator->trans('specification.excel.weight'));
+            $this->formatTotalTitlesCell($cell);
+        }
+
+        $key = $this->generateCellKey($position, $row);
+        $cell = $sheet->getCell($key);
+        $cell->setValue($specification->getWeight());
+        $this->setAlignmentForCell($cell, 'left', 'top');
+    }
+
+    /**
+     * Create weight cell
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param Specification       $specification
+     * @param int                 $position
+     * @param int                 $row
+     */
+    private function createVolumeCell(\PHPExcel_Worksheet $sheet, Specification $specification, $position, $row)
+    {
+        if ($position > 1) {
+            $key = $this->generateCellKey($position - 1, $row);
+            $cell = $sheet->getCell($key);
+            $cell->setValue($this->translator->trans('specification.excel.volume'));
+            $this->formatTotalTitlesCell($cell);
+        }
+
+        $key = $this->generateCellKey($position, $row);
+        $cell = $sheet->getCell($key);
+        $cell->setValue($specification->getVolume());
+        $this->setAlignmentForCell($cell, 'left', 'top');
     }
 
     /**

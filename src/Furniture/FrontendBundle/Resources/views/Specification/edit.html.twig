@@ -29,6 +29,7 @@
 {% endblock %}
 
 {% block content_with_edit %}
+    <h1>{{ 'frontend.specification_edit'|trans }}</h1>
     <div class="row specification-edit-head">
         <div class="col-sm-3 information-entry">
             <div class="information-blocks form-horizontal specification-info">                
@@ -112,8 +113,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>{{ 'frontend.brand'|trans }}</th>
                     <th class="text-center">{{ 'frontend.image'|trans }}</th>
+                    <th>{{ 'frontend.brand'|trans }}</th>
                     <th>{{ 'frontend.name'|trans }}</th>
                     <th>{{ 'frontend.options'|trans }}</th>
                     <th>{{ 'frontend.note'|trans }}</th>
@@ -125,7 +126,7 @@
             </thead>
             <tbody>
                 {% for specification_item in specification.items %}
-                    {%if specification_item.skuItem %}
+                    {% if specification_item.skuItem %}
                         {% include 'FrontendBundle:Specification/edit:_sku_table_item.html.twig' with {'specification_item':specification_item} %}
                     {% elseif specification_item.customItem %}
                         {% include 'FrontendBundle:Specification/edit:_custom_table_item.html.twig' with {'specification_item':specification_item} %}
@@ -134,23 +135,33 @@
             </tbody>
 
             <tfoot>
-                <tr class="specification-sale">
-                    <td colspan="8"></td>
-                    <td colspan="2" id="extra-sale-td">
-                        {% set sales_count = specification.sales|length %}
-                        {% if sales_count > 0 %}
-                            {% for sale in specification.sales %}
-                                    {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-                </tr>
+            <tr class="total-price">
+                <td colspan="2"></td>
+                <td class="text-right">{{ 'frontend.volume'|trans }}</td>
+                <td class="text-left" rel="volume" id="volume">{{ specification.volume }}</td>
+                <td class="text-right">{{ 'frontend.weight'|trans }}</td>
+                <td class="text-left" rel="weight" id="weight">{{ specification.weight }}</td>
+                <td colspan="2" class="text-right" id="add-extra-sale" style="cursor: pointer;">{{ 'frontend.total_price'|trans }}</td>
+                <td id="table-total-price">{{ specification|specification_total_price(false)|money }}</td>
+                <td></td>
+            </tr>
 
-                <tr>
-                    <td class="text-right" id="add-extra-sale" style="cursor: pointer;" colspan="8">{{ 'frontend.total_price'|trans }}</td>
-                    <td id="table-total-price">{{ specification|specification_total_price|money }}</td>
-                    <td></td>
-                </tr>
+            <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
+                <td colspan="8"></td>
+                <td colspan="2" id="extra-sale-td">
+                    {% set sales_count = specification.sales|length %}
+                    {% if sales_count > 0 %}
+                        {% for sale in specification.sales %}
+                            {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+
+            <tr class="final-price">
+                <td colspan="8" class="text-right">{{ 'frontend.final_price'|trans }}</td>
+                <td rel="final-price" colspan="2">{{ specification|specification_total_price|money }}</td>
+            </tr>
             </tfoot>        
         </table>
 
@@ -163,7 +174,14 @@
 {% endblock %}
 
 {% block specification_sale %}
-    <div class="sale"><a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a><span>( </span><span id="specification-sale" class="edit" data-index="__index__">__sale__</span><span>% )</span></div>
+    <div class="sale">
+        <a href="#">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
+        <span>(</span>
+        <span id="specification-sale" class="edit" data-index="__index__">__sale__</span>
+        <span>% )</span>
+    </div>
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -274,7 +292,7 @@
                                 url: url,
                                 type: 'get',
                                 success: function (res) {
-                                    $('#table-total-price').html(res);
+                                    $('[rel="final-price"]').html(res);
                                 }
                             });
                         },
@@ -384,7 +402,7 @@
 
                         specificationItemInitializer = {
                             editableRoute: '{{ path('specification_api_specification_item_editable', {item: 123}) }}',
-                                tdDefaultSubject: function(dataTableO, tr, td){
+                            tdDefaultSubject: function(dataTableO, tr, td){
                                 td.unbind();
                                 itemId = tr.data('id');
                                 td.click(function(){
@@ -439,14 +457,14 @@
                             },
                             columns: [
                                 { orderable: true },
+                                { orderable: false },
                                 { orderable: true },
                                 { orderable: false },
                                 { orderable: false },
                                 { orderable: false },
-                                null,
-                                null,
-                                null,
-                                null,
+                                { orderable: true },
+                                { orderable: true },
+                                { orderable: true },
                                 { orderable: false }
                             ]
                         }),
@@ -583,6 +601,7 @@
                             var tr = td.parents('tr').first();
                             var itemId = tr.data('id');
                             tr.addClass('danger');
+
                             bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}', function(result) {
                                 if(result){
                                     td.html(progressBasr);
@@ -630,9 +649,10 @@
                     };
                     
                     var saleInitialize = function (el) {
-                        var el = $(el);
+                        el = $(el);
                         var editable = el.find('.edit');
                         var remove = el.find('a');
+
                         editable.editable(editableUrl, {
                             width: '48px',
                             style: "display: inline-block;",
@@ -642,10 +662,11 @@
                                     index: editable.data('index')
                                 }
                             },
-                            "callback": function( sValue, y ) {
+                            callback: function() {
                                 trTotalPriceSpecificationUpdater();
                             }
                         });
+
                         remove.click(function(){
                             el.html(progressBasr);
                             $.ajax({
@@ -664,39 +685,47 @@
                     };
                     
                     $('#add-extra-sale').click(function(){
-                        if( $('#extra-sale-td').find('.edit').length >= 3 ){
+                        var e = $('#extra-sale-td');
+
+                        if (e.find('.edit').length >= 3 ) {
                             return false;
                         }
-                        var lastel = $('#extra-sale-td').children().last();
+
+                        var lastel = e.children().last();
                         
-                        var line = '{{ block('specification_sale')|trim|raw }}';
+                        var line = $('[data-sale-prototype]').data('sale-prototype');
                         line = line
-                         .replace( /__index__/ , 0)
-                         .replace( /__sale__/ , 0);
-                        var new_sale = $(line);
+                            .replace( /__index__/ , 0)
+                            .replace( /__sale__/ , 0);
+
+                        var newSale = $(line);
+
                         if(lastel.length > 0){
-                            lastel.after( new_sale );
+                            lastel.after( newSale );
                         }else{
-                            $('#extra-sale-td').append(new_sale);
+                            $('#extra-sale-td').append(newSale);
                         }
+
                         updateExtraSaleIndexes();
-                        new_sale.children().hide();
-                        new_sale.append(progressBasr);
+
+                        newSale.children().hide();
+                        newSale.append(progressBasr);
+
                         $.ajax({
-                                method: 'POST',
-                                url: editableUrl,
-                                data: {
-                                   'id': 'specification-sale',
-                                   'index': new_sale.find('.edit').data('index'),
-                                   'value': 0
-                                }
+                            method: 'POST',
+                            url: editableUrl,
+                            data: {
+                               'id': 'specification-sale',
+                               'index': newSale.find('.edit').data('index'),
+                               'value': 0
+                            }
                         }).done(function() {
-                            saleInitialize(new_sale);
-                            new_sale.find('.progress').remove();
-                            new_sale.children().show();
-                            new_sale.find('.edit').trigger('click');
-                            
+                            saleInitialize(newSale);
+                            newSale.find('.progress').remove();
+                            newSale.children().show();
+                            newSale.find('.edit').trigger('click');
                         });
+
                         return false;
                     });
                     
@@ -708,7 +737,7 @@
                         type: 'select',
                         loadurl: '{{ path('specification_api_specification_buyers') }}',
                         submit: 'Ok',
-                        'callback': function(){
+                        callback: function(){
                             bootbox.dialog({
                                 title: "",
                                 message: "<h3>{{ 'frontend.specficatior.page_reload_alert'|trans }}</h3>",
@@ -728,7 +757,11 @@
                         });
                         return false;
                     });
-                    
+
+                    (function (url, params) {
+                        $('[rel="volume"]').editable(url, params);
+                        $('[rel="weight"]').editable(url, params);
+                    })(editableUrl, editableParams);
                 })
             })(jQuery);
         </script>

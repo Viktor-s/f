@@ -424,6 +424,13 @@ class SpecificationController
 
                 break;
 
+            case 'volume':
+                $specification->setVolume($value);
+                break;
+
+            case 'weight':
+                $specification->setWeight($value);
+                break;
 
             default:
                 throw new NotFoundHttpException(sprintf(

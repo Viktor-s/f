@@ -4,19 +4,19 @@
     <td class="text-center" data-index="position" data-server-type="specification-item" data-type="text">{{ specification_item.position }}</td>
 
     <td>
-        <div class="factory-info">
-            <div class="factory-name">
-                <a href="#">{{ product_variant.product.factory.name }}</a>
-            </div>
-        </div>
-    </td>
-
-    <td>
         {% if product.image %}
             <div class="product-image">
                 <img src="{{ product.image.path|imagine_filter('s150x150') }}" width="150" height="150" />
             </div>
         {% endif %}
+    </td>
+
+    <td rel="brand">
+        <div class="factory-info">
+            <div class="factory-name">
+                <a href="#">{{ product_variant.product.factory.name }}</a>
+            </div>
+        </div>
     </td>
 
     <td class="product-info">

@@ -99,12 +99,13 @@ class PricingExtension extends \Twig_Extension
      * Get specification total price
      *
      * @param Specification $specification
+     * @param bool          $useSales
      *
      * @return int
      */
-    public function specificationTotalPrice(Specification $specification)
+    public function specificationTotalPrice(Specification $specification, $useSales = true)
     {
-        return $this->calculator->calculateForSpecification($specification);
+        return $this->calculator->calculateForSpecification($specification, $useSales);
     }
 
     /**

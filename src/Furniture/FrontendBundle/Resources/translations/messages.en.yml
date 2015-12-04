@@ -28,6 +28,9 @@ frontend:
     finished: Finished
     price: Price
     total_price: Total price
+    final_price: Final price
+    volume: Volume
+    weight: Weight
     last_modified: Last modified
     quantity: Quantity
     finish: Finish
@@ -52,6 +55,7 @@ frontend:
     characteristics: Characteristics
     export: Export
     total_quantities: Total quantities
+    discount_value: 'Discount :discount%'
     sku: SKU
     factory_profile: Factory profile
     content_user_profile: User profile
@@ -103,6 +107,7 @@ frontend:
     last_name: Last name
     first_name: First name
     mode: Mode
+    specification_edit: Specification edit
     
     user_profile_side:
         update: Update profile

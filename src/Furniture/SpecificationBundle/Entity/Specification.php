@@ -65,6 +65,16 @@ class Specification
     private $sales;
 
     /**
+     * @var string
+     */
+    private $volume;
+
+    /**
+     * @var string
+     */
+    private $weight;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -351,6 +361,54 @@ class Specification
     public function getSales()
     {
         return $this->sales;
+    }
+
+    /**
+     * Set volume
+     *
+     * @param string $volume
+     *
+     * @return Specification
+     */
+    public function setVolume($volume)
+    {
+        $this->volume = $volume;
+
+        return $this;
+    }
+
+    /**
+     * Get volume
+     *
+     * @return string
+     */
+    public function getVolume()
+    {
+        return $this->volume;
+    }
+
+    /**
+     * Set weight
+     *
+     * @param string $weight
+     *
+     * @return Specification
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * Get weight
+     *
+     * @return string
+     */
+    public function getWeight()
+    {
+        return $this->weight;
     }
 
     /**
