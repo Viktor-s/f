@@ -145,7 +145,6 @@ class User extends BaseUser
      */
     protected function resetProfile()
     {
-        $this->factory = null;
         $this->retailerUserProfile = null;
     }
 
