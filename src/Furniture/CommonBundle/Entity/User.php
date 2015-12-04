@@ -110,6 +110,17 @@ class User extends BaseUser
     }
 
     /**
+     * Is factory user ?
+     * 
+     * @return bool
+     */
+    public function isFactory()
+    {
+        return $this->factory ? true : false;
+    }
+
+
+    /**
      * Is retailer?
      *
      * @return bool

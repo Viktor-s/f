@@ -75,11 +75,23 @@ class RetailerProfile implements AddressMarkerInterface
     private $lng;
 
     /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
+    
+    /**
      * Construct
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
     
     /**
@@ -406,6 +418,34 @@ class RetailerProfile implements AddressMarkerInterface
     public function setLng($longtitude) {
         $this->lng = $longtitude;
         return $this;
+    }
+    
+    /**
+     * Get created at
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get updated at
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    
+    /**
+     * On update
+     */
+    public function onUpdate()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
 }

@@ -180,6 +180,9 @@ frontend:
     factory_side:
         main_statistic:
             page: Statistic
+        retailer:
+            added: Added
+            map_page: Available retailers
         menu:
             general: General
             collections: Collections
@@ -205,6 +208,9 @@ frontend:
             compositions: Compositions
             specifications: Specifications
             specification_buyers: Clients
+            factory:
+                statistics: Common statistics
+                map: Available retailers
 
     login:
         username: Username

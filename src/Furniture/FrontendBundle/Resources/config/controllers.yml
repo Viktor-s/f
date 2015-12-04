@@ -1,7 +1,11 @@
 services:
     frontend.controller.homepage:
         class: Furniture\FrontendBundle\Controller\HomepageController
-        arguments: [ @twig, @router, %available_locales% ]
+        arguments: 
+            - @twig
+            - @router
+            - %available_locales%
+            - @security.token_storage
 
     frontend.controller.catalog:
         class: Furniture\FrontendBundle\Controller\CatalogController
