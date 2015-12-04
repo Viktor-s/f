@@ -75,6 +75,7 @@ class RetailerController {
         foreach( ($allRetailers = $this->retailerProfileRepository->findAll()) as $reatilerProfile){
             if($reatilerProfile->getLat() && $reatilerProfile->getLng())
                 $mapRetailerMarkers[] = [
+                    'id' => $reatilerProfile->getId(),
                     'location' => [
                         'lat' => $reatilerProfile->getLat(),
                         'lng' => $reatilerProfile->getLng(),

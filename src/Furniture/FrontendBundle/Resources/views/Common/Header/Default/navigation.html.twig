@@ -5,6 +5,7 @@
     </div>
 
     <div class="header-simple-search hidden-xs hidden-sm hidden-md">
+        {% if app.user.isRetailer() %}
         <div class="row">
             <div class="col-md-3 col-md-push-9">
                 <div class="simple-search-form">
@@ -18,22 +19,19 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
     <div class="nav-overflow">
-        {{ knp_menu_render('frontend.header', {template: 'FrontendBundle:Common/Header/Default:menu.html.twig'}) }}
+        {% if app.user.isFactory() %}
+            {{ knp_menu_render('frontend.header.factory', {template: 'FrontendBundle:Common/Header/Default:menu.html.twig'}) }}
+        {% elseif app.user.isRetailer() %}
+            {{ knp_menu_render('frontend.header.retailer', {template: 'FrontendBundle:Common/Header/Default:menu.html.twig'}) }}
+        {% else %}
+            Undefined user type!
+        {% endif %}
 
         <div class="navigation-footer responsive-menu-toggle-class">
-            <div class="socials-box">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-google-plus"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-                <a href="#"><i class="fa fa-linkedin"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                <div class="clear"></div>
-            </div>
             <div class="navigation-copyright">Created by <a href="#">AgentA Solutions</a>. All rights reserved</div>
         </div>
     </div>

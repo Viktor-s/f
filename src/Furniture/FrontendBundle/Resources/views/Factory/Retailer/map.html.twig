@@ -34,8 +34,33 @@
 {% block content %}
     <div class="information-blocks">
         <div class="row">
-            <div class="col-sm-12 information-entry">
-                <div style="min-height: 450px;" id="map"></div>
+            <div class="col-sm-4 information-entry">
+                {% for retailer in allRetailers %}
+                    <div data-retailer="{{ retailer.id }}" class="inline-product-entry">
+                        {% if retailer.logoImage %}
+                            <a href="blog-list.html#" class="image"><img alt="" src="{{ retailer.logoImage.path|imagine_filter('s201x203') }}"></a>
+                        {% else %}
+                            <a href="blog-list.html#" class="image"><img alt="" src="{{ '/img/201x203.png' }}"></a>
+                        {% endif %}
+                        <div class="content">
+                            <div class="cell-view">
+                                <a href="blog-list.html#" class="title">{{ retailer.name }}</a>
+                                {% if retailer.createdAt %}
+                                    <div class="description">
+                                        {{ 'frontend.factory_side.retailer.added'|trans }} {{  retailer.createdAt.format('d M Y') }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                {% endfor %}
+                <div class="clear"></div>
+            </div>
+            <div class="col-sm-8 information-entry">
+                <div>
+                    <div style="min-height: 450px;" id="map"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,50 +69,61 @@
 {% block footer_javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        var mapRetailerMarkers = {{mapRetailerMarkers|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
-        
-        var geocoder;
+        var mapRetailerMarkers
+        = {{mapRetailerMarkers|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}};
+                var geocoder;
         var map;
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 43.899223, lng: 20.060437},
+                center: {lat: 43, lng: 25},
                 zoom: 5,
                 mapTypeControl: false
             });
             geocoder = new google.maps.Geocoder();
-            
-            mapRetailerMarkers.forEach(function(retailer){
-                
+            var currentActiveInfoWindows = null;
+            mapRetailerMarkers.forEach(function (retailer) {
+
                 var infowindow = new google.maps.InfoWindow({
                     content: '<div>\
                         <div class="article-container style-1">\
                             <div class="cell-view">\
-                                <h4 class="block-title main-heading">'+retailer.name+'</h4>\
+                                <h4 class="block-title main-heading">' + retailer.name + '</h4>\
                                 <h5>Company address</h5>\
-                                <p>'+retailer.address+'<br>\
+                                <p>' + retailer.address + '<br>\
                                 <h5>Contact Informations</h5>\
-                                <p>Email: '+retailer.emails+'<br>\
-                                Phones: '+retailer.phones+'</p>\
+                                <p>Email: ' + retailer.emails + '<br>\
+                                Phones: ' + retailer.phones + '</p>\
                             </div>\
                         </div>\
                     </div>'
                 });
                 var marker = new google.maps.Marker({
-                            icon: '/img/marker.png',
-                            map: map,
-                            position: retailer.location,
-                            title: retailer.name
-                        });
-                marker.addListener('click', function() {
-                    infowindow.open(map, marker);
+                    icon: '/img/marker.png',
+                    map: map,
+                    position: retailer.location,
+                    title: retailer.name
+                });
+                
+                var openInfoWindow = function(){
+                    if( currentActiveInfoWindows )
+                        currentActiveInfoWindows.close();
+                    currentActiveInfoWindows = infowindow;
+                    currentActiveInfoWindows.open(map, marker);
+                }
+                
+                marker.addListener('click', function () {
+                    openInfoWindow();
+                });
+                $('[data-retailer="'+retailer.id+'"] a').click(function(){
+                    openInfoWindow();
+                    return false;
                 });
             });
         }
 
-        
-        $(document).ready(function () {            
+
+        $(document).ready(function () {
         });
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtfFR1y2sFVhzLwxvoeX6g_FUofzQakxA&callback=initMap" async defer></script>
 {% endblock %}
-    

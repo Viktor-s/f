@@ -11,12 +11,19 @@ services:
             - @frontend.repository.product_space
             - @request_stack
 
-    frontend.menu.header:
+    frontend.menu.retailer.header:
         class: Knp\Menu\MenuItem
         factory_service: frontend.menu_builder
-        factory_method: createHeaderMenu
+        factory_method: createReatilerHeaderMenu
         tags:
-            - { name: knp_menu.menu, alias: frontend.header }
+            - { name: knp_menu.menu, alias: frontend.header.retailer }
+
+    frontend.menu.factory.header:
+        class: Knp\Menu\MenuItem
+        factory_service: frontend.menu_builder
+        factory_method: createFactoryHeaderMenu
+        tags:
+            - { name: knp_menu.menu, alias: frontend.header.factory }
 
     frontend.menu.footer:
         class: Knp\Menu\MenuItem

@@ -93,57 +93,42 @@ class FrontendMenuBuilder
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createHeaderMenu()
-    {
+    public function createReatilerHeaderMenu() {
         $menu = $this->factory->createItem('root');
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if (!$user) {
+        if (!$user || !$user->isRetailer()) {
             return $menu;
         }
-        
-        $menu
-            ->addChild('home', [
-                'route' => 'homepage',
-                'label' => $this->translator->trans('frontend.menu_items.header.homepage')
-            ]);
 
-        if($user->isRetailer()) {
-            $menu->addChild('factories', [
-                'uri' => $this->urlGenerator->generate('factory_side_list'),
-                'label' => $this->translator->trans('frontend.menu_items.header.factories')
-            ]);
-        }
-        
+        $menu
+                ->addChild('home', [
+                    'route' => 'homepage',
+                    'label' => $this->translator->trans('frontend.menu_items.header.homepage')
+        ]);
+
+        $menu->addChild('factories', [
+            'uri' => $this->urlGenerator->generate('factory_side_list'),
+            'label' => $this->translator->trans('frontend.menu_items.header.factories')
+        ]);
+
         $products = $menu->addChild('products', [
-            //'uri' => $this->urlGenerator->generate('catalog'),
             'uri' => $this->urlGenerator->generate('products', []),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
 
-        /*$spaces = $this->productSpaceRepository->findAllOnlyRoot();
-        
-        foreach ($spaces as $space){
-            $products->addChild('taxon_'. $space->getId(), [
-                'uri' => $this->urlGenerator->generate('products', ['space' => [$space->getId()]]),
-                'label' => (string) $space
-            ]);
-        }*/
+        $menu->addChild('specifications', [
+            'uri' => $this->urlGenerator->generate('specifications'),
+            'label' => $this->translator->trans('frontend.menu_items.header.specifications')
+        ]);
 
-        if ($user->isRetailer()) {
-            $menu->addChild('specifications', [
-                'uri' => $this->urlGenerator->generate('specifications'),
-                'label' => $this->translator->trans('frontend.menu_items.header.specifications')
-            ]);
+        $menu->addChild('buyers', [
+            'uri' => $this->urlGenerator->generate('specification_buyers'),
+            'label' => $this->translator->trans('frontend.menu_items.header.specification_buyers')
+        ]);
 
-            $menu->addChild('buyers', [
-                'uri' => $this->urlGenerator->generate('specification_buyers'),
-                'label' => $this->translator->trans('frontend.menu_items.header.specification_buyers')
-            ]);
-        }
-
-        switch($this->requestStack->getMasterRequest()->get('_route')){
+        switch ($this->requestStack->getMasterRequest()->get('_route')) {
             case 'homepage':
                 $menu->getChild('home')->setCurrent('true');
                 break;
@@ -162,13 +147,39 @@ class FrontendMenuBuilder
             case 'specification_buyers':
                 $menu->getChild('buyers')->setCurrent('true');
                 break;
-                
         }
-        
-        
+
+
         return $menu;
     }
 
+    /**
+     * Create a header menu
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createFactoryHeaderMenu() {
+        $menu = $this->factory->createItem('root');
+        /** @var \Furniture\CommonBundle\Entity\User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if (!$user || !$user->isFactory()) {
+            return $menu;
+        }
+
+        $menu->addChild('home', [
+            'uri' => $this->urlGenerator->generate('factory'),
+            'label' => $this->translator->trans('frontend.menu_items.header.factory.statistics')
+        ]);
+        
+        $menu->addChild('map', [
+            'uri' => $this->urlGenerator->generate('retailer_map'),
+            'label' => $this->translator->trans('frontend.menu_items.header.factory.map')
+        ]);
+        
+        return $menu;
+    }
+    
     /**
      * Create a footer menu
      *

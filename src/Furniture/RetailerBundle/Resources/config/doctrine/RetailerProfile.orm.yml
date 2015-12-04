@@ -59,3 +59,16 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
             type: float
             name: longtitude
             nullable: true
+            
+        createdAt:
+            type: datetime
+            name: created_at
+            nullable: true
+
+        updatedAt:
+            type: datetime
+            name: updated_at
+            nullable: true
+            
+    lifecycleCallbacks:
+        preUpdate: [ onUpdate ]

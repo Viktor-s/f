@@ -5,6 +5,8 @@ namespace Furniture\FrontendBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HomepageController
 {
@@ -24,17 +26,29 @@ class HomepageController
     private $availableLocales;
 
     /**
+     *
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     */
+    private $tokenStorage;
+    
+    /**
      * Construct
      *
      * @param \Twig_Environment     $twig
      * @param UrlGeneratorInterface $urlGenerator
      * @param string                $availableLocales
      */
-    public function __construct(\Twig_Environment $twig, UrlGeneratorInterface $urlGenerator, $availableLocales)
+    public function __construct(
+            \Twig_Environment $twig, 
+            UrlGeneratorInterface $urlGenerator, 
+            $availableLocales, 
+            TokenStorageInterface $tokenStorage
+    )
     {
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
         $this->availableLocales = explode('|', $availableLocales);
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -45,11 +59,6 @@ class HomepageController
     public function index()
     {
         return new RedirectResponse('/en/');
-//        $content = $this->twig->render('FrontendBundle::select_locale.html.twig', [
-//            'available_locales' => $this->availableLocales
-//        ]);
-//
-//        return new Response($content);
     }
 
     /**
@@ -59,9 +68,16 @@ class HomepageController
      */
     public function home()
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+        if(!$user)
+            throw new NotFoundHttpException('Logged in user not found!');
+        
+        if($user->isFactory())
+            return new RedirectResponse($this->urlGenerator->generate('factory'));
+        
         $content = $this->twig->render('FrontendBundle::homepage.html.twig', [
         ]);
-
+        
         return new Response($content);
     }
 }
