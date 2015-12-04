@@ -101,7 +101,8 @@ class UserType extends BaseUserType
                     $user->addRole(User::ROLE_FACTORY_ADMIN);
                 }
 
-                if ($user->getRetailerUserProfile()) {
+                if ($user->getRetailerUserProfile() 
+                        && $user->getRetailerUserProfile()->getRetailerProfile()) {
                     $this->validateUserForRetailerProfile($user, $event->getForm());
                 }
             });
