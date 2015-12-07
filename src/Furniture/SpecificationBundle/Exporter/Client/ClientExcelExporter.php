@@ -254,15 +254,17 @@ class ClientExcelExporter extends AbstractExporter
             $positions['price'] = $column;
             $key = $this->generateCellKey($column++, $row);
             $cell = $sheet->getCell($key);
-            $cell->setValue($customItem->getPrice());
+            $price = round($item->getCustomItem()->getPrice() / 100, 2);
+            $cell->setValue($price);
             $this->formatPriceCell($cell);
         }
 
         if ($fieldMap->hasFieldTotalPrice()) {
             $positions['total_price'] = $column;
             $key = $this->generateCellKey($column, $row);
+            $totalPrice = round($this->priceCalculator->calculateTotalForSpecificationItem($item) / 100, 2);
             $cell = $sheet->getCell($key);
-            $cell->setValue($customItem->getTotalPrice());
+            $cell->setValue($totalPrice);
             $this->formatTotalPriceCell($cell);
         }
 
