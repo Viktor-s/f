@@ -5,11 +5,20 @@
 {% block breadcrumb %}
     {{ parent() }}
 
+    <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ specification.name }}</a>
+
     <a href="#">{{ 'frontend.title.preview'|trans }}</a>
 {% endblock %}
 
 {% block content %}
     <div class="information-blocks">
+        <div class="pull-right">
+            <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-success">
+                <i class="fa fa-edit"></i>
+                {{ 'frontend.edit'|trans }}
+            </a>
+        </div>
+
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#full" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.all'|trans }}</a>
