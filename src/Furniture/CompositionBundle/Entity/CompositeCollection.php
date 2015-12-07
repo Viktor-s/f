@@ -37,6 +37,13 @@ class CompositeCollection extends AbstractTranslatable
     protected $logoImage;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
+
+    /**
      * Construct
      */
     public function __construct()
