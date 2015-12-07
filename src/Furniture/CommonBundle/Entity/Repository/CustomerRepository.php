@@ -13,7 +13,8 @@ class CustomerRepository extends BaseCustomerRepository
     {
         $queryBuilder = parent::getCollectionQueryBuilder()
             ->leftJoin($this->getPropertyName('user'), 'user')
-            ->leftJoin('user.retailerUserProfile', 'rup');
+            ->leftJoin('user.retailerUserProfile', 'rup')
+            ->leftJoin('rup.retailerProfile', 'rp');
 
         if ($deleted) {
             $this->_em->getFilters()->disable('softdeleteable');
@@ -38,13 +39,13 @@ class CustomerRepository extends BaseCustomerRepository
 
         if (!empty($criteria['mode'])) {
             if ($criteria['mode'] == 'retailer') {
-                $queryBuilder->andWhere('rup.id IS NOT NULL');
+                $queryBuilder->andWhere('rp.id IS NOT NULL');
             }
         }
 
         if (!empty($criteria['retailerId'])) {
             $queryBuilder
-                ->andWhere('rup.id = :retailer_id')
+                ->andWhere('rp.id = :retailer_id')
                 ->setParameter('retailer_id', $criteria['retailerId']);
         }
 
