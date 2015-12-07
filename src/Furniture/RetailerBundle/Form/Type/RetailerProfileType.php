@@ -29,16 +29,16 @@ class RetailerProfileType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                    'required' => true
+                'required' => true
             ])
             ->add('website', 'text', [
-                    'required' => false
+                'required' => false
             ])
             ->add('subtitle', 'text', [
-                    'required' => false
+                'required' => false
             ])
-            ->add('description', 'text', [
-                    'required' => false
+            ->add('description', 'textarea', [
+                'required' => false
             ])
             ->add('logoImage', new ImageType(RetailerProfileLogoImage::class), [
                 'required' => false
