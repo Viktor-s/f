@@ -499,6 +499,19 @@ class SpecificationController
                     )
                 );
                 break;
+            case 'priceInfo':
+                $res = ['totalPrice'  => $this->pricingTwigExtension->money(
+                            $this->calculator->calculateTotalForSpecification($specification, false)
+                            ),
+                    'totalPriceWithExtraDisc' => $this->pricingTwigExtension->money(
+                        $this->calculator->calculateForSpecification($specification)
+                    ),
+                    'salesAmounts' => []];
+                foreach($this->calculator->calculateExtraSalesForSpecification($specification) as $sale){
+                    $res['salesAmounts'][] = $this->pricingTwigExtension->money($sale);
+                }
+                return new JsonResponse($res);
+                break;
         }
 
         return new Response('');

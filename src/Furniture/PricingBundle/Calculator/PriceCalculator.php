@@ -113,6 +113,39 @@ class PriceCalculator
     }
 
     /**
+     * 
+     * @param Specification $specification
+     * @return int
+     */
+    public function calculateTotalForSpecification(Specification $specification)
+    {
+        $price = 0;
+
+        foreach ($specification->getItems() as $item) {
+            $price += $this->calculateTotalForSpecificationItem($item);
+        }
+        return $price;
+    }
+
+
+    /**
+     * 
+     * @param Specification $specification
+     * @return array
+     */
+    public function calculateExtraSalesForSpecification(Specification $specification)
+    {
+        $sales = [];
+        $price = $this->calculateTotalForSpecification($specification);
+        foreach ($specification->getSales() as $sale) {
+            if ($sale->getSale()) {
+                $sales[] = ($price * ($sale->getSale() / 100));
+            }
+        }
+        return $sales;
+    }
+
+    /**
      * Calculate for specification
      *
      * @param Specification $specification
@@ -122,17 +155,11 @@ class PriceCalculator
      */
     public function calculateForSpecification(Specification $specification, $useSales = true)
     {
-        $price = 0;
-
-        foreach ($specification->getItems() as $item) {
-            $price += $this->calculateTotalForSpecificationItem($item);
-        }
+        $price = $this->calculateTotalForSpecification($specification);
 
         if ($useSales) {
-            foreach ($specification->getSales() as $sale) {
-                if ($sale->getSale()) {
-                    $price -= ($price * ($sale->getSale() / 100));
-                }
+            foreach ($this->calculateExtraSalesForSpecification($specification) as $sale) {
+                $price -= $sale;
             }
         }
 
