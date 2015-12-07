@@ -15,15 +15,16 @@
 {% block page_content %}
     <form class="form" method="POST" action="">
         {% if form.vars.errors|length %}
-                {{ form_errors(form) }}
+            {{ form_errors(form) }}
         {% endif %}
 
         {{ form_row(form.customer.firstName) }}
         {{ form_row(form.customer.lastName) }}
-        {#{{ form_row(form.username) }}#}
         {{ form_row(form.customer.email) }}
+        {{ form_row(form.retailerUserProfile.position) }}
         {{ form_row(form.plainPassword) }}
         {{ form_row(form.retailerMode) }}
+        {{ form_row(form.enabled) }}
 
         <div class="form-group text-center">
             <input type="submit" value="{{ employee.id ? 'Save' : 'Create' }}" class="btn btn-success" />

@@ -28,17 +28,20 @@ class RetailerUserProfile
     private $retailerMode = self::RETAILER_EMPLOYEE;
     
     /**
-     * @var \Furniture\CommonBundle\Entity\User
+     * @var User
      */
     private $user;
 
+    /**
+     * @var string
+     */
+    private $position;
 
     /**
      * Construct
      */
     public function __construct()
     {
-        
     }
     
     /**
@@ -99,8 +102,9 @@ class RetailerUserProfile
     }
     
     /**
-     * 
-     * @return \Furniture\CommonBundle\Entity\User
+     * Get user
+     *
+     * @return User
      */
     public function getUser()
     {
@@ -108,13 +112,16 @@ class RetailerUserProfile
     }
     
     /**
-     * 
-     * @param \Furniture\CommonBundle\Entity\User $user
-     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
+     * Set user
+     *
+     * @param User $user
+     *
+     * @return RetailerUserProfile
      */
     public function setUser(User $user)
     {
         $this->user = $user;
+
         return $this;
     }
     
@@ -137,6 +144,28 @@ class RetailerUserProfile
     {
         return $this->retailerMode == self::RETAILER_EMPLOYEE;
     }
-    
-}
 
+    /**
+     * Set position
+     *
+     * @param string $position
+     *
+     * @return RetailerUserProfile
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+}

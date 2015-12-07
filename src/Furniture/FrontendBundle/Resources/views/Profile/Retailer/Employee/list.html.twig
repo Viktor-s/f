@@ -22,8 +22,9 @@
         <thead>
         <tr>
             <th class="text-center">{{ 'frontend.user'|trans }}</th>
-            <th class="text-center">{{ 'frontend.email'|trans }}</th>
+            <th class="text-center">{{ 'frontend.position'|trans }}</th>
             <th class="text-center">{{ 'frontend.created'|trans }}</th>
+            <th class="text-center">{{ 'frontend.enabled'|trans }}</th>
             <th class="text-center">{{ 'frontend.access'|trans }}</th>
             <th class="text-center">{{ 'frontend.actions'|trans }}</th>
         </tr>
@@ -37,12 +38,17 @@
                     <div class="username">{{ employee.username }}</div>
                 </td>
 
-                <td>{{ employee.email }}</td>
+                <td>{{ employee.retailerUserProfile.position }}</td>
+
                 <td>
                     <div class="datetime">
                         <div class="date">{{ employee.createdAt.format('Y/m/d') }}</div>
                         <div class="time">{{ employee.createdAt.format('H:i') }}</div>
                     </div>
+                </td>
+
+                <td>
+                    <i class="glyphicon glyphicon-{{ employee.enabled ? 'ok' : 'remove' }}"></i>
                 </td>
 
                 <td>

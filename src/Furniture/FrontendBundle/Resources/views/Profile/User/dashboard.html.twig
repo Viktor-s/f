@@ -45,6 +45,15 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+
+                    {% if app.user.retailerUserProfile.retailerProfile.website %}
+                        <div class="website">
+                            <b>Website:</b>
+                            <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
+                                {{ app.user.retailerUserProfile.retailerProfile.website }}
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% elseif app.user.factory %}

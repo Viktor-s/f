@@ -33,7 +33,7 @@ class RetailerUserProfileType extends AbstractType
                 'required' => false,
                 'choices' => [
                     RetailerUserProfile::RETAILER_ADMIN => 'Admin',
-                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee'
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager'
                 ]
             ])
             ->add('retailerProfile', 'entity', [
@@ -50,6 +50,4 @@ class RetailerUserProfileType extends AbstractType
     {
         return 'furniture_retailer_user_profile';
     }
-    
 }
-

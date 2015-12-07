@@ -48,6 +48,7 @@ frontend:
     full: Full
     all: All
     by_company: By company
+    position: Position
     photo: Photo
     product_article: Article
     product_size: Size
@@ -107,6 +108,7 @@ frontend:
     last_name: Last name
     first_name: First name
     mode: Mode
+    enabled: Enabled
     specification_edit: Specification edit
     
     user_profile_side:

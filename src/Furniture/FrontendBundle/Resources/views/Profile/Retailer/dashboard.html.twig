@@ -53,7 +53,6 @@
             <div class="col-md-9">
                 <div class="article-container style-1">
                     <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
-                    <h2>User: {{ app.user.username }}</h2>
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
                         <div class="address">
@@ -77,6 +76,15 @@
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                                 <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
                             {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if app.user.retailerUserProfile.retailerProfile.website %}
+                        <div class="website">
+                            <b>Website:</b>
+                            <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
+                                {{ app.user.retailerUserProfile.retailerProfile.website }}
+                            </a>
                         </div>
                     {% endif %}
                 </div>

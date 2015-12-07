@@ -53,7 +53,7 @@ class RetailerEmployeeType extends AbstractType
             }
         }
 
-        $passwordRequired = (bool)!$employee->getID();
+        $passwordRequired = (bool)!$employee->getId();
         
         $builder
             /*->add('username', 'text', [
@@ -72,7 +72,12 @@ class RetailerEmployeeType extends AbstractType
                     RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee',
                 ]
             ])
-            ->add('customer', new RetailerEmployeeCustomerType());
+            ->add('enabled', 'checkbox', [
+                'label' => 'frontend.enabled',
+                'required' => false
+            ])
+            ->add('customer', new RetailerEmployeeCustomerType())
+            ->add('retailerUserProfile', new RetailerUserProfileType());
     }
 
     /**
