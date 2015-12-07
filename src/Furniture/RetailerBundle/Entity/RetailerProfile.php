@@ -85,6 +85,90 @@ class RetailerProfile implements AddressMarkerInterface
     private $updatedAt;
     
     /**
+     *
+     * @var string
+     */
+    private $country;
+    
+    /**
+     *
+     * @var string
+     */
+    private $locality;
+    
+    /**
+     *
+     * @var string
+     */
+    private $route;
+    
+    /**
+     *
+     * @var string
+     */
+    private $streetNumber;
+
+    /**
+     *
+     * @var string
+     */
+    private $sublocalityLevel1;
+    
+    /**
+     *
+     * @var string
+     */
+    private $sublocalityLevel2;
+    
+    /**
+     *
+     * @var string
+     */
+    private $sublocalityLevel3;
+    
+    /**
+     *
+     * @var string
+     */
+    private $sublocalityLevel4;
+    
+    /**
+     *
+     * @var string
+     */
+    private $sublocalityLevel5;
+    
+    /**
+     *
+     * @var string
+     */
+    private $administrativeAreaLevel1;
+
+    /**
+     *
+     * @var string
+     */
+    private $administrativeAreaLevel2;
+    
+    /**
+     *
+     * @var string
+     */
+    private $administrativeAreaLevel3;
+    
+    /**
+     *
+     * @var string
+     */
+    private $administrativeAreaLevel4;
+    
+    /**
+     *
+     * @var string
+     */
+    private $administrativeAreaLevel5;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -446,6 +530,257 @@ class RetailerProfile implements AddressMarkerInterface
     public function onUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdministrativeAreaLevel1() {
+        return $this->administrativeAreaLevel1;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdministrativeAreaLevel2() {
+        return $this->administrativeAreaLevel2;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdministrativeAreaLevel3() {
+        return $this->administrativeAreaLevel3;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdministrativeAreaLevel4() {
+        return $this->administrativeAreaLevel4;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getAdministrativeAreaLevel5() {
+        return $this->administrativeAreaLevel5;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getLocality() {
+        return $this->localy;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setAdministrativeAreaLevel1($levelArea) {
+        $this->administrativeAreaLevel1 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setAdministrativeAreaLevel2($levelArea) {
+        $this->administrativeAreaLevel2 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setAdministrativeAreaLevel3($levelArea) {
+        $this->administrativeAreaLevel3 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setAdministrativeAreaLevel4($levelArea) {
+        $this->administrativeAreaLevel4 = $levelArea; 
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setAdministrativeAreaLevel5($levelArea) {
+        $this->administrativeAreaLevel5 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $country
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $localy
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setLocality($localy) {
+        $this->locality = $localy;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStreetNumber() {
+       return $this->streetNumber; 
+    }
+
+    /**
+     * 
+     * @param street $streetNumber
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setStreetNumber($streetNumber) {
+        $this->streetNumber = $streetNumber;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return sting
+     */
+    public function getSublocalityLevel1() {
+        return $this->sublocalityLevel1;
+    }
+
+    /**
+     * 
+     * @return sting
+     */
+    public function getSublocalityLevel2() {
+        return $this->sublocalityLevel2;
+    }
+
+    /**
+     * 
+     * @return sting
+     */
+    public function getSublocalityLevel3() {
+        return $this->sublocalityLevel3;
+    }
+
+    /**
+     * 
+     * @return sting
+     */
+    public function getSublocalityLevel4() {
+        return $this->sublocalityLevel4;
+    }
+
+    /**
+     * 
+     * @return sting
+     */
+    public function getSublocalityLevel5() {
+        return $this->sublocalityLevel5;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSublocalityLevel1($levelArea) {
+        $this->sublocalityLevel1 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSublocalityLevel2($levelArea) {
+        $this->sublocalityLevel2 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSublocalityLevel3($levelArea) {
+        $this->sublocalityLevel3 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSublocalityLevel4($levelArea) {
+        $this->sublocalityLevel4 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param string $levelArea
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setSublocalityLevel5($levelArea) {
+        $this->sublocalityLevel5 = $levelArea;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getRoute() {
+        return $this->route;
+    }
+
+    /**
+     * 
+     * @param string $route
+     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     */
+    public function setRoute($route) {
+        $this->route = $route;
+        return $this;
     }
 
 }

@@ -60,6 +60,66 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
             name: longtitude
             nullable: true
             
+        country:
+            type: string
+            name: Country
+            nullable: true
+            
+        locality:
+            type: string
+            name: City
+            nullable: true
+            
+        streetNumber:
+            type: string
+            name: Street number
+            nullable: true
+            
+        route:
+            type: string
+            name: Street number
+            nullable: true
+        
+        sublocalityLevel1:
+            type: string
+            nullable: true
+            
+        sublocalityLevel2:
+            type: string
+            nullable: true
+            
+        sublocalityLevel3:
+            type: string
+            nullable: true
+            
+        sublocalityLevel4:
+            type: string
+            nullable: true
+            
+        sublocalityLevel5:
+            type: string
+            nullable: true
+            
+        administrativeAreaLevel1:
+            type: string
+            nullable: true
+            
+        administrativeAreaLevel2:
+            type: string
+            nullable: true
+            
+        administrativeAreaLevel3:
+            type: string
+            nullable: true
+            
+        administrativeAreaLevel4:
+            type: string
+            nullable: true
+            
+        administrativeAreaLevel5:
+            type: string
+            nullable: true
+            
         createdAt:
             type: datetime
             name: created_at

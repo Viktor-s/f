@@ -105,6 +105,7 @@
                 });
                 
                 var openInfoWindow = function(){
+                    map.setZoom(10);
                     if( currentActiveInfoWindows )
                         currentActiveInfoWindows.close();
                     currentActiveInfoWindows = infowindow;

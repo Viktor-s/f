@@ -127,7 +127,12 @@ class User extends BaseUser
      */
     public function isRetailer()
     {
-        return $this->retailerUserProfile ? true : false;
+        if($this->retailerUserProfile 
+                && $this->retailerUserProfile->getRetailerMode()
+                && $this->retailerUserProfile->getRetailerProfile())
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -145,7 +150,6 @@ class User extends BaseUser
      */
     protected function resetProfile()
     {
-        $this->factory = null;
         $this->retailerUserProfile = null;
     }
 

@@ -21,7 +21,7 @@ class Geocoding
 
     private function getUrlByAddress($address)
     {
-        return $this->googleServiceUrl.'?address='.urlencode($address).'&key='.$this->apiKey;
+        return $this->googleServiceUrl.'?language=en&address='.urlencode($address).'&key='.$this->apiKey;
     }
 
 
