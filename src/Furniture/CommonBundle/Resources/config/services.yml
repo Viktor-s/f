@@ -19,3 +19,8 @@ services:
         class: Furniture\CommonBundle\Twig\CommonExtension
         tags:
             - { name: twig.extension }
+            
+    liip_imagine.filter.loader.auto_relative_resize:
+        class: Furniture\CommonBundle\Imagine\Filter\Loader\AutoRelativeResizeLoader
+        tags:
+            - { name: liip_imagine.filter.loader, loader: auto_relative_resize }

@@ -24,7 +24,7 @@
                 {% if is_granted('RETAILER_EDIT', retailer) %}
                     <div class="image-ajax-container" data-full-name="logo[path]" data-url-upload="{{ path('retailer_profile_logo_upload') }}"{% if retailer.logoImage and retailer.logoImage.path %} data-image-path="{{ retailer.logoImage.path|imagine_filter('s200x200') }}"{% endif %}>
                         <div class="image-upload">
-                            <img data-src="holder.js/200x200?text=Choose image" width="200" height="200" />
+                            <img data-src="holder.js/200x200?text=Choose image" />
                         </div>
 
                         <div class="form-widget">
@@ -33,7 +33,7 @@
 
                         <div class="image-container">
                             <div class="image">
-                                <img width="200" height="200" src="" />
+                                <img min-width="200" min-height="200" src="" />
                             </div>
 
                             <a class="btn btn-danger btn-xs" href="#remove-image">
@@ -43,9 +43,9 @@
                     </div>
                 {% else %}
                     {% if retailer.logoImage and retailer.logoImage.path %}
-                        <img src="{{ retailer.logoImage.path|imagine_filter('s200x200') }}" width="200" height="200" />
+                        <img src="{{ retailer.logoImage.path|imagine_filter('s200x200') }}" />
                     {% else %}
-                        <img data-src="holder.js/200x200?text=Logo" width="200" height="200" />
+                        <img data-src="holder.js/200x200?text=Logo" />
                     {% endif %}
                 {% endif %}
             </div>
