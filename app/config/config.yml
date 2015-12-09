@@ -103,6 +103,10 @@ doctrine:
         user:     %sylius.database.user%
         password: %sylius.database.password%
         charset:  UTF8
+
+        mapping_types:
+            json: json_array
+
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         entity_managers:
