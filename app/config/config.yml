@@ -326,32 +326,40 @@ liip_imagine:
     filter_sets:
         s200x250:
             filters:
-                thumbnail: { size: [200, 150], mode: outbound }
+                auto_relative_resize: { widen: 200, heighten: 150 }
+                #thumbnail: { size: [200, 150], mode: outbound }
         s201x203:
             filters:
-                thumbnail: { size: [201, 203], mode: outbound }
+                auto_relative_resize: { widen: 201, heighten: 203 }
+                #thumbnail: { size: [201, 203], mode: outbound }
 
         s150x150:
             filters:
-                thumbnail: { size: [150, 150], mode: outbound }
+                auto_relative_resize: { widen: 150, heighten: 150 }
+                #thumbnail: { size: [150, 150], mode: outbound }
         s425x200:
             filters:
-                thumbnail: { size: [425, 200], mode: outbound }
+                auto_relative_resize: { widen: 425, heighten: 200 }
+                #thumbnail: { size: [425, 200], mode: outbound }
 
         s100x100:
             filters:
-                thumbnail: { size: [100, 100], mode: outbound }
+                auto_relative_resize: { widen: 100, heighten: 100 }
+                #thumbnail: { size: [100, 100], mode: outbound }
 
         s1200x350:
             filters:
-                thumbnail: { size: [1200, 350], mode: outbound }
+                auto_relative_resize: { widen: 1200, heighten: 350 }
+                #thumbnail: { size: [1200, 350], mode: outbound }
 
         s200x200:
             filters:
                 auto_relative_resize: { widen: 200, heighten: 200 }
         s300x225:
             filters:
-                thumbnail: { size: [300, 225], mode: outbound }
+                auto_relative_resize: { widen: 300, heighten: 225 }
+                #thumbnail: { size: [300, 225], mode: outbound }
         s360x360:
             filters:
-                thumbnail: { size: [360, 360], mode: outbound }
+                auto_relative_resize: { widen: 360, heighten: 360 }
+                #thumbnail: { size: [360, 360], mode: outbound }
