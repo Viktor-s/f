@@ -4,7 +4,7 @@ namespace Furniture\CommonBundle\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class ExcelResponse extends Response
+class PhpExcelResponse extends Response
 {
     /**
      * @var \PHPExcel_Writer_IWriter
@@ -16,10 +16,11 @@ class ExcelResponse extends Response
      *
      * @param \PHPExcel_Writer_IWriter $writer
      * @param string                   $fileName
+     * @param string                   $format
      * @param int                      $status
      * @param array                    $headers
      */
-    public function __construct(\PHPExcel_Writer_IWriter $writer, $fileName, $status = 200, array $headers = [])
+    public function __construct(\PHPExcel_Writer_IWriter $writer, $fileName, $format, $status = 200, array $headers = [])
     {
         parent::__construct(null, $status, $headers);
 
@@ -27,7 +28,22 @@ class ExcelResponse extends Response
 
         $this->writer = $writer;
         $this->headers->set('Content-Disposition',  'attachment; filename="' . $fileName . '"');
-        $this->headers->set('Content-Type', 'application/vnd.ms-excel');
+
+        switch ($format) {
+            case 'excel':
+                $this->headers->set('Content-Type', 'application/vnd.ms-excel');
+                break;
+
+            case 'pdf':
+                $this->headers->set('Content-Type', 'application/pdf');
+                break;
+
+            default:
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid format "%s". Available formats: "excel" or "pdf".',
+                    $format
+                ));
+        }
     }
 
     /**

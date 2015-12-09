@@ -206,7 +206,15 @@
 
                         <tr>
                             <td colspan="9">
-                                <input type="submit" class="btn btn-primary" value="{{ 'frontend.export'|trans }}" />
+                                <button type="submit" class="btn btn-primary" value="excel" name="format">
+                                    <i class="fa fa-download"></i>
+                                    {{ 'frontend.excel'|trans }}
+                                </button>
+
+                                <button type="submit" value="pdf" name="format" class="btn btn-primary">
+                                    <i class="fa fa-download"></i>
+                                    {{ 'frontend.pdf'|trans }}
+                                </button>
                             </td>
                         </tr>
                         </tfoot>
@@ -224,28 +232,25 @@
 
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th colspan="5"></th>
-                            </tr>
 
                             <tr class="text-center">
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="sku" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="note" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="size" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="type" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label></th>
                             </tr>
 
                             <tr class="table-title">
-                                <th>#</th>
-                                <th>{{ 'frontend.photo'|trans }}</th>
-                                <th>{{ 'frontend.name'|trans }}</th>
-                                <th>{{ 'frontend.sku'|trans }}</th>
-                                <th>{{ 'frontend.note'|trans }}</th>
-                                <th>{{ 'frontend.product_size'|trans }}</th>
-                                <th>{{ 'frontend.quantity'|trans }}</th>
+                                <th class="text-center">#</th>
+                                <th class="text-center">{{ 'frontend.type'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.name'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.options'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.notes'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.quantity'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.price'|trans }}</th>
                             </tr>
                             </thead>
 
@@ -255,25 +260,54 @@
                                 {% set product = productVariant.product %}
 
                                 <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>
-                                        {% if product.images|length > 0 %}
-                                            <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
+                                    <td class="text-center">{{ loop.index }}</td>
+
+                                    <td class="text-center">
+                                        {% if product.types|length > 0 %}
+                                            {{ (product.types|first).translate.name }}
                                         {% endif %}
                                     </td>
+
                                     <td>{{ productVariant.product.name }}</td>
-                                    <td>{{ productVariant.sku }}</td>
+
+                                    <td>
+                                        <ul>
+                                            {% for option in productVariant.options %}
+                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
+                                            {% endfor %}
+
+                                            {% for option in productVariant.skuOptions %}
+                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
+                                            {% endfor %}
+
+                                            {% for part_variant_selection in productVariant.productPartVariantSelections %}
+                                                <li>
+                                                    <strong>{{ part_variant_selection.productPart.label }}:</strong>
+                                                    {{ part_variant_selection.productPartMaterialVariant.name }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+
                                     <td>{{ item.note }}</td>
-                                    <td>{{ productVariant.humanSize }}</td>
-                                    <td>{{ item.quantity }}</td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="text-center">{{ productVariant.price|money }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
 
                             <tfoot>
                             <tr>
-                                <td colspan="6">
-                                    <input type="submit" class="btn btn-primary" value="{{ 'frontend.export'|trans }}" />
+                                <td colspan="7">
+                                    <button type="submit" class="btn btn-primary" name="format" value="excel">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.excel'|trans }}
+                                    </button>
+
+                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.pdf'|trans }}
+                                    </button>
                                 </td>
                             </tr>
                             </tfoot>
@@ -292,18 +326,23 @@
 
                         <table class="table">
                             <thead>
+
                             <tr class="text-center">
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
-                                <th><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label></th>
+                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label></th>
                             </tr>
 
                             <tr class="table-title">
-                                <th>#</th>
-                                <th>{{ 'frontend.photo'|trans }}</th>
-                                <th>{{ 'frontend.name'|trans }}</th>
-                                <th>{{ 'frontend.quantity'|trans }}</th> 
+                                <th class="text-center">#</th>
+                                <th class="text-center">{{ 'frontend.name'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.options'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.notes'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.quantity'|trans }}</th>
+                                <th class="text-center">{{ 'frontend.price'|trans }}</th>
                             </tr>
                             </thead>
 
@@ -312,15 +351,12 @@
                                     {% set custom_item = item.customItem %}
 
                                     <tr>
-                                        <td>{{ loop.index }}</td>
-                                        <td>
-                                            {% if custom_item.image and custom_item.image.path %}
-                                                <img src="{{ custom_item.image.path|imagine_filter('s100x100') }}" width="100" height="100" />
-                                            {% endif %}
-                                        </td>
-
-                                        <td>{{ custom_item.name }}</td>
-                                        <td>{{ item.quantity }}</td>
+                                        <td class="text-center">{{ loop.index }}</td>
+                                        <td class="text-center">{{ custom_item.name }}</td>
+                                        <td>{{ custom_item.options|nl2br }}</td>
+                                        <td>{{ item.note }}</td>
+                                        <td class="text-center">{{ item.quantity }}</td>
+                                        <td class="text-center">{{ item.price|money }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -328,7 +364,15 @@
                             <tfoot>
                             <tr>
                                 <td colspan="6">
-                                    <input type="submit" class="btn btn-primary" value="{{ 'frontend.export'|trans }}" />
+                                    <button type="submit" class="btn btn-primary" name="format" value="excel">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.excel'|trans }}
+                                    </button>
+
+                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.pdf'|trans }}
+                                    </button>
                                 </td>
                             </tr>
                             </tfoot>

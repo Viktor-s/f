@@ -46,7 +46,7 @@ services:
             - @doctrine.orm.default_entity_manager
             - @security.authorization_checker
             - @router
-            - @specification.exporter.excel
+            - @specification.exporter
 
     frontend.controller.specification_buyer:
         class: Furniture\FrontendBundle\Controller\SpecificationBuyerController

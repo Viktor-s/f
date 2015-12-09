@@ -6,17 +6,17 @@ use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Exporter\AbstractExporter;
 
-class ClientExcelExporter extends AbstractExporter
+class ClientExporter extends AbstractExporter
 {
     /**
      * Export specification
      *
-     * @param Specification $specification
-     * @param FieldMap      $fieldMap
+     * @param Specification     $specification
+     * @param FieldMapForClient $fieldMap
      *
-     * @return \PHPExcel_Writer_Excel2007
+     * @return \PHPExcel
      */
-    public function export(Specification $specification, FieldMap $fieldMap)
+    public function export(Specification $specification, FieldMapForClient $fieldMap)
     {
         $excel = $this->createPhpExcel($specification);
         $excel->setActiveSheetIndex(0);
@@ -58,9 +58,9 @@ class ClientExcelExporter extends AbstractExporter
             $this->createTotalRows($sheet, $specification, $positions['total_price'], $row);
         }
 
-        $writer = new \PHPExcel_Writer_Excel2007($excel);
+        $this->writeEmptyValuesForCells($sheet, count($positions), $row);
 
-        return $writer;
+        return $excel;
     }
 
     /**
@@ -68,14 +68,14 @@ class ClientExcelExporter extends AbstractExporter
      *
      * @param \PHPExcel_Worksheet $sheet
      * @param SpecificationItem   $item
-     * @param FieldMap            $fieldMap
+     * @param FieldMapForClient   $fieldMap
      * @param int                 &$row
      * @param array               &$positions
      */
     private function createRowDataForSkuItem(
         \PHPExcel_Worksheet $sheet,
         SpecificationItem $item,
-        FieldMap $fieldMap,
+        FieldMapForClient $fieldMap,
         &$row,
         &$positions
     )
@@ -179,10 +179,10 @@ class ClientExcelExporter extends AbstractExporter
      *
      * @param \PHPExcel_Worksheet $sheet
      * @param SpecificationItem   $item
-     * @param FieldMap            $fieldMap
+     * @param FieldMapForClient   $fieldMap
      * @param int                 &$row
      */
-    private function createRowDataForCustomItem(\PHPExcel_Worksheet $sheet, SpecificationItem $item, FieldMap $fieldMap, &$row)
+    private function createRowDataForCustomItem(\PHPExcel_Worksheet $sheet, SpecificationItem $item, FieldMapForClient $fieldMap, &$row)
     {
         $column = 1;
         $customItem = $item->getCustomItem();
@@ -587,10 +587,10 @@ class ClientExcelExporter extends AbstractExporter
      * Create table header
      *
      * @param \PHPExcel_Worksheet $sheet
-     * @param FieldMap            $fieldMap
+     * @param FieldMapForClient   $fieldMap
      * @param int                 $row
      */
-    private function createTableHeader(\PHPExcel_Worksheet $sheet, FieldMap $fieldMap, &$row)
+    private function createTableHeader(\PHPExcel_Worksheet $sheet, FieldMapForClient $fieldMap, &$row)
     {
         $index = 1;
 
@@ -640,29 +640,8 @@ class ClientExcelExporter extends AbstractExporter
         }
 
         // Generate style
-        $style = [
-            'font' => [
-                'bold' => true,
-            ],
-
-            'alignment' => [
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            ],
-
-            'borders' => [
-                'allborders' => [
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => [
-                        'rgb' => '000000',
-                    ],
-                ],
-            ],
-        ];
-
         $coordinate = $this->generateDiapasonKey(1, $row, $index, $row);
-        $headerStyle = $sheet->getStyle($coordinate);
-
-        $headerStyle->applyFromArray($style);
+        $this->formatTableHeader($sheet, $coordinate);
 
         $row++;
     }

@@ -3,8 +3,8 @@ services:
         class: Symfony\Component\HttpFoundation\RequestMatcher
         arguments: [ '/specification/api' ]
 
-    specification.exporter.excel:
-        class: Furniture\SpecificationBundle\Exporter\ExcelExporter
+    specification.exporter:
+        class: Furniture\SpecificationBundle\Exporter\PhpExcelExporter
         arguments: [ @translator, @pricing.calculator, @liip_imagine.data.manager, @liip_imagine.filter.manager, @sylius.context.currency, @sylius.templating.helper.money ]
 
     specification.event_subscriber.modified:

@@ -4,7 +4,8 @@ namespace Furniture\SpecificationBundle\Exporter;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\SpecificationBundle\Entity\Specification;
-use Furniture\SpecificationBundle\Exporter\Client\FieldMap;
+use Furniture\SpecificationBundle\Exporter\Client\FieldMapForClient;
+use Furniture\SpecificationBundle\Exporter\Factory\FieldMapForFactory;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 
 /**
@@ -15,12 +16,13 @@ interface ExporterInterface
     /**
      * Export full specification
      *
-     * @param Specification $specification
-     * @param FieldMap      $fieldMap
+     * @param Specification     $specification
+     * @param FieldMapForClient $fieldMap
+     * @param string            $format
      *
-     * @return mixed
+     * @return \PHPExcel_Writer_IWriter
      */
-    public function exportForClient(Specification $specification, FieldMap $fieldMap);
+    public function exportForClient(Specification $specification, FieldMapForClient $fieldMap, $format);
 
     /**
      * Export for factory
@@ -28,23 +30,26 @@ interface ExporterInterface
      * @param Specification      $specification
      * @param FieldMapForFactory $fieldMap
      * @param Factory            $factory
+     * @param string             $format
      *
-     * @return mixed
+     * @return \PHPExcel_Writer_IWriter
      */
-    public function exportForFactory(Specification $specification, FieldMapForFactory $fieldMap, Factory $factory);
+    public function exportForFactory(Specification $specification, FieldMapForFactory $fieldMap, Factory $factory, $format);
 
     /**
      * Export for custom
      *
      * @param Specification               $specification
-     * @param FieldMapForCustom           $fieldMap
+     * @param FieldMapForFactory          $fieldMap
      * @param GroupedCustomItemsByFactory $grouped
+     * @param string                      $format
      *
-     * @return mixed
+     * @return \PHPExcel_Writer_IWriter
      */
     public function exportForCustom(
         Specification $specification,
-        FieldMapForCustom $fieldMap,
-        GroupedCustomItemsByFactory $grouped
+        FieldMapForFactory $fieldMap,
+        GroupedCustomItemsByFactory $grouped,
+        $format
     );
 }

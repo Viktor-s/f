@@ -217,8 +217,10 @@ class SpecificationItem
     {
         if ($this->getSkuItem()) {
             return $this->getSkuItem()->getProductVariant()->getPrice();
+        } else if ($this->customItem) {
+            return $this->customItem->getPrice();
         }
-        
+
         return 0;
     }
 

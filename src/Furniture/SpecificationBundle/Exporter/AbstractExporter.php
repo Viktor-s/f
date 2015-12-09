@@ -249,4 +249,56 @@ abstract class AbstractExporter
 
         return implode("\n", $options);
     }
+
+    /**
+     * Format table header
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param string              $diapason
+     */
+    protected function formatTableHeader(\PHPExcel_Worksheet $sheet, $diapason)
+    {
+        // Generate style
+        $style = [
+            'font' => [
+                'bold' => true,
+            ],
+
+            'alignment' => [
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ],
+
+            'borders' => [
+                'allborders' => [
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => [
+                        'rgb' => '000000',
+                    ],
+                ],
+            ],
+        ];
+
+        $headerStyle = $sheet->getStyle($diapason);
+        $headerStyle->applyFromArray($style);
+    }
+
+    /**
+     * Write empty values for cells
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param int $maxColumn
+     * @param int $maxRow
+     */
+    protected function writeEmptyValuesForCells(\PHPExcel_Worksheet $sheet, $maxColumn, $maxRow)
+    {
+        for ($column = 1; $column <= $maxColumn; $column++) {
+            for ($row = 1; $row <= $maxRow; $row++) {
+                $key = $this->generateCellKey($column, $row);
+                $cell = $sheet->getCell($key);
+                if (null === $cell->getValue()) {
+                    $cell->setValue('');
+                }
+            }
+        }
+    }
 }

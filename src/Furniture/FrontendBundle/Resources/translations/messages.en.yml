@@ -7,6 +7,7 @@ frontend:
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     products: Products
     name: Name
+    type: Type
     creator: Creator
     description: Description
     actions: Actions
@@ -44,7 +45,8 @@ frontend:
     are_you_sure_remove_specification: Are you sure remote specification?
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sure you want to remove logo?
-    export: Export
+    excel: Export
+    pdf: PDF
     full: Full
     all: All
     by_company: By company

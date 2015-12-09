@@ -1,27 +1,22 @@
 <?php
 
-namespace Furniture\SpecificationBundle\Exporter\Client;
+namespace Furniture\SpecificationBundle\Exporter\Factory;
 
 use Furniture\SpecificationBundle\Exporter\Exception\UnavailableFieldException;
 
-/**
- * Field map for full exports
- */
-class FieldMap
+class FieldMapForFactory
 {
     /**
      * @var array
      */
     private static $availableFields = [
-        'position',
-        'photo',
-        'brand',
+        'number',
+        'type',
         'name',
         'options',
-        'notes',
         'quantity',
-        'price',
-        'total_price'
+        'notes',
+        'price'
     ];
 
     /**
@@ -52,35 +47,25 @@ class FieldMap
     }
 
     /**
-     * Has number field
+     * Has field number
      *
      * @return bool
      */
     public function hasFieldNumber()
     {
-        return in_array('position', $this->fields);
+        return in_array('number', $this->fields);
     }
 
     /**
-     * Has factory field
+     * Has field type
      *
      * @return bool
      */
-    public function hasFieldBrand()
+    public function hasFieldType()
     {
-        return in_array('brand', $this->fields);
+        return in_array('type', $this->fields);
     }
-
-    /**
-     * Has field photo
-     *
-     * @return bool
-     */
-    public function hasFieldPhoto()
-    {
-        return in_array('photo', $this->fields);
-    }
-
+    
     /**
      * Has field name
      *
@@ -92,23 +77,13 @@ class FieldMap
     }
 
     /**
-     * Has field finishes
+     * Has field options
      *
      * @return bool
      */
     public function hasFieldOptions()
     {
         return in_array('options', $this->fields);
-    }
-
-    /**
-     * Has field characteristics
-     *
-     * @return bool
-     */
-    public function hasFieldNotes()
-    {
-        return in_array('notes', $this->fields);
     }
 
     /**
@@ -122,6 +97,16 @@ class FieldMap
     }
 
     /**
+     * Has field note
+     *
+     * @return bool
+     */
+    public function hasFieldNotes()
+    {
+        return in_array('notes', $this->fields);
+    }
+
+    /**
      * Has field price
      *
      * @return bool
@@ -129,15 +114,5 @@ class FieldMap
     public function hasFieldPrice()
     {
         return in_array('price', $this->fields);
-    }
-
-    /**
-     * Has field total price
-     *
-     * @return bool
-     */
-    public function hasFieldTotalPrice()
-    {
-        return in_array('total_price', $this->fields);
     }
 }

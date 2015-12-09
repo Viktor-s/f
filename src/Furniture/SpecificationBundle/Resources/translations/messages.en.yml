@@ -26,6 +26,7 @@ specification:
         options: Options
         notes: Notes
         quantity: Quantity
+        type: Type
         price: Price
         total_price: Total price
         description: Description

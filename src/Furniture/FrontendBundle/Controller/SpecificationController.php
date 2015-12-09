@@ -3,14 +3,13 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\HttpFoundation\ExcelResponse;
+use Furniture\CommonBundle\HttpFoundation\PhpExcelResponse;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\ExporterInterface;
-use Furniture\SpecificationBundle\Exporter\Client\FieldMap as FieldMapForClient;
-use Furniture\SpecificationBundle\Exporter\FieldMapForCustom;
-use Furniture\SpecificationBundle\Exporter\FieldMapForFactory;
+use Furniture\SpecificationBundle\Exporter\Client\FieldMapForClient;
+use Furniture\SpecificationBundle\Exporter\Factory\FieldMapForFactory;
 use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -353,69 +352,10 @@ class SpecificationController
             return $this->doExportForClient($specification, $request);
 
         } else if ($request->query->get('mode') == 'factory') {
-            if (!$factoryId = $request->query->get('factory_id')) {
-                throw new NotFoundHttpException('Missing "factory_id" parameter.');
-            }
+            return $this->doExportForFactory($specification, $request);
 
-            // Search factory
-            $factory = null;
-            foreach ($specification->getItems() as $item) {
-                if (!$item->getSkuItem()) {
-                    continue;
-                }
-
-                /** @var \Furniture\ProductBundle\Entity\Product $product */
-                $product = $item->getSkuItem()->getProductVariant()->getProduct();
-                $itemFactory = $product->getFactory();
-
-                if ($itemFactory->getId() == $factoryId) {
-                    $factory = $itemFactory;
-                    break;
-                }
-            }
-
-            if (!$factory) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found factory with identifier "%s" for specification "%s [%d]".',
-                    $factoryId,
-                    $specification->getName(),
-                    $specification->getId()
-                ));
-            }
-
-            $fieldMap = new FieldMapForFactory($request->query->get('fields', []));
-            $writer = $this->exporter->exportForFactory($specification, $fieldMap, $factory);
-
-            return new ExcelResponse($writer, $factory->getName() . '.xlsx');
         } else if ($request->query->get('mode') == 'custom') {
-            if (!$factoryName = $request->query->get('factory_name')) {
-                throw new NotFoundHttpException('Missing "factory_name" parameter.');
-            }
-
-            $groupedCustomItems = $specification->getGroupedCustomItemsByFactory();
-
-            // Search by factory name
-            $groupedItem = null;
-            foreach ($groupedCustomItems as $gItem) {
-                if (strtolower($gItem->getFactoryName()) == strtolower($factoryName)) {
-                    $groupedItem = $gItem;
-                    break;
-                }
-            }
-
-            if (!$groupedItem) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found factory with name "%s" for specification "%s [%d]".',
-                    $factoryName,
-                    $specification->getName(),
-                    $specification->getId()
-                ));
-            }
-
-            $fieldMap = new FieldMapForCustom($request->query->get('fields', []));
-            $writer = $this->exporter->exportForCustom($specification, $fieldMap, $groupedItem);
-
-            return new ExcelResponse($writer, $groupedItem->getFactoryName() . '.xlsx');
+            return $this->doExportForCustom($specification, $request);
 
         } else {
             throw new NotFoundHttpException(sprintf(
@@ -431,13 +371,139 @@ class SpecificationController
      * @param Specification $specification
      * @param Request       $request
      *
-     * @return ExcelResponse
+     * @return PhpExcelResponse
      */
     private function doExportForClient(Specification $specification, Request $request)
     {
         $fieldMap = new FieldMapForClient($request->query->get('fields', []));
-        $writer = $this->exporter->exportForClient($specification, $fieldMap);
+        $format = $request->get('format', 'excel');
 
-        return new ExcelResponse($writer, 'specification.xlsx');
+        $writer = $this->exporter->exportForClient($specification, $fieldMap, $format);
+        $fileName = $this->generateExportFileName($specification->getName(), $format);
+
+        return new PhpExcelResponse($writer, $fileName, $format);
+    }
+
+    /**
+     * Export for factory
+     *
+     * @param Specification $specification
+     * @param Request       $request
+     *
+     * @return PhpExcelResponse
+     */
+    private function doExportForFactory(Specification $specification, Request $request)
+    {
+        if (!$factoryId = $request->query->get('factory_id')) {
+            throw new NotFoundHttpException('Missing "factory_id" parameter.');
+        }
+
+        $format = $request->get('format', 'excel');
+
+        // Search factory
+        $factory = null;
+        foreach ($specification->getItems() as $item) {
+            if (!$item->getSkuItem()) {
+                continue;
+            }
+
+            /** @var \Furniture\ProductBundle\Entity\Product $product */
+            $product = $item->getSkuItem()->getProductVariant()->getProduct();
+            $itemFactory = $product->getFactory();
+
+            if ($itemFactory->getId() == $factoryId) {
+                $factory = $itemFactory;
+                break;
+            }
+        }
+
+        if (!$factory) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found factory with identifier "%s" for specification "%s [%d]".',
+                $factoryId,
+                $specification->getName(),
+                $specification->getId()
+            ));
+        }
+
+        $fieldMap = new FieldMapForFactory($request->query->get('fields', []));
+        $writer = $this->exporter->exportForFactory($specification, $fieldMap, $factory, $format);
+        $fileName = $this->generateExportFileName($factory->getName(), $format);
+
+        return new PhpExcelResponse($writer, $fileName, $format);
+    }
+
+    /**
+     * Export for custom factory
+     *
+     * @param Specification $specification
+     * @param Request $request
+     *
+     * @return PhpExcelResponse
+     */
+    private function doExportForCustom(Specification $specification, Request $request)
+    {
+        if (!$factoryName = $request->query->get('factory_name')) {
+            throw new NotFoundHttpException('Missing "factory_name" parameter.');
+        }
+
+        $groupedCustomItems = $specification->getGroupedCustomItemsByFactory();
+
+        // Search by factory name
+        $groupedItem = null;
+        foreach ($groupedCustomItems as $gItem) {
+            if (strtolower($gItem->getFactoryName()) == strtolower($factoryName)) {
+                $groupedItem = $gItem;
+                break;
+            }
+        }
+
+        if (!$groupedItem) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found factory with name "%s" for specification "%s [%d]".',
+                $factoryName,
+                $specification->getName(),
+                $specification->getId()
+            ));
+        }
+
+        $format = $request->get('format', 'excel');
+
+        $fieldMap = new FieldMapForFactory($request->query->get('fields', []));
+        $writer = $this->exporter->exportForCustom($specification, $fieldMap, $groupedItem, $format);
+        $name = $groupedItem->getFactoryName();
+        $name = $this->generateExportFileName($name, $format);
+
+        return new PhpExcelResponse($writer, $name, $format);
+    }
+
+    /**
+     * Generate file name with name and format
+     *
+     * @param string $name
+     * @param string $format
+     *
+     * @return string
+     */
+    private function generateExportFileName($name, $format)
+    {
+        if ($format == 'excel') {
+            $ext = 'xlsx';
+        } else if ($format == 'pdf') {
+            $ext = 'pdf';
+        } else {
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid format "%s".',
+                $format
+            ));
+        }
+
+        $replaces = [
+            '"' => '',
+            "\s" => '-'
+        ];
+        $name = strtr($name, $replaces);
+
+        return $name . '.' . $ext;
     }
 }

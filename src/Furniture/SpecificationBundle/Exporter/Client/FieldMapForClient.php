@@ -1,19 +1,27 @@
 <?php
 
-namespace Furniture\SpecificationBundle\Exporter;
+namespace Furniture\SpecificationBundle\Exporter\Client;
 
 use Furniture\SpecificationBundle\Exporter\Exception\UnavailableFieldException;
 
-class FieldMapForCustom
+/**
+ * Field map for full exports
+ */
+class FieldMapForClient
 {
     /**
      * @var array
      */
     private static $availableFields = [
-        'number',
+        'position',
         'photo',
+        'brand',
         'name',
-        'quantity'
+        'options',
+        'notes',
+        'quantity',
+        'price',
+        'total_price'
     ];
 
     /**
@@ -44,13 +52,23 @@ class FieldMapForCustom
     }
 
     /**
-     * Has field number
+     * Has number field
      *
      * @return bool
      */
     public function hasFieldNumber()
     {
-        return in_array('number', $this->fields);
+        return in_array('position', $this->fields);
+    }
+
+    /**
+     * Has factory field
+     *
+     * @return bool
+     */
+    public function hasFieldBrand()
+    {
+        return in_array('brand', $this->fields);
     }
 
     /**
@@ -74,6 +92,26 @@ class FieldMapForCustom
     }
 
     /**
+     * Has field finishes
+     *
+     * @return bool
+     */
+    public function hasFieldOptions()
+    {
+        return in_array('options', $this->fields);
+    }
+
+    /**
+     * Has field characteristics
+     *
+     * @return bool
+     */
+    public function hasFieldNotes()
+    {
+        return in_array('notes', $this->fields);
+    }
+
+    /**
      * Has field quantity
      *
      * @return bool
@@ -81,5 +119,25 @@ class FieldMapForCustom
     public function hasFieldQuantity()
     {
         return in_array('quantity', $this->fields);
+    }
+
+    /**
+     * Has field price
+     *
+     * @return bool
+     */
+    public function hasFieldPrice()
+    {
+        return in_array('price', $this->fields);
+    }
+
+    /**
+     * Has field total price
+     *
+     * @return bool
+     */
+    public function hasFieldTotalPrice()
+    {
+        return in_array('total_price', $this->fields);
     }
 }
