@@ -142,7 +142,7 @@
                 <td class="text-right">{{ 'frontend.weight'|trans }}</td>
                 <td class="text-left" rel="weight" id="weight">{{ specification.weight }}</td>
                 <td colspan="2" class="text-right" id="add-extra-sale" style="cursor: pointer;">{{ 'frontend.total_price'|trans }}</td>
-                <td id="table-total-price">{{ specification|specification_total_price(false)|money }}</td>
+                <td id="table-total-price"></td>
                 <td></td>
             </tr>
 
@@ -159,8 +159,8 @@
             </tr>
 
             <tr class="final-price">
-                <td colspan="8" class="text-right">{{ 'frontend.final_price'|trans }}</td>
-                <td rel="final-price" colspan="2">{{ specification|specification_total_price|money }}</td>
+                <td colspan="7" class="text-right">{{ 'frontend.final_price'|trans }}</td>
+                <td rel="final-price" colspan="3">{{ specification|specification_total_price|money }}</td>
             </tr>
             </tfoot>        
         </table>
@@ -178,9 +178,9 @@
         <a href="#">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </a>
-        <span>(</span>
+        <span>discount </span>
         <span id="specification-sale" class="edit" data-index="__index__">__sale__</span>
-        <span>% )</span>
+        <span>%: -</span><span class="discount_summ"></span>
     </div>
 {% endblock %}
 
@@ -190,6 +190,11 @@
     {% if specification.id %}
         <script type="text/javascript">
             (function ($) {
+                function moneyHelper(money)
+                {
+                    return '{{ 0|money }}'.replace( /0.00/, money );
+                }
+                
                 function isIntoView(el)
                 {
                     var
@@ -266,8 +271,29 @@
                     };
         
                     /* table code */
-                    var
-                        trTotalPriceUpdater = function(tr)
+                    var 
+                    trTotalPriceSpecificationUpdater = function()
+                        {
+                            var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
+                                    .replace( /123/, $('#specification-table').data('specification-id').toString())
+                                    .replace(/itemIndex/, 'priceInfo');
+
+                            $.ajax({
+                                url: url,
+                                dataType: 'json',
+                                type: 'get',
+                                success: function (res) {
+                                    $('[rel="final-price"]').html(res.totalPriceWithExtraDisc);
+                                    $('#table-total-price').html(res.totalPrice);
+                                    $('#extra-sale-td .sale').each(function(i){
+                                        var saleWrap = $(this);
+                                        saleWrap.find('.discount_summ').html(res.salesAmounts[i]);       
+                                    });
+                                }
+                            });
+                        };
+                    trTotalPriceSpecificationUpdater();
+                    var trTotalPriceUpdater = function(tr)
                         {
                             var url = '{{path('specification_api_specification_custom_Item_info', { itemId: 123, index: 'itemIndex' })}}'
                                     .replace( /123/, tr.data('id').toString())
@@ -278,21 +304,6 @@
                                 type: 'get',
                                 success: function (res) {
                                     tr.find('td:eq(8)').html(res);
-                                }
-                            });
-                        },
-
-                        trTotalPriceSpecificationUpdater = function()
-                        {
-                            var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
-                                    .replace( /123/, $('#specification-table').data('specification-id').toString())
-                                    .replace(/itemIndex/, 'totalPrice');
-
-                            $.ajax({
-                                url: url,
-                                type: 'get',
-                                success: function (res) {
-                                    $('[rel="final-price"]').html(res);
                                 }
                             });
                         },
@@ -610,12 +621,14 @@
                                         complete: function () {
                                             tr.removeClass('danger');
                                             a.prop('disabled', false);
+                                            console.log('complete remove');
                                             trTotalPriceSpecificationUpdater();
                                         },
                                         error: function () {
                                             alert('Error with remove specification item. Please try again.');
                                         },
                                         success: function () {
+                                            console.log('success remove');
                                             tr.animate({
                                                 height: '0px'
                                             }, 50, 'swing', function () {
