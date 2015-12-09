@@ -20,4 +20,8 @@ if (!function_exists('intl_get_error_code')) {
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
+$vendorDir = realpath(__DIR__ . '/../vendor');
+
+\PHPExcel_Settings::setPdfRendererPath($vendorDir . '/mpdf/mpdf');
+
 return $loader;
