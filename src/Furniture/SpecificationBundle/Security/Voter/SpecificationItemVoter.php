@@ -29,9 +29,6 @@ class SpecificationItemVoter extends AbstractVoter
     protected function isGranted($attribute, $object, $user = null)
     {
         
-        if(!$object instanceof SpecificationItem)
-            return false;
-        
         /** @var \Furniture\CommonBundle\Entity\User $user */
         if ($user->isNoRetailer()) {
             // Only retailer have grants to custom specification item.
@@ -42,6 +39,9 @@ class SpecificationItemVoter extends AbstractVoter
             return true;
         }
 
+        if(!$object instanceof SpecificationItem)
+            return false;
+        
         /** @var SpecificationItem $object */
         $owner = $object->getSpecification()->getCreator();
         

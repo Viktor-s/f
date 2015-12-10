@@ -36,11 +36,7 @@ class SpecificationVoter implements VoterInterface
      * {@inheritDoc}
      */
     public function vote(TokenInterface $token, $object, array $attributes)
-    {
-        
-        if(!$object instanceof Specification)
-            return false;
-        
+    {        
         $user = $token->getUser();
 
         if (!$user || !$user instanceof User) {
@@ -55,6 +51,9 @@ class SpecificationVoter implements VoterInterface
             return self::ACCESS_GRANTED;
         }
 
+        if(!$object instanceof Specification)
+            return false;
+        
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes) || in_array('VIEW', $attributes)) {
             $owner = $object->getCreator();
             if (

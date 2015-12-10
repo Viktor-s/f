@@ -34,8 +34,6 @@ class BuyerVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if(!$object instanceof Buyer)
-            return false;
         
         $user = $token->getUser();
 

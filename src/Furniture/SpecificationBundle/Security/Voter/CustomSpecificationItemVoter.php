@@ -29,9 +29,6 @@ class CustomSpecificationItemVoter extends AbstractVoter
     protected function isGranted($attribute, $object, $user = null)
     {
         
-        if(!$object instanceof CustomSpecificationItem)
-            return false;
-        
         /** @var \Furniture\CommonBundle\Entity\User $user */
         if (!$user) {
             return false;
@@ -46,6 +43,9 @@ class CustomSpecificationItemVoter extends AbstractVoter
             return true;
         }
 
+        if(!$object instanceof CustomSpecificationItem)
+            return false;
+        
         /** @var CustomSpecificationItem $object */
         $owner = $object->getSpecificationItem()->getSpecification()->getCreator();
         
