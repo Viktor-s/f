@@ -57,7 +57,7 @@ class BuyerVoter implements VoterInterface
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes)) {
             $creator = $object->getCreator();
             if ($user->getRetailerUserProfile()->isRetailerAdmin()
-                    && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
+                    && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $creator->getRetailerProfile()->getId()
                     ) {
                 return self::ACCESS_GRANTED;
             }
