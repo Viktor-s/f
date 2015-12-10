@@ -38,12 +38,14 @@ class SpecificationItemVoter extends AbstractVoter
             return true;
         }
 
-        if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
-            return true;
-        }
-
         /** @var SpecificationItem $object */
         $owner = $object->getSpecification()->getCreator();
+        
+        if ($user->getRetailerUserProfile()->isRetailerAdmin()
+                && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
+                ) {
+            return true;
+        }
 
         if (!$user) {
             return false;

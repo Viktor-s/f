@@ -54,11 +54,12 @@ class BuyerVoter implements VoterInterface
         }
 
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes)) {
-            if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+            $creator = $object->getCreator();
+            if ($user->getRetailerUserProfile()->isRetailerAdmin()
+                    && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
+                    ) {
                 return self::ACCESS_GRANTED;
             }
-
-            $creator = $object->getCreator();
 
             if ($creator->getId() == $user->getRetailerUserProfile()->getId()) {
                 return self::ACCESS_GRANTED;

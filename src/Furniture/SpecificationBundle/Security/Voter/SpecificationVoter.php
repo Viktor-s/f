@@ -52,15 +52,17 @@ class SpecificationVoter implements VoterInterface
         }
 
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes) || in_array('VIEW', $attributes)) {
-            if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+            $owner = $object->getCreator();
+            if (
+                    $user->getRetailerUserProfile()->isRetailerAdmin()
+                    && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
+                    ) {
                 return self::ACCESS_GRANTED;
             }
 
             if (!$object || !$object instanceof Specification) {
                 return self::ACCESS_ABSTAIN;
             }
-
-            $owner = $object->getCreator();
 
             if($owner->getId() == $user->getRetailerUserProfile()->getId()) {
                 return self::ACCESS_GRANTED;
