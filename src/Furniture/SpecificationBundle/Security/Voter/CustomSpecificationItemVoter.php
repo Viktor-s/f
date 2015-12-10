@@ -28,6 +28,10 @@ class CustomSpecificationItemVoter extends AbstractVoter
      */
     protected function isGranted($attribute, $object, $user = null)
     {
+        
+        if(!$object instanceof CustomSpecificationItem)
+            return false;
+        
         /** @var \Furniture\CommonBundle\Entity\User $user */
         if (!$user) {
             return false;

@@ -37,6 +37,10 @@ class SpecificationVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
+        
+        if(!$object instanceof Specification)
+            return false;
+        
         $user = $token->getUser();
 
         if (!$user || !$user instanceof User) {
