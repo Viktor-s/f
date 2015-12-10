@@ -140,7 +140,7 @@ class SpecificationController
             ));
         }
 
-        if (!$this->authorizationChecker->isGranted('EDIT', $item)) {
+        if (!$this->authorizationChecker->isGranted('EDIT', $item->getSpecification())) {
             throw new AccessDeniedException(sprintf(
                 'The active user "%s" not have right for edit specification item.',
                 $this->tokenStorage->getToken()->getUsername()
@@ -246,7 +246,7 @@ class SpecificationController
             ));
         }
 
-        if (!$this->authorizationChecker->isGranted('EDIT', $item)) {
+        if (!$this->authorizationChecker->isGranted('EDIT', $item->getSpecification())) {
             throw new AccessDeniedException(sprintf(
                 'The active user "%s" not have right for edit specification item.',
                 $this->tokenStorage->getToken()->getUsername()
@@ -314,7 +314,7 @@ class SpecificationController
             ));
         }
 
-        if (!$this->authorizationChecker->isGranted('REMOVE', $item)) {
+        if (!$this->authorizationChecker->isGranted('REMOVE', $item->getSpecification())) {
             throw new AccessDeniedException(sprintf(
                 'The active user "%s" not have right for remove specification item.',
                 $this->tokenStorage->getToken()->getUsername()
