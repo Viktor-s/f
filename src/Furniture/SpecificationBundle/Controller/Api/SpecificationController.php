@@ -424,6 +424,10 @@ class SpecificationController
 
                 break;
 
+            case 'document':
+                $specification->setDocumentNumber($value);
+                break;
+
             case 'volume':
                 $specification->setVolume($value);
                 break;

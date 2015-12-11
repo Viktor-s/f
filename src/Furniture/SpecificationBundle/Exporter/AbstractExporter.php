@@ -98,12 +98,14 @@ abstract class AbstractExporter
      * @param int $endColumn
      * @param int $endRow
      *
-     * @return string
+     * @return \PHPExcel_Cell
      */
     protected function mergeDiapason(\PHPExcel_Worksheet $sheet, $startColumn, $startRow, $endColumn, $endRow)
     {
         $key = $this->generateDiapasonKey($startColumn, $startRow, $endColumn, $endRow);
         $sheet->mergeCells($key);
+
+        return $sheet->getCell($this->generateCellKey($startColumn, $startRow));
     }
 
     /**

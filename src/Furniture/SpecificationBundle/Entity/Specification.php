@@ -67,6 +67,11 @@ class Specification
     /**
      * @var string
      */
+    private $documentNumber;
+
+    /**
+     * @var string
+     */
     private $volume;
 
     /**
@@ -361,6 +366,30 @@ class Specification
     public function getSales()
     {
         return $this->sales;
+    }
+
+    /**
+     * Set document number
+     *
+     * @param string $documentNumber
+     *
+     * @return Specification
+     */
+    public function setDocumentNumber($documentNumber)
+    {
+        $this->documentNumber = $documentNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get document number
+     *
+     * @return string
+     */
+    public function getDocumentNumber()
+    {
+        return $this->documentNumber;
     }
 
     /**

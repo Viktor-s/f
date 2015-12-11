@@ -435,6 +435,22 @@ class ClientExporter extends AbstractExporter
         $thirdColumnIndex = 8;
 
         // Generate first column
+        // Document number
+        $cell = $this->mergeDiapason($sheet, 1, $row, 2, $row);
+        $cell->setValue($specification->getDocumentNumber());
+        $this->formatHeaderValueCell($cell);
+        $this->setAlignmentForCell($cell, 'left', 'top');
+
+        // Create at
+        $key = $this->generateCellKey(3, $row);
+        $cell = $sheet->getCell($key);
+        $cell->setValue($specification->getCreatedAt()->format('Y/m/d H:i'));
+        $this->formatHeaderValueCell($cell);
+        $this->setAlignmentForCell($cell, 'center', 'top');
+
+        $row++;
+        $row++;
+
         // Client row
         $this->createHeaderRow(
             $sheet,

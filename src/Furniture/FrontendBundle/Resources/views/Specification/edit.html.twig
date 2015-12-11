@@ -34,6 +34,18 @@
         <div class="col-sm-3 information-entry">
             <div class="information-blocks form-horizontal specification-info">                
                 <div class="article-container style-1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Document:</h5>
+                            <div class="document-number editable" id="specification-document">{{ specification.documentNumber }}</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5>Created:</h5>
+                            <div>{{ specification.createdAt.format('Y/m/d H:i') }}</div>
+                        </div>
+                    </div>
+
                     <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
 
                     <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
@@ -650,6 +662,7 @@
                     
                     /*Other editable element*/
                     $('.specification-info .editable.name').editable(editableUrl, editableParams);
+                    $('.specification-info .editable.document-number').editable(editableUrl, editableParams);
 
                     $('.specification-info .editable.description').editable(editableUrl, $.extend({
                         type: 'textarea',

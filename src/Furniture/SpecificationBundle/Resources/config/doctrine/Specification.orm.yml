@@ -32,6 +32,11 @@ Furniture\SpecificationBundle\Entity\Specification:
             name: finished_at
             nullable: true
 
+        documentNumber:
+            type: string
+            name: document_number
+            nullable: true
+
         weight:
             type: string
             name: weight
