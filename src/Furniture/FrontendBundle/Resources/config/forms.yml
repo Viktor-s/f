@@ -4,3 +4,8 @@ services:
         arguments: [ @security.token_storage ]
         tags:
             - { name: form.type, alias: retailer_employee }
+    form.type.retailer_employee_customer:
+        class: Furniture\FrontendBundle\Form\Type\RetailerEmployeeCustomerType
+        arguments: [ @doctrine.orm.default_entity_manager ]
+        tags:
+            - { name: form.type, alias: retailer_employee_customer }

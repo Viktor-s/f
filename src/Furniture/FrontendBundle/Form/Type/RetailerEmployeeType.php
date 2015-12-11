@@ -76,7 +76,7 @@ class RetailerEmployeeType extends AbstractType
                 'label' => 'frontend.enabled',
                 'required' => false
             ])
-            ->add('customer', new RetailerEmployeeCustomerType())
+            ->add('customer', 'retailer_employee_customer')
             ->add('retailerUserProfile', new RetailerUserProfileType());
     }
 
