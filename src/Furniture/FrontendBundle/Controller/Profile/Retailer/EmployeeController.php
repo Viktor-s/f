@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sylius\Component\Core\Model\Customer;
 
 class EmployeeController
 {
@@ -151,18 +152,20 @@ class EmployeeController
                 ));
             }
         } else {
-            $employee = new User();
-            $retailerUserProfile = new RetailerUserProfile();
-            $retailerUserProfile->setRetailerProfile($user->getRetailerUserProfile()->getRetailerProfile());
-            $employee->setRetailerUserProfile($retailerUserProfile);
-            $employee->setEnabled(true);
-
             if (!$this->authorizationChecker->isGranted('RETAILER_EMPLOYEE_CREATE')) {
                 throw new AccessDeniedException(sprintf(
                     'The active user "%s" not have rights for create employee.',
                     $user->getUsername()
                 ));
             }
+            
+            $employee = new User();
+            $retailerUserProfile = new RetailerUserProfile();
+            $retailerUserProfile->setRetailerProfile($user->getRetailerUserProfile()->getRetailerProfile());
+            $employee->setRetailerUserProfile($retailerUserProfile);
+            $cusomer = new Customer();
+            $employee->setCustomer($cusomer);
+            $employee->setEnabled(true);
         }
 
         $form = $this->formFactory->create('retailer_employee', $employee);

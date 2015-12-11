@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
 use Furniture\SpecificationBundle\Entity\Buyer;
-use Furniture\SpecificationBundle\Entity\BuyerImage;
 use Furniture\SpecificationBundle\Form\Type\BuyerType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -227,110 +226,4 @@ class SpecificationBuyerController
         return new RedirectResponse($url);
     }
 
-    /**
-     * Upload image for buyer
-     *
-     * @param Request $request
-     * @param int     $buyer
-     *
-     * @return Response
-     */
-    public function imageUpload(Request $request, $buyer)
-    {
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
-        $file = $request->files->get('file');
-
-        if (!$file) {
-            throw new NotFoundHttpException('Not found "file" in FILES.');
-        }
-
-        $buyer = $this->buyerRepository->find($buyerId = $buyer);
-
-        if (!$buyer) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found buyer with id "%s".',
-                $buyerId
-            ));
-        }
-
-        if (!$this->authorizationChecker->isGranted('EDIT', $buyer)) {
-            throw new AccessDeniedException(sprintf(
-                'The active user "%s" not have rights for edit buyer "%s [%d]".',
-                $this->tokenStorage->getToken()->getUsername(),
-                (string) $buyer,
-                $buyer->getId()
-            ));
-        }
-
-        $image = $buyer->getImage();
-
-        if (!$image) {
-            $image = new BuyerImage();
-            $image->setBuyer($buyer);
-            $buyer->setImage($image);
-        }
-
-        $image->setFile($file);
-
-        $violations = $this->validator->validateProperty($image, 'file');
-
-        if (count($violations)) {
-            $errors = ViolationListUtils::convertToArrayWithoutPath($violations);
-
-            return new JsonResponse([
-                'status' => false,
-                'errors' => $errors,
-            ], 400);
-        }
-
-        $this->em->persist($image);
-        $this->em->flush();
-
-        $path = $image->getPath();
-        $path = $this->cacheManager->getBrowserPath($path, 's100x100');
-
-        return new JsonResponse([
-            'image'  => $path,
-            'status' => true,
-        ]);
-    }
-
-    /**
-     * Remove image
-     *
-     * @param int $buyer
-     *
-     * @return JsonResponse
-     */
-    public function imageRemove($buyer)
-    {
-        $buyer = $this->buyerRepository->find($buyerId = $buyer);
-
-        if (!$buyer) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found buyer with id "%s".',
-                $buyerId
-            ));
-        }
-
-        if (!$this->authorizationChecker->isGranted('EDIT', $buyer)) {
-            throw new AccessDeniedException(sprintf(
-                'The active user "%s" not have rights for edit buyer "%s [%d]".',
-                $this->tokenStorage->getToken()->getUsername(),
-                (string) $buyer,
-                $buyer->getId()
-            ));
-        }
-
-        $image = $buyer->removeImage();
-
-        if ($image) {
-            $this->em->remove($image);
-            $this->em->flush();
-        }
-
-        return new JsonResponse([
-            'status' => true,
-        ]);
-    }
 }

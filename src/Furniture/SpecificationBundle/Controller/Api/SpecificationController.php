@@ -450,11 +450,14 @@ class SpecificationController
      */
     public function buyers()
     {
+        if (!$this->authorizationChecker->isGranted('SPECIFICATION_BUYER_LIST')) {
+            throw new AccessDeniedException();
+        }
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
-        $retailerProfile = null;
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $buyers = $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')

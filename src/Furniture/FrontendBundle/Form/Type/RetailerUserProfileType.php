@@ -26,7 +26,8 @@ class RetailerUserProfileType extends AbstractType
     {
         $builder
             ->add('position', 'text', [
-                'label' => 'frontend.position'
+                'label' => 'frontend.position',
+                'required' => false
             ]);
     }
 

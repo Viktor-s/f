@@ -119,6 +119,10 @@ frontend:
         update: Update profile
         password_upadate: Change password
 
+    retailer_profile_side:
+        managers:
+            email_exists_error: Already in use!
+
     specficatior:
         specification_label: Specification
         description_lable: Description

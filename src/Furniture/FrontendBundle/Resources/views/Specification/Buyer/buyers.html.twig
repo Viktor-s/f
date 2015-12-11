@@ -16,7 +16,6 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>{{ 'frontend.photo'|trans }}</th>
                 <th>{{ 'frontend.name'|trans }}</th>
                 <th>{{ 'frontend.contact'|trans }}</th>
                 <th>{{ 'frontend.address'|trans }}</th>
@@ -28,34 +27,6 @@
             <tbody>
             {% for buyer in buyers %}
                 <tr data-buyer-id="{{ buyer.id }}">
-                    <td>
-                        {% if is_granted('EDIT', buyer) %}
-                            <div class="image-ajax-container" data-full-name="buyer[{{ buyer.id }}][image][path]" data-url-upload="{{ path('specification_buyer_image_upload', {buyer: buyer.id}) }}"{% if buyer.image and buyer.image.path %} data-image-path="{{ buyer.image.path|imagine_filter('s100x100') }}"{% endif %}>
-                                <div class="image-upload">
-                                    <img data-src="holder.js/100x100?text=Choose image" width="100" height="100" />
-                                </div>
-
-                                <div class="form-widget">
-                                    <input type="hidden" name="buyer[{{ buyer.id }}][image][path]" />
-                                </div>
-
-                                <div class="image-container">
-                                    <div class="image">
-                                        <img width="100" height="100" src="" />
-                                    </div>
-
-                                    <a class="btn btn-danger btn-xs" href="#remove-image">
-                                        <i class="fa fa-remove">Remove</i>
-                                    </a>
-                                </div>
-                            </div>
-                        {% else %}
-                            {% if buyer.image %}
-                                <img src="{{ buyer.image.path|imagine_filter('s100x100') }}" width="100" height="100" />
-                            {% endif %}
-                        {% endif %}
-                    </td>
-
                     <td>
                         {{ buyer }}
                     </td>
@@ -106,33 +77,6 @@
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
-                $('[data-buyer-id]').each(function () {
-                    var
-                        id = $(this).data('buyer-id'),
-                        imageAjax = $(this).find('.image-ajax-container'),
-                        q;
-
-                    if (imageAjax.size() > 0) {
-                        q = new ImageAjax(imageAjax, {
-                            onRemove: function () {
-                                bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
-                                    if (result) {
-                                        $.ajax({
-                                            url: '{{ path('specification_buyer_image_remove', {buyer: 123}) }}'.replace(/123/, id),
-                                            method: 'POST',
-                                            success: function () {
-                                                q.setImagePath('');
-                                                q.viewImageUpload();
-                                            }
-                                        });
-                                    }
-                                });
-
-                                return false;
-                            }
-                        });
-                    }
-                });
             });
         })(jQuery);
     </script>

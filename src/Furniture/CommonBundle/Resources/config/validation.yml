@@ -1,0 +1,8 @@
+Sylius\Component\Core\Model\Customer:
+    fields: [email]
+    message: "Page already exists with that parent"
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        email:
+            - Email: ~
