@@ -51,15 +51,19 @@ class RetailerEmployeeCustomerType extends AbstractType
                 'label' => 'frontend.first_name'
             ])
             ->add('lastName', 'text', [
-                'label' => 'frontend.last_name'
+                'label' => 'frontend.last_name',
+                'required' => false
             ])
             ;
         
         $em = $this->em;
+        
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event)use( $em ) {
             $event->stopPropagation();
             /** @var Customer $customer */
             $customer = $event->getData();
+            if($customer->getId())
+                return false;
             /** @var \Sylius\Bundle\UserBundle\Doctrine\ORM\CustomerRepository $cusomerRepositroy */
             $cusomerRepositroy = $em->getRepository(Customer::class);
             $em->getFilters()->disable('softdeleteable');

@@ -73,7 +73,7 @@
 
                     {% if employee.id != app.user.id %}
                         {% if is_granted('RETAILER_EMPLOYEE_REMOVE', employee) %}
-                            <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs">
+                            <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs employee-remove">
                                 <i class="fa fa-remove"></i>
                                 Remove
                             </a>
@@ -90,4 +90,22 @@
         {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $('.employee-remove').click(function(e){
+                    e.preventDefault();
+                    var link = $(this); 
+                    bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
+                        result && document.location.assign(link.attr('href'));
+                    });
+                    return false;
+                });
+            });
+        })(jQuery);
+    </script>
 {% endblock %}
