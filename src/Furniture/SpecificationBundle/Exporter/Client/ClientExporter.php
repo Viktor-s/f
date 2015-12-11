@@ -433,6 +433,8 @@ class ClientExporter extends AbstractExporter
         $firstColumnIndex = 3;
         $secondColumnIndex = 5;
         $thirdColumnIndex = 8;
+        $creator = $specification->getCreator();
+        $retailer = $creator->getRetailerProfile();
 
         // Generate first column
         // Document number
@@ -496,15 +498,26 @@ class ClientExporter extends AbstractExporter
             $specification->getName()
         );
 
+        // Generate second column
+        if ($retailer && $retailer->getLogoImage()) {
+            $path = $retailer->getLogoImage()->getPath();
+
+            if ($path) {
+                $this->mergeDiapason($sheet, $firstColumnIndex + 1, $startRow, $secondColumnIndex, $row);
+                $key = $this->generateCellKey($firstColumnIndex + 1, $startRow);
+
+                $obj = $this->createImageForExcel($path, $key, 's150x100', 150, 100);
+                $obj->setWorksheet($sheet);
+
+                $imageCell = $sheet->getCell($key);
+                $this->formatImageCell($imageCell);
+                $this->setAlignmentForCell($imageCell, 'center', 'top');
+            }
+        }
+
         $row = $startRow;
 
-        // Generate second column
-        // @todo: insert image
-
         // Generate third column
-        $creator = $specification->getCreator();
-        $retailer = $creator->getRetailerProfile();
-
         // Retailer name
         $this->createHeaderRow(
             $sheet,
