@@ -63,6 +63,8 @@ Furniture\SpecificationBundle\Entity\Specification:
         items:
             targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
             mappedBy: specification
+            orderBy:
+                position: ASC
 
         sales:
             targetEntity: Furniture\SpecificationBundle\Entity\SpecificationSale
