@@ -1,27 +1,17 @@
 <div class="col-md-4 col-sm-4 shop-grid-item " data-factory="{{ product.factory.name }}">
     <div class="product-slide-entry">
         <div class="product-image">
+            <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >
             {% if product.getImage() %}
-                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="" />
+                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
+            {% else %}
+                <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
             {% endif %}
+            </a>
             <div class="bottom-line">
                 <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
             </div>
-        </div>
-            {#
-        {% if product.taxons %}
-            {% for taxon in product.taxons %}
-                <a class="tag" href="{{ path('products', {
-                                                            'category_permalink':app.request.attributes.get('_route_params')['category_permalink'],
-                                                            'taxons[]':taxon.id
-                                            }) 
-                                    }}">
-                    {{ taxon.name }}
-                </a>
-            {% endfor %}
-        {% endif %}
-        #}
-        
+        </div>        
         <h4 class="pgp-product-title"><a class="title" href="{{ path('product', {'product':product.id}) }}">
             {% if product.factoryCode != '' %}
                 <small>{{ product.factoryCode }}</small> 
