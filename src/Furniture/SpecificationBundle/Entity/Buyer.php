@@ -69,11 +69,6 @@ class Buyer implements AddressMarkerInterface
     private $phone;
 
     /**
-     * @var BuyerImage
-     */
-    private $image;
-
-    /**
      *
      * @var string
      */
@@ -379,47 +374,6 @@ class Buyer implements AddressMarkerInterface
     public function getPhone()
     {
         return $this->phone;
-    }
-
-    /**
-     * Set image
-     *
-     * @param BuyerImage $image
-     *
-     * @return Buyer
-     */
-    public function setImage(BuyerImage $image = null)
-    {
-        if ($image) {
-            $image->setBuyer($this);
-        }
-
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return Buyer
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * Remove image
-     *
-     * @return BuyerImage
-     */
-    public function removeImage()
-    {
-        $image = $this->image;
-        $this->image = null;
-
-        return $image;
     }
 
     /**

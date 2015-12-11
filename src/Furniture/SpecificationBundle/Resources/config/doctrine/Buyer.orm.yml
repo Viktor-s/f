@@ -118,9 +118,3 @@ Furniture\SpecificationBundle\Entity\Buyer:
                 name: creator
                 referencedColumnName: id
                 nullable: true
-
-    oneToOne:
-        image:
-            targetEntity: Furniture\SpecificationBundle\Entity\BuyerImage
-            mappedBy: buyer
-            cascade: [ persist ]
