@@ -2,9 +2,9 @@
 
 namespace Furniture\SpecificationBundle\Exporter;
 
+use Furniture\CommonBundle\PhpExcel\Writer\PdfWriter;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\PricingBundle\Calculator\PriceCalculator;
-use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\Client\ClientExporter;
 use Furniture\SpecificationBundle\Exporter\Client\FieldMapForClient;
@@ -12,7 +12,6 @@ use Furniture\SpecificationBundle\Exporter\Factory\CustomFactoryExporter;
 use Furniture\SpecificationBundle\Exporter\Factory\FactoryExporter;
 use Furniture\SpecificationBundle\Exporter\Factory\FieldMapForFactory;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -143,10 +142,7 @@ class PhpExcelExporter implements ExporterInterface
         }
 
         if ($format == 'pdf') {
-            $vendorDir = realpath(__DIR__ . '/../../../../vendor');
-            \PHPExcel_Settings::setPdfRendererPath($vendorDir . '/mpdf/mpdf');
-
-            return new \PHPExcel_Writer_PDF_mPDF($excel);
+            return new PdfWriter($excel);
         }
 
         throw new \InvalidArgumentException(sprintf(

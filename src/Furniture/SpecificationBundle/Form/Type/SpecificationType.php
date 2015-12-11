@@ -48,7 +48,7 @@ class SpecificationType extends AbstractType
                 'label' => 'specification.form.name'
             ])
             ->add('description', 'textarea', [
-                'label' => 'specification.form.description',
+                'label' => 'specification.form.notes_with_will_not_appear_in_specification',
                 'required' => false
             ]);
     }

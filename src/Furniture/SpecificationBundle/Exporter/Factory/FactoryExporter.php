@@ -111,6 +111,14 @@ class FactoryExporter extends AbstractFactoryExporter
             $this->formatTypeCell($cell);
         }
 
+        if ($fieldMap->hasFieldFactoryCode()) {
+            $key = $this->generateCellKey($index++, $row);
+            $cell = $sheet->getCell($key);
+            $cell->setValue($product->getFactoryCode());
+            $this->formatFactoryCodeCell($cell);
+
+        }
+
         if ($fieldMap->hasFieldName()) {
             $key = $this->generateCellKey($index++, $row);
             $cell = $sheet->getCell($key);

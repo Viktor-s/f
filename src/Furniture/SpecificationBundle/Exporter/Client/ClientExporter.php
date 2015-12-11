@@ -123,7 +123,23 @@ class ClientExporter extends AbstractExporter
             $positions['name'] = $column;
             $key = $this->generateCellKey($column++, $row);
             $cell = $sheet->getCell($key);
-            $cell->setValue($product->getName());
+
+            $values = [
+                $product->getName(),
+                $product->getFactoryCode()
+            ];
+
+            if (count($product->getTypes()) > 0) {
+                /** @var \Furniture\ProductBundle\Entity\Type $type */
+                $type = $product->getTypes()->first();
+                /** @var \Furniture\ProductBundle\Entity\TypeTranslation $translation */
+                $translation = $type->translate();
+                $values[] = $translation->getName();
+            }
+
+            $values = array_filter($values);
+
+            $cell->setValue(implode("\n", $values));
             $this->formatNameCell($cell);
         }
 
@@ -464,18 +480,6 @@ class ClientExporter extends AbstractExporter
             $specification->getName()
         );
 
-        $row++;
-
-        // Description
-        $this->createHeaderRow(
-            $sheet,
-            1,
-            $firstColumnIndex,
-            $row,
-            $this->translator->trans('specification.excel.description'),
-            $specification->getDescription()
-        );
-
         $row = $startRow;
 
         // Generate second column
@@ -527,7 +531,7 @@ class ClientExporter extends AbstractExporter
             $row,
             $this->translator->trans('specification.excel.contact_info'),
             [
-                'Emails: ' . implode(', ', $retailer->getEmails()),
+                'Email: ' . implode(', ', $retailer->getEmails()),
                 'Toll-free: ' . implode(', ', $retailer->getPhones())
             ]
         );

@@ -29,6 +29,11 @@ abstract class AbstractFactoryExporter extends AbstractExporter
             $sheet->setCellValue($key, $this->translator->trans('specification.excel.type'));
         }
 
+        if ($fieldMap->hasFieldFactoryCode()) {
+            $key = $this->generateCellKey($index++, $row);
+            $sheet->setCellValue($key, $this->translator->trans('specification.excel.factory_code'));
+        }
+
         if ($fieldMap->hasFieldName()) {
             $key = $this->generateCellKey($index++, $row);
             $sheet->setCellValue($key, $this->translator->trans('specification.excel.name'));
@@ -102,6 +107,17 @@ abstract class AbstractFactoryExporter extends AbstractExporter
      * @param \PHPExcel_Cell $cell
      */
     protected function formatTypeCell(\PHPExcel_Cell $cell)
+    {
+        $this->setAlignmentForCell($cell, 'center', 'top');
+        $this->setAutoWidthForColumnByCell($cell);
+    }
+
+    /**
+     * Format factory code cell
+     *
+     * @param \PHPExcel_Cell $cell
+     */
+    protected function formatFactoryCodeCell(\PHPExcel_Cell $cell)
     {
         $this->setAlignmentForCell($cell, 'center', 'top');
         $this->setAutoWidthForColumnByCell($cell);

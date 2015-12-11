@@ -49,10 +49,12 @@
                     <h5>Description</h5>
                     <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
 
-                    <h5>{{ 'frontend.specficatior.description_lable'|trans }}</h5>
-                    <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">
-                        {{ specification.description|default('None') }}
-                    </div>
+                    <h5>
+                        {{ 'frontend.specficatior.notes'|trans }}
+                        <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}</span>
+                    </h5>
+
+                    <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
 
                     {% if specification.buyer and specification.buyer.hasSale() %}
                         <h5>{{ 'frontend.sale'|trans }}</h5>

@@ -14,6 +14,7 @@ specification:
         name: Name
         description: Description
         sale: Sale
+        notes_with_will_not_appear_in_specification: Notes (will no apper in specification)
 
     excel:
         creation_date: Date
@@ -26,13 +27,14 @@ specification:
         options: Options
         notes: Notes
         quantity: Quantity
+        factory_code: Factory code
         type: Type
         price: Price
         total_price: Total price
         description: Description
         manager: Manager
         address: Address
-        contact_info: Contact informations
+        contact_info: Contact information
         sku: Sku
         total: Total
         weight: Weight

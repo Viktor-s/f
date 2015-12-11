@@ -11,6 +11,7 @@ class FieldMapForFactory
      */
     private static $availableFields = [
         'number',
+        'factory_code',
         'type',
         'name',
         'options',
@@ -54,6 +55,16 @@ class FieldMapForFactory
     public function hasFieldNumber()
     {
         return in_array('number', $this->fields);
+    }
+
+    /**
+     * Has field factory code
+     *
+     * @return bool
+     */
+    public function hasFieldFactoryCode()
+    {
+        return in_array('factory_code', $this->fields);
     }
 
     /**

@@ -8,6 +8,7 @@ frontend:
     products: Products
     name: Name
     type: Type
+    factory_code: Factory code
     creator: Creator
     description: Description
     actions: Actions
@@ -112,6 +113,7 @@ frontend:
     mode: Mode
     enabled: Enabled
     specification_edit: Specification edit
+    notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
     
     user_profile_side:
         update: Update profile
@@ -119,10 +121,12 @@ frontend:
 
     specficatior:
         specification_label: Specification
-        description_lable: Additional info
+        description_lable: Description
         page_reload_alert: Processing, wait ...
         client_lable: Client
         client_contact_lable: Contact information
+        notes: Notes
+        will_not_appear_in_specification: will no appear in specification
 
     title:
         spaces: Spaces

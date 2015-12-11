@@ -233,24 +233,46 @@
                         <table class="table">
                             <thead>
 
-                            <tr class="text-center">
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="type" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label></th>
-                                <th class="text-center"><label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label></th>
-                            </tr>
-
                             <tr class="table-title">
-                                <th class="text-center">#</th>
-                                <th class="text-center">{{ 'frontend.type'|trans }}</th>
-                                <th class="text-center">{{ 'frontend.name'|trans }}</th>
-                                <th class="text-center">{{ 'frontend.options'|trans }}</th>
-                                <th class="text-center">{{ 'frontend.notes'|trans }}</th>
-                                <th class="text-center">{{ 'frontend.quantity'|trans }}</th>
-                                <th class="text-center">{{ 'frontend.price'|trans }}</th>
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label>
+                                    #
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="type" checked /><span class="check"></span></label>
+                                    {{ 'frontend.type'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="factory_code" checked /><span class="check"></span></label>
+                                    {{ 'frontend.factory_code'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
+                                    {{ 'frontend.name'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
+                                    {{ 'frontend.options'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
+                                    {{ 'frontend.notes'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
+                                    {{ 'frontend.quantity'|trans }}
+                                </th>
+
+                                <th class="text-center">
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
+                                    {{ 'frontend.price'|trans }}
+                                </th>
                             </tr>
                             </thead>
 
@@ -266,6 +288,10 @@
                                         {% if product.types|length > 0 %}
                                             {{ (product.types|first).translate.name }}
                                         {% endif %}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{ product.factoryCode }}
                                     </td>
 
                                     <td>{{ productVariant.product.name }}</td>
@@ -402,13 +428,8 @@
                     {{ specification.buyer ? specification.buyer.phone }}
                 </p>
 
-                <h5>Description</h5>
+                <h5>Name</h5>
                 <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
-
-                <h5>{{ 'frontend.specficatior.description_lable'|trans }}</h5>
-                <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">
-                    {{ specification.description|default('None') }}
-                </div>
 
                 {% if specification.buyer and specification.buyer.hasSale() %}
                     <h5>{{ 'frontend.sale'|trans }}</h5>
@@ -437,7 +458,7 @@
             <h5>Company address</h5>
             <p>{{ specification.creator.retailerProfile.address }}</p>
 
-            <h5>Contact Informations</h5>
+            <h5>Contact Information</h5>
             <p>
                 Retailer Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
                 Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
