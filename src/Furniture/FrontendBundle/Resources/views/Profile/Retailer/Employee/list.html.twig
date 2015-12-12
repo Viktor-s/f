@@ -72,11 +72,18 @@
                     {% endif %}
 
                     {% if employee.id != app.user.id %}
-                        {% if is_granted('RETAILER_EMPLOYEE_REMOVE', employee) %}
-                            <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs employee-remove">
-                                <i class="fa fa-remove"></i>
-                                Remove
-                            </a>
+                        {% if employee.enabled %}
+                            {% if is_granted('RETAILER_EMPLOYEE_REMOVE', employee) %}
+                                <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs employee-remove">
+                                    <i class="fa fa-remove"></i>
+                                    Disable
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <span class="label label-warning">
+                                <i class="fa-archive"></i>
+                                    Disabled
+                            </span>
                         {% endif %}
                     {% endif %}
                 </td>
