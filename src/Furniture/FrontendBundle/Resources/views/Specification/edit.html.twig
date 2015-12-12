@@ -521,7 +521,7 @@
                                     rowData = [];
 
                                 rowData.push('');
-                                rowData.push(data.factoryName ? data.factoryName : '' );
+                                rowData.push('');
                                 rowData.push('');
                                 rowData.push(data.name ? data.name : '' );
                                 rowData.push(data.options ? data.options : '' );
@@ -571,13 +571,13 @@
 
                                 row
                                     .find('td:eq(1)')
-                                    .data('index', 'factoryName')
-                                    .data('type', 'text')
-                                    .data('server-type', 'custom-item');
+                                    .html(imageAjaxContainer);
 
                                 row
                                     .find('td:eq(2)')
-                                    .html(imageAjaxContainer);
+                                    .data('index', 'factoryName')
+                                    .data('type', 'text')
+                                    .data('server-type', 'custom-item');
 
                                 row.find('td:eq(3)')
                                     .data('index', 'name')
@@ -608,7 +608,7 @@
                                 scrollToView(row);
                                 row.addClass('active');
                                 initializeUploaderForTableRow(row);
-                                Holder.run(row.find('.image-container img').get(0));
+                                Holder.run(row.find('.image-container img').get(1));
                             }
                         });
 
