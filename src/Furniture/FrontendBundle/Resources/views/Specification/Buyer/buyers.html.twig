@@ -51,7 +51,7 @@
 
                         {% if is_granted('REMOVE', buyer) %}
                             {% if buyer.countSpecifications == 0 %}
-                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" data-remove data-message="Are you sure remove client?" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
+                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" data-remove data-message="Are you sure you want to remove a user?" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
                             {% else %}
                                 <span class="text-warning">Has specifications</span>
                             {% endif %}
