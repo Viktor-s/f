@@ -162,7 +162,7 @@
 
             <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
                 <td colspan="8"></td>
-                <td colspan="2" id="extra-sale-td">
+                <td colspan="2" id="extra-sale-td" nowrap>
                     {% set sales_count = specification.sales|length %}
                     {% if sales_count > 0 %}
                         {% for sale in specification.sales %}
@@ -172,9 +172,9 @@
                 </td>
             </tr>
 
-            <tr class="final-price">
-                <td colspan="7" class="text-right">{{ 'frontend.final_price'|trans }}</td>
-                <td rel="final-price" colspan="3">{{ specification|specification_total_price|money }}</td>
+            <tr class="final-price{% if specification.sales|length == 0 %} hide{% endif %}">
+                <td colspan="8" class="text-right">{{ 'frontend.final_price'|trans }}</td>
+                <td rel="final-price" colspan="2">{{ specification|specification_total_price|money }}</td>
             </tr>
             </tfoot>        
         </table>
@@ -286,7 +286,7 @@
         
                     /* table code */
                     var 
-                    trTotalPriceSpecificationUpdater = function()
+                        trTotalPriceSpecificationUpdater = function()
                         {
                             var url = '{{path('specification_api_specification_info', { itemId: 123, index: 'itemIndex' })}}'
                                     .replace( /123/, $('#specification-table').data('specification-id').toString())
@@ -306,7 +306,9 @@
                                 }
                             });
                         };
+
                     trTotalPriceSpecificationUpdater();
+
                     var trTotalPriceUpdater = function(tr)
                         {
                             var url = '{{path('specification_api_specification_custom_Item_info', { itemId: 123, index: 'itemIndex' })}}'
@@ -669,48 +671,65 @@
                         "submit": '<button type="button" class="btn btn-default" aria-label="Left Align"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </button>',
                     }, editableParams));
                     
-                    var updateExtraSaleIndexes = function(){
-                        $('#extra-sale-td').find('.edit').each(function(index, el){
-                            index++;
-                            $(el).data('index', index);
-                        });
-                    };
-                    
-                    var saleInitialize = function (el) {
-                        el = $(el);
-                        var editable = el.find('.edit');
-                        var remove = el.find('a');
+                    var
+                        saleInitialize = function (el)
+                        {
+                            el = $(el);
+                            var editable = el.find('.edit');
+                            var remove = el.find('a');
 
-                        editable.editable(editableUrl, {
-                            width: '48px',
-                            style: "display: inline-block;",
-                            height: '100%',
-                            submitdata: function (value) {
-                                return {
-                                    index: editable.data('index')
+                            editable.editable(editableUrl, {
+                                width: '48px',
+                                style: "display: inline-block;",
+                                height: '100%',
+                                submitdata: function (value) {
+                                    return {
+                                        index: editable.data('index')
+                                    }
+                                },
+                                callback: function() {
+                                    trTotalPriceSpecificationUpdater();
                                 }
-                            },
-                            callback: function() {
-                                trTotalPriceSpecificationUpdater();
-                            }
-                        });
-
-                        remove.click(function(){
-                            el.html(progressBasr);
-                            $.ajax({
-                                method: 'POST',
-                                url: '{{ path('specification_api_specification_item_remove_extra_sale', {specification: specification.id}) }}',
-                                data: {
-                                    index: editable.data('index')
-                                }
-                            }).done(function() {
-                                updateExtraSaleIndexes();
-                                trTotalPriceSpecificationUpdater();
-                                el.remove();
                             });
-                            return false;
-                        });
-                    };
+
+                            remove.click(function(){
+                                el.html(progressBasr);
+                                $.ajax({
+                                    method: 'POST',
+                                    url: '{{ path('specification_api_specification_item_remove_extra_sale', {specification: specification.id}) }}',
+                                    data: {
+                                        index: editable.data('index')
+                                    }
+                                }).done(function() {
+                                    updateExtraSaleIndexes();
+                                    trTotalPriceSpecificationUpdater();
+                                    el.remove();
+                                    viewOrHideFinalPriceBySales();
+                                });
+
+                                return false;
+                            });
+                        },
+
+                        updateExtraSaleIndexes = function()
+                        {
+                            var index = 1;
+
+                            $('#extra-sale-td').find('.edit').each(function(){
+                                $(this).data('index', index++);
+                            });
+                        },
+
+                        viewOrHideFinalPriceBySales = function ()
+                        {
+                            var finalPrice = $('tr.final-price');
+
+                            if ($('div.sale').size() > 0) {
+                                finalPrice.removeClass('hide');
+                            } else {
+                                finalPrice.addClass('hide');
+                            }
+                        };
                     
                     $('#add-extra-sale').click(function(){
                         var e = $('#extra-sale-td');
@@ -723,18 +742,16 @@
                         
                         var line = $('[data-sale-prototype]').data('sale-prototype');
                         line = line
-                            .replace( /__index__/ , 0)
-                            .replace( /__sale__/ , 0);
+                            .replace( /__index__/, $('div.sale').size() + 1)
+                            .replace( /__sale__/, 0);
 
                         var newSale = $(line);
 
                         if(lastel.length > 0){
-                            lastel.after( newSale );
+                            lastel.after(newSale);
                         }else{
                             $('#extra-sale-td').append(newSale);
                         }
-
-                        updateExtraSaleIndexes();
 
                         newSale.children().hide();
                         newSale.append(progressBasr);
@@ -752,6 +769,8 @@
                             newSale.find('.progress').remove();
                             newSale.children().show();
                             newSale.find('.edit').trigger('click');
+                            updateExtraSaleIndexes();
+                            viewOrHideFinalPriceBySales();
                         });
 
                         return false;

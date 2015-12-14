@@ -218,6 +218,7 @@ class SpecificationController
         $sales = $specification->getSales();
 
         if ($saleElement = $sales->get($index)) {
+            $sales->removeElement($saleElement);
             $this->em->remove($saleElement);
         }
 
