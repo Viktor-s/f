@@ -160,7 +160,7 @@ frontend:
         factory_rates: Factory conditions
         user_relations: User relations
         retailer_relations: Retailer relations
-        user_profile: User profile
+        user_profile: My profile
         factory_relations: Factory relations
         default_relation: Default relation
         view: View

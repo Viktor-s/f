@@ -63,11 +63,10 @@
 
                                 <br />
 
-                                <a
-                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_factory_relation'|trans }});"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                <a href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}" 
+                                   data-remove data-message="Are you sure you want to remove a relation?" class="btn btn-danger btn-xs">
+                                    {{ 'frontend.remove'|trans }}
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -116,7 +115,7 @@
                                 <a
                                         href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
                                         class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_user_relation'|trans }});"
+                                        data-remove data-message="Are you sure you want to remove a relation?"
                                         >{{ 'frontend.remove'|trans }}</a>
                             </td>
                         </tr>
@@ -158,7 +157,7 @@
                                 <a
                                         href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
                                         class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_user_relation'|trans }});"
+                                        data-remove data-message="Are you sure you want to remove a relation?"
                                         >{{ 'frontend.remove'|trans }}</a>
                             </td>
                         </tr>

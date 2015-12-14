@@ -217,8 +217,8 @@ class EmployeeController
                 $employee->getUsername()
             ));
         }
-
-        $this->em->remove($employee);
+        $employee->setEnabled(false);
+        //$this->em->remove($employee);
         $this->em->flush();
 
         $url = $this->urlGenerator->generate('retailer_profile_employees');

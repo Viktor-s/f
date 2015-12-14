@@ -4,7 +4,6 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
-use Furniture\FrontendBundle\Form\Type\FactoryRetailerRelationType;
 use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -132,7 +131,7 @@ class FactoryRelationController
                 ->setFactoryAccept(false);
         }
 
-        $form = $this->formFactory->create(new FactoryRetailerRelationType(), $relation, [
+        $form = $this->formFactory->create( 'retailer_factory_relation', $relation, [
             'mode'         => 'from_retailer',
             'content_user' => $user
         ]);

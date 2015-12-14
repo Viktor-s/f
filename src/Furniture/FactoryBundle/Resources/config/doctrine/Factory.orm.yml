@@ -23,6 +23,7 @@ Furniture\FactoryBundle\Entity\Factory:
             orphanRemoval: true
             targetEntity: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
             mappedBy: factory
+            fetch: EXTRA_LAZY
 
         images:
             cascade: [persist]

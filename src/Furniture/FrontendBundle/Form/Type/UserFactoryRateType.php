@@ -7,6 +7,7 @@ use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 class UserFactoryRateType extends AbstractType
 {
@@ -25,16 +26,31 @@ class UserFactoryRateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $factroyRate = $builder->getData();
+        
         $builder
             ->add('factory', 'entity', [
                 'class' => Factory::class,
-                'label' => 'frontend.factory'
+                'label' => 'frontend.factory',
+                'query_builder' => function (EntityRepository $er) use ($factroyRate) {
+                    if($factroyRate->getRetailer())
+                        return $er->createQueryBuilder('f')
+                            ->leftJoin(
+                                    RetailerFactoryRate::class, 'rfr',
+                                    'with', 'rfr.factory = f.id AND rfr.retailer = :retailer')
+                            ->andWhere('rfr.retailer is NULL')
+                            ->setParameter('retailer', $factroyRate->getRetailer())
+                        ;
+                    else
+                        return $er->createQueryBuilder('f');
+                }
             ])
             ->add('coefficient', 'number', [
                 'label' => 'frontend.coefficient'
             ])
             ->add('dumping', 'number', [
-                'label' => 'frontend.dumping'
+                'label' => 'frontend.dumping',
+                'data' => 0
             ])
             ->add('_submit', 'submit', [
                 'label' => 'frontend.save',

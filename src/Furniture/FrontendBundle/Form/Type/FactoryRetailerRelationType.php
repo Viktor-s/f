@@ -11,12 +11,33 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
+use Furniture\FrontendBundle\Repository\FactoryRepository;
 
 class FactoryRetailerRelationType extends AbstractType
 {
+    
     /**
+     *
+     * @var \Furniture\FrontendBundle\Repository\FactoryRepository
+     */
+    private $factoryRepository;
+
+    /**
+     *
+     * @var \Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository
+     */
+    private $factoryRelationRepostiroy;
+
+    public function __construct(FactoryRetailerRelationRepository $factoryRelationRepostiroy, FactoryRepository $factoryRepository) {
+        $this->factoryRelationRepostiroy = $factoryRelationRepostiroy;
+        $this->factoryRepository = $factoryRepository;
+    }
+
+        /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -96,7 +117,17 @@ class FactoryRetailerRelationType extends AbstractType
                 } else {
                     $form->add('factory', 'entity', [
                         'label' => 'frontend.factory',
-                        'class' => Factory::class
+                        'class' => Factory::class,
+                        'query_builder' => function (EntityRepository $er) use ($relation) {
+                            if( $relation->getRetailer() ){
+                                return $er->createQueryBuilder('f')
+                                    ->leftJoin( 'f.retailerRelations','fur', 'WITH', 'fur.retailer = :retailer')
+                                    ->orWhere('fur.retailer is NULL')
+                                    ->setParameter('retailer', $relation->getRetailer())
+                                    ;
+                            }else
+                                return $er->createQueryBuilder('f');
+                        }
                     ]);
                 }
             }
@@ -130,6 +161,6 @@ class FactoryRetailerRelationType extends AbstractType
      */
     public function getName()
     {
-        return 'factory_retailer_relation';
+        return 'retailer_factory_relation';
     }
 }
