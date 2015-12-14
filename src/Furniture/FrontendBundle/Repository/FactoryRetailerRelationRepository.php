@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\FactoryBundle\Entity\Factory;
 
 class FactoryRetailerRelationRepository
 {
@@ -175,5 +176,18 @@ class FactoryRetailerRelationRepository
                 'factory_accept' => $factoryAccept,
                 'retailer_accept'    => $retailerAccept,
             ]);
+    }
+    
+    public function findRequestBetweenRetailerFactry( RetailerProfile $retailer, Factory $factory ){
+        return $this->em->createQueryBuilder()
+                ->from(FactoryRetailerRelation::class, 'frr')
+                ->select('frr')
+                ->andWhere('frr.factory = :factory')
+                ->andWhere('frr.retailer = :retailer')
+                ->setParameter('factory', $factory)
+                ->setParameter('retailer', $retailer)
+                ->getQuery()
+                ->getOneOrNullResult();
+                
     }
 }
