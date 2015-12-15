@@ -1,7 +1,7 @@
 <div class="col-md-4 col-sm-4 shop-grid-item " data-factory="{{ product.factory.name }}">
     <div class="product-slide-entry">
         <div class="product-image">
-            <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >
+            <a href="{{ path('product', {'product':product.id}) }}" >
             {% if product.getImage() %}
                 <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
             {% else %}
