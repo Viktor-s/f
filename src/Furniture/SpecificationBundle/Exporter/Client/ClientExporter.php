@@ -34,7 +34,7 @@ class ClientExporter extends AbstractExporter
                 $this->createRowDataForSkuItem($sheet, $item, $fieldMap, $row, $positions);
 
             } else if ($customItem = $item->getCustomItem()) {
-                $this->createRowDataForCustomItem($sheet, $item, $fieldMap, $row);
+                $this->createRowDataForCustomItem($sheet, $item, $fieldMap, $row, $positions);
 
             } else {
                 throw new \RuntimeException(sprintf(
@@ -198,7 +198,7 @@ class ClientExporter extends AbstractExporter
      * @param FieldMapForClient   $fieldMap
      * @param int                 &$row
      */
-    private function createRowDataForCustomItem(\PHPExcel_Worksheet $sheet, SpecificationItem $item, FieldMapForClient $fieldMap, &$row)
+    private function createRowDataForCustomItem(\PHPExcel_Worksheet $sheet, SpecificationItem $item, FieldMapForClient $fieldMap, &$row, &$positions)
     {
         $column = 1;
         $customItem = $item->getCustomItem();
