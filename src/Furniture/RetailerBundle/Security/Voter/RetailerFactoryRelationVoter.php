@@ -36,7 +36,11 @@ class RetailerFactoryRelationVoter implements VoterInterface
 
         if (in_array('RETAILER_FACTORY_RELATION_LIST', $attributes) || in_array('RETAILER_FACTORY_RELATION_CREATE', $attributes)) {
             if ($user->isRetailer()) {
-                return self::ACCESS_GRANTED;
+                if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+                    return self::ACCESS_GRANTED;
+                } else {
+                    return self::ACCESS_DENIED;
+                }
             }
 
             return self::ACCESS_DENIED;
