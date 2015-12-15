@@ -60,13 +60,11 @@ class RetailerProfile implements AddressMarkerInterface
     private $description;
 
     /**
-     *
      * @var float
      */
     private $lat;
 
     /**
-     *
      * @var float
      */
     private $lng;
@@ -82,85 +80,71 @@ class RetailerProfile implements AddressMarkerInterface
     private $updatedAt;
 
     /**
-     *
      * @var string
      */
     private $country;
 
     /**
-     *
      * @var string
      */
     private $locality;
 
     /**
-     *
      * @var string
      */
     private $route;
 
     /**
-     *
      * @var string
      */
     private $streetNumber;
 
     /**
-     *
      * @var string
      */
     private $sublocalityLevel1;
 
     /**
-     *
      * @var string
      */
     private $sublocalityLevel2;
 
     /**
-     *
      * @var string
      */
     private $sublocalityLevel3;
 
     /**
-     *
      * @var string
      */
     private $sublocalityLevel4;
 
     /**
-     *
      * @var string
      */
     private $sublocalityLevel5;
 
     /**
-     *
      * @var string
      */
     private $administrativeAreaLevel1;
 
     /**
-     *
      * @var string
      */
     private $administrativeAreaLevel2;
 
     /**
-     *
      * @var string
      */
     private $administrativeAreaLevel3;
 
     /**
-     *
      * @var string
      */
     private $administrativeAreaLevel4;
 
     /**
-     *
      * @var string
      */
     private $administrativeAreaLevel5;

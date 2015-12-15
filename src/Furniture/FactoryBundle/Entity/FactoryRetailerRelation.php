@@ -3,6 +3,7 @@
 namespace Furniture\FactoryBundle\Entity;
 
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class FactoryRetailerRelation
 {
@@ -13,6 +14,8 @@ class FactoryRetailerRelation
 
     /**
      * @var Factory
+     *
+     * @Assert\NotBlank()
      */
     private $factory;
     

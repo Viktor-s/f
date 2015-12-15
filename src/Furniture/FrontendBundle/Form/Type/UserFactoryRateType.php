@@ -26,20 +26,20 @@ class UserFactoryRateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $factroyRate = $builder->getData();
+        $factoryRate = $builder->getData();
         
         $builder
             ->add('factory', 'entity', [
                 'class' => Factory::class,
                 'label' => 'frontend.factory',
-                'query_builder' => function (EntityRepository $er) use ($factroyRate) {
-                    if($factroyRate->getRetailer())
+                'query_builder' => function (EntityRepository $er) use ($factoryRate) {
+                    if($factoryRate->getRetailer())
                         return $er->createQueryBuilder('f')
                             ->leftJoin(
                                     RetailerFactoryRate::class, 'rfr',
                                     'with', 'rfr.factory = f.id AND rfr.retailer = :retailer')
                             ->andWhere('rfr.retailer is NULL')
-                            ->setParameter('retailer', $factroyRate->getRetailer())
+                            ->setParameter('retailer', $factoryRate->getRetailer())
                         ;
                     else
                         return $er->createQueryBuilder('f');
@@ -50,7 +50,6 @@ class UserFactoryRateType extends AbstractType
             ])
             ->add('dumping', 'number', [
                 'label' => 'frontend.dumping',
-                'data' => 0
             ])
             ->add('_submit', 'submit', [
                 'label' => 'frontend.save',

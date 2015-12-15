@@ -128,6 +128,7 @@ services:
         arguments:
             - @twig
             - @security.token_storage
+            - @security.authorization_checker
             - @frontend.repository.retailer_factory_rate
             - @doctrine.orm.default_entity_manager
             - @form.factory
@@ -140,6 +141,7 @@ services:
             - @frontend.repository.factory_retailer_relation
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+            - @security.authorization_checker
             - @router
             - @form.factory
 

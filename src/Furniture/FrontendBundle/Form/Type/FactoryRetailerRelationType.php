@@ -21,19 +21,27 @@ class FactoryRetailerRelationType extends AbstractType
 {
     
     /**
-     *
-     * @var \Furniture\FrontendBundle\Repository\FactoryRepository
+     * @var FactoryRepository
      */
     private $factoryRepository;
 
     /**
-     *
-     * @var \Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository
+     * @var FactoryRetailerRelationRepository
      */
-    private $factoryRelationRepostiroy;
+    private $factoryRelationRepository;
 
-    public function __construct(FactoryRetailerRelationRepository $factoryRelationRepostiroy, FactoryRepository $factoryRepository) {
-        $this->factoryRelationRepostiroy = $factoryRelationRepostiroy;
+    /**
+     * Constructor
+     *
+     * @param FactoryRetailerRelationRepository $factoryRelationRepository
+     * @param FactoryRepository                 $factoryRepository
+     */
+    public function __construct(
+        FactoryRetailerRelationRepository $factoryRelationRepository,
+        FactoryRepository $factoryRepository
+    )
+    {
+        $this->factoryRelationRepository = $factoryRelationRepository;
         $this->factoryRepository = $factoryRepository;
     }
 

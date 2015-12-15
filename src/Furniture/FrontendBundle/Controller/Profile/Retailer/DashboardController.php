@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DashboardController
 {
@@ -38,6 +39,11 @@ class DashboardController
     {
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
+
+        if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {
+            throw new AccessDeniedException();
+        }
+
         $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer:dashboard.html.twig', [

@@ -24,6 +24,8 @@ class RetailerFactoryRate
 
     /**
      * @var Factory
+     *
+     * @Assert\NotBlank()
      */
     private $factory;
 

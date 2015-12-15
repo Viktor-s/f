@@ -19,3 +19,13 @@ services:
         class: Furniture\RetailerBundle\Security\Voter\RetailerVoter
         tags:
             - { name: security.voter }
+
+    security.voter.retailer_factory_rate:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerFactoryRateVoter
+        tags:
+            - { name: security.voter }
+
+    security.voter.retailer_factory_relation:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerFactoryRelationVoter
+        tags:
+            - { name: security.voter }

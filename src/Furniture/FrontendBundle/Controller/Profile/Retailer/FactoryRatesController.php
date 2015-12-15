@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FactoryRatesController
 {
@@ -25,6 +27,11 @@ class FactoryRatesController
      * @var TokenStorageInterface
      */
     private $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
 
     /**
      * @var RetailerFactoryRateRepository
@@ -51,6 +58,7 @@ class FactoryRatesController
      *
      * @param \Twig_Environment             $twig
      * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param RetailerFactoryRateRepository $userFactoryRateRepository
      * @param EntityManagerInterface        $em
      * @param FormFactoryInterface          $formFactory
@@ -59,6 +67,7 @@ class FactoryRatesController
     public function __construct(
         \Twig_Environment $twig,
         TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         RetailerFactoryRateRepository $userFactoryRateRepository,
         EntityManagerInterface $em,
         FormFactoryInterface $formFactory,
@@ -66,6 +75,7 @@ class FactoryRatesController
     ) {
         $this->twig = $twig;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
         $this->userFactoryRateRepository = $userFactoryRateRepository;
         $this->em = $em;
         $this->formFactory = $formFactory;
@@ -79,6 +89,10 @@ class FactoryRatesController
      */
     public function rates()
     {
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_LIST')) {
+            throw new AccessDeniedException();
+        }
+
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
@@ -117,11 +131,16 @@ class FactoryRatesController
                 ));
             }
 
-            // @todo: check granted for edit this rate (via security voter in Symfony 2)
+            if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_EDIT', $rate)) {
+                throw new AccessDeniedException();
+            }
         } else {
-            // @todo: check granted for create rate (via security voter in Symfony 2)
             $rate = new RetailerFactoryRate();
             $rate->setRetailer($user->getRetailerUserProfile()->getRetailerProfile());
+
+            if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_EDIT', $rate)) {
+                throw new AccessDeniedException();
+            }
         }
 
         $form = $this->formFactory->create(new UserFactoryRateType(), $rate);
@@ -167,7 +186,9 @@ class FactoryRatesController
             ));
         }
 
-        // @todo: add check grated for remove (via security voter in Symfony2)
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_REMOVE', $rate)) {
+            throw new AccessDeniedException();
+        }
 
         $this->em->remove($rate);
         $this->em->flush();

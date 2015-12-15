@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FactoryRelationController
 {
@@ -37,6 +39,11 @@ class FactoryRelationController
     private $tokenStorage;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -53,6 +60,7 @@ class FactoryRelationController
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
      * @param EntityManagerInterface            $entityManager
      * @param TokenStorageInterface             $tokenStorage
+     * @param AuthorizationCheckerInterface     $authorizationChecker
      * @param UrlGeneratorInterface             $urlGenerator
      * @param FormFactoryInterface              $formFactory
      */
@@ -61,13 +69,16 @@ class FactoryRelationController
         FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         UrlGeneratorInterface $urlGenerator,
         FormFactoryInterface $formFactory
-    ) {
+    )
+    {
         $this->twig = $twig;
         $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
         $this->em = $entityManager;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->formFactory = $formFactory;
     }
@@ -79,6 +90,10 @@ class FactoryRelationController
      */
     public function factoryRelations()
     {
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_LIST')) {
+            throw new AccessDeniedException();
+        }
+
         /** @var \Furniture\CommonBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
@@ -90,9 +105,9 @@ class FactoryRelationController
         $relations = $this->factoryRetailerRelationRepository->findAuthorizedForRetailer($retailer);
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRelation:relations.html.twig', [
-            'factory_requests' => $factoryRequests,
+            'factory_requests'      => $factoryRequests,
             'requests_to_factories' => $requestsToFactories,
-            'authorized_relations' => $relations
+            'authorized_relations'  => $relations,
         ]);
 
         return new Response($content);
@@ -122,18 +137,24 @@ class FactoryRelationController
                 ));
             }
 
-            // @todo: add check granted for edit this relation (via security voter in Symfony2)
+            if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_EDIT', $relation)) {
+                throw new AccessDeniedException();
+            }
         } else {
             $relation = new FactoryRetailerRelation();
             $relation
                 ->setRetailer($user->getRetailerUserProfile()->getRetailerProfile())
                 ->setRetailerAccept(true)
                 ->setFactoryAccept(false);
+
+            if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_CREATE', $relation)) {
+                throw new AccessDeniedException();
+            }
         }
 
-        $form = $this->formFactory->create( 'retailer_factory_relation', $relation, [
+        $form = $this->formFactory->create('retailer_factory_relation', $relation, [
             'mode'         => 'from_retailer',
-            'content_user' => $user
+            'content_user' => $user,
         ]);
 
         $form->handleRequest($request);
@@ -149,7 +170,7 @@ class FactoryRelationController
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRelation:edit.html.twig', [
             'relation' => $relation,
-            'form' => $form->createView()
+            'form'     => $form->createView(),
         ]);
 
         return new Response($content);
@@ -174,7 +195,9 @@ class FactoryRelationController
             ));
         }
 
-        // @todo: add check granted for approve this relation (via security voter in Symfony3)
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_EDIT', $relation)) {
+            throw new AccessDeniedException();
+        }
 
         $relation->setRetailerAccept(true);
 
@@ -214,7 +237,9 @@ class FactoryRelationController
             ));
         }
 
-        // @todo: add check granted for remove this relation (via security voter in Symfony2)
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_EDIT', $relation)) {
+            throw new AccessDeniedException();
+        }
 
         $this->em->remove($relation);
         $this->em->flush();
