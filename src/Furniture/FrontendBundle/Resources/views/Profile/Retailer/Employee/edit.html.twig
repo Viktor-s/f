@@ -18,19 +18,19 @@
             {{ form_errors(form) }}
         {% endif %}
 
+        {{ form_row(form.customer.email) }}
+        {{ form_row(form.plainPassword) }}
         {{ form_row(form.customer.firstName) }}
         {{ form_row(form.customer.lastName) }}
-        {{ form_row(form.customer.email) }}
         {{ form_row(form.retailerUserProfile.position)}}
-        {{ form_row(form.retailerMode) }}
-        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.retailerUserProfile.phones) }}
         {{ form_row(form.retailerMode) }}
         {{ form_row(form.enabled) }}
+
+        {{ form_rest(form) }}
 
         <div class="form-group text-center">
             <input type="submit" value="{{ employee.id ? 'Save' : 'Create' }}" class="btn btn-success" />
         </div>
-
-        {{ form_rest(form) }}
     </form>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +21,7 @@ class RetailerUserProfileType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,7 +29,13 @@ class RetailerUserProfileType extends AbstractType
             ->add('position', 'text', [
                 'label' => 'frontend.position',
                 'required' => false
+            ])
+            ->add('phones', 'text', [
+                'label' => 'frontend.phones',
+                'required' => false
             ]);
+
+        $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
     }
 
     /**

@@ -22,6 +22,7 @@ frontend:
     create: Create
     update: Update
     edit: Edit
+    export_specification_preview: Export specification - preview
     remove: Remove
     show: Show
     detailed: Detailed
@@ -52,6 +53,7 @@ frontend:
     all: All
     by_company: By company
     position: Position
+    phones: Phones
     photo: Photo
     product_article: Article
     product_size: Size

@@ -70,7 +70,7 @@
                         </div>
                     {% endif %}
 
-                    {% if app.user.retailerUserProfile.retailerProfile|length > 0 %}
+                    {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
                             <b>Emails:</b>
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}

@@ -10,7 +10,17 @@
 
 {% block page_content %}
     <form class="form" method="POST" action="">
-        {{ form_widget(form) }}
+        {% if form.vars.errors|length > 0 %}
+            {{ form_errors(form) }}
+        {% endif %}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.retailerUserProfile.position) }}
+        {{ form_row(form.retailerUserProfile.phones) }}
+
+        {{ form_rest(form) }}
 
         <div class="text-center">
             <input type="submit" class="btn btn-success" value="Save" />

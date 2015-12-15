@@ -45,13 +45,15 @@ class RetailerProfileType extends AbstractType
             ])
             ->add('address', 'text', [
                 'attr' => array('class'=>'google-address-autocomplete'),
-                'required' => true
+                'required' => false
             ])
             ->add('phones', 'text', [
-                'label' => 'furniture_retailer_profile.form.phones'
+                'label' => 'furniture_retailer_profile.form.phones',
+                'required' => false
             ])
             ->add('emails', 'text', [
-                'label' => 'furniture_retailer_profile.form.emails'
+                'label' => 'furniture_retailer_profile.form.emails',
+                'required' => false
             ]);
         
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));

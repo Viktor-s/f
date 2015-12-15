@@ -33,6 +33,11 @@ class RetailerUserProfile
     private $user;
 
     /**
+     * @var array
+     */
+    private $phones = [];
+
+    /**
      * @var string
      */
     private $position;
@@ -143,6 +148,30 @@ class RetailerUserProfile
     public function isRetailerEmployee()
     {
         return $this->retailerMode == self::RETAILER_EMPLOYEE;
+    }
+
+    /**
+     * Set contact phones
+     *
+     * @param array $phones
+     *
+     * @return RetailerUserProfile
+     */
+    public function setPhones(array $phones)
+    {
+        $this->phones = $phones;
+
+        return $this;
+    }
+
+    /**
+     * Get contact phones
+     *
+     * @return array
+     */
+    public function getPhones()
+    {
+        return $this->phones;
     }
 
     /**

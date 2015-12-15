@@ -41,7 +41,7 @@
                         <div class="emails">
                             <b>Emails:</b>
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
-                                <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
+                                <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -73,10 +73,20 @@
             <hr/>
             <div class="article-container style-1">
                 <h5>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }} </h5>
+
                 <div class="emails">
                     <b>Email:</b>
                     <span class="item">{{ app.user.customer.email }}</span>
                 </div>
+
+                {% if app.user.retailerUserProfile.phones|length > 0 %}
+                    <div class="phones">
+                        <b>Phones:</b>
+                        {% for phone in app.user.retailerUserProfile.phones %}
+                            <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

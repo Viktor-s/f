@@ -36,8 +36,10 @@ class UserInformationType extends AbstractType
             ])
             ->add('lastName', 'text', [
                 'property_path' => 'customer.lastName',
-                'label' => 'frontend.last_name'
-            ]);
+                'label' => 'frontend.last_name',
+                'required' => false
+            ])
+            ->add('retailerUserProfile', new RetailerUserProfileType());
     }
     
     /**
@@ -47,6 +49,5 @@ class UserInformationType extends AbstractType
     {
         return 'frontend_user_profile_type';
     }
-    
 }
 

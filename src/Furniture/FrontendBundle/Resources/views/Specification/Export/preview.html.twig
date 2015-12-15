@@ -12,6 +12,12 @@
 
 {% block content %}
     <div class="information-blocks">
+        <h1>
+            {{ 'frontend.export_specification_preview'|trans }}
+        </h1>
+
+        <div class="clearfix"></div>
+
         <div class="pull-right">
             <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-success">
                 <i class="fa fa-edit"></i>

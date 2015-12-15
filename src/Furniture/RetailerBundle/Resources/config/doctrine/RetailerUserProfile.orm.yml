@@ -19,6 +19,10 @@ Furniture\RetailerBundle\Entity\RetailerUserProfile:
             type: string
             name: position
             nullable: true
+
+        phones:
+            type: json_array
+            name: phones
                 
     oneToOne:
         user:
