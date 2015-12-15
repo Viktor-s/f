@@ -6,7 +6,7 @@
     <td>
         {% if product.image %}
             <div class="product-image">
-                <img src="{{ product.image.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                <img src="{{ product.image.path|imagine_filter('s150x150') }}" />
             </div>
         {% endif %}
     </td>
