@@ -126,6 +126,8 @@
                 query[name] = val;
             }
 
+            query.liveForm = 1;
+
             window.location = window.location.origin + window.location.pathname + '?' + $.param(query);
         });
     }

@@ -70,7 +70,7 @@ class ProductRepository
                 ->getResult();
         }
 
-        $pagination = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery()));
+        $pagination = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery(), false));
         $pagination->setMaxPerPage($limit);
         $pagination->setCurrentPage($page);
 

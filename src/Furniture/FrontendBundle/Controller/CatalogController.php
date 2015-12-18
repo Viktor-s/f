@@ -18,8 +18,10 @@ use Furniture\FrontendBundle\Repository\Query\ProductStyleQuery;
 use Furniture\FrontendBundle\Repository\Query\ProductTypeQuery;
 use Furniture\FrontendBundle\Repository\SpecificationItemRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CatalogController
@@ -80,6 +82,11 @@ class CatalogController
     private $tokenStorage;
 
     /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment             $twig
@@ -93,6 +100,7 @@ class CatalogController
      * @param SpecificationItemRepository   $specificationItemRepository
      * @param CompositeCollectionRepository $compositeCollectionRepository
      * @param TokenStorageInterface         $tokenStorage
+     * @param UrlGeneratorInterface         $urlGenerator
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -105,7 +113,8 @@ class CatalogController
         SpecificationRepository $specificationRepository,
         SpecificationItemRepository $specificationItemRepository,
         CompositeCollectionRepository $compositeCollectionRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->twig = $twig;
         $this->productRepository = $productRepository;
@@ -118,6 +127,7 @@ class CatalogController
         $this->specificationItemRepository = $specificationItemRepository;
         $this->compositeCollectionRepository = $compositeCollectionRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->urlGenerator = $urlGenerator;
     }
 
 
@@ -146,6 +156,25 @@ class CatalogController
      */
     public function products(Request $request)
     {
+        $searchQuery = clone $request->query;
+        $searchQuery->remove('page');
+
+        if (!count($searchQuery) && !$searchQuery->has('liveForm')) {
+            // Get latest URI for product
+            $latestQuery = $request->getSession()->get('product_latest_query');
+
+            if ($latestQuery) {
+                $productUrl = $this->urlGenerator->generate('products');
+                $productUrl .= '?' . $latestQuery;
+
+                return new RedirectResponse($productUrl);
+            }
+        } else {
+            $searchQuery->remove('liveForm');
+            $latestQuery = http_build_query($searchQuery->all());
+            $request->getSession()->set('product_latest_query', $latestQuery);
+        }
+
         $productQuery = new ProductQuery();
 
         $filterIds = function ($ids) {
@@ -249,10 +278,7 @@ class CatalogController
         $user = $this->tokenStorage->getToken()->getUser();
 
         if ($user->isRetailer()) {
-            $productQuery->withRetailer($user
-                    ->getRetailerUserProfile()
-                    ->getRetailerProfile()
-                    );
+            $productQuery->withRetailer($user->getRetailerUserProfile()->getRetailerProfile());
         }
         
         /* Create product paginator */
@@ -267,10 +293,7 @@ class CatalogController
         // Create a brands query
         $brandsQuery= new FactoryQuery();
         if ($user->isRetailer()) {
-            $brandsQuery->withRetailer($user
-                    ->getRetailerUserProfile()
-                    ->getRetailerProfile()
-                    );
+            $brandsQuery->withRetailer($user->getRetailerUserProfile()->getRetailerProfile());
         }
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [

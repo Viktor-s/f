@@ -21,6 +21,7 @@ services:
             - @frontend.repository.specification_item
             - @frontend.repository.composite_collection
             - @security.token_storage
+            - @router
 
     frontend.controller.product:
         class: Furniture\FrontendBundle\Controller\ProductController
