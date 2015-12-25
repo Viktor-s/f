@@ -9,5 +9,5 @@ Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage:
             joinColumn:
                 name: material_variant_id
                 referencedColumnName: id
-                nullable: true
+                nullable: false
                 onDelete: CASCADE

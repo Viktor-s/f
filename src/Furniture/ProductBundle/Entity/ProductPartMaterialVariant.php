@@ -243,7 +243,7 @@ class ProductPartMaterialVariant
     public function setImage(ProductPartMaterialVariantImage $image = null)
     {
         $this->image = $image;
-
+        $image->setMaterialVariant($this);
         return $this;
     }
 

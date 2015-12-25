@@ -18,6 +18,7 @@ Furniture\ProductBundle\Entity\ProductPartType:
             
     oneToMany:
         productParts:
+            fetch: EXTRA_LAZY
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
             mappedBy: productPartType
             cascade: [ persist ]

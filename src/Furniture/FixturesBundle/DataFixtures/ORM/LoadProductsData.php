@@ -10,6 +10,7 @@ use Furniture\ProductBundle\Entity\ProductPdpInput;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Model\AttributeValueInterface;
 use Sylius\Component\Taxation\Model\TaxCategoryInterface;
+use Furniture\ProductBundle\Entity\ProductPart;
 
 
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadProductsData as BaseLoadProductsData;
@@ -35,7 +36,10 @@ class LoadProductsData extends BaseLoadProductsData
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 1; $i <= 60; $i++) {
+        $countOfProducts = 30;
+        echo 'Create products number: '.$countOfProducts.PHP_EOL;
+        for ($i = 1; $i <= $countOfProducts; $i++) {
+            echo 'Product '.$i.' of '.$countOfProducts.PHP_EOL;
             switch (rand(0, 2)) {
                 case 0:
                     $e = $this->createTable($i);
@@ -204,15 +208,13 @@ class LoadProductsData extends BaseLoadProductsData
     {
         $product = $this->createProduct();
         //$product->setTaxCategory($this->getTaxCategory('Taxable goods'));
-
         $translatedNames = array(
             $this->defaultLocale => sprintf('Table "%s"', $this->faker->word),
             'es_ES' => sprintf('Camiseta "%s"', $this->fakers['es_ES']->word),
         );
         $this->addTranslatedFields($product, $translatedNames);
-
         $product->setVariantSelectionMethod(ProductInterface::VARIANT_SELECTION_MATCH);
-
+        
         $this->addMasterVariant($product);
         $this->setChannels($product, $this->faker->randomElements($this->channels, rand(1, 4)));
 
@@ -223,9 +225,6 @@ class LoadProductsData extends BaseLoadProductsData
         $types = ['Console table', 'Dressing table', 'Coffee table'];
         $type = $types[rand(0, count($types) - 1)];
         $product->addType($this->getReference('product.type:' . $type));
-
-        $product->addOption($this->getReference('Sylius.Option.table_legs'));
-        $product->addOption($this->getReference('Sylius.Option.table_tops'));
         
         $this->setDesignerAttribute($product);
         
@@ -236,12 +235,30 @@ class LoadProductsData extends BaseLoadProductsData
                 '4x6',
             ]);
 
+        $this->setProductPart(
+            $product,
+            sprintf('Top "%s"', $this->faker->word),
+            $this->getReference('Furniture.product_part_type.Top'),
+            [
+                $this->getReference('Furniture.product_part_material.antonello_italia_wood')
+                ]
+                );
+        
+        $this->setProductPart(
+            $product,
+            sprintf('Top "%s"', $this->faker->word),
+            $this->getReference('Furniture.product_part_type.Legs'),
+            [
+                $this->getReference('Furniture.product_part_material.antonello_italia_wood')
+                ]
+                );
+        
         $this->setFactory($product);
         
         $this->setCollections($product);
         
         $this->setReference('Sylius.Product.Table'.$i, $product);
-        
+        echo 'END create'.PHP_EOL;
         return $product;
     }
 
@@ -285,6 +302,15 @@ class LoadProductsData extends BaseLoadProductsData
                 );
     }
 
+    protected function setProductPart(ProductInterface $product, $label, $type, $materials)
+    {
+        /* @var $productPartType \Furniture\ProductBundle\Entity\ProductPart */
+        $productPartType = $this->get('furniture.repository.product_part')->createNew();
+        $productPartType->setLabel($label);
+        $productPartType->setProductPartType($type);
+        $productPartType->setProductPartMaterials(new ArrayCollection($materials));
+        return $product->addProductPart($productPartType);
+    }
 
     /**
      * 
@@ -342,7 +368,6 @@ class LoadProductsData extends BaseLoadProductsData
         $this->get('Furniture.generator.product_variant')
             ->generate($product)
         ;
-
         foreach ($product->getVariants() as $variant) {
             $variant->setAvailableOn($this->faker->dateTimeThisYear);
             $variant->setPrice($this->faker->randomNumber(4));

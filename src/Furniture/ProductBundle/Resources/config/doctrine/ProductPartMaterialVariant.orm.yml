@@ -55,6 +55,7 @@ Furniture\ProductBundle\Entity\ProductPartMaterialVariant:
         image:
             targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage
             cascade: [ persist ]
+            onDelete: CASCADE
             mappedBy: materialVariant
 
     lifecycleCallbacks:

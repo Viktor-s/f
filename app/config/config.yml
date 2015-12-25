@@ -282,6 +282,11 @@ sylius_resource:
             classes:
                 model: Furniture\ProductBundle\Entity\ProductPartMaterialOption
 
+        furniture.product_part_material_variant_image:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductPartMaterialVariantImage
+                
         furniture.product_part_material_variant:
             driver: doctrine/orm
             classes:

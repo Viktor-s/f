@@ -7,17 +7,27 @@ use \Doctrine\Common\Persistence\ObjectManager;
 
 class LoadProductPartMaterialOption extends DataFixture {
     
+    /**
+     * List of product part material option names
+     * @var array
+     */
+    private $productPartMaterialOptions = [
+        'category',
+        'code',
+        'Color',
+    ];
+
+
     public function getOrder() {
         return 19;
     }
     
     public function load(ObjectManager $manager) {
         
-        $roductPartMaterialOption = $this->createEntity('Material category');
-        $manager->persist($roductPartMaterialOption);
-        
-        $roductPartMaterialOption = $this->createEntity('Material name');
-        $manager->persist($roductPartMaterialOption);
+        foreach($this->productPartMaterialOptions as $productPartMaterialOptionName){
+            $roductPartMaterialOption = $this->createEntity($productPartMaterialOptionName);
+            $manager->persist($roductPartMaterialOption);
+        }
         
         $manager->flush();
     }
