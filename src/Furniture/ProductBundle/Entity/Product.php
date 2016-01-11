@@ -85,7 +85,6 @@ class Product extends BaseProduct
      */
     private $availableForSale;
 
-
     /**
      * Constructor.
      */

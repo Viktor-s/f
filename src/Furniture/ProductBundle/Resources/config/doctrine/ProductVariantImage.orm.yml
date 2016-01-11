@@ -1,0 +1,8 @@
+Furniture\ProductBundle\Entity\ProductVariantImage:
+    type: entity
+    table: product_variant_image
+
+    fields:
+        position:
+            type: integer
+            name: position

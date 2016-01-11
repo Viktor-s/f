@@ -1,2 +1,29 @@
 {% include 'SyliusWebBundle:Common:forms.html.twig' %}
 {% include 'SyliusResourceBundle::forms.html.twig' %}
+
+{% block product_variant_image_widget %}
+{% spaceless %}
+    <div class="product-images-image row sortable-item">
+        <div class="col-md-1 text-center" data-target="move">
+            <i class="glyphicon glyphicon-move" data-target="move"></i>
+            {{ form_widget(form.position) }}
+        </div>
+
+        <div class="col-md-2">
+            {% if form.vars.value and form.vars.value.path|length > 0 %}
+                <a href="{{ form.vars.value.path|imagine_filter('sylius_large') }}" data-gallery="gallery">
+                    <img class="img-rounded" src="{{ form.vars.value.path|imagine_filter('sylius_small') }}" alt="" />
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="col-md-7">
+            {{ form_widget(form.file) }}
+        </div>
+
+        <div class="col-md-2">
+            <a href="#" class="btn btn-danger" data-collection-button="delete" data-collection="product-images" data-collection-item="image"><i class="glyphicon glyphicon-trash"></i>&nbsp;{{ 'sylius.variant.delete_image'|trans }}</a>
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock %}

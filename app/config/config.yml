@@ -147,6 +147,11 @@ furniture_factory:
     content_access_control:
         roles: [ content_user ]
 
+sylius_core:
+    classes:
+        product_variant_image:
+            model: Furniture\ProductBundle\Entity\ProductVariantImage
+
 sylius_product:
     classes:
         product:

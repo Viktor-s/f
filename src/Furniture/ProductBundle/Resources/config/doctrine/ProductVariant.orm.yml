@@ -1,7 +1,7 @@
 Furniture\ProductBundle\Entity\ProductVariant:
     type: entity
-    inheritanceType: SINGLE_TABLE
-    
+    table: product_variant
+
     oneToMany:
         productPartVariantSelections:
             orphanRemoval: true
@@ -24,6 +24,12 @@ Furniture\ProductBundle\Entity\ProductVariant:
                     sku_option_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+
+    oneToMany:
+        images:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariantImage
+            orphanRemoval: true
+            orderBy: { position: ASC }
 
 #        extensionVariants:
 #            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant

@@ -589,3 +589,17 @@ input[type="file"] {
     display: block;
 }
 
+div[data-target="move"]
+{
+    cursor: move;
+}
+
+.product-images-image
+{
+    margin-bottom: 20px;
+}
+
+.product-images-image:last-child
+{
+    margin-bottom: 0;
+}

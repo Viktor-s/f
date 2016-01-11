@@ -27,3 +27,21 @@
 
 {# @todo: correct call to form_rest(form), for view all not rendered fields #}
 {{ form_widget(form._token) }}
+
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            var images = $('#product-images');
+
+            images.sortable({
+                update: function () {
+                    var index = 0;
+                    images.find('.product-image').each(function () {
+                        $(this).find('[data-target="move"] input').val(index++);
+                    });
+                }
+            });
+            images.disableSelection();
+        });
+    })(jQuery);
+</script>
