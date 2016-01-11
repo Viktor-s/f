@@ -51,7 +51,17 @@ class UserType extends BaseUserType
         if ($options['mode'] == 'retailer') {
             $builder->remove('authorizationRoles');
             $builder->remove('factory');
-
+            /*$builder->remove('plainPassword');
+            
+            $builder->add('plainPassword', 'repeated', array(
+                'type' => 'password',
+                'invalid_message' => 'The password fields must match.',
+                'options' => array('attr' => array('class' => 'password-field')),
+                'required' => true,
+                'first_options'  => array('label' => 'frontend.new_password'),
+                'second_options' => array('label' => 'frontend.repeat_password'),
+            ));*/
+            
             $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 $this->validateUserForRetailerProfile($event->getData(), $event->getForm());
             });
@@ -123,7 +133,7 @@ class UserType extends BaseUserType
             ));
         }
         if (!$user->getRetailerUserProfile()->getRetailerProfile()) {
-            $form->get('retailerUserProfile')->get('retailerMode')->addError(new FormError(
+            $form->get('retailerUserProfile')->get('retailerProfile')->addError(new FormError(
                 'This value should be not blank'
             ));
         }
