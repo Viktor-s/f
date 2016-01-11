@@ -458,7 +458,7 @@ class SpecificationController
         if (!$this->authorizationChecker->isGranted('SPECIFICATION_BUYER_LIST')) {
             throw new AccessDeniedException();
         }
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 

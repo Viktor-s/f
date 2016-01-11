@@ -17,7 +17,7 @@ class LoadPostData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $syliusUser */
+        /** @var \Furniture\UserBundle\Entity\User $syliusUser */
         $syliusUser = $this->getReference('Sylius.User-Administrator');
 
         for ($i = 1; $i <= 100; $i++) {

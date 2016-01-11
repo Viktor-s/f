@@ -17,7 +17,7 @@ class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtu
     {
         $faker = Factory::create();
 
-        /** @var \Furniture\CommonBundle\Entity\User $administer */
+        /** @var \Furniture\UserBundle\Entity\User $administer */
         $administer = $this->getReference('Sylius.User-Administrator');
         $administer->getRetailerUserProfile()->getId();
         for ($i = 0; $i < 5; $i++) {

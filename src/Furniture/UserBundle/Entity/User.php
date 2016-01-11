@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\CommonBundle\Entity;
+namespace Furniture\UserBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
@@ -19,9 +19,14 @@ class User extends BaseUser
     protected $factory;
 
     /**
-     * @var \Furniture\RetailerBundle\Entity\RetailerUserProfile
+     * @var RetailerUserProfile
      */
     protected $retailerUserProfile;
+
+    /**
+     * @var bool
+     */
+    protected $shouldControlForKill = false;
 
     /**
      * Construct
@@ -67,8 +72,31 @@ class User extends BaseUser
     }
 
     /**
-     * 
-     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
+     * Should control for kill
+     *
+     * @return User
+     */
+    public function shouldControlForKill()
+    {
+        $this->shouldControlForKill = true;
+
+        return $this;
+    }
+
+    /**
+     * Is should control for kill?
+     *
+     * @return bool
+     */
+    public function isShouldControlForKill()
+    {
+        return $this->shouldControlForKill;
+    }
+
+    /**
+     * Get retailer user profile
+     *
+     * @return RetailerUserProfile
      */
     public function getRetailerUserProfile()
     {
@@ -76,15 +104,18 @@ class User extends BaseUser
     }
     
     /**
-     * 
-     * @param \Furniture\RetailerBundle\Entity\RetailerUserProfile
-     * @return \Furniture\CommonBundle\Entity\User
+     * Set retailer user profile
+     *
+     * @param RetailerUserProfile $retailerUserProfile
+     *
+     * @return User
      */
     public function setRetailerUserProfile(RetailerUserProfile $retailerUserProfile)
     {
         $this->resetProfile();
         $retailerUserProfile->setUser($this);
         $this->retailerUserProfile = $retailerUserProfile;
+
         return $this;
     }
 

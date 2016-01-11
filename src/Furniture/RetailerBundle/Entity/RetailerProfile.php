@@ -1,7 +1,7 @@
 <?php
 namespace Furniture\RetailerBundle\Entity;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;

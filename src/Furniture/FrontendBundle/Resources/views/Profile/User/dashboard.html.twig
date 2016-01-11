@@ -79,7 +79,7 @@
                     <span class="item">{{ app.user.customer.email }}</span>
                 </div>
 
-                {% if app.user.retailerUserProfile.phones|length > 0 %}
+                {% if app.user.retailerUserProfile and app.user.retailerUserProfile.phones|length > 0 %}
                     <div class="phones">
                         <b>Phones:</b>
                         {% for phone in app.user.retailerUserProfile.phones %}

@@ -4,7 +4,7 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 use Furniture\SpecificationBundle\Model\GroupedItemsByFactory;
 use Symfony\Component\Validator\Constraints as Assert;

@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 
 class ProductsBlock extends BaseBlockService
 {

@@ -3,7 +3,7 @@
 namespace Furniture\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadUsersData as BaseLoadUserData;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
@@ -33,7 +33,7 @@ class LoadUserData extends BaseLoadUserData
         for ($i = 1; $i <= 5; $i++) {
             $email = 'user' . $i . '@content-user.com';
 
-            /** @var \Furniture\CommonBundle\Entity\User $user */
+            /** @var \Furniture\UserBundle\Entity\User $user */
             $user = $this->createUser(
                 $email,
                 'user' . $i,
@@ -75,7 +75,7 @@ class LoadUserData extends BaseLoadUserData
         for ($i = 1; $i <= 5; $i++) {
             $email = 'user' . $i . '@factory-admin.com';
 
-            /** @var \Furniture\CommonBundle\Entity\User $user */
+            /** @var \Furniture\UserBundle\Entity\User $user */
             $user = $this->createUser(
                 $email,
                 'user' . $i,

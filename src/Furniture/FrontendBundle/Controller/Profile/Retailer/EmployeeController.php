@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\FrontendBundle\Repository\RetailerEmployeeRepository;
 use Sylius\Component\User\Security\PasswordUpdater;
@@ -106,7 +106,7 @@ class EmployeeController
             throw new AccessDeniedException();
         }
 
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
         $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
 

@@ -3,7 +3,7 @@
 namespace Furniture\FactoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Furniture\RetailerBundle\Entity\RetailerProfile;

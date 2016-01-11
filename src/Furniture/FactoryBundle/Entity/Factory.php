@@ -51,7 +51,7 @@ class Factory extends AbstractTranslatable
     protected $retailerRelations;
 
     /**
-     * @var Collection|\Furniture\CommonBundle\Entity\User[]
+     * @var Collection|\Furniture\UserBundle\Entity\User[]
      */
     protected $users;
 
@@ -465,7 +465,7 @@ class Factory extends AbstractTranslatable
     /**
      * Get users
      *
-     * @return Collection|\Furniture\CommonBundle\Entity\User
+     * @return Collection|\Furniture\UserBundle\Entity\User
      */
     public function getUsers()
     {

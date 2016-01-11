@@ -37,9 +37,19 @@ class LoadProductsData extends BaseLoadProductsData
     public function load(ObjectManager $manager)
     {
         $countOfProducts = 30;
-        echo 'Create products number: '.$countOfProducts.PHP_EOL;
+
+        print sprintf(
+            "Create %d products:\n",
+            $countOfProducts
+        );
+
         for ($i = 1; $i <= $countOfProducts; $i++) {
-            echo 'Product '.$i.' of '.$countOfProducts.PHP_EOL;
+            print sprintf(
+                "Product %d of %d\n",
+                $i,
+                $countOfProducts
+            );
+
             switch (rand(0, 2)) {
                 case 0:
                     $e = $this->createTable($i);
@@ -47,7 +57,6 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->flush();
                     $this->generateVariants($e);
                     $this->createPDP($e);
-                    $manager->flush();
                     break;
 
                 case 1:
@@ -56,7 +65,6 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->flush();
                     $this->generateVariants($e);
                     $this->createPDP($e);
-                    $manager->flush();
                     break;
 
                 case 2:
@@ -65,20 +73,17 @@ class LoadProductsData extends BaseLoadProductsData
                     $manager->flush();
                     $this->generateVariants($e);
                     $this->createPDP($e);
-                    $manager->flush();
                     break;
 
                 case 3:
                     //$manager->persist($this->createFurnture($i));
                     break;
             }
-            
-            if (0 === $i % 20) {
-                $manager->flush();
-            }
+
+            $manager->flush();
+            $manager->clear();
+            gc_collect_cycles();
         }
-        
-        $manager->flush();
 
         $this->defineTotalVariants();
     }
@@ -258,7 +263,7 @@ class LoadProductsData extends BaseLoadProductsData
         $this->setCollections($product);
         
         $this->setReference('Sylius.Product.Table'.$i, $product);
-        echo 'END create'.PHP_EOL;
+
         return $product;
     }
 

@@ -2,7 +2,7 @@
 
 namespace Furniture\SpecificationBundle\Entity;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;

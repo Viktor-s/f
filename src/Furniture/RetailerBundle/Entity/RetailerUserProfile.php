@@ -2,7 +2,7 @@
 
 namespace Furniture\RetailerBundle\Entity;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
@@ -87,7 +87,7 @@ class RetailerUserProfile
      *
      * @param int $retailerMode
      *
-     * @return User
+     * @return \Furniture\UserBundle\Entity\User
      */
     public function setRetailerMode($retailerMode)
     {
@@ -109,7 +109,7 @@ class RetailerUserProfile
     /**
      * Get user
      *
-     * @return User
+     * @return \Furniture\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -123,7 +123,7 @@ class RetailerUserProfile
      *
      * @return RetailerUserProfile
      */
-    public function setUser(User $user)
+    public function setUser(\Furniture\UserBundle\Entity\User $user)
     {
         $this->user = $user;
 

@@ -29,7 +29,7 @@ class SpecificationItemVoter extends AbstractVoter
     protected function isGranted($attribute, $object, $user = null)
     {
         
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         if ($user->isNoRetailer()) {
             // Only retailer have grants to custom specification item.
             return false;

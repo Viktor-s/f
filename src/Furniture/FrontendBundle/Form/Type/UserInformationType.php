@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

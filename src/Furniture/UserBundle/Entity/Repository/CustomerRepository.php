@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\CommonBundle\Entity\Repository;
+namespace Furniture\UserBundle\Entity\Repository;
 
 use Sylius\Bundle\UserBundle\Doctrine\ORM\CustomerRepository as BaseCustomerRepository;
 

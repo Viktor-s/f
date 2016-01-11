@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\SpecificationBundle\Entity\Specification;

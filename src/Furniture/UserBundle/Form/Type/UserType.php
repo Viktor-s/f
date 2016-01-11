@@ -1,8 +1,8 @@
 <?php
 
-namespace Furniture\CommonBundle\Form\Type;
+namespace Furniture\UserBundle\Form\Type;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Sylius\Bundle\CoreBundle\Form\Type\UserType as BaseUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -48,6 +48,7 @@ class UserType extends BaseUserType
             ]);
 
         $builder->add('retailerUserProfile', new RetailerUserProfileType());
+
         if ($options['mode'] == 'retailer') {
             $builder->remove('authorizationRoles');
             $builder->remove('factory');
@@ -59,7 +60,7 @@ class UserType extends BaseUserType
 
         if ($options['mode'] === null) {
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                /** @var User $user */
+                /** @var \Furniture\UserBundle\Entity\User $user */
                 $user = $event->getData();
 
                 $userActiveRole = null;
@@ -87,7 +88,7 @@ class UserType extends BaseUserType
 
         if ($options['mode'] === null) {
             $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-                /** @var User $user */
+                /** @var \Furniture\UserBundle\Entity\User $user */
                 $user = $event->getData();
                 $role = $event->getForm()->get('role')->getData();
 

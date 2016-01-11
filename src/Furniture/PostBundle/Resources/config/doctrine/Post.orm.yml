@@ -36,7 +36,7 @@ Furniture\PostBundle\Entity\Post:
 
     manyToOne:
         creator:
-            targetEntity: Furniture\CommonBundle\Entity\User
+            targetEntity: Furniture\UserBundle\Entity\User
             joinColumn:
                 name: user_id
                 referencedColumnName: id

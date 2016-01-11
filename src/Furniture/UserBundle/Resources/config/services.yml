@@ -1,0 +1,23 @@
+parameters:
+    sylius.form.type.customer_filter.class: Furniture\UserBundle\Form\Type\CustomerFilterType
+
+services:
+    user.killer.storage:
+        class: Furniture\UserBundle\Killer\Storage\MemcachedStorage
+        arguments: [ @memcached ]
+
+    user.killer:
+        class: Furniture\UserBundle\Killer\Killer
+        arguments: [ @user.killer.storage, @request_stack, @security.token_storage ]
+
+    user.killer.subscriber:
+        class: Furniture\UserBundle\Killer\Subscriber\KillerSubscriber
+        arguments: [ @user.killer, @router ]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    user.killer.doctrine_subscriber:
+        class: Furniture\UserBundle\Killer\Subscriber\UserChangedSubscriber
+        arguments: [ @user.killer ]
+        tags:
+            - { name: doctrine.event_subscriber }

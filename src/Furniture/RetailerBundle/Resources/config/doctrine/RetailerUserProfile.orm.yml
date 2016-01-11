@@ -26,7 +26,7 @@ Furniture\RetailerBundle\Entity\RetailerUserProfile:
                 
     oneToOne:
         user:
-            targetEntity: Furniture\CommonBundle\Entity\User
+            targetEntity: Furniture\UserBundle\Entity\User
             inversedBy: retailerUserProfile
             joinColumn:
                 name: user_id

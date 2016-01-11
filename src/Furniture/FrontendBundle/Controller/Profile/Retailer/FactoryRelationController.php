@@ -94,7 +94,7 @@ class FactoryRelationController
             throw new AccessDeniedException();
         }
 
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
@@ -123,7 +123,7 @@ class FactoryRelationController
      */
     public function edit(Request $request, $relation = null)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 

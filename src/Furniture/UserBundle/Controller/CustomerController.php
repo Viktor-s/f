@@ -1,9 +1,11 @@
 <?php
 
-namespace Furniture\CommonBundle\Controller;
+namespace Furniture\UserBundle\Controller;
 
 use Sylius\Bundle\CoreBundle\Controller\CustomerController as BaseCustomerController;
+use Sylius\Component\Resource\Event\ResourceEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CustomerController extends BaseCustomerController
 {
@@ -51,4 +53,46 @@ class CustomerController extends BaseCustomerController
 
         return $this->handleView($view);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateAction(Request $request)
+    {
+        $this->isGrantedOr403('update');
+
+        /** @var \Sylius\Component\Core\Model\Customer $resource */
+        $resource = $this->findOr404($request);
+        $form     = $this->getForm($resource);
+
+        $resource->getUser()
+            ->shouldControlForKill();
+
+        if (in_array($request->getMethod(), array('POST', 'PUT', 'PATCH')) && $form->submit($request, !$request->isMethod('PATCH'))->isValid()) {
+            $this->domainManager->update($resource);
+
+            if ($resource instanceof ResourceEvent) {
+                return $this->redirectHandler->redirectToIndex();
+            }
+
+            return $this->redirectHandler->redirectTo($resource);
+        }
+
+        if ($this->config->isApiRequest()) {
+            return $this->handleView($this->view($form, 400));
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('update.html'))
+            ->setData(array(
+                $this->config->getResourceName() => $resource,
+                'form'                           => $form->createView(),
+            ))
+        ;
+
+        return $this->handleView($view);
+    }
+
+
 }

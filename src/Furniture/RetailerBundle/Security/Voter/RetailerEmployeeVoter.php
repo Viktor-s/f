@@ -2,7 +2,7 @@
 
 namespace Furniture\RetailerBundle\Security\Voter;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 class RetailerEmployeeVoter extends AbstractVoter

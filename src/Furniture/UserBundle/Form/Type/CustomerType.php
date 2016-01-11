@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\CommonBundle\Form\Type;
+namespace Furniture\UserBundle\Form\Type;
 
 use Sylius\Bundle\UserBundle\Form\Type\CustomerType as BaseCustomerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +25,7 @@ class CustomerType extends BaseCustomerType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +33,6 @@ class CustomerType extends BaseCustomerType
 
         // Replace user form
         $builder
-       //     ->remove('sylius_user')
             ->add('user', 'sylius_user', [
                 'mode' => $options['mode']
             ]);
