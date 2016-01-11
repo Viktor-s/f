@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 use Furniture\FrontendBundle\Form\Type\UserInformationType;
 use Furniture\FrontendBundle\Form\Type\UserPasswordType;
@@ -80,7 +80,7 @@ class UserProfileController
     public function updateInformation(Request $request)
     {
         // Get active user profile
-        /* @var $user \Furniture\CommonBundle\Entity\User */
+        /* @var $user \Furniture\UserBundle\Entity\User */
         $user = $this->tokenStorage->getToken()->getUser();
         
         if (!$user || !$user instanceof User) {
@@ -109,7 +109,7 @@ class UserProfileController
     public function upatePassword(Request $request)
     {
         // Get active user profile
-        /* @var $user \Furniture\CommonBundle\Entity\User */
+        /* @var $user \Furniture\UserBundle\Entity\User */
         $user = $this->tokenStorage->getToken()->getUser();
         
         if (!$user || !$user instanceof User) {

@@ -2,7 +2,7 @@
 
 namespace Furniture\FactoryBundle\Security\Voter;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 

@@ -114,7 +114,7 @@ class SpecificationBuyerController
             throw new AccessDeniedException();
         }
 
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
         $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
 
@@ -138,7 +138,7 @@ class SpecificationBuyerController
      */
     public function edit(Request $request, $buyer = null)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if ($buyer) {

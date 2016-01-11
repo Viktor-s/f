@@ -29,7 +29,7 @@ class CustomSpecificationItemVoter extends AbstractVoter
     protected function isGranted($attribute, $object, $user = null)
     {
         
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         if (!$user) {
             return false;
         }

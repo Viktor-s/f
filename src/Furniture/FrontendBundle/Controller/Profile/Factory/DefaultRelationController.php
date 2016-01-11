@@ -68,7 +68,7 @@ class DefaultRelationController
      */
     public function defaultRelation()
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
@@ -98,7 +98,7 @@ class DefaultRelationController
      */
     public function edit(Request $request)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 

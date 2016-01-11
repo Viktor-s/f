@@ -17,7 +17,7 @@ class LoadSpecificationData extends AbstractFixture implements OrderedFixtureInt
     {
         $faker = Factory::create();
 
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->getReference('user:content:1');
 
         for ($i = 0; $i < 5; $i++) {

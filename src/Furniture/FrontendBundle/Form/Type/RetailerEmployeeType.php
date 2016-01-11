@@ -2,7 +2,7 @@
 
 namespace Furniture\FrontendBundle\Form\Type;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,9 +41,9 @@ class RetailerEmployeeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $employee */
+        /** @var \Furniture\UserBundle\Entity\User $employee */
         $employee = $builder->getData();
-        /** @var \Furniture\CommonBundle\Entity\User $activeUser */
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $activeUser = $this->tokenStorage->getToken()->getUser();
         $disabledMode = false;
 

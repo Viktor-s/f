@@ -80,7 +80,7 @@ class RetailerRelationController
      */
     public function retailerRelations()
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
@@ -107,7 +107,7 @@ class RetailerRelationController
      */
     public function edit(Request $request, $relation = null)
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 

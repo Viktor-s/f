@@ -170,15 +170,15 @@ sylius_user:
     classes:
         customer:
             model: Sylius\Component\Core\Model\Customer
-            controller: Furniture\CommonBundle\Controller\CustomerController
-            repository: Furniture\CommonBundle\Entity\Repository\CustomerRepository
+            controller: Furniture\UserBundle\Controller\CustomerController
+            repository: Furniture\UserBundle\Entity\Repository\CustomerRepository
             form:
-                default: Furniture\CommonBundle\Form\Type\CustomerType
+                default: Furniture\UserBundle\Form\Type\CustomerType
 
         user:
-            model: Furniture\CommonBundle\Entity\User
+            model: Furniture\UserBundle\Entity\User
             form:
-                default: Furniture\CommonBundle\Form\Type\UserType
+                default: Furniture\UserBundle\Form\Type\UserType
             
 
 sylius_resource:

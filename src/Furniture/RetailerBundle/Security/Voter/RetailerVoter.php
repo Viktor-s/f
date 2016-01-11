@@ -2,7 +2,7 @@
 
 namespace Furniture\RetailerBundle\Security\Voter;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 

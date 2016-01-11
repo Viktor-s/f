@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 
 class FrontendMenuBuilder
 {
@@ -95,7 +95,7 @@ class FrontendMenuBuilder
      */
     public function createReatilerHeaderMenu() {
         $menu = $this->factory->createItem('root');
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user || !$user->isRetailer()) {
@@ -160,7 +160,7 @@ class FrontendMenuBuilder
      */
     public function createFactoryHeaderMenu() {
         $menu = $this->factory->createItem('root');
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user || !$user->isFactory()) {
@@ -278,7 +278,7 @@ class FrontendMenuBuilder
      */
     public function createUserProfileMenu()
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
         $menu = $this->factory->createItem('root');
 

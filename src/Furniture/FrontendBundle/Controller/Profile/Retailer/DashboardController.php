@@ -37,7 +37,7 @@ class DashboardController
      */
     public function dashboard()
     {
-        /** @var \Furniture\CommonBundle\Entity\User $user */
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {

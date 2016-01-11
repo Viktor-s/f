@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
 use Furniture\FrontendBundle\Form\Type\RetailerProfileType;

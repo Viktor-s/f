@@ -2,7 +2,7 @@
 
 namespace Furniture\SpecificationBundle\Security\Voter;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

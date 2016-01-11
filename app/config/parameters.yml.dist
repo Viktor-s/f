@@ -67,3 +67,6 @@ parameters:
     sylius.order.pending.duration: 3 hours
 
     available_locales: ru|en
+
+    memcached.host: 127.0.0.1
+    memcached.port: 11211

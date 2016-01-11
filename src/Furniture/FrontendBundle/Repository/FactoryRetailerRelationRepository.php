@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\FactoryBundle\Entity\Factory;
@@ -46,7 +46,7 @@ class FactoryRetailerRelationRepository
     /**
      * Find user requests to factory for factory
      *
-     * @param User $user
+     * @param \Furniture\UserBundle\Entity\User $user
      *
      * @return FactoryRetailerRelation[]
      */

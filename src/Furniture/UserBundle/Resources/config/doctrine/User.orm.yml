@@ -1,4 +1,4 @@
-Furniture\CommonBundle\Entity\User:
+Furniture\UserBundle\Entity\User:
     type: entity
     table: furniture_user
 

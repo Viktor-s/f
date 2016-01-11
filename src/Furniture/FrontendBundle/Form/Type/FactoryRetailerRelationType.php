@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\RetailerBundle\Entity\RetailerProfile;

@@ -3,7 +3,7 @@
 namespace Furniture\PricingBundle\Calculator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Furniture\ProductBundle\Entity\Product;
@@ -169,7 +169,7 @@ class PriceCalculator
     /**
      * Get active user
      *
-     * @return User|null
+     * @return \Furniture\UserBundle\Entity\User|null
      */
     private function getActiveUser()
     {
@@ -192,9 +192,9 @@ class PriceCalculator
     /**
      * Calculate price for product for content user
      *
-     * @param Factory $factory
-     * @param User    $user
-     * @param int     $amount
+     * @param Factory                           $factory
+     * @param \Furniture\UserBundle\Entity\User $user
+     * @param int                               $amount
      *
      * @return integer
      */

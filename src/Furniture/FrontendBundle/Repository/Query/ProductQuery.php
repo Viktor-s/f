@@ -2,7 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Category;
@@ -392,7 +392,7 @@ class ProductQuery
     /**
      * Get content user
      *
-     * @return User
+     * @return \Furniture\UserBundle\Entity\User
      */
     public function getRetailer()
     {

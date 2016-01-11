@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\CommonBundle\Form\Type;
+namespace Furniture\UserBundle\Form\Type;
 
 use Sylius\Bundle\CoreBundle\Form\Type\Filter\CustomerFilterType as BaseCustomerFilterType;
 use Symfony\Component\Form\FormBuilderInterface;

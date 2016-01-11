@@ -4,7 +4,7 @@ namespace Furniture\PostBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Symfony\Component\Validator\Constraints as Assert;

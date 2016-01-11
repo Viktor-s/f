@@ -3,7 +3,7 @@
 namespace Furniture\SpecificationBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationSale;

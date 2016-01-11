@@ -2,7 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
-use Furniture\CommonBundle\Entity\User;
+use Furniture\UserBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class SpecificationQuery
@@ -44,7 +44,7 @@ class SpecificationQuery
     /**
      * Search for users
      *
-     * @param User[] $users
+     * @param \Furniture\UserBundle\Entity\User[] $users
      *
      * @return SpecificationQuery
      */
