@@ -87,6 +87,13 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+
+                {% if app.user.retailerUserProfile and app.user.retailerUserProfile.position %}
+                    <div class="position">
+                        <b>Position:</b>
+                        {{ app.user.retailerUserProfile.position }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
