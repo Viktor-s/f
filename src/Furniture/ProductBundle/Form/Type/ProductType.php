@@ -50,11 +50,6 @@ class ProductType extends BaseProductType
                     'multiple' => true,
                     'expanded' => true
                 ])
-                ->add('readinesses', 'entity', [
-                    'class' => Readiness::class,
-                    'multiple' => true,
-                    'expanded' => true
-                ])
                 ->add('skuOptionVariants', 'collection', [
                     'type' => new SkuOptionVariantFormType(),
                     'required'  => false,
@@ -77,6 +72,15 @@ class ProductType extends BaseProductType
                 /** @var Product $product */
                 $product = $event->getData();
                 $factory = $product->getFactory();
+
+                if ($product->getId()) {
+                    $event->getForm()
+                        ->add('readinesses', 'entity', [
+                            'class' => Readiness::class,
+                            'multiple' => true,
+                            'expanded' => true
+                        ]);
+                }
 
                 $event->getForm()
                     ->add('productParts', 'collection', [
