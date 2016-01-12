@@ -231,3 +231,4 @@ sylius:
         tabs:
             extensions: Extensions
             composite_collections: Collections
+            status: Status
