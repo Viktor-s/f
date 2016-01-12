@@ -6,3 +6,5 @@ Furniture\ProductBundle\Entity\ProductVariantImage:
         position:
             type: integer
             name: position
+            options:
+                default: 0
