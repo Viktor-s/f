@@ -183,6 +183,7 @@ body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; li
 .button.style-19{background: #ca1515; border-color: #ca1515; color: #fff;}
 .button.style-19:hover{background: transparent;}
 
+/**PDP button**/
 .button-content.button.style-12 {
     margin-bottom: 0;
 }
@@ -210,6 +211,9 @@ body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; li
     float: left;
     margin-right: 10px;
 }
+
+/**POPUP**/
+
 
 .button-x{font-size: 12px; line-height: 15px; width: 15px; text-align: center; color: #808080;}
 .button-x .fa{display: block; line-height: 15px;}
@@ -3351,6 +3355,9 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .agenta-popup .popup-container{
     max-width: none; 
     width: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 85vh; 
 }
 
 .agenta-popup .material-entry{
@@ -3363,6 +3370,11 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
     vertical-align: top;
     cursor: pointer;
 }
+
+.agenta-popup .information-blocks {
+    margin-bottom: 30px;
+}
+
 
 .material-selector .material-entry:after{
     position: absolute; left: -2px;
