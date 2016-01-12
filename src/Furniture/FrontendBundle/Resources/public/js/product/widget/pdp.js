@@ -17,10 +17,8 @@ $.widget('furniture.pdp_default_select', {
             var el = $(this);
             var selectedInput = el.data('input-id');
             var selectedVariant = el.find(":selected").data('input-variant');
-            var filters = {};
-            if( data_container.getFilteredWithFilterValue(selectedInput, selectedVariant).length > 0 ){
-                var filters = data_container.getFilters();
-            }
+            var filters = data_container.getFilters();
+            
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
         });
@@ -55,10 +53,8 @@ $.widget('furniture.pdp_inline_select', {
             var el = $(this);
             var selectedInput = element.data('input-id');
             var selectedVariant = el.data('input-variant');
-            filters = {};
-            if( data_container.getFilteredWithFilterValue(selectedInput, selectedVariant).length > 0 ){
-                var filters = data_container.getFilters();
-            }
+            var filters = data_container.getFilters();
+            
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
          });
@@ -90,43 +86,66 @@ $.widget('furniture.pdp_inline_select', {
          var data_container = this.options.data_container;
          var element = this.element;
          
+         var selectedBtn = {
+             selectButton: element.find('a.pdp-button.button .button-content.button.style-12'),
+             showSelected: element.find('a.pdp-button.button .material-entry'),
+             select: function(item){
+                this.selectButton.addClass('hidden');
+                this.showSelected.removeClass('hidden');
+                //Replace image
+                this.showSelected.find('img').attr('src', item.find('img').attr('src'));
+                //Replace label
+                this.showSelected.find('.caption').text(item.find('.caption').text());
+             },
+             unselect: function(){
+                this.showSelected.addClass('hidden');
+                this.selectButton.removeClass('hidden');
+             }
+         };
+         
          element.find('.open-input').click(function(){
             var opener = $(this);
-            $('#'+opener.data('popup-id')).addClass('visible active');;
-            initSwiper();
+            $('#'+opener.data('popup-id')).addClass('visible active');
             return false;
          });
         
+        //Select element
          element.find('.material-selector .material-entry').on('click', function () {
             var el = $(this);
             $(this).parent().find('.active').removeClass('active');
             el.addClass('active');
+            selectedBtn.select(el);
         });
          
-        element.find('.material-entry').click(function(){
+        element.find('.material-entry[data-input-variant]').click(function(){
             var el = $(this);
             var selectedInput = element.data('input-id');
             var selectedVariant = el.data('input-variant');
-            filters = {};
-            if( data_container.getFilteredWithFilterValue(selectedInput, selectedVariant).length > 0 ){
-                var filters = data_container.getFilters();
-            }
+            filters = data_container.getFilters();
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
          });
          
          $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
+            
             if( !data_container.getFilters()[selectInput] ){
                 element.find('.material-entry.active').removeClass('active');
+                selectedBtn.unselect();
+            }else{
+                element.find('.material-entry[data-input-variant="'+data_container.getFilters()[selectInput]+'"]').addClass('active');
             }
-            element.find(".material-entry").each(function(){
+            element.find("[data-input-variant].material-entry").each(function(){
                 var selectVariant = $(this).data('input-variant');
-                if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
+                var resLen = data_container.getFilteredWithFilterValue(selectInput, selectVariant).length;
+                if(resLen == 0){
                     $(this).css('background','#E0E0E0');
                 }else{
                     $(this).css('background','white');
                 }
+            });
+            element.find("[data-input-variant].material-entry.active").each(function(){
+                selectedBtn.select($(this));
             });
         });
          
