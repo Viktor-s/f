@@ -8,27 +8,19 @@
         <thead>
             <tr>
                 <th class="id">{{ sylius_resource_sort('id', '#id') }}</th>
-                <th class="info">{{ sylius_resource_sort('archetype', 'sylius.product.archetype'|trans) }}</th>
                 <th class="info">{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
-                <th class="stock">{{ 'sylius.product.stock'|trans }}</th>
+                <th class="info text-center">{{ 'status'|trans }}</th>
                 <th class="retail-price">{{ 'sylius.product.price'|trans }}</th>
                 <th class="updated-at">{{ sylius_resource_sort('updatedAt', 'Updated At') }}</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+
         {% for product in products %}
             <tr id="{{ product.id }}">
-                <td class="id">
-                    {{ product.id }}
-                </td>
-                <td>
-                    {% if product.archetype is not null %}
-                        {{ product.archetype }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
+                <td class="id">{{ product.id }}</td>
+
                 <td class="info">
                     <div class="media">
                         <a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}" class="pull-left"
@@ -46,36 +38,37 @@
                                     <span class="label label-default">{{ 'sylius.product.unavailable'|trans }}</span>
                                 {% endif %}
                             </h5>
+
                             <div class="media-body">
                                 {% if product.sku %}
                                     <strong>{{ 'sylius.product.sku'|trans }}: </strong> <code class="sku">{{ product.sku }}</code>
                                 {% endif %}
                             </div>
+
                             <div class="media-body">
                                 {% if product.factory.name is defined %}
                                     <strong>Factory: </strong>
                                     <code class="sku">{{ product.factory.name }}</code>
                                 {% endif %}
                             </div>
+
+                            <div class="media-body">
+                                {% if product.factoryCode %}
+                                    <strong>Factory code:</strong>
+                                    <code class="factory">{{ product.factoryCode }}</code>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </td>
-                {% if product.hasOptions %}
-                    <td class="stock contain-variants text-muted">
-                        <em>{{ 'sylius.product.contain_variants'|trans }}</em>
-                    </td>
-                {% else %}
-                    {% if product.masterVariant.onHand > 0 and product.masterVariant.isAvailable %}
-                        <td class="stock in-stock">
-                            {{ product.masterVariant.onHand }}
-                        </td>
-                    {% else %}
-                        <td class="stock out-of-stock text-muted">
-                            <em>{{ 'sylius.out_of_stock'|trans }}</em>
-                        </td>
-                    {% endif %}
-                {% endif %}
 
+                <td>
+                    <ul>
+                        {% for status in product.readinesses %}
+                            <li>{{ status.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
 
                 {# Retail Price #}
                 {#{% if not product.hasOptions %}#}
