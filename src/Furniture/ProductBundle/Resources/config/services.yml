@@ -1,5 +1,5 @@
 services:
-    Furniture.generator.product_variant:
+    furniture.generator.product_variant:
         class: Furniture\ProductBundle\Generator\VariantGenerator
         arguments:
             - '@sylius.repository.product_variant'
@@ -9,7 +9,7 @@ services:
         calls:
         - [setContainer, ['@service_container']]
 
-    Furniture.product.form.ProductVariantPartMaterialsType:
+    furniture.product.form.ProductVariantPartMaterialsType:
         class: Furniture\ProductBundle\Form\Type\ProductVariantPartMaterialsType
         tags:
             - { name: form.type, alias: ProductVariantPartMaterialsType }
@@ -34,3 +34,8 @@ services:
         arguments: [ @sylius.image_uploader ]
         tags:
             - { name: kernel.event_subscriber }
+
+    product_variant.doctrine.subscriver.metadata:
+        class: Furniture\ProductBundle\EventListener\Doctrine\ProductVariantMetadataSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }

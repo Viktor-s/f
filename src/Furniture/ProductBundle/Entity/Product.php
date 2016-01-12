@@ -896,13 +896,16 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
+     * Set available for sale status
+     *
      * @param bool $availableForSale
-     * @return \Furniture\ProductBundle\Entity\Product
+     *
+     * @return Product
      */
     public function setAvailableForSale($availableForSale)
     {
         $this->availableForSale = (bool)$availableForSale;
+
         return $this;
     }
     
@@ -914,6 +917,20 @@ class Product extends BaseProduct
         $now = new \DateTime();
 
         return ($now >= $this->availableOn && $this->getAvailableForSale());
+    }
+
+    /**
+     * Get master image
+     *
+     * @return ProductVariantImage|null
+     */
+    public function getMasterImage()
+    {
+        if (!count($this->getImages())) {
+            return null;
+        }
+
+        return $this->getImages()->first();
     }
     
     /**

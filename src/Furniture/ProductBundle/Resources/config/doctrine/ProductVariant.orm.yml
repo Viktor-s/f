@@ -25,12 +25,6 @@ Furniture\ProductBundle\Entity\ProductVariant:
                         referencedColumnName: id
                         onDelete: CASCADE
 
-    oneToMany:
-        images:
-            targetEntity: Furniture\ProductBundle\Entity\ProductVariantImage
-            orphanRemoval: true
-            orderBy: { position: ASC }
-
 #        extensionVariants:
 #            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant
 #            orphanRemoval: true

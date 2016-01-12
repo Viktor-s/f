@@ -34,7 +34,7 @@ class PricingExtension extends \Twig_Extension
      * @param CurrencyContextInterface $currencyContext
      * @param MoneyHelper              $moneyHelper
      */
-    public function __construct (
+    public function __construct(
         PriceCalculator $calculator,
         CurrencyContextInterface $currencyContext,
         MoneyHelper $moneyHelper
@@ -55,7 +55,7 @@ class PricingExtension extends \Twig_Extension
             'sku_price'                      => new \Twig_Filter_Method($this, 'skuPrice'),
             'specification_item_total_price' => new \Twig_Filter_Method($this, 'specificationItemTotalPrice'),
             'specification_total_price'      => new \Twig_Filter_Method($this, 'specificationTotalPrice'),
-            'money'                          => new \Twig_Filter_Method($this, 'money')
+            'money'                          => new \Twig_Filter_Method($this, 'money'),
         ];
     }
 
@@ -111,7 +111,8 @@ class PricingExtension extends \Twig_Extension
     /**
      * Format money
      *
-     * @param int $amount
+     * @param int  $amount
+     * @param bool $precision
      *
      * @return string
      */
@@ -120,12 +121,12 @@ class PricingExtension extends \Twig_Extension
         $currency = $this->currencyContext->getCurrency();
         $amount = str_replace(' ', '', $this->moneyHelper->formatAmount($amount, $currency));
 
-        if($precision === 0){
-            $amount = ceil((float)$amount).preg_replace('/[0-9\.]+/', '', $amount);
-        }elseif( $precision > 0 ){
-            $amount = round((float)$amount, $precision).preg_replace('/[0-9]+/', '', $amount);
+        if ($precision === 0) {
+            $amount = ceil((float)$amount) . preg_replace('/[0-9\.]+/', '', $amount);
+        } else if ($precision > 0) {
+            $amount = round((float)$amount, $precision) . preg_replace('/[0-9]+/', '', $amount);
         }
-        
+
         return $amount;
     }
 

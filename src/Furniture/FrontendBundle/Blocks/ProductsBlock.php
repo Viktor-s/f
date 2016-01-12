@@ -55,13 +55,14 @@ class ProductsBlock extends BaseBlockService
         $productQuery->withOnlyAvailable();
 
         $products = [];
-        if($settings['user'] instanceof User){
-            if( $settings['user']->isRetailer() ){
-                $productQuery->withRetailer(
-                        $settings['user']
-                            ->getRetailerUserProfile()
-                            ->getRetailerProfile()
-                        );
+        if ($settings['user'] instanceof User) {
+            if ($settings['user']->isRetailer()) {
+                $retailerProfile = $settings['user']
+                    ->getRetailerUserProfile()
+                    ->getRetailerProfile();
+
+                $productQuery->withRetailer($retailerProfile);
+
                 $products = $this->productRepository->findLatestBy($productQuery, $settings['limit']);
             }
         }

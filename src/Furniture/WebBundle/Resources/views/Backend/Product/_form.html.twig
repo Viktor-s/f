@@ -36,7 +36,7 @@
             images.sortable({
                 update: function () {
                     var index = 0;
-                    images.find('.product-image').each(function () {
+                    images.find('.product-images-image').each(function () {
                         $(this).find('[data-target="move"] input').val(index++);
                     });
                 }
