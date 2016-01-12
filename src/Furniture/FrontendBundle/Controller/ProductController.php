@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProductController
 {
@@ -44,16 +46,22 @@ class ProductController
      * @var TokenStorageInterface
      */
     private $tokenStorage;
-    
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
     /**
      * Construct
      *
-     * @param \Twig_Environment           $twig
-     * @param ProductRepository           $productRepository
-     * @param TaxonRepository             $taxonRepository
-     * @param SpecificationRepository     $specificationRepository
-     * @param SpecificationItemRepository $specificationItemRepository
-     * @param TokenStorageInterface       $tokenStorage
+     * @param \Twig_Environment             $twig
+     * @param ProductRepository             $productRepository
+     * @param TaxonRepository               $taxonRepository
+     * @param SpecificationRepository       $specificationRepository
+     * @param SpecificationItemRepository   $specificationItemRepository
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -61,29 +69,32 @@ class ProductController
         TaxonRepository $taxonRepository,
         SpecificationRepository $specificationRepository,
         SpecificationItemRepository $specificationItemRepository,
-        TokenStorageInterface $tokenStorage
-    ) {
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
+    )
+    {
         $this->twig = $twig;
         $this->productRepository = $productRepository;
         $this->specificationRepository = $specificationRepository;
         $this->specificationItemRepository = $specificationItemRepository;
         $this->taxonRepository = $taxonRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function products(Request $request, $page)
     {
         $productQuery = new ProductQuery();
-        
-        if($taxons = $request->get('taxons', [])) {
+
+        if ($taxons = $request->get('taxons', [])) {
             $taxons = $this->taxonRepository->findBy([
-                'id' => $taxons
+                'id' => $taxons,
             ]);
 
             $productQuery->withSpaces($taxons);
-            
+
         }
-        
+
         $products = $this->productRepository->findBy($productQuery, $page, 12);
 
         $content = $this->twig->render('FrontendBundle:Product:products.html.twig', [
@@ -91,9 +102,9 @@ class ProductController
         ]);
 
         return new Response($content);
-        
+
     }
-    
+
     /**
      * Show product action
      *
@@ -127,14 +138,14 @@ class ProductController
 
         // Get active variant
         $activeVariant = null;
-        if ($sku_id = $request->query->get('sku_id')) {
-            $activeVariant = $product->getVariantById($sku_id);
+        if ($skuId = $request->query->get('sku_id')) {
+            $activeVariant = $product->getVariantById($skuId);
 
             if (!$activeVariant) {
                 throw new NotFoundHttpException(sprintf(
                     'The product with identifier "%s" not have a variant with sku id "%s".',
                     $product->getId(),
-                    $sku_id
+                    $skuId
                 ));
             }
         }
@@ -142,13 +153,21 @@ class ProductController
         // Check, if update for specification item
         $updateSpecificationItem = false;
         $specificationItem = null;
-        if ($specificationItemSku = $request->query->get('sku_id') && $specificationItemId = $request->query->get('si')) {
+        if ($skuId && $specificationItemId = $request->query->get('si')) {
             $updateSpecificationItem = true;
             $specificationItem = $this->specificationItemRepository->find($specificationItemId);
 
             if (!$specificationItem) {
                 throw new NotFoundHttpException(sprintf(
                     'Not found specification item with identifier "%s".',
+                    $specificationItemId
+                ));
+            }
+
+            if (!$this->authorizationChecker->isGranted('EDIT', $specificationItem)) {
+                throw new AccessDeniedException(sprintf(
+                    'The user "%s" not have rights for edit specification item with id "%d" on pdp.',
+                    $this->tokenStorage->getToken()->getUsername(),
                     $specificationItemId
                 ));
             }
@@ -161,46 +180,47 @@ class ProductController
 
         $skuMatrix = [];
         $activeVariantMatrix = false;
-        
+
         foreach ($product->getVariants() as $variant) {
             /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-           $item = [
-               'options' => [],
-               'variant' => $variant
-           ];
-           
-           foreach($variant->getOptions() as $option){
-               $item['options'][$product->getPdpConfig()->findInputForOption($option->getOption())->getId()] = $option->getId();
-           }
-           
-           foreach($variant->getSkuOptions() as $option){
-               $item['options'][$product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId()] = $option->getId();
-           }
-           
-           foreach ($variant->getProductPartVariantSelections() as $variantSelection)
-           {
-               $item['options'][$product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId()] 
-                       = $variantSelection->getProductPartMaterialVariant()->getId();
-           }
-           
-           if($activeVariant && $variant == $activeVariant){
-               $activeVariantMatrix = $item['options'];
-           }
-           
-           $skuMatrix[] = $item;
+            $item = [
+                'options' => [],
+                'variant' => $variant,
+            ];
+
+            foreach ($variant->getOptions() as $option) {
+                $inputId = $product->getPdpConfig()->findInputForOption($option->getOption())->getId();
+                $item['options'][$inputId] = $option->getId();
+            }
+
+            foreach ($variant->getSkuOptions() as $option) {
+                $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                $item['options'][$inputId] = $option->getId();
+            }
+
+            foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
+                $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
+                $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
+            }
+
+            if ($activeVariant && $variant == $activeVariant) {
+                $activeVariantMatrix = $item['options'];
+            }
+
+            $skuMatrix[] = $item;
         }
 
         $specifications = $this->specificationRepository->findOpenedForUser($user);
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
-            'product' => $product,
-            'sku_matrix' => $skuMatrix,
-            'active_variant_matrix' => $activeVariantMatrix,
-            'options' => $options,
-            'specifications' => $specifications,
-            'specification_item' => $specificationItem,
+            'product'                   => $product,
+            'sku_matrix'                => $skuMatrix,
+            'active_variant_matrix'     => $activeVariantMatrix,
+            'options'                   => $options,
+            'specifications'            => $specifications,
+            'specification_item'        => $specificationItem,
             'update_specification_item' => $updateSpecificationItem,
-            'quantity' => $quantity
+            'quantity'                  => $quantity,
         ]);
 
         return new Response($content);

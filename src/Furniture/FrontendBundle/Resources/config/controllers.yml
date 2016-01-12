@@ -32,6 +32,7 @@ services:
             - @frontend.repository.specification
             - @frontend.repository.specification_item
             - @security.token_storage
+            - @security.authorization_checker
 
     frontend.controller.security:
         class: Furniture\FrontendBundle\Controller\SecurityController
