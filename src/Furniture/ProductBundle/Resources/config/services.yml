@@ -1,3 +1,6 @@
+parameters:
+    sylius.form.type.product_filter.class: Furniture\ProductBundle\Form\Type\ProductFilterType
+
 services:
     furniture.generator.product_variant:
         class: Furniture\ProductBundle\Generator\VariantGenerator
