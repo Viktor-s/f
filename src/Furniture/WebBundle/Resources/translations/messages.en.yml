@@ -1,3 +1,5 @@
+status: Status
+
 product_extension:
     breadcrumb:
         index: Product extensions
@@ -229,3 +231,4 @@ sylius:
         tabs:
             extensions: Extensions
             composite_collections: Collections
+            status: Status

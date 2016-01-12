@@ -1,0 +1,23 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+<div class="tab-pane" id="status">
+    <div class="form-group">
+        {{ form_label(form.readinesses) }}
+
+        <div class="col-lg-10">
+            <ul class="list-unstyled" id="hierarchy-root">
+                {% for readiness in form.readinesses %}
+                    <li>
+                        {{ form_widget(readiness) }}
+                        {{ form.readinesses.vars.choices[readiness.vars.value].data.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+
+    {{ form_row(form.readinesses) }}
+</div>
