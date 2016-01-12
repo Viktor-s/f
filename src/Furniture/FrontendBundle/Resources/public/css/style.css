@@ -3355,7 +3355,7 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .agenta-popup .popup-container{
     max-width: none; 
     width: 90%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     height: 85vh; 
 }
