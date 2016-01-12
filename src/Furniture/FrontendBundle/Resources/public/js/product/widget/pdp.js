@@ -103,8 +103,10 @@ $.widget('furniture.pdp_inline_select', {
              }
          };
          
-         element.find('.open-input').click(function(){
-            var opener = $(this);
+         var opener = element.find('.open-input[data-popup-id]')
+         
+         opener.click(function(){
+            console.log(opener);
             $('#'+opener.data('popup-id')).addClass('visible active');
             return false;
          });
@@ -124,6 +126,10 @@ $.widget('furniture.pdp_inline_select', {
             filters = data_container.getFilters();
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
+            $('#'+opener.data('popup-id')).removeClass('active');
+            setTimeout(function(){
+                $('#'+opener.data('popup-id')).removeClass('visible');
+            }, 500);
          });
          
          $(document).on('filter:update', function (event) {
