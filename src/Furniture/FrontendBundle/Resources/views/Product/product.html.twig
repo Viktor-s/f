@@ -16,12 +16,12 @@
     'static/js/3d/Projector.js'
     #}
     {{ parent() }}
-    {% javascripts output='static/js/widget/.*.js'
-                        'static/js/widget/variant_data_container.js'
-                        'static/js/widget/variant_buy_btn.js'
+    {% javascripts output='/js/*.min.js'
+                        '@FrontendBundle/Resources/public/js/product/widget/variant_data_container.js'
+                        '@FrontendBundle/Resources/public/js/product/widget/variant_buy_btn.js'
+                        '@FrontendBundle/Resources/public/js/product/widget/pdp.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    <script type="text/javascript" src="/static/js/widget/pdp.js"></script>
     {% endjavascripts %}
 {% endblock %}
 
@@ -179,7 +179,7 @@
                     'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                     'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
             },{% endfor %} ];
-            console.log(sku_matrix);
+            
             var variants_container = new variant_data_container(sku_matrix);
 
             $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': variants_container });

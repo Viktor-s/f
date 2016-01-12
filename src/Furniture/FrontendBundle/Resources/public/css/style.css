@@ -190,7 +190,7 @@ body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; li
     height: 90px;
     display: table-cell;
     vertical-align: middle;
-    max-width: 260px;
+    width: 260px;
 }
 .material-entry.selected img {
     max-width: 100%;
