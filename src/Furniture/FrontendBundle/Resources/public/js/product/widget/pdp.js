@@ -106,7 +106,6 @@ $.widget('furniture.pdp_inline_select', {
          var opener = element.find('.open-input[data-popup-id]')
          
          opener.click(function(){
-            console.log(opener);
             $('#'+opener.data('popup-id')).addClass('visible active');
             return false;
          });
