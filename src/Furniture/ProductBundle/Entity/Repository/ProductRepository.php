@@ -4,6 +4,7 @@ namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\ORM\NoResultException;
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Entity\Readiness;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepositiry;
 
@@ -24,14 +25,14 @@ class ProductRepository extends BaseProductRepositiry
 
         return $qb
             ->andWhere('translation.name LIKE :name')
-            ->setParameter('name', $name.'%')
+            ->setParameter('name', $name . '%')
             ->andWhere('SIZE(product.subProducts) = 0')
             ->getQuery()
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getResult();
     }
-    
+
     /**
      * Search by name
      *
@@ -46,12 +47,12 @@ class ProductRepository extends BaseProductRepositiry
         $qb = $this->getQueryBuilder();
 
         return $qb
-                ->andWhere('translation.name LIKE :name')
-                ->setParameter('name', $name.'%')
-                ->getQuery()
-                ->setMaxResults($limit)
-                ->setFirstResult($offset)
-                ->getResult();
+            ->andWhere('translation.name LIKE :name')
+            ->setParameter('name', $name . '%')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getResult();
     }
 
     /**
@@ -87,9 +88,88 @@ class ProductRepository extends BaseProductRepositiry
         try {
             $result = $query->getSingleScalarResult();
 
-            return (bool) $result;
+            return (bool)$result;
         } catch (NoResultException $e) {
             return false;
         }
+    }
+
+    /**
+     * Create filter paginator.
+     *
+     * @param array $criteria
+     * @param array $sorting
+     * @param bool  $deleted
+     *
+     * @return \Pagerfanta\PagerfantaInterface
+     */
+    public function createFilterPaginator($criteria = [], $sorting = [], $deleted = false)
+    {
+        $queryBuilder = parent::getCollectionQueryBuilder()
+            ->addSelect('variant')
+            ->leftJoin('product.variants', 'variant');
+
+        if (!empty($criteria['name'])) {
+            $queryBuilder
+                ->andWhere('translation.name LIKE :name')
+                ->setParameter('name', '%' . $criteria['name'] . '%');
+        }
+
+        if (!empty($criteria['factoryCode'])) {
+            $queryBuilder
+                ->andWhere('product.factoryCode LIKE :factory_code')
+                ->setParameter('factory_code', '%' . $criteria['factoryCode'] . '%');
+        }
+
+        if (!empty($criteria['factory'])) {
+            $queryBuilder
+                ->andWhere('product.factory = :factory')
+                ->setParameter('factory', $criteria['factory']);
+        }
+
+        if (!empty($criteria['priceFrom'])) {
+            $queryBuilder
+                ->andWhere('variant.price >= :price_from')
+                ->setParameter('price_from', $criteria['priceFrom'] * 100);
+        }
+
+        if (!empty($criteria['priceTo'])) {
+            $queryBuilder
+                ->andWhere('variant.price <= :price_to')
+                ->setParameter('price_to', $criteria['priceTo'] * 100);
+        }
+
+        if (!empty($criteria['statuses'])) {
+            $queryBuilder
+                ->innerJoin('product.readinesses', 'readiness');
+
+            $andX = $queryBuilder->expr()->andX();
+
+            $index = 0;
+            array_map(function ($status) use ($queryBuilder, $andX, &$index) {
+                $andX->add('readiness.id = :readiness_' . $index);
+                $queryBuilder->setParameter('readiness_' . $index, $status);
+                $index++;
+            }, $criteria['statuses']);
+
+            $queryBuilder->andWhere($andX);
+        }
+
+        if (empty($sorting)) {
+            if (!is_array($sorting)) {
+                $sorting = [];
+            }
+
+            $sorting['updatedAt'] = 'desc';
+        }
+
+        $this->applySorting($queryBuilder, $sorting);
+
+        if ($deleted) {
+            $this->_em->getFilters()->disable('softdeleteable');
+            $queryBuilder->andWhere('product.deletedAt IS NOT NULL');
+        }
+
+        return $this->getPaginator($queryBuilder);
     }
 }

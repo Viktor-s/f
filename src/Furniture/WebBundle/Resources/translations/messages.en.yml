@@ -232,3 +232,11 @@ sylius:
             extensions: Extensions
             composite_collections: Collections
             status: Status
+
+    form:
+        product_filter:
+            factory_code: Factory code
+            factory: Factory
+            price_from: Price from
+            price_to: Price to
+            statuses: Statuses
