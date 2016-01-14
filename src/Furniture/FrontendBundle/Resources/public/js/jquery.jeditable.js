@@ -109,6 +109,9 @@
             /* save this to self because this changes when scope changes */
             var self = this;
 
+            // create copy of the value 
+            var copiedValue = $(this).text();  
+
             /* inlined block elements lose their width and height after first edit */
             /* save them for later use as workaround */
             var savedwidth  = $(self).width();
@@ -245,6 +248,7 @@
 
                 /* add created form to self */
                 $(self).append(form);
+                $(self).append(document.createTextNode( copiedValue ));
 
                 /* attach 3rd party plugin if requested */
                 plugin.apply(form, [settings, self]);
