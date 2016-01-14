@@ -569,12 +569,12 @@ $(function() {
     });
 
     //simple search form focus
-    $('.simple-search-form input').on('focus', function(){
-    	$(this).closest('.simple-search-form').addClass('active');
+    $('.simple-search-form input, .specification-search-form input').on('focus', function(){
+    	$(this).closest('.simple-search-form, .specification-search-form').addClass('active');
     });
 
-    $('.simple-search-form input').on('blur', function(){
-    	$(this).closest('.simple-search-form').removeClass('active');
+    $('.simple-search-form input, .specification-search-form input').on('blur', function(){
+    	$(this).closest('.simple-search-form, .specification-search-form').removeClass('active');
     });
 
 });
