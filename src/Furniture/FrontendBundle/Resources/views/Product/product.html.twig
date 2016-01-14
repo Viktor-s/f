@@ -149,7 +149,7 @@
                     {% else %}
                         <div class="add-to-specification detail-info-entry">
                             <div class="btn-group" style="width:300px;">
-                                <button type="button" class="button style-10 btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:0;max-width:280px;width:280px;">
+                                <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
                                     {{ 'frontend.add_to_specification'|trans }}
                                     <span class="caret"></span>
                                 </button>
@@ -158,11 +158,34 @@
                                     {# <li>
                                         <a href="#" class="new-specification">{{ 'frontend.new_specification'|trans }}</a>
                                     </li> #}
-                                    <li >
-                                       <input type="text" class="form-control" placeholder="Search for...">
-                                    </li>
+                                    <li class="specification-search-form">
+                                        <form>
+                                            <input type="text" placeholder="Search for specification" class="dropdown-search">
+                                            <div class="simple-submit">
+                                                <i class="fa fa-search"></i>
+                                                <input type="submit">
+                                            </div>
+                                        </form>
+                                    </li>     
                                     <li role="separator" class="divider"></li>
-
+                                    <li class="dropdown-header">Specification title</li>
+                                    <li>
+                                        <a href="#" data-specification-id="84">test2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-specification-id="84">test2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-specification-id="84">test2</a>
+                                    </li>                                        
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">Specification title</li>
+                                    <li>
+                                        <a href="#" data-specification-id="84">test2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-specification-id="84">test2</a>
+                                    </li>
                                     {% for specification in specifications %}
                                         <li>
                                             <a href="#" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
