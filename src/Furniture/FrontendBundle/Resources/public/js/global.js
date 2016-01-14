@@ -595,4 +595,16 @@ $(function() {
     }
     $('.popup-container').scroll(fixPopupTitle);
     fixPopupTitle();
+
+    //dropdown specification on PDP
+    $('.dropdown-btn, .dropdown-menu > li > a').click( function(event){
+            event.stopPropagation();
+            $('.dropdown-menu').toggle();
+        });
+
+    $(document).click(function(e){
+        if($(e.target).closest(".dropdown-menu").length === 0){
+            $(".dropdown-menu").hide();
+        };
+    });
 });
