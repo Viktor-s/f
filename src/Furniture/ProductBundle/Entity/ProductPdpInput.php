@@ -5,6 +5,8 @@ namespace Furniture\ProductBundle\Entity;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
 use Doctrine\Common\Collections\Criteria;
+use Furniture\ProductBundle\Model\ProductPartMaterialVariantGrouped;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductPdpInput
 {
@@ -161,6 +163,11 @@ class ProductPdpInput
         return $this->productPart;
     }
 
+    /**
+     * Get array of \Furniture\ProductBundle\Entity\ProductPartVariantSelection
+     * 
+     * @return \Furniture\ProductBundle\Entity\ProductPartVariantSelection[]
+     */
     public function getProductPartMaterialsVariantSelections()
     {
         $criteria = new Criteria();
@@ -175,6 +182,21 @@ class ProductPdpInput
         return $variantSelections;
     }
 
+    public function getProductPartMaterialsVariantGrouped(){
+        
+        $grouped = new ArrayCollection();
+        
+        foreach($this->getProductPartMaterialsVariantSelections() as $variantSelection){
+            $productPartMaterialVariant = $variantSelection->getProductPartMaterialVariant();
+            $productPartMaterial = $productPartMaterialVariant->getProductPartMaterial();
+            #создать новый обьект для групировки!
+            if(!$grouped->containsKey($productPartMaterial->getId())){
+                $grouped[$productPartMaterial->getId()] = new ProductPartMaterialVariantGrouped($productPartMaterial);
+            }
+            $grouped[$productPartMaterial->getId()]->add($productPartMaterialVariant);
+        }
+        return $grouped;
+    }
 
     /**
      * Set sku option

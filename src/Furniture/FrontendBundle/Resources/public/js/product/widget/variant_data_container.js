@@ -19,7 +19,7 @@ var variant_data_container = function (variants) {
             return options.filtered;
         },
         setFilters: function (filters) {
-            console.log(filters);
+            //console.log(filters);
             options.filtered = [];
             options.filters = filters;            
             options.variants.forEach(function (el) {
