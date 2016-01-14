@@ -577,4 +577,22 @@ $(function() {
     	$(this).closest('.simple-search-form, .specification-search-form').removeClass('active');
     });
 
+    //fix title in material popup
+    function fixPopupTitle() {
+        if ($('.popup-container').scrollTop() > 100)
+            $('.block-title').css({
+                'position': 'absolute',
+                'top': 0,
+            	'left': 0,
+                'right': 0
+            });
+        else {
+            $('.block-title').css({
+                'position': 'relative',
+                'top': 'auto'
+            });
+        }    
+    }
+    $('.popup-container').scroll(fixPopupTitle);
+    fixPopupTitle();
 });
