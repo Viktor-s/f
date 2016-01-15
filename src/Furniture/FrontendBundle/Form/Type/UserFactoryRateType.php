@@ -28,8 +28,9 @@ class UserFactoryRateType extends AbstractType
     {
         $factoryRate = $builder->getData();
         
-        $builder
-            ->add('factory', 'entity', [
+        if( !$factoryRate->getId() ){
+            $builder
+                ->add('factory', 'entity', [
                 'class' => Factory::class,
                 'label' => 'frontend.factory',
                 'query_builder' => function (EntityRepository $er) use ($factoryRate) {
@@ -44,7 +45,17 @@ class UserFactoryRateType extends AbstractType
                     else
                         return $er->createQueryBuilder('f');
                 }
-            ])
+            ]);
+        }else{
+            $builder
+                ->add('factory', 'entity', [
+                'class' => Factory::class,
+                'label' => 'frontend.factory',
+                'data' => $factoryRate->getFactory(),
+                'disabled' => true
+                    ]);
+        }
+        $builder
             ->add('coefficient', 'number', [
                 'label' => 'frontend.coefficient'
             ])
