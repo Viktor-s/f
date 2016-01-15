@@ -87,8 +87,8 @@ $.widget('furniture.pdp_inline_select', {
          var element = this.element;
          
          var selectedBtn = {
-             selectButton: element.find('a.pdp-button.button .button-content.button.style-12'),
-             showSelected: element.find('a.pdp-button.button .material-entry'),
+             selectButton: element.find('a.button-content'),
+             showSelected: element.find('a.pdp-button'),
              select: function(item){
                 this.selectButton.addClass('hidden');
                 this.showSelected.removeClass('hidden');
@@ -103,8 +103,7 @@ $.widget('furniture.pdp_inline_select', {
              }
          };
          
-         var opener = element.find('.open-input[data-popup-id]')
-         
+         var opener = element.find('a.pdp-button, a.button-content');
          opener.click(function(){
             $('#'+opener.data('popup-id')).addClass('visible active');
             return false;
