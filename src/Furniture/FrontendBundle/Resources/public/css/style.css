@@ -3442,8 +3442,9 @@ header.fixed-header nav {
     width:280px;
     border-radius:0 ;
     top:42px;
+    padding-bottom: 0;
 }
-.add-to-specification .dropdown-menu a{
+.add-to-specification .specification-list a{
     font-size: 16px;
 }
 .add-to-specification .dropdown-menu .divider{
@@ -3451,6 +3452,11 @@ header.fixed-header nav {
     margin-bottom: 5px;
 }
 
+.specification-list {
+    max-height: 150px;
+    overflow-y: scroll;
+    margin-bottom: 0;
+}
 .specification-added{
     display: none;
 }
@@ -3563,4 +3569,14 @@ form.someclass input {
     margin: 0;
     background: #ffffff;
     z-index: 2;
+}
+
+.dropdown-menu .specification-list>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
 }
