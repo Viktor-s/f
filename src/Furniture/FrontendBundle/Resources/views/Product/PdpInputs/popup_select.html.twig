@@ -2,15 +2,17 @@
     {# <a class="button style-12 open-input" data-popup-id="input-popup-{{ input.id }}">{{ input.humanName }}</a> #}
     <div class="detail-info-entry open-input" style="margin-top: 50px;">
         <div class="detail-info-entry-title">{{ input.humanName }}</div>
-        <a class="button open-input style-12" data-popup-id="input-popup-{{ input.id }}">
-            <span class="button-content">Select</span>
-            <div class="material-entry selected hidden">{# add hidden class #}
-                <div class="image">
-                    <img src="http://devfortest-01.agenta.solutions/media/cache/s100x100/38/dd/665050f16b0168a464f9a6b4bdff.jpeg" alt="">
+        <div class="popup-button" data-popup-id="input-popup-{{ input.id }}">
+            <a class="button-content button style-12">Select</a>
+            <a class="pdp-button button open-input hidden">
+                <div class="material-entry selected">{# add hidden class #}
+                    <div class="image">
+                        <img src="http://devfortest-01.agenta.solutions/media/cache/s100x100/38/dd/665050f16b0168a464f9a6b4bdff.jpeg" alt="">
+                    </div>
+                    <div class="caption" style="background: white none repeat scroll 0% 0%;">>Havana - ND Opaque walnut, indian ink coloured Havana - ND Opaque walnut, indian ink coloured </div>
                 </div>
-                <div class="caption" style="background: white none repeat scroll 0% 0%;">>Havana - ND Opaque walnut, indian ink coloured Havana - ND Opaque walnut, indian ink coloured </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
     <div id="input-popup-{{ input.id }}" class="overlay-popup agenta-popup">
         <div class="overflow">
