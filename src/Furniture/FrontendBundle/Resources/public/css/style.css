@@ -3452,10 +3452,13 @@ header.fixed-header nav {
     margin-bottom: 5px;
 }
 
-.specification-list {
+.specification-list.list {
     max-height: 150px;
     overflow-y: scroll;
     margin-bottom: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 .specification-added{
     display: none;
