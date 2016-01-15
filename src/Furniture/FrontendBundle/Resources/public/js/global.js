@@ -597,7 +597,7 @@ $(function() {
     fixPopupTitle();
 
     //dropdown specification on PDP
-    $('.dropdown-btn, .dropdown-menu > li > a').click( function(event){
+    $('.dropdown-btn, .specification-list > li > a').click( function(event){
             event.stopPropagation();
             $('.dropdown-menu').toggle();
         });
