@@ -10,3 +10,15 @@
 
     <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> {{ 'sylius.filter'|trans }}</button>
 </form>
+
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('#criteria_factory').select2({
+                allowClear: true
+            });
+
+            $('#criteria_statuses').select2();
+        });
+    })(jQuery);
+</script>

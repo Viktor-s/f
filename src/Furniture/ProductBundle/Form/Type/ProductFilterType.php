@@ -42,7 +42,8 @@ class ProductFilterType extends BaseProductFilterType
                 'label'    => 'sylius.form.product_filter.price_from',
                 'attr'     => [
                     'placeholder' => 'sylius.form.product_filter.price_from',
-                    'min' => 0
+                    'min'         => 0,
+                    'style'       => 'width: 100px',
                 ],
             ])
             ->add('priceTo', 'number', [
@@ -50,18 +51,19 @@ class ProductFilterType extends BaseProductFilterType
                 'label'    => 'sylius.form.product_filter.price_to',
                 'attr'     => [
                     'placeholder' => 'sylius.form.product_filter.price_to',
-                    'min' => 0
+                    'min'         => 0,
+                    'style'       => 'width: 100px',
                 ],
             ])
             ->add('statuses', 'entity', [
                 'required' => false,
-                'class' => Readiness::class,
+                'class'    => Readiness::class,
                 'multiple' => true,
                 'expanded' => false,
-                'label' => 'sylius.form.product_filter.statuses',
-                'attr' => [
-                    'placeholder' => 'sylius.form.product_filter.statuses'
-                ]
+                'label'    => 'sylius.form.product_filter.statuses',
+                'attr'     => [
+                    'placeholder' => 'sylius.form.product_filter.statuses',
+                ],
             ]);
     }
 }
