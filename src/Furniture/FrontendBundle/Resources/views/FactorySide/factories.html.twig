@@ -11,9 +11,9 @@
                         <div class="blog-entry">
                             <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}">
                             {% if factory.logoImage %}
-                                <img src="{{ factory.logoImage.path|imagine_filter('s201x203') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
+                                <img src="{{ factory.logoImage.path|imagine_filter('s160x250') }}" alt="{{ factory.name }}" title="{{ factory.name }}" width="250" height="160" />
                             {% else %}
-                                <img class="image hover-class-1" src="{{ '/img/201x203.png' }}" alt="{{ factory.name }}" title="{{ factory.name }}" />
+                                <img class="image hover-class-1" src="http://dummyimage.com/160x250/ababab/ffffff" alt="{{ factory.name }}" title="{{ factory.name }}" width="250" height="160" />
                             {% endif %}
                                 <span class="hover-label">Show</span>
                             </a>
