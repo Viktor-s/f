@@ -36,7 +36,11 @@ class RetailerFactoryRateVoter implements VoterInterface
 
         if (in_array('RETAILER_FACTORY_RATE_LIST', $attributes) || in_array('RETAILER_FACTORY_RATE_CREATE', $attributes)) {
             if ($user->isRetailer()) {
-                return self::ACCESS_GRANTED;
+                if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+                    return self::ACCESS_GRANTED;
+                }
+
+                return self::ACCESS_DENIED;
             }
 
             return self::ACCESS_DENIED;
@@ -54,6 +58,10 @@ class RetailerFactoryRateVoter implements VoterInterface
             $retailer = $object->getRetailer();
 
             if ($retailer->hasRetailerUserProfile($user->getRetailerUserProfile())) {
+                if (!$user->getRetailerUserProfile() || !$user->getRetailerUserProfile()->isRetailerAdmin()) {
+                    return self::ACCESS_DENIED;
+                }
+
                 return self::ACCESS_GRANTED;
             }
 
