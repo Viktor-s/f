@@ -588,18 +588,3 @@ input[type="file"] {
 .fade.in {
     display: block;
 }
-
-div[data-target="move"]
-{
-    cursor: move;
-}
-
-.product-images-image
-{
-    margin-bottom: 20px;
-}
-
-.product-images-image:last-child
-{
-    margin-bottom: 0;
-}

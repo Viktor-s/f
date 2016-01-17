@@ -46,7 +46,22 @@
                     });
                 }
             });
+
             images.disableSelection();
+
+            $(document).bind('DOMNodeInserted', function (event) {
+                var target = event.target,
+                    classes = target.classList;
+
+                if ($.inArray('product-images-image', classes) !== -1) {
+                    var fullCount = $('.product-images-image').size(),
+                        element = $(target);
+
+                    element.find('[data-target="move"] input').val(fullCount - 1);
+                    images.sortable('refresh');
+                    element.disableSelection();
+                }
+            });
         });
     })(jQuery);
 </script>
