@@ -143,6 +143,8 @@ class FactoryRetailerRelationRepository
             ->select('fur')
             ->innerJoin('fur.factory', 'f')
             ->innerJoin('f.users', 'fu')
+            //If visible in front!
+            ->andWhere('f.enabled = true')
             ->andWhere('fu.id = :user')
             ->andWhere('fur.retailerAccept = :retailer_accept')
             ->andWhere('fur.factoryAccept = :factory_accept')

@@ -89,6 +89,7 @@ class LoadFactoriesData extends DataFixture
         /* @var $factory \Furniture\FactoryBundle\Entity\Factory */
         $factory = $this->get('Furniture.repository.factory')->createNew();
         $factory->setName($name);
+        $factory->setEnabled(true);
         
         foreach ($translations as $locale => $presentation) {
             $factory->setCurrentLocale($locale);

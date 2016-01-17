@@ -131,6 +131,8 @@ class FactoryRetailerRelationType extends AbstractType
                                 return $er->createQueryBuilder('f')
                                     ->leftJoin( 'f.retailerRelations','fur', 'WITH', 'fur.retailer = :retailer')
                                     ->orWhere('fur.retailer is NULL')
+                                    //If visible in front!
+                                    ->andWhere('f.enabled = true')
                                     ->setParameter('retailer', $relation->getRetailer())
                                     ;
                             }else

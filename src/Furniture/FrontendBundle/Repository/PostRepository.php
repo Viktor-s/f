@@ -48,6 +48,8 @@ class PostRepository
 
             $qb
                 ->innerJoin('p.factory', 'f')
+                //If visible in front!
+                ->andWhere('f.enabled = true')
                 ->andWhere('f.id IN (:factory_ids)')
                 ->setParameter('factory_ids', $factoryIds);
         }

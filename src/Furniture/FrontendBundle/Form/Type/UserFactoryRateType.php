@@ -40,6 +40,8 @@ class UserFactoryRateType extends AbstractType
                                     RetailerFactoryRate::class, 'rfr',
                                     'with', 'rfr.factory = f.id AND rfr.retailer = :retailer')
                             ->andWhere('rfr.retailer is NULL')
+                            //If visible in front!
+                            ->andWhere('f.enabled = true')
                             ->setParameter('retailer', $factoryRate->getRetailer())
                         ;
                     else

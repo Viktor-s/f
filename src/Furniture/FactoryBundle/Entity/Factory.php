@@ -68,6 +68,12 @@ class Factory extends AbstractTranslatable
     private $contacts;
 
     /**
+     *
+     * @var bool
+     */
+    private $enabled;
+    
+    /**
      * Construct
      */
     public function __construct()
@@ -552,6 +558,26 @@ class Factory extends AbstractTranslatable
             $this->contacts->removeElement($contact);
         }
 
+        return $this;
+    }
+
+    /**
+     * 
+     * @return bool
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+    
+    /**
+     * 
+     * @param bool $enabled
+     * @return \Furniture\FactoryBundle\Entity\Factory
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool)$enabled;
         return $this;
     }
 

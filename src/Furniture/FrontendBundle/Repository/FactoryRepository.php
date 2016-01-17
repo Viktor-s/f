@@ -36,7 +36,14 @@ class FactoryRepository
      */
     public function find($factory)
     {
-        return $this->em->find(Factory::class, $factory);
+        return $this->em->createQueryBuilder()
+                ->from(Factory::class, 'f')
+                ->select('f')
+                ->andWhere('f.enabled = true')
+                ->andWhere('f.id = :factory')
+                ->setParameter('factory', $factory)
+                ->getQuery()
+                ->getOneOrNullResult();
     }
 
     /**
@@ -51,7 +58,9 @@ class FactoryRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Factory::class, 'f')
             ->distinct()
-            ->select('f');
+            ->select('f')
+            //If visible in front!
+             ->andWhere('f.enabled = true');
 
         if ($query->hasStyles() || $query->hasCategories()) {
             $qb
@@ -128,6 +137,8 @@ class FactoryRepository
     {
         return $this->em->createQueryBuilder()
             ->from(Factory::class, 'f')
+            //If visible in front!
+            ->andWhere('f.enabled = true')
             ->select('f')
             ->orderBy('f.createdAt', 'DESC')
             ->getQuery()

@@ -44,6 +44,9 @@ class ProductRepository
         return $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
+            ->innerJoin('p.factory', 'f')
+            //If visible in front!
+            ->andWhere('f.enabled = true')
             ->andWhere('p.id = :product')
             ->setParameter('product', $product)
             ->getQuery()
@@ -106,7 +109,10 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
-            ->innerJoin('p.factory', 'f');
+            ->innerJoin('p.factory', 'f')
+            //If visible in front!
+            ->andWhere('f.enabled = true')
+            ;
 
         // Filtering by space
         if ($query->hasSpaces()) {

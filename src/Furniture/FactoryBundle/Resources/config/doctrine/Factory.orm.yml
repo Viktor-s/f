@@ -16,6 +16,11 @@ Furniture\FactoryBundle\Entity\Factory:
             type: datetime
             nullable: true
             name: created_at
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: false
 
     oneToMany:
         retailerRelations:

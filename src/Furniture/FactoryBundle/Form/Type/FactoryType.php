@@ -37,6 +37,7 @@ class FactoryType extends AbstractType
             ->add('name', 'text', [
                 'required' => true
             ])
+            ->add('enabled')
             ->add('images', 'collection', [
                 'type' => new ImageType(FactoryImage::class),
                 'allow_add' => true,
