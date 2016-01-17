@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\UserBundle\Entity\User;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
@@ -57,9 +58,9 @@ class SpecificationRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Specification::class, 's')
             ->select('s');
-        
+
         if ($query->hasRetailer()) {
-            
+
             $qb
                 ->innerJoin('s.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
                 ->setParameter('rp', $query->getRetailer());
@@ -67,15 +68,27 @@ class SpecificationRepository
 
         if ($query->hasUsers()) {
             $ids = array_map(function (User $user) {
-                if(!$user->isRetailer()){
-                    throw new Exception('Only retailer users can be asign to Specification objects');
+                if (!$user->isRetailer()) {
+                    throw new \Exception('Only retailer users can be asign to Specification objects');
                 }
+
                 return $user->getRetailerUserProfile()->getId();
             }, $query->getUsers());
 
             $qb
                 ->andWhere('s.creator IN (:rup_ids)')
                 ->setParameter('rup_ids', $ids);
+        }
+
+        if ($query->hasBuyers()) {
+            $ids = array_map(function (Buyer $buyer) {
+                return $buyer->getId();
+            }, $query->getBuyers());
+
+            $qb
+                ->innerJoin('s.buyer', 'sb')
+                ->andWhere('sb.id IN (:buyer_ids)')
+                ->setParameter('buyer_ids', $ids);
         }
 
         if ($query->hasState()) {
@@ -173,6 +186,44 @@ class SpecificationRepository
         $query = new SpecificationQuery();
         $query
             ->withUser($user);
+
+        return $this->findBy($query);
+    }
+
+    /**
+     * Find opened specifications for buyer
+     *
+     * @param User  $creator
+     * @param Buyer $buyer
+     *
+     * @return Specification[]
+     */
+    public function findOpenedForBuyer(User $creator, Buyer $buyer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withUser($creator)
+            ->withBuyer($buyer)
+            ->opened();
+
+        return $this->findBy($query);
+    }
+
+    /**
+     * Find finished specifications for buyer
+     *
+     * @param User  $creator
+     * @param Buyer $buyer
+     *
+     * @return Specification[]
+     */
+    public function findFinishedForBuyer(User $creator, Buyer $buyer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withUser($creator)
+            ->withBuyer($buyer)
+            ->finished();
 
         return $this->findBy($query);
     }

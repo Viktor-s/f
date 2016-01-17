@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository\Query;
 
+use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\UserBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 
@@ -21,11 +22,14 @@ class SpecificationQuery
     private $users = [];
 
     /**
-     *
      * @var \Furniture\RetailerBundle\Entity\RetailerProfile
      */
     private $retailer;
 
+    /**
+     * @var Buyer[]
+     */
+    private $buyers = [];
 
     /**
      * Search for user
@@ -95,7 +99,8 @@ class SpecificationQuery
     }
 
     /**
-     * 
+     * Has retailer?
+     *
      * @return bool
      */
     public function hasRetailer()
@@ -104,14 +109,66 @@ class SpecificationQuery
     }
 
     /**
-     * 
-     * @return \Furniture\RetailerBundle\Entity\RetailerProfile
+     * Get retailer
+     *
+     * @return RetailerProfile
      */
     public function getRetailer()
     {
         return $this->retailer;
     }
 
+    /**
+     * With buyer
+     *
+     * @param Buyer $buyer
+     *
+     * @return SpecificationQuery
+     */
+    public function withBuyer(Buyer $buyer)
+    {
+        $this->buyers[$buyer->getId()] = $buyer;
+
+        return $this;
+    }
+
+    /**
+     * With buyers
+     *
+     * @param Buyer[] $buyers
+     *
+     * @return SpecificationQuery
+     */
+    public function withBuyers(array $buyers)
+    {
+        $this->buyers = [];
+
+        foreach ($buyers as $buyer) {
+            $this->withBuyer($buyer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has buyers?
+     *
+     * @return bool
+     */
+    public function hasBuyers()
+    {
+        return count($this->buyers) > 0;
+    }
+
+    /**
+     * Get buyers
+     *
+     * @return Buyer[]
+     */
+    public function getBuyers()
+    {
+        return array_values($this->buyers);
+    }
 
     /**
      * Only opened

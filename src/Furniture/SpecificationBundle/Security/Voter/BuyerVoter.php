@@ -17,6 +17,7 @@ class BuyerVoter implements VoterInterface
         return in_array($attribute, [
             'SPECIFICATION_BUYER_CREATE',
             'SPECIFICATION_BUYER_LIST',
+            'SPECIFICATIONS',
             'EDIT',
             'REMOVE'
         ]);
@@ -54,11 +55,12 @@ class BuyerVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes)) {
+        if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('SPECIFICATIONS', $attributes)) {
             $creator = $object->getCreator();
-            if ($user->getRetailerUserProfile()->isRetailerAdmin()
-                    && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $creator->getRetailerProfile()->getId()
-                    ) {
+            $retailerAdmin = $user->getRetailerUserProfile()->isRetailerAdmin();
+            $owner = $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $creator->getRetailerProfile()->getId();
+
+            if ($retailerAdmin && $owner) {
                 return self::ACCESS_GRANTED;
             }
 

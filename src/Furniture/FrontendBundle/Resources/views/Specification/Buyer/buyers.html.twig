@@ -13,6 +13,7 @@
         <div class="line-entry" style="text-align:right; padding-bottom:10px;">
             <a class="btn btn-success" href="{{ path('specification_buyer_create') }}"><span>{{ 'frontend.create'|trans }}</span></a>
         </div>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -20,7 +21,7 @@
                 <th>{{ 'frontend.contact'|trans }}</th>
                 <th>{{ 'frontend.address'|trans }}</th>
                 <th>{{ 'frontend.sale'|trans }}</th>
-                <th>{{ 'frontend.actions'|trans }}</th>
+                <th class="text-center">{{ 'frontend.actions'|trans }}</th>
             </tr>
             </thead>
 
@@ -42,18 +43,16 @@
                     </td>
 
                     <td>{{ buyer.sale|default('0') }}%</td>
-                    <td>
+                    <td nowrap class="text-center">
                         {% if is_granted('EDIT', buyer) %}
                             <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
                         {% endif %}
-
-                        <br />
 
                         {% if is_granted('REMOVE', buyer) %}
                             {% if buyer.countSpecifications == 0 %}
                                 <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" data-remove data-message="Are you sure you want to remove a user?" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
                             {% else %}
-                                <span class="text-warning">Has specifications</span>
+                                <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-default">{{ 'frontend.specifications'|trans }}</a>
                             {% endif %}
                         {% endif %}
                     </td>

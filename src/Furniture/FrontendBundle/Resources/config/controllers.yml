@@ -55,6 +55,7 @@ services:
         arguments:
             - @twig
             - @frontend.repository.specification_buyer
+            - @frontend.repository.specification
             - @security.token_storage
             - @form.factory
             - @doctrine.orm.default_entity_manager

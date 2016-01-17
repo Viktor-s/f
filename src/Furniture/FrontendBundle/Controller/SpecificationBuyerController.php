@@ -5,6 +5,7 @@ namespace Furniture\FrontendBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
+use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Form\Type\BuyerType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -31,6 +32,11 @@ class SpecificationBuyerController
      * @var SpecificationBuyerRepository
      */
     private $buyerRepository;
+
+    /**
+     * @var SpecificationRepository
+     */
+    private $specificationRepository;
 
     /**
      * @var TokenStorageInterface
@@ -72,6 +78,7 @@ class SpecificationBuyerController
      *
      * @param \Twig_Environment             $twig
      * @param SpecificationBuyerRepository  $buyerRepository
+     * @param SpecificationRepository       $specificationRepository
      * @param TokenStorageInterface         $tokenStorage
      * @param FormFactoryInterface          $formFactory
      * @param EntityManagerInterface        $em
@@ -83,6 +90,7 @@ class SpecificationBuyerController
     public function __construct(
         \Twig_Environment $twig,
         SpecificationBuyerRepository $buyerRepository,
+        SpecificationRepository $specificationRepository,
         TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         EntityManagerInterface $em,
@@ -94,6 +102,7 @@ class SpecificationBuyerController
     {
         $this->twig = $twig;
         $this->buyerRepository = $buyerRepository;
+        $this->specificationRepository = $specificationRepository;
         $this->tokenStorage = $tokenStorage;
         $this->formFactory = $formFactory;
         $this->em = $em;
@@ -155,7 +164,7 @@ class SpecificationBuyerController
                 throw new AccessDeniedException(sprintf(
                     'The active user "%s" not have rights for edit buyer "%s [%d]".',
                     $this->tokenStorage->getToken()->getUsername(),
-                    (string) $buyer,
+                    (string)$buyer,
                     $buyer->getId()
                 ));
             }
@@ -213,7 +222,7 @@ class SpecificationBuyerController
             throw new AccessDeniedException(sprintf(
                 'The active user "%s" not have rights for remove buyer "%s [%d]".',
                 $this->tokenStorage->getToken()->getUsername(),
-                (string) $buyer,
+                (string)$buyer,
                 $buyer->getId()
             ));
         }
@@ -226,4 +235,43 @@ class SpecificationBuyerController
         return new RedirectResponse($url);
     }
 
+    /**
+     * View specifications for buyer
+     *
+     * @param int $buyer
+     *
+     * @return Response
+     */
+    public function specifications($buyer)
+    {
+        $buyer = $this->buyerRepository->find($buyerId = $buyer);
+
+        if (!$buyer) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found buyer with id "%s".',
+                $buyerId
+            ));
+        }
+
+        if (!$this->authorizationChecker->isGranted('SPECIFICATIONS', $buyer)) {
+            throw new AccessDeniedException(sprintf(
+                'The active user "%s" not have a rights for view specification of "%s" client.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $buyer->getFullName()
+            ));
+        }
+
+        // Load specifications for buyer
+        $creator = $this->tokenStorage->getToken()->getUser();
+        $openedSpecifications = $this->specificationRepository->findOpenedForBuyer($creator, $buyer);
+        $finishedSpecifications = $this->specificationRepository->findFinishedForBuyer($creator, $buyer);
+
+        $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
+            'buyer' => $buyer,
+            'opened_specifications' => $openedSpecifications,
+            'finished_specifications' => $finishedSpecifications
+        ]);
+
+        return new Response($content);
+    }
 }

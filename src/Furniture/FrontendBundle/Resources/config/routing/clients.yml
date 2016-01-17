@@ -26,16 +26,9 @@ specification_buyer_remove:
     defaults:
         _controller: frontend.controller.specification_buyer:remove
 
-specification_buyer_image_upload:
-    path: /{buyer}/image/upload
-    methods: [ POST ]
+specification_buyer_specifications:
+    path: /{buyer}/specifications
+    methods: [ GET ]
     requirements: { _locale: %available_locales%, buyer: \d+ }
     defaults:
-        _controller: frontend.controller.specification_buyer:imageUpload
-
-specification_buyer_image_remove:
-    path: /{buyer}/image/remove
-    methods: [ POST ]
-    requirements: { _locale: %available_locales%, buyer: \d+ }
-    defaults:
-        _controller: frontend.controller.specification_buyer:imageRemove
+        _controller: frontend.controller.specification_buyer:specifications

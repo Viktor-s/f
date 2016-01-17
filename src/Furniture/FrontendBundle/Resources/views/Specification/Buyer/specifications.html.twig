@@ -1,0 +1,117 @@
+{% extends 'FrontendBundle:Specification/Buyer:base.html.twig' %}
+
+{% block title %}{{ 'frontend.specifications'|trans }} :: {{ buyer.fullName }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+
+    <a href="#">{{ buyer.fullName }}</a>
+    <a href="#">{{ 'frontend.specifications'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    <div class="information-blocks">
+        <h1>{{ buyer.fullName }}</h1>
+    </div>
+
+    <div class="information-blocks" style="position: relative;">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#opened" aria-controls="opened" role="tab" data-toggle="tab">{{ 'frontend.opened'|trans }}</a>
+            </li>
+
+            <li role="presentation">
+                <a href="#finished" aria-controls="finished" role="tab" data-toggle="tab">{{ 'frontend.finished'|trans }}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="opened">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ 'frontend.manager'|trans }}</th>
+                        <th>{{ 'frontend.name'|trans }}</th>
+                        <th>{{ 'frontend.buyer'|trans }}</th>
+                        <th>{{ 'frontend.last_modified'|trans }}</th>
+                        <th>{{ 'frontend.total_price'|trans }}</th>
+                        <th style="min-width: 215px;">{{ 'frontend.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for specification in opened_specifications %}
+                        <tr>
+                            <td>{{ specification.id }}</td>
+                            <td>{{ specification.creator.user.fullName }}</td>
+                            <td>{{ specification.name }}</td>
+                            <td>{{ specification.buyer }}</td>
+                            <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>
+                            <td>{{ specification|specification_total_price|money }}</td>
+                            <td>
+                                {% if is_granted('EDIT', specification) %}
+                                    <a class="btn btn-success btn-xs" href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                {% endif %}
+
+                                {% if is_granted('REMOVE', specification) %}
+                                    <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure remove specification?" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                                {% endif %}
+
+                                {% if is_granted('FINISH', specification) and specification.items|length > 0 %}
+                                    <a class="btn btn-primary btn-xs" data-remove data-message="Are you sure  you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                                {% endif %}
+
+                                {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                                    <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                {{ 'frontend.specfications_not_found_for_buyer'|trans({':buyer': buyer.fullName}) }}
+
+                                {% if is_granted('SPECIFICATION_CREATE') %}
+                                    <a href="{{ path('specification_create', {buyer: buyer.id}) }}">{{ 'frontend.create'|trans }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="finished">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>{{ 'frontend.name'|trans }}</th>
+                        <th>{{ 'frontend.buyer'|trans }}</th>
+                        <th>{{ 'frontend.total_price'|trans }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for specification in finished_specifications %}
+                        <tr>
+                            <td>{{ specification.id }}</td>
+                            <td>{{ specification.name }}</td>
+                            <td>{{ specification.buyer }}</td>
+                            <td>{{ specification|specification_total_price|money }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">
+                                {{ 'frontend.specfications_finished_not_found_for_buyer'|trans({':buyer': buyer.fullName}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
