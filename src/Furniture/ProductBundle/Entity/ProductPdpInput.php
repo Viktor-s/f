@@ -236,8 +236,9 @@ class ProductPdpInput
         $variants = [];
         foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
             /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-            $variant = $variant->getSkuOptions()->matching($criteria)->first();
-            $variants[$variant->getId()] = $variant;
+            if($variant = $variant->getSkuOptions()->matching($criteria)->first()){
+                $variants[$variant->getId()] = $variant;
+            }
         }
         return $variants;
     }
