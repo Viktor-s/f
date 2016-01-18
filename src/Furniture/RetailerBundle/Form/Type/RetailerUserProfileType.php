@@ -8,11 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 
-
-
 class RetailerUserProfileType extends AbstractType
 {
-    
     /**
      * {@inheritDoc}
      */

@@ -3,9 +3,13 @@
 namespace Furniture\UserBundle\Form\Type;
 
 use Sylius\Bundle\UserBundle\Form\Type\CustomerType as BaseCustomerType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * A base customer type. Includes all info about user and customer and retailer profile
+ */
 class CustomerType extends BaseCustomerType
 {
     /**
@@ -16,11 +20,16 @@ class CustomerType extends BaseCustomerType
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults([
-            'mode' => null
-        ]);
+            'validation_groups' => function (Form $form) {
+                /** @var \Furniture\UserBundle\Entity\Customer $customer */
+                $customer = $form->getData();
 
-        $resolver->setAllowedValues([
-            'mode' => [null, 'retailer']
+                if ($customer->getId()) {
+                    return ['Update'];
+                } else {
+                    return ['Create'];
+                }
+            }
         ]);
     }
 
@@ -31,14 +40,17 @@ class CustomerType extends BaseCustomerType
     {
         parent::buildForm($builder, $options);
 
-        // Replace user form
+        // Replace email field for change label
         $builder
-            ->add('user', 'sylius_user', [
-                'mode' => $options['mode']
+            ->remove('email')
+            ->add('email', 'email', [
+                'label' => 'Login'
             ]);
 
-        if ($options['mode'] == 'retailer') {
-            $builder->remove('groups');
-        }
+        // Remove non use fields
+        $builder->remove('birthday');
+
+        // Replace user form
+        $builder->add('user', new UserType());
     }
 }

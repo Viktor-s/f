@@ -3,9 +3,8 @@
 namespace Furniture\RetailerBundle\Entity;
 
 use Furniture\UserBundle\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RetailerUserProfile 
 {
@@ -24,8 +23,10 @@ class RetailerUserProfile
     
     /**
      * @var int
+     *
+     * @Assert\Choice(groups={"Default", "Create", "Update"}, choices={1, 2})
      */
-    private $retailerMode = self::RETAILER_EMPLOYEE;
+    private $retailerMode;
     
     /**
      * @var User
@@ -69,6 +70,7 @@ class RetailerUserProfile
     public function setRetailerProfile(RetailerProfile $retailerProfile)
     {
         $this->retailerProfile = $retailerProfile;
+
         return $this;
     }
 
@@ -123,7 +125,7 @@ class RetailerUserProfile
      *
      * @return RetailerUserProfile
      */
-    public function setUser(\Furniture\UserBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
 
@@ -196,5 +198,27 @@ class RetailerUserProfile
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Check requirements
+     *
+     * @Assert\Callback(groups={"Default", "Create", "Update"})
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function checkRequirements(ExecutionContextInterface $context)
+    {
+        if ($this->retailerProfile && !$this->retailerMode) {
+            $context->buildViolation('This value should be not blank.')
+                ->atPath('retailerMode')
+                ->addViolation();
+        }
+
+        if ($this->retailerMode && !$this->retailerProfile) {
+            $context->buildViolation('This value should be not blank.')
+                ->atPath('retailerProfile')
+                ->addViolation();
+        }
     }
 }

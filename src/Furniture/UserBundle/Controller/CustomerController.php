@@ -18,7 +18,7 @@ class CustomerController extends BaseCustomerController
 
         $request = $this->get('request');
         if ($request->query->get('mode') == 'retailer') {
-            $options['mode'] = 'retailer';
+            //$options['mode'] = 'retailer';
         }
 
         return parent::getForm($resource, $options);
@@ -93,6 +93,4 @@ class CustomerController extends BaseCustomerController
 
         return $this->handleView($view);
     }
-
-
 }

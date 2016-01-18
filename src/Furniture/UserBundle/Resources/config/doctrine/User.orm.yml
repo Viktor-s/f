@@ -1,6 +1,6 @@
 Furniture\UserBundle\Entity\User:
     type: entity
-    table: furniture_user
+    table: users
 
     manyToOne:
         factory:

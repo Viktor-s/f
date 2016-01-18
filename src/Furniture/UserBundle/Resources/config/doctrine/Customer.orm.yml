@@ -1,0 +1,3 @@
+Furniture\UserBundle\Entity\Customer:
+    type: entity
+    table: customers

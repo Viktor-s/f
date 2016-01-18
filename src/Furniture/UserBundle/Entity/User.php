@@ -4,6 +4,7 @@ namespace Furniture\UserBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
 class User extends BaseUser 
@@ -14,12 +15,21 @@ class User extends BaseUser
     const ROLE_PUBLIC_CONTENT = 'ROLE_PUBLIC_CONTENT';
 
     /**
+     * @var string
+     *
+     * @Assert\NotBlank(groups={"Create"})
+     */
+    protected $plainPassword;
+
+    /**
      * @var Factory
      */
     protected $factory;
 
     /**
      * @var RetailerUserProfile
+     *
+     * @Assert\Valid()
      */
     protected $retailerUserProfile;
 
