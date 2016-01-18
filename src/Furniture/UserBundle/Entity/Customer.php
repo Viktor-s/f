@@ -3,6 +3,7 @@
 namespace Furniture\UserBundle\Entity;
 
 use Sylius\Component\Core\Model\Customer as BaseCustomer;
+use Sylius\Component\User\Model\CustomerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Customer extends BaseCustomer
@@ -27,7 +28,7 @@ class Customer extends BaseCustomer
      *
      * @Assert\NotBlank(groups={"Create", "Update"})
      */
-    protected $gender;
+    protected $gender = CustomerInterface::UNKNOWN_GENDER;
 
     /**
      * @var User

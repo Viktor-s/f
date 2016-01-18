@@ -54,10 +54,10 @@
                     classes = target.classList;
 
                 if ($.inArray('product-images-image', classes) !== -1) {
-                    var fullCount = $('.product-images-image').size(),
+                    var lastPosition = parseInt($('.product-images-image:eq(-2) div[data-target="move"] input').val()),
                         element = $(target);
 
-                    element.find('[data-target="move"] input').val(fullCount - 1);
+                    element.find('[data-target="move"] input').val(lastPosition + 1);
                     images.sortable('refresh');
                     element.disableSelection();
                 }
