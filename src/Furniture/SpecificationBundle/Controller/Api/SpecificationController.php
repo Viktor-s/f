@@ -19,6 +19,7 @@ use Furniture\PricingBundle\Calculator\PriceCalculator;
 use Furniture\PricingBundle\Twig\PricingExtension;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SpecificationController
 {
@@ -56,6 +57,11 @@ class SpecificationController
     private $authorizationChecker;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * Construct
      *
      * @param FormFactoryInterface          $formFactory
@@ -64,9 +70,16 @@ class SpecificationController
      * @param PriceCalculator               $calculator
      * @param PricingExtension              $pricingTwigExtension
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ValidatorInterface            $validator
      */
     public function __construct(
-        FormFactoryInterface $formFactory, EntityManagerInterface $em, TokenStorageInterface $tokenStorage, PriceCalculator $calculator, PricingExtension $pricingTwigExtension, AuthorizationCheckerInterface $authorizationChecker
+        FormFactoryInterface $formFactory,
+        EntityManagerInterface $em,
+        TokenStorageInterface $tokenStorage,
+        PriceCalculator $calculator,
+        PricingExtension $pricingTwigExtension,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ValidatorInterface $validator
     )
     {
         $this->formFactory = $formFactory;
@@ -75,6 +88,7 @@ class SpecificationController
         $this->calculator = $calculator;
         $this->pricingTwigExtension = $pricingTwigExtension;
         $this->authorizationChecker = $authorizationChecker;
+        $this->validator = $validator;
     }
 
     /**
@@ -414,14 +428,29 @@ class SpecificationController
 
                 if (isset($sales[$index])) {
                     $sales[$index]->setSale($value);
+                    $sale = $sales[$index];
                 } else {
                     $sale = new SpecificationSale();
                     $sale
                         ->setSpecification($specification)
                         ->setSale($value);
-
-                    $this->em->persist($sale);
                 }
+
+                $violations = $this->validator->validate($sale);
+
+                if (count($violations)) {
+                    // @todo: format JSON data for data error
+                    return new JsonResponse([], 400);
+                }
+
+                $violations = $this->validator->validate($specification, null, ['Sales']);
+
+                if (count($violations)) {
+                    // @todo: format JSON data for data error
+                    return new JsonResponse([], 400);
+                }
+
+                $this->em->persist($sale);
 
                 break;
 

@@ -4,11 +4,11 @@ namespace Furniture\SpecificationBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\UserBundle\Entity\User;
 use Furniture\SpecificationBundle\Model\GroupedCustomItemsByFactory;
 use Furniture\SpecificationBundle\Model\GroupedItemsByFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Specification
 {
@@ -478,5 +478,28 @@ class Specification
     public function onUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Check for sales sum
+     *
+     * @param ExecutionContextInterface $context
+     *
+     * @Assert\Callback(groups={"Sales"})
+     */
+    public function checkForSalesSum(ExecutionContextInterface $context)
+    {
+        $sales = 0;
+
+        foreach ($this->sales as $sale) {
+            $sales += $sale->getSale();
+        }
+
+        // Can use bccomp for compare? Because in PHP floating comparing is vary bad.
+        if ($sales > 100) {
+            $context->buildViolation('All sales larger then 100.')
+                ->atPath('sales')
+                ->addViolation();
+        }
     }
 }
