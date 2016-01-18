@@ -384,3 +384,6 @@ liip_imagine:
             filters:
                 auto_relative_resize: { widen: 360, heighten: 360 }
                 #thumbnail: { size: [360, 360], mode: outbound }
+        s570x427:
+            filters:
+                auto_relative_resize: { widen: 570, heighten: 427 }
