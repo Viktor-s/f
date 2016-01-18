@@ -3457,7 +3457,7 @@ header.fixed-header nav {
 
 .specification-list.list {
     max-height: 150px;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-bottom: 0;
     list-style: none;
     padding: 0;
