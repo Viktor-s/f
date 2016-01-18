@@ -19,6 +19,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Furniture\ProductBundle\Form\Type\ProductTranslationType;
+
 class ProductType extends BaseProductType
 {
     /**
@@ -28,6 +30,12 @@ class ProductType extends BaseProductType
     {
         parent::buildForm($builder, $options);
 
+        $builder->remove('translations')
+                ->add('translations', 'a2lix_translationsForms', array(
+                'form_type' => new ProductTranslationType,
+                'label'    => 'sylius.form.product.translations'
+            ));
+        
         if ($options['mode'] == 'full') {
             $builder
                 ->add('categories', 'entity', [
