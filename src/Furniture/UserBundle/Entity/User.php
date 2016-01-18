@@ -34,11 +34,6 @@ class User extends BaseUser
     protected $retailerUserProfile;
 
     /**
-     * @var bool
-     */
-    protected $shouldControlForKill = false;
-
-    /**
      * Construct
      */
     public function __construct()
@@ -79,28 +74,6 @@ class User extends BaseUser
     public function hasFactory()
     {
         return $this->factory ? true : false;
-    }
-
-    /**
-     * Should control for kill
-     *
-     * @return User
-     */
-    public function shouldControlForKill()
-    {
-        $this->shouldControlForKill = true;
-
-        return $this;
-    }
-
-    /**
-     * Is should control for kill?
-     *
-     * @return bool
-     */
-    public function isShouldControlForKill()
-    {
-        return $this->shouldControlForKill;
     }
 
     /**

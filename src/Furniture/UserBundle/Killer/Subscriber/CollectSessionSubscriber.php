@@ -6,10 +6,11 @@ use Furniture\UserBundle\Killer\Killer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class KillerSubscriber implements EventSubscriberInterface
+class CollectSessionSubscriber implements EventSubscriberInterface
 {
     /**
      * @var Killer
@@ -17,20 +18,13 @@ class KillerSubscriber implements EventSubscriberInterface
     private $killer;
 
     /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
      * Construct
      *
      * @param Killer                $killer
-     * @param UrlGeneratorInterface $urlGenerator
      */
-    public function __construct(Killer $killer, UrlGeneratorInterface $urlGenerator)
+    public function __construct(Killer $killer)
     {
         $this->killer = $killer;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -38,15 +32,17 @@ class KillerSubscriber implements EventSubscriberInterface
      *
      * @param GetResponseEvent $event
      */
-    public function onRequestForKill(GetResponseEvent $event)
+    public function collectSession(GetResponseEvent $event)
     {
-        if ($this->killer->isShouldKill()) {
-            $this->killer->kill();
-
-            $loginUrl = $this->urlGenerator->generate('security_login');
-            $response = new RedirectResponse($loginUrl);
-            $event->setResponse($response);
+        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+            return;
         }
+
+        $request = $event->getRequest();
+        $session = $request->getSession();
+
+        $id = $session->getId();
+        $this->killer->collectionSessionId($id);
     }
 
     /**
@@ -56,7 +52,7 @@ class KillerSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => [
-                ['onRequestForKill', 8],
+                ['collectSession', 0],
             ],
         ];
     }

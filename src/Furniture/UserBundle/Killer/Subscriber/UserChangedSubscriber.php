@@ -8,6 +8,7 @@ use Doctrine\ORM\Events;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\UserBundle\Entity\User;
 use Furniture\UserBundle\Killer\Killer;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserChangedSubscriber implements EventSubscriber
 {
@@ -17,13 +18,20 @@ class UserChangedSubscriber implements EventSubscriber
     private $killer;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * Construct
      *
-     * @param Killer $killer
+     * @param Killer                $killer
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(Killer $killer)
+    public function __construct(Killer $killer, TokenStorageInterface $tokenStorage)
     {
         $this->killer = $killer;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -33,64 +41,68 @@ class UserChangedSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $event)
     {
+        $token = $this->tokenStorage->getToken();
+
+        $activeUser = null;
+
+        if ($token) {
+            $user = $token->getUser();
+
+            if ($user && $user instanceof User) {
+                $activeUser = $user;
+            }
+        }
+
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
 
-        $kills =[];
+        $kills = [];
+
+        $isAnyFieldChanged = function ($entity, array $fields) use ($uow)
+        {
+            $changes = $uow->getEntityChangeSet($entity);
+
+            foreach ($fields as $fieldName) {
+                if (isset($changes[$fieldName])) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             // Control user
-            if ($entity instanceof User && $entity->isShouldControlForKill()) {
-                $changes = $uow->getEntityChangeSet($entity);
-                $shouldKill = false;
-
-                $fieldsForKill = [
+            if ($entity instanceof User) {
+                $fields = [
+                    'enabled',
                     'password',
-                    'username',
-                    'enabled'
+                    'username'
                 ];
 
-                foreach ($fieldsForKill as $fieldName) {
-                    if (isset($changes[$fieldName])) {
-                        $shouldKill = true;
-
-                        break;
-                    }
-                }
-
-                if ($shouldKill) {
+                if ($isAnyFieldChanged($entity, $fields)) {
                     $kills[$entity->getId()] = $entity;
-
-                    break;
                 }
             }
 
             // Control retailer user profile
             if ($entity instanceof RetailerUserProfile) {
-                $changes = $uow->getEntityChangeSet($entity);
-                $shouldKill = false;
-
-                $fieldsForKill = [
-                    'retailerMode'
+                $fields = [
+                    'retailerMode',
                 ];
 
-                foreach ($fieldsForKill as $fieldName) {
-                    if (isset($changes[$fieldName])) {
-                        $shouldKill = true;
-
-                        break;
-                    }
-                }
-
-                if ($shouldKill) {
-                    $kills[$entity->getUser()->getId()] = $entity->getUser();
+                if ($isAnyFieldChanged($entity, $fields)) {
+                    $kills[$entity->getUser()->getId()] = $entity;
                 }
             }
         }
 
         if (count($kills)) {
             foreach ($kills as $user) {
-                $this->killer->shouldKill($user);
+                if ($activeUser && $activeUser->getId() != $user->getId()) {
+                    // Kill only non active user.
+                    $this->killer->kill($user);
+                }
             }
         }
     }
@@ -101,7 +113,7 @@ class UserChangedSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::onFlush
+            Events::onFlush,
         ];
     }
 }

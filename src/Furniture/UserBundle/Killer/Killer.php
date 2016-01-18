@@ -44,70 +44,49 @@ class Killer
 
     /**
      * Kill user.
-     * Attention: This method kills the active user in system.
+     *
+     * @param User $user
      */
-    public function kill()
+    public function kill(User $user)
     {
-        $request = $this->requestStack->getMasterRequest();
+        $this->storage->cleanup($user);
+    }
 
-        if (!$request) {
-            // Not found master request. Nothing action
-            return;
+    /**
+     * Collect session id.
+     * Attention: this method save session id only for active user in system.
+     *
+     * @param string $id
+     */
+    public function collectionSessionId($id)
+    {
+        $user = $this->getUser();
+
+        if ($user) {
+            $this->storage->addSession($user, $id);
         }
+    }
 
+    /**
+     * Get user
+     *
+     * @return \Furniture\UserBundle\Entity\User|null
+     */
+    private function getUser()
+    {
         $token = $this->tokenStorage->getToken();
 
         if (!$token) {
             // Not found token for active user. Nothing action
-            return;
+            return null;
         }
 
         $user = $token->getUser();
 
         if (!$user || !$user instanceof User) {
-            return;
+            return null;
         }
 
-        // Clear session
-        $session = $request->getSession();
-        $session->invalidate();
-
-        // Clear security token
-        $this->tokenStorage->setToken(null);
-
-        // Mark as killer
-        $this->storage->successfullyKilled($user);
-    }
-
-    /**
-     * Should kill
-     *
-     * @param User $user
-     */
-    public function shouldKill(User $user)
-    {
-        $this->storage->shouldKill($user);
-    }
-
-    /**
-     * Is should kill active user
-     *
-     * @return bool
-     */
-    public function isShouldKill()
-    {
-        $token = $this->tokenStorage->getToken();
-
-        if (!$token) {
-            return false;
-        }
-
-        $user = $token->getUser();
-
-        if (!$user || !$user instanceof User) {
-            return false;
-        }
-
-        return $this->storage->isShouldKill($user);
+        return $user;
     }
 }

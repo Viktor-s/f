@@ -17,54 +17,79 @@ class MemcachedStorage implements StorageInterface
     private $expirationTime;
 
     /**
+     * @var string
+     */
+    private $memcachedSessionKey;
+
+    /**
      * Construct
      *
-     * @param \Memcached $memcached      The memcached instance
-     * @param int        $expirationTime Expiration time for key in seconds. Default - 7 days
+     * @param \Memcached $memcached           The memcached instance
+     * @param int        $expirationTime      Expiration time for key in seconds. Default - 1 days
+     * @param string     $memcachedSessionKey The key prefix for memcached session. The INI key: memcached.sess_prefix
      */
-    public function __construct(\Memcached $memcached, $expirationTime = 604800)
+    public function __construct(\Memcached $memcached, $expirationTime = 86400, $memcachedSessionKey = 'memc.sess.key.')
     {
         $this->memcached = $memcached;
         $this->expirationTime = $expirationTime;
+        $this->memcachedSessionKey = $memcachedSessionKey;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function shouldKill(User $user)
+    public function addSession(User $user, $id)
     {
-        $key = $this->generateKey($user);
-        $this->memcached->set($key, true, $this->expirationTime);
+        $key = 'user_killer_sessions_' . $user->getId();
+
+        $sessionIds = $this->memcached->get($key);
+
+        if (!$sessionIds) {
+            $sessionIds = [];
+        }
+
+        $sessionIds = $this->flushOldestSessions($sessionIds);
+        $sessionIds[$id] = time();
+
+        $this->memcached->set($key, $sessionIds, $this->expirationTime * 7);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function isShouldKill(User $user)
+    public function cleanup(User $user)
     {
-        $key = $this->generateKey($user);
+        $key = 'user_killer_sessions_' . $user->getId();
 
-        return (bool) $this->memcached->get($key);
-    }
+        $sessionIds = $this->memcached->get($key);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function successfullyKilled(User $user)
-    {
-        $key = $this->generateKey($user);
+        if (!$sessionIds) {
+            return;
+        }
+
+        foreach ($sessionIds as $sessionId => $lastUsed) {
+            $sessionKey = $this->memcachedSessionKey . $sessionId;
+            $this->memcached->delete($sessionKey);
+        }
+
         $this->memcached->delete($key);
     }
 
     /**
-     * Generate key for user
+     * Cleanup oldest session ids
      *
-     * @param User $user
+     * @param array $sessionIds
      *
-     * @return string
+     * @return array
      */
-    private function generateKey(User $user)
+    private function flushOldestSessions(array $sessionIds)
     {
-        return 'should_kill_' . $user->getId();
+        return array_filter($sessionIds, function ($lastUsed) {
+            if ($lastUsed + $this->expirationTime < time()) {
+                return false;
+            }
+
+            return true;
+        });
     }
 }

@@ -11,13 +11,13 @@ services:
         arguments: [ @user.killer.storage, @request_stack, @security.token_storage ]
 
     user.killer.subscriber:
-        class: Furniture\UserBundle\Killer\Subscriber\KillerSubscriber
-        arguments: [ @user.killer, @router ]
+        class: Furniture\UserBundle\Killer\Subscriber\CollectSessionSubscriber
+        arguments: [ @user.killer ]
         tags:
             - { name: kernel.event_subscriber }
 
     user.killer.doctrine_subscriber:
         class: Furniture\UserBundle\Killer\Subscriber\UserChangedSubscriber
-        arguments: [ @user.killer ]
+        arguments: [ @user.killer, @security.token_storage ]
         tags:
             - { name: doctrine.event_subscriber }

@@ -7,25 +7,17 @@ use Furniture\UserBundle\Entity\User;
 interface StorageInterface
 {
     /**
-     * Should kill user from session on next login
+     * Save session identifier for user
      *
-     * @param User $user
+     * @param User   $user
+     * @param string $id
      */
-    public function shouldKill(User $user);
+    public function addSession(User $user, $id);
 
     /**
-     * Is should user killed
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function isShouldKill(User $user);
-
-    /**
-     * Mark user as successfully killed from system
+     * Cleanup sessions for user
      *
      * @param User $user
      */
-    public function successfullyKilled(User $user);
+    public function cleanup(User $user);
 }
