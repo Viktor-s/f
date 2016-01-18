@@ -3197,7 +3197,7 @@ body.teaser-3 .teaser-title{font-size: 72px; line-height: 62px; border-top: 4px 
 .overlay-popup .cell-view{position: relative;}
 .overlay-popup.active .close-layer{opacity: 1;}
 .overlay-popup .overflow{position: absolute; left: 0; top: 0; width: 100%; height: 100%; text-align: center; overflow-x: hidden;}
-.overlay-popup .popup-container{padding: 45px; background: #fff; max-width: 860px; margin: 0 auto; text-align: left; position: relative; transform: perspective(2000px) rotateX(77deg); -moz-transform: perspective(2000px) rotateX(77deg); -webkit-transform: perspective(2000px) rotateX(77deg); -ms-transform: perspective(2000px) rotateX(77deg); opacity: 0;}
+.overlay-popup .popup-container{padding: 0 45px 45px; background: #fff; max-width: 860px; margin: 0 auto; text-align: left; position: relative; transform: perspective(2000px) rotateX(77deg); -moz-transform: perspective(2000px) rotateX(77deg); -webkit-transform: perspective(2000px) rotateX(77deg); -ms-transform: perspective(2000px) rotateX(77deg); opacity: 0;}
 .overlay-popup.active .popup-container{transform: perspective(2000px) rotateX(0deg); -moz-transform: perspective(2000px) rotateX(0deg); -webkit-transform: perspective(2000px) rotateX(0deg); -ms-transform: perspective(2000px) rotateX(0deg); opacity: 1;}
 .overlay-popup .popup-container .gallery-image{width: 100%; height: auto;}
 .close-popup{width: 19px; height: 19px; position: absolute; top: 18px; right: 18px; cursor: pointer;}
@@ -3358,7 +3358,7 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 }
 
 .agenta-popup .popup-container-wr {
-    height: 85vh;
+    height: 80vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -3445,7 +3445,7 @@ header.fixed-header nav {
     width:280px;
     border-radius:0 ;
     top:42px;
-    padding-bottom: 0;
+    padding-bottom: 5px;
 }
 .add-to-specification .specification-list a{
     font-size: 16px;
