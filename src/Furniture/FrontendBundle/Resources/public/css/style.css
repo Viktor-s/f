@@ -3355,9 +3355,12 @@ _:-ms-input-placeholder, :root .simple-drop-down select{padding-right: 10px;}
 .agenta-popup .popup-container{
     max-width: none; 
     width: 90%;
+}
+
+.agenta-popup .popup-container-wr {
+    height: 85vh;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 85vh; 
 }
 
 .agenta-popup .material-entry{
