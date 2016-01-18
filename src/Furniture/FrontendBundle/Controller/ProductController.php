@@ -210,7 +210,15 @@ class ProductController
             $skuMatrix[] = $item;
         }
 
-        $specifications = $this->specificationRepository->findOpenedForUser($user);
+        $specifications = [];
+        foreach( $this->specificationRepository->findOpenedForUser($user) as $specification ){
+            if( !isset($specifications[$specification->getBuyer()->getId()]) )
+                $specifications[$specification->getBuyer()->getId()] = [
+                    'buyer' => $specification->getBuyer(),
+                    'specifications' => []
+                ];
+            $specifications[$specification->getBuyer()->getId()]['specifications'][] = $specification;
+        }
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
             'product'                   => $product,

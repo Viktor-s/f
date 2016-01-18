@@ -200,6 +200,8 @@ frontend:
             title: Product media
             images: Images
             model: 3d model
+        pdp:
+            specify_product: Please choose all options first
 
     factory_side:
         main_statistic:
