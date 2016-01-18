@@ -27,6 +27,10 @@ class ReadinessType extends AbstractType
         $builder
             ->add('name', 'text', [
                 'label' => 'Name'
+            ])
+            ->add('position', 'number', [
+                'label' => 'Postition',
+                'attr' => array('value' => 0)    
             ]);
     }
 

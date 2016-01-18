@@ -164,12 +164,15 @@
                                         </form>
                                     </div>  
                                     <ul class="list specification-list">
-                                        <li class="dropdown-header">Title</li>
-                                        {% for specification in specifications %}
-                                        <li>
-                                            <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                        </li>
-                                        {% endfor %}
+                                        {% if specifications %}
+                                            {% for specification in specifications %}
+                                            <li>
+                                                <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="dropdown-header notice">No active specifications found</li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>

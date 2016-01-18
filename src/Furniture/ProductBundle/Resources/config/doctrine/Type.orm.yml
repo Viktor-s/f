@@ -17,6 +17,8 @@ Furniture\ProductBundle\Entity\Type:
         position:
             type: integer
             name: position
+            options:
+                default: 0
 
     manyToOne:
         parent:

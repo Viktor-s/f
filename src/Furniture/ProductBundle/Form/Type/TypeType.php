@@ -50,6 +50,10 @@ class TypeType extends AbstractType
             ->add('slug', 'text', [
                 'label' => 'Slug'
             ])
+            ->add('position', 'number', [
+                'label' => 'Postition',
+                'attr' => array('value' => 0)    
+            ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new TypeTranslationType()
             ]);
