@@ -2,6 +2,8 @@
 
 namespace Furniture\SpecificationBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class SpecificationSale
 {
     /**
@@ -19,7 +21,7 @@ class SpecificationSale
      *
      * @var float
      *
-     * @Assert\Range(min = 0.01, max = 100)
+     * @Assert\Range(min = 0, max = 100)
      */
     private $sale;
 

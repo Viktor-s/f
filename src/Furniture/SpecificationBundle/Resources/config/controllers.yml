@@ -8,6 +8,7 @@ services:
             - @pricing.calculator
             - @pricing.twig_extension
             - @security.authorization_checker
+            - @validator
 
     specification.controller.api.specification.sku_item:
         class: Furniture\SpecificationBundle\Controller\Api\SkuSpecificationItemController

@@ -124,24 +124,31 @@ class PriceCalculator
         foreach ($specification->getItems() as $item) {
             $price += $this->calculateTotalForSpecificationItem($item);
         }
+
         return $price;
     }
 
 
     /**
-     * 
+     * Calculate extra sales for specification
+     *
      * @param Specification $specification
+     *
      * @return array
      */
     public function calculateExtraSalesForSpecification(Specification $specification)
     {
         $sales = [];
         $price = $this->calculateTotalForSpecification($specification);
+
         foreach ($specification->getSales() as $sale) {
             if ($sale->getSale()) {
-                $sales[] = ($price * ($sale->getSale() / 100));
+                $activeSale = ($price * ($sale->getSale() / 100));
+                $sales[] = $activeSale;
+                $price -= $activeSale;
             }
         }
+
         return $sales;
     }
 
