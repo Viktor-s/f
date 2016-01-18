@@ -21,9 +21,9 @@
                     <div class="close-layer"></div>
                     <div class="popup-container">
                         <h3 class="block-title">{{ input.humanName }}</h3>
-
+                        <div class="popup-container-wr">    
                         {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
-
+                            
                             <div class="accordeon">
                                 <div class="accordeon-title row">
                                     <div class="filter-title col-sm-4">  
@@ -77,6 +77,7 @@
                         {% endfor %}
 
                         <div class="close-popup"></div>
+                    </div>
                     </div>
                 </div>
             </div>
