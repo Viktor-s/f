@@ -193,7 +193,7 @@ class SpecificationQuery
     }
 
     /**
-     * Only finisher
+     * Only finished
      *
      * @return SpecificationQuery
      */

@@ -60,7 +60,6 @@ class SpecificationRepository
             ->select('s');
 
         if ($query->hasRetailer()) {
-
             $qb
                 ->innerJoin('s.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
                 ->setParameter('rp', $query->getRetailer());
@@ -198,7 +197,7 @@ class SpecificationRepository
      *
      * @return Specification[]
      */
-    public function findOpenedForBuyer(User $creator, Buyer $buyer)
+    public function findOpenedForBuyerAndUser(User $creator, Buyer $buyer)
     {
         $query = new SpecificationQuery();
         $query
@@ -217,11 +216,49 @@ class SpecificationRepository
      *
      * @return Specification[]
      */
-    public function findFinishedForBuyer(User $creator, Buyer $buyer)
+    public function findFinishedForBuyerAndUser(User $creator, Buyer $buyer)
     {
         $query = new SpecificationQuery();
         $query
             ->withUser($creator)
+            ->withBuyer($buyer)
+            ->finished();
+
+        return $this->findBy($query);
+    }
+
+    /**
+     * Find opened specifications for buyer and retailer
+     *
+     * @param RetailerProfile $retailer
+     * @param Buyer           $buyer
+     *
+     * @return Specification[]
+     */
+    public function findOpenedForBuyerAndRetailer(RetailerProfile $retailer, Buyer $buyer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withRetailer($retailer)
+            ->withBuyer($buyer)
+            ->opened();
+
+        return $this->findBy($query);
+    }
+
+    /**
+     * Find finished specifications for buyer and retailer
+     *
+     * @param RetailerProfile $retailer
+     * @param Buyer           $buyer
+     *
+     * @return Specification[]
+     */
+    public function findFinishedForBuyerAndRetailer(RetailerProfile $retailer, Buyer $buyer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withRetailer($retailer)
             ->withBuyer($buyer)
             ->finished();
 

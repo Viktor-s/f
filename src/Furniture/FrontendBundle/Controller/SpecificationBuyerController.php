@@ -262,9 +262,18 @@ class SpecificationBuyerController
         }
 
         // Load specifications for buyer
+        /** @var \Furniture\UserBundle\Entity\User $creator */
         $creator = $this->tokenStorage->getToken()->getUser();
-        $openedSpecifications = $this->specificationRepository->findOpenedForBuyer($creator, $buyer);
-        $finishedSpecifications = $this->specificationRepository->findFinishedForBuyer($creator, $buyer);
+        $retailer = $creator->getRetailerUserProfile();
+
+        if ($retailer && $retailer->isRetailerAdmin()) {
+            $profile = $retailer->getRetailerProfile();
+            $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndRetailer($profile, $buyer);
+            $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndRetailer($profile, $buyer);
+        } else {
+            $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndUser($creator, $buyer);
+            $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndUser($creator, $buyer);
+        }
 
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
             'buyer' => $buyer,
