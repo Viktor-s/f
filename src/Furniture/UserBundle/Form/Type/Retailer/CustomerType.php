@@ -1,26 +1,17 @@
 <?php
 
-namespace Furniture\UserBundle\Form\Type;
+namespace Furniture\UserBundle\Form\Type\Retailer;
 
-use Sylius\Bundle\UserBundle\Form\Type\CustomerType as BaseCustomerType;
+use Furniture\UserBundle\Form\Type\CustomerType as BaseCustomerType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Furniture\UserBundle\Entity\Customer;
 
 /**
- * A base customer type. Includes all info about user and customer and retailer profile
+ * Customer type for retailer
  */
 class CustomerType extends BaseCustomerType
 {
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        parent::__construct(Customer::class, []);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -34,9 +25,9 @@ class CustomerType extends BaseCustomerType
                 $customer = $form->getData();
 
                 if ($customer->getId()) {
-                    return ['Update'];
+                    return ['Update', 'RetailerUpdate'];
                 } else {
-                    return ['Create'];
+                    return ['Create', 'RetailerCreate'];
                 }
             }
         ]);
@@ -49,24 +40,12 @@ class CustomerType extends BaseCustomerType
     {
         parent::buildForm($builder, $options);
 
-        // Replace email field for change label
         $builder
-            ->remove('email')
-            ->add('email', 'email', [
-                'label' => 'Login'
-            ]);
-
-        // Remove non use fields
-        $builder->remove('birthday');
-
-        // Replace user form
-        $builder->add('user', $this->getUserFormType());
+            ->remove('groups');
     }
 
     /**
-     * Get a user form type
-     *
-     * @return UserType
+     * {@inheritDoc}
      */
     protected function getUserFormType()
     {

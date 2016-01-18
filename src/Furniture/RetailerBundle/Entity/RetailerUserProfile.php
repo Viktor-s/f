@@ -18,6 +18,8 @@ class RetailerUserProfile
     
     /**
      * @var RetailerProfile
+     *
+     * @Assert\NotBlank(groups={"RetailerCreate", "RetailerUpdate"})
      */
     protected $retailerProfile;
     
@@ -25,6 +27,7 @@ class RetailerUserProfile
      * @var int
      *
      * @Assert\Choice(groups={"Default", "Create", "Update"}, choices={1, 2})
+     * @Assert\NotBlank(groups={"RetailerCreate", "RetailerUpdate"})
      */
     private $retailerMode;
     

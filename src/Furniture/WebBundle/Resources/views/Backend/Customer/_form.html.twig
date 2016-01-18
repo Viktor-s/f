@@ -16,13 +16,13 @@
                 {{ form_row(form.user.enabled) }}
             </fieldset>
 
-            <fieldset>
-                <legend>Factory</legend>
+            {% if form.user.factory is defined %}
+                <fieldset>
+                    <legend>Factory</legend>
 
-                {% if form.user.factory is defined %}
                     {{ form_row(form.user.factory) }}
-                {% endif %}
-            </fieldset>
+                </fieldset>
+            {% endif %}
 
             {% if form.user.retailerUserProfile is defined %}
                 <fieldset>

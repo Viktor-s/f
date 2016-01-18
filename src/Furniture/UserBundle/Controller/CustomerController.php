@@ -2,6 +2,8 @@
 
 namespace Furniture\UserBundle\Controller;
 
+use Furniture\UserBundle\Form\Type\CustomerType;
+use Furniture\UserBundle\Form\Type\Retailer\CustomerType as RetailerCustomerType;
 use Sylius\Bundle\CoreBundle\Controller\CustomerController as BaseCustomerController;
 use Sylius\Component\Resource\Event\ResourceEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +16,15 @@ class CustomerController extends BaseCustomerController
      */
     public function getForm($resource = null, array $options = [])
     {
-        $options = [];
-
         $request = $this->get('request');
+
         if ($request->query->get('mode') == 'retailer') {
-            //$options['mode'] = 'retailer';
+            $form = new RetailerCustomerType();
+        } else {
+            $form = new CustomerType();
         }
 
-        return parent::getForm($resource, $options);
+        return $this->createForm($form, $resource);
     }
 
     /**
