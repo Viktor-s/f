@@ -138,10 +138,14 @@ div[data-target="move"]
     border-radius: 3px;
 }
 
-.select2-container.select2-container-multi.form-contro.select2-container-active .select2-choices {
+.select2-container.select2-container-multi.form-control.select2-container-active .select2-choices {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
+	border: 1px solid #37A37E;
+}
+.select2-drop-active.select2-drop-multi {
+	border: 1px solid #37A37E;
 }
 .select2-container.select2-container-multi.form-control .select2-choices .select2-search-field input {
 	padding: 5px 5px 5px 12px;
