@@ -19,7 +19,7 @@ class SpaceType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Space::class
-        ]);
+        ]);                    
     }
 
     /**
@@ -49,6 +49,10 @@ class SpaceType extends AbstractType
             ])
             ->add('slug', 'text', [
                 'label' => 'Slug'
+            ])
+            ->add('position', 'number', [
+                'label' => 'Postition',
+                'attr' => array('value' => 0)    
             ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new SpaceTranslationType()
