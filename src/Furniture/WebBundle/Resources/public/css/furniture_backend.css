@@ -83,7 +83,7 @@ div[data-target="move"]
 	overflow: hidden;
 }
 
-.select2-container.form-control .select2-choice.select2-default {
+.select2-container.form-control .select2-choice.select2-default, .select2-container.form-control .select2-choice {
     height: 100%;
     line-height: 30px;
     padding: 0 12px;
@@ -139,4 +139,8 @@ div[data-target="move"]
 }
 .select2-container.select2-container-multi.form-control.select2-container-active {
 	border: none;
+}
+.select2-container.select2-container-multi.form-control .select2-choices .select2-search-choice {
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
