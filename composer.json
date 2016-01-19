@@ -80,7 +80,8 @@
         "sonata-project/formatter-bundle":      "~2.3",
         "phpoffice/phpexcel":                   "~1.8",
         "behat/transliterator":                 "~1.1.0",
-        "mpdf/mpdf":                            "~6.0.0"
+        "mpdf/mpdf":                            "~6.0.0",
+        "egulias/email-validator":              "~1.2"
     },
     "require-dev": {
         "behat/behat":                          "~3.0",

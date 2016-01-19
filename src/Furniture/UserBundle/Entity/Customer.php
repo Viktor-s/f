@@ -12,7 +12,7 @@ class Customer extends BaseCustomer
      * @var string
      *
      * @Assert\NotBlank(groups={"Create", "Update"})
-     * @Assert\Email(groups={"Create", "Update"})
+     * @Assert\Email(strict=true, groups={"Create", "Update"})
      */
     protected $email;
 
