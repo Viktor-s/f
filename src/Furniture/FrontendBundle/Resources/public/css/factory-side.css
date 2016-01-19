@@ -142,17 +142,12 @@
     width: 100%;
 }
 
-.factory-info .factory-cover
-{
+.factory-info .factory-cover {
     position: relative;
     margin-bottom: 100px;
+    height: 500px;
 }
 
-.factory-info .factory-cover img
-{
-    width: 100%;
-    height: 350px;
-}
 
 .factory-info .factory-cover .logo
 {
