@@ -20,10 +20,10 @@
 
         {% if post.images|length > 0 %}
             <div class="images">
-                <img src="{{ post.images.first.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                <img src="{{ post.images.first.path|imagine_filter('s150x150') }}"/>
                 {#
                 {% for image in post.images %}
-                    <img src="{{ image.path|imagine_filter('s150x150') }}" width="150" height="150" />
+                    <img src="{{ image.path|imagine_filter('s150x150') }}"/>
                 {% endfor %}
                 #}
             </div>
