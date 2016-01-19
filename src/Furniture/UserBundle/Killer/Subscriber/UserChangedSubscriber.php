@@ -56,6 +56,7 @@ class UserChangedSubscriber implements EventSubscriber
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
 
+        /** @var User[] $kills */
         $kills = [];
 
         $isAnyFieldChanged = function ($entity, array $fields) use ($uow)
@@ -92,7 +93,7 @@ class UserChangedSubscriber implements EventSubscriber
                 ];
 
                 if ($isAnyFieldChanged($entity, $fields)) {
-                    $kills[$entity->getUser()->getId()] = $entity;
+                    $kills[$entity->getUser()->getId()] = $entity->getUser();
                 }
             }
         }
