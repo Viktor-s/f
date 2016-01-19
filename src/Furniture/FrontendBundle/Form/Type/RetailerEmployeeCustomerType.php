@@ -2,7 +2,7 @@
 
 namespace Furniture\FrontendBundle\Form\Type;
 
-use Sylius\Component\Core\Model\Customer;
+use Furniture\UserBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

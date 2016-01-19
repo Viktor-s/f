@@ -75,3 +75,89 @@ div[data-target="move"]
     padding-bottom: 0;
     border-bottom: none;
 }
+
+/**Styling selec2**/
+.select2-container.form-control {
+	padding: 0;
+	min-width: 130px;
+	overflow: hidden;
+}
+
+.select2-container.form-control .select2-choice.select2-default, .select2-container.form-control .select2-choice {
+    height: 100%;
+    line-height: 30px;
+    padding: 0 12px;
+    -webkit-border-radius: 0;
+	-moz-border-radius: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.select2-container.form-control .select2-choice .select2-arrow {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	border: none;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+	position: relative;
+}
+
+.select2-container .select2-choice .select2-arrow b:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 13px;
+    right: 4px;
+    width: 8px;
+    height: 0px;
+    border-top: 8px inset #DADADA;
+    border-right: 5px inset transparent;
+    border-left: 5px inset transparent;
+    z-index: 2;
+    border-bottom: none;
+}
+
+.select2-container.form-control .select2-choice .select2-arrow {
+    border-left: 1px solid rgb(239, 237, 230);
+}
+
+.select2-search {
+    margin: 5px 0 0 0px;
+}
+
+.select2-container.select2-container-multi.form-control {
+	border: none;
+}
+
+.select2-container.select2-container-multi.form-control .select2-choices {
+	height: 34px !important;
+    background: none;
+    border: 1px solid rgb(239, 237, 230);
+    border-radius: 3px;
+}
+
+.select2-container.select2-container-multi.form-control.select2-container-active .select2-choices {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border: 1px solid #37A37E;
+}
+.select2-drop-active.select2-drop-multi {
+	border: 1px solid #37A37E;
+}
+.select2-container.select2-container-multi.form-control .select2-choices .select2-search-field input {
+	padding: 5px 5px 5px 12px;
+	margin: 0;
+}
+.select2-container.select2-container-multi.form-control.select2-container-active {
+	border: none;
+}
+.select2-container.select2-container-multi.form-control .select2-choices .select2-search-choice {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+.select2-container-multi.form-control .select2-choices .select2-search-field input {
+	line-height: 26px;
+}
