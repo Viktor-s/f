@@ -4,9 +4,17 @@ namespace Furniture\UserBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 
+/**
+ * @UniqueEntity(
+ *     fields={"usernameCanonical"},
+ *     groups={"Default", "Create", "Update"},
+ *     errorPath="username"
+ * )
+ */
 class User extends BaseUser 
 {
     const ROLE_CONTENT_USER   = 'ROLE_CONTENT_USER'; // @todo: remove this role?
@@ -39,6 +47,21 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        $this->usernameCanonical = self::canonizeUsername($username);
+
+        return $this;
     }
 
     /**
@@ -179,5 +202,17 @@ class User extends BaseUser
             $this->customer->getFirstName(),
             $this->customer->getLastName()
         );
+    }
+
+    /**
+     * Canonize username
+     *
+     * @param string $username
+     *
+     * @return string
+     */
+    public static function canonizeUsername($username)
+    {
+        return mb_strtolower($username, mb_detect_encoding($username));
     }
 }
