@@ -7,7 +7,8 @@
 .factory-posts .post-item.with-image .image
 {
     float: left;
-    width: 170px;
+    width: 150px;
+    margin-right: 20px;
 }
 
 .factory-posts .post-item.with-image .post-info
@@ -43,8 +44,9 @@
 
 .factory-post.with-images .images
 {
-    width: 170px;
+    width: 150px;
     float: left;
+    margin-right: 20px;
 }
 
 .factory-post.with-images .content
@@ -191,6 +193,11 @@
 .factory-info .short-description
 {
     margin-bottom: 20px;
+}
+
+.image img, .images img {
+    max-width: 100%
+    height: auto;
 }
 
 
