@@ -5,7 +5,7 @@
 <div class="post-item{{ image ? ' with-image' : '' }}">
     {% if image %}
         <div class="image">
-            <img src="{{ post.images.first.path|imagine_filter('s150x150') }}" width="150" height="150" />
+            <img src="{{ post.images.first.path|imagine_filter('s150x150') }}"/>
         </div>
     {% endif %}
 
