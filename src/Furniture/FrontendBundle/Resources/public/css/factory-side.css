@@ -159,8 +159,9 @@
     width: 160px;
     height: 160px;
     position: absolute;;
-    bottom: -80px;
+    top: 100%;
     left: 50%;
+    margin-top: -80px;
     margin-left: -80px;
 }
 
@@ -197,6 +198,22 @@
 
 .image img, .images img {
     max-width: 100%
+    height: auto;
+}
+
+.factory-cover-image-wr {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.factory-info .factory-cover .factory-cover-image-wr img {
+    position: absolute;
+    top: -30%;
+    width: 100%;
     height: auto;
 }
 
