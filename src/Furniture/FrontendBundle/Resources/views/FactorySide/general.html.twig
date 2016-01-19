@@ -14,7 +14,7 @@
             <div class="factory-cover-image-wr">
             {% if factory.images|length > 0 %}
                 {% set image = factory.images.first %}
-                <img src="{{ image.path|imagine_filter('s1200x350') }}" alt="{{ factory.name }}" />
+                <img src="{{ image.path|imagine_filter('s1170x500') }}" alt="{{ factory.name }}" />
             {% else %}
                 <img src="/img/1200x350.png" alt="{{ factory.name }}" />
             {% endif %}
