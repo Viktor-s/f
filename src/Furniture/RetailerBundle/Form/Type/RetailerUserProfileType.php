@@ -2,6 +2,7 @@
 
 namespace Furniture\RetailerBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,7 +38,22 @@ class RetailerUserProfileType extends AbstractType
                 'class' => RetailerProfile::class,
                 'multiple' => false,
                 'required' => false
+            ])
+            ->add('emails', 'text', [
+                'label' => 'Emails',
+                'required' => false
+            ])
+            ->add('phones', 'text', [
+                'label' => 'Phones',
+                'required' => false
+            ])
+            ->add('position', 'text', [
+                'label' => 'Position',
+                'required' => false
             ]);
+
+        $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
+        $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));
     }
     
     /**

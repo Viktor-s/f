@@ -1,6 +1,6 @@
 Furniture\RetailerBundle\Entity\RetailerUserProfile:
     type: entity
-    table: furniture_retailer_user_profile
+    table: retailer_user_profile
     
     id:
         id:
@@ -23,6 +23,10 @@ Furniture\RetailerBundle\Entity\RetailerUserProfile:
         phones:
             type: json_array
             name: phones
+
+        emails:
+            type: json_array
+            name: emails
                 
     oneToOne:
         user:

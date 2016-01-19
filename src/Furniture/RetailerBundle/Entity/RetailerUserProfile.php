@@ -42,6 +42,11 @@ class RetailerUserProfile
     private $phones = [];
 
     /**
+     * @var array
+     */
+    private $emails = [];
+
+    /**
      * @var string
      */
     private $position;
@@ -177,6 +182,30 @@ class RetailerUserProfile
     public function getPhones()
     {
         return $this->phones;
+    }
+
+    /**
+     * Set emails
+     *
+     * @param array $emails
+     *
+     * @return RetailerUserProfile
+     */
+    public function setEmails(array $emails)
+    {
+        $this->emails = $emails;
+
+        return $this;
+    }
+
+    /**
+     * Get emails
+     *
+     * @return array
+     */
+    public function getEmails()
+    {
+        return $this->emails;
     }
 
     /**
