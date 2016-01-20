@@ -164,8 +164,13 @@
                                         </form>
                                     </div>  
                                     <ul class="list specification-list">
-                                        {% if specifications %}
-                                            {% for gspecification in specifications %}
+                                        {% if specificationsWithBuyer or specificationsWithoutBuyer %}
+                                            {% for specification in specificationsWithoutBuyer %}
+                                                <li>
+                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                            {% for gspecification in specificationsWithBuyer %}
                                                 <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
                                                 {% for specification in gspecification.specifications %}
                                                 <li>
