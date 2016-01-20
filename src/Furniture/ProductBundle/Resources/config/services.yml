@@ -34,7 +34,7 @@ services:
 
     product_part_material_variant.subscriber.entity:
         class: Furniture\ProductBundle\EventListener\ProductPartMaterialVariantEntitySubscriber
-        arguments: [ @sylius.image_uploader ]
+        arguments: [ @sylius.image_uploader, @doctrine.orm.default_entity_manager ]
         tags:
             - { name: kernel.event_subscriber }
 

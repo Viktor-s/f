@@ -43,6 +43,7 @@
                     </td>
 
                     <td>{{ buyer.sale|default('0') }}%</td>
+
                     <td nowrap class="text-center">
                         {% if is_granted('EDIT', buyer) %}
                             <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>

@@ -56,15 +56,6 @@ class ProductPartMaterialVariantType extends AbstractType
             'product_part_material' => $productExtension,
             'product_part_material_variant' => $extensionVariant
         ]);
-
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            /** @var ProductPartMaterialVariant $materialVariant */
-            $materialVariant = $event->getData();
-
-            if ($materialVariant->getImage() && !$materialVariant->getImage()->getMaterialVariant()) {
-                $materialVariant->getImage()->setMaterialVariant($materialVariant);
-            }
-        });
     }
 
     /**

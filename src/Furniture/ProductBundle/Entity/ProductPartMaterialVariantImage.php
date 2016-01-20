@@ -21,6 +21,8 @@ class ProductPartMaterialVariantImage extends Image
     public function setMaterialVariant(ProductPartMaterialVariant $materialVariant)
     {
         $this->materialVariant = $materialVariant;
+
+        return $this;
     }
 
     /**

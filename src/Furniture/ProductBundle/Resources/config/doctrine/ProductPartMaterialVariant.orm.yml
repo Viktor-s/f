@@ -57,6 +57,7 @@ Furniture\ProductBundle\Entity\ProductPartMaterialVariant:
             cascade: [ persist ]
             onDelete: CASCADE
             mappedBy: materialVariant
+            orphanRemoval: true
 
     lifecycleCallbacks:
         prePersist: [ generateNameFromValues ]

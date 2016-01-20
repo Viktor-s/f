@@ -243,8 +243,26 @@ class ProductPartMaterialVariant
     public function setImage(ProductPartMaterialVariantImage $image = null)
     {
         $this->image = $image;
-        $image->setMaterialVariant($this);
+
+        if ($image) {
+            $image->setMaterialVariant($this);
+        }
+
         return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @return ProductPartMaterialVariantImage
+     */
+    public function removeImage()
+    {
+        $image = $this->image;
+
+        $this->image = null;
+
+        return $image;
     }
 
     /**
@@ -276,6 +294,7 @@ class ProductPartMaterialVariant
     public function setDescriptionalName($name)
     {
         $this->descriptionalName = $name;
+
         return $this;
     }
 
@@ -299,6 +318,7 @@ class ProductPartMaterialVariant
     public function setDescriptionalCode($code)
     {
         $this->descriptionalCode = $code;
+
         return $this;
     }
 
