@@ -52,9 +52,11 @@
                         {% if is_granted('REMOVE', buyer) %}
                             {% if buyer.countSpecifications == 0 %}
                                 <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" data-remove data-message="Are you sure you want to remove a user?" class="btn btn-danger btn-xs">{{ 'frontend.remove'|trans }}</a>
-                            {% else %}
-                                <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-default">{{ 'frontend.specifications'|trans }}</a>
                             {% endif %}
+                        {% endif %}
+
+                        {% if is_granted('SPECIFICATIONS', buyer) and buyer.countSpecifications %}
+                            <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-default">{{ 'frontend.specifications'|trans }}</a>
                         {% endif %}
                     </td>
                 </tr>

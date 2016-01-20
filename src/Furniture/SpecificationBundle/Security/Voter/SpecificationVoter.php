@@ -51,8 +51,9 @@ class SpecificationVoter implements VoterInterface
             return self::ACCESS_GRANTED;
         }
 
-        if(!$object instanceof Specification)
-            return false;
+        if(!$object instanceof Specification) {
+            return self::ACCESS_ABSTAIN;
+        }
         
         if (in_array('EDIT', $attributes) || in_array('REMOVE', $attributes) || in_array('FINISH', $attributes) || in_array('EXPORT', $attributes) || in_array('VIEW', $attributes)) {
             $owner = $object->getCreator();
