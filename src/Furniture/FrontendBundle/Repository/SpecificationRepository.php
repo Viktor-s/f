@@ -55,54 +55,31 @@ class SpecificationRepository
      */
     public function findBy(SpecificationQuery $query)
     {
-        $qb = $this->em->createQueryBuilder()
-            ->from(Specification::class, 's')
-            ->select('s');
-
-        if ($query->hasRetailer()) {
-            $qb
-                ->innerJoin('s.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
-                ->setParameter('rp', $query->getRetailer());
-        }
-
-        if ($query->hasUsers()) {
-            $ids = array_map(function (User $user) {
-                if (!$user->isRetailer()) {
-                    throw new \Exception('Only retailer users can be asign to Specification objects');
-                }
-
-                return $user->getRetailerUserProfile()->getId();
-            }, $query->getUsers());
-
-            $qb
-                ->andWhere('s.creator IN (:rup_ids)')
-                ->setParameter('rup_ids', $ids);
-        }
-
-        if ($query->hasBuyers()) {
-            $ids = array_map(function (Buyer $buyer) {
-                return $buyer->getId();
-            }, $query->getBuyers());
-
-            $qb
-                ->innerJoin('s.buyer', 'sb')
-                ->andWhere('sb.id IN (:buyer_ids)')
-                ->setParameter('buyer_ids', $ids);
-        }
-
-        if ($query->hasState()) {
-            if ($query->isFinished()) {
-                $qb->andWhere('s.finishedAt IS NOT NULL');
-            } else if ($query->isOpened()) {
-                $qb->andWhere('s.finishedAt IS NULL');
-            } else {
-                throw new \InvalidArgumentException('Invalid state.');
-            }
-        }
+        $qb = $this->createQueryBuilderForSpecificationQuery($query);
 
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Count by
+     *
+     * @param SpecificationQuery $query
+     *
+     * @return bool
+     */
+    public function countBy(SpecificationQuery $query)
+    {
+        $qb = $this->createQueryBuilderForSpecificationQuery($query);
+
+        $qb
+            ->select('count(s.id)')
+            ->setMaxResults(1);
+
+        return (bool) $qb
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
@@ -228,6 +205,24 @@ class SpecificationRepository
     }
 
     /**
+     * Count specifications for buyer and user
+     *
+     * @param User  $creator
+     * @param Buyer $buyer
+     *
+     * @return bool
+     */
+    public function countForBuyerAndUser(User $creator, Buyer $buyer)
+    {
+        $query = new SpecificationQuery();
+        $query
+            ->withUser($creator)
+            ->withBuyer($buyer);
+
+        return $this->countBy($query);
+    }
+
+    /**
      * Find opened specifications for buyer and retailer
      *
      * @param RetailerProfile $retailer
@@ -263,5 +258,62 @@ class SpecificationRepository
             ->finished();
 
         return $this->findBy($query);
+    }
+
+    /**
+     * Create query builder for specification query
+     *
+     * @param SpecificationQuery $query
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function createQueryBuilderForSpecificationQuery(SpecificationQuery $query)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->from(Specification::class, 's')
+            ->select('s');
+
+        if ($query->hasRetailer()) {
+            $qb
+                ->innerJoin('s.creator', 'rup', 'WITH', 'rup.retailerProfile = :rp')
+                ->setParameter('rp', $query->getRetailer());
+        }
+
+        if ($query->hasUsers()) {
+            $ids = array_map(function (User $user) {
+                if (!$user->isRetailer()) {
+                    throw new \Exception('Only retailer users can be asign to Specification objects');
+                }
+
+                return $user->getRetailerUserProfile()->getId();
+            }, $query->getUsers());
+
+            $qb
+                ->andWhere('s.creator IN (:rup_ids)')
+                ->setParameter('rup_ids', $ids);
+        }
+
+        if ($query->hasBuyers()) {
+            $ids = array_map(function (Buyer $buyer) {
+                return $buyer->getId();
+            }, $query->getBuyers());
+
+            $qb
+                ->innerJoin('s.buyer', 'sb')
+                ->andWhere('sb.id IN (:buyer_ids)')
+                ->setParameter('buyer_ids', $ids);
+        }
+
+        if ($query->hasState()) {
+            if ($query->isFinished()) {
+                $qb->andWhere('s.finishedAt IS NOT NULL');
+            } else if ($query->isOpened()) {
+                $qb->andWhere('s.finishedAt IS NULL');
+            } else {
+                throw new \InvalidArgumentException('Invalid state.');
+            }
+        }
+
+        return $qb;
     }
 }

@@ -49,12 +49,13 @@ class SpecificationBuyerRepository
      *
      * @param RetailerProfile $retailer
      * @param bool            $withCountSpecifications
+     * @param User            $creator
      *
      * @return Buyer[]
      *
      * @todo: add pagination
      */
-    public function findByRetailer(RetailerProfile $retailer, $withCountSpecifications = false)
+    public function findByRetailer(RetailerProfile $retailer, $withCountSpecifications = false, User $creator = null)
     {
         $qb = $this->em->createQueryBuilder()
             ->from(Buyer::class, 'b')
@@ -65,9 +66,20 @@ class SpecificationBuyerRepository
         if ($withCountSpecifications) {
             $qb
                 ->select('b as buyer')
-                ->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id')
+                //->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id')
                 ->addSelect('COUNT(s.id) as count_specifications')
                 ->groupBy('b.id');
+
+
+
+            if ($creator) {
+                $qb
+                    ->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id AND s.creator = :creator')
+                    ->setParameter('creator', $creator);
+            } else {
+                $qb
+                    ->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id');
+            }
         }
 
         $result = $qb->getQuery()->getResult();
@@ -87,30 +99,4 @@ class SpecificationBuyerRepository
 
         return $buyers;
     }
-
-    /**
-     * Is buyers has specifications?
-     *
-     * @param Buyer[] $buyers
-     *
-     * @return array
-     */
-//    public function hasSpecificationsForBuyers(array $buyers)
-//    {
-//        $buyerIds = array_map(function (Buyer $buyer) {
-//            return $buyer->getId();
-//        }, $buyers);
-//
-//        $qb = $this->em->createQueryBuilder()
-//            ->from(Buyer::class, 'b')
-//            ->select('b.id as buyer_id')
-//            ->innerJoin(Specification::class, 's', 'WITH', 's.buyer = b.id')
-//            ->andWhere('b.id IN (:buyer_ids)')
-//            ->setParameter('buyer_ids', $buyerIds)
-//            ->groupBy('s.id');
-//
-//        $result = $qb->getQuery()->getArrayResult();
-//
-//        print_r($result);exit();
-//    }
 }
