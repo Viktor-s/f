@@ -71,7 +71,7 @@
                     {% else %}
                         <tr>
                             <td colspan="7" class="text-center">
-                                {{ 'frontend.specfications_not_found_for_buyer'|trans({':buyer': buyer.fullName}) }}
+                                {{ 'frontend.specfications_opened_not_found_for_buyer'|trans({':buyer': buyer.fullName}) }}
 
                                 {% if is_granted('SPECIFICATION_CREATE') %}
                                     <a href="{{ path('specification_create', {buyer: buyer.id}) }}">{{ 'frontend.create'|trans }}</a>

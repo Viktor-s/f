@@ -16,7 +16,7 @@ frontend:
     buyers_not_found: Clients not found.
     buyer: Client
     specfications_not_found: Specifications not found.
-    specfications_not_found_for_buyer: "Not found specifications for buyer :buyer."
+    specfications_opened_not_found_for_buyer: "Not found specifications for buyer :buyer."
     specfications_finished_not_found_for_buyer: "Not found finished specification for buyer :buyer."
     update_specification: Update specification
     add_to_specification: Add to specification
