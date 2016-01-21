@@ -61,6 +61,10 @@ class AppKernel extends Kernel
                 return false;
             }
 
+            if ($bundle instanceof HWIOAuthBundle) {
+                return false;
+            }
+
             return true;
         });
 

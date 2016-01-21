@@ -1,5 +1,6 @@
 parameters:
     sylius.form.type.customer_filter.class: Furniture\UserBundle\Form\Type\CustomerFilterType
+    security.authentication.form_entry_point.class: Furniture\UserBundle\Security\Authentication\FormAuthenticationEntryPoint
 
 services:
     user.killer.storage:
