@@ -67,6 +67,7 @@
             </div>
         {% endif %}
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <br/>
@@ -84,6 +85,15 @@
                         <b>Phones:</b>
                         {% for phone in app.user.retailerUserProfile.phones %}
                             <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if app.user.retailerUserProfile and app.user.retailerUserProfile.emails|length > 0 %}
+                    <div class="emails">
+                        <b>Emails:</b>
+                        {% for email in app.user.retailerUserProfile.emails %}
+                            <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
                         {% endfor %}
                     </div>
                 {% endif %}

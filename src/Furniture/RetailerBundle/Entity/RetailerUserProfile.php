@@ -19,15 +19,18 @@ class RetailerUserProfile
     /**
      * @var RetailerProfile
      *
-     * @Assert\NotBlank(groups={"RetailerCreate", "RetailerUpdate"})
+     * @Assert\NotBlank(groups={"RetailerProfileCreate", "RetailerProfileUpdate"})
      */
     protected $retailerProfile;
     
     /**
      * @var int
      *
-     * @Assert\Choice(groups={"Default", "Create", "Update"}, choices={1, 2})
-     * @Assert\NotBlank(groups={"RetailerCreate", "RetailerUpdate"})
+     * @Assert\Choice(
+     *     groups={"Default", "Create", "Update", "RetailerProfileCreate", "RetailerProfileUpdate"},
+     *     choices={1, 2}
+     * )
+     * @Assert\NotBlank(groups={"RetailerProfileCreate", "RetailerProfileUpdate"})
      */
     private $retailerMode;
     
@@ -235,7 +238,7 @@ class RetailerUserProfile
     /**
      * Check requirements
      *
-     * @Assert\Callback(groups={"Default", "Create", "Update"})
+     * @Assert\Callback(groups={"RetailerProfileRequirements"})
      *
      * @param ExecutionContextInterface $context
      */

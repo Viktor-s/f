@@ -25,9 +25,9 @@ class CustomerType extends BaseCustomerType
                 $customer = $form->getData();
 
                 if ($customer->getId()) {
-                    return ['Update', 'RetailerUpdate'];
+                    return ['Update', 'RetailerProfileUpdate'];
                 } else {
-                    return ['Create', 'RetailerCreate'];
+                    return ['Create', 'RetailerProfileCreate'];
                 }
             }
         ]);
