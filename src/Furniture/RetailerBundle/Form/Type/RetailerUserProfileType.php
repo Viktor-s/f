@@ -40,11 +40,11 @@ class RetailerUserProfileType extends AbstractType
                 'required' => false
             ])
             ->add('emails', 'text', [
-                'label' => 'Emails',
+                'label' => 'Contact emails',
                 'required' => false
             ])
             ->add('phones', 'text', [
-                'label' => 'Phones',
+                'label' => 'Contact phones',
                 'required' => false
             ])
             ->add('position', 'text', [

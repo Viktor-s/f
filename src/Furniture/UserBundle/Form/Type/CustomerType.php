@@ -53,7 +53,7 @@ class CustomerType extends BaseCustomerType
         $builder
             ->remove('email')
             ->add('email', 'email', [
-                'label' => 'Login'
+                'label' => 'Email (use for login)'
             ]);
 
         // Remove non use fields
