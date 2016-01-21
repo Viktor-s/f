@@ -22,3 +22,8 @@ services:
         arguments: [ @user.killer, @security.token_storage ]
         tags:
             - { name: doctrine.event_subscriber }
+
+    sylius.listener.default_username:
+        class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
+        tags:
+            - { name: doctrine.event_subscriber }

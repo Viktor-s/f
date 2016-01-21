@@ -163,8 +163,8 @@ class EmployeeController
             $retailerUserProfile = new RetailerUserProfile();
             $retailerUserProfile->setRetailerProfile($user->getRetailerUserProfile()->getRetailerProfile());
             $employee->setRetailerUserProfile($retailerUserProfile);
-            $cusomer = new Customer();
-            $employee->setCustomer($cusomer);
+            $customer = new Customer();
+            $employee->setCustomer($customer);
             $employee->setEnabled(true);
         }
 
