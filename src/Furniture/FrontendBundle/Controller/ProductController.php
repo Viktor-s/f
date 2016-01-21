@@ -210,14 +210,19 @@ class ProductController
             $skuMatrix[] = $item;
         }
 
-        $specifications = [];
+        $specificationsWithBuyer = [];
+        $specificationsWithoutBuyer = [];
         foreach( $this->specificationRepository->findOpenedForUser($user) as $specification ){
-            if( !isset($specifications[$specification->getBuyer()->getId()]) )
-                $specifications[$specification->getBuyer()->getId()] = [
+            if( !$specification->getBuyer() ){
+                $specificationsWithoutBuyer[] = $specification;
+                continue;
+            }
+            if( !isset($specificationsWithBuyer[$specification->getBuyer()->getId()]) )
+                $specificationsWithBuyer[$specification->getBuyer()->getId()] = [
                     'buyer' => $specification->getBuyer(),
                     'specifications' => []
                 ];
-            $specifications[$specification->getBuyer()->getId()]['specifications'][] = $specification;
+            $specificationsWithBuyer[$specification->getBuyer()->getId()]['specifications'][] = $specification;
         }
 
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
@@ -225,7 +230,8 @@ class ProductController
             'sku_matrix'                => $skuMatrix,
             'active_variant_matrix'     => $activeVariantMatrix,
             'options'                   => $options,
-            'specifications'            => $specifications,
+            'specificationsWithBuyer'            => $specificationsWithBuyer,
+            'specificationsWithoutBuyer' => $specificationsWithoutBuyer,
             'specification_item'        => $specificationItem,
             'update_specification_item' => $updateSpecificationItem,
             'quantity'                  => $quantity,
