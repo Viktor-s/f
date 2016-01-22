@@ -52,11 +52,14 @@
             $(document).bind('DOMNodeInserted', function (event) {
                 var target = event.target,
                     classes = target.classList;
-
                 if ($.inArray('product-images-image', classes) !== -1) {
-                    var lastPosition = parseInt($('.product-images-image:eq(-2) div[data-target="move"] input').val()),
+                    var
+                        lastElement = $('.product-images-image:eq(-2) div[data-target="move"] input'),
+                        lastPosition = 0,
                         element = $(target);
-
+                    if (lastElement.size()) {
+                        lastPosition = lastElement.val();
+                    }
                     element.find('[data-target="move"] input').val(lastPosition + 1);
                     images.sortable('refresh');
                     element.disableSelection();

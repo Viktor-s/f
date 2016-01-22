@@ -7,6 +7,9 @@ sylius_backend_customer_index:
     defaults:
         _controller: sylius.controller.customer:indexAction
         _sylius:
+            sortable: true
+            sorting:
+                id: desc
             template: SyliusWebBundle:Backend/Customer:index.html.twig
             repository:
                 method: createFilterPaginator
