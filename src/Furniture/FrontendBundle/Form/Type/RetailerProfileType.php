@@ -2,20 +2,57 @@
 
 namespace Furniture\FrontendBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Furniture\RetailerBundle\Form\Type\RetailerProfileType as BaseRetailerProfileType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RetailerProfileType extends BaseRetailerProfileType
+class RetailerProfileType extends AbstractType
 {
-    
+    /**
+     * {@inheritDoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => RetailerProfile::class
+        ]);
+    }
+
     /**
      * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $builder
+            ->add('name', 'text', [
+                'required' => true
+            ])
+            ->add('website', 'text', [
+                'required' => false
+            ])
+            ->add('subtitle', 'text', [
+                'required' => false
+            ])
+            ->add('description', 'textarea', [
+                'required' => false
+            ])
+            ->add('address', 'text', [
+                'attr' => array('class'=>'google-address-autocomplete'),
+                'required' => false
+            ])
+            ->add('phones', 'text', [
+                'label' => 'furniture_retailer_profile.form.phones',
+                'required' => false
+            ])
+            ->add('emails', 'text', [
+                'label' => 'furniture_retailer_profile.form.emails',
+                'required' => false
+            ]);
 
-        $builder->remove('logoImage');
+        $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
+        $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));
     }
     
     /**
