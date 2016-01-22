@@ -74,4 +74,13 @@ class SecurityController
 
         return new Response($content);
     }
+
+    /**
+     * Reset password
+     *
+     * @param Request $request
+     */
+    public function resetPassword(Request $request)
+    {
+    }
 }

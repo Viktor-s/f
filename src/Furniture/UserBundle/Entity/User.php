@@ -42,6 +42,11 @@ class User extends BaseUser
     protected $retailerUserProfile;
 
     /**
+     * @var bool
+     */
+    protected $needResetPassword = false;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -156,7 +161,6 @@ class User extends BaseUser
         return $this->factory ? true : false;
     }
 
-
     /**
      * Is retailer?
      *
@@ -188,6 +192,30 @@ class User extends BaseUser
     protected function resetProfile()
     {
         $this->retailerUserProfile = null;
+    }
+
+    /**
+     * Set need reset password
+     *
+     * @param bool $resetPassword
+     *
+     * @return User
+     */
+    public function setNeedResetPassword($resetPassword)
+    {
+        $this->needResetPassword = (bool) $resetPassword;
+
+        return $this;
+    }
+
+    /**
+     * Is need reset password
+     *
+     * @return bool
+     */
+    public function isNeedResetPassword()
+    {
+        return $this->needResetPassword;
     }
 
     /**
