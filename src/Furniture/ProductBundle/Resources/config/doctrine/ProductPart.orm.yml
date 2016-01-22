@@ -41,12 +41,3 @@ Furniture\ProductBundle\Entity\ProductPart:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
-        productScheme:
-            fetch: EXTRA_LAZY
-            targetEntity: Furniture\ProductBundle\Entity\ProductScheme
-            inversedBy: productParts
-            joinColumn:
-                name: product_scheme_id
-                referencedColumnName: id
-                onDelete: "SET NULL"
-                nullable: true

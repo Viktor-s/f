@@ -28,12 +28,6 @@ class ProductPart extends AbstractTranslatable
      * @var Collection|ProductPartMaterial[]
      */
     protected $productPartMaterials;
-
-    /**
-     *
-     * @var \Furniture\ProductBundle\Entity\ProductScheme
-     */
-    private $productScheme;
     
     /**
      * Construct
@@ -44,7 +38,6 @@ class ProductPart extends AbstractTranslatable
 
         $this->productPartMaterials = new ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -153,25 +146,6 @@ class ProductPart extends AbstractTranslatable
         return $this->productPartMaterials;
     }
 
-    /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
-     */
-    public function getProductScheme(){
-        return $this->productScheme;
-    }
-    
-    /**
-     * 
-     * @param ProductScheme $productScheme
-     * @return \Furniture\ProductBundle\Entity\ProductPart
-     */
-    public function setProductScheme(ProductScheme $productScheme){
-        $this->productScheme = $productScheme;
-        return $this;
-    }
-
-    
     /**
      * Implement __toString
      *

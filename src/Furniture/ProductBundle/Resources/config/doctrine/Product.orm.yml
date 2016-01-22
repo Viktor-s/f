@@ -1,6 +1,6 @@
 Furniture\ProductBundle\Entity\Product:
     type: entity
-    table: furniture_product
+    table: product
 
     oneToMany:
         productSchemes:
@@ -8,15 +8,16 @@ Furniture\ProductBundle\Entity\Product:
             cascade: [persist]
             mappedBy: product
             orphanRemoval: true
-            OrderBy:
+            orderBy:
                 id: ASC
+
         skuOptionVariants:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
             cascade: [persist]
             mappedBy: product
             orphanRemoval: true
-            OrderBy:
-            skuOptionType: ASC
+            orderBy:
+                skuOptionType: ASC
 
         productParts:
             targetEntity: ProductPart
@@ -145,11 +146,19 @@ Furniture\ProductBundle\Entity\Product:
     indexes:
         factoryCode_index:
             columns:
-                - factoryCode
+                - factory_code
+
     fields:
         factoryCode:
             type: string
             nullable: true
+            column: factory_code
+
         availableForSale:
             type: boolean
             nullable: true
+            column: available_for_sale
+
+        productType:
+            type: smallint
+            column: product_type

@@ -25,10 +25,19 @@ Furniture\ProductBundle\Entity\ProductScheme:
             targetEntity: Furniture\ProductBundle\Entity\ProductVariant
             cascade: [ persist ]
             mappedBy: productScheme
-            
+
+    manyToMany:
         productParts:
             orphanRemoval: true
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
             cascade: [ persist ]
-            mappedBy: productScheme
+            joinTable:
+                name: product_scheme_product_parts
+                joinColumns:
+                    product_scheme:
+                        referencedColumnName: id
+
+                inverseJoinColumns:
+                    product_part:
+                        referencedColumnName: id
             

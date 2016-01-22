@@ -15,6 +15,10 @@
         {% endif %}
     {% endif %}
 
+    {% if product.productSchemes is defined %}
+        <li><a href="#schemes" data-toggle="tab">Schemes</a></li>
+    {% endif %}
+
     {% if form.attributes is defined %}
         <li><a href="#attributes" data-toggle="tab">{{ 'sylius.product.tabs.attributes'|trans }}</a></li>
     {% endif %}

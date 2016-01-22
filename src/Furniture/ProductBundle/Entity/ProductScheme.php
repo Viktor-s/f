@@ -2,202 +2,256 @@
 
 namespace Furniture\ProductBundle\Entity;
 
-use Furniture\ProductBundle\Entity\Product;
-use Furniture\ProductBundle\Entity\ProductVariant;
-use Furniture\ProductBundle\Entity\ProductPart;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
-use Sylius\Component\Translation\Model\TranslationInterface;
 
-class ProductScheme extends AbstractTranslatable{
-    
+class ProductScheme extends AbstractTranslatable
+{
     /**
-     *
      * @var int
      */
     private $id;
 
-
     /**
-     *
-     * @var \Furniture\ProductBundle\Entity\Product
+     * @var Product
      */
     private $product;
-    
+
     /**
-     *
-     * @var \Doctrine\Common\Collections\Collection|\Furniture\ProductBundle\Entity\ProductVariant[]
+     * @var Collection|ProductVariant[]
      */
     private $productVariants;
-    
+
     /**
-     *
-     * @var \Doctrine\Common\Collections\Collection|\Furniture\ProductBundle\Entity\ProductPart[]
+     * @var Collection|ProductPart[]
      */
     private $productParts;
-    
+
     /**
-     * 
+     * Construct
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->productVariants = new ArrayCollection();
+        $this->productParts = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
      * @return int
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * 
+     * Get name
+     *
      * @return string
      */
-    public function getName(){
-       return $this->translate()->getName();
+    public function getName()
+    {
+        return $this->translate()->getName();
     }
-    
+
     /**
-     * 
+     * Set name
+     *
      * @param string $name
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function setName($name){
+    public function setName($name)
+    {
         $this->translate()->setName($name);
+
         return $this;
     }
 
     /**
-     * 
-     * @return \Furniture\ProductBundle\Entity\Product
+     * Get product
+     *
+     * @return Product
      */
-    public function getProduct(){
+    public function getProduct()
+    {
         return $this->product;
     }
 
     /**
-     * 
+     * Set product
+     *
      * @param Product $product
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function setProduct(Product $product){
+    public function setProduct(Product $product)
+    {
         $this->product = $product;
+
         return $this;
     }
 
     /**
-     * 
+     * Has product variants
+     *
      * @return bool
      */
-    public function hasProductVariants(){
+    public function hasProductVariants()
+    {
         return (bool)$this->productVariants->isEmpty();
     }
-    
+
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductVariant $productVariant
-     * @return type
+     * Has product variant
+     *
+     * @param ProductVariant $productVariant
+     *
+     * @return bool
      */
-    public function hasProductVariant(ProductVariant $productVariant){
+    public function hasProductVariant(ProductVariant $productVariant)
+    {
         return $this->productVariants->contains($productVariant);
     }
-    
+
     /**
-     * 
-     * @return \Doctrine\Common\Collections\Collection|\Furniture\ProductBundle\Entity\ProductVariant[]
+     * Get product variants
+     *
+     * @return Collection|ProductVariant[]
      */
-    public function getProductVariants(){
+    public function getProductVariants()
+    {
         return $this->productVariants;
     }
-    
+
     /**
-     * 
+     * Set product variants
+     *
      * @param Collection $productVariants
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function setProductVariants(Collection $productVariants){
+    public function setProductVariants(Collection $productVariants)
+    {
         $this->productVariants = $productVariants;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @param  \Furniture\ProductBundle\Entity\ProductVariant $productVariant
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     * Add product variant
+     *
+     * @param  ProductVariant $productVariant
+     *
+     * @return ProductScheme
      */
-    public function addProductVariant(ProductVariant $productVariant){
-        if(!$this->hasProductVariant($productVariant)){
+    public function addProductVariant(ProductVariant $productVariant)
+    {
+        if (!$this->hasProductVariant($productVariant)) {
             $this->productVariants->add($productVariant);
         }
+
         return $this;
     }
-    
+
     /**
-     * 
+     * Remove product variant
+     *
      * @param ProductVariant $productVariant
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function removeProductVariant(ProductVariant $productVariant){
-        if($this->hasProductVariant($productVariant)){
+    public function removeProductVariant(ProductVariant $productVariant)
+    {
+        if ($this->hasProductVariant($productVariant)) {
             $this->productVariants->removeElement($productVariant);
         }
+
         return $this;
     }
-    
+
     /**
-     * 
+     * Has product parts
+     *
      * @return bool
      */
-    public function hasProductParts(){
+    public function hasProductParts()
+    {
         return (bool)$this->productParts->isEmpty();
     }
-    
+
     /**
-     * 
+     * Has product parts
+     *
      * @param ProductPart $productPart
+     *
      * @return bool
      */
-    public function hasProductPart(ProductPart $productPart){
+    public function hasProductPart(ProductPart $productPart)
+    {
         return $this->productParts->contains($productPart);
     }
-    
+
     /**
-     * 
-     * @return \Doctrine\Common\Collections\Collection|\Furniture\ProductBundle\Entity\ProductPart[]
+     * Get product parts
+     *
+     * @return Collection|ProductPart[]
      */
-    public function getProductParts(){
+    public function getProductParts()
+    {
         return $this->productParts;
     }
-    
+
     /**
-     * 
+     * Set product parts
+     *
      * @param Collection $productParts
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function setProductParts(Collection $productParts){
+    public function setProductParts(Collection $productParts)
+    {
         $this->productParts = $productParts;
+
         return $this;
     }
-    
+
     /**
-     * 
-     * @param \Furniture\ProductBundle\Entity\ProductPart $productPart
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     * Add product part
+     *
+     * @param ProductPart $productPart
+     *
+     * @return ProductScheme
      */
-    public function addProductPart(ProductPart $productPart){
-        if(!$this->hasProductPart($productPart)){
+    public function addProductPart(ProductPart $productPart)
+    {
+        if (!$this->hasProductPart($productPart)) {
             $this->productParts->add($productPart);
         }
+
         return $this;
     }
-    
+
     /**
-     * 
+     * Remove product part
+     *
      * @param ProductPart $productPart
-     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     *
+     * @return ProductScheme
      */
-    public function removeProductPart(ProductPart $productPart){
-        if($this->hasProductPart($productPart)){
+    public function removeProductPart(ProductPart $productPart)
+    {
+        if ($this->hasProductPart($productPart)) {
             $this->productParts->removeElement($productPart);
         }
+
         return $this;
     }
-    
+
 }
 

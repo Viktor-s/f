@@ -18,12 +18,16 @@
     {% include 'SyliusWebBundle:Backend/Product/Form:_categorization.html.twig' %}
     {% include 'SyliusWebBundle:Backend/Product/Form:_images.html.twig' %}
 
-    {% if product.isBundle() or product.isSimple %}
+    {% if product.isBundle or product.isSimple %}
         {% include 'SyliusWebBundle:Backend/Product/Form:_bundle_products.html.twig' %}
     {% endif %}
 
     {% if form.channels|length > 0 %}
         {% include 'SyliusWebBundle:Backend/Product/Form:_channels.html.twig' %}
+    {% endif %}
+
+    {% if form.productSchemes is defined %}
+        {% include 'SyliusWebBundle:Backend/Product/Form:_schemes.html.twig' %}
     {% endif %}
 
     {% include 'SyliusWebBundle:Backend/Product/Form:_composite_collections.html.twig' %}
