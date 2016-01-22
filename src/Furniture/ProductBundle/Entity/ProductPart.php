@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Entity;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class ProductPart extends AbstractTranslatable
 {
@@ -28,6 +29,12 @@ class ProductPart extends AbstractTranslatable
      */
     protected $productPartMaterials;
 
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    private $productScheme;
+    
     /**
      * Construct
      */
@@ -146,6 +153,25 @@ class ProductPart extends AbstractTranslatable
         return $this->productPartMaterials;
     }
 
+    /**
+     * 
+     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    public function getProductScheme(){
+        return $this->productScheme;
+    }
+    
+    /**
+     * 
+     * @param ProductScheme $productScheme
+     * @return \Furniture\ProductBundle\Entity\ProductPart
+     */
+    public function setProductScheme(ProductScheme $productScheme){
+        $this->productScheme = $productScheme;
+        return $this;
+    }
+
+    
     /**
      * Implement __toString
      *

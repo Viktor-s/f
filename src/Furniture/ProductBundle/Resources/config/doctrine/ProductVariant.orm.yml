@@ -9,6 +9,16 @@ Furniture\ProductBundle\Entity\ProductVariant:
             targetEntity: ProductPartVariantSelection
             mappedBy: productVariant
     
+    manyToOne:
+        productScheme:
+            targetEntity: Furniture\ProductBundle\Entity\ProductScheme
+            inversedBy: productVariants
+            joinColumn:
+                name: product_scheme_id
+                referencedColumnName: id
+                onDelete: cascade
+                nullable: true
+    
     manyToMany:
         skuOptions:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
@@ -24,15 +34,3 @@ Furniture\ProductBundle\Entity\ProductVariant:
                     sku_option_id:
                         referencedColumnName: id
                         onDelete: CASCADE
-
-#        extensionVariants:
-#            targetEntity: Furniture\ProductBundle\Entity\ProductExtensionVariant
-#            orphanRemoval: true
-#            joinTable:
-#                name: product_variant_extension_variant_relation
-#                joinColumns:
-#                    product_variant_id:
-#                        referencedColumnName: id
-#                inverseJoinColumns:
-#                    product_extension_variant_id:
-#                        referencedColumnName: id

@@ -10,6 +10,7 @@ use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class Product extends BaseProduct
 {
@@ -84,6 +85,13 @@ class Product extends BaseProduct
      * @var bool
      */
     private $availableForSale;
+
+    /**
+     *
+     * @var \Doctrine\Common\Collections\Collection|Furniture\ProductBundle\Entity\ProductScheme[]
+     */
+    private $productSchemes;
+
 
     /**
      * Constructor.
@@ -933,6 +941,65 @@ class Product extends BaseProduct
         return $this->getImages()->first();
     }
     
+    /**
+     * 
+     * @return bool
+     */
+    public function hasProductSchemes(){
+        return (bool)$this->productSchemes->isEmpty();
+    }
+    
+    /**
+     * 
+     * @param ProductScheme $productScheme
+     * @return bool
+     */
+    public function hasProductScheme(ProductScheme $productScheme){
+        return $this->productSchemes->contains($productScheme);
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Collections\Collection|Furniture\ProductBundle\Entity\ProductScheme[]
+     */
+    public function getProductSchemes(){
+        return $this->productSchemes;
+    }
+
+    /**
+     * 
+     * @param Collection $productSchemes
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setProductSchemes(Collection $productSchemes){
+        $this->productSchemes = $productSchemes;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param ProductScheme $productScheme
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function addProductScheme(ProductScheme $productScheme){
+        if(!$this->hasProductScheme($productScheme)){
+            $this->productSchemes->add($productScheme);
+        }
+        return $this;
+    }
+
+    /**
+     * 
+     * @param ProductScheme $productScheme
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function removeProductScheme(ProductScheme $productScheme){
+        if($this->hasProductScheme($productScheme)){
+            $this->productSchemes->removeElement($productScheme);
+        }
+        return $this;
+    }
+
     /**
      * Return translation model class.
      *

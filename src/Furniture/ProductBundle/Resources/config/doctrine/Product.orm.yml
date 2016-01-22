@@ -3,6 +3,13 @@ Furniture\ProductBundle\Entity\Product:
     table: furniture_product
 
     oneToMany:
+        productSchemes:
+            targetEntity: Furniture\ProductBundle\Entity\ProductScheme
+            cascade: [persist]
+            mappedBy: product
+            orphanRemoval: true
+            OrderBy:
+                id: ASC
         skuOptionVariants:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
             cascade: [persist]
