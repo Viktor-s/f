@@ -274,6 +274,14 @@ sylius_resource:
             classes:
                 model: Furniture\ProductBundle\Entity\ProductPartType
 
+        furniture.product_scheme:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\ProductScheme
+                translation:
+                    model: Furniture\ProductBundle\Entity\ProductSchemeTranslation
+                    mapping: ~
+
         furniture.product_part_material:
             driver: doctrine/orm
             classes:

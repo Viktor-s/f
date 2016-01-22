@@ -7,8 +7,10 @@ use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\Entity\ProductPart;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Sylius\Component\Translation\Model\TranslationInterface;
 
-class ProductScheme {
+class ProductScheme extends AbstractTranslatable{
     
     /**
      *
@@ -43,6 +45,23 @@ class ProductScheme {
         return $this->id;
     }
 
+    /**
+     * 
+     * @return string
+     */
+    public function getName(){
+       return $this->translate()->getName();
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    public function setName($name){
+        $this->translate()->setName($name);
+        return $this;
+    }
 
     /**
      * 
