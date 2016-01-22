@@ -2,6 +2,7 @@
 
 namespace Furniture\RetailerBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\Type\BackendImageType;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +41,7 @@ class RetailerProfileType extends AbstractType
             ->add('description', 'textarea', [
                 'required' => false
             ])
-            ->add('logoImage', new ImageType(RetailerProfileLogoImage::class), [
+            ->add('logoImage', new BackendImageType(RetailerProfileLogoImage::class), [
                 'required' => false
             ])
             ->add('address', 'text', [
