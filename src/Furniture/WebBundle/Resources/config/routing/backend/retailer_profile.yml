@@ -5,6 +5,9 @@ furniture_backend_retailer_profile_index:
     defaults:
         _controller: Furniture.controller.retailer_profile:indexAction
         _sylius:
+            sortable: true
+            sorting:
+                id: desc
             template: SyliusWebBundle:Backend/RetailerProfile:index.html.twig
             
 furniture_backend_retailer_profile_create:
