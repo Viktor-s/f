@@ -25,8 +25,12 @@ class ProductSchemesType extends AbstractType
 
         $resolver->setNormalizer('options', function (OptionsResolver $resolver) {
             return [
-                'parts' => $resolver['parts'],
+                'parts' => $resolver['parts']
             ];
+        });
+
+        $resolver->setNormalizer('mapped', function (OptionsResolver $resolver) {
+            return count($resolver['parts']) >= 2;
         });
     }
 
@@ -38,6 +42,12 @@ class ProductSchemesType extends AbstractType
         /** @var \Furniture\ProductBundle\Entity\ProductPart[] $parts */
         $parts = $options['parts'];
         $labels = [];
+
+        if (count($parts) < 2) {
+            $view->vars['part_error'] = 'You need to create at least two product parts at this product to create|edit schemas.';
+
+            return;
+        }
 
         foreach ($parts as $part) {
             /** @var \Furniture\ProductBundle\Entity\ProductPartTranslation $translate */
