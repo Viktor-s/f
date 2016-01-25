@@ -13,7 +13,8 @@ use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Entity\ProductScheme;
 
-class ProductVariantType extends BaseProductVariantType {
+class ProductVariantType extends BaseProductVariantType
+{
 
     /**
      * {@inheritdoc}
@@ -57,7 +58,6 @@ class ProductVariantType extends BaseProductVariantType {
                     }
                 }
             }
-
 
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
             $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType', [

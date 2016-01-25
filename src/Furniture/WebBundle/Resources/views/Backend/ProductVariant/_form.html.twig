@@ -97,16 +97,50 @@
     {{ form_widget(form._token) }}
 </div>
 {%if form.productScheme is defined %}
-    <script>
-        $(document).ready(function () {
+    <script type="text/javascript">
+        (function ($) {
             var schemes = {};
             {% for scheme in product.productSchemes %}
-            schemes[{{ scheme.id }}] = [{% for part in scheme.productParts %} {{ part.id }},  {% endfor %}];
+            schemes[{{ scheme.id }}] = [{% for part in scheme.productParts %}{{ part.id }}{% if not loop.last %},{% endif %}{% endfor %}];
             {% endfor %}
-            console.log(schemes);
-            $('#sylius_product_variant_productScheme').change(function(){
-                
+
+            function changeProductScheme(scheme)
+            {
+                if (!schemes.hasOwnProperty(scheme)) {
+                    throw new Error('Undefined product scheme with id: ' + scheme);
+                }
+
+                var
+                        parts = schemes[scheme],
+                        i,
+                        partId,
+                        select,
+                        container;
+
+                // Hide all parts
+                $('select[data-part-id]').each(function () {
+                    $($(this).parents('.form-group').get(0)).hide();
+                });
+
+                for (i in parts) {
+                    if (parts.hasOwnProperty(i)) {
+                        partId = parts[i];
+
+                        // Search select
+                        select = $('select[data-part-id="' + partId + '"]');
+                        container = $(select.parents('.form-group').get(0));
+                        container.show();
+                    }
+                }
+            }
+
+            $(document).ready(function () {
+                $('#sylius_product_variant_productScheme')
+                        .change(function(){
+                            changeProductScheme($(this).val());
+                        })
+                        .change();
             });
-        });
+        })(jQuery);
     </script>
 {% endif %}
