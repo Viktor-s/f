@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Furniture\ProductBundle\Model\GroupVaraintFilter;
 use Furniture\ProductBundle\Form\Type\GroupVariantFilterType;
+use Furniture\ProductBundle\Model\GroupVaraintFiler;
 
 class VariantController extends BaseVariantController
 {
@@ -121,8 +122,25 @@ class VariantController extends BaseVariantController
 
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findProductOr404($productId);
+        $groupVariantFilter = null;
+        if( $product->isSchematicProductType() ){
+            if( $schemaId = $request->get('schemaId') ){
+                foreach($product->getProductSchemes() as $pScheme){
+                    if($pScheme->getId() == $schemaId){
+                        $groupVariantFilter = new GroupVaraintFiler($product, $pScheme);
+                        break;
+                    }else{
+                        continue;
+                    }
+                }
+                if(!$groupVariantFilter->getScheme())
+                    throw new NotFoundHttpException('Incorrect product scheme given.');
+            }else{
+                $groupVariantFilter = new GroupVaraintFiler($product, $product->getProductSchemes()->first());
+            }
+        }
         
-        $form = $this->createForm(new GroupVariantFilterType, new \Furniture\ProductBundle\Model\GroupVaraintFiler($product) );
+        $form = $this->createForm(new GroupVariantFilterType, $groupVariantFilter);
         
         $form->handleRequest($request);
         
@@ -139,7 +157,7 @@ class VariantController extends BaseVariantController
 
         $view = $this
                 ->view([
-                    'product' => $product,
+                    'groupVariantFilter' => $groupVariantFilter,
                     'form' => $form->createView(),
                 ])
                 ->setTemplate($this->config->getTemplate('generate.html'));

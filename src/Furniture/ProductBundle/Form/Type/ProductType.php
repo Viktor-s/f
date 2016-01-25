@@ -30,8 +30,9 @@ class ProductType extends BaseProductType
     {
         parent::buildForm($builder, $options);
 
-        $builder->remove('translations')
-                ->add('translations', 'a2lix_translationsForms', array(
+        $builder
+            ->remove('translations')
+            ->add('translations', 'a2lix_translationsForms', array(
                 'form_type' => new ProductTranslationType,
                 'label'    => 'sylius.form.product.translations'
             ));
@@ -112,7 +113,20 @@ class ProductType extends BaseProductType
                         },
                         'multiple' => true,
                         'expanded' => false
+                    ])
+                    ->add('productSchemes', new ProductSchemesType(), [
+                        'parts' => $product->getProductParts(),
                     ]);
+            });
+
+            // Add listener for save reference: ProductScheme -> Product
+            $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var Product $product */
+                $product = $event->getData();
+
+                foreach ($product->getProductSchemes() as $productScheme) {
+                    $productScheme->setProduct($product);
+                }
             });
 
         } else if ($options['mode'] == 'small') {
@@ -124,6 +138,20 @@ class ProductType extends BaseProductType
                 ->remove('options')
                 ->remove('attributes');
         }
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var Product $product */
+            $product = $event->getData();
+
+            $event->getForm()->add('productType', 'choice', [
+                'label' => 'Product type',
+                'disabled' => (bool) $product->getId(),
+                'choices' => [
+                    Product::PRODUCT_SIMPLE => 'Simple',
+                    Product::PRODUCT_SCHEMATIC => 'Schematic'
+                ]
+            ]);
+        });
 
         $builder
             ->add('factoryCode')

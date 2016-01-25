@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Product extends BaseProduct
 {
+    const PRODUCT_SIMPLE = 1;
+    const PRODUCT_SCHEMATIC = 2;
+
     /**
      * @var Collection
      */
@@ -22,7 +25,7 @@ class Product extends BaseProduct
      * @var Collection
      */
     protected $bundleProducts;
-    
+
     /**
      * @var Collection|\Furniture\SkuOptionBundle\Entity\SkuOptionVariant[]
      */
@@ -32,19 +35,19 @@ class Product extends BaseProduct
      * @var Collection
      */
     protected $compositeCollections;
-    
+
     /**
      * @var string
      */
     protected $factoryCode;
-    
+
     /**
      * @var \Furniture\FactoryBundle\Entity\Factory
      *
      * @Assert\NotBlank()
      */
     protected $factory;
-    
+
     /**
      * @var Collection|ProductPart[]
      */
@@ -86,12 +89,22 @@ class Product extends BaseProduct
     private $availableForSale;
 
     /**
+     * @var Collection|ProductScheme[]
+     */
+    private $productSchemes;
+
+    /**
+     * @var integer
+     */
+    private $productType = self::PRODUCT_SIMPLE;
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->variants = new ArrayCollection();
         $this->setMasterVariant(new ProductVariant());
 
@@ -100,6 +113,7 @@ class Product extends BaseProduct
         $this->skuOptionVariants = new ArrayCollection();
         $this->compositeCollections = new ArrayCollection();
         $this->productParts = new ArrayCollection();
+        $this->productSchemes = new ArrayCollection();
 
         $this->categories = new ArrayCollection();
         $this->types = new ArrayCollection();
@@ -107,7 +121,7 @@ class Product extends BaseProduct
         $this->styles = new ArrayCollection();
         $this->readinesses = new ArrayCollection();
     }
-    
+
     /**
      * Has product parts?
      *
@@ -117,7 +131,7 @@ class Product extends BaseProduct
     {
         return (bool)!$this->productParts->isEmpty();
     }
-    
+
     /**
      * Get product parts
      *
@@ -129,16 +143,18 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
+     *
      * @param Collection $productParts
+     *
      * @return \Furniture\ProductBundle\Entity\Product
      */
     public function setProductParts(Collection $productParts)
     {
         $this->productParts = $productParts;
+
         return $this;
     }
-    
+
     /**
      * Has product path?
      *
@@ -150,8 +166,8 @@ class Product extends BaseProduct
     {
         return $this->productParts->contains($productPart);
     }
-    
-    
+
+
     /**
      * Add product part
      *
@@ -165,10 +181,10 @@ class Product extends BaseProduct
             $productPart->setProduct($this);
             $this->productParts[] = $productPart;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Remove product part
      *
@@ -178,14 +194,14 @@ class Product extends BaseProduct
      */
     public function removeProductPart(ProductPart $productPart)
     {
-        if($this->hasProductPart($productPart)){
+        if ($this->hasProductPart($productPart)) {
             $this->productParts->removeElement($productPart);
         }
 
         return $this;
     }
 
-    
+
     /**
      * Has sub products
      *
@@ -195,7 +211,7 @@ class Product extends BaseProduct
     {
         return (bool)!$this->subProducts->isEmpty();
     }
-    
+
     /**
      * Is bundle?
      *
@@ -213,7 +229,7 @@ class Product extends BaseProduct
 
         return false;
     }
-    
+
     /**
      * Is belongable?
      *
@@ -231,7 +247,7 @@ class Product extends BaseProduct
 
         return true;
     }
-    
+
     /**
      * Is simple?
      *
@@ -245,7 +261,7 @@ class Product extends BaseProduct
 
         return false;
     }
-    
+
     /**
      * Get sub products
      *
@@ -255,8 +271,8 @@ class Product extends BaseProduct
     {
         return $this->subProducts;
     }
-    
-    
+
+
     /**
      * Set sub products
      *
@@ -270,7 +286,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Has sub products
      *
@@ -282,7 +298,7 @@ class Product extends BaseProduct
     {
         return $this->subProducts->contains($product);
     }
-    
+
     /**
      * Add sub product
      *
@@ -295,17 +311,17 @@ class Product extends BaseProduct
     public function addSubProduct(Product $product)
     {
         if (!$product->isBelongable()) {
-            throw new \Exception(__CLASS__.'::'.__METHOD__.' '.get_class($product).' must be belongable!');
+            throw new \Exception(__CLASS__ . '::' . __METHOD__ . ' ' . get_class($product) . ' must be belongable!');
         }
 
         if ($this->getId() && $this->getId() == $product->getId()) {
-            throw new \Exception(__CLASS__.'::'.__METHOD__.' '.get_class($product).' cant contains it self!');
+            throw new \Exception(__CLASS__ . '::' . __METHOD__ . ' ' . get_class($product) . ' cant contains it self!');
         }
 
         if (!$this->hasSubProduct($product)) {
             $this->subProducts[] = $product;
         }
-        
+
         return $this;
     }
 
@@ -324,7 +340,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Get factory code
      *
@@ -334,7 +350,7 @@ class Product extends BaseProduct
     {
         return $this->factoryCode;
     }
-    
+
     /**
      * Set factory code
      *
@@ -348,7 +364,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Has SKU option variants
      *
@@ -358,7 +374,7 @@ class Product extends BaseProduct
     {
         return (bool)!$this->skuOptionVariants->isEmpty();
     }
-    
+
     /**
      * Get SKU option variants
      *
@@ -397,7 +413,7 @@ class Product extends BaseProduct
     public function getSkuOptionVariantsGrouped()
     {
         $grouped = [];
-        
+
         $this->skuOptionVariants->forAll(function ($index, SkuOptionVariant $skuVariant) use (&$grouped) {
             $optionId = $skuVariant->getSkuOptionType()->getId();
 
@@ -409,10 +425,10 @@ class Product extends BaseProduct
 
             return true;
         });
-        
+
         return $grouped;
     }
-    
+
     /**
      * Set SKU option variants
      *
@@ -426,7 +442,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Has SKU option variant
      *
@@ -438,7 +454,7 @@ class Product extends BaseProduct
     {
         return $this->skuOptionVariants->contains($optionVariant);
     }
-    
+
     /**
      * Add SKU option variant
      *
@@ -452,10 +468,10 @@ class Product extends BaseProduct
             $optionVariant->setProduct($this);
             $this->skuOptionVariants[] = $optionVariant;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Remove SKU option variant
      *
@@ -465,7 +481,7 @@ class Product extends BaseProduct
      */
     public function removeSkuOptionVariant(SkuOptionVariant $optionVariant)
     {
-        if($this->hasSkuOptionVariant($optionVariant)){
+        if ($this->hasSkuOptionVariant($optionVariant)) {
             $this->skuOptionVariants->removeElement($optionVariant);
         }
 
@@ -495,7 +511,7 @@ class Product extends BaseProduct
     {
         return $this->compositeCollections;
     }
-    
+
     /**
      * Set the factory
      *
@@ -509,7 +525,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Get factory
      *
@@ -887,7 +903,7 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
+     *
      * @return bool
      */
     public function getAvailableForSale()
@@ -908,7 +924,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -932,7 +948,130 @@ class Product extends BaseProduct
 
         return $this->getImages()->first();
     }
-    
+
+    /**
+     * Has product schemes
+     *
+     * @return bool
+     */
+    public function hasProductSchemes()
+    {
+        return (bool)$this->productSchemes->isEmpty();
+    }
+
+    /**
+     * Has product scheme
+     *
+     * @param ProductScheme $productScheme
+     *
+     * @return bool
+     */
+    public function hasProductScheme(ProductScheme $productScheme)
+    {
+        return $this->productSchemes->contains($productScheme);
+    }
+
+    /**
+     * Grt product schemes
+     *
+     * @return Collection|ProductScheme[]
+     */
+    public function getProductSchemes()
+    {
+        return $this->productSchemes;
+    }
+
+    /**
+     * Set product part schemes
+     *
+     * @param Collection $productSchemes
+     *
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setProductSchemes(Collection $productSchemes)
+    {
+        $this->productSchemes = $productSchemes;
+
+        return $this;
+    }
+
+    /**
+     * Add product scheme
+     *
+     * @param ProductScheme $productScheme
+     *
+     * @return Product
+     */
+    public function addProductScheme(ProductScheme $productScheme)
+    {
+        if (!$this->hasProductScheme($productScheme)) {
+            $productScheme->setProduct($this);
+            $this->productSchemes->add($productScheme);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove product scheme
+     *
+     * @param ProductScheme $productScheme
+     *
+     * @return Product
+     */
+    public function removeProductScheme(ProductScheme $productScheme)
+    {
+        if ($this->hasProductScheme($productScheme)) {
+            $this->productSchemes->removeElement($productScheme);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return Product
+     */
+    public function setProductType($type)
+    {
+        $this->productType = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getProductType()
+    {
+        return $this->productType;
+    }
+
+    /**
+     * Is simple product?
+     *
+     * @return bool
+     */
+    public function isSimpleProductType()
+    {
+        return $this->productType === self::PRODUCT_SIMPLE;
+    }
+
+    /**
+     * Is schematic product?
+     *
+     * @return bool
+     */
+    public function isSchematicProductType()
+    {
+        return $this->productType === self::PRODUCT_SCHEMATIC;
+    }
+
     /**
      * Return translation model class.
      *
@@ -940,7 +1079,7 @@ class Product extends BaseProduct
      */
     public static function getTranslationClass()
     {
-        return get_parent_class(__CLASS__).'Translation';
+        return get_parent_class(__CLASS__) . 'Translation';
     }
 
     /**

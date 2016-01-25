@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class GroupVaraintFiler {
 
@@ -16,6 +17,12 @@ class GroupVaraintFiler {
      */
     private $product;
 
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    private $scheme;
+    
     /**
      *
      * @var ArrayCollection|\Sylius\Component\Product\Model\OptionValue[]
@@ -40,16 +47,27 @@ class GroupVaraintFiler {
      * 
      * @param Product $product
      */
-    function __construct(Product $product) {
+    function __construct(Product $product, ProductScheme $productScheme = null) {
+        if($product->isSchematicProductType() && (!$productScheme || $productScheme->getProduct()->getId() != $product->getId() )){
+            throw new \Exception('Schematic product must filtering with schema!');
+        }
+        $this->scheme = $productScheme;
         $this->product = $product;
-
         $this->optionValues = new ArrayCollection();
         $this->skuOptionsValues = new ArrayCollection();
         $this->productPartMaterialVariants = new ArrayCollection();
-        foreach ($this->product->getProductParts() as $pp) {
-            $ppf = new ProductPartMaterialsEditFilter();
-            $ppf->setProductPart($pp);
-            $this->productPartMaterialVariants->add($ppf);
+        if( $this->product->isSchematicProductType() ){
+            foreach ($this->scheme->getProductParts() as $pp) {
+                $ppf = new ProductPartMaterialsEditFilter();
+                $ppf->setProductPart($pp);
+                $this->productPartMaterialVariants->add($ppf);
+            }
+        }else{
+            foreach ($this->product->getProductParts() as $pp) {
+                $ppf = new ProductPartMaterialsEditFilter();
+                $ppf->setProductPart($pp);
+                $this->productPartMaterialVariants->add($ppf);
+            }
         }
     }
 
@@ -157,6 +175,18 @@ class GroupVaraintFiler {
             $filtered->add($variant);
         }
         return $filtered;
+    }
+    
+    public function isSchematicProductType(){
+        return $this->product->isSchematicProductType();
+    }
+    
+    /**
+     * 
+     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    public function getScheme(){
+        return $this->scheme;
     }
 
 }

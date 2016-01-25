@@ -1,6 +1,8 @@
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
 <div class="tab-pane active" id="main">
+    {{ form_row(form.productType) }}
+
     {{ form_row(form.translations, {'attr': {'class': 'input-lg'}}) }}
     <hr />
     {{ form_row(form.factory) }}

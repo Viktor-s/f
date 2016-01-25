@@ -1,0 +1,11 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% if form.productSchemes is defined %}
+    <div id="schemes" class="tab-pane">
+        {% if form.productSchemes.vars.errors|length > 0 %}
+            {{ form_errors(form.productSchemes) }}
+        {% endif %}
+
+        {{ form_widget(form.productSchemes) }}
+    </div>
+{% endif %}

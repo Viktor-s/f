@@ -1,0 +1,15 @@
+Furniture\ProductBundle\Entity\ProductSchemeTranslation:
+    type: entity
+    table: furniture_product_scheme_translation
+
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            nullable: true

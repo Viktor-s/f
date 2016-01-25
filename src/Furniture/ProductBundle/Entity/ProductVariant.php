@@ -7,6 +7,7 @@ use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 {
@@ -19,6 +20,13 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
      * @var Collection|ProductPartVariantSelection[]
      */
     protected $productPartVariantSelections;
+
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    private $productScheme;
+
 
     /**
      * Construct
@@ -186,6 +194,25 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         return $this;
     }
     
+    /**
+     * 
+     * @return \Furniture\ProductBundle\Entity\ProductScheme
+     */
+    public function getProductScheme(){
+        return $this->productScheme;
+    }
+    
+    /**
+     * 
+     * @param ProductScheme $productScheme
+     * @return \Furniture\ProductBundle\Entity\ProductVariant
+     */
+    public function setProductScheme(ProductScheme $productScheme){
+        $this->productScheme = $productScheme;
+        return $this;
+    }
+
+
     /**
      * Get human size
      *

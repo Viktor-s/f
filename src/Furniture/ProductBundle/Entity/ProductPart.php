@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Entity;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class ProductPart extends AbstractTranslatable
 {
@@ -27,7 +28,7 @@ class ProductPart extends AbstractTranslatable
      * @var Collection|ProductPartMaterial[]
      */
     protected $productPartMaterials;
-
+    
     /**
      * Construct
      */
@@ -37,7 +38,6 @@ class ProductPart extends AbstractTranslatable
 
         $this->productPartMaterials = new ArrayCollection();
     }
-
 
     /**
      * Get id

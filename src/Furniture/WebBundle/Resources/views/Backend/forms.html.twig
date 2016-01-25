@@ -27,3 +27,57 @@
     </div>
 {% endspaceless %}
 {% endblock %}
+
+{% block product_schemes_widget %}
+    {% if part_error is defined %}
+        <div class="alert alert-info">{{ part_error }}</div>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-center">Name</th>
+
+                {% for part_label in part_labels %}
+                    <th class="text-center">{{ part_label }}</th>
+                {% endfor %}
+
+                <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody id="table-product-schemes" class="collection-container" data-prototype="{{ form_widget(form.vars.prototype)|e }}">
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="{{ part_count + 2 }}">
+                    <div class="text-center">
+                        <a class="btn btn-default" data-collection-button="add" data-prototype="table-product-schemes" data-collection="table-product-schemes">Add scheme</a>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% block product_scheme_widget %}
+    <tr class="table-product-schemes-scheme">
+        <td>
+            {{ form_widget(form.translations) }}
+        </td>
+
+        {% for child in form.productParts %}
+            <td class="text-center">
+                {{ form_widget(child) }}
+            </td>
+        {% endfor %}
+
+        <td class="text-center">
+            <a class="btn btn-danger" data-collection-button="delete" data-collection="table-product-schemes" data-collection-item="scheme">Remove</a>
+        </td>
+    </tr>
+{% endblock %}
