@@ -11,6 +11,7 @@ use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\Entity\ProductPart;
 use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
+use Furniture\ProductBundle\Entity\ProductScheme;
 
 class ProductVariantType extends BaseProductVariantType {
 
@@ -35,6 +36,14 @@ class ProductVariantType extends BaseProductVariantType {
         if (!$options['master']) {
             /* PISEC PODKRALSA NEZAMETNO ....................................... */
             $variant = $builder->getData();
+            
+            if($variant->getProduct()->isSchematicProductType()){
+                $builder->add('productScheme', 'entity', [
+                    'class' => ProductScheme::class,
+                    'property' => 'name',
+                ]);
+            }
+            
             $dataCollector = [
                 'part' => [],
                 'materialVariant' => []

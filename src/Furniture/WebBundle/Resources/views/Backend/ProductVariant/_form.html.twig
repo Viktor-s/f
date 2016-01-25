@@ -4,6 +4,10 @@
     <div class="col-md-8 row-split">
         {{ form_errors(form) }}
 
+        {%if form.productScheme is defined %}
+            {{ form_row(form.productScheme) }}
+        {% endif %}
+        
         {% if form.options is defined and form.options|length > 0 %}
             {% for optionForm in form.options %}
                 {{ form_row(optionForm) }}
@@ -92,3 +96,17 @@
     </div>
     {{ form_widget(form._token) }}
 </div>
+{%if form.productScheme is defined %}
+    <script>
+        $(document).ready(function () {
+            var schemes = {};
+            {% for scheme in product.productSchemes %}
+            schemes[{{ scheme.id }}] = [{% for part in scheme.productParts %} {{ part.id }},  {% endfor %}];
+            {% endfor %}
+            console.log(schemes);
+            $('#sylius_product_variant_productScheme').change(function(){
+                
+            });
+        });
+    </script>
+{% endif %}

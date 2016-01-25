@@ -12,6 +12,7 @@ use Sylius\Component\Variation\Model\VariantInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Model\GroupVaraintFiler;
+use Symfony\Component\Validator\Exception\BadMethodCallException;
 
 class VariantGenerator extends ContainerAware {
 
@@ -85,6 +86,11 @@ class VariantGenerator extends ContainerAware {
         $generated = [];
         foreach ($permutations as $permutation) {
             $variant = $this->variantRepository->createNew();
+            if( $product->isSchematicProductType() ){
+                if(!$variant_filter->getScheme())
+                    throw new \Exception(__CLASS__.'::'.__METHOD__.'No scheme fount for generate');
+                $variant->setProductScheme($variant_filter->getScheme());
+            }
             $variant->setObject($product);
             $variant->setDefaults($product->getMasterVariant());
             if($variant_filter->getSkuPrice() !== null){
@@ -153,6 +159,8 @@ class VariantGenerator extends ContainerAware {
      */
     public function generate(Product $product) {
 
+        throw new \BadMethodCallException('Deprecated!');
+        
         if (!$product->hasOptions() && !$product->hasSkuOptionVariants() && !$product->hasProductParts() ) {
             throw new \InvalidArgumentException('Cannot generate variants for an product without options and sku options');
         }
