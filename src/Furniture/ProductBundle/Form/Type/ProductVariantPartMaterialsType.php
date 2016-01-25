@@ -75,10 +75,10 @@ class ProductVariantPartMaterialsType extends AbstractType
                 $builder->add($i, 'choice', [
                     'label'       => $productPart->getLabel(),
                     'choice_list' => new ChoiceList($choiceValues, $choiceLabels),
-                    'multiple'    => false,
-                    'attr' => [
-                        'data-part-id' => $productPart->getId()
-                    ]
+                    'required'    => false,
+                    'attr'        => [
+                        'data-part-id' => $productPart->getId(),
+                    ],
                 ]);
 
                 $i++;

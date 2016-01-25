@@ -117,9 +117,10 @@
                         select,
                         container;
 
-                // Hide all parts
+                // Reset and hide all parts
                 $('select[data-part-id]').each(function () {
-                    $($(this).parents('.form-group').get(0)).hide();
+                    $(this).val(null);
+                    $(this).parents('.form-group').hide();
                 });
 
                 for (i in parts) {

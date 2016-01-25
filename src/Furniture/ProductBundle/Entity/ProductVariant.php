@@ -26,11 +26,9 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     protected $productPartVariantSelections;
 
     /**
-     *
-     * @var \Furniture\ProductBundle\Entity\ProductScheme
+     * @var ProductScheme
      */
     private $productScheme;
-
 
     /**
      * Construct
@@ -42,7 +40,17 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         $this->skuOptions = new ArrayCollection();
         $this->productPartVariantSelections = new ArrayCollection();
     }
-    
+
+    /**
+     * Get product
+     *
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return parent::getProduct();
+    }
+
     /**
      * Has SKU options?
      *
@@ -52,7 +60,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return (bool)!$this->skuOptions->isEmpty();
     }
-    
+
     /**
      * Get SKU options
      *
@@ -76,7 +84,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 
         return $this;
     }
-    
+
     /**
      * Has SKU option variant?
      *
@@ -88,7 +96,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return $this->skuOptions->contains($skuOptionVariant);
     }
-    
+
     /**
      * Add SKU option
      *
@@ -101,10 +109,10 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         if (!$this->hasSkuOption($skuOptionVariant)) {
             $this->skuOptions[] = $skuOptionVariant;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Remove SKU option variant
      *
@@ -131,6 +139,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     public function setProductPartVariantSelections(Collection $variantSelections)
     {
         $this->productPartVariantSelections = $variantSelections;
+
         return $this;
     }
 
@@ -143,7 +152,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return $this->productPartVariantSelections;
     }
-    
+
     /**
      * Has SKU options?
      *
@@ -153,7 +162,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return (bool)!$this->productPartVariantSelections->isEmpty();
     }
-    
+
     /**
      *
      * @param ProductPartVariantSelection $variantSelection
@@ -164,7 +173,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     {
         return $this->productPartVariantSelections->contains($variantSelection);
     }
-    
+
     /**
      * Add ProductPartVariantSelection option
      *
@@ -178,10 +187,10 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
             $variantSelection->setProductVariant($this);
             $this->productPartVariantSelections[] = $variantSelection;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Remove ProductPartVariantSelection option
      *
@@ -197,22 +206,26 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 
         return $this;
     }
-    
+
     /**
-     * 
+     *
      * @return \Furniture\ProductBundle\Entity\ProductScheme
      */
-    public function getProductScheme(){
+    public function getProductScheme()
+    {
         return $this->productScheme;
     }
-    
+
     /**
-     * 
+     *
      * @param ProductScheme $productScheme
+     *
      * @return \Furniture\ProductBundle\Entity\ProductVariant
      */
-    public function setProductScheme(ProductScheme $productScheme){
+    public function setProductScheme(ProductScheme $productScheme)
+    {
         $this->productScheme = $productScheme;
+
         return $this;
     }
 
