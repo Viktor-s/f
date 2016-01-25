@@ -7,9 +7,11 @@ use Sylius\Bundle\ProductBundle\Controller\VariantController as BaseVariantContr
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Furniture\ProductBundle\Model\GroupVaraintFilter;
 use Furniture\ProductBundle\Form\Type\GroupVariantFilterType;
 use Furniture\ProductBundle\Model\GroupVaraintFiler;
+use Furniture\ProductBundle\Form\Type\GroupVariantEditType;
+use Furniture\ProductBundle\Model\GroupVaraintEdit;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class VariantController extends BaseVariantController
 {
@@ -161,6 +163,125 @@ class VariantController extends BaseVariantController
                     'form' => $form->createView(),
                 ])
                 ->setTemplate($this->config->getTemplate('generate.html'));
+
+        return $this->handleView($view);
+    }
+    
+    /**
+     * Variant actions
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function variantGroupEditAction(Request $request)
+    {
+        if (null === $productId = $request->get('productId')) {
+            throw new NotFoundHttpException('No product given.');
+        }
+        
+        /** @var \Furniture\ProductBundle\Entity\Product $product */
+        $product = $this->findProductOr404($productId);
+        $groupVariantFilter = null;
+        if( $product->isSchematicProductType() ){
+            if( $schemaId = $request->get('schemaId') ){
+                foreach($product->getProductSchemes() as $pScheme){
+                    if($pScheme->getId() == $schemaId){
+                        $groupVariantFilter = new GroupVaraintEdit($product, $pScheme);
+                        break;
+                    }else{
+                        continue;
+                    }
+                }
+                if(!$groupVariantFilter->getScheme())
+                    throw new NotFoundHttpException('Incorrect product scheme given.');
+            }else{
+                $groupVariantFilter = new GroupVaraintEdit($product, $product->getProductSchemes()->first());
+            }
+        }
+        
+        $form = $this->createForm(new GroupVariantEditType, $groupVariantFilter );
+        
+        $form->handleRequest($request);
+
+        $filteredVariants = [];
+        
+        if ($form->isValid()) {
+            /**
+             * var \Furniture\ProductBundle\Model\GroupVaraintEdit $editObject
+             */
+            $editObject = $form->getData();
+
+            $filteredVariants = $editObject->getFilteredVariants();
+            $removed = 0;
+            foreach ($filteredVariants as $variant) {
+                if ($form->get('delete_by_filter')->isClicked()) {
+                    $this->getDoctrine()->getManager()->remove($variant);
+                    $removed ++;
+                    continue;
+                }
+                
+                $language = new ExpressionLanguage();
+
+                if ($editObject->getPriceCalculator() !== null) {
+                    $price = $language->evaluate($editObject->getPriceCalculator(), [
+                        'price' => $variant->getPrice() / 100
+                    ]);
+                    $variant->setPrice((int) (ceil(($price * 100))));
+                }
+
+
+                if ($editObject->getWidth() !== null) {
+                    $value = $language->evaluate($editObject->getWidth(), [
+                        'width' => $variant->getWidth()
+                    ]);
+
+                    $variant->setWidth($value);
+                }
+
+                if ($editObject->getHeight() !== null) {
+                    $value = $language->evaluate($editObject->getHeight(), [
+                        'height' => $variant->getHeight()
+                    ]);
+
+                    $variant->setHeight($value);
+                }
+
+                if ($editObject->getDepth() !== null) {
+                    $value = $language->evaluate($editObject->getDepth(), [
+                        'depth' => $variant->getDepth()
+                    ]);
+                    $variant->setDepth($value);
+                }
+
+                if ($editObject->getWeight() !== null) {
+                    $value = $language->evaluate($editObject->getWeight(), [
+                        'weight' => $variant->getWeight()
+                    ]);
+                    $variant->setWeight($value);
+                }
+                
+            }
+            $this->getDoctrine()->getManager()->flush();
+            if ($form->get('delete_by_filter')->isClicked()) {
+                $this->flashHelper->setFlash(
+                        'warning', 'Deleted ' . $removed . ' Items'
+                );
+            } else {
+                $this->flashHelper->setFlash(
+                        'warning', 'Updated ' . count($filteredVariants) . ' Items'
+                );
+            }
+        }
+
+        $view = $this
+                ->view([
+                    'updatedVariants' => $filteredVariants,
+                    'groupVariantFilter' => $groupVariantFilter,
+                    'form' => $form->createView(),
+                    'updatedVariants' => []
+                ])
+                ->setTemplate($this->config->getTemplate('variantGroupEdit.html'));
 
         return $this->handleView($view);
     }

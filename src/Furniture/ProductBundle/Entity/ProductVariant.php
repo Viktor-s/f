@@ -8,7 +8,11 @@ use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\ProductBundle\Entity\ProductScheme;
+use Furniture\ProductBundle\Validator\Constraint\ProductVariant as ProductVariantConstraint;
 
+/**
+ * @ProductVariantConstraint
+ */
 class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 {
     /**

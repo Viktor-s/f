@@ -136,11 +136,19 @@ class GroupVaraintFiler {
 
         foreach ($this->getProduct()->getVariants() as $variant) {
             
+            /* if incorrect product scheme */
+            if($this->isSchematicProductType() 
+                    && $variant->getProductScheme()->getId() !== $this->getScheme()->getId() ){
+                continue;
+            }
+            
+            /* if incorrect price */
             if($this->getSkuPrice() !== null && $variant->getPrice() != $this->getSkuPriceCent())
             {
                 continue;
             }
             
+            /* if sku options exists */
             foreach ($variant->getSkuOptions() as $skuOption) {
                 $callbackForExists = function ($k, $e) use ($skuOption) {
                     return $e->getId() == $skuOption->getId();
@@ -151,6 +159,7 @@ class GroupVaraintFiler {
                 }
             }
 
+            /* product variant selection exists */
             foreach ($variant->getProductPartVariantSelections() as $vs) {
                 $callbackForExists = function($k, $e) use ($vs) {
                     return (
@@ -165,6 +174,7 @@ class GroupVaraintFiler {
                 }
             }
 
+            /* if option exists */
             foreach ($variant->getOptions() as $option) {
                 if (!$this->getOptionValues()->contains($option)) {
                     continue 2;

@@ -106,15 +106,6 @@ sylius_backend_product_show:
             repository:
                 method: findForDetailsPage
                 arguments: [$id]
-                
-sylius_backend_product_variant_group_edit:
-    path: /{id}/variant/group/edit
-    methods: [ GET, POST ]
-    defaults:
-        _controller: sylius.controller.product:variantGroupEditAction
-        _sylius:
-            template: SyliusWebBundle:Backend/Product:variantGroupEdit.html.twig
-            redirect: sylius_backend_product_show
 
 furniture_backend_product_pdp_config:
     path: /{id}/pdp

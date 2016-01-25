@@ -43,6 +43,15 @@ sylius_backend_product_variant_generate:
             template: SyliusWebBundle:Backend/ProductVariant:generate.html.twig
             redirect: referer
 
+sylius_backend_product_variant_group_edit:
+    path: /edit
+    methods: [ GET, POST ]
+    defaults:
+        _controller: sylius.controller.product_variant:variantGroupEditAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductVariant:groupEdit.html.twig
+            redirect: sylius_backend_product_show
+
 sylius_backend_product_variant_restore:
     path: /{id}/restore
     methods: [ GET ]
