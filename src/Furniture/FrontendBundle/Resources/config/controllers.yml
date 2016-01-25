@@ -36,7 +36,7 @@ services:
 
     frontend.controller.security:
         class: Furniture\FrontendBundle\Controller\SecurityController
-        arguments: [ @twig, @security.csrf.token_manager ]
+        arguments: [ @twig, @security.csrf.token_manager, @form.factory ]
 
     frontend.controller.specification:
         class: Furniture\FrontendBundle\Controller\SpecificationController

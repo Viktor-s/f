@@ -2,6 +2,8 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\UserBundle\Form\Type\UserResetPasswordType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -21,15 +23,25 @@ class SecurityController
     private $twig;
 
     /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment         $twig
      * @param CsrfTokenManagerInterface $csrfTokenManager
      */
-    public function __construct(\Twig_Environment $twig, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(
+        \Twig_Environment $twig,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        FormFactoryInterface $formFactory
+    )
     {
         $this->csrfTokenManager = $csrfTokenManager;
         $this->twig = $twig;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -79,8 +91,25 @@ class SecurityController
      * Reset password
      *
      * @param Request $request
+     *
+     * @return Response
      */
     public function resetPassword(Request $request)
     {
+        $form = $this->formFactory->create(new UserResetPasswordType());
+
+        if ($request->getMethod() === Request::METHOD_POST) {
+            $form->submit($request);
+
+            if ($form->isValid()) {
+                // @todo: process reset password
+            }
+        }
+
+        $content = $this->twig->render('FrontendBundle:Security:reset_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+        return new Response($content);
     }
 }

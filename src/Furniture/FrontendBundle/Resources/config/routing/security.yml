@@ -1,0 +1,17 @@
+security_login:
+    path: /login
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:login
+
+security_login_check:
+    path: /login_check
+
+security_logout:
+    path: /logout
+
+security_reset_password:
+    path: /reset-password
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:resetPassword
