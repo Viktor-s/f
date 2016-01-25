@@ -140,6 +140,8 @@ class VariantController extends BaseVariantController
             }else{
                 $groupVariantFilter = new GroupVaraintFiler($product, $product->getProductSchemes()->first());
             }
+        }else{
+           $groupVariantFilter = new GroupVaraintFiler($product); 
         }
         
         $form = $this->createForm(new GroupVariantFilterType, $groupVariantFilter);
@@ -198,6 +200,8 @@ class VariantController extends BaseVariantController
             }else{
                 $groupVariantFilter = new GroupVaraintEdit($product, $product->getProductSchemes()->first());
             }
+        }else{
+           $groupVariantFilter = new GroupVaraintFiler($product); 
         }
         
         $form = $this->createForm(new GroupVariantEditType, $groupVariantFilter );

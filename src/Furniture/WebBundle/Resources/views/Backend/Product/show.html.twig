@@ -299,6 +299,9 @@
 <hr>
 
 {% if not product.deleted %}
+    {% if ( product.schematicProductType and product.productSchemes.empty ) %}
+        {{ alerts.info('sylius.product.no_schema_created'|trans) }}
+    {% else %}
     <div class="well well-sm">
         {% if not app.request.query.get('sdv') %}
             {{ buttons.create(path('sylius_backend_product_variant_create', {'productId': product.id}), 'sylius.variant.create'|trans) }}
@@ -328,6 +331,7 @@
             </a>
         {% endif %}
     </div>
+    {% endif %}
 {% endif %}
 
 {% if app.request.query.get('sdv') %}
