@@ -4,6 +4,8 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,13 +39,22 @@ class ProductVariantType extends BaseProductVariantType
         if (!$options['master']) {
             /* PISEC PODKRALSA NEZAMETNO ....................................... */
             $variant = $builder->getData();
-            
-            if($variant->getProduct()->isSchematicProductType()){
-                $builder->add('productScheme', 'entity', [
-                    'class' => ProductScheme::class,
-                    'property' => 'name',
-                ]);
-            }
+
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+                $variant = $event->getData();
+                $product = $variant->getProduct();
+
+                $disabled = (bool) $variant->getId();
+
+                if ($variant->getProduct()->isSchematicProductType()) {
+                    $event->getForm()->add('productScheme', 'entity', [
+                        'class' => ProductScheme::class,
+                        'property' => 'name',
+                        'disabled' => $disabled
+                    ]);
+                }
+            });
             
             $dataCollector = [
                 'part' => [],
