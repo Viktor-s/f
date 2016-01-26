@@ -1,0 +1,22 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_row %}
+    {{ form_label(form) }}
+
+    {% if form.vars.errors|length %}
+        {{ form_errors(form) }}
+    {% endif %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({class: attr.class|default('') ~ ' simple-field'}) %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block button_widget %}
+    {% set attr = attr|merge({class: attr.class|default('') ~ ' button style-12'}) %}
+    {{ parent() }}
+{% endblock %}

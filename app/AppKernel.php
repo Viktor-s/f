@@ -39,6 +39,7 @@ class AppKernel extends Kernel
             new Furniture\SpecificationBundle\SpecificationBundle(),
             new Furniture\PostBundle\PostBundle(),
             new Furniture\UserBundle\UserBundle(),
+            new Furniture\MailerBundle\MailerBundle(),
 
             new Furniture\FixturesBundle\FixturesBundle(),
 

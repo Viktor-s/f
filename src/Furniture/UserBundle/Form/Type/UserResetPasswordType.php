@@ -14,18 +14,33 @@ class UserResetPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', [
-                'label' => 'Email',
-                'constraints' => [
-                    new Assert\Email()
+            ->add('password', 'repeated', [
+                'label' => 'New password',
+                'type' => 'password',
+                'invalid_message' => 'The password fields must match.',
+                'first_options' => [
+                    'label' => 'Password',
+                    'constraints' => [
+                        new Assert\NotBlank()
+                    ]
+                ],
+                'second_options' => [
+                    'label' => 'Repeat password',
+                    'constraints' => [
+                        new Assert\NotBlank()
+                    ]
                 ]
+            ])
+            ->add('submit', 'submit', [
+                'label' => 'Change password'
             ]);
     }
+
     /**
      * {@inheritDoc}
      */
     public function getName()
     {
-        return 'security_reset_password';
+        return 'reset_password';
     }
 }

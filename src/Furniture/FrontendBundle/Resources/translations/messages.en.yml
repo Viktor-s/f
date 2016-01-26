@@ -1,4 +1,5 @@
 frontend:
+
     all_right_reserved: All right reserved
     agenta_solution: AgentA Solution
     new_arrivals: New arrivals
@@ -119,6 +120,12 @@ frontend:
     enabled: Enabled
     specification_edit: Specification edit
     notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
+    reset_password: Reset password
+    user_not_found_with_email: "Not found user with email :email."
+    user_is_disabled_with_email: "User with email :email is disabled."
+    request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."
+    please_enter_new_password: "Please enter a new password for you account."
+    reset_password_successfully: "You password successfully resetted. You can login with new password."
     
     user_profile_side:
         update: Update profile
@@ -239,6 +246,7 @@ frontend:
                 map: Available retailers
 
     login:
+        login: Login
         username: Username
         email: Email
         password: Password

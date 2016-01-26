@@ -36,7 +36,16 @@ services:
 
     frontend.controller.security:
         class: Furniture\FrontendBundle\Controller\SecurityController
-        arguments: [ @twig, @security.csrf.token_manager, @form.factory ]
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @security.csrf.token_manager
+            - @form.factory
+            - @frontend.repository.user
+            - @translator
+            - @user.password_resetter
+            - @router
+            - @sylius.user.password_updater
 
     frontend.controller.specification:
         class: Furniture\FrontendBundle\Controller\SpecificationController

@@ -23,6 +23,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    user.password_resetter:
+        class: Furniture\UserBundle\PasswordResetter\PasswordResetter
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     sylius.listener.default_username:
         class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
         tags:

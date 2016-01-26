@@ -233,6 +233,45 @@ class User extends BaseUser
     }
 
     /**
+     * Is user disabled?
+     *
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return !$this->isEnabled();
+    }
+
+    /**
+     * Request for reset password
+     *
+     * @return User
+     */
+    public function requestForResetPassword()
+    {
+        $this->confirmationToken = md5(uniqid(mt_rand(), true)) . md5(uniqid(mt_rand(), true));
+        $this->passwordRequestedAt = new \DateTime();
+
+        return $this;
+    }
+
+    /**
+     * Reset password
+     *
+     * @param string $newPassword
+     *
+     * @return User
+     */
+    public function resetPassword($newPassword)
+    {
+        $this->plainPassword = $newPassword;
+        $this->confirmationToken = null;
+        $this->passwordRequestedAt = null;
+
+        return $this;
+    }
+
+    /**
      * Canonize username
      *
      * @param string $username
