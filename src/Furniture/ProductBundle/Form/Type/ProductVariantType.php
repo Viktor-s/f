@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -51,7 +52,12 @@ class ProductVariantType extends BaseProductVariantType
                     $event->getForm()->add('productScheme', 'entity', [
                         'class' => ProductScheme::class,
                         'property' => 'name',
-                        'disabled' => $disabled
+                        'disabled' => $disabled,
+                        'query_builder' => function (EntityRepository $er) use ($product) {
+                            return $er->createQueryBuilder('ps')
+                                ->andWhere('ps.product = :product')
+                                ->setParameter('product', $product);
+                        }
                     ]);
                 }
             });
