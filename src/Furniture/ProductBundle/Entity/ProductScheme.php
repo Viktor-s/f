@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductScheme extends AbstractTranslatable
 {
@@ -25,8 +26,17 @@ class ProductScheme extends AbstractTranslatable
 
     /**
      * @var Collection|ProductPart[]
+     *
+     * @Assert\Count(min = 1, minMessage="Please enter more then one product part for scheme.")
      */
     private $productParts;
+
+    /**
+     * @var Collection|ProductSchemeTranslation[]
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
 
     /**
      * Construct

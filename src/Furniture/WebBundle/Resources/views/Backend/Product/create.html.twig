@@ -26,8 +26,6 @@
     <h1><i class="glyphicon glyphicon-plus"></i> {{ 'sylius.product.create_header'|trans|raw }}</h1>
 </div>
 
-{{ form_errors(form) }}
-
 <form action="{{ path('sylius_backend_product_create', {'archetype': app.request.get('archetype')}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
     {% include 'SyliusWebBundle:Backend/Product:_form.html.twig' %}
     {{ create() }}

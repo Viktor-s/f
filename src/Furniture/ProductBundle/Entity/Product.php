@@ -50,6 +50,8 @@ class Product extends BaseProduct
 
     /**
      * @var Collection|ProductPart[]
+     *
+     * @Assert\Valid()
      */
     protected $productParts;
 
@@ -90,6 +92,8 @@ class Product extends BaseProduct
 
     /**
      * @var Collection|ProductScheme[]
+     *
+     * @Assert\Valid()
      */
     private $productSchemes;
 

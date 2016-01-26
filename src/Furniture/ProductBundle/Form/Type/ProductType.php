@@ -15,6 +15,7 @@ use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Furniture\CommonBundle\Form\Type\AutocompleteEntityType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -96,8 +97,7 @@ class ProductType extends BaseProductType
                         'type' => new ProductPartFormType($factory),
                         'required'  => false,
                         'allow_add' => true,
-                        'allow_delete' => true,
-                        'by_reference' => false,
+                        'allow_delete' => true
                     ])
                     ->add('compositeCollections', 'entity', [
                         'class' => CompositeCollection::class,
@@ -130,6 +130,10 @@ class ProductType extends BaseProductType
 
                 foreach ($product->getProductSchemes() as $productScheme) {
                     $productScheme->setProduct($product);
+                }
+
+                foreach ($product->getProductParts() as $productPart) {
+                    $productPart->setProduct($product);
                 }
             });
 
