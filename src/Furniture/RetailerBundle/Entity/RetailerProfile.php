@@ -1,10 +1,9 @@
 <?php
 namespace Furniture\RetailerBundle\Entity;
 
-use Furniture\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Furniture\RetailerBundle\Entity\RetailerUserProfile;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
 
 class RetailerProfile implements AddressMarkerInterface
@@ -18,6 +17,13 @@ class RetailerProfile implements AddressMarkerInterface
      * @var Collection|RetailerUserProfile[]
      */
     private $retailerUserProfiles;
+
+    /**
+     * Control demo factories
+     *
+     * @var Collection|Factory[]
+     */
+    private $demoFactories;
 
     /**
      * @var string
@@ -154,7 +160,9 @@ class RetailerProfile implements AddressMarkerInterface
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->retailerUserProfiles = new ArrayCollection();
+        $this->demoFactories = new ArrayCollection();
+
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -217,35 +225,126 @@ class RetailerProfile implements AddressMarkerInterface
 
 
     /**
+     * Add retailer user profile
      *
-     * @param \Furniture\RetailerBundle\Entity\RetailerProfile $retailerUserProfiles
+     * @param RetailerUserProfile $retailerUserProfile
      *
-     * @return \Furniture\RetailerBundle\Entity\RetailerUserProfile
+     * @return RetailerUserProfile
      */
-    public function addRetailerUserProfile(RetailerUserProfile $retailerUserProfiles)
+    public function addRetailerUserProfile(RetailerUserProfile $retailerUserProfile)
     {
-        if (!$this->hasRetailerUserProfile($retailerUserProfiles)) {
-            $retailerUserProfiles->setRetailerProfile($this);
-            $this->retailerUserProfiles->add($retailerUserProfiles);
+        if (!$this->hasRetailerUserProfile($retailerUserProfile)) {
+            $retailerUserProfile->setRetailerProfile($this);
+            $this->retailerUserProfiles->add($retailerUserProfile);
         }
 
         return $this;
     }
 
     /**
-     * Remove user
+     * Remove user profile
      *
-     * @param User $user
+     * @param RetailerUserProfile $retailerUserProfile
      *
      * @return RetailerProfile
      */
-    public function removeRetailerUserProfile(RetailerUserProfile $retailerUserProfiles)
+    public function removeRetailerUserProfile(RetailerUserProfile $retailerUserProfile)
     {
-        if ($this->hasRetailerUserProfile($retailerUserProfiles)) {
-            $this->retailerUserProfiles->removeElement($retailerUserProfiles);
+        if ($this->hasRetailerUserProfile($retailerUserProfile)) {
+            $this->retailerUserProfiles->removeElement($retailerUserProfile);
         }
 
         return $this;
+    }
+
+    /**
+     * Get demo factories
+     *
+     * @return Collection|Factory[]
+     */
+    public function getDemoFactories()
+    {
+        return $this->demoFactories;
+    }
+
+    /**
+     * Has demo factories?
+     *
+     * @return bool
+     */
+    public function hasDemoFactories()
+    {
+        return count($this->demoFactories) > 0;
+    }
+
+    /**
+     * Has demo factory?
+     *
+     * @param Factory $factory
+     *
+     * @return bool
+     */
+    public function hasDemoFactory(Factory $factory)
+    {
+        return $this->demoFactories->exists(function ($index, Factory $item) use ($factory) {
+            return $item->getId() == $factory->getId();
+        });
+    }
+
+    /**
+     * Add demo factory
+     *
+     * @param Factory $factory
+     *
+     * @return RetailerProfile
+     */
+    public function addDemoFactory(Factory $factory)
+    {
+        if (!$this->hasDemoFactory($factory)) {
+            $this->demoFactories->add($factory);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove demo factory
+     *
+     * @param Factory $factory
+     *
+     * @return RetailerProfile
+     */
+    public function removeDemoFactory(Factory $factory)
+    {
+        if ($this->hasDemoFactory($factory)) {
+            $key = null;
+
+            $this->demoFactories->forAll(function ($index, Factory $item) use (&$key, $factory) {
+                if ($item->getId() == $factory->getId()) {
+                    $key = $index;
+
+                    return false;
+                }
+
+                return true;
+            });
+
+            if ($key) {
+                $this->demoFactories->remove($key);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Is demo?
+     *
+     * @return bool
+     */
+    public function isDemo()
+    {
+        return $this->hasDemoFactories();
     }
 
     /**
@@ -572,6 +671,7 @@ class RetailerProfile implements AddressMarkerInterface
     }
 
     /**
+     * Get county
      *
      * @return string
      */

@@ -140,28 +140,30 @@
                 </div>
 
                 {# Catalog brand selector #}
-                <div id="brand_filter" class="information-blocks">
-                    {% set column_size = (brands|length)/2 %}
-                    <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for factory in brands %}
-                                {% if k > column_size %}
-                                </div>
-                                <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
-                                <label class="checkbox-entry">
-                                    <input{% if factory_ids is iterable and factory.id in factory_ids %} checked{% endif %} type="checkbox" value="{{ factory.id }}" live-form name="brand[]" />
-                                    <span class="check"></span>
-                                    {{ factory.name }}
-                                </label>
-                                {% set k = k + 1 %}
-                            {% endfor %}
+                {% if brands|length > 1 %}
+                    <div id="brand_filter" class="information-blocks">
+                        {% set column_size = (brands|length)/2 %}
+                        <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                {% set k = 1 %}
+                                {% for factory in brands %}
+                                    {% if k > column_size %}
+                                    </div>
+                                    <div class="col-xs-6">
+                                        {% set k = 1 %}
+                                    {% endif %}
+                                    <label class="checkbox-entry">
+                                        <input{% if factory_ids is iterable and factory.id in factory_ids %} checked{% endif %} type="checkbox" value="{{ factory.id }}" live-form name="brand[]" />
+                                        <span class="check"></span>
+                                        {{ factory.name }}
+                                    </label>
+                                    {% set k = k + 1 %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
 
                 {# Style selector #}
                 <div class="information-blocks">
