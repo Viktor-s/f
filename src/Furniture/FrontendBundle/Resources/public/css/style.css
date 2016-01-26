@@ -3638,3 +3638,24 @@ form.someclass input {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
+
+.product-gallery.swiper-container {
+    height: 570px!important;
+}
+
+.product-gallery .swiper-slide:before {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.product-gallery .product-zoom-image {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.product-gallery .product-zoom-image img{
+    width: 100%;
+    height: auto;
+}
