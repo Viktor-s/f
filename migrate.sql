@@ -20,3 +20,9 @@ ALTER TABLE furniture_product RENAME COLUMN factoryCode TO factory_code;
 ALTER TABLE furniture_product RENAME TO product;
 ALTER SEQUENCE furniture_product_id_seq RENAME TO product_id_seq;
 -- End migrations for task #446
+CREATE TABLE retailer_profile_demo_factories (profile_id INT NOT NULL, factory_id INT NOT NULL, PRIMARY KEY(profile_id, factory_id));
+CREATE INDEX IDX_5ECF7558CCFA12B8 ON retailer_profile_demo_factories (profile_id);
+CREATE INDEX IDX_5ECF7558C7AF27D2 ON retailer_profile_demo_factories (factory_id);
+ALTER TABLE retailer_profile_demo_factories ADD CONSTRAINT FK_5ECF7558CCFA12B8 FOREIGN KEY (profile_id) REFERENCES furniture_retailer_profile (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE retailer_profile_demo_factories ADD CONSTRAINT FK_5ECF7558C7AF27D2 FOREIGN KEY (factory_id) REFERENCES factory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE product_pdp_input ADD forSchemes BOOLEAN DEFAULT 'false' NOT NULL;
