@@ -327,7 +327,7 @@ class ProductPdpInput
                 $this->option->getName()
             );
         } else if ($this->isForSchemes()) {
-            return 'schemes';
+            return 'Variants';
         } else {
             return 'Undefined';
         }
@@ -359,7 +359,7 @@ class ProductPdpInput
                 $this->option->getName()
             );
         } else if ($this->isForSchemes()) {
-            return 'schemes';
+            return 'Variants';
         } else {
             return 'Undefined';
         }
