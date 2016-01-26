@@ -203,10 +203,15 @@ class ProductController
                 $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
             }
 
+            if($product->isSchematicProductType()){
+                $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                $item['options'][$inputId] = $variant->getProductScheme()->getId();
+            }
+            
             if ($activeVariant && $variant == $activeVariant) {
                 $activeVariantMatrix = $item['options'];
             }
-
+            
             $skuMatrix[] = $item;
         }
 
@@ -225,9 +230,20 @@ class ProductController
             $specificationsWithBuyer[$specification->getBuyer()->getId()]['specifications'][] = $specification;
         }
 
+        $schemeMapping = [];
+        if($product->isSchematicProductType()){
+            foreach($product->getProductSchemes() as $scheme){
+                $schemeMapping[$scheme->getId()] = [];
+                foreach($scheme->getProductParts() as $productPart){
+                    $schemeMapping[$scheme->getId()][$productPart->getId()] = $product->getPdpConfig()->findInputForProductPart($productPart)->getId();
+                }
+            }
+        }
+        
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
             'product'                   => $product,
             'sku_matrix'                => $skuMatrix,
+            'schemeMapping'             => $schemeMapping,
             'active_variant_matrix'     => $activeVariantMatrix,
             'options'                   => $options,
             'specificationsWithBuyer'            => $specificationsWithBuyer,

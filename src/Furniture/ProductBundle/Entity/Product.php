@@ -1097,6 +1097,19 @@ class Product extends BaseProduct
      */
     private function fixPdpConfig()
     {
+        
+        //Add scheme input for schematic product
+        if($this->isSchematicProductType()){
+            $input = $this->pdpConfig->getInputForSchemes();
+            
+            if (!$input) {
+                $input = new ProductPdpInput();
+                $input->setForSchemes(true);
+                $input->setPosition(0);
+                $this->pdpConfig->addInput($input);
+            }
+        }
+        
         // Add product parts
         foreach ($this->getProductParts() as $productPart) {
             $input = $this->pdpConfig->findInputForProductPart($productPart);

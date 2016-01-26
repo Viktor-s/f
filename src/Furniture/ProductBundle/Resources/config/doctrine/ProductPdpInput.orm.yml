@@ -18,6 +18,10 @@ Furniture\ProductBundle\Entity\ProductPdpInput:
             name: type
             options:
                 default: 0
+        forSchemes:
+            type: boolean
+            options:
+                default: false
 
     manyToOne:
         config:

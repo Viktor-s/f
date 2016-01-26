@@ -14,25 +14,39 @@
         {% endfor %}
 
     {% else %}
-
-        <div class="simple-drop-down simple-field">
-            <select data-input-container="default-select" data-input-id="{{ input.id }}" >
                 {% if input.option %}
+                <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
+                    <select data-input-container="default-select">
                     {% for optionValue in input.optionValues() %}
                         <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
                     {% endfor %}
+                    </select>
+                </div>
                 {% elseif input.skuOption %}
+                <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
+                    <select data-input-container="default-select">
                     {% for skuOptionVariant in input.skuOptionVariants() %}
                         <option data-input-variant="{{ skuOptionVariant.id }}" >{{ skuOptionVariant.value }}</option>
                     {% endfor %}
+                    </select>
+                </div>
                 {% elseif input.productPart %}
+                <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
+                    <select data-input-container="default-select">
                     {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
                         <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
                     {% endfor %}
+                    </select>
+                </div>
+                {% elseif input.forSchemes %}
+                <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
+                    <select id="scheme-selector">
+                        {% for scheme in input.schemes %}
+                            <option value="{{scheme.id}}">{{ scheme.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 {% endif %}
-            </select>
-        </div>
-
     {% endif %}
 </div>
 
