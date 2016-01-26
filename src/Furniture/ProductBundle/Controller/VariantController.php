@@ -201,7 +201,7 @@ class VariantController extends BaseVariantController
                 $groupVariantFilter = new GroupVaraintEdit($product, $product->getProductSchemes()->first());
             }
         }else{
-           $groupVariantFilter = new GroupVaraintFiler($product); 
+           $groupVariantFilter = new GroupVaraintEdit($product); 
         }
         
         $form = $this->createForm(new GroupVariantEditType, $groupVariantFilter );
