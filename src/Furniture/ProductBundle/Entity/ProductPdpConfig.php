@@ -165,4 +165,17 @@ class ProductPdpConfig
 
         return null;
     }
+    
+    public function getInputForSchemes()
+    {
+        if($this->getProduct()->isSchematicProductType()){
+            foreach ($this->inputs as $input) {
+                if( $input->getSchemes() ){
+                    return $input;
+                }
+            }
+        }
+        return null;
+    }
+    
 }
