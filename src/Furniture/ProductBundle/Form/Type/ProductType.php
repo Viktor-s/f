@@ -116,7 +116,7 @@ class ProductType extends BaseProductType
                     ]);
 
                 if (!$product->getId() || $product->isSchematicProductType()) {
-                    $builder
+                    $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
                         ]);

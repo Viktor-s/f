@@ -48,7 +48,8 @@
             '[data-form-prototype="update"]',
             $.proxy(this.updatePrototype, this)
         );
-    }
+    };
+
     CollectionForm.prototype = {
         constructor : CollectionForm,
 
