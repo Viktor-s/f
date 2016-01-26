@@ -3,6 +3,8 @@
 namespace Furniture\FrontendBundle\Blocks;
 
 use Furniture\FrontendBundle\Repository\FactoryRepository;
+use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
+use Furniture\UserBundle\Entity\User;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -38,7 +40,12 @@ class FactoriesBlock extends BaseBlockService
             'limit' => 5,
             'offset' => 0,
             'newest' => false,
+            'user' => null,
             'template' => 'FrontendBundle:Blocks:factories.html.twig'
+        ]);
+
+        $resolver->setAllowedTypes([
+            'user' => User::class
         ]);
     }
 
@@ -52,7 +59,13 @@ class FactoriesBlock extends BaseBlockService
         $offset = $settings['offset'];
 
         if ($settings['newest']) {
-            $factories = $this->factoryRepository->findNewest($limit, $offset);
+            $query = new FactoryQuery();
+
+            if ($settings['user']) {
+                $query->withRetailerFromUser($settings['user']);
+            }
+
+            $factories = $this->factoryRepository->findNewest($query, $limit, $offset);
         } else {
             // @todo: add control filters
             $factories = [];

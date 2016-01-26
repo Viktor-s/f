@@ -37,13 +37,13 @@ class FactoryRepository
     public function find($factory)
     {
         return $this->em->createQueryBuilder()
-                ->from(Factory::class, 'f')
-                ->select('f')
-                ->andWhere('f.enabled = true')
-                ->andWhere('f.id = :factory')
-                ->setParameter('factory', $factory)
-                ->getQuery()
-                ->getOneOrNullResult();
+            ->from(Factory::class, 'f')
+            ->select('f')
+            ->andWhere('f.enabled = true')
+            ->andWhere('f.id = :factory')
+            ->setParameter('factory', $factory)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -55,12 +55,58 @@ class FactoryRepository
      */
     public function findBy(FactoryQuery $query)
     {
+        $qb = $this->createQueryBuilderForFactory($query);
+
+        $query = $qb->getQuery();
+
+        return $query
+            ->getResult();
+    }
+
+    /**
+     * Find newest factories
+     *
+     * @param FactoryQuery $query
+     * @param int          $limit
+     * @param int          $offset
+     *
+     * @return Factory[]
+     */
+    public function findNewest(FactoryQuery $query, $limit = 5, $offset = 0)
+    {
+        return $this->createQueryBuilderForFactory($query)
+            ->orderBy('f.createdAt', 'DESC')
+            ->getQuery()
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
+    /**
+     * Find all
+     *
+     * @return Factory[]
+     */
+    public function findAll()
+    {
+        return $this->findBy(new FactoryQuery());
+    }
+
+    /**
+     * Create query builder for factory query
+     *
+     * @param FactoryQuery $query
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createQueryBuilderForFactory(FactoryQuery $query)
+    {
         $qb = $this->em->createQueryBuilder()
             ->from(Factory::class, 'f')
             ->distinct()
             ->select('f')
-            //If visible in front!
-             ->andWhere('f.enabled = true');
+            // If visible in front!
+            ->andWhere('f.enabled = true');
 
         if ($query->hasStyles() || $query->hasCategories()) {
             $qb
@@ -114,46 +160,23 @@ class FactoryRepository
                 ->andWhere($orExpr)
                 ->setParameter('retailer_access_products', true)
                 ->setParameter('default_access_products', true);
+
+            if ($query->getRetailer()->isDemo()) {
+                // Should filtered by demo
+                $demoFactoryIds = array_map(function (Factory $factory) {
+                    return $factory->getId();
+                }, $query->getRetailer()->getDemoFactories()->toArray());
+
+                $qb
+                    ->andWhere('f.id IN (:demo_factories)')
+                    ->setParameter('demo_factories', $demoFactoryIds);
+            }
         } else {
             $qb
                 ->andWhere('fdr.accessProducts = :default_access_products')
                 ->setParameter('default_access_products', true);
         }
 
-        return $qb
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Find newest factories
-     *
-     * @param int $limit
-     * @param int $offset
-     *
-     * @return Factory[]
-     */
-    public function findNewest($limit = 5, $offset = 0)
-    {
-        return $this->em->createQueryBuilder()
-            ->from(Factory::class, 'f')
-            //If visible in front!
-            ->andWhere('f.enabled = true')
-            ->select('f')
-            ->orderBy('f.createdAt', 'DESC')
-            ->getQuery()
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getResult();
-    }
-
-    /**
-     * Find all
-     *
-     * @return Factory[]
-     */
-    public function findAll()
-    {
-        return $this->findBy(new FactoryQuery());
+        return $qb;
     }
 }

@@ -5,6 +5,7 @@ namespace Furniture\FrontendBundle\Repository\Query;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Style;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\UserBundle\Entity\User;
 use Sylius\Component\Core\Model\Taxon;
 
 class FactoryQuery
@@ -197,6 +198,28 @@ class FactoryQuery
     public function withRetailer(RetailerProfile $retailer)
     {
         $this->retailer = $retailer;
+
+        return $this;
+    }
+
+    /**
+     * With retailer from user
+     *
+     * @param User $user
+     *
+     * @return FactoryQuery
+     */
+    public function withRetailerFromUser(User $user)
+    {
+        if ($user->getRetailerUserProfile()) {
+            $userProfile = $user->getRetailerUserProfile();
+
+            if ($userProfile->getRetailerProfile()) {
+                $profile = $userProfile->getRetailerProfile();
+
+                $this->withRetailer($profile);
+            }
+        }
 
         return $this;
     }

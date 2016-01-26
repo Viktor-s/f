@@ -28,7 +28,6 @@ class SpecificationItemVoter extends AbstractVoter
      */
     protected function isGranted($attribute, $object, $user = null)
     {
-        
         /** @var \Furniture\UserBundle\Entity\User $user */
         if ($user->isNoRetailer()) {
             // Only retailer have grants to custom specification item.
@@ -39,15 +38,35 @@ class SpecificationItemVoter extends AbstractVoter
             return true;
         }
 
-        if(!$object instanceof SpecificationItem)
+        if (!$object instanceof SpecificationItem) {
             return false;
-        
+        }
+
         /** @var SpecificationItem $object */
+        // First check: demo account
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
+        if ($retailerProfile->isDemo()) {
+            $skuItem= $object->getSkuItem();
+
+            if ($skuItem) {
+                $factory = $skuItem->getProductVariant()->getProduct()->getFactory();
+
+                if ($factory) {
+                    if ($retailerProfile->hasDemoFactory($factory)) {
+                        // The active retailer profile not have rights to this factory via demo account
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // Second check: owner or creator
         $owner = $object->getSpecification()->getCreator();
-        
-        if ($user->getRetailerUserProfile()->isRetailerAdmin()
-                && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
-                ) {
+
+        $retailerAdmin = $user->getRetailerUserProfile()->isRetailerAdmin();
+        $owner = $retailerProfile->getId() == $owner->getRetailerProfile()->getId();
+
+        if ($retailerAdmin && $owner) {
             return true;
         }
 
