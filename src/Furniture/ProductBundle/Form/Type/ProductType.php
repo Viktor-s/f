@@ -113,10 +113,14 @@ class ProductType extends BaseProductType
                         },
                         'multiple' => true,
                         'expanded' => false
-                    ])
-                    ->add('productSchemes', new ProductSchemesType(), [
-                        'parts' => $product->getProductParts(),
                     ]);
+
+                if (!$product->getId() || $product->isSchematicProductType()) {
+                    $builder
+                        ->add('productSchemes', new ProductSchemesType(), [
+                            'parts' => $product->getProductParts(),
+                        ]);
+                }
             });
 
             // Add listener for save reference: ProductScheme -> Product
