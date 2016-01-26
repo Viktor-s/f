@@ -115,7 +115,7 @@ class ProductType extends BaseProductType
                         'expanded' => false
                     ]);
 
-                if (!$product->getId() || $product->isSchematicProductType()) {
+                if (!$product->getId() || $product->isSchematicProductType() || count($product->getVariants())) {
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
