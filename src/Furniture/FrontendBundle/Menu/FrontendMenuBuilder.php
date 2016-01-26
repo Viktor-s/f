@@ -316,12 +316,12 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.factory_side.menu.news')
         ]);
 
-        if ($this->sfAuthorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
-            $menu->addChild('collections', [
-                'uri'   => $this->urlGenerator->generate('factory_side_collections', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.collections')
-            ]);
-        }
+//        if ($this->sfAuthorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
+//            $menu->addChild('collections', [
+//                'uri'   => $this->urlGenerator->generate('factory_side_collections', ['factory' => $factory->getId()]),
+//                'label' => $this->translator->trans('frontend.factory_side.menu.collections')
+//            ]);
+//        }
         
         $menu->addChild('work_info', [
             'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
