@@ -20,6 +20,7 @@ Furniture\ProductBundle\Entity\ProductPdpInput:
                 default: 0
         forSchemes:
             type: boolean
+            nullable: true
             options:
                 default: false
 
