@@ -16,7 +16,7 @@
 
 {% block factory_side_content %}
     <div class="factory-post{% if post.images|length > 0 %} with-images{% endif %}">
-        <h1>{{ post.translate.title }}</h1>
+        <h1 class="block-title">{{ post.translate.title }}</h1>
 
         {% if post.images|length > 0 %}
             <div class="images">
