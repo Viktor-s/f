@@ -104,6 +104,7 @@
          * @param event
          */
         deleteItem: function (event) {
+            console.log(event);
             event.preventDefault();
 
             $(event.currentTarget)

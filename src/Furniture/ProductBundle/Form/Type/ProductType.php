@@ -13,6 +13,7 @@ use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Furniture\CommonBundle\Form\Type\AutocompleteEntityType;
 use Symfony\Component\Form\FormError;
@@ -24,6 +25,32 @@ use Furniture\ProductBundle\Form\Type\ProductTranslationType;
 
 class ProductType extends BaseProductType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => $this->dataClass,
+            'cascade_validation' => true,
+            'validation_groups' => function (Form $form) {
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $form->getData();
+
+                if ($product->getId()) {
+                    return ['Update', 'Default'];
+                } else {
+                    return ['Create', 'Default'];
+                }
+            },
+            'mode' => 'full'
+        ));
+
+        $resolver->setAllowedValues([
+            'mode' => ['small', 'full']
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -173,21 +200,5 @@ class ProductType extends BaseProductType
 
         // Remove taxons
         $builder->remove('taxons');
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->dataClass,
-            'validation_groups' => array_merge($this->validationGroups, ['Default']),
-            'mode' => 'full'
-        ));
-
-        $resolver->setAllowedValues([
-            'mode' => ['small', 'full']
-        ]);
     }
 }
