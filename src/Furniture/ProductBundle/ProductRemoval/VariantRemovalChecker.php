@@ -46,4 +46,29 @@ class VariantRemovalChecker
 
         return new VariantRemoval(true);
     }
+
+    /**
+     * Can remove?
+     *
+     * @param ProductVariant $variant
+     *
+     * @return VariantRemoval
+     */
+    public function canRemove(ProductVariant $variant)
+    {
+        $reasonMessages = [];
+
+        /** @var \Furniture\ProductBundle\Entity\Repository\ProductVariantRepository $variantRepository */
+        $variantRepository = $this->em->getRepository(ProductVariant::class);
+
+        if ($variantRepository->hasSpecificationItems($variant)) {
+            $reasonMessages[] = 'The variant have a specification items.';
+        }
+
+        if (count($reasonMessages)) {
+            return new VariantRemoval(false, $reasonMessages);
+        }
+
+        return new VariantRemoval(true);
+    }
 }

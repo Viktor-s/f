@@ -182,7 +182,9 @@ class VariantGenerator extends ContainerAware {
             $product->addVariant($variant);
             $generated[] = $variant;
         }
+
         $this->process($product, $variant);
+
         return $generated;
     }
     
@@ -190,7 +192,8 @@ class VariantGenerator extends ContainerAware {
      * 
      * @param \Furniture\ProductBundle\Entity\Product $product
      */
-    public function generate(Product $product) {
+    public function generate(Product $product)
+    {
 
         throw new \BadMethodCallException('Deprecated!');
         

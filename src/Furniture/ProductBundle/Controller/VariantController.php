@@ -29,10 +29,10 @@ class VariantController extends BaseVariantController
 
         /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
         $variant = $this->findOr404($request);
+        $removalChecker = $this->get('product_variant.removal_checker');
 
         if ($hardDelete) {
-            $checker = $this->get('product_variant.removal_checker');
-            $removal = $checker->canHardRemove($variant);
+            $removal = $removalChecker->canHardRemove($variant);
 
             if ($removal->notCanRemove()) {
                 // @todo: add message to alerts
@@ -40,9 +40,16 @@ class VariantController extends BaseVariantController
             }
 
             $em->getFilters()->enable('softdeleteable');
-        }
+        } else {
+            $removal = $removalChecker->canRemove($variant);
 
-        $this->domainManager->delete($variant);
+            if ($removal->notCanRemove()) {
+                // @todo: add message to alerts
+                return $this->createRedirectResponse($request);
+            }
+
+            $this->domainManager->delete($variant);
+        }
 
         return $this->createRedirectResponse($request);
     }
@@ -108,7 +115,7 @@ class VariantController extends BaseVariantController
     {
         return $this->get('Furniture.generator.product_variant');
     }
-    
+
     /**
      * Generate all possible variants for given product id.
      *
@@ -125,50 +132,48 @@ class VariantController extends BaseVariantController
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findProductOr404($productId);
         $groupVariantFilter = null;
-        if( $product->isSchematicProductType() ){
-            if( $schemaId = $request->get('schemaId') ){
-                foreach($product->getProductSchemes() as $pScheme){
-                    if($pScheme->getId() == $schemaId){
+        if ($product->isSchematicProductType()) {
+            if ($schemaId = $request->get('schemaId')) {
+                foreach ($product->getProductSchemes() as $pScheme) {
+                    if ($pScheme->getId() == $schemaId) {
                         $groupVariantFilter = new GroupVaraintFiler($product, $pScheme);
                         break;
-                    }else{
+                    } else {
                         continue;
                     }
                 }
-                if(!$groupVariantFilter->getScheme())
+                if (!$groupVariantFilter->getScheme())
                     throw new NotFoundHttpException('Incorrect product scheme given.');
-            }else{
+            } else {
                 $groupVariantFilter = new GroupVaraintFiler($product, $product->getProductSchemes()->first());
             }
-        }else{
-           $groupVariantFilter = new GroupVaraintFiler($product); 
+        } else {
+            $groupVariantFilter = new GroupVaraintFiler($product);
         }
-        
+
         $form = $this->createForm(new GroupVariantFilterType, $groupVariantFilter);
-        
+
         $form->handleRequest($request);
-        
+
         if ($form->isValid()) {
             $filter = $form->getData();
             $generated = $this->getGenerator()->generateByFilter($filter);
             $manager = $this->get('sylius.manager.product');
             $manager->persist($filter->getProduct());
             $manager->flush();
-            $this->flashHelper->setFlash(
-                        'success', 'Generated '.count($generated)
-                );
+            $this->flashHelper->setFlash('success', 'Generated ' . count($generated));
         }
 
         $view = $this
-                ->view([
-                    'groupVariantFilter' => $groupVariantFilter,
-                    'form' => $form->createView(),
-                ])
-                ->setTemplate($this->config->getTemplate('generate.html'));
+            ->view([
+                'groupVariantFilter' => $groupVariantFilter,
+                'form'               => $form->createView(),
+            ])
+            ->setTemplate($this->config->getTemplate('generate.html'));
 
         return $this->handleView($view);
     }
-    
+
     /**
      * Variant actions
      *
@@ -178,66 +183,74 @@ class VariantController extends BaseVariantController
      */
     public function variantGroupEditAction(Request $request)
     {
-        if (null === $productId = $request->get('productId')) {
+        if (!$productId = $request->get('productId')) {
             throw new NotFoundHttpException('No product given.');
         }
-        
+
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findProductOr404($productId);
         $groupVariantFilter = null;
-        if( $product->isSchematicProductType() ){
-            if( $schemaId = $request->get('schemaId') ){
-                foreach($product->getProductSchemes() as $pScheme){
-                    if($pScheme->getId() == $schemaId){
+
+        if ($product->isSchematicProductType()) {
+            if ($schemaId = $request->get('schemaId')) {
+                foreach ($product->getProductSchemes() as $pScheme) {
+                    if ($pScheme->getId() == $schemaId) {
                         $groupVariantFilter = new GroupVaraintEdit($product, $pScheme);
                         break;
-                    }else{
+                    } else {
                         continue;
                     }
                 }
-                if(!$groupVariantFilter->getScheme())
+
+                if (!$groupVariantFilter->getScheme()) {
                     throw new NotFoundHttpException('Incorrect product scheme given.');
-            }else{
+                }
+            } else {
                 $groupVariantFilter = new GroupVaraintEdit($product, $product->getProductSchemes()->first());
             }
-        }else{
-           $groupVariantFilter = new GroupVaraintEdit($product); 
+        } else {
+            $groupVariantFilter = new GroupVaraintEdit($product);
         }
-        
-        $form = $this->createForm(new GroupVariantEditType, $groupVariantFilter );
-        
+
+        $form = $this->createForm(new GroupVariantEditType, $groupVariantFilter);
+
         $form->handleRequest($request);
 
         $filteredVariants = [];
-        
+
         if ($form->isValid()) {
-            /**
-             * var \Furniture\ProductBundle\Model\GroupVaraintEdit $editObject
-             */
+            /** @var \Furniture\ProductBundle\Model\GroupVaraintEdit $editObject */
             $editObject = $form->getData();
 
             $filteredVariants = $editObject->getFilteredVariants();
             $removed = 0;
+            $removalChecker = $this->get('product_variant.removal_checker');
+
             foreach ($filteredVariants as $variant) {
                 if ($form->get('delete_by_filter')->isClicked()) {
-                    $this->getDoctrine()->getManager()->remove($variant);
-                    $removed ++;
+                    $removal = $removalChecker->canRemove($variant);
+
+                    if ($removal->canRemove()) {
+                        $this->getDoctrine()->getManager()->remove($variant);
+                        $removed++;
+                    }
+
                     continue;
                 }
-                
+
                 $language = new ExpressionLanguage();
 
                 if ($editObject->getPriceCalculator() !== null) {
                     $price = $language->evaluate($editObject->getPriceCalculator(), [
-                        'price' => $variant->getPrice() / 100
+                        'price' => $variant->getPrice() / 100,
                     ]);
-                    $variant->setPrice((int) (ceil(($price * 100))));
+                    $variant->setPrice((int)(ceil(($price * 100))));
                 }
 
 
                 if ($editObject->getWidth() !== null) {
                     $value = $language->evaluate($editObject->getWidth(), [
-                        'width' => $variant->getWidth()
+                        'width' => $variant->getWidth(),
                     ]);
 
                     $variant->setWidth($value);
@@ -245,7 +258,7 @@ class VariantController extends BaseVariantController
 
                 if ($editObject->getHeight() !== null) {
                     $value = $language->evaluate($editObject->getHeight(), [
-                        'height' => $variant->getHeight()
+                        'height' => $variant->getHeight(),
                     ]);
 
                     $variant->setHeight($value);
@@ -253,39 +266,36 @@ class VariantController extends BaseVariantController
 
                 if ($editObject->getDepth() !== null) {
                     $value = $language->evaluate($editObject->getDepth(), [
-                        'depth' => $variant->getDepth()
+                        'depth' => $variant->getDepth(),
                     ]);
                     $variant->setDepth($value);
                 }
 
                 if ($editObject->getWeight() !== null) {
                     $value = $language->evaluate($editObject->getWeight(), [
-                        'weight' => $variant->getWeight()
+                        'weight' => $variant->getWeight(),
                     ]);
                     $variant->setWeight($value);
                 }
-                
+
             }
+
             $this->getDoctrine()->getManager()->flush();
+
             if ($form->get('delete_by_filter')->isClicked()) {
-                $this->flashHelper->setFlash(
-                        'warning', 'Deleted ' . $removed . ' Items'
-                );
+                $this->flashHelper->setFlash('warning', 'Deleted ' . $removed . ' Items');
             } else {
-                $this->flashHelper->setFlash(
-                        'warning', 'Updated ' . count($filteredVariants) . ' Items'
-                );
+                $this->flashHelper->setFlash('warning', 'Updated ' . count($filteredVariants) . ' Items');
             }
         }
 
         $view = $this
-                ->view([
-                    'updatedVariants' => $filteredVariants,
-                    'groupVariantFilter' => $groupVariantFilter,
-                    'form' => $form->createView(),
-                    'updatedVariants' => []
-                ])
-                ->setTemplate($this->config->getTemplate('variantGroupEdit.html'));
+            ->view([
+                'updatedVariants'    => $filteredVariants,
+                'groupVariantFilter' => $groupVariantFilter,
+                'form'               => $form->createView(),
+            ])
+            ->setTemplate($this->config->getTemplate('variantGroupEdit.html'));
 
         return $this->handleView($view);
     }

@@ -75,20 +75,25 @@
                     </span>
                 </td>
 
-                <td>{{ variant.price|sylius_price }}</td>
+                <td nowrap>{{ variant.price|sylius_price }}</td>
 
                 <td>
                     <div class="pull-right">
                         {% if not variant.deleted %}
                             {{ buttons.edit(path('sylius_backend_product_variant_update', {'productId': product.id, id: variant.id})) }}
-                            {{ buttons.delete(path('sylius_backend_product_variant_delete', {'productId': product.id, id: variant.id})) }}
+
+                            {% if is_product_variant_can_remove(variant) %}
+                                {{ buttons.delete(path('sylius_backend_product_variant_delete', {'productId': product.id, id: variant.id})) }}
+                            {% endif %}
                         {% else %}
                             <a href="{{ path('sylius_backend_product_variant_restore', {productId: product.id, id: variant.id, _from: app.request.requestUri}) }}" class="btn btn-primary">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 Restore
                             </a>
 
-                            {{ buttons.delete(path('sylius_backend_product_variant_delete', {productId: product.id, id: variant.id, _from: app.request.requestUri, hard: 1})) }}
+                            {% if is_product_variant_can_hard_remove(variant) %}
+                                {{ buttons.delete(path('sylius_backend_product_variant_delete', {productId: product.id, id: variant.id, _from: app.request.requestUri, hard: 1})) }}
+                            {% endif %}
                         {% endif %}
                     </div>
                 </td>
