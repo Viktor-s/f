@@ -98,17 +98,20 @@
     </body>
     {# javascripts... #}
     {% block javascripts %}
+        {#'bundles/syliusresource/js/form-collection.js'#}
+        {#'bundles/syliusweb/js/form-collection.js'#}
         {% javascripts output='assets/compiled/backend.js'
             'bundles/syliusreport/js/chart.js'
             'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
             'bundles/syliusweb/js/confirm-modal.js'
-            'bundles/syliusweb/js/form-collection.js'
             'bundles/syliusweb/js/form-spinner.js'
             'bundles/syliusweb/js/select2.js'
             'bundles/syliusweb/js/bootstrap-datepicker.js'
-            'bundles/syliusresource/js/form-collection.js'
+
+            '@SyliusResourceBundle/Resources/public/js/form-collection.js'
 
             '@CommonBundle/Resources/public/js/formtype.js'
+            '@WebBundle/Resources/public/js/form-collection.js'
             '@WebBundle/Resources/public/js/backend.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>

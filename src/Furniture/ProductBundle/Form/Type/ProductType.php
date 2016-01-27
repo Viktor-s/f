@@ -124,7 +124,10 @@ class ProductType extends BaseProductType
                         'type' => new ProductPartFormType($factory),
                         'required'  => false,
                         'allow_add' => true,
-                        'allow_delete' => true
+                        'allow_delete' => true,
+                        'attr' => [
+                            'data-remove-confirm' => 'Are you sure you want to remove product part item?'
+                        ]
                     ])
                     ->add('compositeCollections', 'entity', [
                         'class' => CompositeCollection::class,
@@ -146,6 +149,9 @@ class ProductType extends BaseProductType
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
+                            'attr' => [
+                                'data-remove-confirm' => 'Are you sure you want to remove scheme item?'
+                            ]
                         ]);
                 }
             });

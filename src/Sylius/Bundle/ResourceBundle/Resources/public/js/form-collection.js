@@ -104,14 +104,25 @@
          * @param event
          */
         deleteItem: function (event) {
-            console.log(event);
+            var
+                confirmMessage = $(event.currentTarget).parents('[data-remove-confirm]').data('remove-confirm'),
+                remove = function () {
+                    $(event.currentTarget)
+                        .closest('[data-form-collection="item"]')
+                        .remove();
+
+                    $(document).trigger('collection-form-delete', [$(event.currentTarget)]);
+                };
+
             event.preventDefault();
 
-            $(event.currentTarget)
-                .closest('[data-form-collection="item"]')
-                .remove();
-
-            $(document).trigger('collection-form-delete', [$(event.currentTarget)]);
+            if (confirmMessage) {
+                if (confirm(confirmMessage)) {
+                    remove();
+                }
+            } else {
+                remove();
+            }
         },
 
         /**

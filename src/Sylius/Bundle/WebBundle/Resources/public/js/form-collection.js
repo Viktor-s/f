@@ -30,6 +30,7 @@
         });
 
         $(document).on('click', 'a[data-collection-button="delete"]', function(e) {
+            console.log(e);
             e.preventDefault();
             var item = $(this).closest('.' + $(this).data('collection') + '-' + $(this).data('collection-item'));
             item.remove();
