@@ -3659,6 +3659,7 @@ form.someclass input {
     height: 100%;
     display: inline-block;
     vertical-align: middle;
+    margin-left: -4px;
 }
 
 .product-gallery .product-zoom-image {
