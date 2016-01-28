@@ -3698,3 +3698,7 @@ form.someclass input {
     padding: 10px 18px 10px 10px;
     text-align: left;
 }
+
+.sticky-popup-title.title-is-stuck {
+    border-bottom: 1px #ebebeb solid;
+}
