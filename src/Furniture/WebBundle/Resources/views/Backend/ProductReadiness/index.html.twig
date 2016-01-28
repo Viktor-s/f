@@ -19,24 +19,68 @@
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_readiness.breadcrumb.index'|trans|raw }}</h1>
     </div>
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for readiness in product_readinesses %}
+    <form action="{{ path('furniture_backend_product_readiness_sort_positions') }}" method="POST" id="readiness-list-form">
+        <table class="table table-bordered" id="readiness-list">
+            <thead>
             <tr>
-                <td>{{ readiness.name }}</td>
-                <td class="text-center">
-                    {{ buttons.edit(path('furniture_backend_product_readiness_update', {id: readiness.id})) }}
-                    {{ buttons.delete(path('furniture_backend_product_readiness_delete', {id: readiness.id})) }}
+                <th></th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for readiness in product_readinesses %}
+                <tr>
+                    <td style="width: 50px;">
+                        <div data-target="move" class="text-center">
+                            <i class="glyphicon glyphicon-move"></i>
+                            <input type="hidden" name="readiness[{{ readiness.id }}]" value="{{ readiness.position }}" />
+                        </div>
+                    </td>
+                    <td>{{ readiness.name }}</td>
+                    <td class="text-center">
+                        {{ buttons.edit(path('furniture_backend_product_readiness_update', {id: readiness.id})) }}
+                        {{ buttons.delete(path('furniture_backend_product_readiness_delete', {id: readiness.id})) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="3" class="text-center">
+                    <button class="btn btn-success">
+                        <i class="glyphicon glyphicon-save"></i>
+                        Save positions
+                    </button>
                 </td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </tfoot>
+        </table>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            var readinessList = $('#readiness-list tbody');
+
+            readinessList.sortable({
+                update: function () {
+                    var index = 1;
+                    readinessList.find('tr').each(function () {
+                        $(this).find('[data-target="move"] input').val(index++);
+                    });
+                }
+            });
+
+            $('#readiness-list-form').submit(function () {
+                // Remove method field
+                $(this).find('input[name="_method"]').remove();
+            })
+        })(jQuery);
+    </script>
 {% endblock %}

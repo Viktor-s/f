@@ -263,6 +263,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Readiness
+                controller: Furniture\ProductBundle\Controller\ReadinessController
 
         furniture.product_part:
             driver: doctrine/orm

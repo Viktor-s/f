@@ -6,6 +6,8 @@ furniture_backend_product_readiness:
         _sylius:
             template: SyliusWebBundle:Backend/ProductReadiness:index.html.twig
             paginate: 9999
+            sorting:
+                position: ASC
 
 furniture_backend_product_readiness_create:
     path: /new
@@ -35,3 +37,9 @@ furniture_backend_product_readiness_delete:
         _sylius:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect: furniture_backend_product_readiness
+
+furniture_backend_product_readiness_sort_positions:
+    path: /sort-positions
+    methods: [ POST ]
+    defaults:
+        _controller: furniture.controller.product_readiness:sortPositionsAction
