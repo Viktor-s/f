@@ -3702,3 +3702,8 @@ form.someclass input {
 .sticky-popup-title.title-is-stuck {
     border-bottom: 1px #ebebeb solid;
 }
+
+.popup-material-grid.col-sm-8 {
+    float:right; 
+    width: 65%;
+}
