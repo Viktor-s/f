@@ -106,10 +106,19 @@ class GroupVaraintFiler {
         return $this;
     }
 
+    /**
+     * 
+     * @return \Furniture\ProductBundle\Model\ProductPartMaterialsEditFilter
+     */
     public function getProductPartMaterialVariants() {
         return $this->productPartMaterialVariants;
     }
 
+    /**
+     * 
+     * @param \Furniture\ProductBundle\Model\ProductPartMaterialsEditFilter $productPartMaterialVariants
+     * @return \Furniture\ProductBundle\Model\GroupVaraintFiler
+     */
     public function setProductPartMaterialVariants($productPartMaterialVariants) {
         $this->productPartMaterialVariants = $productPartMaterialVariants;
         return $this;
