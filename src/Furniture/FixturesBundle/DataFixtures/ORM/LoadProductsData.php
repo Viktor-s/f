@@ -11,7 +11,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Model\AttributeValueInterface;
 use Sylius\Component\Taxation\Model\TaxCategoryInterface;
 use Furniture\ProductBundle\Entity\ProductPart;
-
+use Furniture\ProductBundle\Model\GroupVaraintFiler;
 
 use Sylius\Bundle\FixturesBundle\DataFixtures\ORM\LoadProductsData as BaseLoadProductsData;
 
@@ -212,6 +212,7 @@ class LoadProductsData extends BaseLoadProductsData
     protected function createTable($i)
     {
         $product = $this->createProduct();
+        $product->setProductType(Product::PRODUCT_SIMPLE);
         //$product->setTaxCategory($this->getTaxCategory('Taxable goods'));
         $translatedNames = array(
             $this->defaultLocale => sprintf('Table "%s"', $this->faker->word),
@@ -370,8 +371,29 @@ class LoadProductsData extends BaseLoadProductsData
      */
     protected function generateVariants(ProductInterface $product)
     {
+        $varantFilter = new GroupVaraintFiler($product);
+        
+        if($varantFilter->getProductPartMaterialVariants())
+            foreach($varantFilter->getProductPartMaterialVariants() as $ppmv){
+                foreach($ppmv->getProductPart()->getProductPartMaterials() as $m){
+                    foreach($m->getVariants() as $v){
+                        $ppmv->getProductPartMaterialVariants()->add($v);
+                    }
+                }
+            }
+        
+        if($product->getSkuOptionVariants())
+            $varantFilter->setSkuOptionsValues($product->getSkuOptionVariants());
+        if($product->getOptions()){
+            foreach($product->getOptions() as $o){
+                foreach($o->getValues() as $v){
+                    $varantFilter->getOptionValues()->add($v);
+                }
+            }
+        }
+        
         $this->get('Furniture.generator.product_variant')
-            ->generate($product)
+            ->generateByFilter($varantFilter)
         ;
         foreach ($product->getVariants() as $variant) {
             $variant->setAvailableOn($this->faker->dateTimeThisYear);

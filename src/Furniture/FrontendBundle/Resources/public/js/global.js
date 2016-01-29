@@ -607,4 +607,14 @@ $(function() {
             $(".dropdown-menu").hide();
         };
     });
+    
+    //sticky filters in popup
+    $(".sticky-popup-title").stick_in_parent({
+        spacer: true,
+        sticky_class: "title-is-stuck"
+    });
+    $(".sticky-filter").stick_in_parent({
+        spacer: true,
+        offset_top: 70
+    });
 });
