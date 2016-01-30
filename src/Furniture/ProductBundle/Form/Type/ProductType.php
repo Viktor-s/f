@@ -122,7 +122,6 @@ class ProductType extends BaseProductType
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type' => new ProductPartFormType($factory),
-                        'required'  => false,
                         'allow_add' => true,
                         'allow_delete' => true,
                         'attr' => [
