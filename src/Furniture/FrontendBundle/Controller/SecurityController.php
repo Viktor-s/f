@@ -247,11 +247,11 @@ class SecurityController
 
                 if (!$user) {
                     $error = $this->translator->trans('frontend.user_not_found_with_email', [
-                        'email' => $email,
+                        ':email' => $email,
                     ]);
                 } else if ($user->isDisabled()) {
                     $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
-                        'email' => $email,
+                        ':email' => $email,
                     ]);
                 }
 
@@ -261,9 +261,7 @@ class SecurityController
 
                     // We should create a redirect response, because user can reload page and send repeatedly
                     // send data.
-                    $url = $this->urlGenerator->generate('security_reset_password_requets_success', [
-                        'token' => $user->getConfirmationToken(),
-                    ]);
+                    $url = $this->urlGenerator->generate('security_reset_password_requets_success');
 
                     return new RedirectResponse($url);
                 }

@@ -245,14 +245,14 @@ class User extends BaseUser
     /**
      * Request for reset password
      *
-     * @return User
+     * @return string Returns the confirmation token for reset password
      */
     public function requestForResetPassword()
     {
         $this->confirmationToken = md5(uniqid(mt_rand(), true)) . md5(uniqid(mt_rand(), true));
         $this->passwordRequestedAt = new \DateTime();
 
-        return $this;
+        return $this->confirmationToken;
     }
 
     /**

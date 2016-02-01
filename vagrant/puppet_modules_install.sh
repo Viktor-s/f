@@ -16,5 +16,6 @@ puppet module install puppetlabs-rabbitmq
 puppet module install garethr-erlang
 puppet module install ajcrowe-supervisord
 puppet module install cornfeedhobo-nano
+puppet module install camptocamp-postfix
 
 # ssh root@%host% "puppet apply --pluginsync --verbose --environment prod --hiera_config=/vagrant/hiera.yaml /vagrant/manifests/"

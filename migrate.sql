@@ -20,3 +20,9 @@ ALTER TABLE furniture_product RENAME COLUMN factoryCode TO factory_code;
 ALTER TABLE furniture_product RENAME TO product;
 ALTER SEQUENCE furniture_product_id_seq RENAME TO product_id_seq;
 -- End migrations for task #446
+
+-- Start migrations for task #75
+ALTER TABLE users ADD need_reset_password BOOLEAN DEFAULT NULL;
+UPDATE users SET need_reset_password = FALSE;
+ALTER TABLE users ALTER need_reset_password SET NOT NULL;
+-- End migrations for task #75

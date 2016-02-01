@@ -18,3 +18,8 @@ Furniture\UserBundle\Entity\User:
             targetEntity: Furniture\RetailerBundle\Entity\RetailerUserProfile
             mappedBy: user
             cascade: [ persist ]
+
+    fields:
+        needResetPassword:
+            column: need_reset_password
+            type: boolean

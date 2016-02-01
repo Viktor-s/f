@@ -25,7 +25,7 @@ services:
 
     user.password_resetter:
         class: Furniture\UserBundle\PasswordResetter\PasswordResetter
-        arguments: [ @doctrine.orm.default_entity_manager ]
+        arguments: [ @doctrine.orm.default_entity_manager, @furniture.mailer ]
 
     sylius.listener.default_username:
         class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
