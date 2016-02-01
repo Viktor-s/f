@@ -267,6 +267,7 @@ class User extends BaseUser
         $this->plainPassword = $newPassword;
         $this->confirmationToken = null;
         $this->passwordRequestedAt = null;
+        $this->needResetPassword = false;
 
         return $this;
     }

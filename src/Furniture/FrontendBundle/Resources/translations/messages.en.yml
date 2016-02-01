@@ -121,6 +121,7 @@ frontend:
     specification_edit: Specification edit
     notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
     reset_password: Reset password
+    need_reset_password: You should reset password
     user_not_found_with_email: "Not found user with email :email."
     user_is_disabled_with_email: "User with email :email is disabled."
     request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."

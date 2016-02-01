@@ -1,6 +1,8 @@
 parameters:
     sylius.form.type.customer_filter.class: Furniture\UserBundle\Form\Type\CustomerFilterType
     security.authentication.form_entry_point.class: Furniture\UserBundle\Security\Authentication\FormAuthenticationEntryPoint
+    security.authentication.provider.dao.class: Furniture\UserBundle\Security\Authentication\DaoAuthenticationProvider
+    security.authentication.failure_handler.class: Furniture\UserBundle\Security\Authentication\DefaultAuthenticationFailureHandler
 
 services:
     user.killer.storage:
@@ -31,3 +33,12 @@ services:
         class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
         tags:
             - { name: doctrine.event_subscriber }
+
+    security.authentication.failure_handler:
+        class: %security.authentication.failure_handler.class%
+        arguments:
+            - @http_kernel
+            - @security.http_utils
+            - []
+            - @logger
+            - @router

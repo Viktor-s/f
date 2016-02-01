@@ -222,6 +222,7 @@ class SecurityController
 
         return new Response($content);
     }
+
     /**
      * Request for reset password
      *
@@ -269,8 +270,9 @@ class SecurityController
         }
 
         $content = $this->twig->render('FrontendBundle:Security:reset_password_request.html.twig', [
-            'form'  => $form->createView(),
-            'error' => $error,
+            'form'   => $form->createView(),
+            'error'  => $error,
+            'reason' => $request->get('reason'),
         ]);
 
         return new Response($content);

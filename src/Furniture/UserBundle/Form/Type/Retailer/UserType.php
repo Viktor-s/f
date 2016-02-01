@@ -36,7 +36,8 @@ class UserType extends BaseUserType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('retailerUserProfile', new RetailerUserProfileType());
+        $builder
+            ->add('retailerUserProfile', new RetailerUserProfileType());
 
         // Remove non used fields
         $builder

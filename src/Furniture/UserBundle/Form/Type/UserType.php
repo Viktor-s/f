@@ -45,6 +45,10 @@ class UserType extends BaseUserType
                 'class'    => Factory::class,
                 'multiple' => false,
                 'required' => false,
+            ])
+            ->add('needResetPassword', 'checkbox', [
+                'label' => 'Need reset password',
+                'required' => false
             ]);
 
         $builder->add('retailerUserProfile', new RetailerUserProfileType());
