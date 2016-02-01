@@ -32,7 +32,7 @@
     {% if part_error is defined %}
         <div class="alert alert-info">{{ part_error }}</div>
     {% else %}
-        <table class="table">
+        <table class="table" {{ block('widget_attributes') }} >
             <thead>
             <tr>
                 <th class="text-center">Name</th>
@@ -55,7 +55,7 @@
             <tr>
                 <td colspan="{{ part_count + 2 }}">
                     <div class="text-center">
-                        <a class="btn btn-default" data-collection-button="add" data-prototype="table-product-schemes" data-collection="table-product-schemes">Add scheme</a>
+                        <a class="btn btn-default" data-collection-button="add" data-prototype="table-product-schemes" data-collection="table-product-schemes">Add new</a>
                     </div>
                 </td>
             </tr>

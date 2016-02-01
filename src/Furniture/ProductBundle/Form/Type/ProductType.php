@@ -13,8 +13,10 @@ use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Furniture\CommonBundle\Form\Type\AutocompleteEntityType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -23,6 +25,32 @@ use Furniture\ProductBundle\Form\Type\ProductTranslationType;
 
 class ProductType extends BaseProductType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => $this->dataClass,
+            'cascade_validation' => true,
+            'validation_groups' => function (Form $form) {
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $form->getData();
+
+                if ($product->getId()) {
+                    return ['Update', 'Default'];
+                } else {
+                    return ['Create', 'Default'];
+                }
+            },
+            'mode' => 'full'
+        ));
+
+        $resolver->setAllowedValues([
+            'mode' => ['small', 'full']
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -94,10 +122,11 @@ class ProductType extends BaseProductType
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type' => new ProductPartFormType($factory),
-                        'required'  => false,
                         'allow_add' => true,
                         'allow_delete' => true,
-                        'by_reference' => false,
+                        'attr' => [
+                            'data-remove-confirm' => 'Are you sure you want to remove product part item?'
+                        ]
                     ])
                     ->add('compositeCollections', 'entity', [
                         'class' => CompositeCollection::class,
@@ -113,10 +142,17 @@ class ProductType extends BaseProductType
                         },
                         'multiple' => true,
                         'expanded' => false
-                    ])
-                    ->add('productSchemes', new ProductSchemesType(), [
-                        'parts' => $product->getProductParts(),
                     ]);
+
+                if (!$product->getId() || $product->isSchematicProductType() || count($product->getVariants())) {
+                    $event->getForm()
+                        ->add('productSchemes', new ProductSchemesType(), [
+                            'parts' => $product->getProductParts(),
+                            'attr' => [
+                                'data-remove-confirm' => 'Are you sure you want to remove scheme item?'
+                            ]
+                        ]);
+                }
             });
 
             // Add listener for save reference: ProductScheme -> Product
@@ -126,6 +162,10 @@ class ProductType extends BaseProductType
 
                 foreach ($product->getProductSchemes() as $productScheme) {
                     $productScheme->setProduct($product);
+                }
+
+                foreach ($product->getProductParts() as $productPart) {
+                    $productPart->setProduct($product);
                 }
             });
 
@@ -165,21 +205,5 @@ class ProductType extends BaseProductType
 
         // Remove taxons
         $builder->remove('taxons');
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->dataClass,
-            'validation_groups' => array_merge($this->validationGroups, ['Default']),
-            'mode' => 'full'
-        ));
-
-        $resolver->setAllowedValues([
-            'mode' => ['small', 'full']
-        ]);
     }
 }

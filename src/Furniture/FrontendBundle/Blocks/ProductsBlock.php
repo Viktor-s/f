@@ -42,6 +42,10 @@ class ProductsBlock extends BaseBlockService
             'user' => null,
             'template' => 'FrontendBundle:Blocks:products.html.twig'
         ]);
+
+        $resolver->setAllowedTypes([
+            'user' => User::class
+        ]);
     }
     
     /**
@@ -55,6 +59,7 @@ class ProductsBlock extends BaseBlockService
         $productQuery->withOnlyAvailable();
 
         $products = [];
+
         if ($settings['user'] instanceof User) {
             if ($settings['user']->isRetailer()) {
                 $retailerProfile = $settings['user']

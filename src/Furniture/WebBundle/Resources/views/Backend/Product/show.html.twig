@@ -299,13 +299,16 @@
 <hr>
 
 {% if not product.deleted %}
+    {% if ( product.schematicProductType and product.productSchemes.empty ) %}
+        {{ alerts.info('sylius.product.no_schema_created'|trans) }}
+    {% else %}
     <div class="well well-sm">
         {% if not app.request.query.get('sdv') %}
             {{ buttons.create(path('sylius_backend_product_variant_create', {'productId': product.id}), 'sylius.variant.create'|trans) }}
 
             {% if product.hasOptions or product.hasSkuOptionVariants or product.productParts %}
                 {{ buttons.manage(path('sylius_backend_product_variant_generate', {'productId': product.id}), 'sylius.product.generate_variants'|trans) }}
-                {{ buttons.manage(path('sylius_backend_product_variant_group_edit', {'id': product.id}), 'Group edit') }}
+                {{ buttons.manage(path('sylius_backend_product_variant_group_edit', {'productId': product.id}), 'Group edit') }}
             {% endif %}
 
             <a class="btn btn-danger" href="{{ path('sylius_backend_product_show', {id: product.id, sdv: 1}) }}">
@@ -328,6 +331,7 @@
             </a>
         {% endif %}
     </div>
+    {% endif %}
 {% endif %}
 
 {% if app.request.query.get('sdv') %}

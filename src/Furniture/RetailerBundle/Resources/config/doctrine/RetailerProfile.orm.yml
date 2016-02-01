@@ -19,6 +19,23 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
             targetEntity: Furniture\RetailerBundle\Entity\RetailerProfileLogoImage
             mappedBy: retailerProfile
             cascade: [ persist ]
+
+    manyToMany:
+        demoFactories:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinTable:
+                name: retailer_profile_demo_factories
+                joinColumns:
+                    profile_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    factory_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
             
     fields:
         name:

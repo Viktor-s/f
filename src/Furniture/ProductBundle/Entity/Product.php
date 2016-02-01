@@ -50,6 +50,8 @@ class Product extends BaseProduct
 
     /**
      * @var Collection|ProductPart[]
+     *
+     * @Assert\Valid()
      */
     protected $productParts;
 
@@ -90,6 +92,8 @@ class Product extends BaseProduct
 
     /**
      * @var Collection|ProductScheme[]
+     *
+     * @Assert\Valid()
      */
     private $productSchemes;
 
@@ -97,6 +101,13 @@ class Product extends BaseProduct
      * @var integer
      */
     private $productType = self::PRODUCT_SIMPLE;
+
+    /**
+     * @var Collection|ProductTranslation[]
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
 
     /**
      * Constructor.
@@ -1073,16 +1084,6 @@ class Product extends BaseProduct
     }
 
     /**
-     * Return translation model class.
-     *
-     * @return string
-     */
-    public static function getTranslationClass()
-    {
-        return get_parent_class(__CLASS__) . 'Translation';
-    }
-
-    /**
      * Implement __toString
      *
      * @return string
@@ -1097,6 +1098,18 @@ class Product extends BaseProduct
      */
     private function fixPdpConfig()
     {
+        //Add scheme input for schematic product
+        if($this->isSchematicProductType()){
+            $input = $this->pdpConfig->getInputForSchemes();
+            
+            if (!$input) {
+                $input = new ProductPdpInput();
+                $input->setForSchemes(true);
+                $input->setPosition(0);
+                $this->pdpConfig->addInput($input);
+            }
+        }
+        
         // Add product parts
         foreach ($this->getProductParts() as $productPart) {
             $input = $this->pdpConfig->findInputForProductPart($productPart);

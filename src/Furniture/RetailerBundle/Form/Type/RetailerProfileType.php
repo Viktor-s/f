@@ -3,6 +3,7 @@
 namespace Furniture\RetailerBundle\Form\Type;
 
 use Furniture\CommonBundle\Form\Type\BackendImageType;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -55,6 +56,12 @@ class RetailerProfileType extends AbstractType
             ->add('emails', 'text', [
                 'label' => 'furniture_retailer_profile.form.emails',
                 'required' => false
+            ])
+            ->add('demoFactories', 'entity', [
+                'label' => 'furniture_retailer_profile.form.demo_factories',
+                'class' => Factory::class,
+                'multiple' => true,
+                'expanded' => false
             ]);
         
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));

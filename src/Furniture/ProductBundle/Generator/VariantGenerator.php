@@ -13,13 +13,34 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Model\GroupVaraintFiler;
 use Symfony\Component\Validator\Exception\BadMethodCallException;
+use Furniture\ProductBundle\Entity\ProductVariant;
 
 class VariantGenerator extends ContainerAware {
 
+    /**
+     *
+     * @var \Sylius\Component\Variation\SetBuilder\SetBuilderInterface
+     */
     protected $setBuilder;
+    
+    /**
+     *
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
     protected $eventDispatcher;
+    
+    /**
+     *
+     * @var \Sylius\Component\Resource\Repository\RepositoryInterface
+     */
     protected $variantRepository;
-
+    
+    /**
+     *
+     * @var \Symfony\Component\Validator\ValidatorInterface
+     */
+    protected $validator;
+    
     function __construct(RepositoryInterface $variantRepository, SetBuilderInterface $setBuilder, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher) {
         $this->variantRepository = $variantRepository;
         $this->setBuilder = $setBuilder;
@@ -27,6 +48,13 @@ class VariantGenerator extends ContainerAware {
         $this->validator = $validator;
     }
 
+    /**
+     * 
+     * @param GroupVaraintFiler $variant_filter
+     * @return \Furniture\ProductBundle\Entity\ProductVariant[]
+     * @throws \InvalidArgumentException
+     * @throws \Exception
+     */
     public function generateByFilter(GroupVaraintFiler $variant_filter)
     {
         if (!$variant_filter->getOptionValues() 
@@ -146,10 +174,17 @@ class VariantGenerator extends ContainerAware {
                     }
                 }
             }
+
+            if($this->validator->validate($variant)->count()){
+                throw new \Exception( __METHOD__.' generate invalid '.ProductVariant::class.' instance');
+            }
+            
             $product->addVariant($variant);
             $generated[] = $variant;
         }
+
         $this->process($product, $variant);
+
         return $generated;
     }
     
@@ -157,7 +192,8 @@ class VariantGenerator extends ContainerAware {
      * 
      * @param \Furniture\ProductBundle\Entity\Product $product
      */
-    public function generate(Product $product) {
+    public function generate(Product $product)
+    {
 
         throw new \BadMethodCallException('Deprecated!');
         

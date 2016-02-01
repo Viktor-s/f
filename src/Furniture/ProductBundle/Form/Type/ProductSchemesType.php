@@ -51,6 +51,12 @@ class ProductSchemesType extends AbstractType
 
         foreach ($parts as $part) {
             /** @var \Furniture\ProductBundle\Entity\ProductPartTranslation $translate */
+            if (!$part->getCurrentLocale()) {
+                // Fuck!!! We should set a current locale, if not found, because Sylius not sets default
+                // locale on constructor of object
+                $part->setCurrentLocale('en_US');
+            }
+
             $translate = $part->translate();
             $labels[] = $translate->getLabel();
         }

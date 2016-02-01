@@ -52,7 +52,7 @@
                         <div class="tabs-entry">
                             {% if product.images|length > 0 %}
                                 <div class="product-preview-box">
-                                    <div class="swiper-container product-preview-swiper" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
+                                    <div class="swiper-container product-preview-swiper product-gallery" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
                                         <div class="swiper-wrapper">
                                             {% for image in product.images %}
                                                 <div class="swiper-slide">
@@ -122,8 +122,7 @@
                     <div class="price detail-info-entry">
                         <div class="current" id="prices"></div>
                     </div>
-
-                    <div id="skuoption" class="options-selector detail-info-entry">
+                    <div class="options-selector detail-info-entry">
                         {% for input in product.PdpConfig.inputs %}
                             {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
                                 {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
@@ -201,7 +200,7 @@
 
     <script type="text/javascript">
         (function ($) {
-            
+        $( document ).ready(function(){
             var sku_matrix = [{% for v in sku_matrix %}
             {
             'id':{{v.variant.id}},
@@ -210,6 +209,39 @@
             },{% endfor %} ];
             
             var variants_container = new variant_data_container(sku_matrix);
+
+            {% if product.schematicProductType %}
+                /*this code need to be migrate to pdp widget js */
+                var schemeMapping = {{ schemeMapping|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
+                var selectSchemeElement = $('#scheme-selector');
+                var selectSchemeFilter = selectSchemeElement.parent().data('input-id');
+                var selectSchemeCall = function(){
+                    $(".detail-info-entry[data-input-id]").hide();
+                    var el = $(this);
+                    var schemeSelected = el.val();
+                    var oldFilters = variants_container.getFilters();
+                    var newFilters = {};
+                    newFilters[selectSchemeFilter] = schemeSelected;
+                    for(filter in schemeMapping[schemeSelected]){
+                        if( filter == selectSchemeFilter )
+                            continue;
+                        var inputId = schemeMapping[schemeSelected][filter];
+                        if(oldFilters[filter]){
+                            newFilters[filter] = oldFilters[filter];
+                        }
+                        $(".detail-info-entry[data-input-id="+inputId+"]").show();
+                    }
+                    variants_container.setFilters(newFilters);
+                };
+                selectSchemeElement.change(selectSchemeCall);
+                $(document).on('filter:update', function (event) {
+                    if( !variants_container.getFilters()[selectSchemeFilter] ){
+                        selectSchemeElement.prop('selectedIndex', -1);
+                    }
+                });
+                $.proxy(selectSchemeCall ,selectSchemeElement)();
+            {% endif %}
+
 
             $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': variants_container });
             $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': variants_container });
@@ -259,6 +291,17 @@
 
         {% if active_variant_matrix %}
                 variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                /* temporary solution !!!!!!!!!! */
+                {% if product.schematicProductType %}
+                if(variants_container.getFilters()[selectSchemeFilter]){
+                    selectSchemeElement.val(variants_container.getFilters()[selectSchemeFilter]);
+                    console.log(selectSchemeElement.val());
+                    $.proxy(selectSchemeCall ,selectSchemeElement)();
+                    console.log(selectSchemeElement.val());
+                }
+                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                {% endif %}
+                /********/
         {% endif %}
 
         {% if not update_specification_item %}
@@ -331,6 +374,7 @@
                     }
                 });
         {% endif %}
+            });
             })(jQuery);
     </script>
 {% endblock %}

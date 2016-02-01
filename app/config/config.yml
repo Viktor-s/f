@@ -89,7 +89,7 @@ twig:
 
 assetic:
     debug:          %kernel.debug%
-    use_controller: false
+    use_controller: %kernel.debug%
     bundles:        ['SyliusWebBundle', 'CmfCreateBundle', 'SyliusResourceBundle', 'FrontendBundle']
     filters:
         cssrewrite: ~
@@ -158,6 +158,9 @@ sylius_product:
             controller: Furniture\ProductBundle\Controller\ProductController
             model: Furniture\ProductBundle\Entity\Product
             repository: Furniture\ProductBundle\Entity\Repository\ProductRepository
+            translation:
+                model: Furniture\ProductBundle\Entity\ProductTranslation
+                mapping: ~
             form:
                 default: Furniture\ProductBundle\Form\Type\ProductType
 
@@ -198,6 +201,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\RetailerBundle\Entity\RetailerProfile
+                repository: Furniture\RetailerBundle\Entity\Repository\RetailerProfileRepository
 
         furniture.factory:
             driver: doctrine/orm
@@ -260,6 +264,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Readiness
+                controller: Furniture\ProductBundle\Controller\Readined
 
         furniture.product_part:
             driver: doctrine/orm

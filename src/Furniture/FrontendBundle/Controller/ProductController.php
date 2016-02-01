@@ -6,6 +6,7 @@ use Furniture\FrontendBundle\Repository\ProductRepository;
 use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Furniture\FrontendBundle\Repository\SpecificationItemRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
+use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,6 +135,9 @@ class ProductController
             ));
         }
 
+        // Check product for retailer
+        $this->checkProductForRetailer($product);
+
         $quantity = 1;
 
         // Get active variant
@@ -203,10 +207,15 @@ class ProductController
                 $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
             }
 
+            if($product->isSchematicProductType()){
+                $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                $item['options'][$inputId] = $variant->getProductScheme()->getId();
+            }
+            
             if ($activeVariant && $variant == $activeVariant) {
                 $activeVariantMatrix = $item['options'];
             }
-
+            
             $skuMatrix[] = $item;
         }
 
@@ -225,9 +234,20 @@ class ProductController
             $specificationsWithBuyer[$specification->getBuyer()->getId()]['specifications'][] = $specification;
         }
 
+        $schemeMapping = [];
+        if($product->isSchematicProductType()){
+            foreach($product->getProductSchemes() as $scheme){
+                $schemeMapping[$scheme->getId()] = [];
+                foreach($scheme->getProductParts() as $productPart){
+                    $schemeMapping[$scheme->getId()][$productPart->getId()] = $product->getPdpConfig()->findInputForProductPart($productPart)->getId();
+                }
+            }
+        }
+        
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
             'product'                   => $product,
             'sku_matrix'                => $skuMatrix,
+            'schemeMapping'             => $schemeMapping,
             'active_variant_matrix'     => $activeVariantMatrix,
             'options'                   => $options,
             'specificationsWithBuyer'            => $specificationsWithBuyer,
@@ -238,5 +258,35 @@ class ProductController
         ]);
 
         return new Response($content);
+    }
+
+    /**
+     * Check product for retailer
+     *
+     * @param Product $product
+     */
+    private function checkProductForRetailer(Product $product)
+    {
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+
+        $retailerUserProfile = $activeUser->getRetailerUserProfile();
+
+        if ($retailerUserProfile) {
+            $retailerProfile = $retailerUserProfile->getRetailerProfile();
+
+            if ($retailerProfile && $retailerProfile->isDemo()) {
+                $factory = $product->getFactory();
+
+                if (!$retailerProfile->hasDemoFactory($factory)) {
+                    throw new NotFoundHttpException(sprintf(
+                        'The active retailer "%s" is demo and not have rights for view product "%s" from factory "%s".',
+                        $retailerProfile->getName(),
+                        $product->getName(),
+                        $factory->getName()
+                    ));
+                }
+            }
+        }
     }
 }

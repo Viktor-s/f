@@ -204,6 +204,16 @@ class ProductRepository
                 ->andWhere($orExpr)
                 ->setParameter('retailer_access_products', true)
                 ->setParameter('default_access_products', true);
+
+            if ($query->getRetailer()->isDemo()) {
+                $demoFactoryIds = array_map(function (Factory $factory) {
+                    return $factory->getId();
+                }, $query->getRetailer()->getDemoFactories()->toArray());
+
+                $qb
+                    ->andWhere('f.id IN (:demo_factory_ids)')
+                    ->setParameter('demo_factory_ids', $demoFactoryIds);
+            }
         } else {
             $qb
                 ->andWhere('fdr.accessProducts = :default_access_products')

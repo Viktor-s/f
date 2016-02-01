@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
@@ -138,6 +139,10 @@ class FactorySideController
             $query->withCategory($selectedCategory);
         }
 
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $query->withRetailerFromUser($activeUser);
+
         $factories = $this->factoryRepository->findBy($query);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:factories.html.twig', [
@@ -161,6 +166,7 @@ class FactorySideController
     public function general($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:general.html.twig', [
             'factory' => $factory,
@@ -179,6 +185,7 @@ class FactorySideController
     public function news($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         $posts = $this->postRepository->findNewsForFactory($factory);
 
@@ -201,6 +208,7 @@ class FactorySideController
     public function circulars($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         $posts = $this->postRepository->findCircularsForFactory($factory);
 
@@ -224,6 +232,7 @@ class FactorySideController
     public function post($factory, $slug)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
         $post = $this->postRepository->findBySlugForFactory($factory, $slug);
 
         if (!$post) {
@@ -253,6 +262,7 @@ class FactorySideController
     public function contacts($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:contacts.html.twig', [
             'factory'  => $factory,
@@ -272,6 +282,7 @@ class FactorySideController
     public function workInfo($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $translate = $factory->translate();
@@ -294,6 +305,7 @@ class FactorySideController
     public function collections($factory)
     {
         $factory = $this->findFactory($factory);
+        $this->checkFactoryForRetailer($factory);
 
         if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
             throw new AccessDeniedException(sprintf(
@@ -320,7 +332,7 @@ class FactorySideController
      *
      * @param int $factory
      *
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     * @return Factory
      *
      * @throws NotFoundHttpException
      */
@@ -336,5 +348,31 @@ class FactorySideController
         }
 
         return $factory;
+    }
+
+    /**
+     * Check factory for retailer
+     *
+     * @param Factory $factory
+     */
+    private function checkFactoryForRetailer(Factory $factory)
+    {
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $retailerUserProfile = $activeUser->getRetailerUserProfile();
+
+        if ($retailerUserProfile) {
+            $retailerProfile = $retailerUserProfile->getRetailerProfile();
+
+            if ($retailerProfile && $retailerProfile->isDemo()) {
+                if (!$retailerProfile->hasDemoFactory($factory)) {
+                    throw new NotFoundHttpException(sprintf(
+                        'The retailer "%s" is demo and not have rights for view factory "%s".',
+                        $retailerProfile->getName(),
+                        $factory->getName()
+                    ));
+                }
+            }
+        }
     }
 }

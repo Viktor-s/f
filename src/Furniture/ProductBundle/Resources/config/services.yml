@@ -42,3 +42,9 @@ services:
         class: Furniture\ProductBundle\EventListener\Doctrine\ProductVariantMetadataSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+
+    twig.extension.product:
+        class: Furniture\ProductBundle\Twig\ProductExtension
+        arguments: [ @product_variant.removal_checker ]
+        tags:
+            - { name: twig.extension }

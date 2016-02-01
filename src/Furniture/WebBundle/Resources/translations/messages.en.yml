@@ -228,6 +228,7 @@ sylius:
         clear_deleted: Clear deleted
         no_extensions:  There are no extensions for this product
         factory_code: Factory code
+        no_schema_created: You need to create at least two productSchemas at this product to create|edit sku variants
         tabs:
             extensions: Extensions
             composite_collections: Collections

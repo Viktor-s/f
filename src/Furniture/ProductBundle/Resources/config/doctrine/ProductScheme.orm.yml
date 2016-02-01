@@ -36,8 +36,10 @@ Furniture\ProductBundle\Entity\ProductScheme:
                 joinColumns:
                     product_scheme:
                         referencedColumnName: id
+                        onDelete: CASCADE
 
                 inverseJoinColumns:
                     product_part:
                         referencedColumnName: id
+                        onDelete: CASCADE
             

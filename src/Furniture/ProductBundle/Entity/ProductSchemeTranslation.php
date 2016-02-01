@@ -3,10 +3,10 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductSchemeTranslation extends AbstractTranslation
 {
-    
     /**
      * @var int
      */
@@ -14,6 +14,8 @@ class ProductSchemeTranslation extends AbstractTranslation
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     protected $name;
     

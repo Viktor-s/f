@@ -68,7 +68,6 @@ class Factory extends AbstractTranslatable
     private $contacts;
 
     /**
-     *
      * @var bool
      */
     private $enabled;

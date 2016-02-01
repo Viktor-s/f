@@ -71,12 +71,20 @@
     </ol>
 {% endblock %}
 
+{% set product = groupVariantFilter.product %}
+
 {% block content %}
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-pencil"></i> Variants of "{{ product.name }}"</h1>
     </div>
     <script>
         $(document).ready(function () {
+            
+            $('#select-scheme').change(function(){
+                var el = $(this);
+                el.parents('form:first').submit()
+            })
+            
             $('.panel-on').click(function () {
                 var el = $(this);
                 var container = '[data-container="'+el.parent().data('controledcontainer')+'"]';
@@ -159,6 +167,20 @@
     </script>
 
     <div class="row admin-filter-variants">
+        {% if groupVariantFilter.schematicProductType %}
+        <form class="form-horizontal" type="GET">
+            <div class="form-group">
+                <label for="select-scheme" class="col-sm-2 control-label">Scheme</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="select-scheme" name="schemaId">
+                        {% for pScheme in product.productSchemes %}
+                            <option value="{{ pScheme.id }}" {% if groupVariantFilter.scheme.id == pScheme.id %} selected{% endif %}>{{ pScheme.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+        {% endif %}
         <form name="blablaba">
         {% if product.hasOptions() %}
             {% for option in  product.options %}
@@ -211,7 +233,12 @@
             {% endfor %}
         {% endif %}
         {% if product.hasProductParts() %}
-            {% for productPart in  product.productParts %}
+            {% if groupVariantFilter.schematicProductType %}
+                {% set productParts = groupVariantFilter.scheme.productParts %}
+            {% else %}
+                {% set productParts = product.productParts %}
+            {% endif %}
+            {% for productPart in  productParts %}
                 <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
                     <div class="panel panel-default">
                         <div class="panel-heading">

@@ -19,7 +19,7 @@
             <div>
                 <div class="tabs-entry">
                     <div class="products-swiper">
-                        {{ sonata_block_render({type: 'frontend.block.factories'}, {newest: true}) }}
+                        {{ sonata_block_render({type: 'frontend.block.factories'}, {user: app.user, newest: true}) }}
                     </div>
                 </div>
 

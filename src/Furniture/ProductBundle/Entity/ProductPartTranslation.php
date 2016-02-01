@@ -3,10 +3,10 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class ProductPartTranslation extends AbstractTranslation 
+class ProductPartTranslation extends AbstractTranslation
 {
-    
     /**
      * @var int
      */
@@ -14,6 +14,8 @@ class ProductPartTranslation extends AbstractTranslation
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     protected $label;
 
@@ -28,9 +30,11 @@ class ProductPartTranslation extends AbstractTranslation
     }
 
     /**
-     * 
+     * Set label
+     *
      * @param string $label
-     * @return \Furniture\ProductBundle\Entity\ProductPartTranslation
+     *
+     * @return ProductPartTranslation
      */
     public function setLabel($label)
     {
@@ -40,13 +44,12 @@ class ProductPartTranslation extends AbstractTranslation
     }
 
     /**
-     * 
+     * Get label
+     *
      * @return string
      */
     public function getLabel()
     {
         return $this->label;
     }
-    
 }
-

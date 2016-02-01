@@ -17,7 +17,7 @@ class ProductPdpInputType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProductPdpInput::class
+            'data_class' => ProductPdpInput::class,
         ]);
     }
 
@@ -26,19 +26,19 @@ class ProductPdpInputType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('position', 'integer', [
-            'label' => 'Position'
-        ])
+        $builder
+            ->add('position', 'hidden', [
+                'label' => 'Position',
+            ])
             ->add('type', 'choice', [
-            'label' => 'Input type',
-            'required' => true,
-            'choices' => [ 
-                ProductPdpInput::SELECT_DEFAULT_TYPE => 'Default',
-                ProductPdpInput::SELECT_INLINE_TYPE => 'Inline',
-                ProductPdpInput::SELECT_POPUP_TYPE => 'Popup'
-                ]
-        ])
-            ;
+                'label'    => 'Input type',
+                'required' => true,
+                'choices'  => [
+                    ProductPdpInput::SELECT_DEFAULT_TYPE => 'Default',
+                    ProductPdpInput::SELECT_INLINE_TYPE  => 'Inline',
+                    ProductPdpInput::SELECT_POPUP_TYPE   => 'Popup',
+                ],
+            ]);
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductPdpInputType extends AbstractType
         }
 
         $view->vars = array_merge($view->vars, [
-            'pdp_input' => $data
+            'pdp_input' => $data,
         ]);
     }
 

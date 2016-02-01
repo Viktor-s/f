@@ -4,7 +4,7 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
-use Furniture\FrontendBundle\Form\Type\UserFactoryRateType;
+use Furniture\FrontendBundle\Form\Type\RetailerFactoryRateType;
 use Furniture\FrontendBundle\Repository\RetailerFactoryRateRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -143,7 +143,7 @@ class FactoryRatesController
             }
         }
 
-        $form = $this->formFactory->create(new UserFactoryRateType(), $rate);
+        $form = $this->formFactory->create('retailer_factory_rate', $rate);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

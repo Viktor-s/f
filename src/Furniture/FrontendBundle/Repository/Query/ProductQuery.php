@@ -392,7 +392,7 @@ class ProductQuery
     /**
      * Get content user
      *
-     * @return \Furniture\UserBundle\Entity\User
+     * @return RetailerProfile
      */
     public function getRetailer()
     {

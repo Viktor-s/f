@@ -51,6 +51,12 @@ class ProductPdpInput
     private $productPart;
 
     /**
+     *
+     * @var int
+     */
+    private $forSchemes;
+    
+    /**
      * @var int
      */
     private $position = 0;
@@ -176,8 +182,9 @@ class ProductPdpInput
         $variantSelections = [];
         foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
             /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-            $variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first();
-            $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+            if($variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first()){
+                $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+            }
         }
         return $variantSelections;
     }
@@ -243,6 +250,22 @@ class ProductPdpInput
         return $variants;
     }
     
+    public function setForSchemes($status){
+        $this->forSchemes = $status;
+        return $this;
+    }
+    
+    public function isForSchemes(){
+        return $this->forSchemes;
+    }
+
+    public function getSchemes(){
+        if($this->isForSchemes()){
+            return $this->getConfig()->getProduct()->getProductSchemes();
+        }
+        return null;
+    }
+
     /**
      * Set position
      *
@@ -303,6 +326,8 @@ class ProductPdpInput
                 '%s',
                 $this->option->getName()
             );
+        } else if ($this->isForSchemes()) {
+            return 'Variants';
         } else {
             return 'Undefined';
         }
@@ -333,6 +358,8 @@ class ProductPdpInput
                 '%s',
                 $this->option->getName()
             );
+        } else if ($this->isForSchemes()) {
+            return 'Variants';
         } else {
             return 'Undefined';
         }

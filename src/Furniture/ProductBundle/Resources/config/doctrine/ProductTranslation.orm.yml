@@ -1,0 +1,9 @@
+Furniture\ProductBundle\Entity\ProductTranslation:
+    type: entity
+    table: product_translation
+
+    attributeOverride:
+        description:
+            column: description
+            type: text
+            nullable: true

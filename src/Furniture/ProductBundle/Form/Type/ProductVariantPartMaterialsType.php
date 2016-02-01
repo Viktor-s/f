@@ -13,12 +13,12 @@ use Symfony\Component\Form\FormEvents;
 
 class ProductVariantPartMaterialsType extends AbstractType
 {
-    
+
     /**
      * @var EntityManagerInterface
      */
     private $em;
-    
+
     /**
      * Construct
      *
@@ -28,64 +28,64 @@ class ProductVariantPartMaterialsType extends AbstractType
     {
         $this->em = $em;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired([
-            'product_varant_object'
+            'product_varant_object',
         ]);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /**
-         * @var $productVariant \Furniture\ProductBundle\Entity\ProductVariant
-         */
+        /** @var \Furniture\ProductBundle\Entity\ProductVariant $productVariant */
         $productVariant = $options['product_varant_object'];
-        
+
         $contains = [];
-        foreach($productVariant->getProductPartVariantSelections() as $ppvs )
-        {
+        foreach ($productVariant->getProductPartVariantSelections() as $ppvs) {
             $contains[$ppvs->getProductPartMaterialVariant()->getId()] = $ppvs->getProductPartMaterialVariant();
         }
-        
+
         $i = 0;
-        
-        foreach( $productVariant->getProduct()->getProductParts() as $productPart )
-        {
+
+        /** @var \Furniture\ProductBundle\Entity\Product $product */
+        $product = $productVariant->getProduct();
+
+        foreach ($product->getProductParts() as $productPart) {
             $productPartMaterialsVariants = [];
             $choiceLabels = [];
             $choiceValues = [];
-            
-            foreach($productPart->getProductPartMaterials() as $productPartMaterial)
-            {
-                foreach($productPartMaterial->getVariants() as $productPartMaterialVariant)
-                {
+
+            foreach ($productPart->getProductPartMaterials() as $productPartMaterial) {
+                foreach ($productPartMaterial->getVariants() as $productPartMaterialVariant) {
                     $productPartMaterialsVariants[$productPartMaterialVariant->getName()] = $productPartMaterialVariant->getId();
                     $choiceLabels[] = $productPartMaterialVariant->getName();
-                    $choiceValues[] = $productPart->getId().'_'.$productPartMaterialVariant->getId();
+                    $choiceValues[] = $productPart->getId() . '_' . $productPartMaterialVariant->getId();
                 }
-                
+
             }
-            
-            if(count($productPartMaterialsVariants) > 0)
-            {
-                $builder->add( $i, 'choice', [
-                    'label' => $productPart->getLabel(),
+
+            if (count($productPartMaterialsVariants) > 0) {
+                $builder->add($i, 'choice', [
+                    'label'       => $productPart->getLabel(),
                     'choice_list' => new ChoiceList($choiceValues, $choiceLabels),
-                    'multiple' => false
+                    'required'    => false,
+                    'attr'        => [
+                        'data-part-id' => $productPart->getId(),
+                    ],
                 ]);
-                $i ++;
+
+                $i++;
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -93,6 +93,6 @@ class ProductVariantPartMaterialsType extends AbstractType
     {
         return 'ProductVariantPartMaterialsType';
     }
-    
+
 }
 

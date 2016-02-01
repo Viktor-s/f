@@ -2,8 +2,11 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +16,8 @@ use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Entity\ProductScheme;
 
-class ProductVariantType extends BaseProductVariantType {
+class ProductVariantType extends BaseProductVariantType
+{
 
     /**
      * {@inheritdoc}
@@ -36,13 +40,27 @@ class ProductVariantType extends BaseProductVariantType {
         if (!$options['master']) {
             /* PISEC PODKRALSA NEZAMETNO ....................................... */
             $variant = $builder->getData();
-            
-            if($variant->getProduct()->isSchematicProductType()){
-                $builder->add('productScheme', 'entity', [
-                    'class' => ProductScheme::class,
-                    'property' => 'name',
-                ]);
-            }
+
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+                $variant = $event->getData();
+                $product = $variant->getProduct();
+
+                $disabled = (bool) $variant->getId();
+
+                if ($variant->getProduct()->isSchematicProductType()) {
+                    $event->getForm()->add('productScheme', 'entity', [
+                        'class' => ProductScheme::class,
+                        'property' => 'name',
+                        'disabled' => $disabled,
+                        'query_builder' => function (EntityRepository $er) use ($product) {
+                            return $er->createQueryBuilder('ps')
+                                ->andWhere('ps.product = :product')
+                                ->setParameter('product', $product);
+                        }
+                    ]);
+                }
+            });
             
             $dataCollector = [
                 'part' => [],
@@ -57,7 +75,6 @@ class ProductVariantType extends BaseProductVariantType {
                     }
                 }
             }
-
 
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
             $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType', [

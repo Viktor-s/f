@@ -4,6 +4,7 @@ namespace Furniture\CommonBundle\Controller\Backend;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Readiness;
+use Furniture\RetailerBundle\Form\Type\RetailerProfileFilterType;
 use Sylius\Bundle\WebBundle\Controller\Backend\FormController as BaseFormController;
 
 class FormController extends BaseFormController
@@ -66,6 +67,24 @@ class FormController extends BaseFormController
 
         return $this->render('SyliusWebBundle:Backend/Product:filterForm.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Create a retailer filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function retailerProfileFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+
+        $form = $this->get('form.factory')->createNamed('criteria', new RetailerProfileFilterType(), $data);
+
+        return $this->render('WebBundle:Backend/RetailerProfile:filterForm.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }

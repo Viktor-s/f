@@ -15,6 +15,7 @@
             {{ form_row(form.website) }}
             {{ form_row(form.subtitle) }}
             {{ form_row(form.description) }}
+            {{ form_row(form.demoFactories) }}
         </div>
 
         <div class="tab-pane" id="images">
@@ -24,3 +25,11 @@
 </div>
 
 {{ form_rest(form) }}
+
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('#furniture_retailer_profile_demoFactories').select2();
+        });
+    })(jQuery);
+</script>

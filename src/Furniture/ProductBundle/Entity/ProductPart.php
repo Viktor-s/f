@@ -5,7 +5,7 @@ namespace Furniture\ProductBundle\Entity;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Furniture\ProductBundle\Entity\ProductScheme;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductPart extends AbstractTranslatable
 {
@@ -28,6 +28,13 @@ class ProductPart extends AbstractTranslatable
      * @var Collection|ProductPartMaterial[]
      */
     protected $productPartMaterials;
+
+    /**
+     * @var Collection|ProductPartTranslation[]
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
     
     /**
      * Construct

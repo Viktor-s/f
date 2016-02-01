@@ -18,11 +18,13 @@
 
     <div class="row">
         {{ form_start(form) }}
-        <table class="table">
+
+        <table class="table" id="pdp-config-list">
             <thead>
             <tr>
+                <th style="width: 50px;"></th>
                 <th>Type</th>
-                <th>Position</th>
+                <th></th>
             </tr>
             </thead>
 
@@ -49,12 +51,39 @@
 
 {% block product_pdp_input_widget %}
     <tr>
-        <td>{{ form.vars.value.humanNameDetailed }}</td>
         <td>
-            {{ form_widget(form.position) }}
+            <div data-target="move" class="text-center">
+                <i class="glyphicon glyphicon-move"></i>
+
+                {{ form_widget(form.position) }}
+            </div>
         </td>
+
+        <td>{{ form.vars.value.humanNameDetailed }}</td>
+
         <td>
             {{ form_widget(form.type) }}
         </td>
     </tr>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var list = $('#pdp-config-list');
+
+                list.find('tbody').sortable({
+                    update: function () {
+                        var index = 1;
+                        list.find('tbody tr').each(function () {
+                            $(this).find('[data-target="move"] input').val(index++);
+                        });
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

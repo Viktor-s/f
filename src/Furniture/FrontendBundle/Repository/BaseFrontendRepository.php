@@ -13,7 +13,8 @@ use Pagerfanta\Pagerfanta;
 class BaseFrontendRepository extends EntityRepository
 {
 
-    function __construct($em, $entityName) {
+    public function __construct($em, $entityName)
+    {
         $metadata = $em->getClassMetadata($entityName);
         parent::__construct($em, $metadata);
     }
@@ -27,5 +28,4 @@ class BaseFrontendRepository extends EntityRepository
     {
         return new Pagerfanta(new DoctrineORMAdapter($queryBuilder, true, false));
     }
-    
 }

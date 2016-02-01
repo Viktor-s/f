@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
@@ -16,10 +17,10 @@ use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FactoryRetailerRelationType extends AbstractType
 {
-    
     /**
      * @var FactoryRepository
      */
@@ -31,27 +32,35 @@ class FactoryRetailerRelationType extends AbstractType
     private $factoryRelationRepository;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
      * Constructor
      *
      * @param FactoryRetailerRelationRepository $factoryRelationRepository
      * @param FactoryRepository                 $factoryRepository
+     * @param TokenStorageInterface             $tokenStorage
      */
     public function __construct(
         FactoryRetailerRelationRepository $factoryRelationRepository,
-        FactoryRepository $factoryRepository
+        FactoryRepository $factoryRepository,
+        TokenStorageInterface $tokenStorage
     )
     {
         $this->factoryRelationRepository = $factoryRelationRepository;
         $this->factoryRepository = $factoryRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
-        /**
+    /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => FactoryRetailerRelation::class,
+            'data_class'   => FactoryRetailerRelation::class,
             'factory_user' => null,
             'content_user' => null,
         ]);
@@ -100,15 +109,15 @@ class FactoryRetailerRelationType extends AbstractType
                 if ($relation->getId()) {
                     // Edit saved relation
                     $form->add('_retailer', 'text', [
-                        'label' => 'frontend.retailer',
-                        'mapped' => false,
+                        'label'    => 'frontend.retailer',
+                        'mapped'   => false,
                         'disabled' => true,
-                        'data' => $relation->getRetailer()->getName()
+                        'data'     => $relation->getRetailer()->getName(),
                     ]);
                 } else {
                     $form->add('retailer', 'entity', [
                         'label' => 'frontend.retailer',
-                        'class' => RetailerProfile::class
+                        'class' => RetailerProfile::class,
                     ]);
                 }
             }
@@ -117,51 +126,55 @@ class FactoryRetailerRelationType extends AbstractType
                 if ($relation->getId()) {
                     // Edit saved relation
                     $form->add('_factory', 'text', [
-                        'label' => 'frontend.brand',
-                        'mapped' => false,
+                        'label'    => 'frontend.brand',
+                        'mapped'   => false,
                         'disabled' => true,
-                        'data' => $relation->getFactory()->getName()
+                        'data'     => $relation->getFactory()->getName(),
                     ]);
                 } else {
                     $form->add('factory', 'entity', [
-                        'label' => 'frontend.factory',
-                        'class' => Factory::class,
+                        'label'         => 'frontend.factory',
+                        'class'         => Factory::class,
                         'query_builder' => function (EntityRepository $er) use ($relation) {
-                            if( $relation->getRetailer() ){
-                                return $er->createQueryBuilder('f')
-                                    ->leftJoin( 'f.retailerRelations','fur', 'WITH', 'fur.retailer = :retailer')
-                                    ->orWhere('fur.retailer is NULL')
-                                    //If visible in front!
-                                    ->andWhere('f.enabled = true')
-                                    ->setParameter('retailer', $relation->getRetailer())
-                                    ;
-                            }else
+                            if ($relation->getRetailer()) {
+                                $factoryQuery = new FactoryQuery();
+                                $activeUser = $this->tokenStorage->getToken()->getUser();
+                                $factoryQuery->withRetailerFromUser($activeUser);
+
+                                $qb = $this->factoryRepository->createQueryBuilderForFactory($factoryQuery);
+
+                                return $qb
+                                    ->leftJoin('f.retailerRelations', 'fur', 'WITH', 'fur.retailer = :retailer')
+                                    ->andWhere('fur.retailer is NULL')
+                                    ->setParameter('retailer', $relation->getRetailer());
+                            } else {
                                 return $er->createQueryBuilder('f');
-                        }
+                            }
+                        },
                     ]);
                 }
             }
 
             $form
                 ->add('accessProducts', 'checkbox', [
-                    'label' => 'frontend.products_view',
+                    'label'    => 'frontend.products_view',
                     'disabled' => $disabledAccessRights,
-                    'required' => false
+                    'required' => false,
                 ])
                 ->add('accessProductsPrices', 'checkbox', [
-                    'label' => 'frontend.product_prices_view',
+                    'label'    => 'frontend.product_prices_view',
                     'disabled' => $disabledAccessRights,
-                    'required' => false
+                    'required' => false,
                 ])
                 ->add('discount', 'number', [
-                    'label' => 'frontend.discount',
-                    'disabled' => $disabledAccessRights
+                    'label'    => 'frontend.discount',
+                    'disabled' => $disabledAccessRights,
                 ])
                 ->add('_submit', 'submit', [
                     'label' => 'frontend.save',
-                    'attr' => [
-                        'class' => 'btn btn-success col-lg-offset-2'
-                    ]
+                    'attr'  => [
+                        'class' => 'btn btn-success col-lg-offset-2',
+                    ],
                 ]);
         });
     }
