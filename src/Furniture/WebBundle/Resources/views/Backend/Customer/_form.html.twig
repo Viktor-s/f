@@ -14,10 +14,6 @@
 
                 {{ form_row(form.gender) }}
                 {{ form_row(form.user.enabled) }}
-
-                {% if form.user.needResetPassword is defined %}
-                    {{ form_row(form.user.needResetPassword) }}
-                {% endif %}
             </fieldset>
 
             {% if form.user.factory is defined %}

@@ -42,3 +42,4 @@ services:
             - []
             - @logger
             - @router
+            - @user.password_resetter

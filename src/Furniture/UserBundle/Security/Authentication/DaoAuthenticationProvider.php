@@ -18,7 +18,7 @@ class DaoAuthenticationProvider extends BaseDaoAuthenticationProvider
 
         if ($user instanceof User) {
             if ($user->isNeedResetPassword()) {
-                throw new AuthenticationNeedResetPasswordException('Need reset password.');
+                throw new AuthenticationNeedResetPasswordException($user, 'Need reset password.');
             }
         }
 

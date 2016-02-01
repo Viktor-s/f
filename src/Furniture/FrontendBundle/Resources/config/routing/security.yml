@@ -35,3 +35,9 @@ security_reset_password_success:
     methods: [ GET ]
     defaults:
         _controller: frontend.controller.security:resetPasswordSuccessfully
+
+security_need_reset_password:
+    path: /need-reset-password
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:needResetPassword

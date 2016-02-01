@@ -145,6 +145,18 @@ class SecurityController
     }
 
     /**
+     * Need reset password
+     *
+     * @return Response
+     */
+    public function needResetPassword()
+    {
+        $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig');
+
+        return new Response($content);
+    }
+
+    /**
      * Reset password process
      *
      * @param Request $request

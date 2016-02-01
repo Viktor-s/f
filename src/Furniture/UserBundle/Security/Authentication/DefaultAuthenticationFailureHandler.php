@@ -2,6 +2,7 @@
 
 namespace Furniture\UserBundle\Security\Authentication;
 
+use Furniture\UserBundle\PasswordResetter\PasswordResetter;
 use Furniture\UserBundle\Security\Exception\AuthenticationNeedResetPasswordException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +21,11 @@ class DefaultAuthenticationFailureHandler extends BaseDefaultAuthenticationFailu
     private $urlGenerator;
 
     /**
+     * @var PasswordResetter
+     */
+    private $passwordResetter;
+
+    /**
      * Constructor.
      *
      * @param HttpKernelInterface   $httpKernel
@@ -27,18 +33,21 @@ class DefaultAuthenticationFailureHandler extends BaseDefaultAuthenticationFailu
      * @param array                 $options
      * @param LoggerInterface       $logger
      * @param UrlGeneratorInterface $urlGenerator
+     * @param PasswordResetter      $passwordResetter
      */
     public function __construct(
         HttpKernelInterface $httpKernel,
         HttpUtils $httpUtils,
         array $options,
         LoggerInterface $logger,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        PasswordResetter $passwordResetter
     )
     {
         parent::__construct($httpKernel, $httpUtils, $options, $logger);
 
         $this->urlGenerator = $urlGenerator;
+        $this->passwordResetter = $passwordResetter;
     }
 
     /**
@@ -47,9 +56,10 @@ class DefaultAuthenticationFailureHandler extends BaseDefaultAuthenticationFailu
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($exception instanceof AuthenticationNeedResetPasswordException) {
-            $toUrl = $this->urlGenerator->generate('security_reset_password_request', [
-                'reason' => 'nrp'
-            ]);
+            $user = $exception->getUser();
+            $this->passwordResetter->resetPassword($user);
+
+            $toUrl = $this->urlGenerator->generate('security_need_reset_password');
 
             return new RedirectResponse($toUrl);
         }
