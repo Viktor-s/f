@@ -3672,14 +3672,18 @@ form.someclass input {
     height: auto;
 }
 
-.factories-grid .image {
-    width: auto;
-    max-height: 100%;
+.factories-grid.blog-entry .image {
+    height: 160px;
     display: inline-block;
 }
 
-.factories-grid.blog-entry .image {
-    height: 160px;
+.factories-grid.blog-entry .image img {
+    max-height: 100%;
+    width: auto;
+}
+
+.blog-entry.factories-grid {
+    text-align: center;
 }
 
 .information-entry .factory-info .factory-cover .logo {
