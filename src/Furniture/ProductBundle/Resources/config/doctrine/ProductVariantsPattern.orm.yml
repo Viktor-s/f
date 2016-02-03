@@ -1,0 +1,65 @@
+Furniture\ProductBundle\Entity\ProductVariantsPattern:
+    type: entity
+    table: product_variants_pattern
+
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            column: name
+
+        price:
+            type: integer
+            column: price
+
+    manyToOne:
+        scheme:
+            targetEntity: Furniture\ProductBundle\Entity\ProductScheme
+            joinColumn:
+                name: scheme_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    manyToMany:
+        partVariantSelections:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartVariantSelection
+            joinTable:
+                name: product_variants_pattern_part_variant_selections
+                joinColumns:
+                    pattern_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    part_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        skuOptionValues:
+            targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
+            joinTable:
+                name: product_variants_sku_option_variants
+                joinColumns:
+                    pattern_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+                inverseJoinColumns:
+                    sku_option_variant_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

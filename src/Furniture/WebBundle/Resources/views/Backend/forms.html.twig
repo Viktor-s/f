@@ -81,3 +81,9 @@
         </td>
     </tr>
 {% endblock %}
+
+{% block product_pattern_widget %}
+    {{ form_row(form.product) }}
+    {{ form_row(form.scheme) }}
+    {{ form_row(form.name) }}
+{% endblock %}

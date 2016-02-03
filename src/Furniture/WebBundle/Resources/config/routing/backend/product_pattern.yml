@@ -1,0 +1,21 @@
+furniture_backend_product_pattern_index:
+    path: /
+    defaults:
+        _controller: furniture.controller.product_pattern:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPattern:index.html.twig
+
+furniture_backend_product_pattern_create:
+    path: /new
+    defaults:
+        _controller: furniture.controller.product_pattern:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPattern:create.html.twig
+
+furniture_backend_product_pattern_create_with_scheme:
+    path: /new/{scheme}
+    requirements: {}
+    defaults:
+        _controller: furniture.controller.product_pattern:createWithSchemeAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPattern:create.html.twig

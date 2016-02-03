@@ -228,6 +228,12 @@ sylius_resource:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
 
+        furniture.product_pattern:
+            driver: doctrine/orm
+            classes:
+                controller: Furniture\ProductBundle\Controller\ProductVariantsPatternController
+                model: Furniture\ProductBundle\Entity\ProductVariantsPattern
+
         furniture.product_category:
             driver: doctrine/orm
             classes:

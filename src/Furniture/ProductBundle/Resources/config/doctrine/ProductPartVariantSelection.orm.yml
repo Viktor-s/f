@@ -18,6 +18,7 @@ Furniture\ProductBundle\Entity\ProductPartVariantSelection:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+
         productVariant:
             targetEntity: Furniture\ProductBundle\Entity\ProductVariant
             inversedBy: productPartVariantSelections
@@ -27,6 +28,7 @@ Furniture\ProductBundle\Entity\ProductPartVariantSelection:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+
         productPartMaterialVariant:
             targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
             joinColumn:

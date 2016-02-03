@@ -5,7 +5,7 @@ Furniture\ProductBundle\Entity\ProductScheme:
     id:
         id:
             type: integer
-            name: id
+            column: id
             generator:
                 strategy: AUTO
     

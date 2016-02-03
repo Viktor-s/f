@@ -1,0 +1,41 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('sylius_backend_product_index') }}">Products</a></li>
+        <li>{{ product.name }}</li>
+        <li>Patterns</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{  buttons.create(path('furniture_backend_product_pattern_create', {productId: product.id})) }}
+        </div>
+
+        <h1><i class="glyphicon glyphicon-list-alt"></i> Patterns</h1>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for pattern in product_patterns %}
+            <tr>
+                <td>{{ pattern.name }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
