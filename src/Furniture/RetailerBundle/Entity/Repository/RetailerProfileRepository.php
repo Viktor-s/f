@@ -20,9 +20,19 @@ class RetailerProfileRepository extends EntityRepository
         $qb = $this->createQueryBuilder('rp');
 
         if (!empty($criteria['name'])) {
+            $words= explode(' ', $criteria['name']);
+            $words = array_map('trim', $words);
+
+            $orX = $qb->expr()->orX();
+
+            foreach ($words as $index => $word) {
+                $key = sprintf(':name_word_%d', $index);
+                $orX->add('LOWER(rp.name) LIKE ' . $key);
+                $qb->setParameter($key, '%' . mb_strtolower($word) . '%');
+            }
+
             $qb
-                ->andWhere('rp.name LIKE :name')
-                ->setParameter('name', '%' . $criteria['name'] . '%');
+                ->andWhere($orX);
         }
 
         $qb->orderBy('rp.id', 'DESC');
