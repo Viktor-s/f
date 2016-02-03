@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FrontendBundle\Form\Type;
+namespace Furniture\FrontendBundle\Form\Type\RetailerEmployee;
 
 use Furniture\UserBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;

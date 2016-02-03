@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Form\Type;
 
+use Furniture\FrontendBundle\Form\Type\RetailerEmployee\RetailerEmployeeUserProfileType;
 use Symfony\Component\Form\AbstractType;
 use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,7 +40,7 @@ class UserInformationType extends AbstractType
                 'label' => 'frontend.last_name',
                 'required' => false
             ])
-            ->add('retailerUserProfile', new RetailerUserProfileType());
+            ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
     }
     
     /**
