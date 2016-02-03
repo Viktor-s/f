@@ -69,7 +69,7 @@ class RetailerEmployeeType extends AbstractType
                 'disabled' => $disabledMode,
                 'choices' => [
                     RetailerUserProfile::RETAILER_ADMIN => 'Admin',
-                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee',
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager',
                 ]
             ])
             ->add('enabled', 'checkbox', [
