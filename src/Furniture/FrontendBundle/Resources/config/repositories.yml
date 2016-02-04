@@ -41,7 +41,7 @@ services:
 
     frontend.repository.retailer_factory_rate:
         class: Furniture\FrontendBundle\Repository\RetailerFactoryRateRepository
-        arguments: [ @doctrine.orm.default_entity_manager ]
+        arguments: [ @doctrine.orm.default_entity_manager, @frontend.repository.factory ]
 
     frontend.repository.factory_retailer_relation:
         class: Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository

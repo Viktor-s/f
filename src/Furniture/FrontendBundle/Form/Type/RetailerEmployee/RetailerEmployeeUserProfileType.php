@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FrontendBundle\Form\Type;
+namespace Furniture\FrontendBundle\Form\Type\RetailerEmployee;
 
 use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RetailerUserProfileType extends AbstractType
+class RetailerEmployeeUserProfileType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -33,6 +33,14 @@ class RetailerUserProfileType extends AbstractType
             ->add('phones', 'text', [
                 'label' => 'frontend.phones',
                 'required' => false
+            ])
+            ->add('retailerMode', 'choice', [
+                'label' => 'frontend.mode',
+                'required' => false,
+                'choices' => [
+                    RetailerUserProfile::RETAILER_ADMIN => 'Admin',
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee'
+                ]
             ]);
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
@@ -43,6 +51,6 @@ class RetailerUserProfileType extends AbstractType
      */
     public function getName()
     {
-        return 'frontend_retailer_user_profile';
+        return 'frontend_retailer_employee_user_profile';
     }
 }

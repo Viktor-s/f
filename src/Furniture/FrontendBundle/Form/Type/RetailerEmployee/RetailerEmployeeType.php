@@ -1,13 +1,16 @@
 <?php
 
-namespace Furniture\FrontendBundle\Form\Type;
+namespace Furniture\FrontendBundle\Form\Type\RetailerEmployee;
 
+use Furniture\FrontendBundle\Form\Type\RetailerEmployee\RetailerEmployeeUserProfileType;
 use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RetailerEmployeeType extends AbstractType
 {
@@ -32,7 +35,16 @@ class RetailerEmployeeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class
+            'data_class' => User::class,
+            'validation_groups' => function (Form $form) {
+                $user = $form->getData();
+
+                if ($user->getId()) {
+                    return ['Update', 'RetailerProfileUpdate'];
+                } else {
+                    return ['Create', 'RetailerProfileCreate'];
+                }
+            }
         ]);
     }
 
@@ -53,31 +65,19 @@ class RetailerEmployeeType extends AbstractType
             }
         }
 
-        $passwordRequired = (bool)!$employee->getId();
+        $passwordRequired = (bool) !$employee->getId();
         
         $builder
-            /*->add('username', 'text', [
-                'label' => 'frontend.username',
-            ])*/
             ->add('plainPassword', 'password', [
                 'label' => 'frontend.password',
                 'required' => $passwordRequired
-            ])
-            ->add('retailerMode', 'choice', [
-                'property_path' => 'retailerUserProfile.retailerMode',
-                'label' => 'frontend.mode',
-                'disabled' => $disabledMode,
-                'choices' => [
-                    RetailerUserProfile::RETAILER_ADMIN => 'Admin',
-                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Employee',
-                ]
             ])
             ->add('enabled', 'checkbox', [
                 'label' => 'frontend.enabled',
                 'required' => false
             ])
             ->add('customer', 'retailer_employee_customer')
-            ->add('retailerUserProfile', new RetailerUserProfileType());
+            ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
     }
 
     /**
