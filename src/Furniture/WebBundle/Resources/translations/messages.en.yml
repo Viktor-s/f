@@ -218,6 +218,16 @@ furniture_retailer_profile:
         phones: Contact phones
         emails: Contact emails
 
+backend_confirmation:
+    default:
+        title: Confirmation
+        message: Are you sure you want to procced this action?
+    password_reset:
+        title: Confirmation
+        message: Are you sure you want to reset password?
+    confirm: Confirm
+    cancel: Cancel
+
 sylius:
     customer:
         create_retailer: Retailer customer

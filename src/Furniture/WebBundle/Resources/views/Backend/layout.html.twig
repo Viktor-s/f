@@ -74,7 +74,6 @@
 
                 <div id="content">
                     {% include 'SyliusWebBundle:Backend:_flashes.html.twig' %}
-
                     {% block content %}
                     {% endblock %}
 
@@ -85,6 +84,7 @@
 
                     {# Confirmation modal #}
                     {% include 'SyliusWebBundle::confirm-modal.html.twig' %}
+                    {% include 'SyliusWebBundle::confirmation-modal.html.twig' %}
 
                     <footer>
                         <p>&copy; <a href="http://Sylius.org">Sylius</a>, 2011 - {{ 'now'|date('Y') }}.</p>
@@ -103,7 +103,6 @@
         {% javascripts output='assets/compiled/backend.js'
             'bundles/syliusreport/js/chart.js'
             'bundles/syliusweb/js/jquery.blueimp-gallery.min.js'
-            'bundles/syliusweb/js/confirm-modal.js'
             'bundles/syliusweb/js/form-spinner.js'
             'bundles/syliusweb/js/select2.js'
             'bundles/syliusweb/js/bootstrap-datepicker.js'
@@ -113,6 +112,7 @@
             '@CommonBundle/Resources/public/js/formtype.js'
             '@WebBundle/Resources/public/js/form-collection.js'
             '@WebBundle/Resources/public/js/backend.js'
+            '@WebBundle/Resources/public/js/confirm-modal.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

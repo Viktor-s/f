@@ -1,6 +1,6 @@
 {% macro list(customers) %}
 
-{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:buttons.html.twig' as buttons %}
 {% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
 {% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
 
@@ -54,7 +54,7 @@
                     {{ buttons.show(path('sylius_backend_customer_show', {'id': customer.id})) }}
                     {% if not customer.deleted %}
                         {% if sylius_is_granted('sylius.customer.update') %}
-                            {{ buttons.generic(path('sylius_backend_customer_reset_password', {id: customer.id}), 'Reset password') }}
+                            {{ buttons.generic(path('sylius_backend_customer_reset_password', {id: customer.id}), 'Reset password', null, {confirm: '', title: 'backend_confirmation.password_reset.title'|trans, message: 'backend_confirmation.password_reset.message'|trans}) }}
                             {{ buttons.edit(path('sylius_backend_customer_update', {'id': customer.id})) }}
                         {% else  %}
                             Not allowed to edit!
