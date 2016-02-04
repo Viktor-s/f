@@ -93,13 +93,18 @@ class FactoryRatesController
             throw new AccessDeniedException();
         }
 
+        /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
-        $rates = $this->userFactoryRateRepository->findByRetailerUserProfile($user->getRetailerUserProfile());
+        $retailerUserProfile = $user->getRetailerUserProfile();
+        $retailerProfile = $retailerUserProfile->getRetailerProfile();
+
+        $rates = $this->userFactoryRateRepository->findByRetailerUserProfile($retailerUserProfile);
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRate:list.html.twig', [
-            'rates' => $rates
+            'rates' => $rates,
+            'has_factories_for_create' => $this->userFactoryRateRepository->hasFactoriesForCreateCondition($retailerProfile)
         ]);
 
         return new Response($content);

@@ -66,10 +66,12 @@ class RetailerFactoryRateType extends AbstractType
 
                             $qb = $this->factoryRepository->createQueryBuilderForFactory($factoryQuery);
 
-                            return $qb
-                                ->leftJoin('f.retailerRelations', 'fur', 'WITH', 'fur.retailer = :retailer')
-                                ->andWhere('fur.retailer is NULL')
+                            $qb
+                                ->leftJoin(RetailerFactoryRate::class, 'rfr', 'with', 'rfr.factory = f.id AND rfr.retailer = :retailer')
+                                ->andWhere('rfr.retailer is NULL')
                                 ->setParameter('retailer', $factoryRate->getRetailer());
+
+                            return $qb;
                         } else {
                             return $er->createQueryBuilder('f');
                         }
