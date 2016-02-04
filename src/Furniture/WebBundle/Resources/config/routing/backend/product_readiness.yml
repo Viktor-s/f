@@ -6,6 +6,7 @@ furniture_backend_product_readiness:
         _sylius:
             template: SyliusWebBundle:Backend/ProductReadiness:index.html.twig
             paginate: 9999
+            sortable: true
             sorting:
                 position: ASC
 
