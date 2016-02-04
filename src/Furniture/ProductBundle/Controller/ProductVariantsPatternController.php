@@ -57,21 +57,38 @@ class ProductVariantsPatternController extends ResourceController
         $pattern = new ProductVariantsPattern();
         $pattern->setProduct($product);
 
-        $form = $this->createForm(new ProductPatternWithoutSchemaType(), $pattern, [
-            'product' => $product,
-        ]);
+        if ($product->isSchematicProductType()) {
+            $form = $this->createForm(new ProductPatternWithoutSchemaType(), $pattern, [
+                'product' => $product,
+            ]);
+        } else {
+            $form = $this->createForm(new ProductPatternType(), $pattern, [
+                'product' => $product,
+                'parts'   => $product->getProductParts(),
+            ]);
+        }
 
-        if ($request->getMethod() === Request::METHOD_POST) {
-            $form->submit($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
+        if ($form->isValid()) {
+            if ($product->isSchematicProductType()) {
+                // This is a schematic product type, and user only choice scheme. Redirect to full form
                 $url = $this->generateUrl('furniture_backend_product_pattern_create_with_scheme', [
                     'productId' => $product->getId(),
                     'scheme'    => $pattern->getScheme()->getId(),
                 ]);
+            } else {
+                // This is a simple product type, and we should save pattern and redirect to index.
+                $em = $this->get('doctrine.orm.default_entity_manager');
+                $em->persist($pattern);
+                $em->flush();
 
-                return new RedirectResponse($url);
+                $url = $this->generateUrl('furniture_backend_product_pattern_index', [
+                    'productId' => $product->getId(),
+                ]);
             }
+
+            return new RedirectResponse($url);
         }
 
         $view = $this
@@ -106,16 +123,23 @@ class ProductVariantsPatternController extends ResourceController
             ->setScheme($scheme);
 
         $form = $this->createForm(new ProductPatternType(), $pattern, [
-            'product' => $product,
-            'scheme'  => $scheme,
+            'product'     => $product,
+            'parts'       => $scheme->getProductParts(),
+            'sku_options' => $product->getSkuOptionVariants(),
         ]);
 
-        if ($request->getMethod() === Request::METHOD_POST) {
-            $form->submit($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                // Save
-            }
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.default_entity_manager');
+            $em->persist($pattern);
+            $em->flush();
+
+            $toUrl = $this->get('router')->generate('furniture_backend_product_pattern_index', [
+                'productId' => $product->getId(),
+            ]);
+
+            return new RedirectResponse($toUrl);
         }
 
         $view = $this
@@ -129,6 +153,94 @@ class ProductVariantsPatternController extends ResourceController
             ]);
 
         return $this->handleView($view);
+    }
+
+    /**
+     * Update action
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateAction(Request $request)
+    {
+        $this->isGrantedOr403('update');
+        $product = $this->loadProduct($request);
+
+        /** @var ProductVariantsPattern $pattern */
+        $pattern = $this->findOr404($request);
+
+        if ($pattern->getProduct()->getId() !== $product->getId()) {
+            throw new NotFoundHttpException('The project identifiers not equals.');
+        }
+
+        if ($product->isSchematicProductType()) {
+            $parts = $pattern->getScheme()->getProductParts();
+        } else {
+            $parts = $product->getProductParts();
+        }
+
+        $form = $this->createForm(new ProductPatternType(), $pattern, [
+            'product'     => $product,
+            'parts'       => $parts,
+            'sku_options' => $product->getSkuOptionVariants(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            // Save
+            $this->get('doctrine.orm.default_entity_manager')->flush();
+
+            $url = $this->get('router')->generate('furniture_backend_product_pattern_index', [
+                'productId' => $product->getId(),
+            ]);
+
+            return new RedirectResponse($url);
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('update.html'))
+            ->setData([
+                $this->config->getResourceName() => $pattern,
+                'form'                           => $form->createView(),
+                'product'                        => $product,
+                'pattern'                        => $pattern,
+            ]);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * Delete action
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteAction(Request $request)
+    {
+        $product = $this->loadProduct($request);
+        /** @var ProductVariantsPattern $pattern */
+        $pattern = $this->findOr404($request);
+
+        if ($product->getId() != $pattern->getProduct()->getId()) {
+            throw new NotFoundHttpException('Product requested not equals.');
+        }
+
+        // @todo: check constraints before remove from database
+
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $em->remove($pattern);
+        $em->flush();
+
+        $url = $this->get('router')->generate('furniture_backend_product_pattern_index', [
+            'productId' => $product->getId()
+        ]);
+
+        return new RedirectResponse($url);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Furniture\ProductBundle\Form\Type\ProductPattern;
 
 use Doctrine\ORM\EntityRepository;
-use Furniture\CommonBundle\Form\ModelTransformer\ObjectToStringTransformer;
+use Furniture\CommonBundle\Form\DataTransformer\ObjectToStringTransformer;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductScheme;
 use Furniture\ProductBundle\Entity\ProductVariantsPattern;
@@ -19,9 +19,9 @@ class ProductPatternWithoutSchemaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProductVariantsPattern::class,
-            'product' => null,
-            'validation_groups' => ['WithoutSchema']
+            'data_class'        => ProductVariantsPattern::class,
+            'product'           => null,
+            'validation_groups' => ['WithoutSchema'],
         ]);
 
         $resolver->setRequired('product');
@@ -35,16 +35,19 @@ class ProductPatternWithoutSchemaType extends AbstractType
     {
         $builder
             ->add('product', 'text', [
-                'disabled' => true
+                'disabled' => true,
+                'label'    => 'Product',
             ])
             ->add('scheme', 'entity', [
-                'class' => ProductScheme::class,
+                'class'         => ProductScheme::class,
+                'required'      => false,
+                'label'         => 'Scheme',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('s')
                         ->innerJoin('s.product', 'p')
                         ->andWhere('p.id = :product')
                         ->setParameter('product', $options['product']);
-                }
+                },
             ]);
 
         $builder->get('product')->addModelTransformer(new ObjectToStringTransformer());

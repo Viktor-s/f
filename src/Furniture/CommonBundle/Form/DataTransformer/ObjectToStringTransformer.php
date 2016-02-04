@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\CommonBundle\Form\ModelTransformer;
+namespace Furniture\CommonBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;

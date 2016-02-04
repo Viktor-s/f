@@ -35,21 +35,14 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
                 nullable: false
                 onDelete: CASCADE
 
+    oneToMany:
+        partPatternVariantSelections:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartPatternVariantSelection
+            mappedBy: pattern
+            cascade: [ persist ]
+            orphanRemoval: true
+
     manyToMany:
-        partVariantSelections:
-            targetEntity: Furniture\ProductBundle\Entity\ProductPartVariantSelection
-            joinTable:
-                name: product_variants_pattern_part_variant_selections
-                joinColumns:
-                    pattern_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-
-                inverseJoinColumns:
-                    part_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-
         skuOptionValues:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
             joinTable:

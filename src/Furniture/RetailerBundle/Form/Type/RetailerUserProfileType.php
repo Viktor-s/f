@@ -2,7 +2,7 @@
 
 namespace Furniture\RetailerBundle\Form\Type;
 
-use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
+use Furniture\CommonBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

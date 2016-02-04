@@ -2,7 +2,7 @@
 
 namespace Furniture\FrontendBundle\Form\Type\RetailerEmployee;
 
-use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
+use Furniture\CommonBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

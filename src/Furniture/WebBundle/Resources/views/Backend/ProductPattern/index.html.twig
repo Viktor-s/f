@@ -7,7 +7,7 @@
 {% block topbar %}
     <ol class="breadcrumb">
         <li><a href="{{ path('sylius_backend_product_index') }}">Products</a></li>
-        <li>{{ product.name }}</li>
+        <li><a href="{{ path('sylius_backend_product_show', {id: product.id}) }}">{{ product.name }}</a></li>
         <li>Patterns</li>
     </ol>
 {% endblock %}
@@ -25,6 +25,7 @@
         <thead>
         <tr>
             <th>Name</th>
+            <th>Scheme</th>
             <th></th>
         </tr>
         </thead>
@@ -33,7 +34,11 @@
         {% for pattern in product_patterns %}
             <tr>
                 <td>{{ pattern.name }}</td>
-                <td></td>
+                <td>{{ pattern.scheme }}</td>
+                <td>
+                    {{ buttons.edit(path('furniture_backend_product_pattern_update', {productId: product.id, id: pattern.id})) }}
+                    {{ buttons.delete(path('furniture_backend_product_pattern_delete', {productId: product.id, id: pattern.id})) }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

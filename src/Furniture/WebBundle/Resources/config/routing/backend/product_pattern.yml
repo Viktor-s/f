@@ -19,3 +19,15 @@ furniture_backend_product_pattern_create_with_scheme:
         _controller: furniture.controller.product_pattern:createWithSchemeAction
         _sylius:
             template: SyliusWebBundle:Backend/ProductPattern:create.html.twig
+
+furniture_backend_product_pattern_update:
+    path: /{id}/update
+    defaults:
+        _controller: furniture.controller.product_pattern:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPattern:update.html.twig
+
+furniture_backend_product_pattern_delete:
+    path: /{id}/delete
+    defaults:
+        _controller: furniture.controller.product_pattern:deleteAction

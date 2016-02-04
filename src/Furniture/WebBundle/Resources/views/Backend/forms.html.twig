@@ -83,7 +83,89 @@
 {% endblock %}
 
 {% block product_pattern_widget %}
+    {% if form.vars.errors|length > 0 %}
+        {{ form_errors(form) }}
+    {% endif %}
+
     {{ form_row(form.product) }}
-    {{ form_row(form.scheme) }}
+
+    {% if form.scheme is defined %}
+        {{ form_row(form.scheme) }}
+    {% endif %}
+
     {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+
+    {{ form_widget(form.partPatternVariantSelections ) }}
+    {{ form_widget(form.skuOptionValues) }}
+{% endblock %}
+
+{% block product_part_pattern_variant_collection_widget %}
+    <div class="product-parts">
+        {% if form.vars.errors|length > 0 %}
+            {{ form_errors(form) }}
+        {% endif %}
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block product_part_pattern_widget %}
+    <fieldset>
+        <legend>{{ part_label }}</legend>
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </fieldset>
+{% endblock %}
+
+{% block product_part_material_pattern_widget %}
+    <div class="product-part-materials">
+        <h3>{{ material_label }}</h3>
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block product_part_pattern_variant_selection_widget %}
+    <div class="part-variant-selection">
+        {{ form_widget(form.productPartMaterialVariant) }}
+        &nbsp;&nbsp;
+        <span class="item-label">{{ label }}</span>
+    </div>
+{% endblock %}
+
+{% block product_sku_option_collection_pattern_widget %}
+    <div class="product-sku-options">
+        {% if form.vars.errors|length > 0 %}
+            {{ form_errors(form.vars) }}
+        {% endif %}
+
+        <fieldset>
+            <legend>Sku options:</legend>
+
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        </fieldset>
+    </div>
+{% endblock %}
+
+{% block product_sku_option_group_widget %}
+    <div class="sku-option-group">
+        <h3>{{ group_name }}</h3>
+
+        {% for child in form %}
+            <div class="sku-option">
+                {{ form_widget(child) }}
+                &nbsp;&nbsp;
+                <span class="item-label">{{ child.vars.label}}</span>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

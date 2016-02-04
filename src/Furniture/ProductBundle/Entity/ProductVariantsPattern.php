@@ -3,7 +3,9 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductVariantsPattern
 {
@@ -14,16 +16,23 @@ class ProductVariantsPattern
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var int
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min = 0.01)
      */
     private $price;
 
     /**
      * @var ProductScheme
+     *
+     * @Assert\NotBlank(groups={"WithoutSchema"})
      */
     private $scheme;
 
@@ -33,9 +42,11 @@ class ProductVariantsPattern
     private $product;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|ProductPartVariantSelection[]
+     * @var \Doctrine\Common\Collections\Collection|ProductPartPatternVariantSelection[]
+     *
+     * @Assert\Count(min = 1)
      */
-    private $partVariantSelections;
+    private $partPatternVariantSelections;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|SkuOptionVariant[]
@@ -47,7 +58,7 @@ class ProductVariantsPattern
      */
     public function __construct()
     {
-        $this->partVariantSelections = new ArrayCollection();
+        $this->partPatternVariantSelections = new ArrayCollection();
         $this->skuOptionValues = new ArrayCollection();
     }
 
@@ -158,47 +169,52 @@ class ProductVariantsPattern
     }
 
     /**
-     * Has part variant selection?
+     * Has part pattern variant selection?
      *
-     * @param ProductPartVariantSelection $selection
+     * @param ProductPartPatternVariantSelection $selection
      *
      * @return bool
      */
-    public function hasPartVariantSelection(ProductPartVariantSelection $selection)
+    public function hasPartPatternVariantSelection(ProductPartPatternVariantSelection $selection)
     {
-        return $this->partVariantSelections->exists(function ($key, ProductPartVariantSelection $item) use ($selection) {
+        if (!$selection->getId()) {
+            // This is a new selection
+            return false;
+        }
+
+        return $this->partPatternVariantSelections->exists(function ($key, ProductPartPatternVariantSelection $item) use ($selection) {
             return $item->getId() == $selection->getId();
         });
     }
 
     /**
-     * Add part variant selection.
+     * Add part pattern variant selection.
      *
-     * @param ProductPartVariantSelection $selection
+     * @param ProductPartPatternVariantSelection $selection
      *
      * @return ProductVariantsPattern
      */
-    public function addPartVariantSelection(ProductPartVariantSelection $selection)
+    public function addPartPatternVariantSelection(ProductPartPatternVariantSelection $selection)
     {
-        if (!$this->hasPartVariantSelection($selection)) {
-            $this->partVariantSelections->add($selection);
+        if (!$this->hasPartPatternVariantSelection($selection)) {
+            $this->partPatternVariantSelections->add($selection);
         }
 
         return $this;
     }
 
     /**
-     * Remove part variant selection.
+     * Remove part pattern variant selection.
      *
-     * @param ProductPartVariantSelection $selection
+     * @param ProductPartPatternVariantSelection $selection
      *
      * @return ProductVariantsPattern
      */
-    public function removePartVariantSelection(ProductPartVariantSelection $selection)
+    public function removePartPatterVariantSelection(ProductPartPatternVariantSelection $selection)
     {
         $removalKey = null;
 
-        $this->partVariantSelections->forAll(function ($key, ProductPartVariantSelection $item) use ($selection, &$removalKey) {
+        $this->partPatternVariantSelections->forAll(function ($key, ProductPartPatternVariantSelection $item) use ($selection, &$removalKey) {
             if ($item->getId() == $selection->getId()) {
                 $removalKey = $key;
 
@@ -209,7 +225,47 @@ class ProductVariantsPattern
         });
 
         if ($removalKey) {
-            $this->partVariantSelections->remove($removalKey);
+            $this->partPatternVariantSelections->remove($removalKey);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set part pattern variant selections.
+     * Attention: this method not rewrite all part patterns! This method use diff and remove/insert elements.
+     *
+     * @param Collection|ProductPartPatternVariantSelection[] $selections
+     *
+     * @return ProductVariantsPattern
+     */
+    public function setPartPatternVariantSelections(Collection $selections)
+    {
+        // First step: add elements
+        foreach ($selections as $selection) {
+            $this->addPartPatternVariantSelection($selection);
+        }
+
+        // Second step: get selections for next remove.
+        $removalSelections = [];
+        foreach ($this->partPatternVariantSelections as $selection) {
+            if (!$selection->getId()) {
+                // This is a new selection. Not remove.
+                continue;
+            }
+
+            $exist = $selections->exists(function ($key, ProductPartPatternVariantSelection $item) use ($selection) {
+                return $item->getId() == $selection->getId();
+            });
+
+            if (!$exist) {
+                $removalSelections[] = $selection;
+            }
+        }
+
+        // Third step: remove selections
+        foreach ($removalSelections as $selection) {
+            $this->partPatternVariantSelections->removeElement($selection);
         }
 
         return $this;
@@ -218,11 +274,11 @@ class ProductVariantsPattern
     /**
      * Get part variant selections
      *
-     * @return \Doctrine\Common\Collections\Collection|ProductPartVariantSelection[]
+     * @return \Doctrine\Common\Collections\Collection|ProductPartPatternVariantSelection[]
      */
-    public function getPartVariantSelections()
+    public function getPartPatternVariantSelections()
     {
-        return $this->partVariantSelections;
+        return $this->partPatternVariantSelections;
     }
 
     /**
@@ -276,7 +332,7 @@ class ProductVariantsPattern
             return true;
         });
 
-        if ($removalKey) {
+        if (null !== $removalKey) {
             $this->skuOptionValues->remove($removalKey);
         }
 
