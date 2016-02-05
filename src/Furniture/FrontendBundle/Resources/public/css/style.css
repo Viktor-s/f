@@ -3710,3 +3710,10 @@ form.someclass input {
     float:right; 
     width: 65%;
 }
+
+/**
+ * Reset password form
+ */
+form #reset_password {
+    padding-top: 20px;
+}

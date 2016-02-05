@@ -147,10 +147,18 @@ class SecurityController
     /**
      * Need reset password
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function needResetPassword()
+    public function needResetPassword(Request $request)
     {
+        if (is_null($request->server->get('HTTP_REFERER'))) {
+            $url = $this->urlGenerator->generate('security_login');
+
+            return new RedirectResponse($url);
+        }
+
         $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig');
 
         return new Response($content);

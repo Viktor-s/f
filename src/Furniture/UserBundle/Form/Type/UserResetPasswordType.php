@@ -25,7 +25,7 @@ class UserResetPasswordType extends AbstractType
                     ]
                 ],
                 'second_options' => [
-                    'label' => 'Repeat password',
+                    'label' => 'Please confirm password',
                     'constraints' => [
                         new Assert\NotBlank()
                     ]
