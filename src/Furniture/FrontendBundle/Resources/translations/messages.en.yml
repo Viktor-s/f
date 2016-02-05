@@ -57,7 +57,7 @@ frontend:
     all: All
     by_company: By company
     position: Position
-    phones: Phones
+    phones: Contact phones
     photo: Photo
     product_article: Article
     product_size: Size

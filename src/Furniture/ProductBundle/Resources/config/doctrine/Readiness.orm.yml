@@ -17,5 +17,6 @@ Furniture\ProductBundle\Entity\Readiness:
         position:
             type: integer
             name: position
+            nullable: true
             options:
                 default: 0

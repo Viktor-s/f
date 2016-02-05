@@ -1,4 +1,4 @@
-furniture_backend_product_readiness:
+furniture_backend_product_readiness_index:
     path: /
     methods: [ GET ]
     defaults:
@@ -18,7 +18,7 @@ furniture_backend_product_readiness_create:
         _sylius:
             template: SyliusWebBundle:Backend/ProductReadiness:create.html.twig
             form: Furniture\ProductBundle\Form\Type\ReadinessType
-            redirect: furniture_backend_product_readiness
+            redirect: furniture_backend_product_readiness_index
 
 furniture_backend_product_readiness_update:
     path: /{id}/update
@@ -28,16 +28,16 @@ furniture_backend_product_readiness_update:
         _sylius:
             template: SyliusWebBundle:Backend/ProductReadiness:update.html.twig
             form: Furniture\ProductBundle\Form\Type\ReadinessType
-            redirect: furniture_backend_product_readiness
+            redirect: furniture_backend_product_readiness_index
 
 furniture_backend_product_readiness_delete:
-    path: /{id}/delete
+    path: /{id}/
     methods: [ DELETE ]
     defaults:
         _controller: furniture.controller.product_readiness:deleteAction
         _sylius:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
-            redirect: furniture_backend_product_readiness
+            redirect: furniture_backend_product_readiness_index
 
 furniture_backend_product_readiness_sort_positions:
     path: /sort-positions
