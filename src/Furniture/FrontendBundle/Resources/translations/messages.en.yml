@@ -125,7 +125,7 @@ frontend:
     user_not_found_with_email: "Not found user with email :email."
     user_is_disabled_with_email: "User with email :email is disabled."
     request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."
-    please_enter_new_password: "Please enter a new password for you account."
+    please_enter_new_password: "Please enter a new password for your account."
     reset_password_successfully: "You password successfully resetted. You can login with new password."
     
     user_profile_side:
