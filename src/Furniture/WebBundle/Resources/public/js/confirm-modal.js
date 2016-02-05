@@ -58,9 +58,9 @@
             $modal.modal('show');
         });
         $modalAction.on('click', function(e) {
-            if (deleteButton.is("button")) {
+            if ($actionButton.is("button")) {
                 e.preventDefault();
-                deleteButton.closest('form').submit();
+                $actionButton.closest('form').submit();
             }
             else {
                 $modal.modal('hide');
