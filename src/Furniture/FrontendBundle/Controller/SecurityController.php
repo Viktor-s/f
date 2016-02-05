@@ -137,8 +137,8 @@ class SecurityController
 
         $content = $this->twig->render('FrontendBundle:Security:login.html.twig', [
             'last_username' => $lastUsername,
-            'error'         => $error,
-            'csrf_token'    => $csrfToken,
+            'error' => $error,
+            'csrf_token' => $csrfToken,
         ]);
 
         return new Response($content);
@@ -153,15 +153,60 @@ class SecurityController
      */
     public function needResetPassword(Request $request)
     {
+        $token = $request->query->get('token');
         if (is_null($request->server->get('HTTP_REFERER'))) {
             $url = $this->urlGenerator->generate('security_login');
 
             return new RedirectResponse($url);
         }
-
-        $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig');
+        $error = $success = null;
+        if (!is_null($request->server->get('HTTP_REFERER'))) {
+            $error = $request->query->get('error');
+            $success = $request->query->get('success');
+        }
+        $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig', [
+            'token' => $token,
+            'error' => $error,
+            'success' => $success,
+        ]);
 
         return new Response($content);
+    }
+
+    /**
+     * Send reset password email.
+     *
+     * @param Request $request
+     * @param $token
+     */
+    public function sendNeedResetPassword(Request $request, $token)
+    {
+        // Try load user via token
+        $user = $this->userRepository->findByConfirmationToken($token);
+
+        if (!$user) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found user with confirmation token "%s".',
+                $token
+            ));
+        }
+
+        if ($user->isEnabled()) {
+            $this->passwordResetter->resetPassword($user);
+            $token = $user->getConfirmationToken();
+            $url = $this->urlGenerator->generate('security_need_reset_password', [
+                'token' => $token,
+                'success' => 'sent'
+            ]);
+        } else {
+            // DisabledException;
+            $url = $this->urlGenerator->generate('security_need_reset_password', [
+                'token' => $token,
+                'error' => 'disabled'
+            ]);
+        }
+
+        return new RedirectResponse($url);
     }
 
     /**
@@ -270,7 +315,7 @@ class SecurityController
                     $error = $this->translator->trans('frontend.user_not_found_with_email', [
                         ':email' => $email,
                     ]);
-                } else if ($user->isDisabled()) {
+                } elseif ($user->isDisabled()) {
                     $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
                         ':email' => $email,
                     ]);

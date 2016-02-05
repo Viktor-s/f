@@ -1,5 +1,5 @@
 frontend:
-
+    account_disabled: Account is disabled.
     all_right_reserved: All right reserved
     agenta_solution: AgentA Solution
     new_arrivals: New arrivals
@@ -122,6 +122,9 @@ frontend:
     notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
     reset_password: Reset password
     need_reset_password: We sent you a verification email, please check email and follow instructions
+    need_reset_password_success: New email was sent.
+    need_reset_password_error: Email not send.
+    send_reset_password: Reset password again
     user_not_found_with_email: "Not found user with email :email."
     user_is_disabled_with_email: "User with email :email is disabled."
     request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."

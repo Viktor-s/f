@@ -57,9 +57,13 @@ class DefaultAuthenticationFailureHandler extends BaseDefaultAuthenticationFailu
     {
         if ($exception instanceof AuthenticationNeedResetPasswordException) {
             $user = $exception->getUser();
-            $this->passwordResetter->resetPassword($user);
-
-            $toUrl = $this->urlGenerator->generate('security_need_reset_password');
+            if ($user->isNeedResetPassword()
+                && empty($user->getConfirmationToken())
+            ) {
+                $this->passwordResetter->resetPassword($user);
+            }
+            $token = $user->getConfirmationToken();
+            $toUrl = $this->urlGenerator->generate('security_need_reset_password', array('token' => $token));
 
             return new RedirectResponse($toUrl);
         }

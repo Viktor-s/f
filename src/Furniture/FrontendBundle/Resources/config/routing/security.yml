@@ -41,3 +41,10 @@ security_need_reset_password:
     methods: [ GET ]
     defaults:
         _controller: frontend.controller.security:needResetPassword
+
+security_send_need_reset_password:
+    path: /need-reset-password/reset/{token}
+    methods: [ GET ]
+    requirements: {token: "[a-f0-9]{64}" }
+    defaults:
+        _controller: frontend.controller.security:sendNeedResetPassword
