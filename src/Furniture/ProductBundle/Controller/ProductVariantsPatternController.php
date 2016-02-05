@@ -6,7 +6,6 @@ use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductScheme;
 use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 use Furniture\ProductBundle\Form\Type\ProductPattern\ProductPatternType;
-use Furniture\ProductBundle\Form\Type\ProductPattern\ProductPatternWithoutSchemaType;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,9 +57,9 @@ class ProductVariantsPatternController extends ResourceController
         $pattern->setProduct($product);
 
         if ($product->isSchematicProductType()) {
-            $form = $this->createForm(new ProductPatternWithoutSchemaType(), $pattern, [
-                'product' => $product,
-            ]);
+//            $form = $this->createForm(new PatternWithoutSchemaType(), $pattern, [
+//                'product' => $product,
+//            ]);
         } else {
             $form = $this->createForm(new ProductPatternType(), $pattern, [
                 'product' => $product,

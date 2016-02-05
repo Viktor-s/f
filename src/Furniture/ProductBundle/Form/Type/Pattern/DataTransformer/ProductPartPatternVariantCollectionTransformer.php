@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern\DataTransformer;
+namespace Furniture\ProductBundle\Form\Type\Pattern\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductSkuOptionCollectionPatternType extends AbstractType
+class SkuOptionCollectionPatternType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -47,7 +47,7 @@ class ProductSkuOptionCollectionPatternType extends AbstractType
             $name = $groupInfo['name'];
             $skuOptions = $groupInfo['options'];
 
-            $builder->add($name, new ProductSkuOptionGroupType(), [
+            $builder->add($name, new SkuOptionGroupType(), [
                 'name'        => $name,
                 'sku_options' => $skuOptions,
             ]);
@@ -59,6 +59,6 @@ class ProductSkuOptionCollectionPatternType extends AbstractType
      */
     public function getName()
     {
-        return 'product_sku_option_collection_pattern';
+        return 'sku_option_collection_pattern';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Furniture\CommonBundle\Form\DataTransformer\CheckboxForValueTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductSkuOptionGroupType extends AbstractType
+class SkuOptionGroupType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -52,6 +52,6 @@ class ProductSkuOptionGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'product_sku_option_group';
+        return 'sku_option_group';
     }
 }

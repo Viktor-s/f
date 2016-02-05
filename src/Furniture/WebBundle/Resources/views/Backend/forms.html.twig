@@ -29,6 +29,7 @@
 {% endblock %}
 
 {% block product_schemes_widget %}
+{% spaceless %}
     {% if part_error is defined %}
         <div class="alert alert-info">{{ part_error }}</div>
     {% else %}
@@ -62,9 +63,11 @@
             </tfoot>
         </table>
     {% endif %}
+{% endspaceless %}
 {% endblock %}
 
 {% block product_scheme_widget %}
+{% spaceless %}
     <tr class="table-product-schemes-scheme">
         <td>
             {{ form_widget(form.translations) }}
@@ -80,9 +83,11 @@
             <a class="btn btn-danger" data-collection-button="delete" data-collection="table-product-schemes" data-collection-item="scheme">Remove</a>
         </td>
     </tr>
+{% endspaceless %}
 {% endblock %}
 
 {% block product_pattern_widget %}
+{% spaceless %}
     {% if form.vars.errors|length > 0 %}
         {{ form_errors(form) }}
     {% endif %}
@@ -98,9 +103,11 @@
 
     {{ form_widget(form.partPatternVariantSelections ) }}
     {{ form_widget(form.skuOptionValues) }}
+{% endspaceless %}
 {% endblock %}
 
-{% block product_part_pattern_variant_collection_widget %}
+{% block part_pattern_variant_collection_widget %}
+{% spaceless %}
     <div class="product-parts">
         {% if form.vars.errors|length > 0 %}
             {{ form_errors(form) }}
@@ -110,9 +117,11 @@
             {{ form_widget(child) }}
         {% endfor %}
     </div>
+{% endspaceless %}
 {% endblock %}
 
-{% block product_part_pattern_widget %}
+{% block part_pattern_widget %}
+{% spaceless %}
     <fieldset>
         <legend>{{ part_label }}</legend>
 
@@ -120,9 +129,11 @@
             {{ form_widget(child) }}
         {% endfor %}
     </fieldset>
+{% endspaceless %}
 {% endblock %}
 
-{% block product_part_material_pattern_widget %}
+{% block part_material_pattern_widget %}
+{% spaceless %}
     <div class="product-part-materials">
         <h3>{{ material_label }}</h3>
 
@@ -130,17 +141,21 @@
             {{ form_widget(child) }}
         {% endfor %}
     </div>
+{% endspaceless %}
 {% endblock %}
 
-{% block product_part_pattern_variant_selection_widget %}
+{% block part_pattern_variant_selection_widget %}
+{% spaceless %}
     <div class="part-variant-selection">
         {{ form_widget(form.productPartMaterialVariant) }}
         &nbsp;&nbsp;
         <span class="item-label">{{ label }}</span>
     </div>
+{% endspaceless %}
 {% endblock %}
 
-{% block product_sku_option_collection_pattern_widget %}
+{% block sku_option_collection_pattern_widget %}
+{% spaceless %}
     <div class="product-sku-options">
         {% if form.vars.errors|length > 0 %}
             {{ form_errors(form.vars) }}
@@ -154,9 +169,11 @@
             {% endfor %}
         </fieldset>
     </div>
+{% endspaceless %}
 {% endblock %}
 
-{% block product_sku_option_group_widget %}
+{% block sku_option_group_widget %}
+{% spaceless %}
     <div class="sku-option-group">
         <h3>{{ group_name }}</h3>
 
@@ -168,4 +185,5 @@
             </div>
         {% endfor %}
     </div>
+{% endspaceless %}
 {% endblock %}

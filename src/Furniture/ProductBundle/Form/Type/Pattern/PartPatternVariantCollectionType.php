@@ -1,20 +1,22 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductPartPatternVariantCollectionType extends AbstractType
+class PartPatternVariantCollectionType extends AbstractType
 {
     /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('parts');
-        $resolver->setAllowedTypes('parts', ['Traversable']);
+        $resolver->setRequired(['parts', 'variant_selection_class']);
+        $resolver->setAllowedTypes('parts', \Traversable::class);
+        $resolver->setAllowedTypes('variant_selection_class', 'string');
+
     }
 
     /**
@@ -26,8 +28,9 @@ class ProductPartPatternVariantCollectionType extends AbstractType
         $parts = $options['parts'];
 
         foreach ($parts as $part) {
-            $builder->add($part->getId(), new ProductPartPatternType(), [
-                'part' => $part
+            $builder->add($part->getId(), new PartPatternType(), [
+                'variant_selection_class' => $options['variant_selection_class'],
+                'part'                    => $part,
             ]);
         }
     }
@@ -37,6 +40,6 @@ class ProductPartPatternVariantCollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'product_part_pattern_variant_collection';
+        return 'part_pattern_variant_collection';
     }
 }

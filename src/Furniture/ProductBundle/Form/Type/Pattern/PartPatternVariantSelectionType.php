@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Furniture\CommonBundle\Form\DataTransformer\CheckboxForValueTransformer;
 use Furniture\ProductBundle\Entity\ProductPart;
@@ -12,17 +12,13 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductPartPatternVariantSelectionType extends AbstractType
+class PartPatternVariantSelectionType extends AbstractType
 {
     /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ProductPartPatternVariantSelection::class
-        ]);
-
         $resolver->setRequired(['variant', 'part']);
         $resolver->setAllowedTypes('variant', ProductPartMaterialVariant::class);
         $resolver->setAllowedTypes('part', ProductPart::class);
@@ -67,6 +63,6 @@ class ProductPartPatternVariantSelectionType extends AbstractType
      */
     public function getName()
     {
-        return 'product_part_pattern_variant_selection';
+        return 'part_pattern_variant_selection';
     }
 }

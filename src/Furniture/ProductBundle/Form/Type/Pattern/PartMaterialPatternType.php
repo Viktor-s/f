@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Furniture\ProductBundle\Entity\ProductPart;
@@ -10,16 +10,17 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductPartMaterialPatternType extends AbstractType
+class PartMaterialPatternType extends AbstractType
 {
     /**
      * {@inheritDoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['material', 'part']);
+        $resolver->setRequired(['material', 'part', 'variant_selection_class']);
         $resolver->setAllowedTypes('material', ProductPartMaterial::class);
         $resolver->setAllowedTypes('part', ProductPart::class);
+        $resolver->setAllowedTypes('variant_selection_class', 'string');
     }
 
     /**
@@ -31,10 +32,11 @@ class ProductPartMaterialPatternType extends AbstractType
         $material = $options['material'];
 
         foreach ($material->getVariants() as $variant) {
-            $builder->add($variant->getId(), new ProductPartPatternVariantSelectionType(), [
-                'label' => $variant->getName(),
-                'variant' => $variant,
-                'part' => $options['part']
+            $builder->add($variant->getId(), new PartPatternVariantSelectionType(), [
+                'data_class' => $options['variant_selection_class'],
+                'label'      => $variant->getName(),
+                'variant'    => $variant,
+                'part'       => $options['part'],
             ]);
         }
     }
@@ -56,6 +58,6 @@ class ProductPartMaterialPatternType extends AbstractType
      */
     public function getName()
     {
-        return 'product_part_material_pattern';
+        return 'part_material_pattern';
     }
 }

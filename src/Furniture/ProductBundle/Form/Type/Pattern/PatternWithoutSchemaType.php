@@ -1,17 +1,16 @@
 <?php
 
-namespace Furniture\ProductBundle\Form\Type\ProductPattern;
+namespace Furniture\ProductBundle\Form\Type\Pattern;
 
 use Doctrine\ORM\EntityRepository;
 use Furniture\CommonBundle\Form\DataTransformer\ObjectToStringTransformer;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductScheme;
-use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductPatternWithoutSchemaType extends AbstractType
+abstract class PatternWithoutSchemaType extends AbstractType
 {
     /**
      * {@inheritDoc}
@@ -19,8 +18,6 @@ class ProductPatternWithoutSchemaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'        => ProductVariantsPattern::class,
-            'product'           => null,
             'validation_groups' => ['WithoutSchema'],
         ]);
 
@@ -51,13 +48,5 @@ class ProductPatternWithoutSchemaType extends AbstractType
             ]);
 
         $builder->get('product')->addModelTransformer(new ObjectToStringTransformer());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'product_pattern_without_schema';
     }
 }
