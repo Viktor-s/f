@@ -45,7 +45,10 @@ class ProductPartMaterialType extends AbstractType
             ->add('optionValues', 'collection', [
                 'type' => new ProductPartMaterialOptionValueType(),
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'attr' => [
+                    'data-remove-confirm' => 'Are you sure you want to delete option values item?'
+                ]
             ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
