@@ -1,6 +1,6 @@
-Furniture\ProductBundle\Entity\ProductVariantsPattern:
+Furniture\ProductBundle\Entity\ProductVariantsPatternModifier:
     type: entity
-    table: product_variants_pattern
+    table: product_variants_pattern_modifier
 
     id:
         id:
@@ -15,8 +15,12 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
             column: name
 
         price:
-            type: integer
+            type: string
             column: price
+
+        attach:
+            type: smallint
+            column: attach
 
     manyToOne:
         scheme:
@@ -35,9 +39,17 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
                 nullable: false
                 onDelete: CASCADE
 
+        pattern:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariantsPattern
+            joinColumn:
+                name: pattern_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE
+
     oneToMany:
         partPatternVariantSelections:
-            targetEntity: Furniture\ProductBundle\Entity\ProductPartPatternVariantSelection
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartPatternVariantModifierSelection
             mappedBy: pattern
             cascade: [ persist ]
             orphanRemoval: true
@@ -46,7 +58,7 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
         skuOptionValues:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
             joinTable:
-                name: product_variants_sku_option_variants
+                name: product_variants_modifier_sku_option_variants
                 joinColumns:
                     pattern_id:
                         referencedColumnName: id

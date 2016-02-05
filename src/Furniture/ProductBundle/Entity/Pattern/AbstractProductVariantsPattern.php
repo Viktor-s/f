@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\ProductBundle\Entity\ProductScheme;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
+use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class AbstractProductVariantsPattern
 {
@@ -35,7 +36,7 @@ abstract class AbstractProductVariantsPattern
     protected $product;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection|ProductPartPatternVariantSelection[]
+     * @var \Doctrine\Common\Collections\Collection|AbstractProductPartPatternVariantSelection[]
      *
      * @Assert\Count(min = 1)
      */
@@ -96,7 +97,7 @@ abstract class AbstractProductVariantsPattern
      *
      * @return self
      */
-    public function setScheme(ProductScheme $scheme)
+    public function setScheme(ProductScheme $scheme = null)
     {
         $this->scheme = $scheme;
 
@@ -316,5 +317,47 @@ abstract class AbstractProductVariantsPattern
     public function getSkuOptionValues()
     {
         return $this->skuOptionValues;
+    }
+
+    /**
+     * Get all product parts for this pattern
+     *
+     * @return \Furniture\ProductBundle\Entity\ProductPart[]
+     */
+    public function getProductParts()
+    {
+        $parts = new ArrayCollection();
+
+        foreach ($this->partPatternVariantSelections as $partSelection) {
+            $parts->add($partSelection->getProductPart());
+        }
+
+        return $parts;
+    }
+
+    /**
+     * Get all product part material variants for this pattern
+     *
+     * @return \Furniture\ProductBundle\Entity\ProductPartMaterialVariant[]
+     */
+    public function getProductPartMaterialVariants()
+    {
+        $variants = new ArrayCollection();
+
+        foreach ($this->partPatternVariantSelections as $partSelection) {
+            $variants->add($partSelection->getProductPartMaterialVariant());
+        }
+
+        return $variants;
+    }
+
+    /**
+     * Implement __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name ?: '';
     }
 }

@@ -19,10 +19,15 @@ abstract class PatternType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults([
+            'part_material_variants' => null,
+        ]);
+
         $resolver->setRequired(['product', 'parts', 'sku_options', 'variant_selection_class']);
         $resolver->setAllowedTypes('product', Product::class);
-        $resolver->setAllowedTypes('parts', \Traversable::class);
-        $resolver->setAllowedTypes('sku_options', \Traversable::class);
+        $resolver->setAllowedTypes('parts', ['array', \Traversable::class]);
+        $resolver->setAllowedTypes('part_material_variants', ['null', 'array', \Traversable::class]);
+        $resolver->setAllowedTypes('sku_options', ['array', \Traversable::class]);
         $resolver->setAllowedTypes('variant_selection_class', 'string');
     }
 
@@ -53,6 +58,7 @@ abstract class PatternType extends AbstractType
             ])
             ->add('partPatternVariantSelections', new PartPatternVariantCollectionType(), [
                 'parts'                   => $options['parts'],
+                'part_material_variants'  => $options['part_material_variants'],
                 'variant_selection_class' => $options['variant_selection_class'],
             ])
             ->add('skuOptionValues', new SkuOptionCollectionPatternType(), [
@@ -80,6 +86,3 @@ abstract class PatternType extends AbstractType
         });
     }
 }
-
-// Furniture\ProductBundle\Entity\ProductPartVariantSelection
-// Furniture\ProductBundle\Entity\ProductPartPatternVariantSelection

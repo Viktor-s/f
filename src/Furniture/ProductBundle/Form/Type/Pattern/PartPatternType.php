@@ -16,8 +16,13 @@ class PartPatternType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults([
+            'material_variants' => null
+        ]);
+
         $resolver->setRequired(['part', 'variant_selection_class']);
         $resolver->setAllowedTypes('part', ProductPart::class);
+        $resolver->setAllowedTypes('material_variants', ['null', 'array', \Traversable::class]);
         $resolver->setAllowedTypes('variant_selection_class', 'string');
     }
 
@@ -34,6 +39,7 @@ class PartPatternType extends AbstractType
                 'variant_selection_class' => $options['variant_selection_class'],
                 'material'                => $material,
                 'part'                    => $part,
+                'material_variants'       => $options['material_variants']
             ]);
         }
     }

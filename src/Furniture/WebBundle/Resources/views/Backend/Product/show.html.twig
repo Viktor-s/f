@@ -18,6 +18,7 @@
     <div class="actions-menu">
         {% if not product.deleted %}
             {{ buttons.show(path('furniture_backend_product_pattern_index', {'productId': product.id}), 'Patterns') }}
+            {{ buttons.show(path('furniture_backend_product_pattern_modifier_index', {productId: product.id}), 'Modifiers') }}
             {{ buttons.edit(path('furniture_backend_product_pdp_config', {'id': product.id}), 'PDP') }}
             {{ buttons.edit(path('sylius_backend_product_update', {'id': product.id})) }}
             {{ buttons.delete(path('sylius_backend_product_delete', {'id': product.id}), null, false, false) }}

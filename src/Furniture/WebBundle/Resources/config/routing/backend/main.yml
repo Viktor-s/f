@@ -29,6 +29,11 @@ sylius_backend_product_pattern:
     prefix: /products/{productId}/pattern
     requirements: { productId: \d+ }
 
+sylius_backend_product_pattern_modifier:
+    resource: @WebBundle/Resources/config/routing/backend/product_pattern_modifier.yml
+    prefix: /products/{productId}/pattern-modifier
+    requirements: { productId: \d+ }
+
 sylius_backend_inventory:
     resource: @SyliusWebBundle/Resources/config/routing/backend/inventory.yml
     prefix: /inventory
