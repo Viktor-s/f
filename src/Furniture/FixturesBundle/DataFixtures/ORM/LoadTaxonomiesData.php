@@ -27,10 +27,12 @@ class LoadTaxonomiesData extends BaseLoadTaxonomiesData
      * Create taxonomy
      *
      * @param array $description
+     * @param array $taxonsArray
      *
      * @return object
+     *
      */
-    protected function createTaxonomy(array $description)
+    protected function createTaxonomy(array $description, array $taxonsArray = [])
     {
         /* @var $taxonomy TaxonomyInterface */
         $taxonomy = $this->getTaxonomyRepository()->createNew();
