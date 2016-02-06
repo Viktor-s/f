@@ -28,13 +28,13 @@ class CollectSessionSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Kill user if necessary
+     * User add session to collection.
      *
      * @param GetResponseEvent $event
      */
     public function collectSession(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
             return;
         }
 
