@@ -20,7 +20,7 @@ framework:
     default_locale:  "%sylius.locale%"
     trusted_proxies: ~
     session:
-        handler_id: session.handler.native
+        handler_id:  ~ # Allow symfony get php provided session handler
 
 sonata_block:
     blocks:

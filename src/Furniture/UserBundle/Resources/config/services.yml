@@ -3,6 +3,7 @@ parameters:
     security.authentication.form_entry_point.class: Furniture\UserBundle\Security\Authentication\FormAuthenticationEntryPoint
     security.authentication.provider.dao.class: Furniture\UserBundle\Security\Authentication\DaoAuthenticationProvider
     security.authentication.failure_handler.class: Furniture\UserBundle\Security\Authentication\DefaultAuthenticationFailureHandler
+    security.authentication.rememberme.services.simplehash.class: Furniture\UserBundle\Security\Authentication\DefaultTokenBasedRememberMeServices
 
 services:
     user.killer.storage:
