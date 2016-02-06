@@ -5,8 +5,7 @@
 {% endmacro %}
 
 {% macro generic(url, message, icon, data) %}
-    {% import _self as data_loop %}
-    <a href="{{ url }}" class="btn btn-default" {% if data is not empty %} {{ data_loop.data_generate(data) }}{% endif %}>
+    <a href="{{ url }}" class="btn btn-default" {% if data is not empty %} {{ _self.data_generate(data) }}{% endif %}>
         {% if icon is not empty %}<i class="glyphicon glyphicon-{{ icon }}"></i>{% endif %}<span>{{ message }}</span>
     </a>
 {% endmacro %}
