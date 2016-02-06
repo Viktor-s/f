@@ -130,7 +130,9 @@ frontend:
     request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."
     please_enter_new_password: "Please enter a new password for your account."
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
-    
+    session_is_disabled: Session data not provided.
+    user_not_found: User not found.
+
     user_profile_side:
         update: Update profile
         password_upadate: Change password
