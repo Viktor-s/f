@@ -132,6 +132,7 @@ class VariantController extends BaseVariantController
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $this->findProductOr404($productId);
         $groupVariantFilter = null;
+
         if ($product->isSchematicProductType()) {
             if ($schemaId = $request->get('schemaId')) {
                 foreach ($product->getProductSchemes() as $pScheme) {
@@ -142,8 +143,9 @@ class VariantController extends BaseVariantController
                         continue;
                     }
                 }
-                if (!$groupVariantFilter->getScheme())
+                if (!$groupVariantFilter->getScheme()) {
                     throw new NotFoundHttpException('Incorrect product scheme given.');
+                }
             } else {
                 $groupVariantFilter = new GroupVaraintFiler($product, $product->getProductSchemes()->first());
             }

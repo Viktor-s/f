@@ -1,0 +1,27 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('sylius_backend_product_index') }}">Products</a></li>
+        <li><a href="{{ path('sylius_backend_product_show', {id: product.id}) }}">{{ product.name }}</a></li>
+        <li><a href="{{ path('furniture_backend_product_pattern_index', {productId: product.id}) }}">Patterns</a></li>
+        <li>{{ pattern.name }}</li>
+        <li>Edit</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-plus-sign"></i> Edit pattern</h1>
+    </div>
+
+    <form method="post" class="form-horizontal" novalidate>
+        {{ form_widget(form) }}
+        {{ form_rest(form) }}
+
+        {{ update() }}
+    </form>
+{% endblock %}

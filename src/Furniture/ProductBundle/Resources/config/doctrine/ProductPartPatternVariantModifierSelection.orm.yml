@@ -1,0 +1,36 @@
+Furniture\ProductBundle\Entity\ProductPartPatternVariantModifierSelection:
+    type: entity
+    table: product_part_pattern_variant_modifier_selection
+
+    id:
+        id:
+            column: id
+            type: integer
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        pattern:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariantsPatternModifier
+            inversedBy: partPatternVariantSelections
+            joinColumn:
+                name: pattern_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        productPart:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPart
+            joinColumn:
+                name: part_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT
+
+        productPartMaterialVariant:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
+            joinColumn:
+                name: material_variant_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT

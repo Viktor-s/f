@@ -2,8 +2,8 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
+use Furniture\CommonBundle\Form\DataTransformer\CheckboxForValueTransformer;
 use Furniture\ProductBundle\Entity\ProductScheme;
-use Furniture\ProductBundle\Form\DataTransformer\ProductPartCheckboxModelTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -77,7 +77,7 @@ class ProductSchemeType extends AbstractType
                     'value'           => $part->getId()
                 ]);
 
-                $childBuilder->addModelTransformer(new ProductPartCheckboxModelTransformer($part));
+                $childBuilder->addModelTransformer(new CheckboxForValueTransformer($part));
 
                 $childForm->add($childBuilder->getForm());
             }

@@ -8,7 +8,7 @@ use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
+use Furniture\CommonBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
 use Sylius\Bundle\CoreBundle\Form\Type\ImageType;
 

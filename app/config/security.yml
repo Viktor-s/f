@@ -89,6 +89,18 @@ sylius_rbac:
         furniture.sku_option.update: update sku attribute
         furniture.sku_option.delete: delete sku attribute
 
+        furniture.manage.product_patterns: manage product patterns
+        furniture.product_pattern.index: list product patterns
+        furniture.product_pattern.create: create new product pattern
+        furniture.product_pattern.update: update product pattern
+        furniture.product_pattern.delete: delete product pattern
+
+        furniture.manage.product_pattern_modifiers: manage product pattern modifiers
+        furniture.product_pattern_modifier.index: list product pattern modifiers
+        furniture.product_pattern_modifier.create: create new product pattern modifier
+        furniture.product_pattern_modifier.update: update product pattern modifier
+        furniture.product_pattern_modifier.delete: delete product pattern modifier
+
         furniture.manage.product_categories: manage product categories
         furniture.product_category.index: list product categories
         furniture.product_category.create: create product category
@@ -224,6 +236,18 @@ sylius_rbac:
             - furniture.sku_option.delete
             - sylius.product.variantGrouEdit
 
+        furniture.manage.product_patterns:
+            - furniture.product_pattern.index
+            - furniture.product_pattern.create
+            - furniture.product_pattern.update
+            - furniture.product_pattern.delete
+
+        furniture.manage.product_pattern_modifiers:
+            - furniture.product_pattern_modifier.index
+            - furniture.product_pattern_modifier.create
+            - furniture.product_pattern_modifier.update
+            - furniture.product_pattern_modifier.delete
+
         furniture.manage.product_categories:
             - furniture.product_category.index
             - furniture.product_category.create
@@ -346,6 +370,8 @@ sylius_rbac:
                 - furniture.manage.product_part_material_options
                 - furniture.manage.product_part_material_variants
                 - furniture.manage.sku_options
+                - furniture.manage.product_patterns
+                - furniture.manage.product_pattern_modifiers
                 - furniture.manage.product_categories
                 - furniture.manage.product_types
                 - furniture.manage.product_styles

@@ -3,7 +3,7 @@
 namespace Furniture\FactoryBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Furniture\CommonBundle\Form\ModelTransformer\ArrayToStringTransformer;
+use Furniture\CommonBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Furniture\FactoryBundle\Entity\FactoryContact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
