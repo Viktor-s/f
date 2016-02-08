@@ -208,12 +208,10 @@
                 {% for input in product.pdpConfig.inputs %}
                     {% if input.option %}
                     {% elseif input.skuOption %}
-                        {#
                         pdpInputMapping[{{ input.id }}] = {
                             't' : 'so',
-                            'i' : {{ input.option.id }}
+                            'i' : {{ input.skuOption.id }}
                         };
-                        #}
                     {% elseif input.productPart %}
                         pdpInputMapping[{{ input.id }}] = {
                             't' : 'pp',
@@ -230,7 +228,7 @@
                 {
                 'id':{{p.pattern.id}},
                         'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                        'price':{{ p.pattern.price|pattern_min_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                        'price':{{ p.pattern|pattern_min_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
                 },{% endfor %} ];
                 var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
             {% else %}
@@ -350,8 +348,7 @@
                         quantity = parseInt($('.quantity-selector .entry.number').text());
                         
                         {% if product.hasProductVariantsPatterns() %}
-                        var url = '{{ path('specification_api_specification_pattern_sku_item_add') }}',
-                            data = {
+                            var data = {
                                 id: pdpDataContainer.getFiltered()[0].id,
                                 choices: {
                                     'so' : [],
@@ -362,18 +359,33 @@
                                 specification: parseInt($(this).attr('data-specification-id'))
                             };
                             var filters = pdpDataContainer.getFilters();
+                            
                             for( f in pdpDataContainer.getFilters() ){
                                 var v = filters[f];
                                 var d = {};
-                                if( pdpInputMapping[f]['t'] == 'ps' )
+                                if( pdpInputMapping[f]['t'] == 'ps' ){
                                     data['choices']['ps'] = v;
-                                else{
+                                }else if( pdpInputMapping[f]['t'] == 'so' ){
+                                    d['so'] = pdpInputMapping[f]['i'];
+                                    d['sov'] = v;
+                                    data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                                }else{
                                     d['pp'] = pdpInputMapping[f]['i'];
                                     d['ppv'] = v;
                                     data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                                 }
                             }
-                            console.log(data);
+                            
+                            $.ajax({
+                                url: '{{ path('product_api_create_by_pattern_and_parameters') }}',
+                                data: data,
+                                method: 'POST',
+                                dataType : 'json',
+                                success: function(data) {
+                                    console.log(data);
+                                }
+                            });
+                            
                         {% else %}
                         var url = '{{ path('specification_api_specification_sku_item_add') }}',
                             data = {

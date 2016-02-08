@@ -9,6 +9,8 @@ use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Sylius\Bundle\CurrencyBundle\Templating\Helper\MoneyHelper;
 use Sylius\Component\Currency\Context\CurrencyContextInterface;
+use Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller;
+use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 
 class PricingExtension extends \Twig_Extension
 {
@@ -28,21 +30,30 @@ class PricingExtension extends \Twig_Extension
     protected $currencyContext;
 
     /**
+     *
+     * @var \Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller
+     */
+    protected $productPatternVariantPriceCompiller;
+    
+    /**
      * Construct
      *
      * @param PriceCalculator          $calculator
      * @param CurrencyContextInterface $currencyContext
      * @param MoneyHelper              $moneyHelper
+     * @param \Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller $productPatternVariantPriceCompiller
      */
     public function __construct(
         PriceCalculator $calculator,
         CurrencyContextInterface $currencyContext,
-        MoneyHelper $moneyHelper
+        MoneyHelper $moneyHelper,
+        ProductVariantPriceCompiller $productPatternVariantPriceCompiller
     )
     {
         $this->calculator = $calculator;
         $this->currencyContext = $currencyContext;
         $this->moneyHelper = $moneyHelper;
+        $this->productPatternVariantPriceCompiller = $productPatternVariantPriceCompiller;
     }
 
     /**
@@ -109,8 +120,8 @@ class PricingExtension extends \Twig_Extension
         return $this->calculator->calculateForSpecification($specification, $useSales);
     }
 
-    public function patternMinPrice(){
-        
+    public function patternMinPrice(ProductVariantsPattern $pattern){
+        return $this->productPatternVariantPriceCompiller->getMinPrice($pattern);
     }
 
 

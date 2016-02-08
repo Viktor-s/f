@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Furniture\SkuOptionBundle\Entity\SkuOptionType;
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 
 class PatternProductCreatorController
 {
@@ -131,6 +133,7 @@ class PatternProductCreatorController
         // Load choices
         $productPartVariantSelections = [];
 
+        //Product part choices
         foreach ($choices['pp'] as $index => $choiceData) {
             if (!is_array($choiceData)) {
                 throw new HttpException(400, sprintf(
@@ -179,11 +182,43 @@ class PatternProductCreatorController
             $productPartVariantSelections[] = new ProductPartMaterialVariantSelection($productPart, $productPartVariant);
         }
 
+        //Sku option choices
+        foreach($choices['so'] as $index => $choiceData){
+            if (!is_array($choiceData)) {
+                throw new HttpException(400, sprintf(
+                    'Invalid choice with index "%s". Should be a array.',
+                    $index
+                ));
+            }
+            
+            if (!isset($choiceData['so']) || !isset($choiceData['sov'])) {
+                throw new HttpException(400, sprintf(
+                    'Missing requires data "so" or "sov" in choice data with index "%s".',
+                    $index
+                ));
+            }
+            
+            $skuOptionVariantId = (int) $choiceData['sov'];
+
+            $skuOptionVariant = $this->em->find(SkuOptionVariant::class, $skuOptionVariantId);
+
+            if (!$skuOptionVariant) {
+                throw new NotFoundHttpException(sprintf(
+                    'Not found product sku option variant with identifier "%s" in choice data with index "%s".',
+                    $skuOptionVariantId,
+                    $index
+                ));
+            }
+
+            $skuOptionVariantSelection[] = $skuOptionVariant;
+            
+        }
+        
         // Convert selections from array to collection object
         $productPartVariantSelections = new ProductPartMaterialVariantSelectionCollection($productPartVariantSelections);
 
         // Create parameters for next validate and create variant
-        $productVariantParameters = new ProductVariantParameters($productPartVariantSelections, $scheme);
+        $productVariantParameters = new ProductVariantParameters($productPartVariantSelections, $scheme, $skuOptionVariantSelection);
 
         // Validate
         $violations = $this->parametersValidator->validateByPattern($pattern, $productVariantParameters);

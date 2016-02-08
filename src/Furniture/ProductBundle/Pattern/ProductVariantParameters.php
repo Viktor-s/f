@@ -18,6 +18,12 @@ class ProductVariantParameters
     private $productScheme;
 
     /**
+     *
+     * @var array
+     */
+    private $skuOptionVariantSelections;
+    
+    /**
      * Construct
      *
      * @param ProductPartMaterialVariantSelectionCollection $materialVariants
@@ -25,11 +31,13 @@ class ProductVariantParameters
      */
     public function __construct(
         ProductPartMaterialVariantSelectionCollection $materialVariants,
-        ProductScheme $scheme = null
+        ProductScheme $scheme = null,
+        $skuOptionVariantSelections = null
     )
     {
         $this->materialVariants = $materialVariants;
         $this->productScheme = $scheme;
+        $this->skuOptionVariantSelections = $skuOptionVariantSelections;
     }
 
     /**
@@ -50,5 +58,14 @@ class ProductVariantParameters
     public function getProductScheme()
     {
         return $this->productScheme;
+    }
+    
+    /**
+     * 
+     * @return array[]|\Furniture\SkuOptionBundle\EntitySkuOptionVariant
+     */
+    public function getSkuOptionVariantSelections()
+    {
+        return $this->skuOptionVariantSelections;
     }
 }
