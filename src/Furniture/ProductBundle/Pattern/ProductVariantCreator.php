@@ -67,6 +67,12 @@ class ProductVariantCreator
             $variant->addProductPartVariantSelection($selection);
         }
 
+        if(count($parameters->getSkuOptionVariantSelections())){
+            foreach($parameters->getSkuOptionVariantSelections() as $skuOptionVariant){
+                $variant->addSkuOption($skuOptionVariant);
+            }
+        }
+        
         if ($parameters->getProductScheme()) {
             $variant->setProductScheme($parameters->getProductScheme());
         }

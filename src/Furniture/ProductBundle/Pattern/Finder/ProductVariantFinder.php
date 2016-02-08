@@ -83,12 +83,17 @@ class ProductVariantFinder
 
         if(count($variantParameters->getSkuOptionVariantSelections())){
             // Create inner SQL for control sku option variants
-            $materialVariantsQb = new QueryBuilder($this->em->getConnection());
-            $materialVariantsQb
-                ->select('COUNT(ppmv.id) AS count_material_variants_for_variant')
+            $skuOptionValues = new QueryBuilder($this->em->getConnection());
+            $skuOptionValues
+                ->select('COUNT(*) AS count_material_variants_for_variant')
                 ->from('furniture_product_sku_option_variants', 'psov')
-                ->innerJoin('ppmv', 'furniture_product_part_variant_selection', 'ppvs', 'ppvs.product_part_material_variant_id = ppmv.id')
-                ->andWhere('ppvs.product_variant_id = pv.id');
+                ->andWhere('psov.product_variant_id = pv.id')
+                ->andWhere('psov.sku_option_id IN ( :sku_option_ids )');
+            
+            $qb
+                ->andWhere('(' . $skuOptionValues . ') = :count_sku_option_variants')
+                ->setParameter('count_sku_option_variants', count($variantParameters->getSkuOptionVariantSelections()))
+                ->setParameter('sku_option_ids', (array)$variantParameters->getSkuOptionVariantSelections());
         }
         
         // We set a two results for next control many sku by this parameters
