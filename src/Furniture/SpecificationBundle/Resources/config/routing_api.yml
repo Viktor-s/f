@@ -51,6 +51,12 @@ specification_api_specification_sku_item_add:
     methods: [ POST ]
     defaults:
         _controller: specification.controller.api.specification.sku_item:add
+        
+specification_api_specification_pattern_sku_item_add:
+    path: /catalog/item/add/patt
+    methods: [ POST ]
+    defaults:
+        _controller: specification.controller.api.specification.sku_item:addByPattern
 
 specification_api_specification_sku_item_edit:
     path: /catalog/item/{item}/edit

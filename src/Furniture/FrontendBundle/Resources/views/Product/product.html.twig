@@ -351,13 +351,13 @@
                         quantity = parseInt($('.quantity-selector .entry.number').text());
                         
                         {% if product.hasProductVariantsPatterns() %}
-                        var url = '{{ path('specification_api_specification_sku_item_add') }}',
+                        var url = '{{ path('specification_api_specification_pattern_sku_item_add') }}',
                             data = {
                                 id: pdpDataContainer.getFiltered()[0].id,
                                 choices: {
                                     'so' : [],
                                     'pp' : [],
-                                    'ps' : []
+                                    'ps' : null
                                 },
                                 quantity: quantity,
                                 specification: parseInt($(this).attr('data-specification-id'))
@@ -367,14 +367,14 @@
                                 var v = filters[f];
                                 var d = {};
                                 if( pdpInputMapping[f]['t'] == 'ps' )
-                                    d['i'] = v;
+                                    data['choices']['ps'] = v;
                                 else{
-                                    d[pdpInputMapping[f]['i']] = v;
+                                    d['pp'] = pdpInputMapping[f]['i'];
+                                    d['ppv'] = v;
+                                    data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                                 }
-                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                             }
                             console.log(data);
-                            return;
                         {% else %}
                         var url = '{{ path('specification_api_specification_sku_item_add') }}',
                             data = {

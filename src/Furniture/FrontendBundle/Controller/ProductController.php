@@ -128,6 +128,9 @@ class ProductController
      */
     public function product(Request $request, $product)
     {
+        
+        
+        /**
         // Attention: this is a temporary block for fast testing
         $ref = new \ReflectionObject($this->productRepository);
         $ref = $ref->getProperty('em');
@@ -154,7 +157,7 @@ class ProductController
         var_dump($variant);exit();
 
         // End temporary block for fast testing
-
+        **/
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
