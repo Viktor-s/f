@@ -22,6 +22,10 @@ Furniture\ProductBundle\Entity\ProductVariantsPatternModifier:
             type: smallint
             column: attach
 
+        position:
+            type: integer
+            column: position
+
     manyToOne:
         scheme:
             targetEntity: Furniture\ProductBundle\Entity\ProductScheme

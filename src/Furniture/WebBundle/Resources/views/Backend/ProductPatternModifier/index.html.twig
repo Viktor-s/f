@@ -21,25 +21,65 @@
         <h1><i class="glyphicon glyphicon-list-alt"></i> Modifiers</h1>
     </div>
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for modifier in product_pattern_modifiers %}
+    <form action="{{ path('furniture_backend_product_pattern_modifier_save_positions', {productId: product.id}) }}" method="POST">
+        <table class="table table-bordered" id="modifier-list">
+            <thead>
             <tr>
-                <td>{{ modifier.name }}</td>
-
-                <td>
-                    {{ buttons.edit(path('furniture_backend_product_pattern_modifier_update', {productId: product.id, id: modifier.id})) }}
-                    {{ buttons.delete(path('furniture_backend_product_pattern_modifier_delete', {productId: product.id, id: modifier.id})) }}
-                </td>
+                <th style="width: 50px" class="text-center"></th>
+                <th>Name</th>
+                <th></th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% for modifier in product_pattern_modifiers %}
+                <tr>
+                    <td data-target="move">
+                        <i class="glyphicon glyphicon-move"></i>
+                        <input type="hidden" name="modifier[{{ modifier.id }}]" value="{{ modifier.position }}" />
+                    </td>
+                    <td>{{ modifier.name }}</td>
+
+                    <td>
+                        {{ buttons.edit(path('furniture_backend_product_pattern_modifier_update', {productId: product.id, id: modifier.id})) }}
+                        {{ buttons.delete(path('furniture_backend_product_pattern_modifier_delete', {productId: product.id, id: modifier.id})) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            {% if product_pattern_modifiers|length > 0 %}
+                <tfoot>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <button type="submit" class="btn btn-primary">
+                            Save positions
+                        </button>
+                    </td>
+                </tr>
+                </tfoot>
+            {% endif %}
+        </table>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var modifierList = $('#modifier-list tbody');
+
+                modifierList.sortable({
+                    update: function () {
+                        var index = 1;
+                        modifierList.find('tr').each(function () {
+                            $(this).find('[data-target="move"] input').val(index++);
+                        });
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

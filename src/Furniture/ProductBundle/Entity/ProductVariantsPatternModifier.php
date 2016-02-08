@@ -28,6 +28,11 @@ class ProductVariantsPatternModifier extends AbstractProductVariantsPattern
     private $price;
 
     /**
+     * @var string
+     */
+    private $position = 0;
+
+    /**
      * Set product variants pattern
      *
      * @param ProductVariantsPattern $pattern
@@ -115,5 +120,29 @@ class ProductVariantsPatternModifier extends AbstractProductVariantsPattern
     public function isAttachedToPattern()
     {
         return $this->attach === self::ATTACH_TO_PATTERN;
+    }
+
+    /**
+     * Set position
+     *
+     * @param integer $position
+     *
+     * @return ProductVariantsPatternModifier
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return integer
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 }

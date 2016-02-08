@@ -49,3 +49,8 @@ ALTER TABLE users ADD need_reset_password BOOLEAN DEFAULT NULL;
 UPDATE users SET need_reset_password = FALSE;
 ALTER TABLE users ALTER need_reset_password SET NOT NULL;
 -- End migrations for task #75
+
+-- Start migrations for add position field to pattern modifier
+ALTER TABLE product_variants_pattern_modifier ADD position INTEGER DEFAULT NULL;
+UPDATE product_variants_pattern_modifier SET position = 0;
+ALTER TABLE product_variants_pattern_modifier ALTER position SET NOT NULL;

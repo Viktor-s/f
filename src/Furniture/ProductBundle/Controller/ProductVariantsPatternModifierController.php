@@ -29,6 +29,7 @@ class ProductVariantsPatternModifierController extends ResourceController
         $product = $this->loadProduct($request);
 
         $criteria['product'] = $product;
+        $sorting['position'] = 'ASC';
 
         $resources = $this->resourceResolver->getResource(
             $repository,
@@ -257,6 +258,41 @@ class ProductVariantsPatternModifierController extends ResourceController
             ]);
 
         return $this->handleView($view);
+    }
+
+    /**
+     * Save modifier positions
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function savePositionsAction(Request $request)
+    {
+        $product = $this->loadProduct($request);
+
+        $positions = $request->get('modifier');
+        $modifierIds = array_keys($positions);
+
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $modifiers = $em->getRepository(ProductVariantsPatternModifier::class)
+            ->findBy([
+                'product' => $product,
+                'id' => $modifierIds
+            ]);
+
+        foreach ($modifiers as $modifier) {
+            $modifier->setPosition($positions[$modifier->getId()]);
+        }
+
+        $em->flush();
+
+        $url = $this->generateUrl('furniture_backend_product_pattern_modifier_index', [
+            'productId' => $product->getId()
+        ]);
+
+        return new RedirectResponse($url);
     }
 
     /**

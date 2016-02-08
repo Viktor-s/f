@@ -125,6 +125,18 @@
                     );
                 });
             }
+
+            $(document).ready(function () {
+                $('[data-remove]').click(function () {
+                    var message = $(this).data('message');
+
+                    if (!message) {
+                        message = 'Are you sure remove this item?'
+                    }
+
+                    return confirm(message);
+                });
+            });
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_maps_key }}&signed_in=true&libraries=places&callback=initAutocomplete"
         async defer></script>

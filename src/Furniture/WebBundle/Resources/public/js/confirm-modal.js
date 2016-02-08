@@ -37,12 +37,15 @@
         var $modalTitle = $modal.find('.modal-title');
         var $modalBody = $modal.find('.modal-body');
         var $modalAction = $('#backend-confirmation-modal #backend-confirmation-modal-confirm');
+
         $(document).on('click', '[data-confirm]',function(e) {
             e.preventDefault();
             $actionButton = $(this);
+
             if ($actionButton.is("a")) {
                 $modalAction.attr('href', $actionButton.attr('href'));
             }
+
             titleText = $modalTitle.text();
             bodyText = $modalBody.text();
             actionText = $modalAction.find('span').text();
