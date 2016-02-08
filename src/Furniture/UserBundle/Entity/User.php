@@ -283,4 +283,24 @@ class User extends BaseUser
     {
         return mb_strtolower($username, mb_detect_encoding($username));
     }
+
+    /**
+     * Get needResetPassword
+     *
+     * @return boolean
+     */
+    public function getNeedResetPassword()
+    {
+        return $this->needResetPassword;
+    }
+
+    /**
+     * Remove oauthAccount
+     *
+     * @param \Sylius\Component\User\Model\UserOAuth $oauthAccount
+     */
+    public function removeOauthAccount(\Sylius\Component\User\Model\UserOAuth $oauthAccount)
+    {
+        $this->oauthAccounts->removeElement($oauthAccount);
+    }
 }
