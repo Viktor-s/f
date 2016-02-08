@@ -134,7 +134,7 @@ class ProductPdpInput
      */
     public function getOptionValues() {
         $criteria = new Criteria();
-        $criteria->andWhere($criteria->expr()->eq('option', $this->getOption()));
+        $criteria->andWhere($criteria->expr()->eq('option_id', $this->getOption()->getId()));
         
         $values = [];
         if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
@@ -262,7 +262,7 @@ class ProductPdpInput
                 $vss = $pattern->getSkuOptionValues()->matching($criteria);
                 if($vss->count()){
                     foreach($vss as $variant){
-                        $variantSelections[$variant->getId()] = $variant;
+                        $variants[$variant->getId()] = $variant;
                     }
                 }
             }

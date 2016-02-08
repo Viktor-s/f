@@ -230,9 +230,8 @@
                 {
                 'id':{{p.pattern.id}},
                         'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                        'price':{{ p.pattern.price|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                        'price':{{ p.pattern.price|pattern_min_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
                 },{% endfor %} ];
-                
                 var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
             {% else %}
                 var sku_matrix = [{% for v in sku_matrix %}

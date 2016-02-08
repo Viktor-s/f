@@ -15,7 +15,7 @@ $.widget('furniture.pdp_default_select', {
          element.prop('selectedIndex', -1);
          element.change(function(e){
             var el = $(this);
-            var selectedInput = el.data('input-id');
+            var selectedInput = el.parents('.simple-drop-down.simple-field').first().data('input-id');
             var selectedVariant = el.find(":selected").data('input-variant');
             var filters = data_container.getFilters();
             
@@ -24,7 +24,7 @@ $.widget('furniture.pdp_default_select', {
         });
         
         $(document).on('filter:update', function (event) {
-            var selectInput = element.data('input-id');
+            var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
             if( !data_container.getFilters()[selectInput] ){
                 element.prop('selectedIndex', -1);
             }

@@ -128,36 +128,6 @@ class ProductController
      */
     public function product(Request $request, $product)
     {
-        
-        
-        /**
-        // Attention: this is a temporary block for fast testing
-        $ref = new \ReflectionObject($this->productRepository);
-        $ref = $ref->getProperty('em');
-        $ref->setAccessible(true);
-        $em = $ref->getValue($this->productRepository);
-        $part = $em->find('Furniture\ProductBundle\Entity\ProductPart', 22);
-        $pattern = $em->find('Furniture\ProductBundle\Entity\ProductVariantsPattern', 3);
-        $scheme = $em->find('Furniture\ProductBundle\Entity\ProductScheme', 1);
-
-        $partMaterialVariant11 = $em->find('Furniture\ProductBundle\Entity\ProductPartMaterialVariant', 14);
-        $partMaterialVariant12 = $em->find('Furniture\ProductBundle\Entity\ProductPartMaterialVariant', 15);
-
-        $partMaterialVariant21 = $em->find('Furniture\ProductBundle\Entity\ProductPartMaterialVariant', 32);
-        $partMaterialVariant22 = $em->find('Furniture\ProductBundle\Entity\ProductPartMaterialVariant', 31);
-
-        $selection1 = new ProductPartMaterialVariantSelection($part, $partMaterialVariant11);
-        $selection2 = new ProductPartMaterialVariantSelection($part, $partMaterialVariant12);
-        $selection3 = new ProductPartMaterialVariantSelection($part, $partMaterialVariant21);
-        $selection4 = new ProductPartMaterialVariantSelection($part, $partMaterialVariant22);
-        $selections = new ProductPartMaterialVariantSelectionCollection([$selection1, $selection2, $selection3, $selection4]);
-
-        $parameters = new ProductVariantParameters($selections, $scheme);
-        $variant = $this->productVariantCreator->create($pattern, $parameters);
-        var_dump($variant);exit();
-
-        // End temporary block for fast testing
-        **/
         $user = $this->tokenStorage->getToken()
             ->getUser();
 

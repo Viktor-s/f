@@ -37,6 +37,9 @@ var variant_pattern_data_container = function (patterns) {
                 }
             });
             $(document).trigger("filter:update");
+            console.log(options.patterns);
+            console.log(options.filters);
+            console.log(options.filtered);
             return this;
         },
         getFilteredWithFilterValue: function(filter, value){
