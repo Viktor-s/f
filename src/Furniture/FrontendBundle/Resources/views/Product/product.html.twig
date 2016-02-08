@@ -345,7 +345,8 @@
                     var el = $(this);
                     
                     if (pdpDataContainer.getFiltered().length == 1) {
-                        quantity = parseInt($('.quantity-selector .entry.number').text());
+                        var quantity = parseInt($('.quantity-selector .entry.number').text());
+                        var specificationId = parseInt($(this).attr('data-specification-id'));
                         
                         {% if product.hasProductVariantsPatterns() %}
                             var data = {
@@ -355,8 +356,6 @@
                                     'pp' : [],
                                     'ps' : null
                                 },
-                                quantity: quantity,
-                                specification: parseInt($(this).attr('data-specification-id'))
                             };
                             var filters = pdpDataContainer.getFilters();
                             
@@ -382,7 +381,31 @@
                                 method: 'POST',
                                 dataType : 'json',
                                 success: function(data) {
-                                    console.log(data);
+                                    if(data['id']){
+                                        var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
+                                        var url = '{{ path('specification_api_specification_sku_item_add') }}';
+                                        $.ajax({
+                                            url: url,
+                                            data: {
+                                                id: data['id'],
+                                                quantity: quantity,
+                                                specification: specificationId
+                                            },
+                                            method: 'POST',
+                                            success: function () {
+                                                //alert('Successfully add product to specification.');
+                                                $('#specification-added')
+                                                    .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
+                                                    .show();
+                                                $('.add-to-specification button').dropdown('toggle');
+                                                addSpecificationProcessed = false;
+                                            },
+                                            error: function () {
+                                                alert('Error with add product to specification.');
+                                                addSpecificationProcessed = false;
+                                            }
+                                        });
+                                    }
                                 }
                             });
                             
@@ -391,28 +414,30 @@
                             data = {
                                 id: pdpDataContainer.getFiltered()[0].id,
                                 quantity: quantity,
-                                specification: parseInt($(this).attr('data-specification-id'))
+                                specification: specificationId
                             };
-                        {% endif %}
-                        var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , data.specification);
+                            
+                            var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
 
-                        $.ajax({
-                            url: url,
-                            data: data,
-                            method: 'POST',
-                            success: function () {
-                                //alert('Successfully add product to specification.');
-                                $('#specification-added')
-                                    .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
-                                    .show();
-                                $('.add-to-specification button').dropdown('toggle');
-                                addSpecificationProcessed = false;
-                            },
-                            error: function () {
-                                alert('Error with add product to specification.');
-                                addSpecificationProcessed = false;
-                            }
-                        });
+                            $.ajax({
+                                url: url,
+                                data: data,
+                                method: 'POST',
+                                success: function () {
+                                    //alert('Successfully add product to specification.');
+                                    $('#specification-added')
+                                        .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
+                                        .show();
+                                    $('.add-to-specification button').dropdown('toggle');
+                                    addSpecificationProcessed = false;
+                                },
+                                error: function () {
+                                    alert('Error with add product to specification.');
+                                    addSpecificationProcessed = false;
+                                }
+                            });
+                            
+                        {% endif %}
                     }else{
                         bootbox.alert('{{ 'frontend.product.pdp.specify_product'|trans }}');
                     }
