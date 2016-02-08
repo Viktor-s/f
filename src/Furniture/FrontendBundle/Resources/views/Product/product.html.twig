@@ -205,13 +205,15 @@
             {% if product.hasProductVariantsPatterns() %}
                 var pdpInputMapping = {};
                 
-                {% for input in product.PdpConfig.inputs %}
+                {% for input in product.pdpConfig.inputs %}
                     {% if input.option %}
                     {% elseif input.skuOption %}
+                        {#
                         pdpInputMapping[{{ input.id }}] = {
                             't' : 'so',
                             'i' : {{ input.option.id }}
                         };
+                        #}
                     {% elseif input.productPart %}
                         pdpInputMapping[{{ input.id }}] = {
                             't' : 'pp',
@@ -363,7 +365,10 @@
                             var filters = pdpDataContainer.getFilters();
                             for( f in pdpDataContainer.getFilters() ){
                                 var v = filters[f];
-                                data['choices'][pdpInputMapping[f]['t']].push({ pdpInputMapping[f][i] : v });
+                                var key = pdpInputMapping[f][i];
+                                var o = {};
+                                o[key] = v;
+                                data['choices'][pdpInputMapping[f]['t']].push(o);
                             }
                             console.log(data);
                             return;

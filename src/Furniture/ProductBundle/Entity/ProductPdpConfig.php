@@ -89,12 +89,13 @@ class ProductPdpConfig
     public function getInputs()
     {
         $order = new Criteria();
-        $order->orderBy(Array(
-            'position' => Criteria::ASC
-        ));
-        return $this->inputs->matching($order);;
+        $order->orderBy([
+            'position' => Criteria::ASC,
+        ]);
+
+        return $this->inputs->matching($order);
     }
-    
+
     /**
      * Add input
      *
@@ -165,17 +166,18 @@ class ProductPdpConfig
 
         return null;
     }
-    
+
     public function getInputForSchemes()
     {
-        if($this->getProduct()->isSchematicProductType()){
+        if ($this->getProduct()->isSchematicProductType()) {
             foreach ($this->inputs as $input) {
-                if( $input->getSchemes() ){
+                if ($input->getSchemes()) {
                     return $input;
                 }
             }
         }
+
         return null;
     }
-    
+
 }

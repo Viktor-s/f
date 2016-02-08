@@ -33,6 +33,7 @@ services:
             - @frontend.repository.specification_item
             - @security.token_storage
             - @security.authorization_checker
+            - @product_pattern.product_variant_creator
 
     frontend.controller.security:
         class: Furniture\FrontendBundle\Controller\SecurityController
