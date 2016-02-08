@@ -137,10 +137,14 @@ class ProductPdpInput
         $criteria->andWhere($criteria->expr()->eq('option', $this->getOption()));
         
         $values = [];
-        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
-            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-            $value = $variant->getOptions()->matching($criteria)->first();
-            $values[$value->getId()] = $value;
+        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
+            
+        }else{
+            foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+                /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+                $value = $variant->getOptions()->matching($criteria)->first();
+                $values[$value->getId()] = $value;
+            }
         }
         return $values;
     }
@@ -177,13 +181,25 @@ class ProductPdpInput
     public function getProductPartMaterialsVariantSelections()
     {
         $criteria = new Criteria();
-        $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
         
         $variantSelections = [];
-        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
-            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-            if($variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first()){
-                $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
+            $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
+            foreach($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern){
+                $vss = $pattern->getPartPatternVariantSelections()->matching($criteria);
+                if($vss->count()){
+                    foreach($vss as $variantSelection){
+                        $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+                    }
+                }
+            }
+        }else{
+            $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
+            foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+                /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+                if($variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first()){
+                    $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
+                }
             }
         }
         return $variantSelections;
@@ -238,13 +254,25 @@ class ProductPdpInput
      */
     public function getSkuOptionVariants() {
         $criteria = new Criteria();
-        $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
         
         $variants = [];
-        foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
-            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-            if($variant = $variant->getSkuOptions()->matching($criteria)->first()){
-                $variants[$variant->getId()] = $variant;
+        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
+            $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
+            foreach($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern){
+                $vss = $pattern->getSkuOptionValues()->matching($criteria);
+                if($vss->count()){
+                    foreach($vss as $variant){
+                        $variantSelections[$variant->getId()] = $variant;
+                    }
+                }
+            }
+        }else{
+            $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
+            foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
+                /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
+                if($variant = $variant->getSkuOptions()->matching($criteria)->first()){
+                    $variants[$variant->getId()] = $variant;
+                }
             }
         }
         return $variants;

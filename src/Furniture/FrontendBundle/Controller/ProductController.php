@@ -137,7 +137,7 @@ class ProductController
 
         // Check product for retailer
         $this->checkProductForRetailer($product);
-
+        
         $quantity = 1;
 
         // Get active variant
@@ -185,38 +185,70 @@ class ProductController
         $skuMatrix = [];
         $activeVariantMatrix = false;
 
-        foreach ($product->getVariants() as $variant) {
-            /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-            $item = [
-                'options' => [],
-                'variant' => $variant,
-            ];
+        if($product->hasProductVariantsPatterns()){
+            foreach($product->getProductVariantsPatterns() as $pattern){
+                $item = [
+                    'options' => [],
+                    'pattern' => $pattern
+                    ];
+                
+                if( $product->isSchematicProductType() ){
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $item['options'][$inputId] = [ $pattern->getScheme()->getId() ];
+                }
+                
+                foreach ($pattern->getPartPatternVariantSelections() as $patternVariantSelection){
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($patternVariantSelection->getProductPart())->getId();
+                    if(!isset($item['options'][$inputId])){
+                        $item['options'][$inputId] = [];
+                    }
+                    $item['options'][$inputId][] = $patternVariantSelection->getProductPartMaterialVariant()->getId();
+                }
+                
+                foreach ($pattern->getSkuOptionValues() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    if(!isset($item['options'][$inputId])){
+                        $item['options'][$inputId] = [];
+                    }
+                    $item['options'][$inputId][] = $option->getId();
+                }
+                
+                $skuMatrix[] = $item;
+            }
+        } else {
+            foreach ($product->getVariants() as $variant) {
+                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+                $item = [
+                    'options' => [],
+                    'variant' => $variant,
+                ];
 
-            foreach ($variant->getOptions() as $option) {
-                $inputId = $product->getPdpConfig()->findInputForOption($option->getOption())->getId();
-                $item['options'][$inputId] = $option->getId();
-            }
+                /**foreach ($variant->getOptions() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForOption($option->getOption())->getId();
+                    $item['options'][$inputId] = $option->getId();
+                }**/
 
-            foreach ($variant->getSkuOptions() as $option) {
-                $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
-                $item['options'][$inputId] = $option->getId();
-            }
+                foreach ($variant->getSkuOptions() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    $item['options'][$inputId] = $option->getId();
+                }
 
-            foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
-                $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
-                $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
-            }
+                foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
+                    $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
+                }
 
-            if($product->isSchematicProductType()){
-                $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
-                $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                if ($product->isSchematicProductType()) {
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                }
+
+                if ($activeVariant && $variant == $activeVariant) {
+                    $activeVariantMatrix = $item['options'];
+                }
+
+                $skuMatrix[] = $item;
             }
-            
-            if ($activeVariant && $variant == $activeVariant) {
-                $activeVariantMatrix = $item['options'];
-            }
-            
-            $skuMatrix[] = $item;
         }
 
         $specificationsWithBuyer = [];

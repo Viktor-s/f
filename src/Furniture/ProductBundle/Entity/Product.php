@@ -10,6 +10,7 @@ use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 
 class Product extends BaseProduct
 {
@@ -109,6 +110,12 @@ class Product extends BaseProduct
      */
     protected $translations;
 
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\ProductVariantsPattern
+     */
+    private $productVariantsPatterns;
+    
     /**
      * Constructor.
      */
@@ -967,7 +974,7 @@ class Product extends BaseProduct
      */
     public function hasProductSchemes()
     {
-        return (bool)$this->productSchemes->isEmpty();
+        return !(bool)$this->productSchemes->isEmpty();
     }
 
     /**
@@ -1083,6 +1090,72 @@ class Product extends BaseProduct
         return $this->productType === self::PRODUCT_SCHEMATIC;
     }
 
+    /**
+     * 
+     * @return Collection[]|\Furniture\ProductBundle\Entity\ProductVariantsPattern
+     */
+    public function getProductVariantsPatterns(){
+        return $this->productVariantsPatterns;
+    }
+
+    /**
+     * 
+     * @param Collection $productVariantsPatterns
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setProductVariantsPatterns(Collection $productVariantsPatterns){
+        $this->productVariantsPatterns = $productVariantsPatterns;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return bool
+     */
+    public function hasProductVariantsPatterns()
+    {
+        return !(bool)$this->productVariantsPatterns->isEmpty();
+    }
+
+    /**
+     * 
+     * @param ProductVariantsPattern $productVariantsPattern
+     * @return bool
+     */
+    public function hasProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        return $this->productVariantsPatterns->contains($productVariantsPattern);
+    }
+    
+    /**
+     * 
+     * @param ProductVariantsPattern $productVariantsPattern
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function addProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        if (!$this->hasProductVariantsPattern($productVariantsPattern)) {
+            $productVariantsPattern->setProduct($this);
+            $this->productVariantsPatterns->add($productVariantsPattern);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 
+     * @param ProductVariantsPattern $productVariantsPattern
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function removeProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        if ($this->hasProductVariantsPattern($productVariantsPattern)) {
+            $this->productVariantsPatterns->removeElement($productVariantsPattern);
+        }
+
+        return $this;
+    }
+    
     /**
      * Implement __toString
      *

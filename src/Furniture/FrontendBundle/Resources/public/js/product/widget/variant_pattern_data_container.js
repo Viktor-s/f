@@ -1,8 +1,10 @@
-var variant_data_container = function (variants) {
+var variant_pattern_data_container = function (patterns) {
+
+    
 
     var options = {
-        variants: variants,
-        filtered: variants,
+        patterns: patterns,
+        filtered: patterns,
         filters: {},
     };
 
@@ -13,19 +15,18 @@ var variant_data_container = function (variants) {
             this.setFilters({});
         },
         getAll: function () {
-            return options.variants;
+            return options.patterns;
         },
         getFiltered: function () {
             return options.filtered;
         },
         setFilters: function (filters) {
-            //console.log(filters);
             options.filtered = [];
             options.filters = filters;            
-            options.variants.forEach(function (el) {
+            options.patterns.forEach(function (el) {
                 var ok = true;
                 $.each(options.filters, function (index, value) {
-                    if (!el.options[index] || el.options[index] != value) {
+                    if (!el.options[index] || $.inArray(value, el.options[index]) < 0 ) {
                         ok = false;
                         return ok;
                     }
@@ -36,15 +37,12 @@ var variant_data_container = function (variants) {
                 }
             });
             $(document).trigger("filter:update");
-            console.log('---');
-            console.log( options.filtered );
-            console.log('---');
             return this;
         },
         getFilteredWithFilterValue: function(filter, value){
             var res = [];
             options.filtered.forEach(function (el) {
-                if(el.options[filter] && el.options[filter] == value){
+                if(el.options[filter] && $.inArray(value, el.options[filter]) > -1){
                     res.push(el);
                 }
             });

@@ -28,6 +28,7 @@
     {% javascripts output='/js/*.min.js'
                         '@FrontendBundle/Resources/public/js/list.min.js'
                         '@FrontendBundle/Resources/public/js/product/widget/variant_data_container.js'
+                        '@FrontendBundle/Resources/public/js/product/widget/variant_pattern_data_container.js'
                         '@FrontendBundle/Resources/public/js/product/widget/variant_buy_btn.js'
                         '@FrontendBundle/Resources/public/js/product/widget/pdp.js'
     %}
@@ -201,14 +202,46 @@
     <script type="text/javascript">
         (function ($) {
         $( document ).ready(function(){
-            var sku_matrix = [{% for v in sku_matrix %}
-            {
-            'id':{{v.variant.id}},
-                    'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                    'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
-            },{% endfor %} ];
-            
-            var variants_container = new variant_data_container(sku_matrix);
+            {% if product.hasProductVariantsPatterns() %}
+                var pdpInputMapping = {};
+                
+                {% for input in product.PdpConfig.inputs %}
+                    {% if input.option %}
+                    {% elseif input.skuOption %}
+                        pdpInputMapping[{{ input.id }}] = {
+                            't' : 'so',
+                            'i' : {{ input.option.id }}
+                        };
+                    {% elseif input.productPart %}
+                        pdpInputMapping[{{ input.id }}] = {
+                            't' : 'pp',
+                            'i' : {{ input.productPart.id }}
+                        };
+                    {% elseif input.forSchemes %}
+                        pdpInputMapping[{{ input.id }}] = {
+                            't' : 'ps',
+                        };
+                    {% endif %}
+                {% endfor %}
+                
+                var sku_matrix = [{% for p in sku_matrix %}
+                {
+                'id':{{p.pattern.id}},
+                        'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                        'price':{{ p.pattern.price|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                },{% endfor %} ];
+                
+                var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
+            {% else %}
+                var sku_matrix = [{% for v in sku_matrix %}
+                {
+                'id':{{v.variant.id}},
+                        'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                        'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                },{% endfor %} ];
+
+                var pdpDataContainer = new variant_data_container(sku_matrix);
+            {% endif %}
 
             {% if product.schematicProductType %}
                 /*this code need to be migrate to pdp widget js */
@@ -219,9 +252,9 @@
                     $(".detail-info-entry[data-input-id]").hide();
                     var el = $(this);
                     var schemeSelected = el.val();
-                    var oldFilters = variants_container.getFilters();
+                    var oldFilters = pdpDataContainer.getFilters();
                     var newFilters = {};
-                    newFilters[selectSchemeFilter] = schemeSelected;
+                    newFilters[selectSchemeFilter] = parseInt(schemeSelected);
                     for(filter in schemeMapping[schemeSelected]){
                         if( filter == selectSchemeFilter )
                             continue;
@@ -231,11 +264,11 @@
                         }
                         $(".detail-info-entry[data-input-id="+inputId+"]").show();
                     }
-                    variants_container.setFilters(newFilters);
+                    pdpDataContainer.setFilters(newFilters);
                 };
                 selectSchemeElement.change(selectSchemeCall);
                 $(document).on('filter:update', function (event) {
-                    if( !variants_container.getFilters()[selectSchemeFilter] ){
+                    if( !pdpDataContainer.getFilters()[selectSchemeFilter] ){
                         selectSchemeElement.prop('selectedIndex', -1);
                     }
                 });
@@ -243,12 +276,12 @@
             {% endif %}
 
 
-            $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': variants_container });
-            $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': variants_container });
-            $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': variants_container });
+            $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': pdpDataContainer });
+            $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
+            $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
 
             var low_max_price = function () {
-                var variants = variants_container.getFiltered()
+                var variants = pdpDataContainer.getFiltered()
                 if (variants.length > 1) {
                     var max = 0;
                     var min = 0;
@@ -290,16 +323,14 @@
             });
 
         {% if active_variant_matrix %}
-                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
                 /* temporary solution !!!!!!!!!! */
                 {% if product.schematicProductType %}
-                if(variants_container.getFilters()[selectSchemeFilter]){
-                    selectSchemeElement.val(variants_container.getFilters()[selectSchemeFilter]);
-                    console.log(selectSchemeElement.val());
+                if(pdpDataContainer.getFilters()[selectSchemeFilter]){
+                    selectSchemeElement.val(pdpDataContainer.getFilters()[selectSchemeFilter]);
                     $.proxy(selectSchemeCall ,selectSchemeElement)();
-                    console.log(selectSchemeElement.val());
                 }
-                variants_container.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
                 {% endif %}
                 /********/
         {% endif %}
@@ -314,14 +345,36 @@
                 $('.add-to-specification a').click(function () {
                     var el = $(this);
                     
-                    if (variants_container.getFiltered().length == 1) {
+                    if (pdpDataContainer.getFiltered().length == 1) {
                         quantity = parseInt($('.quantity-selector .entry.number').text());
+                        
+                        {% if product.hasProductVariantsPatterns() %}
                         var url = '{{ path('specification_api_specification_sku_item_add') }}',
-                                data = {
-                                    id: variants_container.getFiltered()[0].id,
-                                    quantity: quantity,
-                                    specification: parseInt($(this).attr('data-specification-id'))
-                                };
+                            data = {
+                                id: pdpDataContainer.getFiltered()[0].id,
+                                choices: {
+                                    'so' : [],
+                                    'pp' : [],
+                                    'ps' : []
+                                },
+                                quantity: quantity,
+                                specification: parseInt($(this).attr('data-specification-id'))
+                            };
+                            var filters = pdpDataContainer.getFilters();
+                            for( f in pdpDataContainer.getFilters() ){
+                                var v = filters[f];
+                                data['choices'][pdpInputMapping[f]['t']].push({ pdpInputMapping[f][i] : v });
+                            }
+                            console.log(data);
+                            return;
+                        {% else %}
+                        var url = '{{ path('specification_api_specification_sku_item_add') }}',
+                            data = {
+                                id: pdpDataContainer.getFiltered()[0].id,
+                                quantity: quantity,
+                                specification: parseInt($(this).attr('data-specification-id'))
+                            };
+                        {% endif %}
                         var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , data.specification);
 
                         $.ajax({
@@ -349,14 +402,14 @@
         {% else %}
                 $('.update-specification-item button').click(function () {
                     var el = $(this);
-                    if (variants_container.getFiltered().length == 1) {
+                    if (pdpDataContainer.getFiltered().length == 1) {
 
 
                         quantity = parseInt($('.quantity-selector .entry.number').text());
 
                         var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}',
                                 data = {
-                                    id: variants_container.getFiltered()[0].id,
+                                    id: pdpDataContainer.getFiltered()[0].id,
                                     quantity: quantity
                                 };
 
