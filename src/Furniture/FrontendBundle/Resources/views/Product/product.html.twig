@@ -363,7 +363,13 @@
                             var filters = pdpDataContainer.getFilters();
                             for( f in pdpDataContainer.getFilters() ){
                                 var v = filters[f];
-                                data['choices'][pdpInputMapping[f]['t']].push({ pdpInputMapping[f][i] : v });
+                                var d = {};
+                                if( pdpInputMapping[f]['t'] == 'ps' )
+                                    d['i'] = v;
+                                else{
+                                    d[pdpInputMapping[f]['i']] = v;
+                                }
+                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                             }
                             console.log(data);
                             return;
