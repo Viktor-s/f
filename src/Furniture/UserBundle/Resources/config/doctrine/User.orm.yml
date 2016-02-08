@@ -23,3 +23,5 @@ Furniture\UserBundle\Entity\User:
         needResetPassword:
             column: need_reset_password
             type: boolean
+            options:
+                default: false

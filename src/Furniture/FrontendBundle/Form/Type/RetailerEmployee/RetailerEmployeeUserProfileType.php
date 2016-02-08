@@ -31,7 +31,7 @@ class RetailerEmployeeUserProfileType extends AbstractType
                 'required' => false
             ])
             ->add('phones', 'text', [
-                'label' => 'frontend.phones',
+                'label' => 'frontend.phones_contact',
                 'required' => false
             ])
             ->add('retailerMode', 'choice', [
