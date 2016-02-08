@@ -24,5 +24,8 @@ cmf_media_image:
 specification:
     resource: "@SpecificationBundle/Resources/config/routing.yml"
 
+product:
+    resource: "@ProductBundle/Resources/config/routing.yml"
+
 frontend:
     resource: "@FrontendBundle/Resources/config/routing.yml"

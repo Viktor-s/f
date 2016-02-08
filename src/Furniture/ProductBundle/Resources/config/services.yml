@@ -31,6 +31,9 @@ services:
     product_pattern.product_variant_creator:
         class: Furniture\ProductBundle\Pattern\ProductVariantCreator
         arguments: [ @product_pattern.finder.product_variant, @doctrine.orm.default_entity_manager ]
+
+    product_pattern.product_variant_parameters_validator:
+        class: Furniture\ProductBundle\Pattern\ProductVariantParametersValidator
     
     product_pattern.product_variant_price_compiller:
         class: Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller

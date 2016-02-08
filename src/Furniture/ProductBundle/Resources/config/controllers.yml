@@ -1,0 +1,9 @@
+services:
+    product.controller.api.pattern_product_creator:
+        class: Furniture\ProductBundle\Controller\Api\PatternProductCreatorController
+        arguments:
+            - @product_pattern.product_variant_creator
+            - @product_pattern.product_variant_parameters_validator
+            - @form.factory
+            - @doctrine.orm.default_entity_manager
+            - @pricing.calculator
