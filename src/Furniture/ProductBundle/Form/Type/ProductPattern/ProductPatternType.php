@@ -31,7 +31,7 @@ class ProductPatternType extends PatternType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('price', 'number', [
+            ->add('price', 'sylius_money', [
                 'label' => 'Price'
             ]);
     }
