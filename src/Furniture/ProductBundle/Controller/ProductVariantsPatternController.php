@@ -94,11 +94,8 @@ class ProductVariantsPatternController extends ResourceController
             return new RedirectResponse($url);
         }
         
-        if ($product->isSchematicProductType()) {
-            $groupVariantFilter = new GroupVaraintEdit($product, $scheme);
-        } else {
-            $groupVariantFilter = new GroupVaraintEdit($product);
-        }
+
+        $groupVariantFilter = new GroupVaraintEdit($product);
 
         $view = $this
             ->view()
