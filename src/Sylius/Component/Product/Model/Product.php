@@ -364,6 +364,19 @@ class Product extends AbstractTranslatable implements ProductInterface
     }
 
     /**
+     * Has variants without master?
+     *
+     * @return bool
+     */
+    public function hasVariantsWithoutMaster()
+    {
+        return $this->variants->exists(function ($key, ProductVariant $variant) {
+            return !$variant->isMaster();
+        });
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function getVariants()

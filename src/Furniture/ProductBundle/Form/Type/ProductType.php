@@ -21,8 +21,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Furniture\ProductBundle\Form\Type\ProductTranslationType;
-
 class ProductType extends BaseProductType
 {
     /**
@@ -183,9 +181,15 @@ class ProductType extends BaseProductType
             /** @var Product $product */
             $product = $event->getData();
 
+            $hasVariants = $product->hasVariantsWithoutMaster();
+            $hasSchemes = $product->hasProductSchemes();
+            $hasVariantPatterns = $product->hasProductVariantsPatterns();
+
+            $disabled = $hasVariants || $hasSchemes || $hasVariantPatterns;
+
             $event->getForm()->add('productType', 'choice', [
                 'label' => 'Product type',
-                'disabled' => (bool) $product->getId(),
+                'disabled' => $disabled,
                 'choices' => [
                     Product::PRODUCT_SIMPLE => 'Simple',
                     Product::PRODUCT_SCHEMATIC => 'Schematic'

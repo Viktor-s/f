@@ -10,7 +10,6 @@ use Sylius\Component\Core\Model\Product as BaseProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
-use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 
 class Product extends BaseProduct
 {
@@ -111,8 +110,7 @@ class Product extends BaseProduct
     protected $translations;
 
     /**
-     *
-     * @var \Furniture\ProductBundle\Entity\ProductVariantsPattern
+     * @var Collection|ProductVariantsPattern[]
      */
     private $productVariantsPatterns;
     
@@ -1101,25 +1099,32 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
-     * @return Collection[]|\Furniture\ProductBundle\Entity\ProductVariantsPattern
+     * Get product variant patterns
+     *
+     * @return Collection|ProductVariantsPattern[]
      */
-    public function getProductVariantsPatterns(){
+    public function getProductVariantsPatterns()
+    {
         return $this->productVariantsPatterns;
     }
 
     /**
-     * 
+     * Set product variant patterns
+     *
      * @param Collection $productVariantsPatterns
-     * @return \Furniture\ProductBundle\Entity\Product
+     *
+     * @return Product
      */
-    public function setProductVariantsPatterns(Collection $productVariantsPatterns){
+    public function setProductVariantsPatterns(Collection $productVariantsPatterns)
+    {
         $this->productVariantsPatterns = $productVariantsPatterns;
+
         return $this;
     }
 
     /**
-     * 
+     * Has product variants patterns?
+     *
      * @return bool
      */
     public function hasProductVariantsPatterns()
@@ -1128,8 +1133,10 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
+     * Has product variant pattern?
+     *
      * @param ProductVariantsPattern $productVariantsPattern
+     *
      * @return bool
      */
     public function hasProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
@@ -1138,9 +1145,11 @@ class Product extends BaseProduct
     }
     
     /**
-     * 
+     * Add product variant pattern
+     *
      * @param ProductVariantsPattern $productVariantsPattern
-     * @return \Furniture\ProductBundle\Entity\Product
+     *
+     * @return Product
      */
     public function addProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
     {
@@ -1153,9 +1162,11 @@ class Product extends BaseProduct
     }
 
     /**
-     * 
+     * Remove product variant pattern
+     *
      * @param ProductVariantsPattern $productVariantsPattern
-     * @return \Furniture\ProductBundle\Entity\Product
+     *
+     * @return Product
      */
     public function removeProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
     {
