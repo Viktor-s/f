@@ -93,6 +93,13 @@ class ProductVariantsPatternController extends ResourceController
 
             return new RedirectResponse($url);
         }
+        
+        if ($product->isSchematicProductType()) {
+            throw new Exception('WHTF!');
+            $groupVariantFilter = new GroupVaraintEdit($product, $scheme);
+        } else {
+            $groupVariantFilter = new GroupVaraintEdit($product);
+        }
 
         $view = $this
             ->view()
@@ -101,6 +108,7 @@ class ProductVariantsPatternController extends ResourceController
                 'product'                        => $product,
                 $this->config->getResourceName() => $pattern,
                 'form'                           => $form->createView(),
+                'groupVariantFilter'             => $groupVariantFilter,
             ]);
 
         return $this->handleView($view);
