@@ -33,6 +33,8 @@ class RetailerUserProfileType extends AbstractType
                 'label' => 'frontend.phones_contact',
                 'required' => false
             ]);
+        
+        $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
     }
 
     /**
