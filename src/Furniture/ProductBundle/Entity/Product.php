@@ -1091,6 +1091,16 @@ class Product extends BaseProduct
     }
 
     /**
+     * Is not schematic product type?
+     *
+     * @return bool
+     */
+    public function isNotSchematicProductType()
+    {
+        return !$this->isSchematicProductType();
+    }
+
+    /**
      * 
      * @return Collection[]|\Furniture\ProductBundle\Entity\ProductVariantsPattern
      */

@@ -75,144 +75,159 @@
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-plus-sign"></i> Create pattern</h1>
     </div>
-    <script>
+
+    <script type="text/javascript">
         var filterDb = {
             parts: {},
-            skuOptions: {},
+            skuOptions: {}
         };
     </script>
-    <div class="row admin-filter-variants">
-        <form name="blablaba">
-        {% if product.hasProductParts() %}
-            {% if groupVariantFilter.schematicProductType %}
-                {% set productParts = groupVariantFilter.scheme.productParts %}
-            {% else %}
-                {% set productParts = product.productParts %}
-            {% endif %}
-            {% for productPart in  productParts %}
-                
-                <script> filterDb['parts'][{{ productPart.id }}] = {}; </script>
-                
-                <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            {{ productPart.label }}
-                        </div>
 
-                        <ul class="nav nav-list nav-tree-main">
-                            {% for material in productPart.productPartMaterials %}
-                                
-                                <script> filterDb['parts'][{{ productPart.id }}][{{ material.id }}] = {}; </script>
-                                
-                                <li>
-                                    <div class="tree-opener">+</div>
-                                    <label class="tree-toggle nav-header checkbox-entry">
-                                        <input type="checkbox"> <span class="check"></span>{{ material.name }}
-                                    </label>
-                                    <ul class="nav nav-list tree">
-                                        {% for grouped in  material.getGroupedOptionValues() %}                                            
-                                            <li>
-                                                <label class="checkbox-entry tree-toggle ">
-                                                    <input type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
-                                                </label>
-                                                <ul class="nav nav-list tree">
-                                                {% for value in grouped.values %}
-                                                    
-                                                    <script> filterDb['parts'][{{ productPart.id }}][{{ material.id }}][{{ value.id }}] = []; </script>
-                                                    
+    {% if groupVariantFilter %}
+        {#
+            We have a group variant filter and now we should render all group of product parts
+        #}
+        <div class="row admin-filter-variants">
+            <form name="blablaba">
+                {% if product.hasProductParts() %}
+                    {% if groupVariantFilter and groupVariantFilter.schematicProductType %}
+                        {% set productParts = groupVariantFilter.scheme.productParts %}
+                    {% else %}
+                        {% set productParts = product.productParts %}
+                    {% endif %}
+
+                    {% for productPart in  productParts %}
+                        <script type="text/javascript">filterDb['parts'][{{ productPart.id }}] = {}; </script>
+
+                        <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    {{ productPart.label }}
+                                </div>
+
+                                <ul class="nav nav-list nav-tree-main">
+                                    {% for material in productPart.productPartMaterials %}
+
+                                        <script type="text/javascript">filterDb['parts'][{{ productPart.id }}][{{ material.id }}] = {};</script>
+
+                                        <li>
+                                            <div class="tree-opener">+</div>
+                                            <label class="tree-toggle nav-header checkbox-entry">
+                                                <input type="checkbox"> <span class="check"></span>{{ material.name }}
+                                            </label>
+                                            <ul class="nav nav-list tree">
+                                                {% for grouped in  material.getGroupedOptionValues() %}
                                                     <li>
-                                                    <label class="tree-toggle checkbox-entry">
-                                                        <input 
-                                                            class="system-check-material-variant"
-                                                            data-product-part-id="{{ productPart.id }}"
-                                                            data-product-part-material-id="{{ material.id }}"
-                                                            data-product-part-material-variant-value-id="{{ value.id }}" 
-                                                            type="checkbox"> 
-                                                        <span class="check"></span> {{ value.value }}
-                                                    </label>
+                                                        <label class="checkbox-entry tree-toggle ">
+                                                            <input type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
+                                                        </label>
+                                                        <ul class="nav nav-list tree">
+                                                        {% for value in grouped.values %}
+
+                                                            <script> filterDb['parts'][{{ productPart.id }}][{{ material.id }}][{{ value.id }}] = []; </script>
+
+                                                            <li>
+                                                            <label class="tree-toggle checkbox-entry">
+                                                                <input
+                                                                    class="system-check-material-variant"
+                                                                    data-product-part-id="{{ productPart.id }}"
+                                                                    data-product-part-material-id="{{ material.id }}"
+                                                                    data-product-part-material-variant-value-id="{{ value.id }}"
+                                                                    type="checkbox">
+                                                                <span class="check"></span> {{ value.value }}
+                                                            </label>
+                                                            </li>
+                                                        {% endfor %}
+                                                        </ul>
                                                     </li>
                                                 {% endfor %}
-                                                </ul>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if product.hasSkuOptionVariants() %}
-            {% for skuOptionGroup in product.getSkuOptionVariantsGrouped() %}
-                <div class="col-md-3" data-container="sku_option_panel_{{ skuOptionGroup[0].id }}">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            {{ skuOptionGroup[0].name }}
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
-                        <ul class="list-group">
-                            {% for skuValue in skuOptionGroup %}
-                                <li class="list-group-item">
-                                    <label class="checkbox-entry">
-                                        <input class="system-sku-option-value" data-sku-option-value-map="{{ skuValue.skuOptionType.name }}_{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
-                                    </label>
-                                </li>
+                    {% endfor %}
+                {% endif %}
+                {% if product.hasSkuOptionVariants() %}
+                    {% for skuOptionGroup in product.getSkuOptionVariantsGrouped() %}
+                        <div class="col-md-3" data-container="sku_option_panel_{{ skuOptionGroup[0].id }}">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    {{ skuOptionGroup[0].name }}
+                                </div>
+                                <ul class="list-group">
+                                    {% for skuValue in skuOptionGroup %}
+                                        <li class="list-group-item">
+                                            <label class="checkbox-entry">
+                                                <input class="system-sku-option-value" data-sku-option-value-map="{{ skuValue.skuOptionType.name }}_{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </form>
+
+            <script>
+                {% for productPart in productParts %}
+                    {% for productPartMaterial in productPart.productPartMaterials %}
+                        {% for productPartMaterialVariant in productPartMaterial.variants %}
+                            {% for value in productPartMaterialVariant.values %}
+                                filterDb['parts'][{{ productPart.id }}][{{ productPartMaterial.id }}][{{ value.id }}].push({{productPartMaterialVariant.id}});
                             {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-        </form>
-        <script>
-            {% for productPart in productParts %}
-                {% for productPartMaterial in productPart.productPartMaterials %}
-                    {% for productPartMaterialVariant in productPartMaterial.variants %}
-                        {% for value in productPartMaterialVariant.values %}
-                            filterDb['parts'][{{ productPart.id }}][{{ productPartMaterial.id }}][{{ value.id }}].push({{productPartMaterialVariant.id}});
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}
-            {% endfor %}
-            $(document).ready(function () {
-               /* CONFIG */
-               var productPartMaterialVariantSelectionPrefix = 'product_pattern_partPatternVariantSelections_';
-               var productPartMaterialVariantSelectionPostfix = '_productPartMaterialVariant';
-               var skuOptionPrefix = 'product_pattern_skuOptionValues_';
-               
-               /* Sync sku options */
-               $('.system-sku-option-value').change(function(){
-                   var el = $(this);
-                   var elId = skuOptionPrefix + el.data('sku-option-value-map');
-                   $('#'+elId).prop('checked', el.prop('checked'))
-               });
-                
-               /*Sync product parts*/
-               $('.system-check-material-variant').change(function(){
-                   var el = $(this);
-                   var productPartId = el.data('product-part-id'),
-                   productPartMaterialId = el.data('product-part-material-id'),
-                   productPartMaterialVariantValueId = el.data('product-part-material-variant-value-id');
-                   
-                   filterDb['parts'][productPartId][productPartMaterialId][productPartMaterialVariantValueId].forEach(function(productPartMaterialVariantId){
-                       var elId = productPartMaterialVariantSelectionPrefix 
-                               + productPartId 
-                               + '_' + productPartMaterialId 
-                               +'_' + productPartMaterialVariantId 
-                               + productPartMaterialVariantSelectionPostfix;
+                $(document).ready(function () {
+                   /* CONFIG */
+                   var productPartMaterialVariantSelectionPrefix = 'product_pattern_partPatternVariantSelections_';
+                   var productPartMaterialVariantSelectionPostfix = '_productPartMaterialVariant';
+                   var skuOptionPrefix = 'product_pattern_skuOptionValues_';
+
+                   /* Sync sku options */
+                   $('.system-sku-option-value').change(function(){
+                       var el = $(this);
+                       var elId = skuOptionPrefix + el.data('sku-option-value-map');
                        $('#'+elId).prop('checked', el.prop('checked'))
                    });
-               });
-            });
-        </script>
-    </div>
+
+                   /*Sync product parts*/
+                   $('.system-check-material-variant').change(function(){
+                       var el = $(this);
+                       var productPartId = el.data('product-part-id'),
+                       productPartMaterialId = el.data('product-part-material-id'),
+                       productPartMaterialVariantValueId = el.data('product-part-material-variant-value-id');
+
+                       filterDb['parts'][productPartId][productPartMaterialId][productPartMaterialVariantValueId].forEach(function(productPartMaterialVariantId){
+                           var elId = productPartMaterialVariantSelectionPrefix
+                                   + productPartId
+                                   + '_' + productPartMaterialId
+                                   +'_' + productPartMaterialVariantId
+                                   + productPartMaterialVariantSelectionPostfix;
+                           $('#'+elId).prop('checked', el.prop('checked'))
+                       });
+                   });
+                });
+            </script>
+        </div>
+    {% endif %}
     
     <form method="post" class="form-horizontal" novalidate>
         {{ form_widget(form) }}
+
+        {% if form.partPatternVariantSelections is defined %}
+            {#
+                Attention: the field "partPatternVariantSelections" defined only on non schematic product type
+            #}
             {% for partPatternVariantSelection in form.partPatternVariantSelections %}
                 {{ form_widget(partPatternVariantSelection) }}
             {% endfor %}
-            {{ form_rest(form) }}
+        {% endif %}
+
+        {{ form_rest(form) }}
         {{ create() }}
     </form>
 {% endblock %}
