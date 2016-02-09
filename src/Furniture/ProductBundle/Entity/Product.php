@@ -130,6 +130,7 @@ class Product extends BaseProduct
         $this->compositeCollections = new ArrayCollection();
         $this->productParts = new ArrayCollection();
         $this->productSchemes = new ArrayCollection();
+        $this->productVariantsPatterns = new ArrayCollection();
 
         $this->categories = new ArrayCollection();
         $this->types = new ArrayCollection();
