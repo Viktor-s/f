@@ -153,8 +153,7 @@ class SecurityController
      */
     public function needResetPassword(Request $request)
     {
-        $session = $request->getSession();
-        if (is_null($request->server->get('HTTP_REFERER'))) {
+        if ($request->server->has('HTTP_REFERER')) {
             $url = $this->urlGenerator->generate('security_login');
 
             return new RedirectResponse($url);
