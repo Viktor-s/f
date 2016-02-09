@@ -9,11 +9,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
-use Furniture\FrontendBundle\Form\Type\UserInformationType;
+use Furniture\FrontendBundle\Form\Type\UserProfile\UserInformationType;
 use Furniture\FrontendBundle\Form\Type\UserPasswordType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\User\Security\PasswordUpdater;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserProfileController 
 {
