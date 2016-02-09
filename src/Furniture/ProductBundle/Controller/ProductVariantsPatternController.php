@@ -95,7 +95,6 @@ class ProductVariantsPatternController extends ResourceController
         }
         
         if ($product->isSchematicProductType()) {
-            throw new Exception('WHTF!');
             $groupVariantFilter = new GroupVaraintEdit($product, $scheme);
         } else {
             $groupVariantFilter = new GroupVaraintEdit($product);
