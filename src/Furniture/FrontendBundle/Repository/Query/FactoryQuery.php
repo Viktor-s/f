@@ -31,6 +31,11 @@ class FactoryQuery
     private $retailer;
 
     /**
+     * @var bool|null
+     */
+    private $onlyEnabled = true;
+
+    /**
      * With id
      *
      * @param int $id
@@ -242,5 +247,61 @@ class FactoryQuery
     public function getRetailer()
     {
         return $this->retailer;
+    }
+
+    /**
+     * With only enabled
+     *
+     * @return FactoryQuery
+     */
+    public function withOnlyEnabled()
+    {
+        $this->onlyEnabled = true;
+
+        return $this;
+    }
+
+    /**
+     * With only disabled
+     *
+     * @return FactoryQuery
+     */
+    public function withOnlyDisabled()
+    {
+        $this->onlyEnabled = false;
+
+        return $this;
+    }
+
+    /**
+     * Without only enabled or disabled
+     *
+     * @return FactoryQuery
+     */
+    public function withoutOnlyEnabledOrDisabled()
+    {
+        $this->onlyEnabled = null;
+
+        return $this;
+    }
+
+    /**
+     * Is only enabled?
+     *
+     * @return bool
+     */
+    public function isOnlyEnabled()
+    {
+        return $this->onlyEnabled === true;
+    }
+
+    /**
+     * Is only disabled?
+     *
+     * @return bool
+     */
+    public function isOnlyDisabled()
+    {
+        return $this->onlyEnabled === false;
     }
 }

@@ -104,9 +104,17 @@ class FactoryRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Factory::class, 'f')
             ->distinct()
-            ->select('f')
-            // If visible in front!
-            ->andWhere('f.enabled = true');
+            ->select('f');
+
+        if ($query->isOnlyEnabled()) {
+            $qb
+                ->andWhere('f.enabled = :enabled')
+                ->setParameter('enabled', true);
+        } else if ($query->isOnlyDisabled()) {
+            $qb
+                ->andWhere('f.enabled = :enabled')
+                ->setParameter('enabled', false);
+        }
 
         if ($query->hasStyles() || $query->hasCategories()) {
             $qb
