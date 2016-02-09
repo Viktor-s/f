@@ -358,9 +358,12 @@
                                 },
                             };
                             var filters = pdpDataContainer.getFilters();
-                            
-                            for( f in pdpDataContainer.getFilters() ){
-                                var v = filters[f];
+                            for( f in pdpDataContainer.getFiltered()[0].options ){
+                                if( filters[f] ){
+                                    var v = filters[f];
+                                }else{
+                                    var v = pdpDataContainer.getFiltered()[0].options[f][0];
+                                }
                                 var d = {};
                                 if( pdpInputMapping[f]['t'] == 'ps' ){
                                     data['choices']['ps'] = v;
