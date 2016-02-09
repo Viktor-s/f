@@ -36,6 +36,9 @@ var variant_data_container = function (variants) {
                 }
             });
             $(document).trigger("filter:update");
+            console.log('---');
+            console.log( options.filtered );
+            console.log('---');
             return this;
         },
         getFilteredWithFilterValue: function(filter, value){

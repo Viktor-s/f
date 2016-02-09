@@ -16,7 +16,7 @@
     {% else %}
                 {% if input.option %}
                 <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
-                    <select data-input-container="default-select">
+                    <select data-input-id="{{ input.id }}" data-input-container="default-select">
                     {% for optionValue in input.optionValues() %}
                         <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
                     {% endfor %}

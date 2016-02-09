@@ -3638,3 +3638,82 @@ form.someclass input {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
+
+#specification-table td form button {
+    float: left;
+}
+.edit {
+    position: relative;     
+}
+
+#specification-sale.edit form {
+    bottom: 155%;
+}
+
+.product-gallery.swiper-container {
+    height: 570px!important;
+}
+
+.product-gallery .swiper-slide:before {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -4px;
+}
+
+.product-gallery .product-zoom-image {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.product-gallery .product-zoom-image img{
+    width: 100%;
+    height: auto;
+}
+
+.factories-grid.blog-entry .image {
+    height: 160px;
+    display: inline-block;
+}
+
+.factories-grid.blog-entry .image img {
+    max-height: 100%;
+    width: auto;
+}
+
+.blog-entry.factories-grid {
+    text-align: center;
+}
+
+.information-entry .factory-info .factory-cover .logo {
+    width: 250px;
+    height: 160px;
+    margin-left: -125px;
+    text-align: center;
+    background: #ffffff;
+}
+.information-entry .factory-info .factory-cover .logo img {
+    width: auto;
+    max-height: 100%;
+}
+
+#specification-table td, #specification-table th {
+    text-align: center;
+}
+
+.sticky-popup-title.title-is-stuck {
+    border-bottom: 1px #ebebeb solid;
+}
+
+.popup-material-grid.col-sm-8 {
+    float:right; 
+    width: 65%;
+}
+
+/**
+ * Reset password form
+ */
+form #reset_password {
+    padding-top: 20px;
+}

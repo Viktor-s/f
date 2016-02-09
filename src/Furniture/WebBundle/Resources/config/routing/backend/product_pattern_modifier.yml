@@ -1,0 +1,39 @@
+furniture_backend_product_pattern_modifier_index:
+    path: /
+    defaults:
+        _controller: furniture.controller.product_pattern_modifier:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPatternModifier:index.html.twig
+
+furniture_backend_product_pattern_modifier_create:
+    path: /new
+    defaults:
+        _controller: furniture.controller.product_pattern_modifier:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPatternModifier:create.html.twig
+
+furniture_backend_product_pattern_modifier_create_with_attach:
+    path: /new/attach/{attach}/{id}
+    requirements: { attach: "pattern|product" }
+    defaults:
+        id: null
+        _controller: furniture.controller.product_pattern_modifier:createWithAttachAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPatternModifier:create.html.twig
+
+furniture_backend_product_pattern_modifier_update:
+    path: /{id}/update
+    defaults:
+        _controller: furniture.controller.product_pattern_modifier:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPatternModifier:update.html.twig
+
+furniture_backend_product_pattern_modifier_delete:
+    path: /{id}/delete
+    defaults:
+        _controller: furniture.controller.product_pattern_modifier:deleteAction
+
+furniture_backend_product_pattern_modifier_save_positions:
+    path: /save-positions
+    defaults:
+        _controller: furniture.controller.product_pattern_modifier:savePositionsAction

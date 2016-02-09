@@ -9,6 +9,8 @@
                 window.location = '/login';
 
                 return false;
+            } else if (e.status == 403) {
+                window.location = '/login';
             }
         };
 

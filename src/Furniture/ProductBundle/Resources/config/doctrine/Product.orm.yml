@@ -10,7 +10,13 @@ Furniture\ProductBundle\Entity\Product:
             orphanRemoval: true
             orderBy:
                 id: ASC
-
+        productVariantsPatterns:
+            targetEntity: Furniture\ProductBundle\Entity\ProductVariantsPattern
+            mappedBy: product
+            orphanRemoval: true
+            fetch: EXTRA_LAZY
+            orderBy:
+                id: ASC
         skuOptionVariants:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
             cascade: [persist]

@@ -7,7 +7,11 @@ use Furniture\FrontendBundle\Repository\Query\ProductQuery;
 use Furniture\FrontendBundle\Repository\SpecificationItemRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\ProductBundle\Entity\Product;
-use Furniture\ProductBundle\Entity\ProductVariant;
+use Furniture\ProductBundle\Model\ProductPartMaterialVariantSelection;
+use Furniture\ProductBundle\Model\ProductPartMaterialVariantSelectionCollection;
+use Furniture\ProductBundle\Pattern\Finder\ProductVariantFinder;
+use Furniture\ProductBundle\Pattern\ProductVariantCreator;
+use Furniture\ProductBundle\Pattern\ProductVariantParameters;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +58,11 @@ class ProductController
     private $authorizationChecker;
 
     /**
+     * @var ProductVariantCreator
+     */
+    private $productVariantCreator;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment             $twig
@@ -63,6 +72,7 @@ class ProductController
      * @param SpecificationItemRepository   $specificationItemRepository
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ProductVariantCreator         $productVariantCreator
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -71,7 +81,8 @@ class ProductController
         SpecificationRepository $specificationRepository,
         SpecificationItemRepository $specificationItemRepository,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductVariantCreator $productVariantCreator
     )
     {
         $this->twig = $twig;
@@ -81,6 +92,7 @@ class ProductController
         $this->taxonRepository = $taxonRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
+        $this->productVariantCreator = $productVariantCreator;
     }
 
     public function products(Request $request, $page)
@@ -157,6 +169,7 @@ class ProductController
         // Check, if update for specification item
         $updateSpecificationItem = false;
         $specificationItem = null;
+
         if ($skuId && $specificationItemId = $request->query->get('si')) {
             $updateSpecificationItem = true;
             $specificationItem = $this->specificationItemRepository->find($specificationItemId);
@@ -185,76 +198,109 @@ class ProductController
         $skuMatrix = [];
         $activeVariantMatrix = false;
 
-        foreach ($product->getVariants() as $variant) {
-            /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-            $item = [
-                'options' => [],
-                'variant' => $variant,
-            ];
+        if ($product->hasProductVariantsPatterns()) {
+            /** @var \Furniture\ProductBundle\Entity\ProductVariantsPattern $pattern */
+            foreach ($product->getProductVariantsPatterns() as $pattern) {
+                $item = [
+                    'options' => [],
+                    'pattern' => $pattern,
+                ];
 
-            foreach ($variant->getOptions() as $option) {
-                $inputId = $product->getPdpConfig()->findInputForOption($option->getOption())->getId();
-                $item['options'][$inputId] = $option->getId();
-            }
+                if ($product->isSchematicProductType()) {
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $item['options'][$inputId] = [$pattern->getScheme()->getId()];
+                }
 
-            foreach ($variant->getSkuOptions() as $option) {
-                $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
-                $item['options'][$inputId] = $option->getId();
-            }
+                foreach ($pattern->getPartPatternVariantSelections() as $patternVariantSelection) {
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($patternVariantSelection->getProductPart())->getId();
+                    if (!isset($item['options'][$inputId])) {
+                        $item['options'][$inputId] = [];
+                    }
+                    $item['options'][$inputId][] = $patternVariantSelection->getProductPartMaterialVariant()->getId();
+                }
 
-            foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
-                $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
-                $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
-            }
+                foreach ($pattern->getSkuOptionValues() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    if (!isset($item['options'][$inputId])) {
+                        $item['options'][$inputId] = [];
+                    }
+                    $item['options'][$inputId][] = $option->getId();
+                }
 
-            if($product->isSchematicProductType()){
-                $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
-                $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                $skuMatrix[] = $item;
             }
-            
-            if ($activeVariant && $variant == $activeVariant) {
-                $activeVariantMatrix = $item['options'];
+        } else {
+            foreach ($product->getVariants() as $variant) {
+                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+                $item = [
+                    'options' => [],
+                    'variant' => $variant,
+                ];
+
+                /**foreach ($variant->getOptions() as $option) {
+                 * $inputId = $product->getPdpConfig()->findInputForOption($option->getOption())->getId();
+                 * $item['options'][$inputId] = $option->getId();
+                 * }**/
+
+                foreach ($variant->getSkuOptions() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    $item['options'][$inputId] = $option->getId();
+                }
+
+                foreach ($variant->getProductPartVariantSelections() as $variantSelection) {
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
+                    $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
+                }
+
+                if ($product->isSchematicProductType()) {
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                }
+
+                if ($activeVariant && $variant == $activeVariant) {
+                    $activeVariantMatrix = $item['options'];
+                }
+
+                $skuMatrix[] = $item;
             }
-            
-            $skuMatrix[] = $item;
         }
 
         $specificationsWithBuyer = [];
         $specificationsWithoutBuyer = [];
-        foreach( $this->specificationRepository->findOpenedForUser($user) as $specification ){
-            if( !$specification->getBuyer() ){
+        foreach ($this->specificationRepository->findOpenedForUser($user) as $specification) {
+            if (!$specification->getBuyer()) {
                 $specificationsWithoutBuyer[] = $specification;
                 continue;
             }
-            if( !isset($specificationsWithBuyer[$specification->getBuyer()->getId()]) )
+            if (!isset($specificationsWithBuyer[$specification->getBuyer()->getId()]))
                 $specificationsWithBuyer[$specification->getBuyer()->getId()] = [
-                    'buyer' => $specification->getBuyer(),
-                    'specifications' => []
+                    'buyer'          => $specification->getBuyer(),
+                    'specifications' => [],
                 ];
             $specificationsWithBuyer[$specification->getBuyer()->getId()]['specifications'][] = $specification;
         }
 
         $schemeMapping = [];
-        if($product->isSchematicProductType()){
-            foreach($product->getProductSchemes() as $scheme){
+        if ($product->isSchematicProductType()) {
+            foreach ($product->getProductSchemes() as $scheme) {
                 $schemeMapping[$scheme->getId()] = [];
-                foreach($scheme->getProductParts() as $productPart){
+                foreach ($scheme->getProductParts() as $productPart) {
                     $schemeMapping[$scheme->getId()][$productPart->getId()] = $product->getPdpConfig()->findInputForProductPart($productPart)->getId();
                 }
             }
         }
-        
+
         $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
-            'product'                   => $product,
-            'sku_matrix'                => $skuMatrix,
-            'schemeMapping'             => $schemeMapping,
-            'active_variant_matrix'     => $activeVariantMatrix,
-            'options'                   => $options,
-            'specificationsWithBuyer'            => $specificationsWithBuyer,
+            'product'                    => $product,
+            'sku_matrix'                 => $skuMatrix,
+            'schemeMapping'              => $schemeMapping,
+            'active_variant_matrix'      => $activeVariantMatrix,
+            'options'                    => $options,
+            'specificationsWithBuyer'    => $specificationsWithBuyer,
             'specificationsWithoutBuyer' => $specificationsWithoutBuyer,
-            'specification_item'        => $specificationItem,
-            'update_specification_item' => $updateSpecificationItem,
-            'quantity'                  => $quantity,
+            'specification_item'         => $specificationItem,
+            'update_specification_item'  => $updateSpecificationItem,
+            'quantity'                   => $quantity,
         ]);
 
         return new Response($content);

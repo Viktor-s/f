@@ -11,5 +11,6 @@ services:
             - @pricing.calculator
             - @sylius.context.currency
             - @sylius.templating.helper.money
+            - @product_pattern.product_variant_price_compiller
         tags:
             - { name: twig.extension }

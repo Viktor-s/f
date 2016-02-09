@@ -2,10 +2,6 @@ furniture_factory:
     resource: "@FurnitureFactoryBundle/Resources/config/routing.yml"
     prefix:   /
 
-
-sylius_installer:
-    resource: "@SyliusInstallerBundle/Resources/config/routing.yml"
-
 sylius_api:
     resource: "@SyliusApiBundle/Resources/config/routing/main.yml"
     prefix: /api
@@ -25,34 +21,11 @@ cmf_media_file:
 cmf_media_image:
     resource: "@CmfMediaBundle/Resources/config/routing/image.xml"
 
-payum_capture:
-    resource: "@PayumBundle/Resources/config/routing/capture.xml"
-
-payum_notify:
-    resource: "@PayumBundle/Resources/config/routing/notify.xml"
-
-fos_oauth_server_token:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
-
-#hwi_oauth_security:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-#    prefix: /login
-
-#hwi_oauth_redirect:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-#    prefix: /connect
-
-#amazon_login:
-#    path: /login/check-amazon
-
-#facebook_login:
-#    path: /login/check-facebook
-
-#google_login:
-#    path: /login/check-google
-
 specification:
     resource: "@SpecificationBundle/Resources/config/routing.yml"
+
+product:
+    resource: "@ProductBundle/Resources/config/routing.yml"
 
 frontend:
     resource: "@FrontendBundle/Resources/config/routing.yml"

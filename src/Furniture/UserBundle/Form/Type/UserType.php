@@ -39,7 +39,7 @@ class UserType extends BaseUserType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
+        $builder->add('needResetPassword');
         $builder
             ->add('factory', 'entity', [
                 'class'    => Factory::class,
@@ -59,7 +59,7 @@ class UserType extends BaseUserType
             if ($user) {
                 if ($user->isContentUser()) {
                     $userActiveRole = User::ROLE_CONTENT_USER;
-                } else if ($user->isFactoryAdmin()) {
+                } elseif ($user->isFactoryAdmin()) {
                     $userActiveRole = User::ROLE_FACTORY_ADMIN;
                 }
             }
@@ -88,7 +88,7 @@ class UserType extends BaseUserType
 
             if ($role == User::ROLE_CONTENT_USER) {
                 $user->addRole(User::ROLE_CONTENT_USER);
-            } else if ($role == User::ROLE_FACTORY_ADMIN) {
+            } elseif ($role == User::ROLE_FACTORY_ADMIN) {
                 $user->addRole(User::ROLE_FACTORY_ADMIN);
             }
         });

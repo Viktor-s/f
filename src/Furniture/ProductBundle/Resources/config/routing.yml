@@ -1,0 +1,3 @@
+_product_api:
+    resource: @ProductBundle/Resources/config/routing/api.yml
+    prefix: /product/api

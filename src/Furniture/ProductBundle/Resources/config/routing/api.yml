@@ -1,0 +1,5 @@
+product_api_create_by_pattern_and_parameters:
+    pattern: /create/by-pattern-and-parameters
+    methods: [ POST ]
+    defaults:
+        _controller: product.controller.api.pattern_product_creator:createProductVariant

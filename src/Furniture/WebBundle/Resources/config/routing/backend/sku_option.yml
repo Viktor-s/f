@@ -34,7 +34,7 @@ furniture_backend_sku_option_delete:
     path: /{id}
     methods: [DELETE]
     defaults:
-        _controller: sylius.controller.product_attribute:deleteAction
+        _controller: Furniture.controller.sku_option:deleteAction
         _sylius:
             template: SyliusWebBundle:Backend/Misc:delete.html.twig
             redirect: furniture_backend_sku_option_index

@@ -78,7 +78,8 @@ class UserChangedSubscriber implements EventSubscriber
                 $fields = [
                     'enabled',
                     'password',
-                    'username'
+                    'username',
+                    'needResetPassword'
                 ];
 
                 if ($isAnyFieldChanged($entity, $fields)) {

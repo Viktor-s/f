@@ -30,9 +30,23 @@
         });
 
         $(document).on('click', 'a[data-collection-button="delete"]', function(e) {
+            var
+                $this = this,
+                confirmMessage = $(this).parents('[data-remove-confirm]').data('remove-confirm'),
+                remove = function () {
+                    var item = $($this).closest('.' + $($this).data('collection') + '-' + $($this).data('collection-item'));
+                    item.remove();
+                };
+
             e.preventDefault();
-            var item = $(this).closest('.' + $(this).data('collection') + '-' + $(this).data('collection-item'));
-            item.remove();
+
+            if (confirmMessage) {
+                if (confirm(confirmMessage)) {
+                    remove();
+                }
+            } else {
+                remove();
+            }
         });
     });
 })( jQuery );

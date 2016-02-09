@@ -15,7 +15,7 @@ class ProductPartVariantSelection
     protected $productPart;
     
     /**
-     * @var ProductVariant 
+     * @var ProductVariant
      */
     protected $productVariant;
 

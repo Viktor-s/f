@@ -4,6 +4,7 @@ namespace Furniture\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Style extends AbstractTranslatable
 {
@@ -19,6 +20,8 @@ class Style extends AbstractTranslatable
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -31,6 +34,13 @@ class Style extends AbstractTranslatable
      * @var \Doctrine\Common\Collections\Collection|Style[]
      */
     private $children;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Style[]
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
 
     /**
      * Construct

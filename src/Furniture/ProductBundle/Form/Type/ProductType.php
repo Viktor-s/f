@@ -13,6 +13,7 @@ use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
 use Furniture\SkuOptionBundle\Form\Type\SkuOptionVariantFormType;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductType as BaseProductType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Furniture\CommonBundle\Form\Type\AutocompleteEntityType;
 use Symfony\Component\Form\FormError;
@@ -20,10 +21,34 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Furniture\ProductBundle\Form\Type\ProductTranslationType;
-
 class ProductType extends BaseProductType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => $this->dataClass,
+            'cascade_validation' => true,
+            'validation_groups' => function (Form $form) {
+                /** @var \Furniture\ProductBundle\Entity\Product $product */
+                $product = $form->getData();
+
+                if ($product->getId()) {
+                    return ['Update', 'Default'];
+                } else {
+                    return ['Create', 'Default'];
+                }
+            },
+            'mode' => 'full'
+        ));
+
+        $resolver->setAllowedValues([
+            'mode' => ['small', 'full']
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -95,9 +120,11 @@ class ProductType extends BaseProductType
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type' => new ProductPartFormType($factory),
-                        'required'  => false,
                         'allow_add' => true,
-                        'allow_delete' => true
+                        'allow_delete' => true,
+                        'attr' => [
+                            'data-remove-confirm' => 'Are you sure you want to remove product part item?'
+                        ]
                     ])
                     ->add('compositeCollections', 'entity', [
                         'class' => CompositeCollection::class,
@@ -119,6 +146,9 @@ class ProductType extends BaseProductType
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
+                            'attr' => [
+                                'data-remove-confirm' => 'Are you sure you want to remove scheme item?'
+                            ]
                         ]);
                 }
             });
@@ -151,9 +181,15 @@ class ProductType extends BaseProductType
             /** @var Product $product */
             $product = $event->getData();
 
+            $hasVariants = $product->hasVariantsWithoutMaster();
+            $hasSchemes = $product->hasProductSchemes();
+            $hasVariantPatterns = $product->hasProductVariantsPatterns();
+
+            $disabled = $hasVariants || $hasSchemes || $hasVariantPatterns;
+
             $event->getForm()->add('productType', 'choice', [
                 'label' => 'Product type',
-                'disabled' => (bool) $product->getId(),
+                'disabled' => $disabled,
                 'choices' => [
                     Product::PRODUCT_SIMPLE => 'Simple',
                     Product::PRODUCT_SCHEMATIC => 'Schematic'
@@ -173,21 +209,5 @@ class ProductType extends BaseProductType
 
         // Remove taxons
         $builder->remove('taxons');
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->dataClass,
-            'validation_groups' => array_merge($this->validationGroups, ['Default']),
-            'mode' => 'full'
-        ));
-
-        $resolver->setAllowedValues([
-            'mode' => ['small', 'full']
-        ]);
     }
 }

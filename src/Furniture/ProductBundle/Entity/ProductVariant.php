@@ -7,8 +7,8 @@ use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Sylius\Component\Core\Model\ProductVariant as BaseProductVariant;
 use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Furniture\ProductBundle\Entity\ProductScheme;
 use Furniture\ProductBundle\Validator\Constraint\ProductVariant as ProductVariantConstraint;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ProductVariantConstraint
@@ -29,6 +29,13 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
      * @var ProductScheme
      */
     private $productScheme;
+
+    /**
+     * @var integer
+     *
+     * @Assert\NotBlank()
+     */
+    protected $price;
 
     /**
      * Construct

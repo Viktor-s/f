@@ -42,6 +42,11 @@ class User extends BaseUser
     protected $retailerUserProfile;
 
     /**
+     * @var bool
+     */
+    protected $needResetPassword = false;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -156,7 +161,6 @@ class User extends BaseUser
         return $this->factory ? true : false;
     }
 
-
     /**
      * Is retailer?
      *
@@ -191,6 +195,30 @@ class User extends BaseUser
     }
 
     /**
+     * Set need reset password
+     *
+     * @param bool $resetPassword
+     *
+     * @return User
+     */
+    public function setNeedResetPassword($resetPassword)
+    {
+        $this->needResetPassword = (bool) $resetPassword;
+
+        return $this;
+    }
+
+    /**
+     * Is need reset password
+     *
+     * @return bool
+     */
+    public function isNeedResetPassword()
+    {
+        return $this->needResetPassword;
+    }
+
+    /**
      * Get full name
      *
      * @return string
@@ -205,6 +233,46 @@ class User extends BaseUser
     }
 
     /**
+     * Is user disabled?
+     *
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return !$this->isEnabled();
+    }
+
+    /**
+     * Request for reset password
+     *
+     * @return string Returns the confirmation token for reset password
+     */
+    public function requestForResetPassword()
+    {
+        $this->confirmationToken = md5(uniqid(mt_rand(), true)) . md5(uniqid(mt_rand(), true));
+        $this->passwordRequestedAt = new \DateTime();
+
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Reset password
+     *
+     * @param string $newPassword
+     *
+     * @return User
+     */
+    public function resetPassword($newPassword)
+    {
+        $this->plainPassword = $newPassword;
+        $this->confirmationToken = null;
+        $this->passwordRequestedAt = null;
+        $this->needResetPassword = false;
+
+        return $this;
+    }
+
+    /**
      * Canonize username
      *
      * @param string $username
@@ -214,5 +282,25 @@ class User extends BaseUser
     public static function canonizeUsername($username)
     {
         return mb_strtolower($username, mb_detect_encoding($username));
+    }
+
+    /**
+     * Get needResetPassword
+     *
+     * @return boolean
+     */
+    public function getNeedResetPassword()
+    {
+        return $this->needResetPassword;
+    }
+
+    /**
+     * Remove oauthAccount
+     *
+     * @param \Sylius\Component\User\Model\UserOAuth $oauthAccount
+     */
+    public function removeOauthAccount(\Sylius\Component\User\Model\UserOAuth $oauthAccount)
+    {
+        $this->oauthAccounts->removeElement($oauthAccount);
     }
 }

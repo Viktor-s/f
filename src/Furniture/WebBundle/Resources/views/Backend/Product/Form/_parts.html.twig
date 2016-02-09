@@ -2,6 +2,10 @@
 
 {% if form.productParts is defined %}
     <div class="tab-pane" id="parts">
-        {{ form_row(form.productParts) }}
+        {% if form.productParts.vars.errors|length > 0 %}
+            {{ form_errors(form.productParts) }}
+        {% endif %}
+
+        {{ form_widget(form.productParts) }}
     </div>
 {% endif %}

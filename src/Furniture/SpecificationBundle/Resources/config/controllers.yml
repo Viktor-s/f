@@ -19,6 +19,7 @@ services:
             - @security.authorization_checker
             - @pricing.calculator
             - @pricing.twig_extension
+            - @product_pattern.product_variant_creator
 
     specification.controller.api.specification.custom_item:
         class: Furniture\SpecificationBundle\Controller\Api\CustomSpecificationItemController

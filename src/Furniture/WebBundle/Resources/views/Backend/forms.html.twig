@@ -29,10 +29,11 @@
 {% endblock %}
 
 {% block product_schemes_widget %}
+{% spaceless %}
     {% if part_error is defined %}
         <div class="alert alert-info">{{ part_error }}</div>
     {% else %}
-        <table class="table">
+        <table class="table" {{ block('widget_attributes') }} >
             <thead>
             <tr>
                 <th class="text-center">Name</th>
@@ -62,9 +63,11 @@
             </tfoot>
         </table>
     {% endif %}
+{% endspaceless %}
 {% endblock %}
 
 {% block product_scheme_widget %}
+{% spaceless %}
     <tr class="table-product-schemes-scheme">
         <td>
             {{ form_widget(form.translations) }}
@@ -77,8 +80,159 @@
         {% endfor %}
 
         <td class="text-center">
-            <a class="btn btn-danger" data-collection-button="delete" data-collection="table-product-schemes" data-collection-item="scheme" data-confirm="Are you sure you want to remove scheme item?
-            ">Remove</a>
+            <a class="btn btn-danger" data-collection-button="delete" data-collection="table-product-schemes" data-collection-item="scheme">Remove</a>
         </td>
     </tr>
+{% endspaceless %}
+{% endblock %}
+
+{% block product_pattern_modifier_widget %}
+    {{ block('product_pattern_widget') }}
+{% endblock %}
+
+{% block product_pattern_widget %}
+{% spaceless %}
+    {% if form.vars.errors|length > 0 %}
+        {{ form_errors(form) }}
+    {% endif %}
+
+    {{ form_row(form.product) }}
+
+    {% if form.pattern is defined %}
+        {{ form_row(form.pattern) }}
+    {% endif %}
+
+    {% if form.scheme is defined %}
+        {{ form_row(form.scheme) }}
+    {% endif %}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+
+    {{ form_widget(form.partPatternVariantSelections ) }}
+    {{ form_widget(form.skuOptionValues) }}
+{% endspaceless %}
+{% endblock %}
+
+{% block part_pattern_variant_collection_widget %}
+{% spaceless %}
+    <div class="product-parts">
+        {% if form.vars.errors|length > 0 %}
+            {{ form_errors(form) }}
+        {% endif %}
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block part_pattern_widget %}
+{% spaceless %}
+    <fieldset>
+        <legend>{{ part_label }}</legend>
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </fieldset>
+{% endspaceless %}
+{% endblock %}
+
+{% block part_material_pattern_widget %}
+{% spaceless %}
+    <div class="product-part-materials">
+        <h3>{{ material_label }}</h3>
+
+        {% for child in form %}
+            {{ form_widget(child) }}
+        {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block part_pattern_variant_selection_widget %}
+{% spaceless %}
+    <div class="part-variant-selection">
+        {{ form_widget(form.productPartMaterialVariant) }}
+        &nbsp;&nbsp;
+        <span class="item-label">{{ label }}</span>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block sku_option_collection_pattern_widget %}
+{% spaceless %}
+    <div class="product-sku-options">
+        {% if form.vars.errors|length > 0 %}
+            {{ form_errors(form.vars) }}
+        {% endif %}
+
+        <fieldset>
+            <legend>Sku options:</legend>
+
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+        </fieldset>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block sku_option_group_widget %}
+{% spaceless %}
+    <div class="sku-option-group">
+        <h3>{{ group_name }}</h3>
+
+        {% for child in form %}
+            <div class="sku-option">
+                {{ form_widget(child) }}
+                &nbsp;&nbsp;
+                <span class="item-label">{{ child.vars.label}}</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block modifier_without_pattern_and_product_widget %}
+{% spaceless %}
+    {{ form_row(form.attach) }}
+    {{ form_row(form.pattern) }}
+    {{ form_row(form.product) }}
+
+    {% if form.scheme is defined %}
+        {{ form_row(form.scheme) }}
+    {% endif %}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                function choiceAttach()
+                {
+                    var
+                            v = $(this).val(),
+                            product = $('#modifier_without_pattern_and_product_product').parents('.form-group'),
+                            scheme = $('#modifier_without_pattern_and_product_scheme').parents('.form-group'),
+                            pattern = $('#modifier_without_pattern_and_product_pattern').parents('.form-group');
+
+                    if (v == 1) {
+                        product.show();
+                        scheme.show();
+                        pattern.hide();
+                    } else if (v == 2) {
+                        product.hide();
+                        scheme.hide();
+                        pattern.show();
+                    }
+                }
+
+                $('#modifier_without_pattern_and_product_attach')
+                        .change(choiceAttach)
+                        .change();
+            });
+        })(jQuery);
+    </script>
+{% endspaceless %}
 {% endblock %}

@@ -53,3 +53,10 @@ sylius_backend_customer_show:
             repository:
                 method: findForDetailsPage
                 arguments: [$id]
+
+sylius_backend_customer_reset_password:
+    path: /{id}/reset-password
+    methods: [ GET ]
+    requirements: { id: \d+ }
+    defaults:
+        _controller: sylius.controller.customer:resetPassword

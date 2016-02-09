@@ -1,133 +1,189 @@
 frontend:
-    all_right_reserved: All right reserved
-    agenta_solution: AgentA Solution
-    new_arrivals: New arrivals
-    new_factories: New Brands
-    factories: Brands
-    question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
-    products: Products
-    name: Name
-    type: Type
-    factory_code: Factory code
-    creator: Creator
-    description: Description
+    access: Access
+    account_disabled: Account is disabled.
     actions: Actions
-    created_at: Created at
-    buyers_not_found: Clients not found.
-    buyer: Client
-    specfications_not_found: Specifications not found.
-    specfications_opened_not_found_for_buyer: "Not found specifications for buyer :buyer."
-    specfications_finished_not_found_for_buyer: "Not found finished specification for buyer :buyer."
-    update_specification: Update specification
     add_to_specification: Add to specification
-    new_specification: New specification
-    create: Create
-    update: Update
-    edit: Edit
-    specifications: Specifications
-    export_specification_preview: Export specification - preview
-    remove: Remove
-    show: Show
-    detailed: Detailed
-    save: Save
-    opened: Opened
-    finished: Finished
-    price: Price
-    total_price: Total price
-    final_price: Final price
-    volume: Volume
-    weight: Weight
-    last_modified: Last modified
-    quantity: Quantity
-    finish: Finish
-    click_to_edit: Click to edit
-    image: Image
-    brand: Brand
-    options: Options
-    note: Note
-    notes: Notes
-    are_you_sure_remove_specification_item: Are you sure remote specification item?
-    are_you_sure_remove_specification: Are you sure remote specification?
+    address: Address
+    admin: Admin
+    agenta_solution: AgentA Solution
+    all: All
+    all_right_reserved: All right reserved
+    approve: Approve
+    are_you_sure_remove_factory_relation: Are you sure remove factory relation?
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sure you want to remove logo?
-    excel: Export
-    pdf: PDF
-    full: Full
-    all: All
-    by_company: By company
-    position: Position
-    phones: Phones
-    photo: Photo
-    product_article: Article
-    product_size: Size
-    finishes: Finishes
-    characteristics: Characteristics
-    export: Export
-    total_quantities: Total quantities
-    discount_value: 'Discount :discount%'
-    sku: SKU
-    factory_profile: Factory profile
-    content_user_profile: User profile
-    factory_rates: Factory conditions
-    factory: Brand
-    you_not_have_factory_rates: You not have factory conditions.
-    coefficient: Coefficient
-    dumping: Extra discount
-    sale: Personal discount
-    contact: Contact
-    address: Address
-    retailer_relations: User relations
-    retailer_requests: Retailer requests
-    to_retailer_requests: Requests to retailers
-    authorized_users: Authorized users
-    username: Username
-    products_view: View products
-    product_prices_view: Prices view
-    discount: Discount
-    create_to_retailer_relation: Relate to retailer
-    create_to_factory_relation: Relate to factory
     are_you_sure_remove_retailer_relation: Are you sure remove retailer relation?
-    are_you_sure_remove_factory_relation: Are you sure remove factory relation?
-    approve: Approve
+    are_you_sure_remove_specification: Are you sure remote specification?
+    are_you_sure_remove_specification_item: Are you sure remote specification item?
+    authorized_factories: Authorized brands
+    authorized_users: Authorized users
+    brand: Brand
+    button:
+        settings: Settings
+        user_profile: My profile
+        logout: Log out
+    buyer: Client
+    buyers_not_found: Clients not found.
+    by_company: By company
+    catalog:
+        space_selector: Select space
+        brand_filter: Brand
+        space_filter: Space
+        category_selector: Category
+        type_selector: Type
+        style_selector: Styles
+        composite_collection_selector: Collections
+    characteristics: Characteristics
+    click_to_edit: Click to edit
+    coefficient: Coefficient
+    contact: Contact
+    content_user_profile: User profile
+    create: Create
+    create_to_factory_relation: Relate to factory
+    create_to_retailer_relation: Relate to retailer
+    created: Created
+    created_at: Created at
+    creator: Creator
+    default_relation: Default relation
+    description: Description
+    detailed: Detailed
+    discount: Discount
+    discount_value: 'Discount :discount%'
+    downlod_file_with_number: "Download :number"
+    dumping: Extra discount
+    edit: Edit
+    email: Email
+    emails: Emails
+    employee: Employee
+    employees: Employees
+    enabled: Enabled
+    excel: Export
+    export: Export
+    export_specification_preview: Export specification - preview
+    factories: Brands
+    factory: Brand
+    factory_code: Factory code
+    factory_profile: Factory profile
+    factory_rates: Factory conditions
     factory_relations: Factory relations
     factory_requests: Factory requests
-    to_factory_requests: Requests to factory
-    authorized_factories: Authorized brands
-    user: User
-    admin: Admin
-    email: Email
-    access: Access
-    created: Created
-    default_relation: Default relation
-    taxonomy: Categories
-    downlod_file_with_number: "Download :number"
-    select_style: Style
-    select_category: Category
-    spaces: Spaces
-    employees: Employees
+    factory_side:
+        main_statistic:
+            page: Statistic
+        retailer:
+            added: Added
+            map_page: Available retailers
+        menu:
+            general: General
+            collections: Collections
+            work_info: Work info
+            contacts: Contacts
+            circulars: Circulars
+            news: News
+    final_price: Final price
+    finish: Finish
+    finished: Finished
+    finishes: Finishes
+    first_name: First name
+    full: Full
+    image: Image
+    language:
+        en: English
+        ru: Russian
+        it: Italian
+    last_modified: Last modified
+    last_name: Last name
+    login:
+        login: Login
+        username: Username
+        email: Email
+        password: Password
+        remember_me: Remember me
+        submit: Login
     manager: Manager
     managers: Managers
-    employee: Employee
-    retailer_profile: Retailer profile
-    retailer: Retailer
-    password: Password
-    new_password: New password
-    repeat_password: Repeat password
-    last_name: Last name
-    first_name: First name
-    mode: Mode
-    enabled: Enabled
-    specification_edit: Specification edit
-    notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
-    
-    user_profile_side:
-        update: Update profile
-        password_upadate: Change password
+    menu_items:
+        footer:
+            sitemap: Sitemap
+            terms_and_condition: Terms and condition
+            privacy_policy: Privacy policy
+            about_us: About Us
+            contact_us: Contact Us
+            advanced_search: Advanced search
 
+        header:
+            homepage: Home
+            factories: Brands
+            products: Products
+            catalog: Catalog
+            compositions: Compositions
+            specifications: Specifications
+            specification_buyers: Clients
+            factory:
+                statistics: Common statistics
+                map: Available retailers
+    mode: Mode
+    name: Name
+    need_reset_password: We sent you a verification email, please check email and follow instructions
+    need_reset_password_error: Email not send.
+    need_reset_password_success: New email was sent.
+    new_arrivals: New arrivals
+    new_factories: New Brands
+    new_password: New password
+    new_specification: New specification
+    note: Note
+    notes: Notes
+    notes_with_will_not_appear_in_specification: Notes (will no appear in specification)
+    opened: Opened
+    options: Options
+    password: Password
+    pdf: PDF
+    phones: Phones
+    phones_contact: Contact phones
+    photo: Photo
+    please_enter_new_password: "Please enter a new password for your account."
+    position: Position
+    price: Price
+    product:
+        media_tab:
+            title: Product media
+            images: Images
+            model: 3d model
+        pdp:
+            specify_product: Please choose all options first
+    product_article: Article
+    product_prices_view: Prices view
+    product_size: Size
+    products: Products
+    products_view: View products
+    quantity: Quantity
+    question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
+    remove: Remove
+    repeat_password: Repeat password
+    request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."
+    reset_password: Reset password
+    reset_password_successfully: "Your password successfully resetted. You can login with new password."
+    retailer: Retailer
+    retailer_profile: Retailer profile
     retailer_profile_side:
         managers:
             email_exists_error: Already in use!
-
+    retailer_relations: User relations
+    retailer_requests: Retailer requests
+    sale: Personal discount
+    save: Save
+    select_category: Category
+    select_style: Style
+    send_reset_password: Reset password again
+    session_is_disabled: Session data not provided.
+    show: Show
+    sku: SKU
+    spaces: Spaces
+    specfications_finished_not_found_for_buyer: "Not found finished specification for buyer :buyer."
+    specfications_not_found: Specifications not found.
+    specfications_opened_not_found_for_buyer: "Not found specifications for buyer :buyer."
+    specification_edit: Specification edit
+    specifications: Specifications
     specficatior:
         specification_label: Specification
         description_lable: Description
@@ -136,7 +192,7 @@ frontend:
         client_contact_lable: Contact information
         notes: Notes
         will_not_appear_in_specification: will no appear in specification
-
+    taxonomy: Categories
     title:
         spaces: Spaces
         contacts: Contacts
@@ -175,72 +231,22 @@ frontend:
         brands: Brands
         employees: Employees
         managers: Managers
-
-    button:
-        settings: Settings
-        user_profile: My profile
-        logout: Log out
-
-    language:
-        en: English
-        ru: Russian
-        it: Italian
-
-    catalog:
-        space_selector: Select space
-        brand_filter: Brand
-        space_filter: Space
-        category_selector: Category
-        type_selector: Type
-        style_selector: Styles
-        composite_collection_selector: Collections
-
-    product:
-        media_tab:
-            title: Product media
-            images: Images
-            model: 3d model
-        pdp:
-            specify_product: Please choose all options first
-
-    factory_side:
-        main_statistic:
-            page: Statistic
-        retailer:
-            added: Added
-            map_page: Available retailers
-        menu:
-            general: General
-            collections: Collections
-            work_info: Work info
-            contacts: Contacts
-            circulars: Circulars
-            news: News
-
-    menu_items:
-        footer:
-            sitemap: Sitemap
-            terms_and_condition: Terms and condition
-            privacy_policy: Privacy policy
-            about_us: About Us
-            contact_us: Contact Us
-            advanced_search: Advanced search
-
-        header:
-            homepage: Home
-            factories: Brands
-            products: Products
-            catalog: Catalog
-            compositions: Compositions
-            specifications: Specifications
-            specification_buyers: Clients
-            factory:
-                statistics: Common statistics
-                map: Available retailers
-
-    login:
-        username: Username
-        email: Email
-        password: Password
-        remember_me: Remember me
-        submit: Login
+    to_factory_requests: Requests to factory
+    to_retailer_requests: Requests to retailers
+    total_price: Total price
+    total_quantities: Total quantities
+    type: Type
+    update: Update
+    update_specification: Update specification
+    user: User
+    user_is_disabled_with_email: "User with email :email is disabled."
+    user_not_found: User not found.
+    user_not_found_with_email: "Not found user with email :email."
+    user_profile_side:
+        update: Update profile
+        password_upadate: Change password
+    username: Username
+    volume: Volume
+    weight: Weight
+    website: Website
+    you_not_have_factory_rates: You not have factory conditions.

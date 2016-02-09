@@ -15,7 +15,7 @@ class ReadinessType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Readiness::class
+            'data_class' => Readiness::class,
         ]);
     }
 
@@ -26,11 +26,7 @@ class ReadinessType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                'label' => 'Name'
-            ])
-            ->add('position', 'number', [
-                'label' => 'Postition',
-                'attr' => array('value' => 0)    
+                'label' => 'Name',
             ]);
     }
 

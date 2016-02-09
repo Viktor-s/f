@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryTranslation extends AbstractTranslation
 {
@@ -13,6 +14,8 @@ class CategoryTranslation extends AbstractTranslation
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $name;
 

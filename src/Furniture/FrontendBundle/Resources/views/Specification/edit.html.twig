@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block content_with_edit %}
-    <h1>{{ 'frontend.specification_edit'|trans }}</h1>
+    <h1 class="block-title">{{ 'frontend.specification_edit'|trans }}</h1>
     <div class="row specification-edit-head">
         <div class="col-sm-3 information-entry">
             <div class="information-blocks form-horizontal specification-info">                
@@ -58,7 +58,7 @@
                         {{ specification.buyer ? specification.buyer.phone }} 
                     </p>
 
-                    <h5>Description</h5>
+                    <h5>Name</h5>
                     <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
 
                     <h5>

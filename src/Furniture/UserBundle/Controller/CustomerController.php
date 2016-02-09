@@ -2,12 +2,15 @@
 
 namespace Furniture\UserBundle\Controller;
 
+use Furniture\UserBundle\Entity\Customer;
 use Furniture\UserBundle\Form\Type\CustomerType;
 use Furniture\UserBundle\Form\Type\Retailer\CustomerType as RetailerCustomerType;
 use Sylius\Bundle\CoreBundle\Controller\CustomerController as BaseCustomerController;
 use Sylius\Component\Resource\Event\ResourceEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerController extends BaseCustomerController
 {
@@ -92,5 +95,39 @@ class CustomerController extends BaseCustomerController
         ;
 
         return $this->handleView($view);
+    }
+
+    /**
+     * Reset password for customer
+     *
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function resetPassword($id)
+    {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+
+        $customer = $this->get('doctrine.orm.default_entity_manager')
+            ->find(Customer::class, $customerId = $id);
+
+        if (!$customer) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found customer with identifier "%s".',
+                $customerId
+            ));
+        }
+
+        /** @var \Furniture\UserBundle\Entity\User $user */
+        $user = $customer->getUser();
+        $user->setNeedResetPassword(true);
+
+        $em->flush($user);
+
+        $this->flashHelper->setFlash('info', 'Successfully set flag for reset user password.');
+
+        $toUrl = $this->get('router')->generate('sylius_backend_customer_index');
+
+        return new RedirectResponse($toUrl);
     }
 }

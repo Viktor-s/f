@@ -103,6 +103,18 @@ class Product extends BaseProduct
     private $productType = self::PRODUCT_SIMPLE;
 
     /**
+     * @var Collection|ProductTranslation[]
+     *
+     * @Assert\Valid()
+     */
+    protected $translations;
+
+    /**
+     * @var Collection|ProductVariantsPattern[]
+     */
+    private $productVariantsPatterns;
+    
+    /**
      * Constructor.
      */
     public function __construct()
@@ -960,7 +972,7 @@ class Product extends BaseProduct
      */
     public function hasProductSchemes()
     {
-        return (bool)$this->productSchemes->isEmpty();
+        return !(bool)$this->productSchemes->isEmpty();
     }
 
     /**
@@ -1077,15 +1089,94 @@ class Product extends BaseProduct
     }
 
     /**
-     * Return translation model class.
+     * Is not schematic product type?
      *
-     * @return string
+     * @return bool
      */
-    public static function getTranslationClass()
+    public function isNotSchematicProductType()
     {
-        return get_parent_class(__CLASS__) . 'Translation';
+        return !$this->isSchematicProductType();
     }
 
+    /**
+     * Get product variant patterns
+     *
+     * @return Collection|ProductVariantsPattern[]
+     */
+    public function getProductVariantsPatterns()
+    {
+        return $this->productVariantsPatterns;
+    }
+
+    /**
+     * Set product variant patterns
+     *
+     * @param Collection $productVariantsPatterns
+     *
+     * @return Product
+     */
+    public function setProductVariantsPatterns(Collection $productVariantsPatterns)
+    {
+        $this->productVariantsPatterns = $productVariantsPatterns;
+
+        return $this;
+    }
+
+    /**
+     * Has product variants patterns?
+     *
+     * @return bool
+     */
+    public function hasProductVariantsPatterns()
+    {
+        return !(bool)$this->productVariantsPatterns->isEmpty();
+    }
+
+    /**
+     * Has product variant pattern?
+     *
+     * @param ProductVariantsPattern $productVariantsPattern
+     *
+     * @return bool
+     */
+    public function hasProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        return $this->productVariantsPatterns->contains($productVariantsPattern);
+    }
+    
+    /**
+     * Add product variant pattern
+     *
+     * @param ProductVariantsPattern $productVariantsPattern
+     *
+     * @return Product
+     */
+    public function addProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        if (!$this->hasProductVariantsPattern($productVariantsPattern)) {
+            $productVariantsPattern->setProduct($this);
+            $this->productVariantsPatterns->add($productVariantsPattern);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove product variant pattern
+     *
+     * @param ProductVariantsPattern $productVariantsPattern
+     *
+     * @return Product
+     */
+    public function removeProductVariantsPattern(ProductVariantsPattern $productVariantsPattern)
+    {
+        if ($this->hasProductVariantsPattern($productVariantsPattern)) {
+            $this->productVariantsPatterns->removeElement($productVariantsPattern);
+        }
+
+        return $this;
+    }
+    
     /**
      * Implement __toString
      *
@@ -1101,7 +1192,6 @@ class Product extends BaseProduct
      */
     private function fixPdpConfig()
     {
-        
         //Add scheme input for schematic product
         if($this->isSchematicProductType()){
             $input = $this->pdpConfig->getInputForSchemes();

@@ -1,0 +1,8 @@
+services:
+    furniture.mailer:
+        class: Furniture\MailerBundle\Mailer\Mailer
+        arguments:
+            - @swiftmailer.mailer
+            - @twig
+            - %mailer.default_from.name%
+            - %mailer.default_from.email%

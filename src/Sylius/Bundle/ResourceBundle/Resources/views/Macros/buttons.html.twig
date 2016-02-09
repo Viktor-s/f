@@ -28,12 +28,9 @@
     <i class="glyphicon glyphicon-trash"></i><span>{{ message is empty ? 'sylius.delete'|trans : message }}</span>
 </span>
 {% else %}
-<form action="{{ url }}" method="post" class="delete-action-form" novalidate>
-    <input type="hidden" name="_method" value="DELETE">
-    <button class="btn btn-danger{% if modal %} btn-confirm{% endif %}" type="submit">
-        <i class="glyphicon glyphicon-trash"></i> <span>{{ message is empty ? 'sylius.delete'|trans : message }}</span>
-    </button>
-</form>
+<a href="{{ url }}" class="btn btn-danger"{% if modal %} data-remove{% endif %}>
+    <i class="glyphicon glyphicon-trash"></i> <span>{{ message is empty ? 'sylius.delete'|trans : message }}</span>
+</a>
 {% endif %}
 {% endmacro %}
 

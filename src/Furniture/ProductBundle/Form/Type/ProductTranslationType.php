@@ -2,11 +2,10 @@
 
 namespace Furniture\ProductBundle\Form\Type;
 
-use Furniture\ProductBundle\Entity\ProductPartTranslation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Sylius\Component\Core\Model\ProductTranslation;
+use Furniture\ProductBundle\Entity\ProductTranslation;
 
 class ProductTranslationType extends AbstractType 
 {

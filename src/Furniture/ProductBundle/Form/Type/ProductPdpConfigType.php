@@ -31,21 +31,6 @@ class ProductPdpConfigType extends AbstractType
     }
 
     /**
-     * Build for for product part
-     *
-     * @param Product              $product
-     * @param FormBuilderInterface $builder
-     */
-    private function buildFormForProductPart(Product $product, FormBuilderInterface $builder)
-    {
-        $pdpConfig = $product->getPdpConfig();
-
-        foreach ($product->getProductParts() as $productPart) {
-            $input = $pdpConfig->findInputForProductPart($productPart);
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getName()

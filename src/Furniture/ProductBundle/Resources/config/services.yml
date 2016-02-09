@@ -24,6 +24,21 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: sylius.validator.variant.combination }
 
+    product_pattern.finder.product_variant:
+        class: Furniture\ProductBundle\Pattern\Finder\ProductVariantFinder
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_pattern.product_variant_creator:
+        class: Furniture\ProductBundle\Pattern\ProductVariantCreator
+        arguments: [ @product_pattern.finder.product_variant, @doctrine.orm.default_entity_manager ]
+
+    product_pattern.product_variant_parameters_validator:
+        class: Furniture\ProductBundle\Pattern\ProductVariantParametersValidator
+    
+    product_pattern.product_variant_price_compiller:
+        class: Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     product.removal_checker:
         class: Furniture\ProductBundle\ProductRemoval\ProductRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
@@ -42,3 +57,9 @@ services:
         class: Furniture\ProductBundle\EventListener\Doctrine\ProductVariantMetadataSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+
+    twig.extension.product:
+        class: Furniture\ProductBundle\Twig\ProductExtension
+        arguments: [ @product_variant.removal_checker ]
+        tags:
+            - { name: twig.extension }

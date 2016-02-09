@@ -20,7 +20,7 @@ framework:
     default_locale:  "%sylius.locale%"
     trusted_proxies: ~
     session:
-        handler_id: session.handler.native
+        handler_id:  ~ # Allow symfony get php provided session handler
 
 sonata_block:
     blocks:
@@ -89,7 +89,7 @@ twig:
 
 assetic:
     debug:          %kernel.debug%
-    use_controller: false
+    use_controller: %kernel.debug%
     bundles:        ['SyliusWebBundle', 'CmfCreateBundle', 'SyliusResourceBundle', 'FrontendBundle']
     filters:
         cssrewrite: ~
@@ -158,6 +158,9 @@ sylius_product:
             controller: Furniture\ProductBundle\Controller\ProductController
             model: Furniture\ProductBundle\Entity\Product
             repository: Furniture\ProductBundle\Entity\Repository\ProductRepository
+            translation:
+                model: Furniture\ProductBundle\Entity\ProductTranslation
+                mapping: ~
             form:
                 default: Furniture\ProductBundle\Form\Type\ProductType
 
@@ -198,6 +201,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\RetailerBundle\Entity\RetailerProfile
+                repository: Furniture\RetailerBundle\Entity\Repository\RetailerProfileRepository
 
         furniture.factory:
             driver: doctrine/orm
@@ -223,6 +227,18 @@ sylius_resource:
                 translation:
                     model: Furniture\SkuOptionBundle\Entity\SkuOptionTypeTranslation
                     mapping: ~
+
+        furniture.product_pattern:
+            driver: doctrine/orm
+            classes:
+                controller: Furniture\ProductBundle\Controller\ProductVariantsPatternController
+                model: Furniture\ProductBundle\Entity\ProductVariantsPattern
+
+        furniture.product_pattern_modifier:
+            driver: doctrine/orm
+            classes:
+                controller: Furniture\ProductBundle\Controller\ProductVariantsPatternModifierController
+                model: Furniture\ProductBundle\Entity\ProductVariantsPatternModifier
 
         furniture.product_category:
             driver: doctrine/orm
@@ -260,6 +276,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Readiness
+                controller: Furniture\ProductBundle\Controller\ReadinessController
 
         furniture.product_part:
             driver: doctrine/orm

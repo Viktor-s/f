@@ -132,7 +132,7 @@ class BackendMenuBuilder extends MenuBuilder
 
         if ($this->authorizationChecker->isGranted('furniture.product_readiness.index')) {
             $child->addChild('product_readiness', [
-                'route' => 'furniture_backend_product_readiness',
+                'route' => 'furniture_backend_product_readiness_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
             ])->setLabel('Product: Readiness');
         }

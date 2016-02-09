@@ -1,0 +1,49 @@
+security_login:
+    path: /login
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:login
+
+security_login_check:
+    path: /login_check
+
+security_logout:
+    path: /logout
+
+security_reset_password_request:
+    path: /reset-password-request
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:resetPasswordRequest
+
+security_reset_password_requets_success:
+    path: /reset-password-request/success
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:resetPasswordRequestSuccessfully
+
+
+security_reset_password:
+    path: /reset-password/{token}
+    methods: [ GET, POST ]
+    requirements: {token: "[a-f0-9]{64}" }
+    defaults:
+        _controller: frontend.controller.security:resetPassword
+
+security_reset_password_success:
+    path: /reset-password/success
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:resetPasswordSuccessfully
+
+security_need_reset_password:
+    path: /need-reset-password
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:needResetPassword
+
+security_send_need_reset_password:
+    path: /need-reset-password/reset/
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:sendNeedResetPassword

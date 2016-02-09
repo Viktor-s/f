@@ -19,18 +19,18 @@
 
             <div class="col-md-9">
                 <div class="article-container style-1">
-                    <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
+                    <h3>{{ 'frontend.retailer'|trans }}: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
                         <div class="address">
-                            <b>Address:</b>
+                            <b>{{ 'frontend.address'|trans }}:</b>
                             {{ app.user.retailerUserProfile.retailerProfile.address }}
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
                         <div class="phones">
-                            <b>Phones:</b>
+                            <b>{{ 'frontend.phones'|trans }}:</b>
                             {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
                                 <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
                             {% endfor %}
@@ -39,7 +39,7 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
-                            <b>Emails:</b>
+                            <b>{{ 'frontend.emails'|trans }}:</b>
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                                 <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
                             {% endfor %}
@@ -48,7 +48,7 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.website %}
                         <div class="website">
-                            <b>Website:</b>
+                            <b>{{ 'frontend.website'|trans }}:</b>
                             <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
                                 {{ app.user.retailerUserProfile.retailerProfile.website }}
                             </a>
@@ -76,13 +76,13 @@
                 <h5>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }} </h5>
 
                 <div class="emails">
-                    <b>Email:</b>
+                    <b>{{ 'frontend.email'|trans }}:</b>
                     <span class="item">{{ app.user.customer.email }}</span>
                 </div>
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.phones|length > 0 %}
                     <div class="phones">
-                        <b>Phones:</b>
+                        <b>{{ 'frontend.phones_contact'|trans }}:</b>
                         {% for phone in app.user.retailerUserProfile.phones %}
                             <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
                         {% endfor %}
@@ -91,7 +91,7 @@
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.emails|length > 0 %}
                     <div class="emails">
-                        <b>Emails:</b>
+                        <b>{{ 'frontend.emails'|trans }}:</b>
                         {% for email in app.user.retailerUserProfile.emails %}
                             <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
                         {% endfor %}
@@ -100,7 +100,7 @@
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.position %}
                     <div class="position">
-                        <b>Position:</b>
+                        <b>{{ 'frontend.position'|trans }}:</b>
                         {{ app.user.retailerUserProfile.position }}
                     </div>
                 {% endif %}

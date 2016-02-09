@@ -6,7 +6,7 @@ Furniture\ProductBundle\Entity\ProductVariant:
         productPartVariantSelections:
             orphanRemoval: true
             cascade: [ persist ]
-            targetEntity: ProductPartVariantSelection
+            targetEntity: Furniture\ProductBundle\Entity\ProductPartVariantSelection
             mappedBy: productVariant
     
     manyToOne:

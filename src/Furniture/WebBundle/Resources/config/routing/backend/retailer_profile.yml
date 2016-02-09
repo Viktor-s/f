@@ -6,9 +6,10 @@ furniture_backend_retailer_profile_index:
         _controller: Furniture.controller.retailer_profile:indexAction
         _sylius:
             sortable: true
-            sorting:
-                id: desc
             template: SyliusWebBundle:Backend/RetailerProfile:index.html.twig
+            repository:
+                method: createFilterPaginator
+                arguments: [$criteria]
             
 furniture_backend_retailer_profile_create:
     path: /new

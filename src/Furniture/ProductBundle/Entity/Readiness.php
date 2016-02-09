@@ -2,6 +2,8 @@
 
 namespace Furniture\ProductBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Readiness
 {
     /**
@@ -11,6 +13,8 @@ class Readiness
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      */
     private $name;
 

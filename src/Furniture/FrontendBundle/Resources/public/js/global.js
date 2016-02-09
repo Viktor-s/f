@@ -597,14 +597,24 @@ $(function() {
     fixPopupTitle();
 
     //dropdown specification on PDP
-    $('.dropdown-btn, .specification-list > li > a').click( function(event){
-            event.stopPropagation();
-            $('.dropdown-menu').toggle();
-        });
+    $('#add-to-spec-widget .dropdown-btn, #add-to-spec-widget .specification-list > li > a').click( function(event){
+		event.stopPropagation();
+		$('div.dropdown-menu').toggle();
+	});
 
     $(document).click(function(e){
-        if($(e.target).closest(".dropdown-menu").length === 0){
-            $(".dropdown-menu").hide();
+        if($(e.target).closest("div.dropdown-menu").length === 0){
+            $("div.dropdown-menu").hide();
         };
     });
+    
+    //sticky filters in popup
+    /*$(".sticky-popup-title").stick_in_parent({
+        spacer: true,
+        sticky_class: "title-is-stuck"
+    });
+    $(".sticky-filter").stick_in_parent({
+        spacer: true,
+        offset_top: 70
+    });*/
 });
