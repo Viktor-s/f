@@ -3,6 +3,65 @@
 {% from 'SyliusResourceBundle:Macros:actions.html.twig' import create %}
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        /* Use this css */
+        .nav > li.divider {
+            height: 1px;
+            margin: 9px 1px;
+            overflow: hidden;
+            background-color: #e5e5e5;
+        }
+        .admin-filter-variants .tree-toggle.nav-header.checkbox-entry{
+            font-weight:bold;
+            margin-bottom: 5px;
+        }
+        .admin-filter-variants .tree-toggle.checkbox-entry, .checkbox-entry-filter-items{
+            font-weight:normal;
+        }
+        .admin-filter-variants .checkbox-entry:hover, .checkbox-entry-filter-items:hover{
+            font-weight:normal;
+            background-color:#B4CFEC;
+        }
+        .admin-filter-variants .btn-submenu {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .admin-filter-variants .nav{
+            margin-left:10px;
+            margin-right:10px;
+        }
+        .admin-filter-variants .tree-opener{
+            font-weight:bold;
+            font-size:20px;
+            border:solid black 1px;
+            line-height:14px;
+            width:15px;
+            height:15px;
+            text-align:center;
+            position:absolute;
+            top:5px;
+            left:-18px;
+            background:#ccc;
+            cursor:pointer;
+            display: none;
+        }
+        .admin-filter-variants .nav.nav-list.tree .nav.nav-list.tree{
+
+        }
+        .admin-filter-variants .nav-tree-main{
+            margin: 10px 10px 20px 10px;
+            padding-bottom: 30px;
+        }
+        .admin-filter-variants .panel{
+            margin-bottom: 30px !important;
+        }
+        /* Use this css end */
+    </style>
+{% endblock %}
+
 {% block topbar %}
     <ol class="breadcrumb">
         <li><a href="{{ path('sylius_backend_product_index') }}">Products</a></li>
@@ -16,11 +75,144 @@
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-plus-sign"></i> Create pattern</h1>
     </div>
+    <script>
+        var filterDb = {
+            parts: {},
+            skuOptions: {},
+        };
+    </script>
+    <div class="row admin-filter-variants">
+        <form name="blablaba">
+        {% if product.hasProductParts() %}
+            {% if groupVariantFilter.schematicProductType %}
+                {% set productParts = groupVariantFilter.scheme.productParts %}
+            {% else %}
+                {% set productParts = product.productParts %}
+            {% endif %}
+            {% for productPart in  productParts %}
+                
+                <script> filterDb['parts'][{{ productPart.id }}] = {}; </script>
+                
+                <div class="col-md-3" data-part="product_part_panel_{{ productPart.id }}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ productPart.label }}
+                        </div>
 
+                        <ul class="nav nav-list nav-tree-main">
+                            {% for material in productPart.productPartMaterials %}
+                                
+                                <script> filterDb['parts'][{{ productPart.id }}][{{ material.id }}] = {}; </script>
+                                
+                                <li>
+                                    <div class="tree-opener">+</div>
+                                    <label class="tree-toggle nav-header checkbox-entry">
+                                        <input type="checkbox"> <span class="check"></span>{{ material.name }}
+                                    </label>
+                                    <ul class="nav nav-list tree">
+                                        {% for grouped in  material.getGroupedOptionValues() %}                                            
+                                            <li>
+                                                <label class="checkbox-entry tree-toggle ">
+                                                    <input type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
+                                                </label>
+                                                <ul class="nav nav-list tree">
+                                                {% for value in grouped.values %}
+                                                    
+                                                    <script> filterDb['parts'][{{ productPart.id }}][{{ material.id }}][{{ value.id }}] = []; </script>
+                                                    
+                                                    <li>
+                                                    <label class="tree-toggle checkbox-entry">
+                                                        <input 
+                                                            class="system-check-material-variant"
+                                                            data-product-part-id="{{ productPart.id }}"
+                                                            data-product-part-material-id="{{ material.id }}"
+                                                            data-product-part-material-variant-value-id="{{ value.id }}" 
+                                                            type="checkbox"> 
+                                                        <span class="check"></span> {{ value.value }}
+                                                    </label>
+                                                    </li>
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if product.hasSkuOptionVariants() %}
+            {% for skuOptionGroup in product.getSkuOptionVariantsGrouped() %}
+                <div class="col-md-3" data-container="sku_option_panel_{{ skuOptionGroup[0].id }}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ skuOptionGroup[0].name }}
+                        </div>
+                        <ul class="list-group">
+                            {% for skuValue in skuOptionGroup %}
+                                <li class="list-group-item">
+                                    <label class="checkbox-entry">
+                                        <input class="system-sku-option-value" data-sku-option-value-map="{{ skuValue.skuOptionType.name }}_{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
+                                    </label>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </form>
+        <script>
+            {% for productPart in productParts %}
+                {% for productPartMaterial in productPart.productPartMaterials %}
+                    {% for productPartMaterialVariant in productPartMaterial.variants %}
+                        {% for value in productPartMaterialVariant.values %}
+                            filterDb['parts'][{{ productPart.id }}][{{ productPartMaterial.id }}][{{ value.id }}].push({{productPartMaterialVariant.id}});
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+            $(document).ready(function () {
+               /* CONFIG */
+               var productPartMaterialVariantSelectionPrefix = 'product_pattern_partPatternVariantSelections_';
+               var productPartMaterialVariantSelectionPostfix = '_productPartMaterialVariant';
+               var skuOptionPrefix = 'product_pattern_skuOptionValues_';
+               
+               /* Sync sku options */
+               $('.system-sku-option-value').change(function(){
+                   var el = $(this);
+                   var elId = skuOptionPrefix + el.data('sku-option-value-map');
+                   $('#'+elId).prop('checked', el.prop('checked'))
+               });
+                
+               /*Sync product parts*/
+               $('.system-check-material-variant').change(function(){
+                   var el = $(this);
+                   var productPartId = el.data('product-part-id'),
+                   productPartMaterialId = el.data('product-part-material-id'),
+                   productPartMaterialVariantValueId = el.data('product-part-material-variant-value-id');
+                   
+                   filterDb['parts'][productPartId][productPartMaterialId][productPartMaterialVariantValueId].forEach(function(productPartMaterialVariantId){
+                       var elId = productPartMaterialVariantSelectionPrefix 
+                               + productPartId 
+                               + '_' + productPartMaterialId 
+                               +'_' + productPartMaterialVariantId 
+                               + productPartMaterialVariantSelectionPostfix;
+                       $('#'+elId).prop('checked', el.prop('checked'))
+                   });
+               });
+            });
+        </script>
+    </div>
+    
     <form method="post" class="form-horizontal" novalidate>
         {{ form_widget(form) }}
-        {{ form_rest(form) }}
-
+            {% for partPatternVariantSelection in form.partPatternVariantSelections %}
+                {{ form_widget(partPatternVariantSelection) }}
+            {% endfor %}
+            {{ form_rest(form) }}
         {{ create() }}
     </form>
 {% endblock %}

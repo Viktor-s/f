@@ -11,6 +11,7 @@ use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Furniture\ProductBundle\Model\GroupVaraintEdit;
 
 class ProductVariantsPatternController extends ResourceController
 {
@@ -144,6 +145,12 @@ class ProductVariantsPatternController extends ResourceController
             return new RedirectResponse($toUrl);
         }
 
+        if ($product->isSchematicProductType()) {
+            $groupVariantFilter = new GroupVaraintEdit($product, $scheme);
+        } else {
+            $groupVariantFilter = new GroupVaraintEdit($product);
+        }
+        
         $view = $this
             ->view()
             ->setTemplate($this->config->getTemplate('create.html'))
@@ -152,6 +159,7 @@ class ProductVariantsPatternController extends ResourceController
                 $this->config->getResourceName() => $pattern,
                 'form'                           => $form->createView(),
                 'scheme'                         => $scheme,
+                'groupVariantFilter'             => $groupVariantFilter,
             ]);
 
         return $this->handleView($view);
@@ -201,6 +209,12 @@ class ProductVariantsPatternController extends ResourceController
             return new RedirectResponse($url);
         }
 
+        if ($product->isSchematicProductType()) {
+            $groupVariantFilter = new GroupVaraintEdit($product, $pattern->getScheme());
+        } else {
+            $groupVariantFilter = new GroupVaraintEdit($product);
+        }
+        
         $view = $this
             ->view()
             ->setTemplate($this->config->getTemplate('update.html'))
@@ -209,6 +223,7 @@ class ProductVariantsPatternController extends ResourceController
                 'form'                           => $form->createView(),
                 'product'                        => $product,
                 'pattern'                        => $pattern,
+                'groupVariantFilter'             => $groupVariantFilter,
             ]);
 
         return $this->handleView($view);
