@@ -128,13 +128,27 @@
 
             $(document).ready(function () {
                 $('[data-remove]').click(function () {
-                    var message = $(this).data('message');
+                    var
+                            message = $(this).data('message'),
+                            href = $(this).attr('href');
 
                     if (!message) {
                         message = 'Are you sure remove this item?'
                     }
 
-                    return confirm(message);
+                    if (confirm(message)) {
+                        var form = $('<form novalidate action="' + href + '" method="post">' +
+                                '<input type="hidden" value="DELETE" name="_method">' +
+                            '</form>');
+
+                        $('body').append(form);
+
+                        setTimeout(function () {
+                            form.submit();
+                        }, 10);
+                    }
+
+                    return false;
                 });
             });
         </script>
