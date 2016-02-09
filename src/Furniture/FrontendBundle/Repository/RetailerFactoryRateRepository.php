@@ -100,6 +100,10 @@ class RetailerFactoryRateRepository
         $factoryQuery = new FactoryQuery();
         $factoryQuery->withRetailer($retailerProfile);
 
+        if ($retailerProfile->isDemo()) {
+            $factoryQuery->withoutOnlyEnabledOrDisabled();
+        }
+
         $qb = $this->factoryRepository->createQueryBuilderForFactory($factoryQuery);
 
         $qb
