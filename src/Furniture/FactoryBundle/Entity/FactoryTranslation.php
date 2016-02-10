@@ -40,6 +40,26 @@ class FactoryTranslation extends AbstractTranslation
      * @var string
      */
     private $workInfoContent;
+
+    /**
+     * @var string
+     */
+    private $bankDetails;
+
+    /**
+     * @var string
+     */
+    private $productTime;
+
+    /**
+     * @var string
+     */
+    private $deliveryAndPackaging;
+
+    /**
+     * @var string
+     */
+    private $vacations;
     
     /**
      * Get id
@@ -152,7 +172,7 @@ class FactoryTranslation extends AbstractTranslation
      *
      * @param string $collectionContent
      *
-     * @return Factory
+     * @return FactoryTranslation
      */
     public function setCollectionContent($collectionContent)
     {
@@ -176,7 +196,7 @@ class FactoryTranslation extends AbstractTranslation
      *
      * @param string $workInfoContent
      *
-     * @return Factory
+     * @return FactoryTranslation
      */
     public function setWorkInfoContent($workInfoContent)
     {
@@ -193,5 +213,95 @@ class FactoryTranslation extends AbstractTranslation
     public function getWorkInfoContent()
     {
         return $this->workInfoContent;
+    }
+
+    /**
+     * Get Bank details
+     *
+     * @return string
+     */
+    public function getBankDetails()
+    {
+        return $this->bankDetails;
+    }
+
+    /**
+     * Set Bank details.
+     *
+     * @param $bankDetails
+     * @return FactoryTranslation
+     */
+    public function setBankDetails($bankDetails)
+    {
+        $this->bankDetails = $bankDetails;
+
+        return $this;
+    }
+
+    /**
+     * Get production time
+     *
+     * @return string
+     */
+    public function getProductTime()
+    {
+        return $this->productTime;
+    }
+
+    /**
+     * Set production time.
+     *
+     * @param $productTime
+     * @return FactoryTranslation
+     */
+    public function setProductTime($productTime)
+    {
+        $this->productTime = $productTime;
+
+        return $this;
+    }
+
+    /**
+     * Get delivery and apcking info.
+     *
+     * @return string
+     */
+    public function getDeliveryAndPackaging()
+    {
+        return $this->deliveryAndPackaging;
+    }
+
+    /**
+     * @param $deliveryAndPackging
+     * @return FactoryTranslation
+     */
+    public function setDeliveryAndPackaging($deliveryAndPackging)
+    {
+        $this->deliveryAndPackaging = $deliveryAndPackging;
+
+        return $this;
+    }
+
+    /**
+     * Get vacations.
+     *
+     * @return string
+     */
+    public function getVacations()
+    {
+        return $this->vacations;
+    }
+
+    /**
+     * Set vacations info.
+     *
+     * @param $vacations
+     * @return $this
+     */
+    public function setVacations($vacations)
+    {
+        $this->vacations = $vacations;
+
+        return $this;
     }
 }

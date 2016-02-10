@@ -30,3 +30,19 @@ Furniture\FactoryBundle\Entity\FactoryTranslation:
             type: text
             nullable: true
             name: collection_content
+
+        bankDetails:
+            type: text
+            nullable: true
+
+        productTime:
+            type: text
+            nullable: true
+
+        deliveryAndPackaging:
+            type: text
+            nullable: true
+
+        vacations:
+            type: text
+            nullable: true

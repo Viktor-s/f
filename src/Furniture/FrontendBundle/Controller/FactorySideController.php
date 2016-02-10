@@ -10,6 +10,7 @@ use Furniture\FrontendBundle\Repository\ProductStyleRepository;
 use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
+use Furniture\ProductBundle\Entity\Category;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -281,15 +282,29 @@ class FactorySideController
      */
     public function workInfo($factory)
     {
+        $product_types  = [];
         $factory = $this->findFactory($factory);
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $retailerUserProfile = $activeUser->getRetailerUserProfile();
+
         $this->checkFactoryForRetailer($factory);
 
+        $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+        // Check active state for factory retailer relation.
+        if ($factoryRetailerRelation->isFactoryAccept()) {
+            $categories = $this->productCategoryRepository->findByFactory($factory->getId());
+            $product_types = implode(', ', array_map(function(Category $c) {
+                return $c->translate()->getName();
+            }, $categories));
+        }
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $translate = $factory->translate();
 
         $content = $this->twig->render('FrontendBundle:FactorySide:work_info.html.twig', [
             'factory'   => $factory,
-            'work_info' => $translate->getWorkInfoContent(),
+            'product_types' => $product_types,
+            'retailer_data' => $factoryRetailerRelation,
         ]);
 
         return new Response($content);

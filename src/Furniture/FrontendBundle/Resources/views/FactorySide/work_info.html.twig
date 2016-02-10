@@ -9,5 +9,60 @@
 {% endblock %}
 
 {% block factory_side_content %}
-    <div class="factory-work-info">{{ work_info|raw }}</div>
+    <div class="factory-work-info">
+        <div class="row">
+            <div class="col-sm-6">
+                <dl class="dl-horizontal">
+                {% if product_types is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.products_type'|trans }}</dt>
+                    <dd>{{ product_types }}</dd>
+                {% endif %}
+                {% if retailer_data is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.work_discount'|trans }}</dt>
+                    <dd>{{ '%s%%'|format(retailer_data.discount) }}</dd>
+                {% endif %}
+                {% if factory.translate.workInfoContent is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.terms_payment'|trans }}</dt>
+                    <dd>{{ factory.translate.workInfoContent }}</dd>
+                {% endif %}
+                {% if factory.translate.bankDetails is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.bank_details'|trans }}</dt>
+                    <dd>
+                        {{ factory.translate.bankDetails|raw }}
+                    </dd>
+                {% endif %}
+                </dl>
+            </div>
+            <div class="col-sm-6">
+                <dl class="dl-horizontal">
+                {% if factory.translate.productTime is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.production_time'|trans }}</dt>
+                    <dd>{{ factory.translate.productTime|raw }}</dd>
+                {% endif %}
+                {% if factory.translate.deliveryAndPackaging is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.delivery_packaging'|trans }}</dt>
+                    <dd>{{ factory.translate.deliveryAndPackaging|raw }}</dd>
+                {% endif %}
+                {% if factory.contacts|length %}
+                    {% set contact =  factory.contacts[0] %}
+                    <dt>{{ 'frontend.factory_side.work_info.address_warehouse'|trans }}</dt>
+                    <dd>
+                        {{ '%s %s, '|format(contact.translate.name, contact.departmentName) }}<br>
+                        {{ '%s, '|format(contact.address) }}<br>
+                        {% if contact.phones|length %}
+                            {{ 'tel: %s, '|format(contact.phones[0]) }}<br>
+                        {% endif %}
+                        {% if contact.emails|length %}
+                            {{ '<a href="mailto:%1$s">%1$s</a>'|format(contact.emails[0])|raw }}
+                        {% endif %}
+                    </dd>
+                {% endif %}
+                {% if factory.translate.vacations is not empty %}
+                    <dt>{{ 'frontend.factory_side.work_info.vacations'|trans }}</dt>
+                    <dd>{{ factory.translate.vacations|raw }}</dd>
+                {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
 {% endblock %}
