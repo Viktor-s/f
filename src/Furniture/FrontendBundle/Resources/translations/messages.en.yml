@@ -85,6 +85,7 @@ frontend:
     finished: Finished
     finishes: Finishes
     first_name: First name
+    forgot_password: Forgot password?
     full: Full
     image: Image
     language:
@@ -142,6 +143,7 @@ frontend:
     phones_contact: Contact phones
     photo: Photo
     please_enter_new_password: "Please enter a new password for your account."
+    please_enter_your_email: "Please enter your account email."
     position: Position
     price: Price
     product:

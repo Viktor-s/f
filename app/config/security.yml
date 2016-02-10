@@ -66,6 +66,7 @@ security:
         - { path: ^/login.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/reset-password.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/need-reset-password.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forgot-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
