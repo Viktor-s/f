@@ -5,16 +5,9 @@ namespace Furniture\ProductBundle\EventListener\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Furniture\ProductBundle\Entity\ProductVariant;
+use Sylius\Component\Product\Model\AttributeValue;
 
-/**
- * The Doctrine ORM not supports override orderBy attribute, and
- * we create this class for override ProductVariant::images "orderBy"
- * attribute.
- *
- * @author Vitaliy Zhuk <zhuk2205@gmail.com>
- */
-class ProductVariantMetadataSubscriber implements EventSubscriber
+class ProductAttributeValueMetadataSubscriber implements EventSubscriber
 {
     /**
      * Load class metadata
@@ -26,10 +19,12 @@ class ProductVariantMetadataSubscriber implements EventSubscriber
         /** @var \Doctrine\ORM\Mapping\ClassMetadataInfo $classMetadata */
         $classMetadata = $event->getClassMetadata();
 
-        if ($classMetadata->getName() === ProductVariant::class) {
-            $classMetadata->associationMappings['images']['orderBy'] = [
-                'position' => 'ASC'
-            ];
+        if ($classMetadata->getName() === AttributeValue::class) {
+            foreach ($classMetadata->associationMappings as $key => $associationMapping) {
+                if ($associationMapping['fieldName'] == 'attribute') {
+                    $classMetadata->associationMappings[$key]['joinColumns'][0]['onDelete'] = 'RESTRICT';
+                }
+            }
         }
     }
 

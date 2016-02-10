@@ -25,9 +25,12 @@
                 <td>{{ attribute.updatedAt|date }}</td>
                 <td>
                     <div class="pull-right">
-                    {{ buttons.edit(path('sylius_backend_product_attribute_update', {'id': attribute.id})) }}
-                    {{ buttons.delete(path('sylius_backend_product_attribute_delete', {'id': attribute.id})) }}
-                   </div>
+                        {{ buttons.edit(path('sylius_backend_product_attribute_update', {'id': attribute.id})) }}
+
+                        {% if is_product_attribute_can_remove(attribute) %}
+                            {{ buttons.delete(path('sylius_backend_product_attribute_delete', {'id': attribute.id})) }}
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
         {% endfor %}

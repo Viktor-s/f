@@ -47,19 +47,30 @@ services:
         class: Furniture\ProductBundle\ProductRemoval\VariantRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
 
+    product_attribute.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\AttributeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     product_part_material_variant.subscriber.entity:
         class: Furniture\ProductBundle\EventListener\ProductPartMaterialVariantEntitySubscriber
         arguments: [ @sylius.image_uploader, @doctrine.orm.default_entity_manager ]
         tags:
             - { name: kernel.event_subscriber }
 
-    product_variant.doctrine.subscriver.metadata:
+    product_variant.doctrine.subscriber.metadata:
         class: Furniture\ProductBundle\EventListener\Doctrine\ProductVariantMetadataSubscriber
+        public: false
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    product_attribute_value.doctrine.subscriber.metadata:
+        class: Furniture\ProductBundle\EventListener\Doctrine\ProductAttributeValueMetadataSubscriber
+        public: false
         tags:
             - { name: doctrine.event_subscriber }
 
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
-        arguments: [ @product_variant.removal_checker ]
+        arguments: [ @product_variant.removal_checker, @product_attribute.removal_checker ]
         tags:
             - { name: twig.extension }

@@ -164,6 +164,16 @@ sylius_product:
             form:
                 default: Furniture\ProductBundle\Form\Type\ProductType
 
+sylius_attribute:
+    classes:
+        product:
+            attribute:
+                model: Sylius\Component\Product\Model\Attribute
+                repository: Furniture\ProductBundle\Entity\Repository\AttributeRepository
+                translation:
+                    model: Sylius\Component\Product\Model\AttributeTranslation
+                    mapping: ~
+
 sylius_variation:
     classes:
         product:
