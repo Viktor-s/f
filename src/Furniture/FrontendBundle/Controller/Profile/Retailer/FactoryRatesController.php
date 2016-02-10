@@ -139,6 +139,14 @@ class FactoryRatesController
             if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_EDIT', $rate)) {
                 throw new AccessDeniedException();
             }
+
+            if ($rate->getFactory()->isDisabled()) {
+                throw new NotFoundHttpException(sprintf(
+                    'Can not edit factory rate with identifier "%s", because the factory "%s" is disabled.',
+                    $rate->getId(),
+                    $rate->getFactory()->getName()
+                ));
+            }
         } else {
             $rate = new RetailerFactoryRate();
             $rate->setRetailer($user->getRetailerUserProfile()->getRetailerProfile());
@@ -193,6 +201,14 @@ class FactoryRatesController
 
         if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_REMOVE', $rate)) {
             throw new AccessDeniedException();
+        }
+
+        if ($rate->getFactory()->isDisabled()) {
+            throw new NotFoundHttpException(sprintf(
+                'Can not remove user factory rate with identifier "%s", because the factory "%s" is disabled.',
+                $rate->getId(),
+                $rate->getFactory()->getName()
+            ));
         }
 
         $this->em->remove($rate);
