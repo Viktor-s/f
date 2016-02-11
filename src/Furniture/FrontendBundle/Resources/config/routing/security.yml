@@ -47,3 +47,9 @@ security_send_need_reset_password:
     methods: [ GET ]
     defaults:
         _controller: frontend.controller.security:sendNeedResetPassword
+
+security_forgot_password:
+    path: /forgot-password
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:forgotPassword

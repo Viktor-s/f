@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController
 {
@@ -366,6 +367,65 @@ class SecurityController
         $content = $this->twig->render('FrontendBundle:Security:reset_password_request_success.html.twig');
         $session = $request->getSession();
         $session->remove('need-reset-password');
+        return new Response($content);
+    }
+
+    /**
+     * Forgot password.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function forgotPassword(Request $request)
+    {
+        $error = null;
+        $form = $this->formFactory->createBuilder('form')
+            ->add('email', 'email', [
+                'label' => false,
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('send', 'submit')
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $formData = $form->getData();
+            $email = $formData['email'];
+
+            // Try search user by email
+            /** @var \Furniture\UserBundle\Entity\User $user */
+            $user = $this->userRepository->findByUsername($email);
+
+            if (!$user) {
+                $error = $this->translator->trans('frontend.user_not_found_with_email', [
+                    ':email' => $email,
+                ]);
+            } elseif ($user->isDisabled()) {
+                $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
+                    ':email' => $email,
+                ]);
+            }
+
+            if (!$error) {
+                // Error not found. Start resetting password.
+                $this->passwordResetter->resetPassword($user);
+
+                // We should create a redirect response, because user can reload page and send repeatedly
+                // send data.
+                $url = $this->urlGenerator->generate('security_reset_password_requets_success');
+
+                return new RedirectResponse($url);
+            }
+        }
+
+        $content = $this->twig->render('FrontendBundle:Security:forgot_password.html.twig', [
+            'form' => $form->createView(),
+            'error' => $error,
+        ]);
+
         return new Response($content);
     }
 }
