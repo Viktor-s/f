@@ -14,13 +14,15 @@
             <a href="{{ path('retailer_profile_factory_rate_create') }}">{{ 'frontend.create'|trans }}.</a>
         </div>
     {% else %}
-        {% if has_factories_for_create %}
-            <div class="pull-right">
+        <div class="pull-right">
+            {% if has_factories_for_create %}
                 <a class="btn btn-success" href="{{ path('retailer_profile_factory_rate_create') }}">{{ 'frontend.create'|trans }}</a>
-            </div>
+            {% else %}
+                <a class="btn btn-success" href="#" disabled data-toggle="tooltip" title="{{ 'frontend.no_factories_for_create_relation'|trans }}">Create</a>
+            {% endif %}
+        </div>
 
-            <div class="clearfix"></div>
-        {% endif %}
+        <div class="clearfix"></div>
 
         <div class="information-blocks">
             <table class="table table-hover">
