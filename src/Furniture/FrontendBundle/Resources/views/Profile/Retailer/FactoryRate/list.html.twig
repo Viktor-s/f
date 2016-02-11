@@ -18,7 +18,7 @@
             {% if has_factories_for_create %}
                 <a class="btn btn-success" href="{{ path('retailer_profile_factory_rate_create') }}">{{ 'frontend.create'|trans }}</a>
             {% else %}
-                <a class="btn btn-success" href="#" disabled data-toggle="tooltip" title="{{ 'frontend.no_factories_for_create_relation'|trans }}">Create</a>
+                <a class="btn btn-success disabled" href="#" onclick="return false;" data-toggle="tooltip" title="{{ 'frontend.no_factories_for_create_relation'|trans }}">Create</a>
             {% endif %}
         </div>
 
