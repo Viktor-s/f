@@ -62,6 +62,7 @@ class DefaultAuthenticationFailureHandler extends BaseDefaultAuthenticationFailu
             ) {
                 $this->passwordResetter->resetPassword($user);
             }
+
             $token = $user->getConfirmationToken();
             $toUrl = $this->urlGenerator->generate('security_need_reset_password');
             $session = $request->getSession();

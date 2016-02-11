@@ -138,8 +138,8 @@ class SecurityController
 
         $content = $this->twig->render('FrontendBundle:Security:login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
-            'csrf_token' => $csrfToken,
+            'error'         => $error,
+            'csrf_token'    => $csrfToken,
         ]);
 
         return new Response($content);
@@ -154,11 +154,12 @@ class SecurityController
      */
     public function needResetPassword(Request $request)
     {
-        if ($request->server->has('HTTP_REFERER')) {
+        if (!$request->server->has('HTTP_REFERER')) {
             $url = $this->urlGenerator->generate('security_login');
 
             return new RedirectResponse($url);
         }
+
         $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig');
 
         return new Response($content);
@@ -168,17 +169,21 @@ class SecurityController
      * Send reset password email.
      *
      * @param Request $request
-     * @param $token
+     *
+     * @return RedirectResponse
      */
     public function sendNeedResetPassword(Request $request)
     {
-        $type = $message = null;
+        $type = null;
+        $message = null;
         $session = $request->getSession();
         $token = $session->get('need-reset-password');
         $notSent = $this->translator->trans('frontend.need_reset_password_error');
+
         if (isset($token)) {
             // Try load user via token
             $user = $this->userRepository->findByConfirmationToken($token);
+
             if (!$user) {
                 // User not found exception.
                 $type = 'error';
@@ -187,7 +192,7 @@ class SecurityController
                     $notSent,
                     $this->translator->trans('frontend.user_not_found')
                 );
-            } elseif ($user->isEnabled()) {
+            } else if ($user->isEnabled()) {
                 $this->passwordResetter->resetPassword($user);
                 $token = $user->getConfirmationToken();
                 $session->set('need-reset-password', $token);
@@ -367,6 +372,7 @@ class SecurityController
         $content = $this->twig->render('FrontendBundle:Security:reset_password_request_success.html.twig');
         $session = $request->getSession();
         $session->remove('need-reset-password');
+
         return new Response($content);
     }
 
@@ -382,10 +388,10 @@ class SecurityController
         $error = null;
         $form = $this->formFactory->createBuilder('form')
             ->add('email', 'email', [
-                'label' => false,
+                'label'       => false,
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('send', 'submit')
             ->getForm();
@@ -422,7 +428,7 @@ class SecurityController
         }
 
         $content = $this->twig->render('FrontendBundle:Security:forgot_password.html.twig', [
-            'form' => $form->createView(),
+            'form'  => $form->createView(),
             'error' => $error,
         ]);
 
