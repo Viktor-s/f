@@ -40,11 +40,6 @@ class FactoryRetailerRelation
      * @var int
      */
     private $discount = 0;
-    
-    /**
-     * @var bool
-     */
-    private $active = false;
 
     /**
      * @var bool
@@ -184,30 +179,6 @@ class FactoryRetailerRelation
     public function getDiscount()
     {
         return $this->discount;
-    }
-
-    /**
-     * Is active relation
-     *
-     * @return bool
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * Set active
-     *
-     * @param bool $status
-     *
-     * @return FactoryRetailerRelation
-     */
-    public function setActive($status)
-    {
-        $this->active = (bool) $status;
-
-        return $this;
     }
 
     /**

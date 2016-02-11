@@ -39,11 +39,6 @@ Furniture\FactoryBundle\Entity\FactoryRetailerRelation:
                 unique: true
 
     fields:
-        active:
-            type: boolean
-            default: false
-            name: active
-
         accessProducts:
             type: boolean
             default: false
