@@ -3521,6 +3521,14 @@ header.fixed-header nav {
 
 }
 
+.specifications-export-table thead .checkbox-entry {
+    padding: 0;
+}
+
+.specifications-export-table thead .checkbox-entry .check {
+    position: relative;
+}
+
 .specification-pretable-controls{
     position:absolute;
     top:0;
