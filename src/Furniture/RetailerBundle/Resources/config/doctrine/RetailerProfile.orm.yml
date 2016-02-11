@@ -53,11 +53,6 @@ Furniture\RetailerBundle\Entity\RetailerProfile:
         description:
             type: text
             nullable: true
-            
-        address:
-            type: string
-            name: address
-            nullable: true
 
         phones:
             type: json_array

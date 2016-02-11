@@ -19,7 +19,7 @@ furniture_backend_retailer_profile_create:
         _sylius:
             template: SyliusWebBundle:Backend/RetailerProfile:create.html.twig
             redirect: furniture_backend_retailer_profile_index
-            form: Furniture\RetailerBundle\Form\Type\RetailerProfileType
+            form: furniture_retailer_profile
             
 furniture_backend_retailer_profile_update:
     path: /{id}/edit
@@ -28,7 +28,7 @@ furniture_backend_retailer_profile_update:
         _controller: Furniture.controller.retailer_profile:updateAction
         _sylius:
             template: SyliusWebBundle:Backend/RetailerProfile:update.html.twig
-            form: Furniture\RetailerBundle\Form\Type\RetailerProfileType
+            form: furniture_retailer_profile
             redirect: furniture_backend_retailer_profile_index
             
 furniture_backend_retailer_profile_delete:

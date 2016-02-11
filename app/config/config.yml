@@ -212,6 +212,9 @@ sylius_resource:
             classes:
                 model: Furniture\RetailerBundle\Entity\RetailerProfile
                 repository: Furniture\RetailerBundle\Entity\Repository\RetailerProfileRepository
+                translation:
+                    model: Furniture\RetailerBundle\Entity\RetailerProfileTranslation
+                    mapping: ~
 
         furniture.factory:
             driver: doctrine/orm
