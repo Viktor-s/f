@@ -39,7 +39,7 @@ frontend:
     contact: Contact
     content_user_profile: User profile
     create: Create
-    create_to_factory_relation: Relate to factory
+    create_to_factory_relation: Create request to factory
     create_to_retailer_relation: Relate to retailer
     created: Created
     created_at: Created at
