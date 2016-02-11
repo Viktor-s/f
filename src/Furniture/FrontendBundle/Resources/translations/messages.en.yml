@@ -80,6 +80,15 @@ frontend:
             contacts: Contacts
             circulars: Circulars
             news: News
+        work_info:
+            products_type: Products type
+            work_discount: Work discount
+            terms_payment: Terms of payments
+            bank_details: Bank details
+            production_time: Production Time
+            delivery_packaging: Delivery and Packaging
+            address_warehouse: Address warehouse
+            vacations: Vacations
     final_price: Final price
     finish: Finish
     finished: Finished
