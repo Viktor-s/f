@@ -193,7 +193,7 @@ services:
             - @frontend.repository.composite_collection
             - @security.token_storage
             - @security.authorization_checker
-            - @security.token_storage
+            - @router
     # User profile controllers
     frontend.controller.user.profile:
         class: Furniture\FrontendBundle\Controller\Profile\User\UserProfileController

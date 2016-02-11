@@ -22,7 +22,6 @@
                     <div class="popup-container">
                         <h3 class="block-title sticky-popup-title">{{ input.humanName }}</h3>
                         {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
-                            
                             <div class="accordeon">
                                 <div class="accordeon-title row">
                                     <div class="filter-title col-sm-4">  
@@ -88,22 +87,38 @@
             'popup': {{ input.id }},
             'variants': []
         };
+        var allOptions = [];
     {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
         {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
-                groupedMaterialVariants['variants'].push({
-                    materialVariantId: {{ productPartMaterialVariant.id }},
-                    optionValues: {
-                    {% for optionValue in productPartMaterialVariant.values %}
-                        {{ optionValue.option.id }}: {{ optionValue.id }},
-                    {% endfor %}
-                    }
-                });
+        var groupedOptionValues = {
+            {% for optionValue in productPartMaterialVariant.values %}
+            {{ optionValue.option.id }}: {{ optionValue.id }},
+            {% endfor %}
+        };
+        allOptions = $.unique($.merge(allOptions, $.map(groupedOptionValues, function(val, i) { return val;})));
+        groupedMaterialVariants['variants'].push({
+            materialVariantId: {{ productPartMaterialVariant.id }},
+            optionValues: groupedOptionValues
+        });
         {% endfor %}
     {% endfor %}
-        console.log(groupedMaterialVariants);
         $(document).ready(function () {
             var popup = $('#input-popup-{{ input.id }}');
             var filterCheckboxes = popup.find('input:checkbox');
+
+            // Hide empty categories from filter.
+            filterCheckboxes.each(function() {
+                if (0 > $.inArray(parseInt($(this).val(), 10), allOptions)) {
+                    $(this).parent().hide();
+                }
+            });
+            popup.find('.sticky-filter .information-blocks').each(function() {
+                if (0 === $(this).find('input:checkbox').parent().filter(':visible').length) {
+                    $(this).hide();
+                }
+            });
+
+            // Filter on change.
             filterCheckboxes.change(function(){
                 var checked = {};
                 filterCheckboxes.filter('input:checked').each(function(){

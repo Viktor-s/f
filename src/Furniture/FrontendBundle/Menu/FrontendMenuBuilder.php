@@ -304,6 +304,10 @@ class FrontendMenuBuilder
      */
     public function createFactorySideMenu(Factory $factory)
     {
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $retailerUserProfile = $activeUser->getRetailerUserProfile();
+        $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [
@@ -322,11 +326,15 @@ class FrontendMenuBuilder
 //                'label' => $this->translator->trans('frontend.factory_side.menu.collections')
 //            ]);
 //        }
-        
-        $menu->addChild('work_info', [
-            'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
-            'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
-        ]);
+
+        // Check active state for factory retailer relation.
+        // Redmine bug #214.
+        if ($factoryRetailerRelation->isFactoryAccept()) {
+            $menu->addChild('work_info', [
+                'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
+                'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
+            ]);
+        }
         
         $menu->addChild('contacts', [
             'uri' => $this->urlGenerator->generate('factory_side_contacts', ['factory' => $factory->getId()]),

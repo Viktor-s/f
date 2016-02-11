@@ -80,11 +80,21 @@ frontend:
             contacts: Contacts
             circulars: Circulars
             news: News
+        work_info:
+            products_type: Products type
+            work_discount: Work discount
+            terms_payment: Terms of payments
+            bank_details: Bank details
+            production_time: Production Time
+            delivery_packaging: Delivery and Packaging
+            address_warehouse: Address warehouse
+            vacations: Vacations
     final_price: Final price
     finish: Finish
     finished: Finished
     finishes: Finishes
     first_name: First name
+    forgot_password: Forgot password?
     full: Full
     image: Image
     language:
@@ -142,6 +152,7 @@ frontend:
     phones_contact: Contact phones
     photo: Photo
     please_enter_new_password: "Please enter a new password for your account."
+    please_enter_your_email: "Please enter your account email."
     position: Position
     price: Price
     product:

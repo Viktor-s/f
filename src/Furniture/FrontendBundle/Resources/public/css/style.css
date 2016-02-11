@@ -1985,6 +1985,12 @@ select{background: #fff!important;}
 /* 17 - LOGIN */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 .login-box{background: #fcfcfc; border: 1px #ebebeb solid; padding: 50px 55px; min-height: 470px;}
+.login-box .checkbox-entry {
+    padding-top: 0;
+}
+.login-box .checkbox-entry span.check {
+    top: 1px;
+}
 /* Tablets (>=768px)*/
 @media (max-width: 991px) {
     .login-box{padding: 20px 25px;}
