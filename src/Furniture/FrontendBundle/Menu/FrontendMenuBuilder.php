@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface 
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Furniture\UserBundle\Entity\User;
 
 class FrontendMenuBuilder
 {
@@ -304,9 +303,14 @@ class FrontendMenuBuilder
      */
     public function createFactorySideMenu(Factory $factory)
     {
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $activeUser = $this->tokenStorage->getToken()->getUser();
-        $retailerUserProfile = $activeUser->getRetailerUserProfile();
-        $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+        $factoryRetailerRelation = null;
+
+        if ($activeUser->isRetailer()) {
+            $retailerUserProfile = $activeUser->getRetailerUserProfile();
+            $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+        }
 
         $menu = $this->factory->createItem('root');
         
@@ -328,8 +332,7 @@ class FrontendMenuBuilder
 //        }
 
         // Check active state for factory retailer relation.
-        // Redmine bug #214.
-        if ($factoryRetailerRelation->isFactoryAccept()) {
+        if ($factoryRetailerRelation && $factoryRetailerRelation->isFactoryAccept()) {
             $menu->addChild('work_info', [
                 'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
                 'label' => $this->translator->trans('frontend.factory_side.menu.work_info')

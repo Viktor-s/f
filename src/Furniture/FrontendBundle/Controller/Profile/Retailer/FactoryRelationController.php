@@ -4,12 +4,14 @@ namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
+use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -27,6 +29,11 @@ class FactoryRelationController
      * @var FactoryRetailerRelationRepository
      */
     private $factoryRetailerRelationRepository;
+
+    /**
+     * @var FactoryRepository
+     */
+    private $factoryRepository;
 
     /**
      * @var EntityManagerInterface
@@ -67,6 +74,7 @@ class FactoryRelationController
     public function __construct(
         \Twig_Environment $twig,
         FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
+        FactoryRepository $factoryRepository,
         EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -76,6 +84,7 @@ class FactoryRelationController
     {
         $this->twig = $twig;
         $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
+        $this->factoryRepository = $factoryRepository;
         $this->em = $entityManager;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -150,11 +159,25 @@ class FactoryRelationController
             if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_CREATE', $relation)) {
                 throw new AccessDeniedException();
             }
+
+            if ($request->query->has('factory')) {
+                $factoryId = $request->query->getInt('factory');
+
+                if (!$factoryId) {
+                    throw new HttpException(400, 'Invalid "factory" parameter.');
+                }
+
+                // Force create relation to factory
+                $factory = $this->factoryRepository->find($factoryId);
+                $relation
+                    ->setFactory($factory);
+            }
         }
 
         $form = $this->formFactory->create('retailer_factory_relation', $relation, [
             'mode'         => 'from_retailer',
             'content_user' => $user,
+            'factory'      => isset($factory) ? $factory : null,
         ]);
 
         $form->handleRequest($request);

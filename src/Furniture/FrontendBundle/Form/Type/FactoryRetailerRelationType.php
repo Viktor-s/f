@@ -63,12 +63,14 @@ class FactoryRetailerRelationType extends AbstractType
             'data_class'   => FactoryRetailerRelation::class,
             'factory_user' => null,
             'content_user' => null,
+            'factory'      => null,
         ]);
 
         $resolver->setRequired('mode');
         $resolver->setAllowedValues('mode', ['from_factory', 'from_retailer']);
         $resolver->setAllowedTypes('factory_user', ['null', User::class]);
         $resolver->setAllowedTypes('content_user', ['null', User::class]);
+        $resolver->setAllowedTypes('factory', ['null', Factory::class]);
 
         $resolver->setNormalizer('factory_user', function (OptionsResolver $resolver, $value) {
             if ($resolver->offsetGet('mode') == 'from_factory' && !$value) {
@@ -132,30 +134,42 @@ class FactoryRetailerRelationType extends AbstractType
                         'data'     => $relation->getFactory()->getName(),
                     ]);
                 } else {
-                    $form->add('factory', 'entity', [
-                        'label'         => 'frontend.factory',
-                        'class'         => Factory::class,
-                        'query_builder' => function (EntityRepository $er) use ($relation) {
-                            if ($relation->getRetailer()) {
-                                $factoryQuery = new FactoryQuery();
-                                $activeUser = $this->tokenStorage->getToken()->getUser();
-                                $factoryQuery->withRetailerFromUser($activeUser);
+                    if ($options['factory']) {
+                        /** @var \Furniture\FactoryBundle\Entity\Factory $factory */
+                        $factory = $options['factory'];
 
-                                if ($relation->getRetailer()->isDemo()) {
-                                    $factoryQuery->withoutOnlyEnabledOrDisabled();
+                        $form->add('_factory', 'text', [
+                            'label'    => 'frontend.brand',
+                            'mapped'   => false,
+                            'disabled' => true,
+                            'data'     => $factory->getName(),
+                        ]);
+                    } else {
+                        $form->add('factory', 'entity', [
+                            'label'         => 'frontend.factory',
+                            'class'         => Factory::class,
+                            'query_builder' => function (EntityRepository $er) use ($relation) {
+                                if ($relation->getRetailer()) {
+                                    $factoryQuery = new FactoryQuery();
+                                    $activeUser = $this->tokenStorage->getToken()->getUser();
+                                    $factoryQuery->withRetailerFromUser($activeUser);
+
+                                    if ($relation->getRetailer()->isDemo()) {
+                                        $factoryQuery->withoutOnlyEnabledOrDisabled();
+                                    }
+
+                                    $qb = $this->factoryRepository->createQueryBuilderForFactory($factoryQuery);
+
+                                    return $qb
+                                        ->leftJoin('f.retailerRelations', 'fur', 'WITH', 'fur.retailer = :retailer')
+                                        ->andWhere('fur.retailer is NULL')
+                                        ->setParameter('retailer', $relation->getRetailer());
+                                } else {
+                                    return $er->createQueryBuilder('f');
                                 }
-
-                                $qb = $this->factoryRepository->createQueryBuilderForFactory($factoryQuery);
-
-                                return $qb
-                                    ->leftJoin('f.retailerRelations', 'fur', 'WITH', 'fur.retailer = :retailer')
-                                    ->andWhere('fur.retailer is NULL')
-                                    ->setParameter('retailer', $relation->getRetailer());
-                            } else {
-                                return $er->createQueryBuilder('f');
-                            }
-                        },
-                    ]);
+                            },
+                        ]);
+                    }
                 }
             }
 

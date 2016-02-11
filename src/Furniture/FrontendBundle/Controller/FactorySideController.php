@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
+use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
 use Furniture\FrontendBundle\Repository\ProductStyleRepository;
@@ -31,6 +32,11 @@ class FactorySideController
      * @var FactoryRepository
      */
     private $factoryRepository;
+
+    /**
+     * @var FactoryRetailerRelationRepository
+     */
+    private $factoryRetailerRelationRepository;
 
     /**
      * @var PostRepository
@@ -70,19 +76,21 @@ class FactorySideController
     /**
      * Construct
      *
-     * @param \Twig_Environment             $twig
-     * @param FactoryRepository             $factoryRepository
-     * @param PostRepository                $postRepository
-     * @param ProductStyleRepository        $productStyleRepository
-     * @param ProductCategoryRepository     $productCategoryRepository
-     * @param CompositeCollectionRepository $compositeCollectionRepository
-     * @param TokenStorageInterface         $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param UrlGeneratorInterface     $urlGenerator
+     * @param \Twig_Environment                 $twig
+     * @param FactoryRepository                 $factoryRepository
+     * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
+     * @param PostRepository                    $postRepository
+     * @param ProductStyleRepository            $productStyleRepository
+     * @param ProductCategoryRepository         $productCategoryRepository
+     * @param CompositeCollectionRepository     $compositeCollectionRepository
+     * @param TokenStorageInterface             $tokenStorage
+     * @param AuthorizationCheckerInterface     $authorizationChecker
+     * @param UrlGeneratorInterface             $urlGenerator
      */
     public function __construct(
         \Twig_Environment $twig,
         FactoryRepository $factoryRepository,
+        FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         PostRepository $postRepository,
         ProductStyleRepository $productStyleRepository,
         ProductCategoryRepository $productCategoryRepository,
@@ -94,6 +102,7 @@ class FactorySideController
     {
         $this->twig = $twig;
         $this->factoryRepository = $factoryRepository;
+        $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
         $this->postRepository = $postRepository;
         $this->productStyleRepository = $productStyleRepository;
         $this->productCategoryRepository = $productCategoryRepository;
@@ -180,7 +189,8 @@ class FactorySideController
         $this->checkFactoryForRetailer($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:general.html.twig', [
-            'factory' => $factory,
+            'factory'                   => $factory,
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -201,9 +211,10 @@ class FactorySideController
         $posts = $this->postRepository->findNewsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:posts.html.twig', [
-            'posts'     => $posts,
-            'factory'   => $factory,
-            'circulars' => false,
+            'posts'                     => $posts,
+            'factory'                   => $factory,
+            'circulars'                 => false,
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -224,9 +235,10 @@ class FactorySideController
         $posts = $this->postRepository->findCircularsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:posts.html.twig', [
-            'posts'     => $posts,
-            'factory'   => $factory,
-            'circulars' => true,
+            'posts'                     => $posts,
+            'factory'                   => $factory,
+            'circulars'                 => true,
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -256,8 +268,9 @@ class FactorySideController
         }
 
         $content = $this->twig->render('FrontendBundle:FactorySide:post.html.twig', [
-            'post'    => $post,
-            'factory' => $factory,
+            'post'                      => $post,
+            'factory'                   => $factory,
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -276,8 +289,9 @@ class FactorySideController
         $this->checkFactoryForRetailer($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:contacts.html.twig', [
-            'factory'  => $factory,
-            'contacts' => $factory->getContacts(),
+            'factory'                   => $factory,
+            'contacts'                  => $factory->getContacts(),
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -292,7 +306,6 @@ class FactorySideController
      */
     public function workInfo($factory)
     {
-        $product_types = [];
         $factory = $this->findFactory($factory);
         /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $activeUser = $this->tokenStorage->getToken()->getUser();
@@ -301,26 +314,30 @@ class FactorySideController
         $this->checkFactoryForRetailer($factory);
 
         $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+
         // Check active state for factory retailer relation.
-        // Redmine bug #214.
         if ($factoryRetailerRelation->isFactoryAccept()) {
             $categories = $this->productCategoryRepository->findByFactory($factory->getId());
-            $product_types = implode(', ', array_map(function (Category $c) {
-                return $c->translate()->getName();
-            }, $categories));
+            $productTypes = array_map(function (Category $category) {
+                /** @var \Furniture\ProductBundle\Entity\CategoryTranslation $translate */
+                $translate = $category->translate();
+
+                return $translate->getName();
+            }, $categories);
+
+            $product_types = implode(', ', $productTypes);
         } else {
             // Factory not accept this retailer. Redirect user to factory page.
             $url = $this->urlGenerator->generate('factory_side_general', ['factory' => $factory->getId()]);
 
             return new RedirectResponse($url);
         }
-        /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
-        $translate = $factory->translate();
 
         $content = $this->twig->render('FrontendBundle:FactorySide:work_info.html.twig', [
-            'factory' => $factory,
-            'product_types' => $product_types,
-            'retailer_data' => $factoryRetailerRelation,
+            'factory'                   => $factory,
+            'product_types'             => $product_types,
+            'retailer_data'             => $factoryRetailerRelation,
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -351,8 +368,9 @@ class FactorySideController
         $ccQuery->withFactory($factory);
         /** @var \Furniture\FactoryBundle\Entity\FactoryTranslation $translate */
         $content = $this->twig->render('FrontendBundle:FactorySide:collections.html.twig', [
-            'factory'               => $factory,
-            'composite_collections' => $this->compositeCollectionRepository->findBy($ccQuery)
+            'factory'                   => $factory,
+            'composite_collections'     => $this->compositeCollectionRepository->findBy($ccQuery),
+            'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
 
         return new Response($content);
@@ -405,5 +423,26 @@ class FactorySideController
                 }
             }
         }
+    }
+
+    /**
+     * Find factory retailer relation
+     *
+     * @param Factory $factory
+     *
+     * @return \Furniture\FactoryBundle\Entity\FactoryRetailerRelation
+     */
+    private function findFactoryRetailerRelation(Factory $factory)
+    {
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+
+        if ($activeUser->isNoRetailer()) {
+            return null;
+        }
+
+        $retailer = $activeUser->getRetailerUserProfile()->getRetailerProfile();
+
+        return $this->factoryRetailerRelationRepository->findRelationBetweenFactoryAndRetailer($factory, $retailer);
     }
 }

@@ -8,6 +8,19 @@
     <a href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name }}</a>
 {% endblock %}
 
+{% block breadcrumb_container %}
+    {% if app.user.isRetailer() and not factory_retailer_relation %}
+        <div class="pull-right">
+            <a href="{{ path('retailer_profile_factory_relation_create', {factory: factory.id}) }}" class="btn btn-success">
+                <i class="fa fa-plus"></i>
+                Relate to factory
+            </a>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
 {% block content %}
     <div class="information-blocks">
         {{ knp_menu_render_factory_side(factory, {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}

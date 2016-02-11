@@ -44,6 +44,29 @@ class FactoryRetailerRelationRepository
     }
 
     /**
+     * Find relation between factory and retailer
+     *
+     * @param Factory         $factory
+     * @param RetailerProfile $retailerProfile
+     *
+     * @return FactoryRetailerRelation|null
+     */
+    public function findRelationBetweenFactoryAndRetailer(Factory $factory, RetailerProfile $retailerProfile)
+    {
+        return $this->em->createQueryBuilder()
+            ->from(FactoryRetailerRelation::class, 'frr')
+            ->select('frr')
+            ->andWhere('frr.factory = :factory')
+            ->andWhere('frr.retailer = :retailer')
+            ->setParameters([
+                'retailer' => $retailerProfile,
+                'factory'  => $factory,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Find user requests to factory for factory
      *
      * @param \Furniture\UserBundle\Entity\User $user
@@ -149,9 +172,9 @@ class FactoryRetailerRelationRepository
             ->andWhere('fur.retailerAccept = :retailer_accept')
             ->andWhere('fur.factoryAccept = :factory_accept')
             ->setParameters([
-                'user'           => $user,
-                'retailer_accept'    => $retailerAccept,
-                'factory_accept' => $factoryAccept,
+                'user'            => $user,
+                'retailer_accept' => $retailerAccept,
+                'factory_accept'  => $factoryAccept,
             ]);
     }
 
@@ -174,22 +197,9 @@ class FactoryRetailerRelationRepository
             ->andWhere('frr.retailerAccept = :retailer_accept')
             ->andWhere('frr.factoryAccept = :factory_accept')
             ->setParameters([
-                'retailer'       => $retailer->getId(),
-                'factory_accept' => $factoryAccept,
-                'retailer_accept'    => $retailerAccept,
+                'retailer'        => $retailer->getId(),
+                'factory_accept'  => $factoryAccept,
+                'retailer_accept' => $retailerAccept,
             ]);
-    }
-    
-    public function findRequestBetweenRetailerFactry( RetailerProfile $retailer, Factory $factory ){
-        return $this->em->createQueryBuilder()
-                ->from(FactoryRetailerRelation::class, 'frr')
-                ->select('frr')
-                ->andWhere('frr.factory = :factory')
-                ->andWhere('frr.retailer = :retailer')
-                ->setParameter('factory', $factory)
-                ->setParameter('retailer', $retailer)
-                ->getQuery()
-                ->getOneOrNullResult();
-                
     }
 }

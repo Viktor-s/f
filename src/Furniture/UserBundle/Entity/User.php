@@ -170,10 +170,12 @@ class User extends BaseUser
     {
         if($this->retailerUserProfile 
                 && $this->retailerUserProfile->getRetailerMode()
-                && $this->retailerUserProfile->getRetailerProfile())
+                && $this->retailerUserProfile->getRetailerProfile()
+        ) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**

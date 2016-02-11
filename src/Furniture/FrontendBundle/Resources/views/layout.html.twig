@@ -122,9 +122,12 @@
                 
                 <div class="content-push">
                     {% set breadcumb_content = block('breadcrumb') %}
-                    {% if breadcumb_content|trim|length > 0 %}
-                        <div class="breadcrumb-box">{{ breadcumb_content|raw }}</div>
-                    {% endif %}
+
+                    {% block breadcrumb_container %}
+                        {% if breadcumb_content|trim|length > 0 %}
+                            <div class="breadcrumb-box">{{ breadcumb_content|raw }}</div>
+                        {% endif %}
+                    {% endblock %}
 
                 {% block content %}{% endblock %}
 
