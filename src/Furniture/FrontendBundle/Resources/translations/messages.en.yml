@@ -39,7 +39,7 @@ frontend:
     contact: Contact
     content_user_profile: User profile
     create: Create
-    create_to_factory_relation: Relate to factory
+    create_to_factory_relation: Create request to factory
     create_to_retailer_relation: Relate to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
@@ -191,9 +191,9 @@ frontend:
     show: Show
     sku: SKU
     spaces: Spaces
-    specfications_finished_not_found_for_buyer: "Not found finished specification for buyer :buyer."
+    specfications_finished_not_found_for_buyer: "Not found finished specifications for client :buyer."
     specfications_not_found: Specifications not found.
-    specfications_opened_not_found_for_buyer: "Not found specifications for buyer :buyer."
+    specfications_opened_not_found_for_buyer: "Not found open specifications for client :buyer."
     specification_edit: Specification edit
     specifications: Specifications
     specficatior:
