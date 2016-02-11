@@ -162,7 +162,7 @@
 
             <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
                 <td colspan="8"></td>
-                <td colspan="2" id="extra-sale-td" nowrap>
+                <td colspan="2" id="extra-sale-td" nowrap style="text-align: left;">
                     {% set sales_count = specification.sales|length %}
                     {% if sales_count > 0 %}
                         {% for sale in specification.sales %}
