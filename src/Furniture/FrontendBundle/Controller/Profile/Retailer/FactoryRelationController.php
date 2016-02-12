@@ -112,11 +112,13 @@ class FactoryRelationController
         $factoryRequests = $this->factoryRetailerRelationRepository->findFactoryRequestsForRetailer($retailer);
         $requestsToFactories = $this->factoryRetailerRelationRepository->findRequestsToFactoriesForRetailer($retailer);
         $relations = $this->factoryRetailerRelationRepository->findAuthorizedForRetailer($retailer);
+        $hasFactoriesForRelate = $this->factoryRetailerRelationRepository->hasFactoriesForCreateRelationFromRetailerToFactory($retailer);
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRelation:relations.html.twig', [
-            'factory_requests'      => $factoryRequests,
-            'requests_to_factories' => $requestsToFactories,
-            'authorized_relations'  => $relations,
+            'factory_requests'         => $factoryRequests,
+            'requests_to_factories'    => $requestsToFactories,
+            'authorized_relations'     => $relations,
+            'has_factories_for_relate' => $hasFactoriesForRelate,
         ]);
 
         return new Response($content);

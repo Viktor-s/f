@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
@@ -179,6 +180,39 @@ class FactoryRetailerRelationRepository
     }
 
     /**
+     * Has factories for create relation between retailer and factory
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return bool
+     */
+    public function hasFactoriesForCreateRelationFromRetailerToFactory(RetailerProfile $retailer)
+    {
+        $existRelationQb = new QueryBuilder($this->em->getConnection());
+        $existRelationQb
+            ->select('frr.factory_id')
+            ->from('factory_user_relation', 'frr')
+            ->andWhere('frr.retailer_id = :retailer_id');
+
+        $qb = new QueryBuilder($this->em->getConnection());
+        $qb
+            ->select('1')
+            ->from('factory', 'f')
+            ->andWhere('f.enabled IS TRUE')
+            ->andWhere('f.id NOT IN (' . $existRelationQb->getSQL() . ')')
+            ->setParameter('retailer_id', $retailer->getId());
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+
+        if (count($result)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Create a query builder for user relations
      *
      * @param RetailerProfile $retailer
@@ -187,7 +221,7 @@ class FactoryRetailerRelationRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createQueryBuilderForRequestsForRetailer(RetailerProfile $retailer, $retailerAccept, $factoryAccept)
+    private function createQueryBuilderForRequestsForRetailer(RetailerProfile $retailer, $retailerAccept, $factoryAccept)
     {
         return $this->em->createQueryBuilder()
             ->from(FactoryRetailerRelation::class, 'frr')

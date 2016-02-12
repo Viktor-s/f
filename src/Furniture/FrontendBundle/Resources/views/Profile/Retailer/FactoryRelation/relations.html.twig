@@ -76,7 +76,11 @@
 
             <div role="tabpanel" class="tab-pane" id="to-user-requests">
                 <div class="pull-right">
-                    <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% if has_factories_for_relate %}
+                        <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% else %}
+                        <a href="#" class="btn btn-success btn-xs" onclick="return false;" data-toggle="tooltip" title="{{ 'frontend.no_factories_for_create_relation'|trans }}">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% endif %}
                 </div>
 
                 <table class="table">
