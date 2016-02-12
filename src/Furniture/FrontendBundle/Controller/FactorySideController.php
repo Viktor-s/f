@@ -318,7 +318,10 @@ class FactorySideController
         $this->checkFactoryForRetailer($factory);
 
         // Check active state for factory retailer relation.
-        if ($factoryRetailerRelation && $factoryRetailerRelation->isFactoryAccept()) {
+        if ($factoryRetailerRelation
+            && $factoryRetailerRelation->isFactoryAccept()
+            && $factoryRetailerRelation->isActive()
+        ) {
             $categories = $this->productCategoryRepository->findByFactory($factory->getId());
             $productTypes = array_map(function (Category $category) {
                 /** @var \Furniture\ProductBundle\Entity\CategoryTranslation $translate */

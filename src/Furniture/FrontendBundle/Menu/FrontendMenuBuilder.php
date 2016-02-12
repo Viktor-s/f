@@ -332,7 +332,10 @@ class FrontendMenuBuilder
 //        }
 
         // Check active state for factory retailer relation.
-        if ($factoryRetailerRelation && $factoryRetailerRelation->isFactoryAccept()) {
+        if ($factoryRetailerRelation
+            && $factoryRetailerRelation->isFactoryAccept()
+            && $factoryRetailerRelation->isActive()
+        ) {
             $menu->addChild('work_info', [
                 'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
                 'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
