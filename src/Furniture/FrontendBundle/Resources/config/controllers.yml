@@ -39,6 +39,7 @@ services:
         class: Furniture\FrontendBundle\Controller\SecurityController
         arguments:
             - @twig
+            - @security.token_storage
             - @doctrine.orm.default_entity_manager
             - @security.csrf.token_manager
             - @form.factory

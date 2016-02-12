@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -26,6 +28,11 @@ class SecurityController
      * @var EntityManagerInterface
      */
     private $em;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
 
     /**
      * @var CsrfTokenManagerInterface
@@ -71,6 +78,7 @@ class SecurityController
      * Construct
      *
      * @param \Twig_Environment         $twig
+     * @param TokenStorageInterface     $tokenStorage
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param FormFactoryInterface      $formFactory
      * @param UserRepository            $userRepository
@@ -81,6 +89,7 @@ class SecurityController
      */
     public function __construct(
         \Twig_Environment $twig,
+        TokenStorageInterface $tokenStorage,
         EntityManagerInterface $em,
         CsrfTokenManagerInterface $csrfTokenManager,
         FormFactoryInterface $formFactory,
@@ -92,6 +101,7 @@ class SecurityController
     )
     {
         $this->em = $em;
+        $this->tokenStorage = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->twig = $twig;
         $this->formFactory = $formFactory;
@@ -276,6 +286,9 @@ class SecurityController
                 $this->passwordUpdater->updatePassword($user);
 
                 $this->em->flush();
+
+                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                $this->tokenStorage->setToken($token);
 
                 // We should create a redirect response, because user can reload page and send repeatedly
                 // send data.
