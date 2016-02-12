@@ -168,14 +168,9 @@ class User extends BaseUser
      */
     public function isRetailer()
     {
-        if($this->retailerUserProfile 
-                && $this->retailerUserProfile->getRetailerMode()
-                && $this->retailerUserProfile->getRetailerProfile()
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->retailerUserProfile
+            && $this->retailerUserProfile->getRetailerMode()
+            && $this->retailerUserProfile->getRetailerProfile();
     }
 
     /**

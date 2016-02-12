@@ -58,7 +58,7 @@
                                                     <div class="material-entry" data-input-variant="{{ productPartMaterialVariant.id }}">
                                                         <div class="image">
                                                             {% if productPartMaterialVariant.image %}
-                                                                <img src="{{ productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
+                                                                <img data-src="{{ productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
                                                             {% else %}
                                                                 <img src="/img/100x100.png" alt="">
                                                             {% endif %}

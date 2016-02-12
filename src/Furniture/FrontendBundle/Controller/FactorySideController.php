@@ -308,15 +308,17 @@ class FactorySideController
     {
         $factory = $this->findFactory($factory);
         /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $factoryRetailerRelation = null;
         $activeUser = $this->tokenStorage->getToken()->getUser();
-        $retailerUserProfile = $activeUser->getRetailerUserProfile();
+        if ($activeUser->isRetailer()) {
+            $retailerUserProfile = $activeUser->getRetailerUserProfile();
+            $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
+        }
 
         $this->checkFactoryForRetailer($factory);
 
-        $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
-
         // Check active state for factory retailer relation.
-        if ($factoryRetailerRelation->isFactoryAccept()) {
+        if ($factoryRetailerRelation && $factoryRetailerRelation->isFactoryAccept()) {
             $categories = $this->productCategoryRepository->findByFactory($factory->getId());
             $productTypes = array_map(function (Category $category) {
                 /** @var \Furniture\ProductBundle\Entity\CategoryTranslation $translate */
