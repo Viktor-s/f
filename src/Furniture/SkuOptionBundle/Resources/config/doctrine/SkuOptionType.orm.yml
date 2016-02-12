@@ -2,6 +2,7 @@ Furniture\SkuOptionBundle\Entity\SkuOptionType:
     type: entity
     inheritanceType: SINGLE_TABLE
     table: furniture_product_option_type
+    repositoryClass: Furniture\SkuOptionBundle\Entity\Repository\SkuOptionTypeRepository
     id:
         id:
              type: integer
