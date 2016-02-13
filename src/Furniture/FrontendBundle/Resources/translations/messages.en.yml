@@ -173,7 +173,7 @@ frontend:
     remove: Remove
     goto_home: Go to home
     repeat_password: Repeat password
-    request_reset_password_successfully: "Succesfully request to reset password. Please check you mail."
+    request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
     retailer: Retailer
