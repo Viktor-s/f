@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Entity\Repository;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\NoResultException;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\Readiness;
@@ -64,32 +65,24 @@ class ProductRepository extends BaseProductRepositiry
      */
     public function hasSpecificationItems(Product $product)
     {
-        $variantIds = [];
-        /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-        foreach ($product->getAllVariants() as $variant) {
-            $variantIds[] = $variant->getId();
-        }
+        $qb = new QueryBuilder($this->_em->getConnection());
 
-        if (!count($variantIds)) {
-            return false;
-        }
-
-        $qb = $this->getQueryBuilder();
-
-        $query = $qb
-            ->from(SpecificationItem::class, 'si')
+        $qb
             ->select('1')
-            ->distinct()
-            ->innerJoin('si.productVariant', 'pv')
-            ->andWhere('pv.id IN (:identifiers)')
-            ->setParameter('identifiers', $variantIds)
-            ->getQuery();
+            ->from('specification_item', 'si')
+            ->innerJoin('si', 'sku_specification_item', 'ssi', 'ssi.speicifcation_item_id = si.id')
+            ->innerJoin('ssi', 'product_variant', 'pv', 'pv.id = ssi.product_id')
+            ->innerJoin('pv', 'product', 'p', 'pv.product_id = pv.id')
+            ->andWhere('p.id = :product_id')
+            ->setParameter('product_id', $product->getId())
+            ->setMaxResults(1);
 
-        try {
-            $result = $query->getSingleScalarResult();
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
 
-            return (bool)$result;
-        } catch (NoResultException $e) {
+        if ($result) {
+            return true;
+        } else {
             return false;
         }
     }

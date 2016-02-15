@@ -21,7 +21,12 @@
             {{ buttons.show(path('furniture_backend_product_pattern_modifier_index', {productId: product.id}), 'Modifiers') }}
             {{ buttons.edit(path('furniture_backend_product_pdp_config', {'id': product.id}), 'PDP') }}
             {{ buttons.edit(path('sylius_backend_product_update', {'id': product.id})) }}
-            {{ buttons.delete(path('sylius_backend_product_delete', {'id': product.id}), null, false, false) }}
+
+            {% if is_product_can_remove(product) %}
+                {{ buttons.delete(path('sylius_backend_product_delete', {'id': product.id})) }}
+            {% else %}
+                {{ buttons.delete(null, null, true) }}
+            {% endif %}
         {% else %}
             {{ buttons.patch(path('sylius_backend_product_delete_restore', {'id': product.id}), 'sylius.product.delete_restore', null, 'btn btn-primary') }}
         {% endif %}
