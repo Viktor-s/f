@@ -56,18 +56,20 @@
                                     <div class="swiper-container product-preview-swiper product-gallery" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
                                         <div class="swiper-wrapper">
                                             {% for image in product.images %}
+                                                {% if image.path %}
                                                 <div class="swiper-slide">
                                                     <div class="product-zoom-image">
-                                                        <img data-src="{{ image ? image.path|imagine_filter('s570x427') : '/img/200x200.png' }}" alt="{{ product.name }}" data-zoom="{{ image ? image.path : '/img/200x200.png' }}" />
+                                                        <img data-src="{{ image ? image.path|imagine_filter('s570x427') : '/img/200x200.png' }}" alt="{{ product.name }}" data-zoom="{{ image ? '/media/image/'+image.path : 'img/200x200.png' }}" />
                                                     </div>
                                                 </div>
+                                                {% endif %}
                                             {% endfor %}
                                         </div>
                                         <div class="pagination"></div>
                                         <div class="product-zoom-container">
                                             <div class="move-box">
-                                                <img class="default-image" data-src="{{ product.image ? product.image.path : 'http://placehold.it/200x200' }}" alt="" />
-                                                <img class="zoomed-image" data-src="{{ product.image ? product.image.path : 'http://placehold.it/200x200' }}" alt="" />
+                                                <img class="default-image" data-src="{{ product.image ?  '/media/image/'+product.image.path : 'http://placehold.it/200x200' }}" alt="" />
+                                                <img class="zoomed-image" data-src="{{ product.image ?  '/media/image/'+product.image.path : 'http://placehold.it/200x200' }}" alt="" />
                                             </div>
                                             <div class="zoom-area"></div>
                                         </div>
