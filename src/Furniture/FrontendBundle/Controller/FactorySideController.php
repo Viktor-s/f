@@ -59,11 +59,6 @@ class FactorySideController
     private $compositeCollectionRepository;
 
     /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -85,7 +80,6 @@ class FactorySideController
      * @param CompositeCollectionRepository     $compositeCollectionRepository
      * @param TokenStorageInterface             $tokenStorage
      * @param AuthorizationCheckerInterface     $authorizationChecker
-     * @param UrlGeneratorInterface             $urlGenerator
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -97,7 +91,6 @@ class FactorySideController
         CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        UrlGeneratorInterface $urlGenerator
     )
     {
         $this->twig = $twig;
@@ -109,7 +102,6 @@ class FactorySideController
         $this->compositeCollectionRepository = $compositeCollectionRepository;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**
