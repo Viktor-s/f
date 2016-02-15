@@ -4,7 +4,9 @@ namespace Furniture\ProductBundle\Twig;
 
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\ProductRemoval\AttributeRemovalChecker;
+use Furniture\ProductBundle\ProductRemoval\SkuOptionTypeRemovalChecker;
 use Furniture\ProductBundle\ProductRemoval\VariantRemovalChecker;
+use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Attribute;
 
 class ProductExtension extends \Twig_Extension
@@ -20,18 +22,26 @@ class ProductExtension extends \Twig_Extension
     private $attributeRemovalChecker;
 
     /**
+     * @var SkuOptionTypeRemovalChecker
+     */
+    private $skuOptionRemovalChecker;
+
+    /**
      * Construct
      *
      * @param VariantRemovalChecker $variantRemovalChecker
      * @param AttributeRemovalChecker $attributeRemovalChecker
+     * @param SkuOptionTypeRemovalChecker $skuOptionRemovalChecker
      */
     public function __construct(
         VariantRemovalChecker $variantRemovalChecker,
-        AttributeRemovalChecker $attributeRemovalChecker
+        AttributeRemovalChecker $attributeRemovalChecker,
+        SkuOptionTypeRemovalChecker $skuOptionRemovalChecker
     )
     {
         $this->variantRemovalChecker = $variantRemovalChecker;
         $this->attributeRemovalChecker = $attributeRemovalChecker;
+        $this->skuOptionRemovalChecker = $skuOptionRemovalChecker;
     }
 
     /**
@@ -42,8 +52,8 @@ class ProductExtension extends \Twig_Extension
         return [
             'is_product_variant_can_remove' => new \Twig_Function_Method($this, 'isProductVariantCanRemove'),
             'is_product_variant_can_hard_remove' => new \Twig_Function_Method($this, 'isProductVariantCanHardRemove'),
-
-            'is_product_attribute_can_remove' => new \Twig_Function_Method($this, 'isProductAttributeCanRemove')
+            'is_product_attribute_can_remove' => new \Twig_Function_Method($this, 'isProductAttributeCanRemove'),
+            'is_sku_option_can_remove' => new \Twig_Function_Method($this, 'isSkuOptionCanRemove'),
         ];
     }
 
@@ -81,6 +91,18 @@ class ProductExtension extends \Twig_Extension
     public function isProductAttributeCanRemove(Attribute $attribute)
     {
         return $this->attributeRemovalChecker->canRemove($attribute)->canRemove();
+    }
+
+    /**
+     * Is sku option can remove?
+     *
+     * @param SkuOptionType $skuOptionType
+     *
+     * @return \Furniture\ProductBundle\ProductRemoval\SkuOptionTypeRemoval
+     */
+    public function isSkuOptionCanRemove(SkuOptionType $skuOptionType)
+    {
+        return $this->skuOptionRemovalChecker->canRemove($skuOptionType)->canRemove();
     }
 
     /**

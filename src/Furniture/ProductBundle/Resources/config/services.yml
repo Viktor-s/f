@@ -75,6 +75,6 @@ services:
 
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
-        arguments: [ @product_variant.removal_checker, @product_attribute.removal_checker ]
+        arguments: [ @product_variant.removal_checker, @product_attribute.removal_checker, @sky_option.removal_checker ]
         tags:
             - { name: twig.extension }

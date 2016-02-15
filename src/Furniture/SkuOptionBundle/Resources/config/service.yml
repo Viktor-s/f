@@ -1,6 +1,0 @@
-services:
-    twig.extension.sku_option:
-        class: Furniture\SkuOptionBundle\Twig\SkuOptionExtension
-        arguments: [ @sky_option.removal_checker ]
-        tags:
-            - { name: twig.extension }
