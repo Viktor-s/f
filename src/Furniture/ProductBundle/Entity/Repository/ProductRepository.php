@@ -101,8 +101,8 @@ class ProductRepository extends BaseProductRepositiry
 
         if (!empty($criteria['name'])) {
             $queryBuilder
-                ->andWhere('translation.name LIKE :name')
-                ->setParameter('name', '%' . $criteria['name'] . '%');
+                ->andWhere('LOWER(translation.name) LIKE :name')
+                ->setParameter('name', '%' . mb_strtolower($criteria['name']) . '%');
         }
 
         if (!empty($criteria['factoryCode'])) {
