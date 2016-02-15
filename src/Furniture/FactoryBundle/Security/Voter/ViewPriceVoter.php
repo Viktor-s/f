@@ -43,11 +43,9 @@ class ViewPriceVoter extends AbstractVoter
         }
 
         // Search relation between factory and user
-        $retailerRelation = $object->getFactory()->getRetailerRelationByRetailer(
-                $user
-                ->getRetailerUserProfile()
-                ->getRetailerProfile()
-                );
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
+
+        $retailerRelation = $object->getFactory()->getRetailerRelationByRetailer($retailerProfile);
 
         $accessInDefaults = $factory->getDefaultRelation()->isAccessProductsPrices();
 
@@ -56,7 +54,7 @@ class ViewPriceVoter extends AbstractVoter
         }
 
         if ($retailerRelation) {
-            return $retailerRelation->isAccessProductsPrices();
+            return $retailerRelation->isActive() && $retailerRelation->isAccessProductsPrices();
         }
 
         return $accessInDefaults;

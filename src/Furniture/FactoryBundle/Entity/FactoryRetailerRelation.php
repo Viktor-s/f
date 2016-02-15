@@ -44,7 +44,7 @@ class FactoryRetailerRelation
     /**
      * @var bool
      */
-    private $active = false;
+    private $active = true;
 
     /**
      * @var bool
@@ -194,6 +194,16 @@ class FactoryRetailerRelation
     public function isActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Is not active relation?
+     *
+     * @return bool
+     */
+    public function isNotActive()
+    {
+        return !$this->isActive();
     }
 
     /**

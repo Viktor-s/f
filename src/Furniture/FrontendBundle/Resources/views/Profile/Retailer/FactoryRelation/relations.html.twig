@@ -142,7 +142,7 @@
 
                     <tbody>
                     {% for relation in authorized_relations %}
-                        <tr class="text-center">
+                        <tr class="text-center{% if not relation.active %} danger{% endif %}">
                             <td>{{ relation.factory.name }}</td>
 
                             <td>
@@ -158,11 +158,13 @@
                             </td>
 
                             <td>
-                                <a
-                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        data-remove data-message="Are you sure you want to remove a relation?"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                {% if relation.active %}
+                                    <a
+                                            href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                            class="btn btn-danger btn-xs"
+                                            data-remove data-message="Are you sure you want to remove a relation?"
+                                            >{{ 'frontend.remove'|trans }}</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
