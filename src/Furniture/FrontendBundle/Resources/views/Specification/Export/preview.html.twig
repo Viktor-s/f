@@ -225,7 +225,7 @@
                                     {% set nowSale = (price / 100) * sale.sale %}
                                     {% set price = price - nowSale %}
 
-                                    <td>{{ nowSale|money }}</td>
+                                    <td>-{{ nowSale|money }}</td>
                                 </tr>
                             {% endfor %}
 
