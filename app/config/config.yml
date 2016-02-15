@@ -360,6 +360,7 @@ sylius_resource:
         furniture.specification:
             driver: doctrine/orm
             classes:
+                controller: Furniture\SpecificationBundle\Controller\SpecificationController
                 model: Furniture\SpecificationBundle\Entity\Specification
 
         furniture.post:

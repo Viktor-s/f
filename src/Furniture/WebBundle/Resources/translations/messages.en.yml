@@ -152,6 +152,7 @@ specification:
         note: Note
         quantity: Quantity
         total_price: Total price
+        actions: Actions
 
     actions:
         delete: Delete

@@ -24,7 +24,9 @@
         </div>
 
         <div class="info-item">
-            <strong>{{ 'specification.table.user'|trans }}:</strong> {{ specification.creator.user.username }}
+            <strong>{{ 'specification.table.user'|trans }}:</strong>
+            {{ specification.creator.user.username }}
+            ({{ specification.creator.retailerProfile.name }})
         </div>
 
         <div class="info-item">
@@ -60,6 +62,7 @@
             <th>{{ 'specification.table.quantity'|trans }}</th>
             <th>{{ 'specification.table.price'|trans }}</th>
             <th>{{ 'specification.table.total_price'|trans }}</th>
+            <th>{{ 'specification.table.actions'|trans }}</th>
         </tr>
         </thead>
 
@@ -103,6 +106,12 @@
 
                 <td class="price">{{ specification_item.price|money }} EUR</td>
                 <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
+
+                <td>
+                    {% if sylius_is_granted('furniture.specification.delete') %}
+                        {{ buttons.delete(path('furniture_backend_specification_item_delete', {id: specification_item.id})) }}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

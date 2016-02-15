@@ -21,3 +21,9 @@ furniture_backend_specification_show:
         _controller: furniture.controller.specification:showAction
         _sylius:
             template: SyliusWebBundle:Backend/Specification:show.html.twig
+
+furniture_backend_specification_item_delete:
+    path: /item/{id}/delete
+    requirements: { id: \d+, itemId: \d+ }
+    defaults:
+        _controller: furniture.controller.specification:deleteItemAction

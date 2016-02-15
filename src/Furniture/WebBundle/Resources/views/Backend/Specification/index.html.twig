@@ -44,6 +44,7 @@
                 <td>{{ specification.name }}</td>
                 <td>{{ specification.countItems }}</td>
                 <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+
                 <td>
                     {{ buttons.delete(path('furniture_backend_specification_delete', {id: specification.id}), 'specification.actions.delete'|trans) }}
                     {{ buttons.show(path('furniture_backend_specification_show', {id: specification.id}), 'specification.actions.show'|trans) }}
