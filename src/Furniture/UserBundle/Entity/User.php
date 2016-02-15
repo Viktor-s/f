@@ -4,6 +4,7 @@ namespace Furniture\UserBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
+use Sylius\Component\User\Model\UserOAuth;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
@@ -65,6 +66,9 @@ class User extends BaseUser
     {
         $this->username = $username;
         $this->usernameCanonical = self::canonizeUsername($username);
+
+        // We should clear confirmation token, because email/username changed
+        $this->confirmationToken = null;
 
         return $this;
     }
@@ -270,6 +274,16 @@ class User extends BaseUser
     }
 
     /**
+     * Remove oauthAccount
+     *
+     * @param UserOAuth $oauthAccount
+     */
+    public function removeOauthAccount(UserOAuth $oauthAccount)
+    {
+        $this->oauthAccounts->removeElement($oauthAccount);
+    }
+
+    /**
      * Canonize username
      *
      * @param string $username
@@ -279,25 +293,5 @@ class User extends BaseUser
     public static function canonizeUsername($username)
     {
         return mb_strtolower($username, mb_detect_encoding($username));
-    }
-
-    /**
-     * Get needResetPassword
-     *
-     * @return boolean
-     */
-    public function getNeedResetPassword()
-    {
-        return $this->needResetPassword;
-    }
-
-    /**
-     * Remove oauthAccount
-     *
-     * @param \Sylius\Component\User\Model\UserOAuth $oauthAccount
-     */
-    public function removeOauthAccount(\Sylius\Component\User\Model\UserOAuth $oauthAccount)
-    {
-        $this->oauthAccounts->removeElement($oauthAccount);
     }
 }

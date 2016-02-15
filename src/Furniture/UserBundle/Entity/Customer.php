@@ -57,6 +57,11 @@ class Customer extends BaseCustomer
         $this->email = $email;
         $this->emailCanonical = self::canonizeEmail($email);
 
+        // We should clear confirmation token, if exist
+        if ($this->user) {
+            $this->user->setConfirmationToken(null);
+        }
+
         return $this;
     }
 
