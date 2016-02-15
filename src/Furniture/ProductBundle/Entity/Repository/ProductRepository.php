@@ -3,10 +3,7 @@
 namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\ORM\NoResultException;
 use Furniture\ProductBundle\Entity\Product;
-use Furniture\ProductBundle\Entity\Readiness;
-use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepositiry;
 
 class ProductRepository extends BaseProductRepositiry
