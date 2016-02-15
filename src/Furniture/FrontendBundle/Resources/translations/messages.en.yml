@@ -54,6 +54,9 @@ frontend:
     dumping: Extra discount
     edit: Edit
     email: Email
+    email_virify_success: "Your email successfully verified"
+    email_virify_success_login: "Your email was verified and you can login with your credentials."
+    email_virify_success_reset: "Or reset your password with form bellow."
     emails: Emails
     employee: Employee
     employees: Employees

@@ -183,6 +183,7 @@ services:
             - @form.factory
             - @sylius.user.password_updater
             - @router
+            - @user.email_verifier
 
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController

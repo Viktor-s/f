@@ -57,4 +57,22 @@ class UserRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * Find user by verifyEmailHash token
+     *
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function findByVerifyEmailHashToken($token)
+    {
+        return $this->em->createQueryBuilder()
+            ->from(User::class, 'u')
+            ->select('u')
+            ->andWhere('u.verifyEmailHash = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

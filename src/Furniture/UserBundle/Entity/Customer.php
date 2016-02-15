@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(
  *     fields={"emailCanonical"},
- *     groups={"Default", "Create", "Update"},
+ *     groups={"Default", "Create", "Update", "RetailerProfileCreate"},
  *     errorPath="email"
  * )
  */
@@ -19,22 +19,22 @@ class Customer extends BaseCustomer
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Create", "Update"})
-     * @Assert\Email(strict=true, groups={"Create", "Update"})
+     * @Assert\NotBlank(groups={"Create", "Update", "RetailerProfileCreate"})
+     * @Assert\Email(strict=true, groups={"Create", "Update", "RetailerProfileCreate"})
      */
     protected $email;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Create", "Update"})
+     * @Assert\NotBlank(groups={"Create", "Update", "RetailerProfileCreate"})
      */
     protected $firstName;
 
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Create", "Update"})
+     * @Assert\NotBlank(groups={"Create", "Update", "RetailerProfileCreate"})
      */
     protected $gender = CustomerInterface::UNKNOWN_GENDER;
 
