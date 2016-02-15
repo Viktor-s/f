@@ -16,3 +16,8 @@ services:
         class: Furniture\FactoryBundle\Security\Voter\ViewProductsVoter
         tags:
             - { name: security.voter }
+
+    factory.security.voter.view_factory:
+        class: Furniture\FactoryBundle\Security\Voter\ViewFactoryVoter
+        tags:
+            - { name: security.voter }

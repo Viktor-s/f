@@ -307,6 +307,7 @@ class FactorySideController
     public function workInfo($factory)
     {
         $factory = $this->findFactory($factory);
+
         /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $factoryRetailerRelation = null;
         $activeUser = $this->tokenStorage->getToken()->getUser();
@@ -318,29 +319,27 @@ class FactorySideController
         $this->checkFactoryForRetailer($factory);
 
         // Check active state for factory retailer relation.
-        if ($factoryRetailerRelation
-            && $factoryRetailerRelation->isFactoryAccept()
-            && $factoryRetailerRelation->isActive()
-        ) {
-            $categories = $this->productCategoryRepository->findByFactory($factory->getId());
-            $productTypes = array_map(function (Category $category) {
-                /** @var \Furniture\ProductBundle\Entity\CategoryTranslation $translate */
-                $translate = $category->translate();
-
-                return $translate->getName();
-            }, $categories);
-
-            $product_types = implode(', ', $productTypes);
-        } else {
-            // Factory not accept this retailer. Redirect user to factory page.
-            $url = $this->urlGenerator->generate('factory_side_general', ['factory' => $factory->getId()]);
-
-            return new RedirectResponse($url);
+        if (!$this->authorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+                ));
         }
+
+        $categories = $this->productCategoryRepository->findByFactory($factory->getId());
+        $categoriesMap = array_map(function (Category $category) {
+            /** @var \Furniture\ProductBundle\Entity\CategoryTranslation $translate */
+            $translate = $category->translate();
+
+            return $translate->getName();
+        }, $categories);
+
+        $productTypes = implode(', ', $categoriesMap);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:work_info.html.twig', [
             'factory'                   => $factory,
-            'product_types'             => $product_types,
+            'product_types'             => $productTypes,
             'retailer_data'             => $factoryRetailerRelation,
             'factory_retailer_relation' => $this->findFactoryRetailerRelation($factory),
         ]);
