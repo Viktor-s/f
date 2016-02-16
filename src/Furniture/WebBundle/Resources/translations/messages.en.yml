@@ -148,6 +148,7 @@ specification:
         actions: Actions
         factory: Factory
         product: Product
+        products: Products
         options: Options
         note: Note
         quantity: Quantity

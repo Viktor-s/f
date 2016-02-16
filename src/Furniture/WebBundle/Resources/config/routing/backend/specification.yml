@@ -4,6 +4,9 @@ furniture_backend_specification:
         _controller: furniture.controller.specification:indexAction
         _sylius:
             template: SyliusWebBundle:Backend/Specification:index.html.twig
+            repository:
+                method: createFilterPaginator
+                arguments: [$criteria]
 
 furniture_backend_specification_delete:
     path: /{id}/delete
