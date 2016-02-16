@@ -88,8 +88,7 @@ class EmployeeController
         PasswordUpdater $passwordUpdater,
         UrlGeneratorInterface $urlGenerator,
         EmailVerifier $emailVerifier
-    )
-    {
+    ) {
         $this->twig = $twig;
         $this->retailerEmployeeRepository = $retailerEmployeeRepository;
         $this->em = $em;
@@ -120,9 +119,12 @@ class EmployeeController
 
         $employees = $this->retailerEmployeeRepository->findForRetailer($retailerProfile);
 
-        $content = $this->twig->render('FrontendBundle:Profile/Retailer/Employee:list.html.twig', [
-            'employees' => $employees
-        ]);
+        $content = $this->twig->render(
+            'FrontendBundle:Profile/Retailer/Employee:list.html.twig',
+            [
+                'employees' => $employees,
+            ]
+        );
 
         return new Response($content);
     }
@@ -146,27 +148,34 @@ class EmployeeController
             $employee = $this->retailerEmployeeRepository->find($employeeId = $employee);
 
             if (!$employee) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found employee with id "%s".',
-                    $employeeId
-                ));
+                throw new NotFoundHttpException(
+                    sprintf(
+                        'Not found employee with id "%s".',
+                        $employeeId
+                    )
+                );
             }
 
             if (!$this->authorizationChecker->isGranted('RETAILER_EMPLOYEE_EDIT', $employee)) {
-                throw new AccessDeniedException(sprintf(
-                    'The active user "%s" not have rights for edit employee "%s".',
-                    $user->getUsername(),
-                    $employee->getUsername()
-                ));
+                throw new AccessDeniedException(
+                    sprintf(
+                        'The active user "%s" not have rights for edit employee "%s".',
+                        $user->getUsername(),
+                        $employee->getUsername()
+                    )
+                );
             }
-        } else {
+        }
+        else {
             if (!$this->authorizationChecker->isGranted('RETAILER_EMPLOYEE_CREATE')) {
-                throw new AccessDeniedException(sprintf(
-                    'The active user "%s" not have rights for create employee.',
-                    $user->getUsername()
-                ));
+                throw new AccessDeniedException(
+                    sprintf(
+                        'The active user "%s" not have rights for create employee.',
+                        $user->getUsername()
+                    )
+                );
             }
-            
+
             $employee = new User();
             $retailerUserProfile = new RetailerUserProfile();
             $retailerUserProfile->setRetailerProfile($user->getRetailerUserProfile()->getRetailerProfile());
@@ -197,10 +206,13 @@ class EmployeeController
             return new RedirectResponse($url);
         }
 
-        $content = $this->twig->render('FrontendBundle:Profile/Retailer/Employee:edit.html.twig', [
-            'employee' => $employee,
-            'form' => $form->createView()
-        ]);
+        $content = $this->twig->render(
+            'FrontendBundle:Profile/Retailer/Employee:edit.html.twig',
+            [
+                'employee' => $employee,
+                'form'     => $form->createView(),
+            ]
+        );
 
         return new Response($content);
     }
@@ -217,18 +229,22 @@ class EmployeeController
         $employee = $this->retailerEmployeeRepository->find($employeeId = $employee);
 
         if (!$employee) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found employee with id "%s".',
-                $employeeId
-            ));
+            throw new NotFoundHttpException(
+                sprintf(
+                    'Not found employee with id "%s".',
+                    $employeeId
+                )
+            );
         }
 
         if (!$this->authorizationChecker->isGranted('RETAILER_EMPLOYEE_REMOVE', $employee)) {
-            throw new AccessDeniedException(sprintf(
-                'The active user "%s" not have rights for remove employee "%s".',
-                $this->tokenStorage->getToken()->getUsername(),
-                $employee->getUsername()
-            ));
+            throw new AccessDeniedException(
+                sprintf(
+                    'The active user "%s" not have rights for remove employee "%s".',
+                    $this->tokenStorage->getToken()->getUsername(),
+                    $employee->getUsername()
+                )
+            );
         }
         $employee->setEnabled(false);
         //$this->em->remove($employee);

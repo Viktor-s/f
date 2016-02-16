@@ -34,18 +34,21 @@ class RetailerEmployeeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'validation_groups' => function (Form $form) {
-                $user = $form->getData();
+        $resolver->setDefaults(
+            [
+                'data_class'        => User::class,
+                'validation_groups' => function (Form $form) {
+                    $user = $form->getData();
 
-                if ($user->getId()) {
-                    return ['Update', 'RetailerProfileUpdate'];
-                } else {
-                    return ['RetailerProfileCreate'];
-                }
-            }
-        ]);
+                    if ($user->getId()) {
+                        return ['Update', 'RetailerProfileUpdate'];
+                    }
+                    else {
+                        return ['RetailerProfileCreate'];
+                    }
+                },
+            ]
+        );
     }
 
     /**
@@ -65,15 +68,20 @@ class RetailerEmployeeType extends AbstractType
             }
         }
 
-        $passwordRequired = (bool) !$employee->getId();
-        
+        $passwordRequired = (bool)!$employee->getId();
+
         $builder
-            ->add('enabled', 'checkbox', [
-                'label' => 'frontend.enabled',
-                'required' => false
-            ])
+            ->add(
+                'enabled',
+                'checkbox',
+                [
+                    'label'    => 'frontend.enabled',
+                    'required' => false,
+                ]
+            )
             ->add('customer', 'retailer_employee_customer')
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
+
         if ($employee->getId()) {
             $builder->get('customer')->get('email')->setDisabled(true);
             $builder->get('customer')->get('lastName')->setDisabled(true);

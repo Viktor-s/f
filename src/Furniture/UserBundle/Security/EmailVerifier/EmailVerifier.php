@@ -22,7 +22,7 @@ class EmailVerifier
      * Construct
      *
      * @param EntityManagerInterface $em
-     * @param Mailer $mailer
+     * @param Mailer                 $mailer
      */
     public function __construct(EntityManagerInterface $em, Mailer $mailer)
     {
@@ -33,7 +33,7 @@ class EmailVerifier
     /**
      * Send verify email link to user.
      *
-     * @param User $user
+     * @param User      $user
      * @param bool|true $update
      *
      * @return User
@@ -46,10 +46,16 @@ class EmailVerifier
         $name = $user->getCustomer()->getFullName();
         $parameters = [
             'username' => $name,
-            'token' => $verifyToken
+            'token'    => $verifyToken,
         ];
 
-        $this->mailer->send($email, 'Verify your email', 'UserBundle:Mail:verify_email_request.html.twig', $parameters, $name);
+        $this->mailer->send($email,
+            'Verify your email',
+            'UserBundle:Mail:verify_email_request.html.twig',
+            $parameters,
+            $name
+        );
+
         if ($update) {
             $this->em->flush($user);
         }
