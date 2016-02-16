@@ -171,20 +171,10 @@ $(function() {
 				},
 				onSlideChangeStart: function(swiper){
 					var activeIndex = (loopVar===true)?swiper.activeIndex:swiper.activeLoopIndex;
-					if($t.hasClass('product-preview-swiper')){
-						swipers['swiper-'+$t.parent().find('.product-thumbnails-swiper').attr('id')].swipeTo(activeIndex);
-						$t.parent().find('.product-thumbnails-swiper .swiper-slide.selected').removeClass('selected');
-						$t.parent().find('.product-thumbnails-swiper .swiper-slide').eq(activeIndex).addClass('selected');
-					}
-					else $t.find('.swiper-slide.active').removeClass('active');
+					$t.find('.swiper-slide.active').removeClass('active');
 				},
 				onSlideClick: function(swiper){
-					if($t.hasClass('product-preview-swiper')){
-						$t.find('.default-image').attr('src', $t.find('.swiper-slide-active img').attr('src'));
-						$t.find('.zoomed-image').attr('src', $t.find('.swiper-slide-active img').data('zoom'));
-						$t.find('.product-zoom-container').addClass('visible').animate({'opacity':'1'});
-					}
-					else if($t.hasClass('product-thumbnails-swiper')){
+					if($t.hasClass('product-thumbnails-swiper')){
 						swipers['swiper-'+$t.parent().parent().find('.product-preview-swiper').attr('id')].swipeTo(swiper.clickedSlideIndex);
 						$t.find('.active').removeClass('active');
 						$(swiper.clickedSlide).addClass('active');
@@ -433,44 +423,6 @@ $(function() {
     $('.menu-slider-arrows .right').on('click', function(){
     	rightClick('.menu-slider-entry', $(this));
     });
-
-    //product page - zooming image
-    //var imageObject = {};
-    //$('.product-zoom-container').on('mouseover', function(e){
-    //	var $t = $(this);
-    //	imageObject.thisW = $t.width();
-    //	imageObject.thisH = $t.height();
-    //	imageObject.zoomW = $t.find('.zoom-area').outerWidth();
-    //	imageObject.zoomH = $t.find('.zoom-area').outerHeight();
-    //	imageObject.thisOf = $t.offset();
-    //	zoomMousemove($(this), e);
-    //});
-    //
-    //function zoomMousemove(foo, e){
-    //	var $t = foo,
-    //		x = e.pageX - imageObject.thisOf.left,
-    //		y = e.pageY - imageObject.thisOf.top,
-    //		zoomX = x - imageObject.zoomW*0.5,
-    //		zoomY = y - imageObject.zoomH*0.5;
-    //	if(zoomX<0) zoomX = 0;
-    //	else if(zoomX+imageObject.zoomW>imageObject.thisW) zoomX = imageObject.thisW - imageObject.zoomW;
-    //	if(zoomY<0) zoomY = 0;
-    //	else if(zoomY+imageObject.zoomH>imageObject.thisH) zoomY = imageObject.thisH - imageObject.zoomH;
-    //	$t.find('.move-box').css({'left':x*(-2), 'top':y*(-2)});
-    //	$t.find('.zoom-area').css({'left':zoomX, 'top':zoomY});
-    //}
-    //
-    //$('.product-zoom-container').on('mousemove', function(e){
-    //	zoomMousemove($(this), e);
-    //});
-    //
-    //$('.product-zoom-container').on('click', function(){
-    //	$(this).animate({'opacity':'0'}, function(){$(this).removeClass('visible');});
-    //});
-    //
-    //$('.product-zoom-container').on('mouseleave', function(){
-    //	$(this).click();
-    //});
 
     //product page - selecting size, quantity, color
     $('.size-selector .entry').on('click', function(){
