@@ -799,7 +799,7 @@ footer{position: relative;}
 .product-slide-entry .title:hover{color: #03b4ea;}
 .rating-box{color: #f5c10c; font-size: 14px; line-height: 14px; margin-bottom: 10px;}
 .rating-box .star{display: inline-block;}
-.price{font-size: 15px; line-height: 15px; padding-bottom: 5px;}
+.price{font-size: 15px; height: 15px; line-height: 15px; padding-bottom: 5px;}
 .price .prev{color: #989898; text-decoration: line-through; display: inline-block;}
 .price .current{color: #da75cb; display: inline-block; font-size: 18px; font-weight: 600;}
 @media (min-width: 768px){
