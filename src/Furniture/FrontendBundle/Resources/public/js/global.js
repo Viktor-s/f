@@ -158,7 +158,7 @@ $(function() {
 				autoplay: autoPlayVar,
 				slidesPerView: slidesPerViewVar,
 				keyboardControl: true,
-				calculateHeight: true, 
+				calculateHeight: true,
 				simulateTouch: simVar,
 				centeredSlides: centerVar,
 				roundLengths: true,
@@ -175,7 +175,6 @@ $(function() {
 				},
 				onSlideClick: function(swiper){
 					if($t.hasClass('product-thumbnails-swiper')){
-						swipers['swiper-'+$t.parent().parent().find('.product-preview-swiper').attr('id')].swipeTo(swiper.clickedSlideIndex);
 						$t.find('.active').removeClass('active');
 						$(swiper.clickedSlide).addClass('active');
 					}

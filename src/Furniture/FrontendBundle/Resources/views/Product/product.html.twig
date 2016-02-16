@@ -52,8 +52,8 @@
                     <div>
                         <div class="tabs-entry">
                             {% if product.images|length > 0 %}
-                            <div class="gallery-wrapper">
-                                <div class="gallery">
+                            <div class="product-gallery-wrapper">
+                                <div class="product-gallery">
                                     <div class="zoom-wapper">
                                         <img id="gallery-zoom"
                                              src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
@@ -71,9 +71,8 @@
                                                             <a href="#" class="gallery-image"
                                                                data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
                                                                data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
-                                                                <img data-src="{{ image ? image.path|imagine_filter('sylius_small') : 'img/200x200.png' }}"
-                                                                     alt="{{ product.name }}"
-                                                                     width="100" />
+                                                                <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                                     alt="{{ product.name }}" />
                                                             </a>
                                                         </div>
                                                     </div>
@@ -198,8 +197,9 @@
     <script>
         $(document).ready(function () {
             var zoomEnabled = false;
+
             // Init elevate zoom.
-            $("#gallery-zoom").elevateZoom({
+            $("#gallery-zoom").ezPlus({
                 gallery:'product-gallery',
                 cursor: 'pointer',
                 galleryActiveClass: "active ",
@@ -207,17 +207,12 @@
                 zoomLevel: 1,
                 zoomEnabled: zoomEnabled,
                 zoomType: "lens",
-                constrainType: "width"
+                zoomWrapperHeight: false
             });
-
-            // Hide zoomContainer
-            if (!zoomEnabled) {
-                $($('#gallery-zoom').data('elevateZoom').getZoomContainer()).css({display: 'none'});
-            }
 
             // Init fancybox on gallery click.
             $("body").on("click", "#gallery-zoom, .zoomContainer", function(e) {
-                var ez = $('#gallery-zoom').data('elevateZoom');
+                var ez = $('#gallery-zoom').data('ezPlus');
                 ez.closeAll(); //NEW: This function force hides the lens, tint and window
                 $.fancybox(ez.getGalleryList());
 
