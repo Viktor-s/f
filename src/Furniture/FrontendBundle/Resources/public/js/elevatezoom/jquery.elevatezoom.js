@@ -155,8 +155,7 @@ if (typeof Object.create !== 'function') {
 
 			//CrossFade Wrapper
 			if (self.options.imageCrossfade) {
-				self.zoomWrap = self.$elem.wrap('<div style="height:' + (self.options.zoomWrapperHeight || self.nzHeight) + 'px;width:' + (self.options.zoomWrapperWidth || self.nzWidth) + 'px;" class="zoomWrapper" />').parent();
-				console.log(self.zoomWrap);
+				self.zoomWrap = self.$elem.wrap('<div style="height:' + (self.options.zoomWrapperHeight || self.nzHeight) + 'px;width:' + (self.options.zoomWrapperWidth || self.nzWidth) + 'px;" class="zoomWrapper" />').parent();`
 				self.$elem.css('position', 'absolute');
 			}
 
