@@ -1802,7 +1802,6 @@ body.style-10 .product-slide-entry .subtitle:hover{color: #ca1515;}
 /* 15 - PRODUCTS DETAIL BOX */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /** Product Gallery*/
-.zoomContainer {display: none;}
 .gallery-wrapper {max-width: 570px;}
 .gallery-wrapper .zoom-wapper {margin-bottom: 30px; overflow: hidden;}
 .gallery-wrapper .zoomWrapper {width:100%!important;}

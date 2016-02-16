@@ -1283,8 +1283,8 @@ if ( typeof Object.create !== 'function' ) {
 					}
 
 					if(self.options.imageCrossfade){
-						self.zoomWrap.css("height", self.$elem.height());
-						self.zoomWrap.css("width", self.$elem.width());
+						//self.zoomWrap.css("height", self.$elem.height());
+						//self.zoomWrap.css("width", self.$elem.width());
 					}
 				}
 				else{
@@ -1302,8 +1302,8 @@ if ( typeof Object.create !== 'function' ) {
 					self.zoomContainer.css("width", self.$elem.width());
 
 					if(self.options.imageCrossfade){
-						self.zoomWrap.css("height", self.$elem.height());
-						self.zoomWrap.css("width", self.$elem.width());
+						//self.zoomWrap.css("height", self.$elem.height());
+						//self.zoomWrap.css("width", self.$elem.width());
 					} 
 				}              
 				if(self.options.constrainType){
@@ -1429,7 +1429,11 @@ if ( typeof Object.create !== 'function' ) {
 			getCurrentImage: function(){
 				var self = this;  
 				return self.zoomImage; 
-			}, 
+			},
+			getZoomContainer: function() {
+				var self = this;
+				return self.zoomContainer;
+			},
 			getGalleryList: function(){
 				var self = this;   
 				//loop through the gallery options and set them in list for fancybox

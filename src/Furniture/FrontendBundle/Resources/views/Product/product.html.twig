@@ -196,14 +196,9 @@
 {% block footer_javascripts %}
     {{ parent() }}
     <script>
-//        $('#zoom_01').elevateZoom({
-//            zoomType: "inner",
-//            cursor: "crosshair",
-//            zoomWindowFadeIn: 500,
-//            zoomWindowFadeOut: 750
-//        });
         $(document).ready(function () {
             var zoomEnabled = false;
+            // Init elevate zoom.
             $("#gallery-zoom").elevateZoom({
                 gallery:'product-gallery',
                 cursor: 'pointer',
@@ -211,17 +206,28 @@
                 imageCrossfade: true,
                 zoomLevel: 1,
                 zoomEnabled: zoomEnabled,
+                zoomType: "lens",
+                constrainType: "width"
             });
+            // Get elevate zoom data.
+            var ez = $('#gallery-zoom').data('elevateZoom');
 
-            $(window).resize(function() {
-                $.fancybox.update();
-            });
+            // Hide zoomContainer
+            if (!zoomEnabled) {
+                $($ez.getZoomContainer()).css({display: 'none'});
+            }
 
+            // Init fancybox on gallery click.
             $("body").on("click", "#gallery-zoom, .zoomContainer", function(e) {
-                var ez = $('#gallery-zoom').data('elevateZoom');
                 ez.closeAll(); //NEW: This function force hides the lens, tint and window
                 $.fancybox(ez.getGalleryList());
+
                 return false;
+            });
+
+            // Update fancybox on window resize.
+            $(window).resize(function() {
+                $.fancybox.update();
             });
         });
     </script>
