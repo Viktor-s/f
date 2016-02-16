@@ -56,7 +56,7 @@
                                 <div class="gallery">
                                     <div class="zoom-wapper">
                                         <img id="gallery-zoom"
-                                             data-src="{{ product.images|first ? product.images|first.path|imagine_filter('s570x427') : '/img/200x200.png' }}"
+                                             data-src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
                                              alt="{{ product.name }}"
                                              data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
                                     </div>
@@ -69,9 +69,9 @@
                                                     <div class="swiper-slide">
                                                         <div class="paddings-container">
                                                             <a href="#" class="gallery-image"
-                                                               data-image="{{ image.path|imagine_filter('s570x427') }}"
+                                                               data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
                                                                data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
-                                                                <img data-src="{{ image.path|imagine_filter('sylius_small') }}"
+                                                                <img data-src="{{ image ? image.path|imagine_filter('sylius_small') : 'img/200x200.png' }}"
                                                                      alt="{{ product.name }}"
                                                                      width="100" />
                                                             </a>
