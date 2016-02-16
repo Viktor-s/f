@@ -56,7 +56,7 @@
                                 <div class="gallery">
                                     <div class="zoom-wapper">
                                         <img id="gallery-zoom"
-                                             data-src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
+                                             src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
                                              alt="{{ product.name }}"
                                              data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
                                     </div>
@@ -209,16 +209,15 @@
                 zoomType: "lens",
                 constrainType: "width"
             });
-            // Get elevate zoom data.
-            var ez = $('#gallery-zoom').data('elevateZoom');
 
             // Hide zoomContainer
             if (!zoomEnabled) {
-                $($ez.getZoomContainer()).css({display: 'none'});
+                $($('#gallery-zoom').data('elevateZoom').getZoomContainer()).css({display: 'none'});
             }
 
             // Init fancybox on gallery click.
             $("body").on("click", "#gallery-zoom, .zoomContainer", function(e) {
+                var ez = $('#gallery-zoom').data('elevateZoom');
                 ez.closeAll(); //NEW: This function force hides the lens, tint and window
                 $.fancybox(ez.getGalleryList());
 
