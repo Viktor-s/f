@@ -1,14 +1,35 @@
 {% spaceless %}
-    <div class="footer-bottom-navigation">
-        <div class="cell-view">
-            <div class="footer-links">
-                {{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}
+{#<div class="footer-bottom-navigation">#}
+    {#<div class="cell-view">#}
+        {#<div class="footer-links">#}
+            {#{{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}#}
+        {#</div>#}
+
+        {#<div class="copyright">#}
+            {#Created by <a href="#">{{ 'frontend.agenta_solution'|trans }}</a>.#}
+            {#{{ 'frontend.all_right_reserved'|trans }}#}
+        {#</div>#}
+    {#</div>#}
+{#</div>#}
+
+<div class="footer-wrapper">
+    <footer class="type-1">
+        <div class="footer-logo-wr">
+            <img src="{{ asset('bundles/frontend/img/footer-logo.png') }}" alt="" class="footer-logo" />
+        </div>
+
+            <div class="footer-bottom-navigation">
+                <div class="cell-view">
+                    <div class="footer-links">
+                        {{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}
+                    </div>
+                </div>
             </div>
 
             <div class="copyright">
-                Created by <a href="#">{{ 'frontend.agenta_solution'|trans }}</a>.
+                &#169 <a href="#">AgentA Solution</a>.
                 {{ 'frontend.all_right_reserved'|trans }}
             </div>
-        </div>
-    </div>
+    </footer>
+</div>
 {% endspaceless %}

@@ -92,7 +92,8 @@ class FrontendMenuBuilder
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createReatilerHeaderMenu() {
+    public function createReatilerHeaderMenu()
+    {
         $menu = $this->factory->createItem('root');
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
@@ -101,10 +102,9 @@ class FrontendMenuBuilder
             return $menu;
         }
 
-        $menu
-                ->addChild('home', [
-                    'route' => 'homepage',
-                    'label' => $this->translator->trans('frontend.menu_items.header.homepage')
+        $menu->addChild('home', [
+            'route' => 'homepage',
+            'label' => $this->translator->trans('frontend.menu_items.header.homepage')
         ]);
 
         $menu->addChild('factories', [
@@ -112,7 +112,7 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.menu_items.header.factories')
         ]);
 
-        $products = $menu->addChild('products', [
+        $menu->addChild('products', [
             'uri' => $this->urlGenerator->generate('products', []),
             'label' => $this->translator->trans('frontend.menu_items.header.products')
         ]);
@@ -131,18 +131,23 @@ class FrontendMenuBuilder
             case 'homepage':
                 $menu->getChild('home')->setCurrent('true');
                 break;
+
             case 'factory_side_list':
                 $menu->getChild('factories')->setCurrent('true');
                 break;
+
             case 'catalog':
                 $menu->getChild('products')->setCurrent('true');
                 break;
+
             case 'products':
                 $menu->getChild('products')->setCurrent('true');
                 break;
+
             case 'specifications':
                 $menu->getChild('specifications')->setCurrent('true');
                 break;
+
             case 'specification_buyers':
                 $menu->getChild('buyers')->setCurrent('true');
                 break;
