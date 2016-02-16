@@ -16,6 +16,14 @@ class ProductController extends BaseProductController
     /**
      * {@inheritDoc}
      */
+    public function showAction(Request $request)
+    {
+        return parent::showAction($request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function createAction(Request $request)
     {
         $this->isGrantedOr403('create');

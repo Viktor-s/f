@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\UserBundle\Entity\User;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\FrontendBundle\Repository\RetailerEmployeeRepository;
+use Furniture\UserBundle\Security\EmailVerifier\EmailVerifier;
 use Sylius\Component\User\Security\PasswordUpdater;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -61,6 +62,11 @@ class EmployeeController
     private $urlGenerator;
 
     /**
+     * @var EmailVerifier
+     */
+    private $emailVerifier;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment             $twig
@@ -80,7 +86,8 @@ class EmployeeController
         AuthorizationCheckerInterface $authorizationChecker,
         FormFactoryInterface $formFactory,
         PasswordUpdater $passwordUpdater,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        EmailVerifier $emailVerifier
     )
     {
         $this->twig = $twig;
@@ -91,6 +98,7 @@ class EmployeeController
         $this->formFactory = $formFactory;
         $this->passwordUpdater = $passwordUpdater;
         $this->urlGenerator = $urlGenerator;
+        $this->emailVerifier = $emailVerifier;
     }
 
     /**
@@ -176,9 +184,14 @@ class EmployeeController
                 $this->passwordUpdater->updatePassword($employee);
             }
 
+            if (!$employee->getId()) {
+                $pass = md5(uniqid(mt_rand(), true));
+                $employee->setPlainPassword($pass);
+                // Verify email action for created users.
+                $this->emailVerifier->verifyEmail($employee, false);
+            }
             $this->em->persist($employee);
             $this->em->flush();
-
             $url = $this->urlGenerator->generate('retailer_profile_employees');
 
             return new RedirectResponse($url);

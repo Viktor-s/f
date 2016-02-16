@@ -12,7 +12,7 @@ use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 /**
  * @UniqueEntity(
  *     fields={"usernameCanonical"},
- *     groups={"Default", "Create", "Update"},
+ *     groups={"Default", "Create", "Update", "RetailerProfileCreate"},
  *     errorPath="username"
  * )
  */
@@ -46,6 +46,11 @@ class User extends BaseUser
      * @var bool
      */
     protected $needResetPassword = false;
+
+    /**
+     * @var string
+     */
+    protected $verifyEmailHash;
 
     /**
      * Construct
@@ -269,6 +274,32 @@ class User extends BaseUser
         $this->confirmationToken = null;
         $this->passwordRequestedAt = null;
         $this->needResetPassword = false;
+
+        return $this;
+    }
+
+    /**
+     * Request for verify email
+     *
+     * @return string
+     */
+    public function requestForVerifyEmail()
+    {
+        $this->verifyEmailHash = md5(
+            uniqid($this->getEmail() . microtime(true) . mt_rand(1, 100), true)
+        );
+
+        return $this->verifyEmailHash;
+    }
+
+    /**
+     * Verify email.
+     *
+     * @return User
+     */
+    public function resetVerifyEmailHash()
+    {
+        $this->verifyEmailHash = null;
 
         return $this;
     }

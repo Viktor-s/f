@@ -14,6 +14,7 @@ Furniture\SpecificationBundle\Entity\SpecificationItem:
             targetEntity: Furniture\SpecificationBundle\Entity\SkuSpecificationItem
             mappedBy: specificationItem
             cascade: [ persist ]
+
         customItem:
             targetEntity: Furniture\SpecificationBundle\Entity\CustomSpecificationItem
             mappedBy: specificationItem

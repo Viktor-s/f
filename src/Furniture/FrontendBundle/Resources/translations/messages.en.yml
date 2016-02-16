@@ -54,6 +54,9 @@ frontend:
     dumping: Extra discount
     edit: Edit
     email: Email
+    email_virify_success: "Your email successfully verified"
+    email_virify_success_login: "Your email was verified and you can login with your credentials."
+    email_virify_success_reset: "Or reset your password with form bellow."
     emails: Emails
     employee: Employee
     employees: Employees
@@ -171,7 +174,7 @@ frontend:
     quantity: Quantity
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     remove: Remove
-    goto_home: Go to home
+    goto_home: Return to home
     repeat_password: Repeat password
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password

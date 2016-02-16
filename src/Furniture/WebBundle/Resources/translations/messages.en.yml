@@ -137,6 +137,7 @@ specification:
 
     table:
         id: Id
+        creator: Creator
         user: User
         buyer: Buyer
         name: Name
@@ -146,10 +147,12 @@ specification:
         price: Price
         actions: Actions
         factory: Factory
+        product: Product
         options: Options
         note: Note
         quantity: Quantity
         total_price: Total price
+        actions: Actions
 
     actions:
         delete: Delete

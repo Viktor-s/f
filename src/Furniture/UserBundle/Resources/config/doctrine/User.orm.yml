@@ -23,3 +23,7 @@ Furniture\UserBundle\Entity\User:
         needResetPassword:
             column: need_reset_password
             type: boolean
+        verifyEmailHash:
+            column: verify_email_hash
+            type: string
+            nullable: true

@@ -183,6 +183,7 @@ services:
             - @form.factory
             - @sylius.user.password_updater
             - @router
+            - @user.email_verifier
 
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController
@@ -196,7 +197,6 @@ services:
             - @frontend.repository.composite_collection
             - @security.token_storage
             - @security.authorization_checker
-            - @router
     # User profile controllers
     frontend.controller.user.profile:
         class: Furniture\FrontendBundle\Controller\Profile\User\UserProfileController
