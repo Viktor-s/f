@@ -3878,3 +3878,30 @@ footer .copyright {
 .footer-logo-wr {
     float: right;
 }
+
+/* footer always bottom */
+#content-block:after {
+    content: "";
+    display: block;
+    height: 203px;
+}
+
+#content-block {
+    min-height: 100%;
+    margin-bottom: -203px;
+}
+
+
+.header-functionality-entry span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.header-functionality-entry .fa {
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+.header-functionality-entry {
+    padding: 0 15px 0 0;
+}
