@@ -34,7 +34,12 @@ interface ExporterInterface
      *
      * @return \PHPExcel_Writer_IWriter
      */
-    public function exportForFactory(Specification $specification, FieldMapForFactory $fieldMap, Factory $factory, $format);
+    public function exportForFactory(
+        Specification $specification,
+        FieldMapForFactory $fieldMap,
+        Factory $factory,
+        $format
+    );
 
     /**
      * Export for custom

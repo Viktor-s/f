@@ -8,10 +8,25 @@ use Furniture\SpecificationBundle\Entity\Specification;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use PHPExcel_Shared_Drawing;
+use PHPExcel_Style_Font;
 use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class AbstractExporter
 {
+
+    /**
+     * Constant to determine imgae row height.
+     * Measurement in pt.
+     */
+    const IMAGE_ROW_HEIGHT = 80;
+
+    /**
+     * Constant to determine imgae column width.
+     * Quantity of characters that fits into the cell. (Default font Calibri 11)
+     */
+    const IMAGE_COLUMN_WIDTH = 15;
+
     /**
      * @var TranslatorInterface
      */
@@ -31,6 +46,11 @@ abstract class AbstractExporter
      * @var FilterManager
      */
     protected $filterManager;
+
+    /**
+     * @var PHPExcel_Style_Font
+     */
+    protected $defaultFont;
 
     /**
      * Construct
@@ -139,6 +159,8 @@ abstract class AbstractExporter
         $excel->getProperties()->setSubject($specification->getName());
         $excel->getProperties()->setDescription($specification->getDescription());
 
+        $this->setDefaultFont($excel->getDefaultStyle()->getFont());
+
         return $excel;
     }
 
@@ -184,6 +206,18 @@ abstract class AbstractExporter
         $objDrawing->setImageResource($imageResource);
         $objDrawing->setCoordinates($coordinate);
         $objDrawing->setWidthAndHeight($width, $height);
+
+        if (!$this->defaultFont) {
+            $this->setDefaultFont();
+        }
+        $rowHeight = PHPExcel_Shared_Drawing::pointsToPixels(self::IMAGE_ROW_HEIGHT);
+        $columnWidth = PHPExcel_Shared_Drawing::cellDimensionToPixels(self::IMAGE_COLUMN_WIDTH, $this->defaultFont);
+
+        $offsetX = ceil(($columnWidth - $objDrawing->getWidth()) / 2);
+        $offsetY = ceil(($rowHeight - $objDrawing->getHeight()) /2);
+
+        $objDrawing->setOffsetX($offsetX);
+        $objDrawing->setOffsetY($offsetY);
 
         return $objDrawing;
     }
@@ -301,6 +335,16 @@ abstract class AbstractExporter
                     $cell->setValue('');
                 }
             }
+        }
+    }
+
+    private function setDefaultFont(PHPExcel_Style_Font $font = null)
+    {
+        if ($font) {
+            $this->defaultFont = $font;
+        }
+        else {
+            $this->defaultFont = new PHPExcel_Style_Font();
         }
     }
 }

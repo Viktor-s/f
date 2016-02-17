@@ -99,7 +99,7 @@ class ClientExporter extends AbstractExporter
             $positions['photo'] = $column;
             $key = $this->generateCellKey($column++, $row);
 
-            $image = $item->getSkuItem()->getProductVariant()->getImage();
+            $image = $productVariant->getImage();
 
             if ($image && $image->getPath()) {
                 $obj = $this->createImageForExcel($image->getPath(), $key);
@@ -729,8 +729,8 @@ class ClientExporter extends AbstractExporter
         $column = $cell->getColumn();
         $sheet = $cell->getWorksheet();
 
-        $sheet->getRowDimension($row)->setRowHeight(80);
-        $sheet->getColumnDimension($column)->setWidth(15);
+        $sheet->getRowDimension($row)->setRowHeight(self::IMAGE_ROW_HEIGHT);
+        $sheet->getColumnDimension($column)->setWidth(self::IMAGE_COLUMN_WIDTH);
 
         $this->setAlignmentForCell($cell, 'center', 'center');
     }
