@@ -90,7 +90,7 @@ class FactorySideController
         ProductCategoryRepository $productCategoryRepository,
         CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker
     )
     {
         $this->twig = $twig;
