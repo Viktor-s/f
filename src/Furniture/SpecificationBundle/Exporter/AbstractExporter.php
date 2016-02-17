@@ -338,6 +338,11 @@ abstract class AbstractExporter
         }
     }
 
+    /**
+     * Set default font for process.
+     *
+     * @param PHPExcel_Style_Font|null $font
+     */
     private function setDefaultFont(PHPExcel_Style_Font $font = null)
     {
         if ($font) {
