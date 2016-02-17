@@ -472,7 +472,7 @@ body:not(.mobile) .socials-box a:hover .fa{top: -5px;}
 .header-functionality-entry:hover{color: #222;}
 .header-functionality-entry:last-child{padding-right: 0; border-right: none;}
 .responsive-search-button{display: none;}
-.header-functionality-entry .fa{display: inline-block; vertical-align: middle; position: relative; top: -2px; margin-right: 5px;}
+.header-functionality-entry .fa{display: inline-block; vertical-align: middle; position: relative; margin-right: 5px;}
 .header-functionality-entry b{font-size: 18px; color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;}
 .logo-wrapper{display: table-cell; vertical-align: middle; width: 300px;}
 #logo{
@@ -3859,7 +3859,6 @@ footer.type-1 {
 
 .footer-wrapper {
     background: #333333;
-    margin-top: 50px;
 }
 
 footer .copyright {
@@ -3885,12 +3884,12 @@ footer .copyright {
 #content-block:after {
     content: "";
     display: block;
-    height: 203px;
+    height: 150px;
 }
 
 #content-block {
     min-height: 100%;
-    margin-bottom: -203px;
+    margin-bottom: -78px;
 }
 
 
