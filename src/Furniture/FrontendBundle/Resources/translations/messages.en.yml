@@ -139,8 +139,6 @@ frontend:
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions
-    need_reset_password_error: Email not send.
-    need_reset_password_success: New email was sent.
     new_arrivals: New arrivals
     new_factories: New Brands
     new_password: New password
@@ -179,6 +177,8 @@ frontend:
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
+    reset_password_error: Email not send.
+    reset_password_success: New email was sent.
     retailer: Retailer
     retailer_profile: Retailer profile
     retailer_profile_side:
