@@ -112,9 +112,9 @@ class RetailerProfileType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
 
-            if ($data['addressReplace']) {
-                $latitude = $data['addressLatitude'];
-                $longitude = $data['addressLongitude'];
+            if (isset($data['addressReplace']) && $data['addressReplace']) {
+                $latitude = isset($data['addressLatitude']) ? $data['addressLatitude'] : null;
+                $longitude = isset($data['addressLongitude']) ? $data['addressLongitude'] : null;
 
                 if ($latitude && $longitude) {
                     foreach ($data['translations'] as $locale => $translation) {
