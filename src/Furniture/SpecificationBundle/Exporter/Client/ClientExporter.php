@@ -11,7 +11,7 @@ class ClientExporter extends AbstractExporter
     /**
      * Export specification
      *
-     * @param Specification     $specification
+     * @param Specification $specification
      * @param FieldMapForClient $fieldMap
      *
      * @return \PHPExcel
@@ -37,11 +37,13 @@ class ClientExporter extends AbstractExporter
                 $this->createRowDataForCustomItem($sheet, $item, $fieldMap, $row, $positions);
 
             } else {
-                throw new \RuntimeException(sprintf(
-                    'The specification with identifier "%s" has a empty item with identifier "%s".',
-                    $specification->getId(),
-                    $item->getId()
-                ));
+                throw new \RuntimeException(
+                    sprintf(
+                        'The specification with identifier "%s" has a empty item with identifier "%s".',
+                        $specification->getId(),
+                        $item->getId()
+                    )
+                );
             }
         }
 
@@ -126,7 +128,7 @@ class ClientExporter extends AbstractExporter
 
             $values = [
                 $product->getName(),
-                $product->getFactoryCode()
+                $product->getFactoryCode(),
             ];
 
             if (count($product->getTypes()) > 0) {
@@ -198,7 +200,13 @@ class ClientExporter extends AbstractExporter
      * @param FieldMapForClient   $fieldMap
      * @param int                 &$row
      */
-    private function createRowDataForCustomItem(\PHPExcel_Worksheet $sheet, SpecificationItem $item, FieldMapForClient $fieldMap, &$row, &$positions)
+    private function createRowDataForCustomItem(
+        \PHPExcel_Worksheet $sheet,
+        SpecificationItem $item,
+        FieldMapForClient $fieldMap,
+        &$row,
+        &$positions
+    )
     {
         $column = 1;
         $customItem = $item->getCustomItem();
@@ -343,7 +351,12 @@ class ClientExporter extends AbstractExporter
      * @param int                 $totalPricePosition
      * @param int                 &$row
      */
-    private function createTotalRows(\PHPExcel_Worksheet $sheet, Specification $specification, $totalPricePosition, &$row)
+    private function createTotalRows(
+        \PHPExcel_Worksheet $sheet,
+        Specification $specification,
+        $totalPricePosition,
+        &$row
+    )
     {
         $useTitleCells = $totalPricePosition > 1;
         $startRow = $row;
@@ -357,7 +370,10 @@ class ClientExporter extends AbstractExporter
             $this->formatTotalTitlesCell($cell);
         }
 
-        $totalPriceWithoutSale = round($this->priceCalculator->calculateForSpecification($specification, false) / 100, 2);
+        $totalPriceWithoutSale = round(
+            $this->priceCalculator->calculateForSpecification($specification, false) / 100,
+            2
+        );
         $totalPriceWithSale = round($this->priceCalculator->calculateForSpecification($specification) / 100, 2);
 
         $key = $this->generateCellKey($totalPricePosition, $row);
@@ -373,9 +389,14 @@ class ClientExporter extends AbstractExporter
                 if ($useTitleCells) {
                     $key = $this->generateCellKey($totalPricePosition - 1, $row);
                     $cell = $sheet->getCell($key);
-                    $cell->setValue($this->translator->trans('specification.excel.discount', [
-                        ':sale' => $sale->getSale(),
-                    ]));
+                    $cell->setValue(
+                        $this->translator->trans(
+                            'specification.excel.discount',
+                            [
+                                ':sale' => $sale->getSale(),
+                            ]
+                        )
+                    );
                     $this->formatTotalTitlesCell($cell);
                 }
 
@@ -406,16 +427,18 @@ class ClientExporter extends AbstractExporter
         $key = $this->generateDiapasonKey($startColumn, $startRow, $totalPricePosition, $row);
         $style = $sheet->getStyle($key);
         $style
-            ->applyFromArray([
-                'borders' => [
-                    'allborders' => [
-                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                        'color' => [
-                            'rgb' => '000000',
+            ->applyFromArray(
+                [
+                    'borders' => [
+                        'allborders' => [
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => [
+                                'rgb' => '000000',
+                            ],
                         ],
                     ],
-                ],
-            ]);
+                ]
+            );
 
         $row++;
     }
@@ -560,8 +583,8 @@ class ClientExporter extends AbstractExporter
             $row,
             $this->translator->trans('specification.excel.contact_info'),
             [
-                'Email: ' . implode(', ', $retailer->getEmails()),
-                'Toll-free: ' . implode(', ', $retailer->getPhones())
+                'Email: '.implode(', ', $retailer->getEmails()),
+                'Toll-free: '.implode(', ', $retailer->getPhones()),
             ]
         );
     }
@@ -587,7 +610,7 @@ class ClientExporter extends AbstractExporter
         $row++;
 
         if (!is_array($value)) {
-            $value = [ $value ];
+            $value = [$value];
         }
 
         foreach ($value as $item) {
@@ -599,11 +622,11 @@ class ClientExporter extends AbstractExporter
      * Create header row value
      *
      * @param \PHPExcel_Worksheet $sheet
-     * @param int $startColumn
-     * @param int $row
-     * @param int $endColumn
-     * @param int $row
-     * @param string $value
+     * @param int                 $startColumn
+     * @param int                 $row
+     * @param int                 $endColumn
+     * @param int                 $row
+     * @param string              $value
      */
     private function createHeaderRowValue(\PHPExcel_Worksheet $sheet, $startColumn, $endColumn, &$row, $value)
     {
@@ -691,16 +714,18 @@ class ClientExporter extends AbstractExporter
         $key = $this->generateDiapasonKey(1, $row, $endColumn, $row);
         $rowStyle = $sheet->getStyle($key);
 
-        $rowStyle->applyFromArray([
-            'borders' => [
-                'allborders' => [
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => [
-                        'rgb' => '000000',
+        $rowStyle->applyFromArray(
+            [
+                'borders' => [
+                    'allborders' => [
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        'color' => [
+                            'rgb' => '000000',
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
     }
 
     /**
@@ -710,12 +735,14 @@ class ClientExporter extends AbstractExporter
      */
     private function formatPositionCell(\PHPExcel_Cell $cell)
     {
-        $cell->getStyle()->applyFromArray([
-            'alignment' => [
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => \PHPExcel_Style_Alignment::VERTICAL_TOP,
-            ],
-        ]);
+        $cell->getStyle()->applyFromArray(
+            [
+                'alignment' => [
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => \PHPExcel_Style_Alignment::VERTICAL_TOP,
+                ],
+            ]
+        );
     }
 
     /**
@@ -823,7 +850,6 @@ class ClientExporter extends AbstractExporter
      */
     private function formatTotalTitlesCell(\PHPExcel_Cell $cell)
     {
-        $this->setAutoWidthForColumnByCell($cell);
         $this->setAlignmentForCell($cell, 'right', 'top');
         $cell->getStyle()->getFont()->setBold(true);
     }
