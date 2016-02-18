@@ -29,77 +29,85 @@
 {% endblock %}
 
 {% block content_with_edit %}
-    <h1 class="block-title">{{ 'frontend.specification_edit'|trans }}</h1>
     <div class="row specification-edit-head">
-        <div class="col-sm-3 information-entry">
+        <div class="col-sm-5 information-entry">
+            <h1 class="block-title">{{ 'frontend.specification_edit'|trans }}</h1>
             <div class="information-blocks form-horizontal specification-info">                
                 <div class="article-container style-1">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Document:</h5>
-                            <div class="document-number editable" id="specification-document">{{ specification.documentNumber }}</div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <h5>Created:</h5>
-                            <div>{{ specification.createdAt.format('Y/m/d H:i') }}</div>
-                        </div>
-                    </div>
-
-                    <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
-
-                    <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
-                        {{ specification.buyer|default('None') }} 
-                    </div>
-
-                    <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
-                    <p>
-                        {{ specification.buyer ? specification.buyer.email }}<br/>
-                        {{ specification.buyer ? specification.buyer.phone }} 
-                    </p>
-
-                    <h5>Name</h5>
-                    <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
-
-                    <h5>
-                        {{ 'frontend.specficatior.notes'|trans }}
-                        <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}</span>
-                    </h5>
-
-                    <div class="description editable" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
-
-                    {% if specification.buyer and specification.buyer.hasSale() %}
-                        <h5>{{ 'frontend.sale'|trans }}</h5>
-                        <p>{{ specification.buyer.sale }}%</p>
-                    {% endif %}
+                    <ul class="spec-info-list">
+                        <li>
+                            <h5 class="spec-info-list-title">Document:</h5>
+                            <span class="document-number editable spec-info-list-value" id="specification-document">{{ specification.documentNumber }}</span>
+                        </li>
+                        <li>
+                            <h5 class="spec-info-list-title">Created:</h5>
+                            <span>{{ specification.createdAt.format('Y/m/d H:i') }}</span>
+                        </li>
+                        <li>
+                            <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_lable'|trans }}</h5>
+                            <span class="editable buyer spec-info-list-value" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
+                                {{ specification.buyer|default('None') }} 
+                            </span>
+                        </li>
+                        <li>
+                            <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
+                            <span class="spec-info-list-value">
+                                {{ specification.buyer ? specification.buyer.email }}<br/>
+                                {{ specification.buyer ? specification.buyer.phone }} 
+                            </span>
+                        </li>
+                        <li>
+                            <h5 class="spec-info-list-title">Name</h5>
+                            <span class="name editable spec-info-list-value" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</span>
+                        </li>
+                        <li>
+                            <h5 class="spec-info-list-title">
+                                {{ 'frontend.specficatior.notes'|trans }}
+                                <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}</span>
+                            </h5>
+                            <div class="description editable spec-info-list-value" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
+                        </li>
+                        {% if specification.buyer and specification.buyer.hasSale() %}
+                        <li>
+                            <h5 class="spec-info-list-title">{{ 'frontend.sale'|trans }}</h5>
+                            <span spec-info-list-value>{{ specification.buyer.sale }}%</span>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-4 information-entry">
-            <div class="information-blocks form-horizontal specification-info pull-right">
-                <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
-            </div>
-        </div>
                     
-        <div class="col-sm-5 information-entry">
+        <div class="col-sm-4 information-entry">
             <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
 
             <div class="article-container style-1">
-                <h5>Manager</h5>
-                <p>
-                    {{ specification.creator.user.fullName }}<br />
-                    {{ specification.creator.user.customer.email }}
-                </p>
+                <ul class="spec-info-list">
+                    <li>
+                        <h5 class="spec-info-list-title">Manager:</h5>
+                        <p class="spec-info-list-value">
+                            {{ specification.creator.user.fullName }}<br />
+                            {{ specification.creator.user.customer.email }}
+                        </p>
+                    </li>
+                    <li>
+                        <h5 class="spec-info-list-title">Company address:</h5>
+                        <span>{{ specification.creator.retailerProfile.address }}</span>
+                    </li>
+                    <li>
+                        <h5 class="spec-info-list-title">Contact Informations</h5>
+                        <span>
+                            Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                            Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-                <h5>Company address</h5>
-                <p>{{ specification.creator.retailerProfile.address }}</p>
-
-                <h5>Contact Informations</h5>
-                <p>
-                    Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                    Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
-                </p>
+        <div class="col-sm-3 information-entry">
+            <div class="information-blocks form-horizontal specification-info pull-right">
+                <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
             </div>
         </div>
     </div>
@@ -108,8 +116,6 @@
         <div class="specification-pretable-controls">
             <div class="form-group">
                 <div class="pull-right">
-                    <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
-
                     {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
                         <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                     {% endif %}
@@ -117,6 +123,8 @@
                     {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
                         <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                     {% endif %}
+
+                    <a id="remove-current-specification" class="fa fa-close remove-spec" href="{{ path('specification_remove', {specification: specification.id}) }}"></a>
                 </div>
 
                 <label class="control-label pull-right" style="margin-right: 10px;">{{ 'frontend.actions'|trans }}</label>
@@ -161,8 +169,7 @@
             </tr>
 
             <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
-                <td colspan="8"></td>
-                <td colspan="2" id="extra-sale-td" nowrap style="text-align: left;">
+                <td colspan="10" id="extra-sale-td" nowrap style="text-align: left;">
                     {% set sales_count = specification.sales|length %}
                     {% if sales_count > 0 %}
                         {% for sale in specification.sales %}
@@ -189,9 +196,7 @@
 
 {% block specification_sale %}
     <div class="sale">
-        <a href="#">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </a>
+        <a href="#" class="fa fa-close"></a>
         <span>discount </span>
         <span id="specification-sale" class="edit" data-index="__index__">__sale__</span>
         <span>%: -</span><span class="discount_summ"></span>
