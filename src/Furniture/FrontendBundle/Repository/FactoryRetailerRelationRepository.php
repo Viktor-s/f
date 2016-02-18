@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Repository;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
@@ -39,6 +40,29 @@ class FactoryRetailerRelationRepository
             ->select('fur')
             ->andWhere('fur.id = :relation')
             ->setParameter('relation', $relation)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Find relation between factory and retailer
+     *
+     * @param Factory         $factory
+     * @param RetailerProfile $retailerProfile
+     *
+     * @return FactoryRetailerRelation|null
+     */
+    public function findRelationBetweenFactoryAndRetailer(Factory $factory, RetailerProfile $retailerProfile)
+    {
+        return $this->em->createQueryBuilder()
+            ->from(FactoryRetailerRelation::class, 'frr')
+            ->select('frr')
+            ->andWhere('frr.factory = :factory')
+            ->andWhere('frr.retailer = :retailer')
+            ->setParameters([
+                'retailer' => $retailerProfile,
+                'factory'  => $factory,
+            ])
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -149,10 +173,43 @@ class FactoryRetailerRelationRepository
             ->andWhere('fur.retailerAccept = :retailer_accept')
             ->andWhere('fur.factoryAccept = :factory_accept')
             ->setParameters([
-                'user'           => $user,
-                'retailer_accept'    => $retailerAccept,
-                'factory_accept' => $factoryAccept,
+                'user'            => $user,
+                'retailer_accept' => $retailerAccept,
+                'factory_accept'  => $factoryAccept,
             ]);
+    }
+
+    /**
+     * Has factories for create relation between retailer and factory
+     *
+     * @param RetailerProfile $retailer
+     *
+     * @return bool
+     */
+    public function hasFactoriesForCreateRelationFromRetailerToFactory(RetailerProfile $retailer)
+    {
+        $existRelationQb = new QueryBuilder($this->em->getConnection());
+        $existRelationQb
+            ->select('frr.factory_id')
+            ->from('factory_user_relation', 'frr')
+            ->andWhere('frr.retailer_id = :retailer_id');
+
+        $qb = new QueryBuilder($this->em->getConnection());
+        $qb
+            ->select('1')
+            ->from('factory', 'f')
+            ->andWhere('f.enabled IS TRUE')
+            ->andWhere('f.id NOT IN (' . $existRelationQb->getSQL() . ')')
+            ->setParameter('retailer_id', $retailer->getId());
+
+        $stmt = $qb->execute();
+        $result = $stmt->fetchAll();
+
+        if (count($result)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -164,7 +221,7 @@ class FactoryRetailerRelationRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createQueryBuilderForRequestsForRetailer(RetailerProfile $retailer, $retailerAccept, $factoryAccept)
+    private function createQueryBuilderForRequestsForRetailer(RetailerProfile $retailer, $retailerAccept, $factoryAccept)
     {
         return $this->em->createQueryBuilder()
             ->from(FactoryRetailerRelation::class, 'frr')
@@ -174,22 +231,9 @@ class FactoryRetailerRelationRepository
             ->andWhere('frr.retailerAccept = :retailer_accept')
             ->andWhere('frr.factoryAccept = :factory_accept')
             ->setParameters([
-                'retailer'       => $retailer->getId(),
-                'factory_accept' => $factoryAccept,
-                'retailer_accept'    => $retailerAccept,
+                'retailer'        => $retailer->getId(),
+                'factory_accept'  => $factoryAccept,
+                'retailer_accept' => $retailerAccept,
             ]);
-    }
-    
-    public function findRequestBetweenRetailerFactry( RetailerProfile $retailer, Factory $factory ){
-        return $this->em->createQueryBuilder()
-                ->from(FactoryRetailerRelation::class, 'frr')
-                ->select('frr')
-                ->andWhere('frr.factory = :factory')
-                ->andWhere('frr.retailer = :retailer')
-                ->setParameter('factory', $factory)
-                ->setParameter('retailer', $retailer)
-                ->getQuery()
-                ->getOneOrNullResult();
-                
     }
 }

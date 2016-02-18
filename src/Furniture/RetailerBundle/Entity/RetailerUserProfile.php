@@ -27,7 +27,7 @@ class RetailerUserProfile
      * @var int
      *
      * @Assert\Choice(
-     *     groups={"Default", "Create", "Update", "RetailerProfileCreate", "RetailerProfileUpdate"},
+     *     groups={"Default", "Create", "Update", "RetailerProfileCreate"},
      *     choices={1, 2}
      * )
      * @Assert\NotBlank(groups={"RetailerProfileCreate", "RetailerProfileUpdate"})

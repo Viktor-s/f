@@ -22,6 +22,11 @@ security_reset_password_requets_success:
     defaults:
         _controller: frontend.controller.security:resetPasswordRequestSuccessfully
 
+security_reset_password_request_reset:
+    path: /reset-password-request/reset
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:resetPasswordRequestReset
 
 security_reset_password:
     path: /reset-password/{token}
@@ -35,6 +40,19 @@ security_reset_password_success:
     methods: [ GET ]
     defaults:
         _controller: frontend.controller.security:resetPasswordSuccessfully
+
+security_verify_email:
+    path: /verify-email/{token}
+    methods: [ GET, POST ]
+    requirements: {token: "[a-f0-9]{32}" }
+    defaults:
+        _controller: frontend.controller.security:verifyEmailRequest
+
+security_verify_success:
+    path: /verify-email/success
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:verifyEmailSuccess
 
 security_need_reset_password:
     path: /need-reset-password

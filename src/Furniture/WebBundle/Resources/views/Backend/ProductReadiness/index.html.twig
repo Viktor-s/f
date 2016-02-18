@@ -41,8 +41,7 @@
                     <td>{{ readiness.name }}</td>
                     <td class="text-center">
                         {{ buttons.edit(path('furniture_backend_product_readiness_update', {id: readiness.id})) }}
-                        {# {{ buttons.delete(path('furniture_backend_product_readiness_delete', {id: readiness.id})) }} #}
-                        <a class="btn btn-danger btn-confirm btn-delete" href="{{ path('furniture_backend_product_readiness_delete', {id: readiness.id}) }}" data-method="DELETE">
+                        <a class="btn btn-danger btn-confirm btn-delete" href="{{ path('furniture_backend_product_readiness_delete', {id: readiness.id}) }}" data-remove="DELETE">
                             <i class="glyphicon glyphicon-trash"></i>
                             <span>delete</span>
                         </a>

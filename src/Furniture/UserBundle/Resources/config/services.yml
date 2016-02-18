@@ -30,6 +30,10 @@ services:
         class: Furniture\UserBundle\PasswordResetter\PasswordResetter
         arguments: [ @doctrine.orm.default_entity_manager, @furniture.mailer ]
 
+    user.email_verifier:
+        class: Furniture\UserBundle\Security\EmailVerifier\EmailVerifier
+        arguments: [ @doctrine.orm.default_entity_manager, @furniture.mailer ]
+
     sylius.listener.default_username:
         class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
         tags:

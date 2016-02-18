@@ -9,7 +9,13 @@
     <div class="tab-content">
         <div class="tab-pane active" id="main">
             {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
+
+            {{ form_row(form.translations) }}
             {{ form_row(form.address) }}
+            {{ form_row(form.addressLatitude) }}
+            {{ form_row(form.addressLongitude) }}
+            {{ form_row(form.addressReplace) }}
+
             {{ form_row(form.phones, {'attr': {'class': 'input-lg'}}) }}
             {{ form_row(form.emails, {'attr': {'class': 'input-lg'}}) }}
             {{ form_row(form.website) }}
@@ -30,6 +36,22 @@
     (function ($) {
         $(document).ready(function () {
             $('#furniture_retailer_profile_demoFactories').select2();
+
+            var addressAutoComplete = $('.address-autocomplete');
+
+            initializeGoogleMaps()
+                    .then(function () {
+                        var autocomplete = new google.maps.places.Autocomplete(addressAutoComplete.get(0), {
+                            types: ['geocode']
+                        });
+
+                        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                            var location = autocomplete.getPlace().geometry.location;
+
+                            $('input[data-address-latitude]').val(location.lat());
+                            $('input[data-address-longitude]').val(location.lng());
+                        });
+                    });
         });
     })(jQuery);
 </script>

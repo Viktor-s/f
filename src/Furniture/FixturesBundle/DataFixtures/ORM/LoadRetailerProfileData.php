@@ -19,7 +19,6 @@ class LoadRetailerProfileData extends AbstractFixture implements OrderedFixtureI
 
             $profile
                 ->setName($profileInfo['name'])
-                ->setAddress($profileInfo['address'])
                 ->setPhones($profileInfo['phones'])
                 ->setEmails($profileInfo['emails']);
 

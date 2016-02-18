@@ -164,6 +164,16 @@ sylius_product:
             form:
                 default: Furniture\ProductBundle\Form\Type\ProductType
 
+sylius_attribute:
+    classes:
+        product:
+            attribute:
+                model: Sylius\Component\Product\Model\Attribute
+                repository: Furniture\ProductBundle\Entity\Repository\AttributeRepository
+                translation:
+                    model: Sylius\Component\Product\Model\AttributeTranslation
+                    mapping: ~
+
 sylius_variation:
     classes:
         product:
@@ -202,6 +212,9 @@ sylius_resource:
             classes:
                 model: Furniture\RetailerBundle\Entity\RetailerProfile
                 repository: Furniture\RetailerBundle\Entity\Repository\RetailerProfileRepository
+                translation:
+                    model: Furniture\RetailerBundle\Entity\RetailerProfileTranslation
+                    mapping: ~
 
         furniture.factory:
             driver: doctrine/orm
@@ -347,6 +360,8 @@ sylius_resource:
         furniture.specification:
             driver: doctrine/orm
             classes:
+                repository: Furniture\SpecificationBundle\Entity\Repository\SpecificationRepository
+                controller: Furniture\SpecificationBundle\Controller\SpecificationController
                 model: Furniture\SpecificationBundle\Entity\Specification
 
         furniture.post:

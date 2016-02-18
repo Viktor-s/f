@@ -113,18 +113,12 @@
             '@WebBundle/Resources/public/js/form-collection.js'
             '@WebBundle/Resources/public/js/backend.js'
             '@WebBundle/Resources/public/js/confirm-modal.js'
+            '@WebBundle/Resources/public/js/google-maps.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         <script type="text/javascript">
-            function initAutocomplete() {
-                $('.google-address-autocomplete').each(function(){
-                    autocomplete = new google.maps.places.Autocomplete(
-                        (this),
-                        {types: ['geocode']}
-                    );
-                });
-            }
+            window.googleMapsApiKey = "{{ google_api_maps_key }}";
 
             $(document).ready(function () {
                 $('[data-remove]').click(function () {
@@ -152,7 +146,5 @@
                 });
             });
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_maps_key }}&signed_in=true&libraries=places&callback=initAutocomplete"
-        async defer></script>
     {% endblock %}
 </html>

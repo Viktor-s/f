@@ -22,3 +22,9 @@ services:
         arguments: [ @frontend.repository.factory, @security.token_storage ]
         tags:
             - { name: form.type, alias: retailer_factory_rate }
+
+    form.type.user_reset_password_type:
+        class: Furniture\UserBundle\Form\Type\UserResetPasswordType
+        arguments: [ @security.token_storage, @security.encoder_factory ]
+        tags:
+            - { name: form.type, alias: reset_password }

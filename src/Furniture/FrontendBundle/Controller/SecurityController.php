@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FrontendBundle\Repository\UserRepository;
+use Furniture\UserBundle\Form\Type\UserForgotPasswordRequestType;
 use Furniture\UserBundle\Form\Type\UserResetPasswordRequestType;
 use Furniture\UserBundle\Form\Type\UserResetPasswordType;
 use Furniture\UserBundle\PasswordResetter\PasswordResetter;
@@ -14,10 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SecurityController
 {
@@ -25,6 +29,11 @@ class SecurityController
      * @var EntityManagerInterface
      */
     private $em;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
 
     /**
      * @var CsrfTokenManagerInterface
@@ -66,20 +75,24 @@ class SecurityController
      */
     private $passwordUpdater;
 
+
+
     /**
      * Construct
      *
-     * @param \Twig_Environment         $twig
+     * @param \Twig_Environment $twig
+     * @param TokenStorageInterface $tokenStorage
      * @param CsrfTokenManagerInterface $csrfTokenManager
-     * @param FormFactoryInterface      $formFactory
-     * @param UserRepository            $userRepository
-     * @param TranslatorInterface       $translator
-     * @param PasswordResetter          $passwordResetter
-     * @param UrlGeneratorInterface     $urlGenerator
-     * @param PasswordUpdater           $passwordUpdater
+     * @param FormFactoryInterface $formFactory
+     * @param UserRepository $userRepository
+     * @param TranslatorInterface $translator
+     * @param PasswordResetter $passwordResetter
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param PasswordUpdater $passwordUpdater
      */
     public function __construct(
         \Twig_Environment $twig,
+        TokenStorageInterface $tokenStorage,
         EntityManagerInterface $em,
         CsrfTokenManagerInterface $csrfTokenManager,
         FormFactoryInterface $formFactory,
@@ -91,6 +104,7 @@ class SecurityController
     )
     {
         $this->em = $em;
+        $this->tokenStorage = $tokenStorage;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->twig = $twig;
         $this->formFactory = $formFactory;
@@ -153,11 +167,12 @@ class SecurityController
      */
     public function needResetPassword(Request $request)
     {
-        if ($request->server->has('HTTP_REFERER')) {
+        if (!$request->server->has('HTTP_REFERER')) {
             $url = $this->urlGenerator->generate('security_login');
 
             return new RedirectResponse($url);
         }
+
         $content = $this->twig->render('FrontendBundle:Security:need_reset_password.html.twig');
 
         return new Response($content);
@@ -167,17 +182,21 @@ class SecurityController
      * Send reset password email.
      *
      * @param Request $request
-     * @param $token
+     *
+     * @return RedirectResponse
      */
     public function sendNeedResetPassword(Request $request)
     {
-        $type = $message = null;
+        $type = null;
+        $message = null;
         $session = $request->getSession();
-        $token = $session->get('need-reset-password');
-        $notSent = $this->translator->trans('frontend.need_reset_password_error');
-        if (isset($token)) {
+        $notSent = $this->translator->trans('frontend.reset_password_error');
+
+        if ($session->has('reset-password-token')) {
+            $token = $session->get('reset-password-token');
             // Try load user via token
             $user = $this->userRepository->findByConfirmationToken($token);
+
             if (!$user) {
                 // User not found exception.
                 $type = 'error';
@@ -186,13 +205,7 @@ class SecurityController
                     $notSent,
                     $this->translator->trans('frontend.user_not_found')
                 );
-            } elseif ($user->isEnabled()) {
-                $this->passwordResetter->resetPassword($user);
-                $token = $user->getConfirmationToken();
-                $session->set('need-reset-password', $token);
-                $type = 'success';
-                $message = $this->translator->trans('frontend.need_reset_password_success');
-            } else {
+            } else if ($user->isDisabled()) {
                 // DisabledException;
                 $type = 'error';
                 $message = sprintf(
@@ -200,6 +213,12 @@ class SecurityController
                     $notSent,
                     $this->translator->trans('frontend.account_disabled')
                 );
+            } else {
+                $this->passwordResetter->resetPassword($user);
+                $token = $user->getConfirmationToken();
+                $session->set('reset-password-token', $token);
+                $type = 'success';
+                $message = $this->translator->trans('frontend.reset_password_success');
             }
         } else {
             // Session issue.
@@ -224,12 +243,13 @@ class SecurityController
      * Reset password process
      *
      * @param Request $request
-     * @param string  $token
+     * @param string $token
      *
      * @return Response
      */
     public function resetPassword(Request $request, $token)
     {
+        $session = $request->getSession();
         // Try load user via token
         $user = $this->userRepository->findByConfirmationToken($token);
 
@@ -251,18 +271,19 @@ class SecurityController
         if ($error) {
             $content = $this->twig->render('FrontendBundle:Security:reset_password.html.twig', [
                 'error' => $error,
-                'form'  => null,
+                'form' => null,
             ]);
 
             return new Response($content);
         }
 
-        $form = $this->formFactory->create(new UserResetPasswordType());
+        $form = $this->formFactory->create('reset_password', ['user' => $user]);
 
         if ($request->getMethod() === Request::METHOD_POST) {
             $form->submit($request);
 
             if ($form->isValid()) {
+                $session->set('reset-password-user', $user->getId());
                 $formData = $form->getData();
                 $password = $formData['password'];
 
@@ -271,6 +292,8 @@ class SecurityController
 
                 $this->em->flush();
 
+                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                $this->tokenStorage->setToken($token);
                 // We should create a redirect response, because user can reload page and send repeatedly
                 // send data.
                 $url = $this->urlGenerator->generate('security_reset_password_success');
@@ -280,7 +303,7 @@ class SecurityController
         }
 
         $content = $this->twig->render('FrontendBundle:Security:reset_password.html.twig', [
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
             'error' => null,
         ]);
 
@@ -292,9 +315,20 @@ class SecurityController
      *
      * @return Response
      */
-    public function resetPasswordSuccessfully()
+    public function resetPasswordSuccessfully(Request $request)
     {
+        if (!$request->server->has('HTTP_REFERER')) {
+            $url = $this->urlGenerator->generate('security_login');
+
+            return new RedirectResponse($url);
+        }
+
+        $session = $request->getSession();
         $content = $this->twig->render('FrontendBundle:Security:reset_password_success.html.twig');
+
+        if ($session->has('reset-password-token')) {
+            $session->remove('reset-password-token');
+        }
 
         return new Response($content);
     }
@@ -310,6 +344,9 @@ class SecurityController
     {
         $form = $this->formFactory->create(new UserResetPasswordRequestType());
         $error = null;
+        $type = null;
+        $message = null;
+        $session = $request->getSession();
 
         if ($request->getMethod() === Request::METHOD_POST) {
             $form->submit($request);
@@ -323,19 +360,35 @@ class SecurityController
                 $user = $this->userRepository->findByUsername($email);
 
                 if (!$user) {
-                    $error = $this->translator->trans('frontend.user_not_found_with_email', [
-                        ':email' => $email,
-                    ]);
-                } elseif ($user->isDisabled()) {
-                    $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
-                        ':email' => $email,
-                    ]);
-                }
-
-                if (!$error) {
-                    // Error not found. Start resetting password.
-                    $this->passwordResetter->resetPassword($user);
-
+                    // User not found exception.
+                    $type = 'error';
+                    $message = sprintf(
+                        '%s',
+                        $this->translator->trans(
+                            'frontend.user_not_found_with_email',
+                            [
+                                ':email' => $email,
+                            ]
+                        )
+                    );
+                } else if ($user->isDisabled()) {
+                    $type = 'error';
+                    $message = sprintf(
+                        '%s',
+                        $this->translator->trans(
+                            'frontend.user_is_disabled_with_email',
+                            [
+                                ':email' => $email,
+                            ]
+                        )
+                    );
+                } else {
+                    $token = $user->getConfirmationToken();
+                    // Do  not send email if user already has confirmation token.
+                    if (!$token) {
+                        $this->passwordResetter->resetPassword($user);
+                    }
+                    $session->set('reset-password-token', $token);
                     // We should create a redirect response, because user can reload page and send repeatedly
                     // send data.
                     $url = $this->urlGenerator->generate('security_reset_password_requets_success');
@@ -344,16 +397,76 @@ class SecurityController
                 }
             }
         }
-
+        if ($type && $message) {
+            $session->getFlashBag()->add($type, $message);
+        }
         $content = $this->twig->render('FrontendBundle:Security:reset_password_request.html.twig', [
-            'form'   => $form->createView(),
-            'error'  => $error,
+            'form' => $form->createView(),
             'reason' => $request->get('reason'),
         ]);
 
         return new Response($content);
     }
 
+    /**
+     * Reset password resend email.
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function resetPasswordRequestReset(Request $request)
+    {
+        $type = null;
+        $message = null;
+        $session = $request->getSession();
+        $notSent = $this->translator->trans('frontend.reset_password_error');
+        if ($session->has('reset-password-token')) {
+            $token = $session->get('reset-password-token');
+            // Try load user via token
+            $user = $this->userRepository->findByConfirmationToken($token);
+
+            if (!$user) {
+                // User not found exception.
+                $type = 'error';
+                $message = sprintf(
+                    '%s %s',
+                    $notSent,
+                    $this->translator->trans('frontend.user_not_found')
+                );
+            } else if ($user->isDisabled()) {
+                // DisabledException;
+                $type = 'error';
+                $message = sprintf(
+                    '%s %s',
+                    $notSent,
+                    $this->translator->trans('frontend.account_disabled')
+                );
+            } else {
+                $this->passwordResetter->resetPassword($user);
+                $token = $user->getConfirmationToken();
+                $session->set('reset-password-token', $token);
+                $type = 'success';
+                $message = $this->translator->trans('frontend.reset_password_success');
+            }
+        } else {
+            // Session issue.
+            $type = 'error';
+            $message = sprintf(
+                '%s %s',
+                $notSent,
+                $this->translator->trans('frontend.session_is_disabled')
+            );
+        }
+
+        if ($type && $message) {
+            $session->getFlashBag()->add($type, $message);
+        }
+
+        $url = $this->urlGenerator->generate('security_reset_password_requets_success');
+
+        return new RedirectResponse($url);
+    }
     /**
      * Reset password successfully
      *
@@ -363,9 +476,96 @@ class SecurityController
      */
     public function resetPasswordRequestSuccessfully(Request $request)
     {
+        if (!$request->server->has('HTTP_REFERER')) {
+            $url = $this->urlGenerator->generate('security_login');
+
+            return new RedirectResponse($url);
+        }
+
         $content = $this->twig->render('FrontendBundle:Security:reset_password_request_success.html.twig');
+
+        return new Response($content);
+    }
+
+    /**
+     * Request to verify email address.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function verifyEmailRequest(Request $request, $token)
+    {
+        $user = $this->userRepository->findByVerifyEmailHashToken($token);
+        if (!$user) {
+            throw new NotFoundHttpException(sprintf(
+                'Not found user with email verification token "%s".',
+                $token
+            ));
+        }
+
+        $user->resetVerifyEmailHash();
+        $this->em->flush($user);
+
         $session = $request->getSession();
-        $session->remove('need-reset-password');
+        $session->set('email-verify', $user->getUsernameCanonical());
+        $url = $this->urlGenerator->generate('security_verify_success');
+
+        return new RedirectResponse($url);
+    }
+
+    /**
+     * User successfully verify his email.
+     *
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function verifyEmailSuccess(Request $request)
+    {
+        $form = null;
+        $session = $request->getSession();
+        if ($session->has('email-verify')) {
+            $userName = $session->get('email-verify');
+            $user = $this->userRepository->findByUsername($userName);
+            if ($user) {
+                $form = $this->formFactory->create('reset_password', ['user' => $user]);
+                $formLogin = $this->formFactory->createBuilder('form')
+                    ->add('login', 'submit')
+                    ->getForm();
+                if ($request->getMethod() === Request::METHOD_POST) {
+                    $formLogin->handleRequest($request);
+                    if ($formLogin->isValid()) {
+                        $session->remove('email-verify');
+                        $url = $this->urlGenerator->generate('security_login');
+                        return new RedirectResponse($url);
+                    }
+                    $form->handleRequest($request);
+                    if ($form->isValid()) {
+                        $formData = $form->getData();
+                        $password = $formData['password'];
+
+                        $user->resetPassword($password);
+                        $this->passwordUpdater->updatePassword($user);
+
+                        $this->em->flush();
+                        $session->remove('email-verify');
+                        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                        $this->tokenStorage->setToken($token);
+
+                        return $this->resetPasswordSuccessfully();
+                    }
+                }
+                $content = $this->twig->render('FrontendBundle:Security:email_verify_success.html.twig', [
+                    'form_login' => $formLogin->createView(),
+                    'form' => $form->createView(),
+                ]);
+            } else {
+                throw new NotFoundHttpException(sprintf(
+                    'Not found user with username "%s".',
+                    $userName
+                ));
+            }
+        }
+
         return new Response($content);
     }
 }

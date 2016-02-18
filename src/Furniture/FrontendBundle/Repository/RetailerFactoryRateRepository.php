@@ -63,9 +63,12 @@ class RetailerFactoryRateRepository
             ->from(RetailerFactoryRate::class, 'rfr')
             ->select('rfr')
             ->innerJoin('rfr.retailer', 'r')
+            ->innerJoin('rfr.factory', 'f')
             ->innerJoin('r.retailerUserProfiles', 'rup')
             ->andWhere('rup.id = :retailerUserProfile')
+            ->andWhere('f.enabled = :enabled')
             ->setParameter('retailerUserProfile', $retailerUserProfile->getId())
+            ->setParameter('enabled', true)
             ->getQuery()
             ->getResult();
     }
@@ -82,8 +85,11 @@ class RetailerFactoryRateRepository
         return $this->em->createQueryBuilder()
             ->from(RetailerFactoryRate::class, 'rfr')
             ->innerJoin('rfr.retailer', 'r')
+            ->innerJoin('rfr.factory', 'f')
             ->andWhere('r.id = :retailer')
+            ->andWhere('f.enabled = :enabled')
             ->setParameter('retailer', $retailer->getId())
+            ->setParameter('enabled', true)
             ->getQuery()
             ->getResult();
     }

@@ -54,6 +54,11 @@ class ProductQuery
     private $onlyAvailable = true;
 
     /**
+     * @var bool
+     */
+    private $factoryEnabled = true;
+
+    /**
      * With taxon
      *
      * @param Space $space
@@ -431,5 +436,39 @@ class ProductQuery
     public function isOnlyAvailable()
     {
         return $this->onlyAvailable;
+    }
+
+    /**
+     * With factory enabled
+     *
+     * @return ProductQuery
+     */
+    public function withFactoryEnabled()
+    {
+        $this->factoryEnabled = true;
+
+        return $this;
+    }
+
+    /**
+     * Without factory enabled
+     *
+     * @return ProductQuery
+     */
+    public function withoutFactoryEnabled()
+    {
+        $this->factoryEnabled = false;
+
+        return $this;
+    }
+
+    /**
+     * Is factory enabled?
+     *
+     * @return bool
+     */
+    public function isFactoryEnabled()
+    {
+        return $this->factoryEnabled;
     }
 }

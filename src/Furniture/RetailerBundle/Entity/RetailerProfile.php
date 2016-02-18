@@ -1,12 +1,14 @@
 <?php
+
 namespace Furniture\RetailerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
+use Sylius\Component\Translation\Model\AbstractTranslatable;
 
-class RetailerProfile implements AddressMarkerInterface
+class RetailerProfile extends AbstractTranslatable implements AddressMarkerInterface
 {
     /**
      * @var int
@@ -29,11 +31,6 @@ class RetailerProfile implements AddressMarkerInterface
      * @var string
      */
     private $name;
-
-    /**
-     * @var string
-     */
-    private $address;
 
     /**
      * @var array
@@ -160,6 +157,8 @@ class RetailerProfile implements AddressMarkerInterface
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->retailerUserProfiles = new ArrayCollection();
         $this->demoFactories = new ArrayCollection();
 
@@ -372,27 +371,16 @@ class RetailerProfile implements AddressMarkerInterface
     }
 
     /**
-     * Set address
-     *
-     * @param string $address
-     *
-     * @return RetailerProfile
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
      * Get address
      *
      * @return string
      */
     public function getAddress()
     {
-        return $this->address;
+        /** @var RetailerProfileTranslation $translation */
+        $translation = $this->translate();
+
+        return $translation->getAddress();
     }
 
     /**

@@ -14,10 +14,11 @@ Furniture\SpecificationBundle\Entity\CustomSpecificationItem:
             targetEntity: Furniture\SpecificationBundle\Entity\SpecificationItem
             inversedBy: customItem
             joinColumn:
-                name: speicifcation_item_id
+                name: specification_item_id
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+
         image:
             targetEntity: Furniture\SpecificationBundle\Entity\CustomSpecificationItemImage
             mappedBy: customSpecificationItem

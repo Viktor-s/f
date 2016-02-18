@@ -1,0 +1,16 @@
+Furniture\RetailerBundle\Entity\RetailerProfileTranslation:
+    type: entity
+    table: retailer_profile_translation
+
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        address:
+            type: string
+            column: address
+            nullable: true

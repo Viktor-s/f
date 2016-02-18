@@ -24,7 +24,9 @@
         </div>
 
         <div class="info-item">
-            <strong>{{ 'specification.table.user'|trans }}:</strong> {{ specification.user }}
+            <strong>{{ 'specification.table.user'|trans }}:</strong>
+            {{ specification.creator.user.username }}
+            ({{ specification.creator.retailerProfile.name }})
         </div>
 
         <div class="info-item">
@@ -54,11 +56,13 @@
         <thead>
         <tr>
             <th>{{ 'specification.table.factory'|trans }}</th>
+            <th>{{ 'specification.table.product'|trans }}</th>
             <th>{{ 'specification.table.options'|trans }}</th>
             <th>{{ 'specification.table.note'|trans }}</th>
             <th>{{ 'specification.table.quantity'|trans }}</th>
             <th>{{ 'specification.table.price'|trans }}</th>
             <th>{{ 'specification.table.total_price'|trans }}</th>
+            <th>{{ 'specification.table.actions'|trans }}</th>
         </tr>
         </thead>
 
@@ -68,6 +72,13 @@
                 {% if specification_item.skuItem %}
                     <td>
                         <a href="#">{{ specification_item.skuItem.productVariant.product.factory.name }}</a>
+                    </td>
+
+                    <td>
+                        <a href="{{ path('sylius_backend_product_show', {id: specification_item.skuItem.productVariant.product.id}) }}">
+                             {{ specification_item.skuItem.productVariant.product.name }}
+                            ({{ specification_item.skuItem.productVariant.product.id }})
+                        </a>
                     </td>
 
                     <td>
@@ -93,8 +104,14 @@
 
                 <td>{{ specification_item.quantity }}</td>
 
-                <td class="price">{{ (specification_item.price / 100)|round(2) }} EUR</td>
-                <td class="total-price">{{ (specification_item.totalPrice / 100)|round(2) }} EUR</td>
+                <td class="price">{{ specification_item.price|money }} EUR</td>
+                <td class="total-price">{{ specification_item|specification_item_total_price|money }}</td>
+
+                <td>
+                    {% if sylius_is_granted('furniture.specification.delete') %}
+                        {{ buttons.delete(path('furniture_backend_specification_item_delete', {id: specification_item.id})) }}
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

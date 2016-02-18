@@ -52,43 +52,39 @@
                     <div>
                         <div class="tabs-entry">
                             {% if product.images|length > 0 %}
-                                <div class="product-preview-box">
-                                    <div class="swiper-container product-preview-swiper product-gallery" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
-                                        <div class="swiper-wrapper">
-                                            {% for image in product.images %}
-                                                <div class="swiper-slide">
-                                                    <div class="product-zoom-image">
-                                                        <img src="{{ image ? image.path|imagine_filter('s570x427') : '/img/200x200.png' }}" alt="{{ product.name }}" data-zoom="{{ image ? image.path : '/img/200x200.png' }}" />
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="pagination"></div>
-                                        <div class="product-zoom-container">
-                                            <div class="move-box">
-                                                <img class="default-image" src="{{ product.image ? product.image.path : 'http://placehold.it/200x200' }}" alt="" />
-                                                <img class="zoomed-image" src="{{ product.image ? product.image.path : 'http://placehold.it/200x200' }}" alt="" />
-                                            </div>
-                                            <div class="zoom-area"></div>
-                                        </div>
+                            <div class="product-gallery-wrapper">
+                                <div class="product-gallery">
+                                    <div class="zoom-wapper">
+                                        <img id="gallery-zoom"
+                                             src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
+                                             alt="{{ product.name }}"
+                                             data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
                                     </div>
-                                    <div class="swiper-hidden-edges">
-                                        <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
-                                            <div class="swiper-wrapper">
-                                                {% if product.images|length > 0 %}
-                                                    {% for image in product.images %}
-                                                        <div class="swiper-slide">
-                                                            <div class="paddings-container">
-                                                                <img src="{{ image.path|imagine_filter('sylius_small') }}" alt="{{ product.name }}" />
-                                                            </div>
+                                    <div id="product-gallery">
+                                        <div class="swiper-hidden-edges">
+                                            <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                                                <div class="swiper-wrapper">
+                                            {% if product.images|length > 0 %}
+                                                {% for image in product.images %}
+                                                    <div class="swiper-slide">
+                                                        <div class="paddings-container">
+                                                            <a href="#" class="gallery-image"
+                                                               data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                               data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
+                                                                <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                                     alt="{{ product.name }}" />
+                                                            </a>
                                                         </div>
-                                                    {% endfor %}
-                                                {% endif %}
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                                </div>
+                                                <div class="pagination"></div>
                                             </div>
-                                            <div class="pagination"></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             {% endif %}
                         </div>
                         <div class="tabs-entry">
@@ -198,7 +194,37 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            var zoomEnabled = false;
 
+            // Init elevate zoom.
+            $("#gallery-zoom").ezPlus({
+                gallery:'product-gallery',
+                cursor: 'pointer',
+                galleryActiveClass: "active ",
+                imageCrossfade: true,
+                zoomLevel: 1,
+                zoomEnabled: zoomEnabled,
+                zoomType: "lens",
+                zoomWrapperHeight: false
+            });
+
+            // Init fancybox on gallery click.
+            $("body").on("click", "#gallery-zoom, .zoomContainer", function(e) {
+                var ez = $('#gallery-zoom').data('ezPlus');
+                ez.closeAll(); //NEW: This function force hides the lens, tint and window
+                $.fancybox(ez.getGalleryList());
+
+                return false;
+            });
+
+            // Update fancybox on window resize.
+            $(window).resize(function() {
+                $.fancybox.update();
+            });
+        });
+    </script>
     <script type="text/javascript">
         (function ($) {
         $( document ).ready(function(){

@@ -50,6 +50,13 @@ class DefaultUsernameORMListener implements EventSubscriber
                     $user->setUsername($entity->getEmail());
                     $uow->recomputeSingleEntityChangeSet($customerClassMetadata, $user);
                 }
+            } else if ($entity instanceof User) {
+                $customer = $entity->getCustomer();
+
+                if ($entity->getUsername() !== $customer->getEmail()) {
+                    $entity->setUsername($customer->getEmail());
+                    $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
+                }
             }
         }
     }

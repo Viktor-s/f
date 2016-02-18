@@ -1,4 +1,10 @@
 services:
+    form.type.furniture_retailer_profile:
+        class: Furniture\RetailerBundle\Form\Type\RetailerProfileType
+        arguments: [ @google_service.maps.geocoding ]
+        tags:
+            - { name: form.type, alias: furniture_retailer_profile }
+
     # Security voters
     security.voter.retailer_employee_list:
         class: Furniture\RetailerBundle\Security\Voter\RetailerEmployeeListVoter

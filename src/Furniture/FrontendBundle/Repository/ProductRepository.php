@@ -109,10 +109,13 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
-            ->innerJoin('p.factory', 'f')
-            //If visible in front!
-            ->andWhere('f.enabled = true')
-            ;
+            ->innerJoin('p.factory', 'f');
+
+        if ($query->isFactoryEnabled()) {
+            $qb
+                ->andWhere('f.enabled = :factory_enabled')
+                ->setParameter('factory_enabled', true);
+        }
 
         // Filtering by space
         if ($query->hasSpaces()) {
@@ -197,11 +200,12 @@ class ProductRepository
 
             $orExpr = $qb->expr()->orX();
             $orExpr
-                ->add('frr.accessProducts = :retailer_access_products')
+                ->add('frr.active = :active AND frr.accessProducts = :retailer_access_products')
                 ->add('fdr.accessProducts = :default_access_products');
 
             $qb
                 ->andWhere($orExpr)
+                ->setParameter('active', true)
                 ->setParameter('retailer_access_products', true)
                 ->setParameter('default_access_products', true);
 

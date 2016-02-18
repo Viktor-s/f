@@ -32,6 +32,7 @@ class ProductVariantMetadataSubscriber implements EventSubscriber
             ];
         }
     }
+
     /**
      * {@inheritDoc}
      */

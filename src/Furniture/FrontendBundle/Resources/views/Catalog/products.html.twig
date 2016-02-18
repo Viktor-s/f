@@ -38,18 +38,18 @@
                 </div>
 
                 <div class="row shop-grid grid-view">
-
                     {% for product in products %}
                         {% include 'FrontendBundle:Catalog:products/item.html.twig' with {'product' : product} %}
                     {% endfor %}
-
                 </div>
+
                 <div class="page-selector">
                     <div class="description">Showing: {{ products.getCurrentPageOffsetStart() }}-{{ products.getCurrentPageOffsetEnd() }} of {{ products.getNbResults() }}</div>
                     {{ pagination(products) }}
                     <div class="clear"></div>
                 </div>
             </div>
+
             {# Left side catalog menu #}
             <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
                 {# Catalog space selector #}

@@ -18,7 +18,9 @@
                 <td>
                     <div class="pull-right">
                     {{ buttons.edit(path('furniture_backend_sku_option_update', {'id': sku_option.id})) }}
+                {% if is_sku_option_can_remove(sku_option) %}
                     {{ buttons.delete(path('furniture_backend_sku_option_delete', {'id': sku_option.id})) }}
+                {% endif %}
                    </div>
                 </td>
             </tr>

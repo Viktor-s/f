@@ -39,6 +39,7 @@ services:
         class: Furniture\FrontendBundle\Controller\SecurityController
         arguments:
             - @twig
+            - @security.token_storage
             - @doctrine.orm.default_entity_manager
             - @security.csrf.token_manager
             - @form.factory
@@ -152,6 +153,7 @@ services:
         arguments:
             - @twig
             - @frontend.repository.factory_retailer_relation
+            - @frontend.repository.factory
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
             - @security.authorization_checker
@@ -181,19 +183,20 @@ services:
             - @form.factory
             - @sylius.user.password_updater
             - @router
+            - @user.email_verifier
 
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController
         arguments:
             - @twig
             - @frontend.repository.factory
+            - @frontend.repository.factory_retailer_relation
             - @frontend.repository.post
             - @frontend.repository.product_style
             - @frontend.repository.product_category
             - @frontend.repository.composite_collection
             - @security.token_storage
             - @security.authorization_checker
-            - @security.token_storage
     # User profile controllers
     frontend.controller.user.profile:
         class: Furniture\FrontendBundle\Controller\Profile\User\UserProfileController

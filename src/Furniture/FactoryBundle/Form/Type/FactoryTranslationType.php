@@ -36,7 +36,11 @@ class FactoryTranslationType extends AbstractType
                 'attr' => [
                     'class' => 'ckeditor'
                 ]
-            ]);
+            ])
+            ->add('bankDetails', 'textarea', array('attr' => array('class' => 'ckeditor')) )
+            ->add('productTime', 'textarea', array('attr' => array('class' => 'ckeditor')) )
+            ->add('deliveryAndPackaging', 'textarea', array('attr' => array('class' => 'ckeditor')) )
+            ->add('vacations', 'textarea', array('attr' => array('class' => 'ckeditor')) );
     }
 
     /**

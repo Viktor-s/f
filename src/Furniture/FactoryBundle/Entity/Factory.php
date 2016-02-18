@@ -561,7 +561,8 @@ class Factory extends AbstractTranslatable
     }
 
     /**
-     * 
+     * Get enabled status
+     *
      * @return bool
      */
     public function getEnabled()
@@ -570,14 +571,37 @@ class Factory extends AbstractTranslatable
     }
     
     /**
-     * 
+     * Set enabled status
+     *
      * @param bool $enabled
-     * @return \Furniture\FactoryBundle\Entity\Factory
+     *
+     * @return Factory
      */
     public function setEnabled($enabled)
     {
         $this->enabled = (bool)$enabled;
+
         return $this;
+    }
+
+    /**
+     * Is enabled?
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Is disabled?
+     *
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return !$this->isEnabled();
     }
 
     /**

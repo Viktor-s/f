@@ -16,13 +16,16 @@
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'specification.header.index'|trans|raw }}</h1>
     </div>
 
+    {% render(controller('sylius.controller.backend.form:specificationFilterAction')) %}
+
     {{ pagination(specifications) }}
 
     <table class="table">
         <thead>
         <tr>
             <th>{{ 'specification.table.id'|trans }}</th>
-            <th>{{ 'specification.table.user'|trans }}</th>
+            <th>{{ 'specification.table.products'|trans }}</th>
+            <th>{{ 'specification.table.creator'|trans }}</th>
             <th>{{ 'specification.table.buyer'|trans }}</th>
             <th>{{ 'specification.table.created_at'|trans }}</th>
             <th>{{ 'specification.table.finished_at'|trans }}</th>
@@ -37,13 +40,23 @@
         {% for specification in specifications %}
             <tr>
                 <td>{{ specification.id }}</td>
-                <td>{{ specification.user.username }}</td>
+
+                <td>
+                    <div style="font-size: 0.8em; text-align: center">
+                        {% for item in specification.items if item.skuItem %}
+                            {{ item.skuItem.productVariant.product.name }}<br />
+                        {% endfor %}
+                    </div>
+                </td>
+
+                <td>{{ specification.creator.user.username }}</td>
                 <td>{{ specification.buyer ? specification.buyer : '~' }}</td>
                 <td>{{ specification.createdAt.format('Y/m/d H:i') }}</td>
                 <td>{{ specification.finishedAt ? specification.finishedAt.format('Y/m/d H:i') }}</td>
                 <td>{{ specification.name }}</td>
                 <td>{{ specification.countItems }}</td>
                 <td>{{ (specification.totalPrice / 100)|round(2) }} EUR</td>
+
                 <td>
                     {{ buttons.delete(path('furniture_backend_specification_delete', {id: specification.id}), 'specification.actions.delete'|trans) }}
                     {{ buttons.show(path('furniture_backend_specification_show', {id: specification.id}), 'specification.actions.show'|trans) }}

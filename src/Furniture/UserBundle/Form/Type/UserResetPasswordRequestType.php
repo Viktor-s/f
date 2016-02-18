@@ -15,7 +15,7 @@ class UserResetPasswordRequestType extends AbstractType
     {
         $builder
             ->add('email', 'email', [
-                'label' => 'Email',
+                'label' => false,
                 'constraints' => [
                     new Assert\Email()
                 ]

@@ -3,6 +3,7 @@
 namespace Furniture\UserBundle\Killer\Storage;
 
 use Furniture\UserBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 interface StorageInterface
 {

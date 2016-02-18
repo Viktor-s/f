@@ -76,7 +76,11 @@
 
             <div role="tabpanel" class="tab-pane" id="to-user-requests">
                 <div class="pull-right">
-                    <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% if has_factories_for_relate %}
+                        <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% else %}
+                        <a href="#" class="btn btn-success btn-xs" onclick="return false;" data-toggle="tooltip" title="{{ 'frontend.no_factories_for_create_relation'|trans }}">{{ 'frontend.create_to_factory_relation'|trans }}</a>
+                    {% endif %}
                 </div>
 
                 <table class="table">
@@ -138,7 +142,7 @@
 
                     <tbody>
                     {% for relation in authorized_relations %}
-                        <tr class="text-center">
+                        <tr class="text-center{% if not relation.active %} danger{% endif %}">
                             <td>{{ relation.factory.name }}</td>
 
                             <td>
@@ -154,11 +158,13 @@
                             </td>
 
                             <td>
-                                <a
-                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        data-remove data-message="Are you sure you want to remove a relation?"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                {% if relation.active %}
+                                    <a
+                                            href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                            class="btn btn-danger btn-xs"
+                                            data-remove data-message="Are you sure you want to remove a relation?"
+                                            >{{ 'frontend.remove'|trans }}</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

@@ -4,6 +4,7 @@ namespace Furniture\UserBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Core\Model\User as BaseUser;
+use Sylius\Component\User\Model\UserOAuth;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
@@ -11,7 +12,7 @@ use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 /**
  * @UniqueEntity(
  *     fields={"usernameCanonical"},
- *     groups={"Default", "Create", "Update"},
+ *     groups={"Default", "Create", "Update", "RetailerProfileCreate"},
  *     errorPath="username"
  * )
  */
@@ -47,6 +48,11 @@ class User extends BaseUser
     protected $needResetPassword = false;
 
     /**
+     * @var string
+     */
+    protected $verifyEmailHash;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -65,6 +71,9 @@ class User extends BaseUser
     {
         $this->username = $username;
         $this->usernameCanonical = self::canonizeUsername($username);
+
+        // We should clear confirmation token, because email/username changed
+        $this->confirmationToken = null;
 
         return $this;
     }
@@ -168,12 +177,9 @@ class User extends BaseUser
      */
     public function isRetailer()
     {
-        if($this->retailerUserProfile 
-                && $this->retailerUserProfile->getRetailerMode()
-                && $this->retailerUserProfile->getRetailerProfile())
-            return true;
-        else
-            return false;
+        return $this->retailerUserProfile
+            && $this->retailerUserProfile->getRetailerMode()
+            && $this->retailerUserProfile->getRetailerProfile();
     }
 
     /**
@@ -273,6 +279,42 @@ class User extends BaseUser
     }
 
     /**
+     * Request for verify email
+     *
+     * @return string
+     */
+    public function requestForVerifyEmail()
+    {
+        $this->verifyEmailHash = md5(
+            uniqid($this->getEmail() . microtime(true) . mt_rand(1, 100), true)
+        );
+
+        return $this->verifyEmailHash;
+    }
+
+    /**
+     * Verify email.
+     *
+     * @return User
+     */
+    public function resetVerifyEmailHash()
+    {
+        $this->verifyEmailHash = null;
+
+        return $this;
+    }
+
+    /**
+     * Remove oauthAccount
+     *
+     * @param UserOAuth $oauthAccount
+     */
+    public function removeOauthAccount(UserOAuth $oauthAccount)
+    {
+        $this->oauthAccounts->removeElement($oauthAccount);
+    }
+
+    /**
      * Canonize username
      *
      * @param string $username
@@ -282,25 +324,5 @@ class User extends BaseUser
     public static function canonizeUsername($username)
     {
         return mb_strtolower($username, mb_detect_encoding($username));
-    }
-
-    /**
-     * Get needResetPassword
-     *
-     * @return boolean
-     */
-    public function getNeedResetPassword()
-    {
-        return $this->needResetPassword;
-    }
-
-    /**
-     * Remove oauthAccount
-     *
-     * @param \Sylius\Component\User\Model\UserOAuth $oauthAccount
-     */
-    public function removeOauthAccount(\Sylius\Component\User\Model\UserOAuth $oauthAccount)
-    {
-        $this->oauthAccounts->removeElement($oauthAccount);
     }
 }

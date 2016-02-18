@@ -17,13 +17,17 @@
 
                 <label for="password">{{ 'frontend.login.password'|trans }}</label>
                 <input class="simple-field" type="password" id="password" name="_password" required="required" />
-
-                <label class="checkbox-entry">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on">
-                    <span class="check"></span>
-                    {{ 'frontend.login.remember_me'|trans }}
-                </label>
-
+                <p class="pull-right">
+                    <a href="{{ path('security_reset_password_request') }}">Forgot password?</a>
+                </p>
+                <p class="pull-left">
+                    <label class="checkbox-entry">
+                        <input type="checkbox" id="remember_me" name="_remember_me" value="on">
+                        <span class="check"></span>
+                        {{ 'frontend.login.remember_me'|trans }}
+                    </label>
+                </p>
+                <p class="lead clear"></p>
                 <input type="submit" class="button style-12" id="_submit" name="_submit" value="{{ 'frontend.login.submit'|trans }}" />
             </form>
         </div>

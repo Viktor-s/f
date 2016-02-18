@@ -25,7 +25,7 @@ Furniture\SkuOptionBundle\Entity\SkuOptionVariant:
                 cascade: [persist, remove]
                 name: sku_option_id
                 referencedColumnName: id
-                onDelete: CASCADE
+                onDelete: RESTRICT
                 nullable: false
     indexes:
         unique_index:            

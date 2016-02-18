@@ -62,7 +62,25 @@ class FactoriesBlock extends BaseBlockService
             $query = new FactoryQuery();
 
             if ($settings['user']) {
-                $query->withRetailerFromUser($settings['user']);
+                /** @var User $user */
+                $user = $settings['user'];
+
+                $retailerProfile = null;
+
+                if ($user->getRetailerUserProfile()) {
+                    $retailerProfile = $user->getRetailerUserProfile()
+                        ->getRetailerProfile();
+                }
+
+                if ($retailerProfile) {
+                    $query->withRetailer($retailerProfile);
+
+                    if ($retailerProfile->isDemo()) {
+                        $query
+                            ->withoutOnlyEnabledOrDisabled()
+                            ->withoutRetailerAccessControl();
+                    }
+                }
             }
 
             $factories = $this->factoryRepository->findNewest($query, $limit, $offset);
