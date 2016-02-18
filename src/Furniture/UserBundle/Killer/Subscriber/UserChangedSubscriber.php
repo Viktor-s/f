@@ -109,7 +109,7 @@ class UserChangedSubscriber implements EventSubscriber
                     // Kill only non active user.
                     $this->killer->kill($user);
                 } else if (
-                    !$activeUser
+                    (!$activeUser || $activeUser && $activeUser->getId() == $user->getId())
                     && $isPasswordChanged
                     && count($kills) === 1
                 )
