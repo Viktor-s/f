@@ -40,7 +40,7 @@ frontend:
     content_user_profile: User profile
     create: Create
     create_to_factory_relation: Create request to factory
-    create_to_retailer_relation: Relate to retailer
+    create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
     created_at: Created at
