@@ -5,13 +5,14 @@ namespace Furniture\SpecificationBundle\Exporter\Client;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Exporter\AbstractExporter;
+use PHPExcel_Shared_Drawing;
 
 class ClientExporter extends AbstractExporter
 {
     /**
      * Export specification
      *
-     * @param Specification $specification
+     * @param Specification     $specification
      * @param FieldMapForClient $fieldMap
      *
      * @return \PHPExcel
@@ -47,11 +48,13 @@ class ClientExporter extends AbstractExporter
             }
         }
 
-        if ($fieldMap->hasFieldName()) {
+        $totalColumns = count($positions);
+
+        if ($fieldMap->hasFieldName() && $totalColumns > 3) {
             $this->createVolumeCell($sheet, $specification, $positions['name'], $row);
         }
 
-        if ($fieldMap->hasFieldNotes()) {
+        if ($fieldMap->hasFieldNotes() && $totalColumns > 3) {
             $this->createWeightCell($sheet, $specification, $positions['notes'], $row);
         }
 
@@ -60,7 +63,9 @@ class ClientExporter extends AbstractExporter
             $this->createTotalRows($sheet, $specification, $positions['total_price'], $row);
         }
 
-        $this->writeEmptyValuesForCells($sheet, count($positions), $row);
+        $this->writeEmptyValuesForCells($sheet, $totalColumns, $row);
+
+        $this->formatTable($sheet, $totalColumns, $row);
 
         return $excel;
     }
@@ -528,12 +533,23 @@ class ClientExporter extends AbstractExporter
             if ($path) {
                 $this->mergeDiapason($sheet, $firstColumnIndex + 1, $startRow, $secondColumnIndex, $row);
                 $key = $this->generateCellKey($firstColumnIndex + 1, $startRow);
-
-                $obj = $this->createImageForExcel($path, $key, 's150x100', 150, 100);
+                $imageWidth = 150;
+                $imageHeight = 100;
+                $cellDimension = ceil(PHPExcel_Shared_Drawing::pixelsToCellDimension($imageWidth, $this->defaultFont));
+                $rowHeight = ceil(PHPExcel_Shared_Drawing::pixelsToPoints($imageHeight));
+                $obj = $this->createImageForExcel(
+                    $path,
+                    $key,
+                    's150x100',
+                    $imageWidth,
+                    $imageHeight,
+                    $cellDimension,
+                    $rowHeight
+                );
                 $obj->setWorksheet($sheet);
-
                 $imageCell = $sheet->getCell($key);
-                $this->formatImageCell($imageCell);
+
+                $this->formatImageCell($imageCell, $cellDimension, $rowHeight);
                 $this->setAlignmentForCell($imageCell, 'center', 'top');
             }
         }
@@ -749,15 +765,20 @@ class ClientExporter extends AbstractExporter
      * Format image cell
      *
      * @param \PHPExcel_Cell $cell
+     * @param int            $cellWidth
+     * @param int            $rowHeight
      */
-    private function formatImageCell(\PHPExcel_Cell $cell)
+    private function formatImageCell(
+        \PHPExcel_Cell $cell,
+        $cellWidth = self::IMAGE_COLUMN_WIDTH,
+        $rowHeight = self::IMAGE_ROW_HEIGHT
+    )
     {
         $row = $cell->getRow();
         $column = $cell->getColumn();
         $sheet = $cell->getWorksheet();
-
-        $sheet->getRowDimension($row)->setRowHeight(self::IMAGE_ROW_HEIGHT);
-        $sheet->getColumnDimension($column)->setWidth(self::IMAGE_COLUMN_WIDTH);
+        $sheet->getRowDimension($row)->setRowHeight($rowHeight);
+        $sheet->getColumnDimension($column)->setWidth($cellWidth);
 
         $this->setAlignmentForCell($cell, 'center', 'center');
     }
