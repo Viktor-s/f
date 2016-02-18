@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
+                <th>Enabled</th>
                 <th></th>
             </tr>
         </thead>
@@ -15,6 +16,9 @@
         {% for factory in factories %}
             <tr id="{{ factory.id }}">
                 <td>{{ factory.name }}</td>
+                <td class="text-center">
+                    <i class="glyphicon glyphicon-{{ factory.enabled ? 'ok' : 'remove' }}"></i>
+                </td>
                 <td>
                     <div class="pull-right">
                     {{ buttons.show(path('furniture_backend_factory_show', {id: factory.id})) }}
