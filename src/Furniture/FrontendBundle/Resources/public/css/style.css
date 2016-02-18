@@ -279,13 +279,10 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 }
 /*form elements*/
 .checkbox, .radio{margin-top: 0;}
-.checkbox-entry{margin-bottom: 15px;}
 .checkbox-entry{display: block; font-size: 13px; line-height: 14px; font-weight: 500; position: relative; padding-left: 22px;}
 .checkbox-entry b{font-weight: 600!important; color: #313131!important;}
-.checkbox-entry input + span{cursor: pointer; display: inline-block; border: 1px #d9d9d9 solid; width: 12px; height: 12px;  vertical-align: middle; color: #333232; position: relative; top: -1px; margin-right: 7px; position: absolute; left: 0; top: 6px;}
 .checkbox-entry.radio input + span{width: 15px; height: 15px; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 .checkbox-entry input{display: none;}
-.checkbox-entry input:checked + span{background: #ca1515;}
 .checkbox-entry.radio input:checked + span:after{position: absolute; left: -1px; top: -1px; right: -1px; bottom: -1px; content: ""; box-shadow: inset 0 0 0 3px #fff; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 /*boxed layout*/
 .boxed-layout{max-width: 1270px; margin: 0 auto; background: #fafafa;}
@@ -3908,14 +3905,16 @@ footer .copyright {
 }
 
 /* styling buttons */
-.table .btn.btn-xs {
+.table .btn {
     width: 64px;
     border: none;
 }
 
-.btn.btn-success {
+.btn.btn-success, .btn.btn-primary, .btn-green.btn {
     height: 20px;
-    padding: 15px;
+    padding: 0 15px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .btn.btn-success {
@@ -3954,14 +3953,14 @@ footer .copyright {
     border-bottom: 1px solid #597b00;
 }
 
-.table.table-bordered th {
+.table th {
     background: #333333;
     color: #ffffff;
     border-color: #ffffff;
     font-weight: 600;
 }
 
-.table.table-bordered tr:nth-child(2n) {
+.table tbody tr:nth-child(2n) {
     background: #f5f5f5;
 }
 
@@ -3971,4 +3970,113 @@ footer .copyright {
 
 .navigation-banner-swiper {
     margin-top: 75px;
+}
+
+.fa.fa-close {
+    color: #f13739;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.fa.fa-close.remove {
+    color: red;
+    font-size: 18px;
+}
+
+.btn-block .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container .remove-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 18px;
+}
+
+.fa.fa-close.remove-spec {
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+#table-total-price {
+    color: #dc0008;
+}
+
+.final-price {
+    color: #dc0008;
+}
+
+.final-price td:first-child {
+    color: #929292;
+}
+
+.sale .fa.fa-close {
+    font-size: 16px;
+}
+
+.spec-info-list li {
+    border-bottom: 1px solid #ededed;
+    padding: 8px 3px 0;
+}
+
+.spec-info-list li:last-child {
+    border-bottom: none;
+}
+
+.spec-info-list-title, .spec-info-list-value {
+    float: left;
+    line-height: 17px;
+}
+
+.spec-info-list-title {
+    color: #333333;
+    width: 140px;
+}
+
+.spec-info-list-value {
+    color: #8a8a8a;
+}
+
+.specification-edit-head .block-title {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.checkbox-name {
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.checkbox-entry input + span.check {
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    background: #ffffff;
+    position: relative;
+    float: right;
+}
+
+.checkbox-entry input + span.check:before {
+    display: none;
+    position: absolute;
+    font-size: 16px;
+    top: -4px;
+    left: -2px;
+    position: absolute;
+    color: #90ca00;
+
+}
+
+.checkbox-entry input:checked + span.check:before {
+    display: block;
 }
