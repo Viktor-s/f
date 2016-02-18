@@ -12,8 +12,6 @@ use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -163,7 +161,9 @@ class FactorySideController
         }
 
         if ($retailerProfile) {
-            $query->withRetailer($retailerProfile);
+            $query
+                ->withRetailer($retailerProfile)
+                ->withoutRetailerAccessControl();
 
             if ($retailerProfile->isDemo()) {
                 $query
