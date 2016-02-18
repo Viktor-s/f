@@ -59,12 +59,16 @@ class UserChangedSubscriber implements EventSubscriber
         /** @var User[] $kills */
         $kills = [];
 
-        $isAnyFieldChanged = function ($entity, array $fields) use ($uow)
+        $isPasswordChanged = false;
+
+        $isAnyFieldChanged = function ($entity, array $fields) use ($uow, &$isPasswordChanged)
         {
             $changes = $uow->getEntityChangeSet($entity);
-
             foreach ($fields as $fieldName) {
                 if (isset($changes[$fieldName])) {
+                    if ($fieldName == 'password') {
+                        $isPasswordChanged = true;
+                    }
                     return true;
                 }
             }
@@ -103,6 +107,15 @@ class UserChangedSubscriber implements EventSubscriber
             foreach ($kills as $user) {
                 if ($activeUser && $activeUser->getId() != $user->getId()) {
                     // Kill only non active user.
+                    $this->killer->kill($user);
+                } else if (
+                    !$activeUser
+                    && $isPasswordChanged
+                    && count($kills) === 1
+                )
+                {
+                    // User reset password.
+                    // Kill all sessions except current for user.
                     $this->killer->kill($user);
                 }
             }
