@@ -72,13 +72,14 @@ class FactoriesBlock extends BaseBlockService
                         ->getRetailerProfile();
                 }
 
+                $query->withoutRetailerAccessControl();
+
                 if ($retailerProfile) {
                     $query->withRetailer($retailerProfile);
 
                     if ($retailerProfile->isDemo()) {
                         $query
-                            ->withoutOnlyEnabledOrDisabled()
-                            ->withoutRetailerAccessControl();
+                            ->withoutOnlyEnabledOrDisabled();
                     }
                 }
             }
