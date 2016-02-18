@@ -439,12 +439,13 @@ class FactorySideController
             }
         }
 
-        if ($factory->isDisabled()) {
-            throw new NotFoundHttpException(sprintf(
-                'The factory "%s" is disabled.',
-                $factory->getName()
-            ));
-        }
+        // By task: #265
+        //if ($factory->isDisabled()) {
+        //    throw new NotFoundHttpException(sprintf(
+        //        'The factory "%s" is disabled.',
+        //        $factory->getName()
+        //    ));
+        //}
     }
 
     /**
