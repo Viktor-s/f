@@ -38,10 +38,6 @@ class RetailerProfileType extends AbstractType
             ->add('description', 'textarea', [
                 'required' => false
             ])
-            ->add('address', 'text', [
-                'attr' => array('class'=>'google-address-autocomplete'),
-                'required' => false
-            ])
             ->add('phones', 'text', [
                 'label' => 'furniture_retailer_profile.form.phones',
                 'required' => false
