@@ -90,7 +90,7 @@ class FactorySideController
         ProductCategoryRepository $productCategoryRepository,
         CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker
     )
     {
         $this->twig = $twig;
@@ -154,6 +154,23 @@ class FactorySideController
         /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $activeUser = $this->tokenStorage->getToken()->getUser();
         $query->withRetailerFromUser($activeUser);
+
+        $retailerProfile = null;
+
+        if ($activeUser->getRetailerUserProfile()) {
+            $retailerProfile = $activeUser->getRetailerUserProfile()
+                ->getRetailerProfile();
+        }
+
+        if ($retailerProfile) {
+            $query->withRetailer($retailerProfile);
+
+            if ($retailerProfile->isDemo()) {
+                $query
+                    ->withoutOnlyEnabledOrDisabled()
+                    ->withoutRetailerAccessControl();
+            }
+        }
 
         $factories = $this->factoryRepository->findBy($query);
 
@@ -417,7 +434,16 @@ class FactorySideController
                         $factory->getName()
                     ));
                 }
+
+                return;
             }
+        }
+
+        if ($factory->isDisabled()) {
+            throw new NotFoundHttpException(sprintf(
+                'The factory "%s" is disabled.',
+                $factory->getName()
+            ));
         }
     }
 

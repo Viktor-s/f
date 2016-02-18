@@ -153,6 +153,7 @@ class FactoryRetailerRelationType extends AbstractType
                                     $factoryQuery = new FactoryQuery();
                                     $activeUser = $this->tokenStorage->getToken()->getUser();
                                     $factoryQuery->withRetailerFromUser($activeUser);
+                                    $factoryQuery->withoutRetailerAccessControl();
 
                                     if ($relation->getRetailer()->isDemo()) {
                                         $factoryQuery->withoutOnlyEnabledOrDisabled();

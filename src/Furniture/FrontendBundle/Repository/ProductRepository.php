@@ -109,10 +109,13 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
-            ->innerJoin('p.factory', 'f')
-            //If visible in front!
-            ->andWhere('f.enabled = true')
-            ;
+            ->innerJoin('p.factory', 'f');
+
+        if ($query->isFactoryEnabled()) {
+            $qb
+                ->andWhere('f.enabled = :factory_enabled')
+                ->setParameter('factory_enabled', true);
+        }
 
         // Filtering by space
         if ($query->hasSpaces()) {

@@ -138,7 +138,7 @@ class RetailerRelationController
                 ->setFactoryAccept(true);
         }
 
-        $form = $this->formFactory->create(new FactoryRetailerRelationType(), $relation, [
+        $form = $this->formFactory->create('retailer_factory_relation', $relation, [
             'mode'         => 'from_factory',
             'factory_user' => $user
         ]);
