@@ -14,4 +14,15 @@
         {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>
+    {% if not relation.id %}
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                $('#retailer_factory_relation_retailer').select2({
+                    allowClear: false
+                });
+            });
+        })(jQuery);
+    </script>
+    {% endif %}
 {% endblock %}
