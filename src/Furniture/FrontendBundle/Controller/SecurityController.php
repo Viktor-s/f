@@ -264,7 +264,7 @@ class SecurityController
 
         if ($user->isDisabled()) {
             $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
-                'email' => $user->getUsername(),
+                ':email' => $user->getUsername(),
             ]);
         }
 
@@ -304,7 +304,7 @@ class SecurityController
 
         $content = $this->twig->render('FrontendBundle:Security:reset_password.html.twig', [
             'form' => $form->createView(),
-            'error' => null,
+            'error' => $error,
         ]);
 
         return new Response($content);
