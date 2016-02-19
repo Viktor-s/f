@@ -74,7 +74,7 @@ class HomepageController
         
         if($user->isFactory())
             return new RedirectResponse($this->urlGenerator->generate('factory'));
-        
+
         $content = $this->twig->render('FrontendBundle::homepage.html.twig', [
         ]);
         
