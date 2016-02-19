@@ -566,7 +566,7 @@
                             {{ 'frontend.specficatior.notes'|trans }}
                             <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}</span>
                         </h5>
-                        <div class="description editable spec-info-list-value" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|defa'None') }}</div>
+                        <div class="description editable spec-info-list-value" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
                     </li>
                     {% if specification.buyer and specification.buyer.hasSale() %}
                     <li>
