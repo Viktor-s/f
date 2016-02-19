@@ -1,7 +1,6 @@
 {% extends 'FrontendBundle:Security:layout.html.twig' %}
 
 {% form_theme form 'FrontendBundle:Security:form.html.twig' %}
-{% form_theme form_login 'FrontendBundle:Security:form.html.twig' %}
 
 {% block content %}
     <div class="col-md-6 information-entry col-md-offset-3">
@@ -10,13 +9,7 @@
                 <h3>{{ 'frontend.email_virify_success'|trans }}</h3>
             </div>
             <p>{{ 'frontend.email_virify_success_login'|trans }}</p>
-
             <p class="lead"></p>
-            {{ form_start(form_login) }}
-            {{ form_widget(form_login) }}
-            {{ form_end(form_login) }}
-            <p class="lead"></p>
-
             <p>{{ 'frontend.email_virify_success_reset'|trans }}</p>
             {{ form_start(form) }}
             {{ form_widget(form) }}
