@@ -61,10 +61,9 @@ class RetailerEmployeeType extends AbstractType
         $builder
             ->add(
                 'enabled',
-                'checkbox',
+                'hidden',
                 [
-                    'label'    => 'frontend.enabled',
-                    'required' => false,
+                    'data' => true,
                 ]
             )
             ->add(

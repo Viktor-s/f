@@ -2,6 +2,7 @@
 
 namespace Furniture\UserBundle\Form\Type;
 
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -89,13 +90,22 @@ class UserResetPasswordType extends AbstractType
                 $form = $event->getForm();
                 $data = $event->getData();
 
-                if (
-                    !isset($data['password'])
-                    || !isset($data['user'])
-                ) {
+                if (!isset($data['user'])
+                    || !$data['user'] instanceof User) {
                     return;
                 }
+
+                /** @var  User $user */
                 $user = $data['user'];
+
+                if ($user->isDisabled()) {
+                    $form->addError(new FormError('Your account has been disabled. Please contact support!.'));
+                }
+
+                if (!isset($data['password'])) {
+                    return;
+                }
+
                 $encoder = $this->encoderFactory->getEncoder($user);
 
                 if ($encoder->isPasswordValid($user->getPassword(), $data['password'], $user->getSalt())) {
