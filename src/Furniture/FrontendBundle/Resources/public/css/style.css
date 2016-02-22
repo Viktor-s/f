@@ -3905,9 +3905,10 @@ footer .copyright {
 }
 
 /* styling buttons */
-.table .btn {
+.table .btn.btn-success, .table .btn.btn-primary, .table .btn.btn-green {
     width: 64px;
     border: none;
+    padding: 0; 
 }
 
 .btn.btn-success, .btn.btn-primary, .btn-green.btn {
@@ -3984,10 +3985,9 @@ footer .copyright {
 }
 
 .btn-block .btn {
-    display: inline-block;
+    float: left;
     margin-bottom: 0;
     margin-right: 5px;
-    vertical-align: middle;
 }
 
 .image-container {
@@ -4050,28 +4050,39 @@ footer .copyright {
     padding-bottom: 0;
 }
 
-.checkbox-name {
+.table .checkbox-name {
     font-size: 14px;
     display: inline-block;
     vertical-align: middle;
+    color: #ffffff;
+}
+
+.checkbox-entry {
+    cursor: pointer;
 }
 
 .checkbox-entry input + span.check {
-    height: 15px;
-    width: 15px;
+    height: 12px;
+    width: 12px;
     display: inline-block;
     vertical-align: middle;
-    background: #ffffff;
+    background: #e8e8e8;
     position: relative;
+}
+
+.table .checkbox-entry input + span.check {
     float: right;
+    background: #ffffff;
+    height: 15px;
+    width: 15px;
 }
 
 .checkbox-entry input + span.check:before {
     display: none;
     position: absolute;
-    font-size: 16px;
-    top: -4px;
-    left: -2px;
+    font-size: 18px;
+    top: -2px;
+    left: -1px;
     position: absolute;
     color: #90ca00;
 
@@ -4079,4 +4090,35 @@ footer .copyright {
 
 .checkbox-entry input:checked + span.check:before {
     display: block;
+    background: #313131;
+}
+
+.table .checkbox-entry input:checked + span.check:before {
+    display: block;
+    background: #ffffff;
+}
+
+.th-total-price {
+    white-space: nowrap;
+}
+
+.article-container ul.spec-info-list li:before {
+    display: none;
+}
+
+.spec-info-list span {
+    margin-bottom: 0!important;
+    padding: 0!important;
+    font-size: 13px;
+    line-height: 30px;
+}
+
+.checkbox-name {
+    font-size: 13px;
+    line-height: 14px;
+    color: #929292;
+}
+
+.checkbox-entry input:checked + span.check + .checkbox-name {
+    color: #313131;
 }
