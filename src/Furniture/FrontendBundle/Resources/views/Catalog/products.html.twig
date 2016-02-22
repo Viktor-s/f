@@ -2,40 +2,42 @@
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
 
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
+<div class="row">
+    {% block breadcrumb %}
+        <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
+        <a href="{{ path('catalog') }}">{{ 'frontend.title.catalog'| trans }}</a>
+    {% endblock %}
 
-{% block breadcrumb %}
-    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
-    <a href="{{ path('catalog') }}">{{ 'frontend.title.catalog'| trans }}</a>
-{% endblock %}
+    <div class="page-selector">
+        {{ pagination(products) }}
+        <div class="shop-grid-controls">
+            <div class="entry">
+                <div class="inline-text">Sorty by</div>
+                <div class="simple-drop-down">
+                    <select name="sorting">
+                        <option>Position</option>
+                        <option>Price</option>
+                        <option>Category</option>
+                        <option>Rating</option>
+                        <option>Color</option>
+                    </select>
+                </div>
+            </div>
+            <div class="sort-button"></div>
+            <div class="entry">
+                <div class="view-button active grid"><i class="fa fa-th"></i></div>
+                <div class="view-button list"><i class="fa fa-list"></i></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
 
 {% block content %}
     <div class="information-blocks">
         <div class="row">
             <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
-                <div class="page-selector">
-                    {{ pagination(products) }}
-
-                    <div class="shop-grid-controls">
-                        <div class="entry">
-                            <div class="inline-text">Sorty by</div>
-                            <div class="simple-drop-down">
-                                <select name="sorting">
-                                    <option>Position</option>
-                                    <option>Price</option>
-                                    <option>Category</option>
-                                    <option>Rating</option>
-                                    <option>Color</option>
-                                </select>
-                            </div>
-                            <div class="sort-button"></div>
-                        </div>
-                        <div class="entry">
-                            <div class="view-button active grid"><i class="fa fa-th"></i></div>
-                            <div class="view-button list"><i class="fa fa-list"></i></div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                
 
                 <div class="row shop-grid grid-view">
                     {% for product in products %}
@@ -58,19 +60,14 @@
 
                     {% set column_size = ((spaces|length) / 2)|round(0, 'ceil') %}
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             {% set k = 1 %}
                             {% for space in spaces %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
 
                                 <label class="checkbox-entry">
                                     <input{% if space_ids is iterable and space.id in space_ids %} checked{% endif %} type="checkbox" value="{{ space.id }}" live-form name="space[]" />
                                     <span class="check"></span>
-                                    {{ space.translate.name}}
+                                    <span class="checkbox-name">{{ space.translate.name}}</span>
                                 </label>
 
                                 {% set k = k + 1 %}
@@ -87,19 +84,14 @@
 
                     {% set column_size = ((categories|length) / 2)|round(0, 'ceil') %}
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             {% set k = 1 %}
                             {% for category in categories %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                {% set k = 1 %}
-                                {% endif %}
 
                                 <label class="checkbox-entry">
                                     <input{% if category_ids is iterable and category.id in category_ids %} checked{% endif %} type="checkbox" value="{{ category.id }}" live-form name="category[]" />
                                     <span class="check"></span>
-                                    {{ category.translate.name}}
+                                    <span class="checkbox-name">{{ category.translate.name}}</span>
                                 </label>
 
                                 {% set k = k + 1 %}
@@ -116,19 +108,14 @@
 
                     {% set column_size = ((types|length) / 2)|round(0, 'ceil') %}
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             {% set k = 1 %}
                             {% for type in types %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
 
                                 <label class="checkbox-entry">
                                     <input{% if type_ids is iterable and type.id in type_ids %} checked{% endif %} type="checkbox" value="{{ type.id }}" live-form name="type[]" />
                                     <span class="check"></span>
-                                    {{ type.translate.name}}
+                                    <span class="checkbox-name">{{ type.translate.name}}</span>
                                 </label>
 
                                 {% set k = k + 1 %}
@@ -145,18 +132,14 @@
                         {% set column_size = (brands|length)/2 %}
                         <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-12">
                                 {% set k = 1 %}
                                 {% for factory in brands %}
-                                    {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                        {% set k = 1 %}
-                                    {% endif %}
+                                    
                                     <label class="checkbox-entry">
                                         <input{% if factory_ids is iterable and factory.id in factory_ids %} checked{% endif %} type="checkbox" value="{{ factory.id }}" live-form name="brand[]" />
                                         <span class="check"></span>
-                                        {{ factory.name }}
+                                        <span class="checkbox-name">{{ factory.name }}</span>
                                     </label>
                                     {% set k = k + 1 %}
                                 {% endfor %}
@@ -171,19 +154,15 @@
 
                     {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             {% set k = 1 %}
                             {% for style in styles %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
+                               
 
                                 <label class="checkbox-entry">
                                     <input{% if style_ids is iterable and style.id in style_ids %} checked{% endif %} type="checkbox" value="{{ style.id }}" live-form name="style[]" />
                                     <span class="check"></span>
-                                    {{ style.translate.name}}
+                                    <span class="checkbox-name">{{ style.translate.name}}</span>
                                 </label>
 
                                 {% set k = k + 1 %}
@@ -201,19 +180,15 @@
 
                     {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-12">
                             {% set k = 1 %}
                             {% for collection in composite_collections %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
+                                
 
                                 <label class="checkbox-entry">
                                     <input{% if composite_collection_ids is iterable and collection.id in composite_collection_ids %} checked{% endif %} type="checkbox" value="{{ collection.id }}" live-form name="cc[]" />
                                     <span class="check"></span>
-                                    {{ collection.translate.presentation }}
+                                    <span class="checkbox-name">{{ collection.translate.presentation }}</span>
                                 </label>
 
                                 {% set k = k + 1 %}
