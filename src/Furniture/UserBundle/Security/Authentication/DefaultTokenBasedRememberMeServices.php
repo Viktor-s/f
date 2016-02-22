@@ -20,9 +20,16 @@ class DefaultTokenBasedRememberMeServices extends TokenBasedRememberMeServices
             throw $e;
         }
 
-        // Check that user should reset password.
-        if ($user instanceof User && $user->isNeedResetPassword()) {
-            throw new AuthenticationException('User need reset password.');
+        if ($user instanceof User) {
+            // Check that user should reset password.
+            if ($user->isNeedResetPassword()) {
+                throw new AuthenticationException('User need reset password.');
+            }
+
+            // Check that user should reset password.
+            if ($user->getVerifyEmailHash()) {
+                throw new AuthenticationException('User need verify email.');
+            }
         }
 
         return $user;

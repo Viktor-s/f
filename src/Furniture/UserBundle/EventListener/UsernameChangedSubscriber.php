@@ -8,6 +8,7 @@ use Doctrine\ORM\Events;
 use Furniture\UserBundle\Entity\Customer;
 use Furniture\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 class UsernameChangedSubscriber implements EventSubscriber
 {
@@ -36,6 +37,22 @@ class UsernameChangedSubscriber implements EventSubscriber
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
 
+        $tokenStorage = $this->container->get('security.token_storage');
+        $token = $tokenStorage->getToken();
+
+        $activeUser = null;
+
+        if ($token) {
+            $user = $token->getUser();
+
+            if ($user && $user instanceof User) {
+                $activeUser = $user;
+            }
+        }
+
+        /** @var User[] $kills */
+        $kills = [];
+
         $userClassMetadata = $em->getClassMetadata(User::class);
         $customerClassMetadata = $em->getClassMetadata(Customer::class);
 
@@ -47,6 +64,7 @@ class UsernameChangedSubscriber implements EventSubscriber
                     $this->changeUsernameForUser($entity);
 
                     $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
+                    $kills[$entity->getId()] = $entity;
                 }
             }
         }
@@ -61,6 +79,7 @@ class UsernameChangedSubscriber implements EventSubscriber
                     $this->changeUsernameForUser($user);
 
                     $uow->recomputeSingleEntityChangeSet($customerClassMetadata, $user);
+                    $kills[$user->getId()] = $user;
                 }
             } else if ($entity instanceof User) {
                 $customer = $entity->getCustomer();
@@ -69,6 +88,16 @@ class UsernameChangedSubscriber implements EventSubscriber
                     $entity->setUsername($customer->getEmail());
                     $this->changeUsernameForUser($entity);
                     $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
+                    $kills[$entity->getId()] = $entity;
+                }
+            }
+        }
+
+        if (count($kills)) {
+            foreach ($kills as $user) {
+                if ($activeUser && $activeUser->getId() == $user->getId()) {
+                    $this->container->get('user.killer')->kill($user);
+                    $tokenStorage->setToken(new AnonymousToken(rand(), 'anon.', array()));
                 }
             }
         }
@@ -81,9 +110,7 @@ class UsernameChangedSubscriber implements EventSubscriber
      */
     private function changeUsernameForUser(User $user)
     {
-        if ($user->getVerifyEmailHash()) {
-            $this->container->get('user.email_verifier')->verifyEmail($user);
-        }
+        $this->container->get('user.email_verifier')->verifyEmail($user);
     }
 
     /**

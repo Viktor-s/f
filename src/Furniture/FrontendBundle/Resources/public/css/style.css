@@ -120,7 +120,6 @@ a, a:link, a:visited, a:active, a:hover{cursor: pointer; text-decoration: none; 
 ul{list-style: none;}
 body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; line-height: 1;}
 
-
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 03 - GLOBAL SETTINGS */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
@@ -3910,8 +3909,7 @@ footer .copyright {
 }
 
 .btn.btn-success, .btn.btn-primary, .btn-green.btn {
-    height: 20px;
-    padding: 0 15px;
+    padding: 5px 15px;
     display: inline-block;
     vertical-align: middle;
 }

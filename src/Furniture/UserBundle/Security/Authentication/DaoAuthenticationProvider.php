@@ -3,6 +3,7 @@
 namespace Furniture\UserBundle\Security\Authentication;
 
 use Furniture\UserBundle\Entity\User;
+use Furniture\UserBundle\Security\Exception\AuthenticationEmailVerifyException;
 use Furniture\UserBundle\Security\Exception\AuthenticationNeedResetPasswordException;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider as BaseDaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -19,6 +20,10 @@ class DaoAuthenticationProvider extends BaseDaoAuthenticationProvider
         if ($user instanceof User) {
             if ($user->isNeedResetPassword()) {
                 throw new AuthenticationNeedResetPasswordException($user, 'Need reset password.');
+            }
+
+            if ($user->getVerifyEmailHash()) {
+                throw new AuthenticationEmailVerifyException($user, "Email address not verified.");
             }
         }
 

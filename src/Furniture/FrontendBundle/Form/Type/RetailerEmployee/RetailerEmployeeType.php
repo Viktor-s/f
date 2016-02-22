@@ -67,7 +67,14 @@ class RetailerEmployeeType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('customer', 'retailer_employee_customer', ['email_disabled' => true, 'last_name_disabled' => true,])
+            ->add(
+                'customer',
+                'retailer_employee_customer',
+                [
+                    'email_disabled'     => (bool)$employee->getId(),
+                    'last_name_disabled' => (bool)$employee->getId(),
+                ]
+            )
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
     }
 

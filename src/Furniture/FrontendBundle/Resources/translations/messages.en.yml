@@ -55,8 +55,7 @@ frontend:
     edit: Edit
     email: Email
     email_virify_success: "Your email successfully verified"
-    email_virify_success_login: "Your email was verified and you can login with your credentials."
-    email_virify_success_reset: "Or reset your password with form bellow."
+    email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
     emails: Emails
     employee: Employee
     employees: Employees
@@ -186,6 +185,8 @@ frontend:
     retailer_profile_side:
         managers:
             email_exists_error: Already in use!
+            create_confirmation: "We'll send confirmation mail on specified email address"
+            email_change_confirmation: "Are you sure you want change your email? If you proceed you'll be logged out and mail with email confirmation instructions will be send to new email."
     retailer_relations: User relations
     retailer_requests: Retailer requests
     sale: Personal discount

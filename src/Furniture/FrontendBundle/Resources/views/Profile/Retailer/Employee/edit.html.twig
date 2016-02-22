@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page_content %}
-    <form class="form" method="POST" action="">
+    <form class="form" method="POST" action="" data-confirm="{{ employee.id ? "false" : "true" }}" {% if not employee.id %}data-message="{{ 'frontend.retailer_profile_side.managers.create_confirmation'|trans }}"{% endif %}>
         {% if form.vars.errors|length %}
             {{ form_errors(form) }}
         {% endif %}
@@ -29,7 +29,28 @@
         {{ form_rest(form) }}
 
         <div class="form-group text-center">
-            <input type="submit" value="{{ employee.id ? 'Save' : 'Create' }}" class="btn btn-success" />
+            <button type="submit"
+                    class="btn btn-success">
+                    {{ employee.id ? 'Save' : 'Create' }}</button>
         </div>
     </form>
+
+        <script>
+            (function($) {
+                $('form[data-confirm]').on('submit', function(e, options) {
+                    options = options || {};
+                    if ($(this).data('confirm') === true) {
+                        var message = $(this).data('message');
+                        if (!options.confirm) {
+                            bootbox.confirm(message, function(result) {
+                                if (result) {
+                                    $(e.currentTarget).trigger('submit', {'confirm': true});
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                });
+            })(jQuery);
+        </script>
 {% endblock %}

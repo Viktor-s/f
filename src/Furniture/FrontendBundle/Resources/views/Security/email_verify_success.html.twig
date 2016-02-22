@@ -8,9 +8,7 @@
             <div class="article-container style-1 text-center">
                 <h3>{{ 'frontend.email_virify_success'|trans }}</h3>
             </div>
-            <p>{{ 'frontend.email_virify_success_login'|trans }}</p>
-            <p class="lead"></p>
-            <p>{{ 'frontend.email_virify_success_reset'|trans }}</p>
+            <p>{{ 'frontend.email_virify_success_login'|trans|raw }}</p>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
