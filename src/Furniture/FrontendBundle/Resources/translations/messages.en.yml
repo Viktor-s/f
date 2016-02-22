@@ -13,7 +13,7 @@ frontend:
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sure you want to remove logo?
     are_you_sure_remove_retailer_relation: Are you sure remove retailer relation?
-    are_you_sure_remove_specification: Are you sure remove specification?
+    are_you_sure_remove_specification: Are you sure you want to remove this specification?
     are_you_sure_remove_specification_item: Are you sure you want to remove this product?
     authorized_factories: Authorized brands
     authorized_users: Authorized users
