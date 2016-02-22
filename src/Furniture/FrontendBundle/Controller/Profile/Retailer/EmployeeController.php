@@ -77,6 +77,7 @@ class EmployeeController
      * @param FormFactoryInterface          $formFactory
      * @param PasswordUpdater               $passwordUpdater
      * @param UrlGeneratorInterface         $urlGenerator
+     * @param EmailVerifier                 $emailVerifier
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -197,7 +198,7 @@ class EmployeeController
                 $pass = md5(uniqid(mt_rand(), true));
                 $employee->setPlainPassword($pass);
                 // Verify email action for created users.
-                $this->emailVerifier->verifyEmail($employee, false);
+                $this->emailVerifier->verifyEmail($employee);
             }
             $this->em->persist($employee);
             $this->em->flush();

@@ -38,7 +38,7 @@ class EmailVerifier
      *
      * @return User
      */
-    public function verifyEmail(User $user, $update = true)
+    public function verifyEmail(User $user)
     {
         $verifyToken = $user->requestForVerifyEmail();
 
@@ -55,9 +55,5 @@ class EmailVerifier
             $parameters,
             $name
         );
-
-        if ($update) {
-            $this->em->flush($user);
-        }
     }
 }
