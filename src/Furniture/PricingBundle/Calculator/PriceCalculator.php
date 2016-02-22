@@ -11,6 +11,7 @@ use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Furniture\ProductBundle\Entity\ProductVariantsPattern;
 
 class PriceCalculator
 {
@@ -72,7 +73,7 @@ class PriceCalculator
         /** @var Product $product */
         $product = $productVariant->getProduct();
 
-        if ($user && $user->hasRole(User::ROLE_CONTENT_USER)) {
+        if ($user && $user->isRetailer()) {
             // Calculate for content user
             $factory = $product->getFactory();
 
@@ -81,6 +82,23 @@ class PriceCalculator
 
         return $productVariant->getPrice();
     }
+
+    public function calculateForPattern(ProductVariantsPattern $pattern){
+        $user = $this->getActiveUser();
+        
+        /** @var Product $product */
+        $product = $pattern->getProduct();
+        
+        if ($user && $user->isRetailer()) {
+            // Calculate for content user
+            $factory = $product->getFactory();
+
+            return $this->calculateForRetailerByFactory($factory, $user, $pattern->getPrice());
+        }
+
+        return $pattern->getPrice();
+    }
+
 
     /**
      * Calculate total price for specification item
