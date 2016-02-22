@@ -12,6 +12,7 @@
 use Sylius\Bundle\CoreBundle\Kernel\Kernel;
 use Sylius\Bundle\FixturesBundle\SyliusFixturesBundle;
 use HWI\Bundle\OAuthBundle\HWIOAuthBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 
 /**
  * Sylius application kernel.
