@@ -14,7 +14,7 @@ class SpecificationRepository extends EntityRepository
      *
      * @return \Pagerfanta\PagerfantaInterface
      */
-    public function createFilterPaginator(array $criteria = null, array $sorting = null)
+    public function createFilterPaginator($criteria = null, $sorting = null)
     {
         $queryBuilder = parent::getCollectionQueryBuilder();
 
