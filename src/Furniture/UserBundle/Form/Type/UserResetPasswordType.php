@@ -88,9 +88,9 @@ class UserResetPasswordType extends AbstractType
             function (FormEvent $event) {
                 $form = $event->getForm();
                 $data = $event->getData();
+
                 if (
-                    !$data
-                    || $data['password'] === ''
+                    !isset($data['password'])
                     || !isset($data['user'])
                 ) {
                     return;
