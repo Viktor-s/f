@@ -61,8 +61,10 @@ frontend:
     employee: Employee
     employees: Employees
     enabled: Enabled
-    excel: Export
+    excel: Excel
     export: Export
+    export_to_excel: Export to excel
+    export_to_pdf: Export to PDF
     export_specification_preview: Export specification - preview
     factories: Brands
     factory: Brand
