@@ -32,10 +32,18 @@ services:
 
     user.email_verifier:
         class: Furniture\UserBundle\Security\EmailVerifier\EmailVerifier
-        arguments: [ @doctrine.orm.default_entity_manager, @furniture.mailer ]
+        arguments: [ @furniture.mailer ]
+        tags:
+            - { name: kernel.event_subscriber }
 
     sylius.listener.default_username:
         class: Furniture\UserBundle\EventListener\DefaultUsernameORMListener
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    user.subscriber.username_changed:
+        class: Furniture\UserBundle\EventListener\UsernameChangedSubscriber
+        arguments: [ @service_container ]
         tags:
             - { name: doctrine.event_subscriber }
 

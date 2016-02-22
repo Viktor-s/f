@@ -5,40 +5,39 @@ namespace Furniture\UserBundle\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\MailerBundle\Mailer\Mailer;
 use Furniture\UserBundle\Entity\User;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-class EmailVerifier
+class EmailVerifier implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
     /**
      * @var Mailer
      */
     private $mailer;
 
     /**
+     * @var array
+     */
+    private $mails = [];
+
+    /**
      * Construct
      *
-     * @param EntityManagerInterface $em
-     * @param Mailer                 $mailer
+     * @param Mailer $mailer
      */
-    public function __construct(EntityManagerInterface $em, Mailer $mailer)
+    public function __construct(Mailer $mailer)
     {
-        $this->em = $em;
         $this->mailer = $mailer;
     }
 
     /**
      * Send verify email link to user.
      *
-     * @param User      $user
-     * @param bool|true $update
+     * @param User $user
      *
      * @return User
      */
-    public function verifyEmail(User $user, $update = true)
+    public function verifyEmail(User $user)
     {
         $verifyToken = $user->requestForVerifyEmail();
 
@@ -49,15 +48,40 @@ class EmailVerifier
             'token'    => $verifyToken,
         ];
 
-        $this->mailer->send($email,
-            'Verify your email',
-            'UserBundle:Mail:verify_email_request.html.twig',
-            $parameters,
-            $name
-        );
+        $this->mails[] = [
+            'email'      => $email,
+            'parameters' => $parameters,
+            'name'       => $name,
+        ];
+    }
 
-        if ($update) {
-            $this->em->flush($user);
+    /**
+     * Flush verifier
+     */
+    public function flush()
+    {
+        foreach ($this->mails as $mailInfo) {
+            $this->mailer->send(
+                $mailInfo['email'],
+                'Verify you email',
+                'UserBundle:Mail:verify_email_request.html.twig',
+                $mailInfo['parameters'],
+                $mailInfo['name']
+            );
         }
+
+        $this->mails = [];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::TERMINATE => [
+                ['flush', 0]
+            ]
+        ];
     }
 }

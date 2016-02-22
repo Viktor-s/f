@@ -75,8 +75,6 @@ class SecurityController
      */
     private $passwordUpdater;
 
-
-
     /**
      * Construct
      *

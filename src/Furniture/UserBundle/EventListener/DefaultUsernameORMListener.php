@@ -25,40 +25,6 @@ class DefaultUsernameORMListener implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $event)
     {
-        $em = $event->getEntityManager();
-        $uow = $em->getUnitOfWork();
-
-        $userClassMetadata = $em->getClassMetadata(User::class);
-        $customerClassMetadata = $em->getClassMetadata(Customer::class);
-
-        foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            if ($entity instanceof User) {
-                $customer = $entity->getCustomer();
-                if (null !== $customer && $customer->getEmail() !== $entity->getUsername()) {
-                    $entity->setUsername($customer->getEmail());
-
-                    $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
-                }
-            }
-        }
-
-        foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if ($entity instanceof Customer) {
-                $user = $entity->getUser();
-
-                if (null !== $user && $user->getUsername() !== $entity->getEmail()) {
-                    $user->setUsername($entity->getEmail());
-                    $uow->recomputeSingleEntityChangeSet($customerClassMetadata, $user);
-                }
-            } else if ($entity instanceof User) {
-                $customer = $entity->getCustomer();
-
-                if ($entity->getUsername() !== $customer->getEmail()) {
-                    $entity->setUsername($customer->getEmail());
-                    $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
-                }
-            }
-        }
     }
 
     /**
