@@ -97,7 +97,7 @@ class UsernameChangedSubscriber implements EventSubscriber
             foreach ($kills as $user) {
                 if ($activeUser && $activeUser->getId() == $user->getId()) {
                     $this->container->get('user.killer')->kill($user);
-                    $tokenStorage->setToken(new AnonymousToken(rand(), 'anon.', array()));
+                    $tokenStorage->setToken(null);
                 }
             }
         }
