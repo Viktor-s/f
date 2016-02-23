@@ -1,6 +1,8 @@
 Furniture\FactoryBundle\Entity\Factory:
     type: entity
     table: factory
+    repositoryClass: Furniture\FactoryBundle\Entity\Repository\FactoryRepository
+
     id:
         id:
             type: integer
@@ -12,10 +14,12 @@ Furniture\FactoryBundle\Entity\Factory:
         name:
             type: string
             nullable: true
+
         createdAt:
             type: datetime
             nullable: true
             name: created_at
+
         enabled:
             type: boolean
             nullable: false
@@ -58,6 +62,7 @@ Furniture\FactoryBundle\Entity\Factory:
             targetEntity: Furniture\FactoryBundle\Entity\FactoryDefaultRelation
             mappedBy: factory
             cascade: [ persist ]
+
         logoImage:
             targetEntity: Furniture\FactoryBundle\Entity\FactoryLogoImage
             mappedBy: factory

@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\ProductBundle\ProductRemoval;
+namespace Furniture\CommonBundle\RemovalChecker;
 
 abstract class Removal
 {

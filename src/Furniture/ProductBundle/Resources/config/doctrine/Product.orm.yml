@@ -38,7 +38,7 @@ Furniture\ProductBundle\Entity\Product:
             joinColumn:
                 name: factory_id
                 referencedColumnName: id
-                onDelete: "SET NULL"
+                onDelete: RESTRICT
                 nullable: true
 
     manyToMany:

@@ -220,8 +220,8 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\FactoryBundle\Entity\Factory
+                repository: Furniture\FactoryBundle\Entity\Repository\FactoryRepository
                 translation:
-                    #repository: Furniture\FactoryBundle\Entity\Repository\FactoryRepository
                     model: Furniture\FactoryBundle\Entity\FactoryTranslation
                     mapping: ~
 

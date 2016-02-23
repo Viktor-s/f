@@ -24,7 +24,10 @@
                     {{ buttons.show(path('sylius_backend_customer_index', {criteria: {factoryId: factory.id}}), 'Users') }}
                     {{ buttons.show(path('furniture_backend_factory_show', {id: factory.id})) }}
                     {{ buttons.edit(path('furniture_backend_factory_update', {'id': factory.id})) }}
-                    {{ buttons.delete(path('furniture_backend_factory_delete', {'id': factory.id})) }}
+
+                    {% if is_factory_can_hard_remove(factory) %}
+                        {{ buttons.delete(path('furniture_backend_factory_delete', {'id': factory.id})) }}
+                    {% endif %}
                    </div>
                 </td>
             </tr>

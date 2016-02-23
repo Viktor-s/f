@@ -11,7 +11,7 @@ Furniture\UserBundle\Entity\User:
                 name: factory_id
                 referencedColumnName: id
                 nullable: true
-                onDelete: SET NULL
+                onDelete: RESTRICT
 
     oneToOne:
         retailerUserProfile:
@@ -23,6 +23,7 @@ Furniture\UserBundle\Entity\User:
         needResetPassword:
             column: need_reset_password
             type: boolean
+
         verifyEmailHash:
             column: verify_email_hash
             type: string
