@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\ProductRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\RemovalChecker\Removal;
 use Furniture\ProductBundle\Entity\ProductVariant;
 
 class VariantRemovalChecker
@@ -27,7 +28,7 @@ class VariantRemovalChecker
      *
      * @param ProductVariant $variant
      *
-     * @return VariantRemoval
+     * @return Removal
      */
     public function canHardRemove(ProductVariant $variant)
     {
@@ -41,10 +42,10 @@ class VariantRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new VariantRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new VariantRemoval(true);
+        return new Removal(true);
     }
 
     /**
@@ -52,7 +53,7 @@ class VariantRemovalChecker
      *
      * @param ProductVariant $variant
      *
-     * @return VariantRemoval
+     * @return Removal
      */
     public function canRemove(ProductVariant $variant)
     {
@@ -66,9 +67,9 @@ class VariantRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new VariantRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new VariantRemoval(true);
+        return new Removal(true);
     }
 }

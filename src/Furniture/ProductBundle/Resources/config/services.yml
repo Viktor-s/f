@@ -51,9 +51,29 @@ services:
         class: Furniture\ProductBundle\ProductRemoval\AttributeRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
 
-    sky_option.removal_checker:
+    sku_option.removal_checker:
         class: Furniture\ProductBundle\ProductRemoval\SkuOptionTypeRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_type.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductTypeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_space.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductSpaceRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_style.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductStyleRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_category.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductCategoryRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product.removal_checker.registry:
+        class: Furniture\ProductBundle\ProductRemoval\RemovalCheckerRegistry
+        arguments: [ @service_container ]
 
     product_part_material_variant.subscriber.entity:
         class: Furniture\ProductBundle\EventListener\ProductPartMaterialVariantEntitySubscriber
@@ -75,10 +95,6 @@ services:
 
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
-        arguments:
-            - @product_variant.removal_checker
-            - @product_attribute.removal_checker
-            - @sky_option.removal_checker
-            - @product.removal_checker
+        arguments: [ @product.removal_checker.registry ]
         tags:
             - { name: twig.extension }

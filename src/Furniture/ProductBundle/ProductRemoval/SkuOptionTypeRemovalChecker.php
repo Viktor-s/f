@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\ProductRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\RemovalChecker\Removal;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 
 class SkuOptionTypeRemovalChecker
@@ -27,7 +28,7 @@ class SkuOptionTypeRemovalChecker
      *
      * @param SkuOptionType $skuOption
      *
-     * @return SkuOptionTypeRemoval
+     * @return Removal
      */
     public function canRemove(SkuOptionType $skuOption)
     {
@@ -40,9 +41,9 @@ class SkuOptionTypeRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new SkuOptionTypeRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new SkuOptionTypeRemoval(true);
+        return new Removal(true);
     }
 }

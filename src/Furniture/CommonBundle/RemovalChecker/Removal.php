@@ -2,7 +2,7 @@
 
 namespace Furniture\CommonBundle\RemovalChecker;
 
-abstract class Removal
+class Removal
 {
     /**
      * @var bool

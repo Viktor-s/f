@@ -85,7 +85,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     category_id:
                         referencedColumnName: id
-                        onDelete: CASCADE
+                        onDelete: RESTRICT
 
         spaces:
             targetEntity: Furniture\ProductBundle\Entity\Space
@@ -99,7 +99,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     space_id:
                         referencedColumnName: id
-                        onDelete: CASCADE
+                        onDelete: RESTRICT
 
         types:
             targetEntity: Furniture\ProductBundle\Entity\Type
@@ -113,7 +113,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     type_id:
                         referencedColumnName: id
-                        onDelete: CASCADE
+                        onDelete: RESTRICT
 
         styles:
             targetEntity: Furniture\ProductBundle\Entity\Style
@@ -127,7 +127,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     style_id:
                         referencedColumnName: id
-                        onDelete: CASCADE
+                        onDelete: RESTRICT
 
         readinesses:
             targetEntity: Furniture\ProductBundle\Entity\Readiness
@@ -141,7 +141,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     readiness_id:
                         referencedColumnName: id
-                        onDelete: CASCADE
+                        onDelete: RESTRICT
 
     oneToOne:
         pdpConfig:
