@@ -18,6 +18,7 @@ class Version20160223015026 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
+        // Drop old index and create unique constraint
         $this->addSql('DROP INDEX unique_relation_index');
         $this->addSql('CREATE UNIQUE INDEX unique_relation_index ON factory_user_relation (factory_id, retailer_id)');
     }
@@ -30,7 +31,6 @@ class Version20160223015026 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX unique_relation_index');
         $this->addSql('CREATE INDEX unique_relation_index ON factory_user_relation (factory_id, retailer_id)');
     }
