@@ -271,7 +271,7 @@
                                     {{ 'frontend.export_to_excel'|trans }}
                                 </button>
 
-                                <button type="submit" value="frontend.export_to_pdf" name="format" class="btn btn-primary">
+                                <button type="submit" value="pdf" name="format" class="btn btn-primary">
                                     <i class="fa fa-download"></i>
                                     {{ 'frontend.export_to_pdf'|trans }}
                                 </button>
@@ -413,7 +413,7 @@
                                         {{ 'frontend.export_to_excel'|trans }}
                                     </button>
 
-                                    <button type="submit" class="btn btn-primary" name="format" value="frontend.export_to_pdf">
+                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
                                         {{ 'frontend.export_to_pdf'|trans }}
                                     </button>
                                 </td>
@@ -540,16 +540,19 @@
                         <h5 class="spec-info-list-title">Document:</h5>
                         <span class="document-number editable spec-info-list-value" id="specification-document">{{ specification.documentNumber }}</span>
                     </li>
+
                     <li class="clearfix">
                         <h5 class="spec-info-list-title">Created:</h5>
                         <span>{{ specification.createdAt.format('Y/m/d H:i') }}</span>
                     </li>
+
                     <li class="clearfix">
                         <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_lable'|trans }}</h5>
                         <span class="editable buyer spec-info-list-value" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
                             {{ specification.buyer|default('None') }} 
                         </span>
                     </li>
+
                     <li class="clearfix">
                         <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
                         <span class="spec-info-list-value">
@@ -557,10 +560,12 @@
                             {{ specification.buyer ? specification.buyer.phone }} 
                         </span>
                     </li>
+
                     <li class="clearfix">
                         <h5 class="spec-info-list-title">Name</h5>
                         <span class="name editable spec-info-list-value" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</span>
                     </li>
+
                     <li class="clearfix">
                         <h5 class="spec-info-list-title">
                             {{ 'frontend.specficatior.notes'|trans }}
@@ -568,11 +573,12 @@
                         </h5>
                         <div class="description editable spec-info-list-value" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
                     </li>
+
                     {% if specification.buyer and specification.buyer.hasSale() %}
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">{{ 'frontend.sale'|trans }}</h5>
-                        <span spec-info-list-value>{{ specification.buyer.sale }}%</span>
-                    </li>
+                        <li class="clearfix">
+                            <h5 class="spec-info-list-title">{{ 'frontend.sale'|trans }}</h5>
+                            <span spec-info-list-value>{{ specification.buyer.sale }}%</span>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
