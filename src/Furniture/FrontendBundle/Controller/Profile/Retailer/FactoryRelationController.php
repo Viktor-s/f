@@ -262,7 +262,7 @@ class FactoryRelationController
             ));
         }
 
-        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_EDIT', $relation)) {
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_REMOVE', $relation)) {
             throw new AccessDeniedException();
         }
 
