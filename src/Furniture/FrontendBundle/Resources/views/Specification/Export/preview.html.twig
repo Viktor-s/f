@@ -602,7 +602,7 @@
                     <span>{{ specification.creator.retailerProfile.address }}</span>
                 </li>
                 <li class="clearfix">
-                    <h5 class="spec-info-list-title">Contact Informations</h5>
+                    <h5 class="spec-info-list-title">{{ 'specification.excel.contact_info'|trans }}</h5>
                     <span>
                         Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
                         Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
