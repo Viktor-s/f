@@ -3902,16 +3902,12 @@ footer .copyright {
 }
 
 /* styling buttons */
-.table .btn.btn-success, .table .btn.btn-primary, .table .btn.btn-green {
-    width: 64px;
-    border: none;
-    padding: 0; 
-}
 
 .btn.btn-success, .btn.btn-primary, .btn-green.btn {
     padding: 5px 15px;
     display: inline-block;
     vertical-align: middle;
+    border: none;
 }
 
 .btn.btn-success {
