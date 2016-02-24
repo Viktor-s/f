@@ -47,7 +47,9 @@ class ProductPatternWithoutSchemaType extends AbstractType
                         ->andWhere('p.id = :product')
                         ->setParameter('product', $options['product']);
                 },
-            ]);
+            ])
+            ->add('factoryCode')
+                ;
 
         $builder->get('product')->addModelTransformer(new ObjectToStringTransformer());
     }

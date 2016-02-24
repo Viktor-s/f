@@ -172,15 +172,17 @@
             </form>
 
             <script>
-                {% for productPart in productParts %}
-                    {% for productPartMaterial in productPart.productPartMaterials %}
-                        {% for productPartMaterialVariant in productPartMaterial.variants %}
-                            {% for value in productPartMaterialVariant.values %}
-                                filterDb['parts'][{{ productPart.id }}][{{ productPartMaterial.id }}][{{ value.id }}].push({{productPartMaterialVariant.id}});
+                {% if productParts is defined %}
+                    {% for productPart in productParts %}
+                        {% for productPartMaterial in productPart.productPartMaterials %}
+                            {% for productPartMaterialVariant in productPartMaterial.variants %}
+                                {% for value in productPartMaterialVariant.values %}
+                                    filterDb['parts'][{{ productPart.id }}][{{ productPartMaterial.id }}][{{ value.id }}].push({{productPartMaterialVariant.id}});
+                                {% endfor %}
                             {% endfor %}
                         {% endfor %}
                     {% endfor %}
-                {% endfor %}
+                {% endif %}
                 $(document).ready(function () {
                    /* CONFIG */
                    var productPartMaterialVariantSelectionPrefix = 'product_pattern_partPatternVariantSelections_';
