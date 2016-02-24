@@ -39,6 +39,7 @@ class UserType extends BaseUserType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
         $builder->add('needResetPassword');
         $builder
             ->add('factory', 'entity', [
@@ -80,10 +81,6 @@ class UserType extends BaseUserType
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var \Furniture\UserBundle\Entity\User $user */
             $user = $event->getData();
-
-            // Disable user email verification.
-            // @TODO: Move this flag to the controller.
-            $user->__disableVerifyEnail = true;
 
             $role = $event->getForm()->get('role')->getData();
 

@@ -63,6 +63,40 @@ class CustomerController extends BaseCustomerController
     /**
      * {@inheritDoc}
      */
+    public function createAction(Request $request)
+    {
+        $this->isGrantedOr403('create');
+
+        $resource = $this->createNew();
+        $form = $this->getForm($resource);
+
+        if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
+            // We edit user in administration, and the user not should verify email
+            $resource->__disableVerifyEmail = true;
+            $resource = $this->domainManager->create($form->getData());
+
+            if ($resource instanceof ResourceEvent) {
+                return $this->redirectHandler->redirectToIndex();
+            }
+
+            return $this->redirectHandler->redirectTo($resource);
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('create.html'))
+            ->setData(array(
+                $this->config->getResourceName() => $resource,
+                'form'                           => $form->createView(),
+            ))
+        ;
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function updateAction(Request $request)
     {
         $this->isGrantedOr403('update');
