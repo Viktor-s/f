@@ -19,6 +19,11 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
     private $price;
 
     /**
+     * @var string
+     */
+    protected $factoryCode;
+    
+    /**
      * Set price
      *
      * @param int $price
@@ -41,4 +46,39 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
     {
         return $this->price;
     }
+    
+    /**
+     * Get factory code
+     *
+     * @return string
+     */
+    public function getFactoryCode()
+    {
+        return $this->factoryCode;
+    }
+
+    /**
+     * Set factory code
+     *
+     * @param string $code
+     *
+     * @return ProductVariantsPattern
+     */
+    public function setFactoryCode($code)
+    {
+        $this->factoryCode = $code;
+
+        return $this;
+    }
+    
+    /**
+     * Get avtive active product code for this pattern
+     * 
+     * @return type
+     */
+    public function getActiveFactoryCode(){
+        return $this->getFactoryCode() ? $this->getFactoryCode() : $this->getProduct()->getFactoryCode();
+    }
+    
+    
 }

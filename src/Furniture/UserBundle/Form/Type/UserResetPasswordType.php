@@ -90,8 +90,7 @@ class UserResetPasswordType extends AbstractType
                 $form = $event->getForm();
                 $data = $event->getData();
 
-                if (!isset($data['user'])
-                    || !$data['user'] instanceof User) {
+                if (!isset($data['user']) || !$data['user'] instanceof User) {
                     return;
                 }
 

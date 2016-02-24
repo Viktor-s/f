@@ -120,6 +120,18 @@ class FactoryRetailerRelationType extends AbstractType
                     $form->add('retailer', 'entity', [
                         'label' => 'frontend.retailer',
                         'class' => RetailerProfile::class,
+                        'query_builder' => function (EntityRepository $er) use ($relation) {
+                            if ($relation->getFactory()) {
+                                return $er->createQueryBuilder('r')
+                                    ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.retailer = r AND frr.factory = :factory')
+                                    ->andWhere('frr.factory IS NULL')
+                                    // Use group by instead distinct() because of ERROR:  could not identify an equality operator for type json
+                                    ->groupBy('r.id')
+                                    ->setParameter('factory', $relation->getFactory()->getId());
+                            } else {
+                                return $er->createQueryBuilder('r');
+                            }
+                        }
                     ]);
                 }
             }

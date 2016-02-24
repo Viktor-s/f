@@ -89,6 +89,7 @@ services:
             - @frontend.repository.factory_retailer_relation
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
+            - @security.authorization_checker
             - @router
             - @form.factory
 

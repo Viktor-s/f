@@ -20,6 +20,7 @@
 
         <div class="pull-right">
             <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-success">
+                <i class="fa fa-edit"></i>
                 {{ 'frontend.edit'|trans }}
             </a>
         </div>
@@ -62,76 +63,48 @@
 
                         <tr class="table-title">
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span class="checkbox-name">#</span>
-                                    <input type="checkbox" name="fields[]" value="position" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="position" checked /><span class="check"></span></label>
+                                <hr/>#
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.photo'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="photo" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.photo'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.brand'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="brand" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="brand" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.brand'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.name'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="name" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.name'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.options'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="options" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.options'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.notes'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="notes" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
-                                
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.notes'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.quantity'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="quantity" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.quantity'|trans }}
                             </th>
 
                             <th class="text-center">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name">{{ 'frontend.price'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="price" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.price'|trans }}
                             </th>
 
                             <th class="text-center" style="min-width:90px;">
-                                <label class="checkbox-entry">
-                                    <span  class="checkbox-name th-total-price">{{ 'frontend.total_price'|trans }}</span>
-                                    <input type="checkbox" name="fields[]" value="total_price" checked />
-                                    <span class="check fa fa-check"></span>
-                                </label>
+                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="total_price" checked /><span class="check"></span></label>
+                                <hr/>{{ 'frontend.total_price'|trans }}
                             </th>
                         </tr>
                         </thead>
@@ -284,7 +257,7 @@
 
             {% for grouped_item in grouped_items_by_factory %}
                 <div role="tabpanel" class="tab-pane" id="factory-{{ grouped_item.factory.id }}">
-                    <h3 class="block-title">{{ grouped_item.factory.name }}</h3>
+                    <h3>{{ grouped_item.factory.name }}</h3>
 
                     <form action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
                         <input type="hidden" name="mode" value="factory" />
@@ -295,67 +268,43 @@
 
                             <tr class="table-title">
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">#</span>
-                                        <input type="checkbox" name="fields[]" value="number" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label>
+                                    <hr/>#
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.type'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="type" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="type" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.type'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.factory_code'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="factory_code" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="factory_code" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.factory_code'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.name'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="name" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.name'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.options'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="options" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.options'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.notes'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="notes" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.notes'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.quantity'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="quantity" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.quantity'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.price'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="price" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.price'|trans }}
                                 </th>
                             </tr>
                             </thead>
@@ -410,11 +359,13 @@
                             <tr>
                                 <td colspan="7">
                                     <button type="submit" class="btn btn-primary" name="format" value="excel">
-                                        {{ 'frontend.export_to_excel'|trans }}
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.excel'|trans }}
                                     </button>
 
                                     <button type="submit" class="btn btn-primary" name="format" value="pdf">
-                                        {{ 'frontend.export_to_pdf'|trans }}
+                                        <i class="fa fa-download"></i>
+                                        {{ 'frontend.pdf'|trans }}
                                     </button>
                                 </td>
                             </tr>
@@ -426,7 +377,7 @@
 
             {% for grouped_item in grouped_custom_items_by_factory %}
                 <div role="tabpanel" class="tab-pane" id="custom-{{ grouped_item.factoryName|md5 }}">
-                    <h3 class="block-title">{{ grouped_item.factoryName }}</h3>
+                    <h3>{{ grouped_item.factoryName }}</h3>
 
                     <form method="get" action="{{ path('specification_export', {specification: specification.id}) }}">
                         <input type="hidden" name="mode" value="custom" />
@@ -437,56 +388,33 @@
 
                             <tr class="table-title">
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">#</span>
-                                        <input type="checkbox" name="fields[]" value="number" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label>
+                                    <hr/>#
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.name'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="name" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
-                                    
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.name'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.options'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="options" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
-                                    
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.options'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.notes'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="notes" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
-                                    
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.notes'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.quantity'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="quantity" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
-                                    
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.quantity'|trans }}
                                 </th>
 
                                 <th class="text-center">
-                                    <label class="checkbox-entry">
-                                        <span class="checkbox-name">{{ 'frontend.price'|trans }}</span>
-                                        <input type="checkbox" name="fields[]" value="price" checked />
-                                        <span class="check fa fa-check"></span>
-                                    </label>
-                                    
+                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
+                                    <hr/>{{ 'frontend.price'|trans }}
                                 </th>
                             </tr>
                             </thead>
@@ -511,12 +439,12 @@
                                 <td colspan="6">
                                     <button type="submit" class="btn btn-primary" name="format" value="excel">
                                         <i class="fa fa-download"></i>
-                                        {{ 'frontend.export_to_excel'|trans }}
+                                        {{ 'frontend.excel'|trans }}
                                     </button>
 
-                                    <button type="submit" class="btn btn-primary" name="format" value="pfd">
+                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
                                         <i class="fa fa-download"></i>
-                                        {{ 'frontend.export_to_pdf'|trans }}
+                                        {{ 'frontend.pdf'|trans }}
                                     </button>
                                 </td>
                             </tr>
@@ -532,89 +460,68 @@
 
 {% block specification_export_header %}
 <div class="row specification-edit-head" style="margin-top: 40px;">
-    <div class="col-sm-5 information-entry">
+    <div class="col-sm-3 information-entry">
         <div class="information-blocks form-horizontal specification-info">
             <div class="article-container style-1">
-                <ul class="spec-info-list">
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">Document:</h5>
-                        <span class="document-number editable spec-info-list-value" id="specification-document">{{ specification.documentNumber }}</span>
-                    </li>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Document:</h5>
+                        <div class="document-number editable" id="specification-document">{{ specification.documentNumber }}</div>
+                    </div>
 
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">Created:</h5>
-                        <span>{{ specification.createdAt.format('Y/m/d H:i') }}</span>
-                    </li>
+                    <div class="col-md-6">
+                        <h5>Created:</h5>
+                        <div>{{ specification.createdAt.format('Y/m/d H:i') }}</div>
+                    </div>
+                </div>
 
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_lable'|trans }}</h5>
-                        <span class="editable buyer spec-info-list-value" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
-                            {{ specification.buyer|default('None') }} 
-                        </span>
-                    </li>
+                <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
 
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
-                        <span class="spec-info-list-value">
-                            {{ specification.buyer ? specification.buyer.email }}<br/>
-                            {{ specification.buyer ? specification.buyer.phone }} 
-                        </span>
-                    </li>
+                <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
+                    {{ specification.buyer|default('None') }}
+                </div>
 
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">Name</h5>
-                        <span class="name editable spec-info-list-value" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</span>
-                    </li>
+                <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
+                <p>
+                    {{ specification.buyer ? specification.buyer.email }}<br/>
+                    {{ specification.buyer ? specification.buyer.phone }}
+                </p>
 
-                    <li class="clearfix">
-                        <h5 class="spec-info-list-title">
-                            {{ 'frontend.specficatior.notes'|trans }}
-                            <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}</span>
-                        </h5>
-                        <div class="description editable spec-info-list-value" id="specification-description" style="padding-top:0;margin-bottom:15px;">{{ specification.description|default('None') }}</div>
-                    </li>
+                <h5>Name</h5>
+                <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
 
-                    {% if specification.buyer and specification.buyer.hasSale() %}
-                        <li class="clearfix">
-                            <h5 class="spec-info-list-title">{{ 'frontend.sale'|trans }}</h5>
-                            <span spec-info-list-value>{{ specification.buyer.sale }}%</span>
-                        </li>
-                    {% endif %}
-                </ul>
+                {% if specification.buyer and specification.buyer.hasSale() %}
+                    <h5>{{ 'frontend.sale'|trans }}</h5>
+                    <p>{{ specification.buyer.sale }}%</p>
+                {% endif %}
             </div>
         </div>
     </div>
 
     <div class="col-sm-4 information-entry">
-        <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
-
-        <div class="article-container style-1">
-            <ul class="spec-info-list">
-                <li class="clearfix">
-                    <h5 class="spec-info-list-title">Manager:</h5>
-                    <p class="spec-info-list-value">
-                        {{ specification.creator.user.fullName }}<br />
-                        {{ specification.creator.user.customer.email }}
-                    </p>
-                </li>
-                <li class="clearfix">
-                    <h5 class="spec-info-list-title">Company address:</h5>
-                    <span>{{ specification.creator.retailerProfile.address }}</span>
-                </li>
-                <li class="clearfix">
-                    <h5 class="spec-info-list-title">Contact Informations</h5>
-                    <span>
-                        Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                        Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
-                    </span>
-                </li>
-            </ul>
+        <div class="information-blocks form-horizontal specification-info pull-right">
+            <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
         </div>
     </div>
 
-    <div class="col-sm-3 information-entry">
-        <div class="information-blocks form-horizontal specification-info pull-right">
-            <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
+    <div class="col-sm-5 information-entry">
+        <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
+
+        <div class="article-container style-1">
+            <h5>Manager</h5>
+            <p>
+                {{ specification.creator.user.fullName }}<br />
+                {{ specification.creator.user.customer.email }}
+            </p>
+
+            <h5>Company address</h5>
+            <p>{{ specification.creator.retailerProfile.address }}</p>
+
+            <h5>Contact Information</h5>
+            <p>
+                Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
+            </p>
         </div>
     </div>
 </div>

@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class RetailerRelationController
 {
@@ -38,6 +40,11 @@ class RetailerRelationController
     private $tokenStorage;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -54,6 +61,7 @@ class RetailerRelationController
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
      * @param EntityManagerInterface            $entityManager
      * @param TokenStorageInterface             $tokenStorage
+     * @param AuthorizationCheckerInterface     $authorizationChecker
      * @param UrlGeneratorInterface             $urlGenerator
      * @param FormFactoryInterface              $formFactory
      */
@@ -62,6 +70,7 @@ class RetailerRelationController
         FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         UrlGeneratorInterface $urlGenerator,
         FormFactoryInterface $formFactory
     ) {
@@ -69,6 +78,7 @@ class RetailerRelationController
         $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
         $this->em = $entityManager;
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->formFactory = $formFactory;
     }
@@ -129,13 +139,19 @@ class RetailerRelationController
                 ));
             }
 
-            // @todo: add check granted for edit this relation (via security voter in Symfony2)
+            if (!$this->authorizationChecker->isGranted('FACTORY_RETAILER_RELATION_EDIT', $relation)) {
+                throw new AccessDeniedException();
+            }
         } else {
             $relation = new FactoryRetailerRelation();
             $relation
                 ->setFactory($user->getFactory())
                 ->setRetailerAccept(false)
                 ->setFactoryAccept(true);
+
+            if (!$this->authorizationChecker->isGranted('FACTORY_RETAILER_RELATION_CREATE', $relation)) {
+                throw new AccessDeniedException();
+            }
         }
 
         $form = $this->formFactory->create('retailer_factory_relation', $relation, [
@@ -181,7 +197,9 @@ class RetailerRelationController
             ));
         }
 
-        // @todo: add check granted for approve this relation (via security voter in Symfony3)
+        if (!$this->authorizationChecker->isGranted('FACTORY_RETAILER_RELATION_EDIT', $relation)) {
+            throw new AccessDeniedException();
+        }
 
         $relation->setFactoryAccept(true);
 
@@ -221,7 +239,9 @@ class RetailerRelationController
             ));
         }
 
-        // @todo: add check granted for remove this relation (via security voter in Symfony2)
+        if (!$this->authorizationChecker->isGranted('FACTORY_RETAILER_RELATION_REMOVE', $relation)) {
+            throw new AccessDeniedException();
+        }
 
         $this->em->remove($relation);
         $this->em->flush();

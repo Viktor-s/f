@@ -51,19 +51,19 @@
                         <td>{{ specification|specification_total_price|money }}</td>
                         <td>
                             {% if is_granted('EDIT', specification) %}
-                                <a class="btn btn-success" href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                            {% endif %}
-
-                            {% if is_granted('FINISH', specification) and specification.items|length > 0 %}
-                                <a class="btn btn-primary" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
-                            {% endif %}
-
-                            {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
-                                <a class="btn btn-success" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                                <a class="btn btn-success btn-xs" href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
                             {% endif %}
 
                             {% if is_granted('REMOVE', specification) %}
-                                <a class="fa fa-close" data-remove data-message="Are you sure you want to remove this specification?" href="{{ path('specification_remove', {specification: specification.id}) }}"></a>
+                                <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure remove specification?" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
+                            {% endif %}
+
+                            {% if is_granted('FINISH', specification) and specification.items|length > 0 %}
+                                <a class="btn btn-primary btn-xs" data-remove data-message="Are you sure  you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                            {% endif %}
+
+                            {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                                <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                             {% endif %}
                         </td>
                     </tr>

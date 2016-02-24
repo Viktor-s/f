@@ -61,9 +61,10 @@ class RetailerEmployeeType extends AbstractType
         $builder
             ->add(
                 'enabled',
-                'hidden',
+                'checkbox',
                 [
-                    'data' => true,
+                    'label'    => 'frontend.enabled',
+                    'required' => false,
                 ]
             )
             ->add(
@@ -75,6 +76,11 @@ class RetailerEmployeeType extends AbstractType
                 ]
             )
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
+
+        // Remove enabled while create emplyee and set default true in controller.
+        if (!$employee->getId()) {
+            $builder->remove('enabled');
+        }
     }
 
     /**
