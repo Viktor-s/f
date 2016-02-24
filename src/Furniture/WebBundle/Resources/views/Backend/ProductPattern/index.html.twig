@@ -27,6 +27,7 @@
             <th>Name</th>
             <th>factory code</th>
             <th>Scheme</th>
+            <th>Price</th>
             <th></th>
         </tr>
         </thead>
@@ -37,6 +38,7 @@
                 <td>{{ pattern.name }}</td>
                 <td>{{ pattern.activeFactoryCode }}</td>
                 <td>{{ pattern.scheme }}</td>
+                <td>{{ pattern.price|money }}</td>
                 <td>
                     {{ buttons.edit(path('furniture_backend_product_pattern_update', {productId: product.id, id: pattern.id})) }}
                     {{ buttons.delete(path('furniture_backend_product_pattern_delete', {productId: product.id, id: pattern.id})) }}
