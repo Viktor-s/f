@@ -73,11 +73,15 @@
 
     <td>
         <div class="btn-block">
-            <a class="btn btn-success" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+            <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+                <i class="fa fa-pencil"></i>
                 {{ 'frontend.edit'|trans }}
             </a>
 
-            <a class="fa fa-close remove" href="#"></a>
+            <a class="btn btn-danger btn-xs remove" href="#">
+                <i class="fa fa-trash-o"></i>
+                {{ 'frontend.remove'|trans }}
+            </a>
         </div>
     </td>
 </tr>
