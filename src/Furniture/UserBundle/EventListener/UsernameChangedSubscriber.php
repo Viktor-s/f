@@ -59,7 +59,9 @@ class UsernameChangedSubscriber implements EventSubscriber
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof User) {
                 $customer = $entity->getCustomer();
-                if (null !== $customer && $customer->getEmail() !== $entity->getUsername()) {
+                if (!isset($entity->__disableVerifyEnail) && null !== $customer
+                    && $customer->getEmail() !== $entity->getUsername()
+                ) {
                     $entity->setUsername($customer->getEmail());
                     $this->changeUsernameForUser($entity);
 
@@ -74,7 +76,7 @@ class UsernameChangedSubscriber implements EventSubscriber
                 /** @var User $user */
                 $user = $entity->getUser();
 
-                if (null !== $user && $user->getUsername() !== $entity->getEmail()) {
+                if (!isset($user->__disableVerifyEnail) && null !== $user && $user->getUsername() !== $entity->getEmail()) {
                     $user->setUsername($entity->getEmail());
                     $this->changeUsernameForUser($user);
 
@@ -84,7 +86,9 @@ class UsernameChangedSubscriber implements EventSubscriber
             } else if ($entity instanceof User) {
                 $customer = $entity->getCustomer();
 
-                if ($entity->getUsername() !== $customer->getEmail()) {
+                if (!isset($entity->__disableVerifyEnail) && null !== $customer
+                    && $customer->getEmail() !== $entity->getUsername()
+                ) {
                     $entity->setUsername($customer->getEmail());
                     $this->changeUsernameForUser($entity);
                     $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
