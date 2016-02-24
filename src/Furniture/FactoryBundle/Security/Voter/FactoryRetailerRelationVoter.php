@@ -55,6 +55,12 @@ class FactoryRetailerRelationVoter implements VoterInterface
                 return self::ACCESS_GRANTED;
             }
             
+            if(!$object->isRetailerAccept()
+                    && $user->isFactory() && $user->isFactoryAdmin()
+                    ){
+                return self::ACCESS_GRANTED;
+            }
+            
             if ($object->isDeal() && $user->isFactory() && $user->isFactoryAdmin()) {
                 return self::ACCESS_GRANTED;
             }
