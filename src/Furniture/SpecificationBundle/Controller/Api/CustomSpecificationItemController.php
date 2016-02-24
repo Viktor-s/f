@@ -9,6 +9,7 @@ use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Entity\CustomSpecificationItem;
 use Furniture\SpecificationBundle\Form\Type\CustomSpecificationItemSingleType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -110,15 +111,15 @@ class CustomSpecificationItemController
         $specificationItem = new SpecificationItem();
         $specificationItem->setCustomItem(new CustomSpecificationItem());
 
-        if (!$this->authorizationChecker->isGranted('CREATE', $specificationItem->getCustomItem())) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->formFactory->createNamed('', new CustomSpecificationItemSingleType($this->em), $specificationItem, [
             'csrf_protection' => false,
         ]);
 
         $form->handleRequest($request);
+
+        if (!$this->authorizationChecker->isGranted('CREATE', $specificationItem->getCustomItem())) {
+            throw new AccessDeniedException();
+        }
 
         if ($form->isValid()) {
             $this->em->persist($specificationItem);
