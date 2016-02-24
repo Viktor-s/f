@@ -66,6 +66,7 @@ class ProductController extends BaseProductController
 
         $hardDelete = $request->get('hard');
         $em = $this->get('doctrine.orm.default_entity_manager');
+        $checker = $this->get('product.removal_checker');
 
         if ($hardDelete) {
             $em->getFilters()->disable('softdeleteable');
@@ -74,11 +75,19 @@ class ProductController extends BaseProductController
         $product = $this->findOr404($request);
 
         if ($hardDelete) {
-            $checker = $this->get('product.removal_checker');
             $removal = $checker->canHardRemove($product);
 
             if ($removal->notCanRemove()) {
-                // @todo: add message to alerts
+                $this->flashHelper->setFlash('error', 'Can not hard remove product');
+
+                return $this->createRedirectResponse($request);
+            }
+        } else {
+            $removal = $checker->canRemove($product);
+
+            if ($removal->notCanRemove()) {
+                $this->flashHelper->setFlash('error', 'Can not remove product');
+
                 return $this->createRedirectResponse($request);
             }
         }
