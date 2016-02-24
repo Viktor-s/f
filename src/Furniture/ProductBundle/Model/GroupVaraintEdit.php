@@ -17,6 +17,8 @@ class GroupVaraintEdit extends GroupVaraintFiler
     private $depth;
     
     private $weight;
+    
+    private $factoryCodeUpdate;
 
     public function getPriceCalculator()
     {
@@ -70,6 +72,17 @@ class GroupVaraintEdit extends GroupVaraintFiler
     public function setWeight($weight)
     {
         $this->weight = $weight;
+        return $this;
+    }
+    
+     public function getFactoryCodeUpdate()
+    {
+        return $this->factoryCodeUpdate;
+    }
+    
+    public function setFactoryCodeUpdate($factoryCodeUpdate)
+    {
+        $this->factoryCodeUpdate = $factoryCodeUpdate;
         return $this;
     }
     

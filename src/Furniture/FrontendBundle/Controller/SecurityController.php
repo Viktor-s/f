@@ -75,8 +75,6 @@ class SecurityController
      */
     private $passwordUpdater;
 
-
-
     /**
      * Construct
      *
@@ -264,7 +262,7 @@ class SecurityController
 
         if ($user->isDisabled()) {
             $error = $this->translator->trans('frontend.user_is_disabled_with_email', [
-                'email' => $user->getUsername(),
+                ':email' => $user->getUsername(),
             ]);
         }
 
@@ -304,7 +302,7 @@ class SecurityController
 
         $content = $this->twig->render('FrontendBundle:Security:reset_password.html.twig', [
             'form' => $form->createView(),
-            'error' => null,
+            'error' => $error,
         ]);
 
         return new Response($content);
@@ -528,16 +526,7 @@ class SecurityController
             $user = $this->userRepository->findByUsername($userName);
             if ($user) {
                 $form = $this->formFactory->create('reset_password', ['user' => $user]);
-                $formLogin = $this->formFactory->createBuilder('form')
-                    ->add('login', 'submit')
-                    ->getForm();
                 if ($request->getMethod() === Request::METHOD_POST) {
-                    $formLogin->handleRequest($request);
-                    if ($formLogin->isValid()) {
-                        $session->remove('email-verify');
-                        $url = $this->urlGenerator->generate('security_login');
-                        return new RedirectResponse($url);
-                    }
                     $form->handleRequest($request);
                     if ($form->isValid()) {
                         $formData = $form->getData();
@@ -551,11 +540,10 @@ class SecurityController
                         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
                         $this->tokenStorage->setToken($token);
 
-                        return $this->resetPasswordSuccessfully();
+                        return $this->resetPasswordSuccessfully($request);
                     }
                 }
                 $content = $this->twig->render('FrontendBundle:Security:email_verify_success.html.twig', [
-                    'form_login' => $formLogin->createView(),
                     'form' => $form->createView(),
                 ]);
             } else {

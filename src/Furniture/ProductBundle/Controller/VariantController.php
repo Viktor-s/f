@@ -242,13 +242,16 @@ class VariantController extends BaseVariantController
 
                 $language = new ExpressionLanguage();
 
+                if($editObject->getFactoryCodeUpdate() !== null){
+                    $variant->setFactoryCode($editObject->getFactoryCodeUpdate());
+                }
+                
                 if ($editObject->getPriceCalculator() !== null) {
                     $price = $language->evaluate($editObject->getPriceCalculator(), [
                         'price' => $variant->getPrice() / 100,
                     ]);
                     $variant->setPrice((int)(ceil(($price * 100))));
                 }
-
 
                 if ($editObject->getWidth() !== null) {
                     $value = $language->evaluate($editObject->getWidth(), [

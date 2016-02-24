@@ -14,4 +14,16 @@
         {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>
+    {% if not relation.id %}
+        <script type="text/javascript">
+            (function ($) {
+                $(document).ready(function () {
+                    $('#retailer_factory_relation_factory').select2({
+                        placeholder: "Select brand",
+                        allowClear: false
+                    }).select2("val", "");
+                });
+            })(jQuery);
+        </script>
+    {% endif %}
 {% endblock %}

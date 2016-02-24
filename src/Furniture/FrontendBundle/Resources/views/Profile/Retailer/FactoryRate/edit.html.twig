@@ -12,4 +12,16 @@
     {{ form_start(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+    {% if not rate.id %}
+        <script type="text/javascript">
+            (function ($) {
+                $(document).ready(function () {
+                    $('#retailer_factory_rate_factory').select2({
+                        placeholder: "Select brand",
+                        allowClear: false
+                    }).select2("val", "");
+                });
+            })(jQuery);
+        </script>
+    {% endif %}
 {% endblock %}

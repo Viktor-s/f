@@ -196,8 +196,6 @@ class EmployeeController
             if (!$employee->getId()) {
                 $pass = md5(uniqid(mt_rand(), true));
                 $employee->setPlainPassword($pass);
-                // Verify email action for created users.
-                $this->emailVerifier->verifyEmail($employee, false);
             }
             $this->em->persist($employee);
             $this->em->flush();

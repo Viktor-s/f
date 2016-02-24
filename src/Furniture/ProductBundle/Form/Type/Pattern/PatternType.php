@@ -56,6 +56,7 @@ abstract class PatternType extends AbstractType
             ->add('name', 'text', [
                 'label' => 'Name',
             ])
+            ->add('factoryCode')
             ->add('partPatternVariantSelections', new PartPatternVariantCollectionType(), [
                 'parts'                   => $options['parts'],
                 'part_material_variants'  => $options['part_material_variants'],

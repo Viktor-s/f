@@ -129,9 +129,9 @@
                                     <td>
                                         <div>{{ product.translate.name }}</div>
 
-                                        {% if product.factoryCode %}
+                                        {% if productVariant.activeFactoryCode %}
                                             <div>
-                                                {{ product.factoryCode }}
+                                                {{ productVariant.activeFactoryCode }}
                                             </div>
                                         {% endif %}
 
@@ -241,12 +241,12 @@
                             <td colspan="9">
                                 <button type="submit" class="btn btn-primary" value="excel" name="format">
                                     <i class="fa fa-download"></i>
-                                    {{ 'frontend.excel'|trans }}
+                                    {{ 'frontend.export_to_excel'|trans }}
                                 </button>
 
                                 <button type="submit" value="pdf" name="format" class="btn btn-primary">
                                     <i class="fa fa-download"></i>
-                                    {{ 'frontend.pdf'|trans }}
+                                    {{ 'frontend.export_to_pdf'|trans }}
                                 </button>
                             </td>
                         </tr>
@@ -324,7 +324,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        {{ product.factoryCode }}
+                                        {{ productVariant.activeFactoryCode }}
                                     </td>
 
                                     <td>{{ productVariant.product.name }}</td>

@@ -30,13 +30,11 @@ Furniture\FactoryBundle\Entity\FactoryRetailerRelation:
                 onDelete: CASCADE
                 nullable: false
 
-    indexes:
-        unique_relation_index:            
+    uniqueConstraints:
+        unique_relation_index:
             columns:
                 - factory_id
                 - retailer_id
-            options:
-                unique: true
 
     fields:
         active:

@@ -12,12 +12,15 @@ var variant_data_container = function (variants) {
         refreshFilters: function(){
             this.setFilters({});
         },
+        
         getAll: function () {
             return options.variants;
         },
+        
         getFiltered: function () {
             return options.filtered;
         },
+        
         setFilters: function (filters) {
             //console.log(filters);
             options.filtered = [];
@@ -36,11 +39,9 @@ var variant_data_container = function (variants) {
                 }
             });
             $(document).trigger("filter:update");
-            console.log('---');
-            console.log( options.filtered );
-            console.log('---');
             return this;
         },
+        
         getFilteredWithFilterValue: function(filter, value){
             var res = [];
             options.filtered.forEach(function (el) {
@@ -50,8 +51,17 @@ var variant_data_container = function (variants) {
             });
             return res;
         },
+        
         getFilters: function () {
             return options.filters;
+        },
+        
+        isFilteredItemFound: function(){
+            if(options.filtered.length == 1){
+                    return true;
+            }
+            
+            return false;
         }
     };
 

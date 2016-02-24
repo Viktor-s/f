@@ -111,7 +111,7 @@
                     <a id="remove-current-specification" class="btn btn-danger btn-xs" href="{{ path('specification_remove', {specification: specification.id}) }}">{{ 'frontend.remove'|trans }}</a>
 
                     {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
-                        <a class="btn btn-primary btn-xs" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                        <a class="btn btn-primary btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                     {% endif %}
 
                     {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}

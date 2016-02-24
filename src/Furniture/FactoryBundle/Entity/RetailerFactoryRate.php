@@ -48,7 +48,7 @@ class RetailerFactoryRate
      *
      * @Assert\Range(min = 0, max = 100)
      */
-    private $dumping;
+    private $dumping = 0;
 
     /**
      * Get id
@@ -141,6 +141,10 @@ class RetailerFactoryRate
      */
     public function setDumping($dumping)
     {
+        if ($dumping === null) {
+            $dumping = 0;
+        }
+
         $this->dumping = $dumping;
 
         return $this;

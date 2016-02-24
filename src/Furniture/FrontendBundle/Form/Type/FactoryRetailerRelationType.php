@@ -106,7 +106,7 @@ class FactoryRetailerRelationType extends AbstractType
 
             $form = $event->getForm();
             $disabledAccessRights = $options['mode'] == 'from_retailer' && $relation->isFactoryAccept();
-
+            
             if ($options['mode'] == 'from_factory') {
                 if ($relation->getId()) {
                     // Edit saved relation
@@ -120,6 +120,18 @@ class FactoryRetailerRelationType extends AbstractType
                     $form->add('retailer', 'entity', [
                         'label' => 'frontend.retailer',
                         'class' => RetailerProfile::class,
+                        'query_builder' => function (EntityRepository $er) use ($relation) {
+                            if ($relation->getFactory()) {
+                                return $er->createQueryBuilder('r')
+                                    ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.retailer = r AND frr.factory = :factory')
+                                    ->andWhere('frr.factory IS NULL')
+                                    // Use group by instead distinct() because of ERROR:  could not identify an equality operator for type json
+                                    ->groupBy('r.id')
+                                    ->setParameter('factory', $relation->getFactory()->getId());
+                            } else {
+                                return $er->createQueryBuilder('r');
+                            }
+                        }
                     ]);
                 }
             }
@@ -188,8 +200,13 @@ class FactoryRetailerRelationType extends AbstractType
                 ->add('discount', 'number', [
                     'label'    => 'frontend.discount',
                     'disabled' => $disabledAccessRights,
-                ])
-                ->add('_submit', 'submit', [
+                ]);
+                if ($relation->getId() && $relation->isDeal() ) {
+                    $form->add('active', 'checkbox', [
+                        'label'    => 'is Active',
+                    ]);
+                }
+                $form->add('_submit', 'submit', [
                     'label' => 'frontend.save',
                     'attr'  => [
                         'class' => 'btn btn-success col-lg-offset-2',

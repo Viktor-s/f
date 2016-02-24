@@ -305,6 +305,16 @@ class User extends BaseUser
     }
 
     /**
+     * Get verify email hash
+     *
+     * @return string
+     */
+    public function getVerifyEmailHash()
+    {
+        return $this->verifyEmailHash;
+    }
+
+    /**
      * Remove oauthAccount
      *
      * @param UserOAuth $oauthAccount

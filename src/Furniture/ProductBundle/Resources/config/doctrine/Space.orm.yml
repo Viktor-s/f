@@ -1,6 +1,7 @@
 Furniture\ProductBundle\Entity\Space:
     type: entity
     table: product_space
+    repositoryClass: Furniture\ProductBundle\Entity\Repository\SpaceRepository
 
     id:
         id:

@@ -21,3 +21,18 @@ services:
         class: Furniture\FactoryBundle\Security\Voter\ViewFactoryVoter
         tags:
             - { name: security.voter }
+
+    factory.security.voter.factory_retailer_relation:
+        class: Furniture\FactoryBundle\Security\Voter\FactoryRetailerRelationVoter
+        tags:
+            - { name: security.voter }
+
+    factory.removal_checker:
+        class: Furniture\FactoryBundle\FactoryRemoval\FactoryRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    twig.extension.factory:
+        class: Furniture\FactoryBundle\Twig\FactoryExtension
+        arguments: [ @factory.removal_checker ]
+        tags:
+            - { name: twig.extension }

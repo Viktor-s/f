@@ -67,7 +67,7 @@ class PricingExtension extends \Twig_Extension
             'specification_item_total_price' => new \Twig_Filter_Method($this, 'specificationItemTotalPrice'),
             'specification_total_price'      => new \Twig_Filter_Method($this, 'specificationTotalPrice'),
             'money'                          => new \Twig_Filter_Method($this, 'money'),
-            'pattern_min_price'              => new \Twig_Filter_Method($this, 'patternMinPrice'),
+            'pattern_price'              => new \Twig_Filter_Method($this, 'patternPrice'),
         ];
     }
 
@@ -120,8 +120,8 @@ class PricingExtension extends \Twig_Extension
         return $this->calculator->calculateForSpecification($specification, $useSales);
     }
 
-    public function patternMinPrice(ProductVariantsPattern $pattern){
-        return $this->productPatternVariantPriceCompiller->getMinPrice($pattern);
+    public function patternPrice(ProductVariantsPattern $pattern){
+        return $this->calculator->calculateForPattern($pattern);
     }
 
 

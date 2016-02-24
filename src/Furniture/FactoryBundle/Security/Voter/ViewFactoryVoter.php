@@ -46,12 +46,14 @@ class ViewFactoryVoter extends AbstractVoter
                         ->getRetailerProfile()
                 );
 
-                if ($factoryRetailerRelation
-                    && $factoryRetailerRelation->isActive()
-                    && $factoryRetailerRelation->isFactoryAccept()
+                if ($factory->isEnabled() && (($factoryRetailerRelation
+                            && $factoryRetailerRelation->isActive()
+                            && $factoryRetailerRelation->isFactoryAccept())
+                        || $factory->getDefaultRelation()->isAccessProducts())
                 ) {
                     return true;
                 }
+
                 return false;
 
             default:

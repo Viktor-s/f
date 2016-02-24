@@ -49,6 +49,13 @@ class CustomerRepository extends BaseCustomerRepository
                 ->setParameter('retailer_id', $criteria['retailerId']);
         }
 
+        if (!empty($criteria['factoryId'])) {
+            $queryBuilder
+                ->leftJoin('user.factory', 'fp')
+                ->andWhere('fp.id = :factory_id')
+                ->setParameter('factory_id', $criteria['factoryId']);
+        }
+
         if (empty($sorting)) {
             if (!is_array($sorting)) {
                 $sorting = array();

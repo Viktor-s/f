@@ -13,30 +13,44 @@ $.widget('furniture.pdp_default_select', {
          var data_container = this.options.data_container;
          var element = this.element;
          element.prop('selectedIndex', -1);
-         element.change(function(e){
-            var el = $(this);
-            var selectedInput = el.parents('.simple-drop-down.simple-field').first().data('input-id');
-            var selectedVariant = el.find(":selected").data('input-variant');
-            var filters = data_container.getFilters();
+         
+         if(element.is('input:hidden')){
+            var selectedInput = element.data('input-id');
+            var selectedVariant = element.data('input-variant');
             
-            filters[selectedInput] = selectedVariant;
-            data_container.setFilters(filters);
-        });
-        
-        $(document).on('filter:update', function (event) {
-            var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
-            if( !data_container.getFilters()[selectInput] ){
-                element.prop('selectedIndex', -1);
-            }
-            element.find("option").each(function(){
-                var selectVariant = $(this).data('input-variant');
-                if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
-                    $(this).css('background','#E0E0E0');
-                }else{
-                    $(this).css('background','white');
+            $(document).on('filter:update', function (event) {
+                var filters = data_container.getFilters();
+                if(!filters[selectedInput]){
+                    filters[selectedInput] = selectedVariant;
+                    data_container.setFilters(filters);
                 }
             });
-        });
+         }else{
+            element.change(function(e){
+               var el = $(this);
+               var selectedInput = el.parents('.simple-drop-down.simple-field').first().data('input-id');
+               var selectedVariant = el.find(":selected").data('input-variant');
+               var filters = data_container.getFilters();
+
+               filters[selectedInput] = selectedVariant;
+               data_container.setFilters(filters);
+           });
+
+           $(document).on('filter:update', function (event) {
+               var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
+               if( !data_container.getFilters()[selectInput] ){
+                   element.prop('selectedIndex', -1);
+               }
+               element.find("option").each(function(){
+                   var selectVariant = $(this).data('input-variant');
+                   if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
+                       $(this).css('background','#E0E0E0');
+                   }else{
+                       $(this).css('background','white');
+                   }
+               });
+           });
+       }
         
      }
 });
