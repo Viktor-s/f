@@ -109,7 +109,9 @@ class UsernameChangedSubscriber implements EventSubscriber
      */
     private function changeUsernameForUser(User $user)
     {
-        if (empty($user->__disableVerifyEmail)) {
+        $customer = $user->getCustomer();
+
+        if (empty($user->__disableVerifyEmail) && empty($customer->__disableVerifyEmail)) {
             $this->container->get('user.email_verifier')->verifyEmail($user);
         }
     }
