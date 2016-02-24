@@ -26,7 +26,7 @@ Furniture\ProductBundle\Entity\Product:
                 skuOptionType: ASC
 
         productParts:
-            targetEntity: ProductPart
+            targetEntity: Furniture\ProductBundle\Entity\ProductPart
             cascade: [persist]
             mappedBy: product
             orphanRemoval: true

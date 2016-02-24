@@ -1,6 +1,7 @@
 Furniture\ProductBundle\Entity\ProductPartType:
     type: entity
     table: furniture_product_part_type
+    repositoryClass: Furniture\ProductBundle\Entity\Repository\ProductPartTypeRepository
     
     id:
         id:

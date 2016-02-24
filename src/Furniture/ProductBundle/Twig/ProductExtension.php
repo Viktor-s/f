@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Twig;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductPartMaterialOption;
+use Furniture\ProductBundle\Entity\ProductPartType;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\Entity\Space;
 use Furniture\ProductBundle\Entity\Style;
@@ -46,6 +47,7 @@ class ProductExtension extends \Twig_Extension
             'is_product_style_can_remove'                => new \Twig_Function_Method($this, 'isProductStyleCanRemove'),
             'is_product_category_can_remove'             => new \Twig_Function_Method($this, 'isProductCategoryCanRemove'),
             'is_product_part_material_option_can_remove' => new \Twig_Function_Method($this, 'isProductPartMaterialOptionCanRemove'),
+            'is_product_part_type_can_remove'            => new \Twig_Function_Method($this, 'isProductPartTypeCanRemove'),
         ];
     }
 
@@ -196,6 +198,21 @@ class ProductExtension extends \Twig_Extension
         return $this->removalCheckerRegistry
             ->getProductPartMaterialOptionRemovalChecker()
             ->canHardRemove($option)
+            ->canRemove();
+    }
+
+    /**
+     * Is product part type can remove?
+     *
+     * @param ProductPartType $type
+     *
+     * @return bool
+     */
+    public function isProductPartTypeCanRemove(ProductPartType $type)
+    {
+        return $this->removalCheckerRegistry
+            ->getProductPartTypeRemovalChecker()
+            ->canHardRemove($type)
             ->canRemove();
     }
 

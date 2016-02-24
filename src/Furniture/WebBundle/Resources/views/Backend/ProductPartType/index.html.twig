@@ -36,7 +36,10 @@
                     <td>
                         <div class="pull-right">
                             {{ buttons.edit(path('furniture_backend_product_part_type_update', {'id': product_part_type.id})) }}
-                            {{ buttons.delete(path('furniture_backend_product_part_type_delete', {'id': product_part_type.id})) }}
+
+                            {% if is_product_part_type_can_remove(product_part_type) %}
+                                {{ buttons.delete(path('furniture_backend_product_part_type_delete', {'id': product_part_type.id})) }}
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

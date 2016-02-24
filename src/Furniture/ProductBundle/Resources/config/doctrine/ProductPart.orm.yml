@@ -32,7 +32,8 @@ Furniture\ProductBundle\Entity\ProductPart:
                 name: product_part_type_id
                 referencedColumnName: id
                 nullable: false
-                onDelete: CASCADE
+                onDelete: RESTRICT
+
         product:
             targetEntity: Furniture\ProductBundle\Entity\Product
             inversedBy: productParts
