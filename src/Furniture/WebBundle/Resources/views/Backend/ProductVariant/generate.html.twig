@@ -421,6 +421,10 @@
                         {{ form_label(form.skuPrice) }}
                         {{ form_widget(form.skuPrice) }}
                     {% endif %}
+                    {% if form.factoryCode is defined %}
+                        {{ form_label(form.factoryCode) }}
+                        {{ form_widget(form.factoryCode) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
