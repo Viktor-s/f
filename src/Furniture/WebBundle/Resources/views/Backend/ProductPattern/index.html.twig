@@ -25,6 +25,7 @@
         <thead>
         <tr>
             <th>Name</th>
+            <th>factory code</th>
             <th>Scheme</th>
             <th></th>
         </tr>
@@ -34,6 +35,7 @@
         {% for pattern in product_patterns %}
             <tr>
                 <td>{{ pattern.name }}</td>
+                <td>{{ pattern.activeFactoryCode }}</td>
                 <td>{{ pattern.scheme }}</td>
                 <td>
                     {{ buttons.edit(path('furniture_backend_product_pattern_update', {productId: product.id, id: pattern.id})) }}
