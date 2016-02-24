@@ -99,7 +99,7 @@
                 <div class="product-detail-box">
                     <h1 class="product-title" style="margin-bottom: 7px;">
                         {% if product.factoryCode != '' %}
-                            <small>{{ product.factoryCode }}</small> 
+                            <small id="factory-code-view" ></small> 
                         {% endif %}
                         {{ product.name }}
                     </h1>
@@ -254,7 +254,8 @@
                 {
                 'id':{{p.pattern.id}},
                         'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                        'price':{{ p.pattern|pattern_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                        'price':{{ p.pattern|pattern_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
+                        'factoryCode': {{ p.pattern.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
                 },{% endfor %} ];
                 var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
             {% else %}
@@ -262,7 +263,8 @@
                 {
                 'id':{{v.variant.id}},
                         'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                        'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}}
+                        'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
+                        'factoryCode': {{ v.variant.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
                 },{% endfor %} ];
 
                 var pdpDataContainer = new variant_data_container(sku_matrix);
@@ -305,6 +307,19 @@
             $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
             $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
 
+            var product_code_show = function() {
+                var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
+                var showEl = $('#factory-code-view');
+                var variants = pdpDataContainer.getFiltered();
+                if ( pdpDataContainer.isFilteredItemFound() ) {
+                    console.log('choiced');
+                    showEl.text(variants[0].factoryCode);
+                }else{
+                    console.log('unchoiced');
+                    showEl.text(defaultpCode);
+                }
+            }
+
             var low_max_price = function () {
                 var variants = pdpDataContainer.getFiltered()
                 if (variants.length > 1) {
@@ -340,10 +355,11 @@
                         $('#prices').fadeIn('medium');
                     });
             };
-
+            product_code_show();
             low_max_price();
 
             $(document).on('filter:update', function (event) {
+                product_code_show();
                 low_max_price();
             });
 
@@ -370,11 +386,12 @@
                 $('.add-to-specification a').click(function () {
                     var el = $(this);
                     
-                    if (pdpDataContainer.getFiltered().length == 1) {
+                    if ( pdpDataContainer.isFilteredItemFound() ) {
                         var quantity = parseInt($('.quantity-selector .entry.number').text());
                         var specificationId = parseInt($(this).attr('data-specification-id'));
-                        
+                        console.log('submit');
                         {% if product.hasProductVariantsPatterns() %}
+                            console.log('has patterns');
                             var data = {
                                 id: pdpDataContainer.getFiltered()[0].id,
                                 choices: {
@@ -403,7 +420,7 @@
                                     data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                                 }
                             }
-                            
+                            console.log(data);
                             $.ajax({
                                 url: '{{ path('product_api_create_by_pattern_and_parameters') }}',
                                 data: data,
@@ -475,7 +492,7 @@
         {% else %}
                 $('.update-specification-item button').click(function () {
                     var el = $(this);
-                    if (pdpDataContainer.getFiltered().length == 1) {
+                    if (pdpDataContainer.isFilteredItemFound()) {
 
 
                         quantity = parseInt($('.quantity-selector .entry.number').text());

@@ -129,9 +129,9 @@
                                     <td>
                                         <div>{{ product.translate.name }}</div>
 
-                                        {% if product.factoryCode %}
+                                        {% if productVariant.activeFactoryCode %}
                                             <div>
-                                                {{ product.factoryCode }}
+                                                {{ productVariant.activeFactoryCode }}
                                             </div>
                                         {% endif %}
 
@@ -324,7 +324,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        {{ product.factoryCode }}
+                                        {{ productVariant.activeFactoryCode }}
                                     </td>
 
                                     <td>{{ productVariant.product.name }}</td>

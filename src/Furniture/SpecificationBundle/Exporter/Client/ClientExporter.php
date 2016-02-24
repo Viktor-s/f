@@ -133,7 +133,7 @@ class ClientExporter extends AbstractExporter
 
             $values = [
                 $product->getName(),
-                $product->getFactoryCode(),
+                $productVariant->getActiveFactoryCode(),
             ];
 
             if (count($product->getTypes()) > 0) {

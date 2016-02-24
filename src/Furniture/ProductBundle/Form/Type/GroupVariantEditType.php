@@ -30,6 +30,10 @@ class GroupVariantEditType extends GroupVariantFilterType {
             'label' => 'Change cost',
             'required' => false,
         ])
+             ->add('factoryCodeUpdate', 'text', [
+            'label' => 'Change factory code',
+                'required' => false,
+            ])
             ->add('width', 'text', [
             'label' => 'Change width',
                 'required' => false,

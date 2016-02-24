@@ -76,6 +76,10 @@ class GroupVariantFilterType extends AbstractType
                 'data' => null,
                 'required' => false
             ])
+            ->add('factoryCode', 'text', [
+                'label' => 'Factory code',
+                'required' => false,
+            ])
                         ;
     }
     

@@ -113,6 +113,7 @@ class VariantGenerator extends ContainerAware {
         
         $generated = [];
         foreach ($permutations as $permutation) {
+            /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
             $variant = $this->variantRepository->createNew();
             if( $product->isSchematicProductType() ){
                 if(!$variant_filter->getScheme())
@@ -121,9 +122,15 @@ class VariantGenerator extends ContainerAware {
             }
             $variant->setObject($product);
             $variant->setDefaults($product->getMasterVariant());
+            
             if($variant_filter->getSkuPrice() !== null){
                 $variant->setPrice($variant_filter->getSkuPriceCent());
             }
+            
+            if($variant_filter->getFactoryCode()){
+                $variant->setFactoryCode($variant_filter->getFactoryCode());
+            }
+            
             if (!is_array($permutation)) {
                 $route_id = $permutation;
                 /*

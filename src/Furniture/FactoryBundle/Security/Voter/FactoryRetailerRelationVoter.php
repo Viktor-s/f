@@ -41,16 +41,28 @@ class FactoryRetailerRelationVoter implements VoterInterface
 
             return self::ACCESS_DENIED;
         }
-
+        
         if (in_array('FACTORY_RETAILER_RELATION_EDIT', $attributes) || in_array('FACTORY_RETAILER_RELATION_REMOVE', $attributes)) {
+            
             if (!$object instanceof FactoryRetailerRelation) {
                 return self::ACCESS_ABSTAIN;
             }
-
-            if ($user->isFactory() && $user->isFactoryAdmin()) {
+            
+            if( !$object->isFactoryAccept() 
+                    && $user->isRetailer()
+                    && $user->getRetailerUserProfile()->isRetailerAdmin()
+                    ){
                 return self::ACCESS_GRANTED;
             }
-
+            
+            if( $user->isFactory() && $user->isFactoryAdmin() ){
+                return self::ACCESS_GRANTED;
+            }
+            
+            if ($object->isDeal() && $user->isFactory() && $user->isFactoryAdmin()) {
+                return self::ACCESS_GRANTED;
+            }
+            
             return self::ACCESS_DENIED;
         }
 

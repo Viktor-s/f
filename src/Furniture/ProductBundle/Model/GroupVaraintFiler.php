@@ -43,6 +43,8 @@ class GroupVaraintFiler {
 
     private $skuPrice = null;
     
+    private $factoryCode = null;
+    
     /**
      * 
      * @param Product $product
@@ -124,6 +126,25 @@ class GroupVaraintFiler {
         return $this;
     }
     
+    /**
+     * 
+     * @return string
+     */
+    public function getFactoryCode(){
+        return $this->factoryCode;
+    }
+
+    /**
+     * 
+     * @param string $factoryCode
+     * @return \Furniture\ProductBundle\Model\GroupVaraintFiler
+     */
+    public function setFactoryCode($factoryCode){
+        $this->factoryCode = $factoryCode;
+        return $this;
+    }
+
+    
     public function setSkuPrice($skuPrice)
     {
         $this->skuPrice = $skuPrice;
@@ -148,6 +169,11 @@ class GroupVaraintFiler {
             /* if incorrect product scheme */
             if($this->isSchematicProductType() 
                     && $variant->getProductScheme()->getId() !== $this->getScheme()->getId() ){
+                continue;
+            }
+            
+            /* if incorrect factoryCode */
+            if($this->getFactoryCode() !== null && $variant->getFactoryCode() !== $this->getFactoryCode()){
                 continue;
             }
             
