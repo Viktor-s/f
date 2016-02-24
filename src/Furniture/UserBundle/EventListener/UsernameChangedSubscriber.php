@@ -8,7 +8,6 @@ use Doctrine\ORM\Events;
 use Furniture\UserBundle\Entity\Customer;
 use Furniture\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 class UsernameChangedSubscriber implements EventSubscriber
 {
@@ -59,9 +58,7 @@ class UsernameChangedSubscriber implements EventSubscriber
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof User) {
                 $customer = $entity->getCustomer();
-                if (!isset($entity->__disableVerifyEnail) && null !== $customer
-                    && $customer->getEmail() !== $entity->getUsername()
-                ) {
+                if (null !== $customer && $customer->getEmail() !== $entity->getUsername()) {
                     $entity->setUsername($customer->getEmail());
                     $this->changeUsernameForUser($entity);
 
@@ -76,7 +73,7 @@ class UsernameChangedSubscriber implements EventSubscriber
                 /** @var User $user */
                 $user = $entity->getUser();
 
-                if (!isset($user->__disableVerifyEnail) && null !== $user && $user->getUsername() !== $entity->getEmail()) {
+                if (null !== $user && $user->getUsername() !== $entity->getEmail()) {
                     $user->setUsername($entity->getEmail());
                     $this->changeUsernameForUser($user);
 
@@ -86,9 +83,7 @@ class UsernameChangedSubscriber implements EventSubscriber
             } else if ($entity instanceof User) {
                 $customer = $entity->getCustomer();
 
-                if (!isset($entity->__disableVerifyEnail) && null !== $customer
-                    && $customer->getEmail() !== $entity->getUsername()
-                ) {
+                if ($entity->getUsername() !== $customer->getEmail()) {
                     $entity->setUsername($customer->getEmail());
                     $this->changeUsernameForUser($entity);
                     $uow->recomputeSingleEntityChangeSet($userClassMetadata, $entity);
@@ -114,7 +109,9 @@ class UsernameChangedSubscriber implements EventSubscriber
      */
     private function changeUsernameForUser(User $user)
     {
-        $this->container->get('user.email_verifier')->verifyEmail($user);
+        if (empty($user->__disableVerifyEmail)) {
+            $this->container->get('user.email_verifier')->verifyEmail($user);
+        }
     }
 
     /**
