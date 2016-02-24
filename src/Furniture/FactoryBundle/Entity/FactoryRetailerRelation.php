@@ -267,4 +267,18 @@ class FactoryRetailerRelation
     {
         return $this->factoryAccept;
     }
+    
+    /**
+     * deal
+     * 
+     * @return bool
+     */
+    public function isDeal(){
+        
+        if( $this->isFactoryAccept() && $this->isRetailerAccept() && $this->isActive() ){
+            return true;
+        }
+        
+        return false;
+    }
 }
