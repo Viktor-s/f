@@ -25,6 +25,16 @@ abstract class AbstractExporter
     const SHEET_DATA_START_ROW = 14;
 
     /**
+     * Index of first header column.
+     */
+    const SHEET_HEADER_FIRST_COL_INDEX = 3;
+
+    /**
+     * Index of second header column.
+     */
+    const SHEET_HEADER_SECOND_COL_INDEX = 5;
+
+    /**
      * Number of columns that sheet top header takes;
      */
     const SHEET_HEADER_LENGTH = 8;
@@ -40,6 +50,16 @@ abstract class AbstractExporter
      * Quantity of characters that fits into the cell. (Default font Calibri 11)
      */
     const IMAGE_COLUMN_WIDTH = 15;
+
+    /**
+     * Logo image width in px.
+     */
+    const LOGO_IMAGE_WIDTH = 150;
+
+    /**
+     * Logo image height in px.
+     */
+    const LOGO_IMAGE_HEIGHT = 100;
 
     /**
      * @var TranslatorInterface
@@ -365,6 +385,33 @@ abstract class AbstractExporter
                     ],
                 ]
             );
+        }
+
+        $this->adjustLogoImageCell($sheet);
+    }
+
+    /**
+     * Adjust logo image cells width.
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     */
+    private function adjustLogoImageCell(\PHPExcel_Worksheet $sheet)
+    {
+        $sheet->calculateColumnWidths();
+
+        $key = $this->generateColumnKey(self::SHEET_HEADER_FIRST_COL_INDEX + 1);
+        $key2 = $this->generateColumnKey(self::SHEET_HEADER_FIRST_COL_INDEX + 2);
+
+        $logoCellWidth = ceil($sheet->getColumnDimension($key)->getWidth());
+        $logoCellWidth2 = ceil($sheet->getColumnDimension($key2)->getWidth());
+
+        $logoColumnsWidth = $logoCellWidth + $logoCellWidth2;
+        $imageWidth = ceil(PHPExcel_Shared_Drawing::pixelsToCellDimension(self::LOGO_IMAGE_WIDTH, $this->defaultFont));
+
+        if ($imageWidth > $logoColumnsWidth) {
+            $increase = round(($imageWidth - $logoColumnsWidth) / 2);
+            $sheet->getColumnDimension($key)->setAutoSize(false)->setWidth($logoCellWidth + $increase);
+            $sheet->getColumnDimension($key2)->setAutoSize(false)->setWidth($logoCellWidth2 + $increase);
         }
     }
 

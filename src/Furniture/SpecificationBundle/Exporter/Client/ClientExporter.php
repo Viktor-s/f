@@ -23,9 +23,9 @@ class ClientExporter extends AbstractExporter
         $excel->setActiveSheetIndex(0);
         $sheet = $excel->getActiveSheet();
 
-        $this->createHeader($sheet, $specification, 1);
+        $this->createHeader($sheet, $specification, self::SHEET_HEADER_START_ROW);
 
-        $row = 14;
+        $row = self::SHEET_DATA_START_ROW;
         $this->createTableHeader($sheet, $fieldMap, $row);
 
         $positions = [];
@@ -458,9 +458,9 @@ class ClientExporter extends AbstractExporter
     private function createHeader(\PHPExcel_Worksheet $sheet, Specification $specification, $row)
     {
         $startRow = $row;
-        $firstColumnIndex = 3;
-        $secondColumnIndex = 5;
-        $thirdColumnIndex = 8;
+        $firstColumnIndex = self::SHEET_HEADER_FIRST_COL_INDEX;
+        $secondColumnIndex = self::SHEET_HEADER_SECOND_COL_INDEX;
+        $thirdColumnIndex = self::SHEET_HEADER_LENGTH;
         $creator = $specification->getCreator();
         $retailer = $creator->getRetailerProfile();
 
@@ -533,8 +533,8 @@ class ClientExporter extends AbstractExporter
             if ($path) {
                 $this->mergeDiapason($sheet, $firstColumnIndex + 1, $startRow, $secondColumnIndex, $row);
                 $key = $this->generateCellKey($firstColumnIndex + 1, $startRow);
-                $imageWidth = 150;
-                $imageHeight = 100;
+                $imageWidth = self::LOGO_IMAGE_WIDTH;
+                $imageHeight = self::LOGO_IMAGE_HEIGHT;
                 $cellDimension = ceil(PHPExcel_Shared_Drawing::pixelsToCellDimension($imageWidth, $this->defaultFont));
                 $rowHeight = ceil(PHPExcel_Shared_Drawing::pixelsToPoints($imageHeight));
                 $obj = $this->createImageForExcel(
