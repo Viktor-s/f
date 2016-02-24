@@ -31,7 +31,7 @@
             {{ form_widget(form) }}
 
             {% for error in errors %}
-                <span class="help-block form-error"> 
+                <span class="help-block form-error">
                     {{
                         error.messagePluralization is null
                             ? error.messageTemplate|trans(error.messageParameters, 'validators')
