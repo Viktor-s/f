@@ -71,6 +71,10 @@ services:
         class: Furniture\ProductBundle\ProductRemoval\ProductCategoryRemovalChecker
         arguments: [ @doctrine.orm.default_entity_manager ]
 
+    product_part_material_option.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductPartMaterialOptionRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     product.removal_checker.registry:
         class: Furniture\ProductBundle\ProductRemoval\RemovalCheckerRegistry
         arguments: [ @service_container ]

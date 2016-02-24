@@ -120,6 +120,7 @@ a, a:link, a:visited, a:active, a:hover{cursor: pointer; text-decoration: none; 
 ul{list-style: none;}
 body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; line-height: 1;}
 
+
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 03 - GLOBAL SETTINGS */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
@@ -278,13 +279,10 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 }
 /*form elements*/
 .checkbox, .radio{margin-top: 0;}
-.checkbox-entry{margin-bottom: 15px;}
 .checkbox-entry{display: block; font-size: 13px; line-height: 14px; font-weight: 500; position: relative; padding-left: 22px;}
 .checkbox-entry b{font-weight: 600!important; color: #313131!important;}
-.checkbox-entry input + span{cursor: pointer; display: inline-block; border: 1px #d9d9d9 solid; width: 12px; height: 12px;  vertical-align: middle; color: #333232; position: relative; top: -1px; margin-right: 7px; position: absolute; left: 0; top: 6px;}
 .checkbox-entry.radio input + span{width: 15px; height: 15px; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 .checkbox-entry input{display: none;}
-.checkbox-entry input:checked + span{background: #ca1515;}
 .checkbox-entry.radio input:checked + span:after{position: absolute; left: -1px; top: -1px; right: -1px; bottom: -1px; content: ""; box-shadow: inset 0 0 0 3px #fff; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 /*boxed layout*/
 .boxed-layout{max-width: 1270px; margin: 0 auto; background: #fafafa;}
@@ -2342,10 +2340,12 @@ select{background: #fff!important;}
 .sort-button{font-family: FontAwesome; float: left; cursor: pointer;}
 .sort-button:before{content: "\f063";}
 .sort-button.active:before{content: "\f062";}
-.view-button{float: left; width: 20px; position: relative; margin-right: 10px; text-align: center; color: #b5b5b5; cursor: pointer;}
+.view-button{float: left; width: 30px; position: relative; margin-right: 10px; text-align: center; color: #b5b5b5; cursor: pointer;}
 .view-button.list{padding-left: 0; margin-top: 0; }
 .view-button:last-child{margin-right: 0;}
-.view-button.active{color: #262626; font-size: 18px;}
+.view-button:after{border: 1px #ebebeb solid; position: absolute; left: 0; top: 0; width: 100%; height: 100%; content: "";}
+.view-button.active{color: #262626;}
+.view-button.active:after{border: 2px #262626 solid;}
 /*list view*/
 .list-view .shop-grid-item{width: 100%;}
 .list-view .product-slide-entry{max-width: 100%; margin-left: 230px; padding-bottom: 45px; margin-bottom: 44px; text-align: left!important;}
@@ -3754,7 +3754,7 @@ form #reset_password {
 header.type-4 {
     position: relative;
     margin-bottom: 0;
-    max-width: 1200px;
+    max-width: 1170px;
     margin: 0 auto;
     background: transparent;
     padding-right: 0;
@@ -3902,4 +3902,60 @@ footer .copyright {
 
 .header-functionality-entry {
     padding: 0 15px 0 0; 
+}
+
+/* styling buttons */
+
+.checkbox-entry {
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    line-height: 14px;
+    font-weight: 500;
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 15px;
+}
+
+.checkbox-entry input + span.check {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 6px;
+}
+
+.checkbox-entry input:checked + span.check {
+    background: #ca1515;
+}
+
+.th-total-price {
+    white-space: nowrap;
+}
+
+.article-container ul.spec-info-list li:before {
+    display: none;
+}
+
+.spec-info-list span {
+    margin-bottom: 0!important;
+    padding: 0!important;
+    font-size: 13px;
+    line-height: 30px;
+}
+
+.checkbox-name {
+    font-size: 13px;
+    line-height: 14px;
+    color: #929292;
+}
+
+.checkbox-entry input:checked + span.check + .checkbox-name {
+    color: #313131;
 }
