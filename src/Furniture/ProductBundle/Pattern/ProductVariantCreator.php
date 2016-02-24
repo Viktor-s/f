@@ -56,6 +56,7 @@ class ProductVariantCreator
         $variant = new ProductVariant();
         $variant->setProduct($pattern->getProduct());
         $variant->setPrice($pattern->getPrice());
+        $variant->setFactoryCode($pattern->getActiveFactoryCode());
 
         foreach ($parameters->getMaterialVariantSelections() as $materialVariantSelection) {
             $selection = new ProductPartVariantSelection();

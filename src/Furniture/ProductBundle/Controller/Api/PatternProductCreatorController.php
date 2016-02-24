@@ -105,10 +105,6 @@ class PatternProductCreatorController
             ));
         }
 
-        if (!isset($choices['pp'])) {
-            throw new HttpException(400, 'Missing "pp" in choices.');
-        }
-
         // Load scheme
         $scheme = null;
 
@@ -134,6 +130,7 @@ class PatternProductCreatorController
         $productPartVariantSelections = [];
 
         //Product part choices
+        if(isset($choices['pp']))
         foreach ($choices['pp'] as $index => $choiceData) {
             if (!is_array($choiceData)) {
                 throw new HttpException(400, sprintf(
@@ -183,35 +180,39 @@ class PatternProductCreatorController
         }
 
         //Sku option choices
-        foreach($choices['so'] as $index => $choiceData){
-            if (!is_array($choiceData)) {
-                throw new HttpException(400, sprintf(
-                    'Invalid choice with index "%s". Should be a array.',
-                    $index
-                ));
-            }
-            
-            if (!isset($choiceData['so']) || !isset($choiceData['sov'])) {
-                throw new HttpException(400, sprintf(
-                    'Missing requires data "so" or "sov" in choice data with index "%s".',
-                    $index
-                ));
-            }
-            
-            $skuOptionVariantId = (int) $choiceData['sov'];
+        $skuOptionVariantSelection = null;
+        if( isset($choices['so']) ){
+            $skuOptionVariantSelection = [];
+            foreach($choices['so'] as $index => $choiceData){
+                if (!is_array($choiceData)) {
+                    throw new HttpException(400, sprintf(
+                        'Invalid choice with index "%s". Should be a array.',
+                        $index
+                    ));
+                }
 
-            $skuOptionVariant = $this->em->find(SkuOptionVariant::class, $skuOptionVariantId);
+                if (!isset($choiceData['so']) || !isset($choiceData['sov'])) {
+                    throw new HttpException(400, sprintf(
+                        'Missing requires data "so" or "sov" in choice data with index "%s".',
+                        $index
+                    ));
+                }
 
-            if (!$skuOptionVariant) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found product sku option variant with identifier "%s" in choice data with index "%s".',
-                    $skuOptionVariantId,
-                    $index
-                ));
-            }
+                $skuOptionVariantId = (int) $choiceData['sov'];
 
-            $skuOptionVariantSelection[] = $skuOptionVariant;
+                $skuOptionVariant = $this->em->find(SkuOptionVariant::class, $skuOptionVariantId);
+
+                if (!$skuOptionVariant) {
+                    throw new NotFoundHttpException(sprintf(
+                        'Not found product sku option variant with identifier "%s" in choice data with index "%s".',
+                        $skuOptionVariantId,
+                        $index
+                    ));
+                }
+
+                $skuOptionVariantSelection[] = $skuOptionVariant;
             
+            }
         }
         
         // Convert selections from array to collection object
