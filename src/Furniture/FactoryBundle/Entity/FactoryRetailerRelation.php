@@ -275,7 +275,7 @@ class FactoryRetailerRelation
      */
     public function isDeal(){
         
-        if( $this->isFactoryAccept() && $this->isRetailerAccept() && $this->isActive() ){
+        if( $this->isFactoryAccept() && $this->isRetailerAccept() ){
             return true;
         }
         
