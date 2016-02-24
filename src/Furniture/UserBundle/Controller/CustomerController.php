@@ -106,6 +106,7 @@ class CustomerController extends BaseCustomerController
         $form     = $this->getForm($resource);
 
         if (in_array($request->getMethod(), array('POST', 'PUT', 'PATCH')) && $form->submit($request, !$request->isMethod('PATCH'))->isValid()) {
+            $resource->__disableVerifyEmail = true;
             $this->domainManager->update($resource);
 
             if ($resource instanceof ResourceEvent) {
