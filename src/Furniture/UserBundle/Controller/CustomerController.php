@@ -106,6 +106,7 @@ class CustomerController extends BaseCustomerController
         $form     = $this->getForm($resource);
 
         if (in_array($request->getMethod(), array('POST', 'PUT', 'PATCH')) && $form->submit($request, !$request->isMethod('PATCH'))->isValid()) {
+            // We edit user in administration, and the user not should verify email
             $resource->__disableVerifyEmail = true;
             $this->domainManager->update($resource);
 
