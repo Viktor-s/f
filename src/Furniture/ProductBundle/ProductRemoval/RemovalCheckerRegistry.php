@@ -102,6 +102,26 @@ class RemovalCheckerRegistry
     }
 
     /**
+     * Get product part material removal checker
+     *
+     * @return ProductPartMaterialRemovalChecker
+     */
+    public function getProductPartMaterialRemovalChecker()
+    {
+        return $this->container->get('product_part_material.removal_checker');
+    }
+
+    /**
+     * Get product part material variant removal checker
+     *
+     * @return ProductPartMaterialVariantRemovalChecker
+     */
+    public function getProductPartMaterialVariantRemovalChecker()
+    {
+        return $this->container->get('product_part_material_variant.removal_checker');
+    }
+
+    /**
      * Get product part material option removal checker
      *
      * @return ProductPartMaterialOptionRemovalChecker
