@@ -1,0 +1,75 @@
+{
+    "type": 2,
+
+    "child": [
+        {
+            "type": 2,
+            "prependText": "Please choose legs variants",
+            "child": [
+                {
+                    "type": 2,
+                    "appendText": "Solid (Сплошные)",
+                    "elements": [
+                        {
+                            "input": 137,
+                            "appendText": "Wood"
+                        },
+
+                        {
+                            "input": 138,
+                            "appendText": "Glass"
+                        }
+                    ]
+                },
+                {
+                    "type": 2,
+                    "appendText": "hybrid (Смешанные)",
+                    "child": [
+                        {
+                            "type": 1,
+                            "appendText": "Bottom legs",
+                            "elements": [
+                                {
+                                    "input": 137,
+                                    "appendText": "Wood bottom legs"
+                                }
+                            ]
+                        },
+
+                        {
+                            "type": 1,
+                            "appendText": "Top legs",
+                            "elements": [
+                                {
+                                    "input": 137,
+                                    "appendText": "Wood top legs"
+                                },
+
+                                {
+                                    "input": 138,
+                                    "appendText": "Glass top legs"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "type": 2,
+            "prependText": "Please choose tabletop",
+            "elements": [
+                {
+                    "input": 135,
+                    "appendText": "Wood"
+                },
+
+                {
+                    "input": 136,
+                    "appendText": "Glass"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+<form action="" method="POST" class="form-horizontal">
+    {{ form_row(form.product) }}
+    {{ form_row(form.name) }}
+
+    {{ form_rest(form) }}
+
+    <fieldset>
+        <legend>Tree</legend>
+
+        <div id="pdp-intellectual-tree"></div>
+    </fieldset>
+
+    <input type="submit" />
+</form>

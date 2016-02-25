@@ -57,6 +57,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    product.pdp_intellectual.creator:
+        class: Furniture\ProductBundle\PdpIntellectual\PdpIntellectualCreator
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
         arguments: [ @product.removal_checker.registry ]
