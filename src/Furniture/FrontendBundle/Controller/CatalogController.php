@@ -279,6 +279,12 @@ class CatalogController
 
         if ($user->isRetailer()) {
             $productQuery->withRetailer($user->getRetailerUserProfile()->getRetailerProfile());
+
+            $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
+
+            if ($retailerProfile->isDemo()) {
+                $productQuery->withoutFactoryEnabled();
+            }
         }
         
         /* Create product paginator */

@@ -39,22 +39,6 @@ services:
         class: Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller
         arguments: [ @doctrine.orm.default_entity_manager ]
 
-    product.removal_checker:
-        class: Furniture\ProductBundle\ProductRemoval\ProductRemovalChecker
-        arguments: [ @doctrine.orm.default_entity_manager ]
-
-    product_variant.removal_checker:
-        class: Furniture\ProductBundle\ProductRemoval\VariantRemovalChecker
-        arguments: [ @doctrine.orm.default_entity_manager ]
-
-    product_attribute.removal_checker:
-        class: Furniture\ProductBundle\ProductRemoval\AttributeRemovalChecker
-        arguments: [ @doctrine.orm.default_entity_manager ]
-
-    sky_option.removal_checker:
-        class: Furniture\ProductBundle\ProductRemoval\SkuOptionTypeRemovalChecker
-        arguments: [ @doctrine.orm.default_entity_manager ]
-
     product_part_material_variant.subscriber.entity:
         class: Furniture\ProductBundle\EventListener\ProductPartMaterialVariantEntitySubscriber
         arguments: [ @sylius.image_uploader, @doctrine.orm.default_entity_manager ]
@@ -75,10 +59,6 @@ services:
 
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
-        arguments:
-            - @product_variant.removal_checker
-            - @product_attribute.removal_checker
-            - @sky_option.removal_checker
-            - @product.removal_checker
+        arguments: [ @product.removal_checker.registry ]
         tags:
             - { name: twig.extension }

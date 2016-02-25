@@ -13,8 +13,8 @@ frontend:
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sure you want to remove logo?
     are_you_sure_remove_retailer_relation: Are you sure remove retailer relation?
-    are_you_sure_remove_specification: Are you sure remote specification?
-    are_you_sure_remove_specification_item: Are you sure remote specification item?
+    are_you_sure_remove_specification: Are you sure you want to remove this specification?
+    are_you_sure_remove_specification_item: Are you sure you want to remove this product?
     authorized_factories: Authorized brands
     authorized_users: Authorized users
     brand: Brand
@@ -40,7 +40,7 @@ frontend:
     content_user_profile: User profile
     create: Create
     create_to_factory_relation: Create request to factory
-    create_to_retailer_relation: Relate to retailer
+    create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
     created_at: Created at
@@ -55,14 +55,15 @@ frontend:
     edit: Edit
     email: Email
     email_virify_success: "Your email successfully verified"
-    email_virify_success_login: "Your email was verified and you can login with your credentials."
-    email_virify_success_reset: "Or reset your password with form bellow."
+    email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
     emails: Emails
     employee: Employee
     employees: Employees
     enabled: Enabled
-    excel: Export
+    excel: Excel
     export: Export
+    export_to_excel: Export to excel
+    export_to_pdf: Export to PDF
     export_specification_preview: Export specification - preview
     factories: Brands
     factory: Brand
@@ -139,8 +140,6 @@ frontend:
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions
-    need_reset_password_error: Email not send.
-    need_reset_password_success: New email was sent.
     new_arrivals: New arrivals
     new_factories: New Brands
     new_password: New password
@@ -179,11 +178,15 @@ frontend:
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
+    reset_password_error: Email not send.
+    reset_password_success: New email was sent.
     retailer: Retailer
     retailer_profile: Retailer profile
     retailer_profile_side:
         managers:
             email_exists_error: Already in use!
+            create_confirmation: "We'll send confirmation mail on specified email address"
+            email_change_confirmation: "Are you sure you want change your email? If you proceed you'll be logged out and mail with email confirmation instructions will be send to new email."
     retailer_relations: User relations
     retailer_requests: Retailer requests
     sale: Personal discount

@@ -12,6 +12,7 @@
             <tr>
                 <th>id</th>
                 <th>{{ 'sylius.variant.sku'|trans }}</th>
+                <th>factory code</th>
                 <th></th>
                 <th>{{ 'sylius.variant.availability'|trans }}</th>
                 <th>{{ 'sylius.variant.last_update'|trans }}</th>
@@ -28,6 +29,7 @@
             <tr id="{{ variant.id }}">
                 <td>{{ variant.id }}</td>
                 <td>{{ variant.sku ?: '-' }}</td>
+                <td>{{ variant.activeFactoryCode }}</td>
 
                 <td>
                     {% if variant.images.count > 0 %}

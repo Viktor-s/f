@@ -45,7 +45,7 @@ class ProductPartMaterial extends AbstractTranslatable
     protected $variants;
 
     /**
-     * @var \Furniture\FactoryBundle\Entity\Factory
+     * @var Factory
      */
     private $factory;
 

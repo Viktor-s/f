@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\ProductRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\RemovalChecker\Removal;
 use Sylius\Component\Product\Model\Attribute;
 
 class AttributeRemovalChecker
@@ -27,7 +28,7 @@ class AttributeRemovalChecker
      *
      * @param Attribute $attribute
      *
-     * @return AttributeRemoval
+     * @return Removal
      */
     public function canRemove(Attribute $attribute)
     {
@@ -41,9 +42,9 @@ class AttributeRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new AttributeRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new AttributeRemoval(true);
+        return new Removal(true);
     }
 }

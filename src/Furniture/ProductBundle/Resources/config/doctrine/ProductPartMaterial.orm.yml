@@ -34,4 +34,4 @@ Furniture\ProductBundle\Entity\ProductPartMaterial:
                 name: factory_id
                 referencedColumnName: id
                 nullable: true
-                onDelete: SET NULL
+                onDelete: RESTRICT

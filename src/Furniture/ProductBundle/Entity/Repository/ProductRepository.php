@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Product;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepositiry;
 

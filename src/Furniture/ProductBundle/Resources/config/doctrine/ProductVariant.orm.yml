@@ -34,3 +34,9 @@ Furniture\ProductBundle\Entity\ProductVariant:
                     sku_option_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+                        
+    fields:
+        factoryCode:
+            type: string
+            nullable: true
+            column: factory_code

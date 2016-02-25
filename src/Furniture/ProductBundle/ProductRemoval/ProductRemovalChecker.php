@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\ProductRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\RemovalChecker\Removal;
 use Furniture\ProductBundle\Entity\Product;
 
 /**
@@ -30,7 +31,7 @@ class ProductRemovalChecker
      *
      * @param Product $product
      *
-     * @return ProductRemoval
+     * @return Removal
      */
     public function canHardRemove(Product $product)
     {
@@ -44,10 +45,10 @@ class ProductRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new ProductRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new ProductRemoval(true);
+        return new Removal(true);
     }
 
     /**
@@ -55,7 +56,7 @@ class ProductRemovalChecker
      *
      * @param Product $product
      *
-     * @return ProductRemoval
+     * @return Removal
      */
     public function canRemove(Product $product)
     {
@@ -73,9 +74,9 @@ class ProductRemovalChecker
         }
 
         if (count($reasonMessages)) {
-            return new ProductRemoval(false, $reasonMessages);
+            return new Removal(false, $reasonMessages);
         }
 
-        return new ProductRemoval(true);
+        return new Removal(true);
     }
 }

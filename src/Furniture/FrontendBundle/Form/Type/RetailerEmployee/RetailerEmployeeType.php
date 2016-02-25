@@ -58,18 +58,6 @@ class RetailerEmployeeType extends AbstractType
     {
         /** @var \Furniture\UserBundle\Entity\User $employee */
         $employee = $builder->getData();
-        /** @var \Furniture\UserBundle\Entity\User $activeUser */
-        $activeUser = $this->tokenStorage->getToken()->getUser();
-        $disabledMode = false;
-
-        if ($employee && $activeUser) {
-            if ($employee->getId() == $activeUser->getId()) {
-                $disabledMode = true;
-            }
-        }
-
-        $passwordRequired = (bool)!$employee->getId();
-
         $builder
             ->add(
                 'enabled',
@@ -79,12 +67,19 @@ class RetailerEmployeeType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('customer', 'retailer_employee_customer')
+            ->add(
+                'customer',
+                'retailer_employee_customer',
+                [
+                    'email_disabled'     => (bool)$employee->getId(),
+                    'last_name_disabled' => (bool)$employee->getId(),
+                ]
+            )
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
 
-        if ($employee->getId()) {
-            $builder->get('customer')->get('email')->setDisabled(true);
-            $builder->get('customer')->get('lastName')->setDisabled(true);
+        // Remove enabled while create emplyee and set default true in controller.
+        if (!$employee->getId()) {
+            $builder->remove('enabled');
         }
     }
 

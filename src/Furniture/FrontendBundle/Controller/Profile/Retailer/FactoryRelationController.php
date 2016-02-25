@@ -134,13 +134,18 @@ class FactoryRelationController
      */
     public function edit(Request $request, $relation = null)
     {
+        
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
 
         if ($relation) {
             $relation = $this->factoryRetailerRelationRepository->find($relationId = $relation);
-
+            
+            if (!$this->authorizationChecker->isGranted('FACTORY_RETAILER_RELATION_EDIT', $relation)) {
+                throw new AccessDeniedException();
+            }
+            
             if (!$relation) {
                 throw new NotFoundHttpException(sprintf(
                     'Not found relation with identifier "%d".',
@@ -262,7 +267,7 @@ class FactoryRelationController
             ));
         }
 
-        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_EDIT', $relation)) {
+        if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_REMOVE', $relation)) {
             throw new AccessDeniedException();
         }
 

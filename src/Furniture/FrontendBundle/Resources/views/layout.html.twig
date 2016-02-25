@@ -24,6 +24,8 @@
             '@FrontendBundle/Resources/public/css/style.css'
             '@FrontendBundle/Resources/public/css/dataTables.bootstrap.min.css'
             '@FrontendBundle/Resources/public/js/fancybox/source/jquery.fancybox.css'
+            '@FrontendBundle/Resources/public/css/select2/select2.min.css'
+            '@FrontendBundle/Resources/public/css/select2/select2-bootstrap.min.css'
         %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
@@ -54,10 +56,12 @@
             '@FrontendBundle/Resources/public/js/image-lazy.js'
             '@FrontendBundle/Resources/public/js/live-form.js'
             '@FrontendBundle/Resources/public/js/remove.js'
+            '@FrontendBundle/Resources/public/js/form.confirmation.js'
             '@FrontendBundle/Resources/public/js/fileupload/jquery.fileupload.js'
             '@FrontendBundle/Resources/public/js/fileupload/jquery.iframe-transport.js'
             '@FrontendBundle/Resources/public/js/elevatezoom/jquery.elevatezoom.min.js'
             '@FrontendBundle/Resources/public/js/fancybox/source/jquery.fancybox.js'
+            '@FrontendBundle/Resources/public/js/select2/select2.min.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -70,14 +74,13 @@
 <body class="style-16">
     {% include 'FrontendBundle:Common:page_loader.html.twig' %}
 
-    {% block header_container %}
-        {% include 'FrontendBundle:Common/Header:header.html.twig' %}
-    {% endblock %}
-
     {# Attention: now we no use alerts #}
 
     {% block content_container %}
         <div id="content-block">
+            {% block header_container %}
+                {% include 'FrontendBundle:Common/Header:header.html.twig' %}
+            {% endblock %}
             <div class="content-center fixed-header-margin" style="padding-top: 248px;">
                 {% set breadcumb_content = block('breadcrumb') %}
 

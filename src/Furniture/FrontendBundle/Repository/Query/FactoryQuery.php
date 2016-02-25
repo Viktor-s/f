@@ -31,6 +31,11 @@ class FactoryQuery
     private $retailer;
 
     /**
+     * @var RetailerProfile
+     */
+    private $retailerAccessControl = true;
+
+    /**
      * @var bool|null
      */
     private $onlyEnabled = true;
@@ -303,5 +308,39 @@ class FactoryQuery
     public function isOnlyDisabled()
     {
         return $this->onlyEnabled === false;
+    }
+
+    /**
+     * With retailer access control
+     *
+     * @return FactoryQuery
+     */
+    public function withRetailerAccessControl()
+    {
+        $this->retailerAccessControl = true;
+
+        return $this;
+    }
+
+    /**
+     * Without retailer access control
+     *
+     * @return FactoryQuery
+     */
+    public function withoutRetailerAccessControl()
+    {
+        $this->retailerAccessControl = false;
+
+        return $this;
+    }
+
+    /**
+     * Is retailer access control?
+     *
+     * @return bool
+     */
+    public function isRetailerAccessControl()
+    {
+        return $this->retailerAccessControl;
     }
 }

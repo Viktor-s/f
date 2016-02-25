@@ -39,7 +39,10 @@
                 <td>{{ category }}</td>
                 <td class="text-center">
                     {{ buttons.edit(path('furniture_backend_product_category_update', {id: category.id})) }}
-                    {{ buttons.delete(path('furniture_backend_product_category_delete', {id: category.id})) }}
+
+                    {% if is_product_category_can_remove(category) %}
+                        {{ buttons.delete(path('furniture_backend_product_category_delete', {id: category.id})) }}
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

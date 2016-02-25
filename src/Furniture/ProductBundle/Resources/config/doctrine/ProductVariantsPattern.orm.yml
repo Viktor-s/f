@@ -10,6 +10,11 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
                 strategy: AUTO
 
     fields:
+        factoryCode:
+            type: string
+            nullable: true
+            column: factory_code
+            
         name:
             type: string
             column: name
@@ -30,6 +35,7 @@ Furniture\ProductBundle\Entity\ProductVariantsPattern:
 
         product:
             targetEntity: Furniture\ProductBundle\Entity\Product
+            inversedBy: productVariantsPatterns
             joinColumn:
                 name: product_id
                 referencedColumnName: id

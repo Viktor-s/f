@@ -12,8 +12,6 @@ use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +88,7 @@ class FactorySideController
         ProductCategoryRepository $productCategoryRepository,
         CompositeCollectionRepository $compositeCollectionRepository,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker
     )
     {
         $this->twig = $twig;
@@ -154,6 +152,25 @@ class FactorySideController
         /** @var \Furniture\UserBundle\Entity\User $activeUser */
         $activeUser = $this->tokenStorage->getToken()->getUser();
         $query->withRetailerFromUser($activeUser);
+
+        $retailerProfile = null;
+
+        if ($activeUser->getRetailerUserProfile()) {
+            $retailerProfile = $activeUser->getRetailerUserProfile()
+                ->getRetailerProfile();
+        }
+
+        if ($retailerProfile) {
+            $query
+                ->withRetailer($retailerProfile)
+                ->withoutRetailerAccessControl();
+
+            if ($retailerProfile->isDemo()) {
+                $query
+                    ->withoutOnlyEnabledOrDisabled()
+                    ->withoutRetailerAccessControl();
+            }
+        }
 
         $factories = $this->factoryRepository->findBy($query);
 
@@ -417,8 +434,18 @@ class FactorySideController
                         $factory->getName()
                     ));
                 }
+
+                return;
             }
         }
+
+        // By task: #265
+        //if ($factory->isDisabled()) {
+        //    throw new NotFoundHttpException(sprintf(
+        //        'The factory "%s" is disabled.',
+        //        $factory->getName()
+        //    ));
+        //}
     }
 
     /**

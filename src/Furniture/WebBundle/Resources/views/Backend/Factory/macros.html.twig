@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
+                <th>Enabled</th>
                 <th></th>
             </tr>
         </thead>
@@ -15,11 +16,18 @@
         {% for factory in factories %}
             <tr id="{{ factory.id }}">
                 <td>{{ factory.name }}</td>
+                <td class="text-center">
+                    <i class="glyphicon glyphicon-{{ factory.enabled ? 'ok' : 'remove' }}"></i>
+                </td>
                 <td>
                     <div class="pull-right">
+                    {{ buttons.show(path('sylius_backend_customer_index', {criteria: {factoryId: factory.id}}), 'Users') }}
                     {{ buttons.show(path('furniture_backend_factory_show', {id: factory.id})) }}
                     {{ buttons.edit(path('furniture_backend_factory_update', {'id': factory.id})) }}
-                    {{ buttons.delete(path('furniture_backend_factory_delete', {'id': factory.id})) }}
+
+                    {% if is_factory_can_hard_remove(factory) %}
+                        {{ buttons.delete(path('furniture_backend_factory_delete', {'id': factory.id})) }}
+                    {% endif %}
                    </div>
                 </td>
             </tr>

@@ -96,7 +96,8 @@ class RetailerFactoryRateType extends AbstractType
                 'label' => 'frontend.coefficient',
             ])
             ->add('dumping', 'number', [
-                'label' => 'frontend.dumping',
+                'label'    => 'frontend.dumping',
+                'required' => false,
             ])
             ->add('_submit', 'submit', [
                 'label' => 'frontend.save',

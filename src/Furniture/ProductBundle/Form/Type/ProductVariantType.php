@@ -40,7 +40,9 @@ class ProductVariantType extends BaseProductVariantType
         if (!$options['master']) {
             /* PISEC PODKRALSA NEZAMETNO ....................................... */
             $variant = $builder->getData();
-
+            
+            $builder->add('factoryCode');
+            
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
                 $variant = $event->getData();

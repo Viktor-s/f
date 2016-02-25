@@ -1,7 +1,5 @@
 var variant_pattern_data_container = function (patterns) {
 
-    
-
     var options = {
         patterns: patterns,
         filtered: patterns,
@@ -14,12 +12,15 @@ var variant_pattern_data_container = function (patterns) {
         refreshFilters: function(){
             this.setFilters({});
         },
+        
         getAll: function () {
             return options.patterns;
         },
+        
         getFiltered: function () {
             return options.filtered;
         },
+        
         setFilters: function (filters) {
             options.filtered = [];
             options.filters = filters;            
@@ -37,11 +38,9 @@ var variant_pattern_data_container = function (patterns) {
                 }
             });
             $(document).trigger("filter:update");
-            console.log(options.patterns);
-            console.log(options.filters);
-            console.log(options.filtered);
             return this;
         },
+        
         getFilteredWithFilterValue: function(filter, value){
             var res = [];
             options.filtered.forEach(function (el) {
@@ -51,8 +50,23 @@ var variant_pattern_data_container = function (patterns) {
             });
             return res;
         },
+        
         getFilters: function () {
             return options.filters;
+        },
+        
+        isFilteredItemFound: function(){
+            if(options.filtered.length == 1){
+                
+                var filtered = options.filtered[0];
+                console.log(options.filters);
+                if( Object.keys(filtered.options).length == Object.keys(options.filters).length ){
+                    return true;
+                }
+                
+            }
+            
+            return false;
         }
     };
 

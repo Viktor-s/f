@@ -435,6 +435,18 @@
             </div>
         </div>
         <div class="col-md-6">
+            {% if form.factoryCode is defined %}
+                <div class="highlight">
+                   <div class="form-group">
+                        {{ form_label(form.factoryCode) }}
+                        <div class="col-lg-8">
+                            {{ form_widget(form.factoryCode) }}
+                        </div>
+                    </div>
+                        <br/>
+                    <hr/> 
+                </div>
+            {% endif %}
             <div class="highlight">
                 All inputs supports ExpressionLanguage.
                 <a href="http://symfony.com/doc/current/components/expression_language/syntax.html"> language descripion </a>

@@ -153,21 +153,23 @@ class FactoryRepository
         $qb->innerJoin('f.defaultRelation', 'fdr');
 
         if ($query->hasRetailer()) {
-            $qb
-                ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
-                ->setParameter('retailer', $query->getRetailer())
-                ->setParameter('retailer_accept', true)
-                ->setParameter('factory_accept', true);
+            if ($query->isRetailerAccessControl()) {
+                $qb
+                    ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
+                    ->setParameter('retailer', $query->getRetailer())
+                    ->setParameter('retailer_accept', true)
+                    ->setParameter('factory_accept', true);
 
-            $orExpr = $qb->expr()->orX();
-            $orExpr
-                ->add('frr.accessProducts = :retailer_access_products')
-                ->add('fdr.accessProducts = :default_access_products');
+                $orExpr = $qb->expr()->orX();
+                $orExpr
+                    ->add('frr.accessProducts = :retailer_access_products')
+                    ->add('fdr.accessProducts = :default_access_products');
 
-            $qb
-                ->andWhere($orExpr)
-                ->setParameter('retailer_access_products', true)
-                ->setParameter('default_access_products', true);
+                $qb
+                    ->andWhere($orExpr)
+                    ->setParameter('retailer_access_products', true)
+                    ->setParameter('default_access_products', true);
+            }
 
             if ($query->getRetailer()->isDemo()) {
                 // Should filtered by demo

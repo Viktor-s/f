@@ -93,7 +93,9 @@
 /* 00 - MEDIA QUERIES */
 /* 00 - CSS ANIMATIONS */
 
-
+html, body {
+    height: 100%;
+}
 
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 01 - FONTS USAGE */
@@ -277,13 +279,10 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 }
 /*form elements*/
 .checkbox, .radio{margin-top: 0;}
-.checkbox-entry{margin-bottom: 15px;}
 .checkbox-entry{display: block; font-size: 13px; line-height: 14px; font-weight: 500; position: relative; padding-left: 22px;}
 .checkbox-entry b{font-weight: 600!important; color: #313131!important;}
-.checkbox-entry input + span{cursor: pointer; display: inline-block; border: 1px #d9d9d9 solid; width: 12px; height: 12px;  vertical-align: middle; color: #333232; position: relative; top: -1px; margin-right: 7px; position: absolute; left: 0; top: 6px;}
 .checkbox-entry.radio input + span{width: 15px; height: 15px; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 .checkbox-entry input{display: none;}
-.checkbox-entry input:checked + span{background: #ca1515;}
 .checkbox-entry.radio input:checked + span:after{position: absolute; left: -1px; top: -1px; right: -1px; bottom: -1px; content: ""; box-shadow: inset 0 0 0 3px #fff; border-radius: 50%; -webkit-border-radius: 50%; border: 1px #e3e3e3 solid;}
 /*boxed layout*/
 .boxed-layout{max-width: 1270px; margin: 0 auto; background: #fafafa;}
@@ -317,7 +316,7 @@ header{margin-bottom: 25px; position: absolute; z-index: 5; background: #fff; pa
 
 nav{position: relative;}
 nav>ul>li{float: left; padding-right: 20px; padding-left: 20px;}
-nav>ul>li>a{font-size: 13px; font-weight: 700; color: #3d3d3d; line-height: 70px; text-transform: uppercase; display: inline-block;}
+nav>ul>li>a{font-size: 13px; font-weight: 400; color: #3d3d3d; line-height: 70px; text-transform: uppercase; display: inline-block;}
 nav>ul>li>a .menu-label{position: absolute; right: 3px; top: 10px;}
 nav>ul>li>.fa{color: #b9b9b9; font-size: 10px; margin-left: 3px; vertical-align: middle; position: relative; top: -5px;}
 .submenu-container{position: absolute; top: 60px; left: 50%; transform: translateX(-50%); -moz-transform: translateX(-50%); -webkit-transform: translateX(-50%); -ms-transform: translateX(-50%); padding: 20px 10px; display: none; border-radius: 3px; background-color: #fff; -webkit-box-shadow: 0 0 15px rgba(0,0,0,.1); box-shadow: 0 0 15px rgba(0,0,0,.1); border: solid 1px #f4f4f4;}
@@ -470,9 +469,8 @@ body:not(.mobile) .socials-box a:hover .fa{top: -5px;}
 .header-functionality-entry:hover{color: #222;}
 .header-functionality-entry:last-child{padding-right: 0; border-right: none;}
 .responsive-search-button{display: none;}
-.header-functionality-entry .fa{display: inline-block; vertical-align: middle; position: relative; top: -2px; margin-right: 5px;}
+.header-functionality-entry .fa{display: inline-block; vertical-align: middle; position: relative; margin-right: 5px;}
 .header-functionality-entry b{font-size: 18px; color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;}
-.logo-wrapper{display: table-cell; vertical-align: middle; width: 300px;}
 #logo{
     width: 90px;
     height: 44px;
@@ -567,10 +565,10 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
 
 /*Desktops (>=992px)*/
 @media (max-width: 1199px) {
-    #content-block header{position: fixed; padding: 0 30px; top: 0;}
+    #content-block header{padding: 0 30px; top: 0;}
     .header-top .socials-box{display: none;}
     .navigation{position: fixed; left: 0; top: 0; width: 290px; background: #272727; height: 100%; border: none; z-index: 7; transform: translateX(-290px); -moz-transform: translateX(-290px); -webkit-transform: translateX(-290px); -ms-transform: translateX(-290px);}
-    .nav-overflow{position: absolute; width: 100%; left: 0; top: 75px; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; -moz-overflow-scrolling: touch; -ms-overflow-scrolling: touch;}
+    .nav-overflow{display:none; position: absolute; width: 100%; left: 0; top: 75px; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; -moz-overflow-scrolling: touch; -ms-overflow-scrolling: touch;}
     .navigation-header{padding: 0 50px 0 20px; border-bottom: 1px #343434 solid;}
     .navigation-header .title{font-size: 20px; line-height: 75px; font-weight: 700; text-transform: uppercase; color: #fff;}
     .navigation-header .close-menu{width: 40px; height: 40px; line-height: 40px; position: absolute; right: 5px; top: 17px; cursor: pointer; text-transform: uppercase;}
@@ -591,7 +589,6 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
     .close-header-layer{position: fixed; width: 100%; height: 100%; left: 0; top: 0; display: none; background: rgba(0,0,0,0.5);}
 
     #content-block nav>ul{float: none;}
-    nav>ul>li{float: none; border-bottom: 1px #343434 solid; padding: 0; position: relative;}
     nav>ul>li>a{font-size: 12px; color: #fff; line-height: 14px; padding: 15px 45px 15px 20px; display: block;}
     nav>ul>li>.fa{position: absolute; right: 5px; top: 2px; line-height: 40px; width: 40px; text-align: center; cursor: pointer; margin: 0; font-size: 12px;}
     nav>ul>li.opened>.fa{transform: rotate(180deg); -moz-transform: rotate(180deg); -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg);}
@@ -630,7 +627,6 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
     .responsive-search-button{display: inline-block;}
     .header-functionality-entry{padding: 0; border-right: none;}
     .header-functionality-entry span{display: none;}
-    .header-functionality-entry .fa{width: 45px; height: 45px; line-height: 45px; font-size: 24px; color: #2f2f2f; text-align: center; margin: 0;}
     .header-functionality-entry.open-search-popup{display: inline-block;}
     .header-middle{border-bottom: 1px solid #f0f0f0;}
     #logo{min-height: 0;}
@@ -640,8 +636,8 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
 
     .full-width-menu-items-left .row > div{padding: 0;}
     .full-width-menu-items-left .row{margin: 0;}
-
 }
+
 /* Tablets (>=768px)*/
 @media (max-width: 991px) {
     .header-middle{padding-top: 10px; padding-bottom: 10px;}
@@ -650,7 +646,6 @@ header .icon-entry .text b{font-size: 16px; line-height: 18px; font-weight: 600;
 @media (max-width: 767px) {
     #content-block header{padding: 0 15px;}
     .header-functionality-entry b{display: none;}
-    .header-functionality-entry .fa{width: 33px; height: 33px; line-height: 33px; font-size: 23px;}
     #logo{max-width: 100%;}
 }
 @media (max-width: 480px) {
@@ -706,7 +701,8 @@ footer{position: relative;}
     .footer-description, .footer-address, .footer-columns-entry .column{margin-bottom: 20px;}
     .footer-columns-entry{padding: 30px 0 10px 0;}
     .footer-columns-entry .column-title{margin-bottom: 10px;}
-    .footer-bottom-navigation .footer-links{margin-bottom: 5px;}
+    .footer-bottom-navigation .footer-links{margin-bottom: 5px; margin-left: 30px;}
+    .footer-bottom-navigation .footer-links a {border: none; display: block; margin-bottom: 10px;}
     .copyright{margin-bottom: 20px;}
 }
 
@@ -3750,12 +3746,12 @@ form #reset_password {
     -o-linear-gradient(left, #212121, #212121 30%, #333333 30%, #333333 100%);
     background-image:
     linear-gradient(to right, #212121, #212121 30%, #333333 30%, #333333 100%);
+    min-width: 878px;
 }
 
 header.type-4 {
     position: relative;
-    margin-bottom: 0;
-    max-width: 1200px;
+    max-width: 1170px;
     margin: 0 auto;
     background: transparent;
     padding-right: 0;
@@ -3857,7 +3853,6 @@ footer.type-1 {
 
 .footer-wrapper {
     background: #333333;
-    margin-top: 50px;
 }
 
 footer .copyright {
@@ -3877,4 +3872,87 @@ footer .copyright {
 
 .footer-logo-wr {
     float: right;
+}
+
+/* footer always bottom */
+#content-block:after {
+    content: "";
+    display: block;
+    height: 150px;
+}
+
+#content-block {
+    min-height: 100%;
+    margin-bottom: -78px;
+}
+
+
+.header-functionality-entry span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.header-functionality-entry .fa {
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+.header-functionality-entry {
+    padding: 0 15px 0 0; 
+}
+
+/* styling buttons */
+
+.checkbox-entry {
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    line-height: 14px;
+    font-weight: 500;
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 15px;
+}
+
+.checkbox-entry input + span.check {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 6px;
+}
+
+.checkbox-entry input:checked + span.check {
+    background: #ca1515;
+}
+
+.th-total-price {
+    white-space: nowrap;
+}
+
+.article-container ul.spec-info-list li:before {
+    display: none;
+}
+
+.spec-info-list span {
+    margin-bottom: 0!important;
+    padding: 0!important;
+    font-size: 13px;
+    line-height: 30px;
+}
+
+.checkbox-name {
+    font-size: 13px;
+    line-height: 14px;
+    color: #929292;
+}
+
+.checkbox-entry input:checked + span.check + .checkbox-name {
+    color: #313131;
 }

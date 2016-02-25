@@ -49,6 +49,11 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     }
 
     /**
+     * @var string
+     */
+    protected $factoryCode;
+    
+    /**
      * Get product
      *
      * @return Product
@@ -235,6 +240,40 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 
         return $this;
     }
+
+    /**
+     * Get factory code
+     *
+     * @return string
+     */
+    public function getFactoryCode()
+    {
+        return $this->factoryCode;
+    }
+
+    /**
+     * Set factory code
+     *
+     * @param string $code
+     *
+     * @return ProductVariant
+     */
+    public function setFactoryCode($code)
+    {
+        $this->factoryCode = $code;
+
+        return $this;
+    }
+    
+    /**
+     * Get avtive active product code for this product variant
+     * 
+     * @return type
+     */
+    public function getActiveFactoryCode(){
+        return $this->getFactoryCode() ? $this->getFactoryCode() : $this->getProduct()->getFactoryCode();
+    }
+
 
 
     /**

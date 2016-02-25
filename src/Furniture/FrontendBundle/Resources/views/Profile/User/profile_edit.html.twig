@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_content %}
-    <form class="form" method="POST" action="">
+    <form class="form" method="POST" action="" data-confirm>
         {% if form.vars.errors|length > 0 %}
             {{ form_errors(form) }}
         {% endif %}
@@ -26,4 +26,20 @@
             <input type="submit" class="btn btn-success" value="Save" />
         </div>
     </form>
+    <script>
+        (function($) {
+            var email = "{{ app.user.email }}";
+            $('form[data-confirm]').on('submit', function(e) {
+                var newEmail = $(this).find('#frontend_user_profile_type_email').val();
+                if (email !== newEmail) {
+                    $(this).data('confirm', true);
+                    $(this).data('message', "{{ 'frontend.retailer_profile_side.managers.email_change_confirmation'|trans }}");
+                }
+                else {
+                    $(this).data('confirm', false);
+                    $(this).data('message', "");
+                }
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

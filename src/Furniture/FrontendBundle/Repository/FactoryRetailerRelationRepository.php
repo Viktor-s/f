@@ -227,13 +227,18 @@ class FactoryRetailerRelationRepository
             ->from(FactoryRetailerRelation::class, 'frr')
             ->select('frr')
             ->innerJoin('frr.retailer', 'r')
+            ->innerJoin('frr.factory', 'f')
             ->andWhere('r.id = :retailer')
+            ->andWhere('f.enabled = :enabled')
             ->andWhere('frr.retailerAccept = :retailer_accept')
             ->andWhere('frr.factoryAccept = :factory_accept')
-            ->setParameters([
-                'retailer'        => $retailer->getId(),
-                'factory_accept'  => $factoryAccept,
-                'retailer_accept' => $retailerAccept,
-            ]);
+            ->setParameters(
+                [
+                    'retailer'        => $retailer->getId(),
+                    'enabled'         => true,
+                    'factory_accept'  => $factoryAccept,
+                    'retailer_accept' => $retailerAccept,
+                ]
+            );
     }
 }

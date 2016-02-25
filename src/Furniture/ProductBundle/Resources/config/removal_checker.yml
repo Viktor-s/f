@@ -1,0 +1,44 @@
+services:
+    product.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_variant.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\VariantRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_attribute.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\AttributeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    sku_option.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\SkuOptionTypeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_type.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductTypeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_space.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductSpaceRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_style.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductStyleRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_category.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductCategoryRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_part_material_option.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductPartMaterialOptionRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product_part_type.removal_checker:
+        class: Furniture\ProductBundle\ProductRemoval\ProductPartTypeRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
+
+    product.removal_checker.registry:
+        class: Furniture\ProductBundle\ProductRemoval\RemovalCheckerRegistry
+        arguments: [ @service_container ]

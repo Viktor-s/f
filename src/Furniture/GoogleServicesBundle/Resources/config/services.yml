@@ -7,6 +7,6 @@ services:
         
     google_service.maps.geocoding.addressing_subscriber:
         class: Furniture\GoogleServicesBundle\Entity\Subscribers\AddressMarkerSubscriber
-        arguments: [ @google_service.maps.geocoding ]
+        arguments: [ @google_service.maps.geocoding, @sylius.translation.locale_provider ]
         tags:
             - { name: doctrine.event_subscriber }

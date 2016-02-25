@@ -18,7 +18,11 @@
 
         <div class="actions-menu">
             {{ buttons.edit(path('furniture_backend_factory_update', {id: factory.id})) }}
-            {{ buttons.delete(path('furniture_backend_factory_delete', {id: factory.id})) }}
+
+            {% if is_factory_can_hard_remove(factory) %}
+                {{ buttons.delete(path('furniture_backend_factory_delete', {id: factory.id})) }}
+            {% endif %}
+
             {{ buttons.manage(path('furniture_backend_factory_user_relation_index', {id: factory.id}), 'Manage user relations') }}
         </div>
 

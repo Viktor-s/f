@@ -9,11 +9,13 @@
 {% endblock %}
 
 {% block breadcrumb_container %}
-    {% if app.user.isRetailer() and not factory_retailer_relation %}
+    {% if app.user.isRetailer()
+        and not factory_retailer_relation
+        and not factory.defaultRelation.accessProducts %}
         <div class="pull-right">
             <a href="{{ path('retailer_profile_factory_relation_create', {factory: factory.id}) }}" class="btn btn-success">
                 <i class="fa fa-plus"></i>
-                Relate to factory
+                {{ 'frontend.create_to_factory_relation'|trans }}
             </a>
         </div>
     {% endif %}
