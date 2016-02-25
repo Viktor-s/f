@@ -19,8 +19,9 @@
         (function ($) {
             $(document).ready(function () {
                 $('#retailer_factory_relation_retailer').select2({
+                    placeholder: "Select retailer",
                     allowClear: false
-                });
+                }).select2("val", "");
             });
         })(jQuery);
     </script>
