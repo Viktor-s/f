@@ -23,7 +23,7 @@
                 {% endif %}
                 {% if factory.translate.workInfoContent is not empty %}
                     <dt>{{ 'frontend.factory_side.work_info.terms_payment'|trans }}</dt>
-                    <dd>{{ factory.translate.workInfoContent }}</dd>
+                    <dd>{{ factory.translate.workInfoContent|raw }}</dd>
                 {% endif %}
                 {% if factory.translate.bankDetails is not empty %}
                     <dt>{{ 'frontend.factory_side.work_info.bank_details'|trans }}</dt>

@@ -3542,6 +3542,7 @@ header.fixed-header nav {
 
 dl {}
 .dl-horizontal dl {}
+.dl-horizontal dt {text-overflow: initial; width: 165px}
 dt {
     font-weight: bold;
     line-height: 23px !important;
