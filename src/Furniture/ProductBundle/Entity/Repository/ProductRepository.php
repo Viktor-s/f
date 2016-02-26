@@ -96,8 +96,7 @@ class ProductRepository extends BaseProductRepositiry
      */
     public function createFilterPaginator($criteria = [], $sorting = [], $deleted = false)
     {
-        $queryBuilder = parent::getCollectionQueryBuilder()
-            ->addSelect('variant');
+        $queryBuilder = parent::getCollectionQueryBuilder();
 
         if (!empty($criteria['name'])) {
             $queryBuilder
@@ -118,6 +117,8 @@ class ProductRepository extends BaseProductRepositiry
         }
 
         if (!empty($criteria['priceFrom']) || !empty($criteria['priceTo'])) {
+            $queryBuilder->addSelect('variant');
+
             $exprPriceFrom = null;
             $exprPriceTo = null;
 
