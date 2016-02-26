@@ -97,8 +97,7 @@ class ProductRepository extends BaseProductRepositiry
     public function createFilterPaginator($criteria = [], $sorting = [], $deleted = false)
     {
         $queryBuilder = parent::getCollectionQueryBuilder()
-            ->addSelect('variant')
-            ->leftJoin('product.variants', 'variant');
+            ->addSelect('variant');
 
         if (!empty($criteria['name'])) {
             $queryBuilder
@@ -118,16 +117,26 @@ class ProductRepository extends BaseProductRepositiry
                 ->setParameter('factory', $criteria['factory']);
         }
 
-        if (!empty($criteria['priceFrom'])) {
-            $queryBuilder
-                ->andWhere('variant.price >= :price_from')
-                ->setParameter('price_from', $criteria['priceFrom'] * 100);
-        }
+        if (!empty($criteria['priceFrom']) || !empty($criteria['priceTo'])) {
+            $exprPriceFrom = null;
+            $exprPriceTo = null;
 
-        if (!empty($criteria['priceTo'])) {
-            $queryBuilder
-                ->andWhere('variant.price <= :price_to')
-                ->setParameter('price_to', $criteria['priceTo'] * 100);
+            if (!empty($criteria['priceFrom'])) {
+                $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
+                $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
+            }
+
+            if (!empty($criteria['priceTo'])) {
+                $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
+                $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
+            }
+
+            $queryBuilder->leftJoin('product.variants', 'variant', \Doctrine\ORM\Query\Expr\Join::WITH,
+                $queryBuilder->expr()->andX(
+                    $exprPriceFrom,
+                    $exprPriceTo
+                )
+            );
         }
 
         if (!empty($criteria['statuses'])) {
