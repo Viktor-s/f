@@ -80,7 +80,7 @@ class ProductVariantType extends BaseProductVariantType
 
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
             $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType', [
-                'product_varant_object' => $variant
+                'product_variant_object' => $variant
             ]);
 
             $callbackTransformer = new CallbackTransformer(
