@@ -40,7 +40,7 @@ $(function() {
 		if($('.menu-button').is(':visible')) _isresponsive = true;
 		else _isresponsive = false;
 
-		$('.fixed-header-margin').css({'padding-top':$('header').outerHeight(true)});
+		//$('.fixed-header-margin').css({'padding-top':$('header').outerHeight(true)});
 		$('.parallax-slide').css({'height':winH});
 	}
 

@@ -125,6 +125,9 @@ body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; li
 /* 03 - GLOBAL SETTINGS */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /*table*/
+#content-block .content-center.fixed-header-margin {
+    padding-top: 75px;
+}
 .table-view{height: 100%; width: 100%; display: table;}
 .row-view{display: table-row;}
 .cell-view{display: table-cell; vertical-align: middle; height: inherit;}
@@ -138,7 +141,6 @@ body{font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 14px; li
 .content-center, .position-center{max-width: 1310px; margin: 0 auto; background: #fff; padding: 0 70px; position: relative;}
 .position-center{background: none;}
 .wide-center{max-width: 1760px; margin: 0 auto; padding: 0 30px;}
-
 @media (max-width: 767px) {
     .wide-center{padding: 0 15px;}    
 }
@@ -3542,7 +3544,7 @@ header.fixed-header nav {
 
 dl {}
 .dl-horizontal dl {}
-.dl-horizontal dt {text-overflow: initial; width: 165px}
+.dl-horizontal dt {text-overflow: initial;}
 dt {
     font-weight: bold;
     line-height: 23px !important;
