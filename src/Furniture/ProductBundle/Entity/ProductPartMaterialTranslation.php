@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Sylius\Component\Translation\Model\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Translation for product extension
@@ -15,6 +16,8 @@ class ProductPartMaterialTranslation extends AbstractTranslation
     protected $id;
 
     /**
+     * @Assert\NotBlank()
+     *
      * @var string
      */
     protected $presentation;
