@@ -10,7 +10,7 @@
      *
      * @constructor
      */
-    function ImageLazyLoad(image)
+    window.imageLazyLoad = function ImageLazyLoad(image)
     {
         // Get source
         var
@@ -87,7 +87,7 @@
                 return;
             }
 
-            (new ImageLazyLoad(this)).load();
+            (new imageLazyLoad(this)).load();
         });
     });
 })(jQuery, document);
