@@ -117,6 +117,16 @@ class PdpIntellectualCompositeExpression
     }
 
     /**
+     * Get type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Is and?
      *
      * @return bool
@@ -146,6 +156,10 @@ class PdpIntellectualCompositeExpression
     public function hasChild(PdpIntellectualCompositeExpression $expression)
     {
         return $this->child->exists(function ($key, PdpIntellectualCompositeExpression $item) use ($expression) {
+            if (!$expression->getId()) {
+                return false;
+            }
+
             return $expression->getId() == $item->getId();
         });
     }
@@ -160,6 +174,8 @@ class PdpIntellectualCompositeExpression
     public function addChild(PdpIntellectualCompositeExpression $expression)
     {
         if (!$this->hasChild($expression)) {
+            $expression->setParent($this);
+
             $this->child->add($expression);
         }
 
@@ -214,6 +230,10 @@ class PdpIntellectualCompositeExpression
     public function hasElement(PdpIntellectualElement $element)
     {
         return $this->elements->exists(function ($key, PdpIntellectualElement $item) use ($element) {
+            if (!$element->getId()) {
+                return;
+            }
+
             return $element->getId() == $item->getId();
         });
     }

@@ -30,7 +30,6 @@ Furniture\ProductBundle\Entity\PdpIntellectualElement:
                 nullable: false
                 onDelete: CASCADE
 
-    manyToOne:
         input:
             targetEntity: Furniture\ProductBundle\Entity\ProductPdpInput
             joinColumn:

@@ -61,6 +61,9 @@ services:
         class: Furniture\ProductBundle\PdpIntellectual\PdpIntellectualCreator
         arguments: [ @doctrine.orm.default_entity_manager ]
 
+    product.pdp_intellectual.converter:
+        class: Furniture\ProductBundle\PdpIntellectual\PdpIntellectualConverter
+
     twig.extension.product:
         class: Furniture\ProductBundle\Twig\ProductExtension
         arguments: [ @product.removal_checker.registry ]

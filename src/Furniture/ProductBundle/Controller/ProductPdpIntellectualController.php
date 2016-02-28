@@ -97,6 +97,64 @@ class ProductPdpIntellectualController extends ResourceController
     /**
      * {@inheritDoc}
      */
+    public function updateAction(Request $request)
+    {
+        $this->isGrantedOr403('update');
+
+        /** @var PdpIntellectualRoot $pdpIntellectualRoot */
+        $pdpIntellectualRoot = $this->findOr404($request);
+        $product = $this->loadProduct($request);
+        $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($pdpIntellectualRoot);
+
+        $newPdpIntellectual = new PdpIntellectualRoot();
+        $newPdpIntellectual->setProduct($product);
+        $newPdpIntellectual->setName($pdpIntellectualRoot->getName());
+
+        $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual);
+
+        $form->add('tree', 'textarea', [
+            'mapped' => false,
+            'data'   => json_encode($tree, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.default_entity_manager');
+
+            $treeData = $form->get('tree')->getData();
+            $treeData = json_decode($treeData, true);
+
+            $this->get('product.pdp_intellectual.creator')->createFromArray($newPdpIntellectual, $treeData);
+
+            // We use transactional because we must remove and add new element.
+            $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
+                $em->remove($pdpIntellectualRoot);
+                $em->persist($newPdpIntellectual);
+            });
+
+            $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
+                'productId' => $product->getId(),
+            ]);
+
+            return new RedirectResponse($toUrl);
+        }
+
+        $view = $this
+            ->view()
+            ->setTemplate($this->config->getTemplate('update.html'))
+            ->setTemplateData([
+                'product'          => $product,
+                'pdp_intellectual' => $pdpIntellectualRoot,
+                'form'    => $form->createView(),
+            ]);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function deleteAction(Request $request)
     {
         $product = $this->loadProduct($request);
@@ -105,7 +163,7 @@ class ProductPdpIntellectualController extends ResourceController
         $this->domainManager->delete($this->findOr404($request));
 
         $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-            'productId' => $product->getId()
+            'productId' => $product->getId(),
         ]);
 
         return new RedirectResponse($toUrl);
