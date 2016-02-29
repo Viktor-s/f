@@ -145,7 +145,6 @@ class BackendMenuBuilder extends MenuBuilder
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_attribute.index')) {
-            dump($section);
             $child->addChild('sku_attributes', [
                 'route' => 'furniture_backend_sku_option_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt'],
