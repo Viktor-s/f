@@ -6,10 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Furniture\ProductBundle\Form\DataTransformer\ProductPartVariantMaterialVariantSelectionTransformer;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+
 
 class ProductVariantPartMaterialsType extends AbstractType
 {
