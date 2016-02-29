@@ -158,6 +158,8 @@ specification:
     actions:
         delete: Delete
         show: Show
+product_options:
+    sku_option_variants_label: "Product option variants"
 
 product_category:
     breadcrumb:
