@@ -115,10 +115,11 @@
 
 
                     <div class="product-description detail-info-entry">{{ product.description|raw }}</div>
-
+                {% if is_granted('VIEW_PRICE', product) %}
                     <div class="price detail-info-entry">
                         <div class="current" id="prices"></div>
                     </div>
+                {% endif %}
                     <div class="options-selector detail-info-entry">
                         {% for input in product.PdpConfig.inputs %}
                             {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
@@ -143,6 +144,7 @@
                             <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
                         </div>
                     {% else %}
+                        {% if is_granted('VIEW_PRICE', product) %}
                         <div class="add-to-specification detail-info-entry">
                             <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
                                 <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
@@ -185,6 +187,7 @@
                             </div>
                             <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
                         </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

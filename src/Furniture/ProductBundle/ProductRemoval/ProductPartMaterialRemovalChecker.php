@@ -4,9 +4,9 @@ namespace Furniture\ProductBundle\ProductRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\RemovalChecker\Removal;
-use Furniture\SkuOptionBundle\Entity\SkuOptionType;
+use Furniture\ProductBundle\Entity\ProductPartMaterial;
 
-class SkuOptionTypeRemovalChecker
+class ProductPartMaterialRemovalChecker
 {
     /**
      * @var EntityManagerInterface
@@ -24,20 +24,20 @@ class SkuOptionTypeRemovalChecker
     }
 
     /**
-     * Can remove skuOptionType?
+     * Can hard remove?
      *
-     * @param SkuOptionType $skuOption
+     * @param ProductPartMaterial $material
      *
      * @return Removal
      */
-    public function canRemove(SkuOptionType $skuOption)
+    public function canHardRemove(ProductPartMaterial $material)
     {
         $reasonMessages = [];
 
-        /** @var \Furniture\SkuOptionBundle\Entity\Repository\SkuOptionTypeRepository $skuOptionRepository */
-        $skuOptionRepository = $this->em->getRepository(SkuOptionType::class);
+        /** @var \Furniture\ProductBundle\Entity\Repository\ProductPartMaterialRepository $productPartMaterialRepository */
+        $productPartMaterialRepository = $this->em->getRepository(ProductPartMaterial::class);
 
-        if ($skuOptionRepository->hasReferencedToProduct($skuOption)) {
+        if ($productPartMaterialRepository->hasReferencedToProduct($material)) {
             $reasonMessages[] = 'Has references to product.';
         }
 

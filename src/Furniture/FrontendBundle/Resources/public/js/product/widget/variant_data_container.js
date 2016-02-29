@@ -57,12 +57,8 @@ var variant_data_container = function (variants) {
         },
         
         isFilteredItemFound: function(){
-            if(options.filtered.length == 1){
-                    return true;
-            }
-            
-            return false;
+            return options.filtered.length == 1;
         }
     };
 
-}
+};

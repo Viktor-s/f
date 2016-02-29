@@ -227,6 +227,9 @@ sylius:
             index: Attributes
         archetype:
             index: archetypes
+        option_variants:
+            index: Product option variants
+            new: Create option variant
         redirect_route:
             index: Redirect routes
         report:
@@ -805,6 +808,11 @@ sylius:
     promotion_rule:
         configuration: Configuration
         type: Type
+    product_option_variants:
+        create: Create option variant
+        create_header: New product option variant
+        index_header: Product option variants
+        update_header: Editing product option variant
     product_attribute:
         add_choice: Add choice
         create: Create product attribute

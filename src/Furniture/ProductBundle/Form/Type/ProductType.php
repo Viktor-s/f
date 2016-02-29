@@ -60,44 +60,45 @@ class ProductType extends BaseProductType
             ->remove('translations')
             ->add('translations', 'a2lix_translationsForms', array(
                 'form_type' => new ProductTranslationType,
-                'label'    => 'sylius.form.product.translations'
+                'label'     => 'sylius.form.product.translations',
             ));
         
         if ($options['mode'] == 'full') {
             $builder
                 ->add('categories', 'entity', [
-                    'class' => Category::class,
+                    'class'    => Category::class,
                     'multiple' => true,
-                    'expanded' => true
+                    'expanded' => true,
                 ])
                 ->add('types', 'entity', [
-                    'class' => Type::class,
+                    'class'    => Type::class,
                     'multiple' => true,
-                    'expanded' => true
+                    'expanded' => true,
                 ])
                 ->add('styles', 'entity', [
-                    'class' => Style::class,
+                    'class'    => Style::class,
                     'multiple' => true,
-                    'expanded' => true
+                    'expanded' => true,
                 ])
                 ->add('spaces', 'entity', [
-                    'class' => Space::class,
+                    'class'    => Space::class,
                     'multiple' => true,
-                    'expanded' => true
+                    'expanded' => true,
                 ])
                 ->add('skuOptionVariants', 'collection', [
-                    'type' => new SkuOptionVariantFormType(),
-                    'required'  => false,
-                    'allow_add' => true,
+                    'type'         => new SkuOptionVariantFormType(),
+                    'required'     => false,
+                    'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'label'        => 'product_options.sku_option_variants_label'
                 ])
                 ->add('subProducts', new AutocompleteEntityType(), [
-                    'class' =>  Product::class,
-                    'property' => 'name',
-                    'source' => 'furniture_autocomplete_for_none_bundle',
+                    'class'       => Product::class,
+                    'property'    => 'name',
+                    'source'      => 'furniture_autocomplete_for_none_bundle',
                     'placeholder' => 'Start type product name',
-                    'multiple' => true
+                    'multiple'    => true,
                 ])
                 ->add('availableForSale', 'checkbox', [
                     'required' => false
@@ -111,20 +112,20 @@ class ProductType extends BaseProductType
                 if ($product->getId()) {
                     $event->getForm()
                         ->add('readinesses', 'entity', [
-                            'class' => Readiness::class,
+                            'class'    => Readiness::class,
                             'multiple' => true,
-                            'expanded' => true
+                            'expanded' => true,
                         ]);
                 }
 
                 $event->getForm()
                     ->add('productParts', 'collection', [
-                        'type' => new ProductPartFormType($factory),
-                        'allow_add' => true,
+                        'type'         => new ProductPartFormType($factory),
+                        'allow_add'    => true,
                         'allow_delete' => true,
-                        'attr' => [
-                            'data-remove-confirm' => 'Are you sure you want to remove product part item?'
-                        ]
+                        'attr'         => [
+                            'data-remove-confirm' => 'Are you sure you want to remove product part item?',
+                        ],
                     ])
                     ->add('compositeCollections', 'entity', [
                         'class' => CompositeCollection::class,
@@ -146,9 +147,9 @@ class ProductType extends BaseProductType
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
-                            'attr' => [
-                                'data-remove-confirm' => 'Are you sure you want to remove scheme item?'
-                            ]
+                            'attr'  => [
+                                'data-remove-confirm' => 'Are you sure you want to remove scheme item?',
+                            ],
                         ]);
                 }
             });

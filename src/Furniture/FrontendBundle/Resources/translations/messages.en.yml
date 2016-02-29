@@ -62,8 +62,8 @@ frontend:
     enabled: Enabled
     excel: Excel
     export: Export
-    export_to_excel: Export to excel
-    export_to_pdf: Export to PDF
+    export_to_excel: Excel
+    export_to_pdf: PDF
     export_specification_preview: Export specification - preview
     factories: Brands
     factory: Brand

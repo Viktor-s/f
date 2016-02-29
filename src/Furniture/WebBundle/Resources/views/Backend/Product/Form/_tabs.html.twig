@@ -5,7 +5,7 @@
         <li><a href="#status" data-toggle="tab">{{ 'sylius.product.tabs.status'|trans }}</a></li>
     {% endif %}
 
-    {% if not product.hasVariants %}
+    {% if not product.hasVariants and not product.hasProductVariantsPatterns %}
         {% if form.skuOptionVariants is defined or form.options is defined %}
             <li><a href="#options" data-toggle="tab">{{ 'sylius.product.tabs.options'|trans }}</a></li>
         {% endif %}

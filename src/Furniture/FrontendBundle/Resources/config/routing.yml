@@ -11,13 +11,6 @@ homepage:
     defaults:
         _controller: frontend.controller.homepage:home
 
-product:
-    path: /{_locale}/product/{product}
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.product:product
-        
 catalog:
     path: /{_locale}/catalog
     methods: [ GET ]
@@ -32,6 +25,13 @@ products:
         _locale: %available_locales%
     defaults:
         _controller: frontend.controller.catalog:products
+
+product:
+    path: /{_locale}/product/{product}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.product:product
 
 # Specifications
 specifications:

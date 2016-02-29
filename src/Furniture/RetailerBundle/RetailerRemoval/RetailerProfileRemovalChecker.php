@@ -1,12 +1,12 @@
 <?php
 
-namespace Furniture\ProductBundle\ProductRemoval;
+namespace Furniture\RetailerBundle\RetailerRemoval;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\RemovalChecker\Removal;
-use Furniture\SkuOptionBundle\Entity\SkuOptionType;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 
-class SkuOptionTypeRemovalChecker
+class RetailerProfileRemovalChecker
 {
     /**
      * @var EntityManagerInterface
@@ -24,21 +24,18 @@ class SkuOptionTypeRemovalChecker
     }
 
     /**
-     * Can remove skuOptionType?
+     * Can remove retailer profile?
      *
-     * @param SkuOptionType $skuOption
+     * @param RetailerProfile $profile
      *
      * @return Removal
      */
-    public function canRemove(SkuOptionType $skuOption)
+    public function canHardRemove(RetailerProfile $profile)
     {
         $reasonMessages = [];
 
-        /** @var \Furniture\SkuOptionBundle\Entity\Repository\SkuOptionTypeRepository $skuOptionRepository */
-        $skuOptionRepository = $this->em->getRepository(SkuOptionType::class);
-
-        if ($skuOptionRepository->hasReferencedToProduct($skuOption)) {
-            $reasonMessages[] = 'Has references to product.';
+        if ($profile->hasRetailerUserProfiles()) {
+            $reasonMessages[] = 'Has references to user.';
         }
 
         if (count($reasonMessages)) {

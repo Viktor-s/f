@@ -26,7 +26,7 @@ class ProductPartMaterialTranslationType extends AbstractType
     {
         $builder
             ->add('presentation', 'text', [
-                'label' => 'product_part_material.form.presentation'
+                'label' => 'product_part_material.form.presentation',
             ]);
     }
 

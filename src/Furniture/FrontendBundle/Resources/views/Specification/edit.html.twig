@@ -95,7 +95,7 @@
                 <h5>Company address</h5>
                 <p>{{ specification.creator.retailerProfile.address }}</p>
 
-                <h5>Contact Informations</h5>
+                <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
                 <p>
                     Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
                     Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}

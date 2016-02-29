@@ -25,22 +25,33 @@ class FactoryTranslationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', 'textarea', array('attr' => array('class' => 'ckeditor')) )
+            ->add('description', 'textarea', ['attr' => ['class' => 'ckeditor']])
             ->add('shortDescription', 'textarea')
             ->add('address')
             ->add('workInfoContent', 'textarea', [
-                'label' => 'Work info'
+                'label' => 'frontend.factory_side.work_info.terms_payment',
+                'attr' => ['class' => 'ckeditor']
             ])
-            ->add('collectionContent', 'textarea', [
+            ->add('collectionContent', 'textarea',[
                 'label' => 'Collections',
-                'attr' => [
-                    'class' => 'ckeditor'
-                ]
+                'attr'  => ['class' => 'ckeditor'],
             ])
-            ->add('bankDetails', 'textarea', array('attr' => array('class' => 'ckeditor')) )
-            ->add('productTime', 'textarea', array('attr' => array('class' => 'ckeditor')) )
-            ->add('deliveryAndPackaging', 'textarea', array('attr' => array('class' => 'ckeditor')) )
-            ->add('vacations', 'textarea', array('attr' => array('class' => 'ckeditor')) );
+            ->add('bankDetails', 'textarea', [
+                'label' => 'frontend.factory_side.work_info.bank_details',
+                'attr' => ['class' => 'ckeditor']
+            ])
+            ->add('productTime', 'textarea', [
+                'label' => 'frontend.factory_side.work_info.production_time',
+                'attr' => ['class' => 'ckeditor']
+            ])
+            ->add('deliveryAndPackaging', 'textarea', [
+                'label' => 'frontend.factory_side.work_info.delivery_packaging',
+                'attr' => ['class' => 'ckeditor']
+            ])
+            ->add('vacations', 'textarea', [
+                'label' => 'frontend.factory_side.work_info.vacations',
+                'attr' => ['class' => 'ckeditor']
+            ]);
     }
 
     /**

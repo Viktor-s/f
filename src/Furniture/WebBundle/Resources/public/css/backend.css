@@ -288,9 +288,7 @@ form.form-signin .btn-success:hover {
     margin-bottom: 10px;
     text-align: center;
 }
-.actions-menu {
-    float: right;
-}
+
 .page-header {
     margin: 0 -15px 20px;
     padding-left: 15px;
@@ -587,4 +585,10 @@ input[type="file"] {
 
 .fade.in {
     display: block;
+}
+
+#factory-preview {
+    width: 100%;
+    min-height: 900px;
+    pointer-events: none;
 }

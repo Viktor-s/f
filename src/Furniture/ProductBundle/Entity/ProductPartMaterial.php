@@ -9,6 +9,7 @@ use Furniture\ProductBundle\Model\ProductPartMaterialOptionValueGrouped;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Translation\Model\TranslationInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product part material
@@ -22,6 +23,8 @@ class ProductPartMaterial extends AbstractTranslatable
 
     /**
      * Internal name
+     *
+     * @Assert\NotBlank()
      *
      * @var string
      */

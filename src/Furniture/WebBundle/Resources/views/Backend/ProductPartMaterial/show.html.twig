@@ -14,13 +14,14 @@
 
 {% block content %}
     <div class="page-header">
-        <h1 style="float: left;">{{ product_part_material.name }}</h1>
+        <h1 class="pull-left">{{ product_part_material.name }}</h1>
 
-        <div class="actions-menu">
+        <div class="actions-menu pull-right">
             {{ buttons.edit(path('furniture_backend_product_part_material_update', {id: product_part_material.id})) }}
+            {% if is_product_part_material_can_remove(product_part_material) %}
             {{ buttons.delete(path('furniture_backend_product_extenstion_delete', {id: product_part_material.id})) }}
+            {% endif %}
         </div>
-
         <div class="clearfix"></div>
     </div>
 
@@ -45,8 +46,10 @@
     </div>
 
     <div class="row">
-        <h3>Variants:</h3>
-
+        <h3 class="pull-left">Variants:</h3>
+        <span class="pull-right">
+            {{ buttons.create(path('furniture_backend_product_part_material_variant_create', {product_part_material: product_part_material.id})) }}
+        </span>
         <table class="table">
             <thead>
             <tr>
@@ -87,7 +90,9 @@
                     <td>
                         <div class="pull-right">
                             {{ buttons.edit(path('furniture_backend_product_part_material_variant_update', {product_part_material: product_part_material.id, id: variant.id})) }}
+                            {% if is_product_part_material_variant_can_remove(variant) %}
                             {{ buttons.delete(path('furniture_backend_product_part_material_variant_delete', {product_part_material: product_part_material.id, id: variant.id})) }}
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

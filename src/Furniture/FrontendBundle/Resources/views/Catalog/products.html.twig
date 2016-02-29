@@ -142,7 +142,7 @@
                 {# Catalog brand selector #}
                 {% if brands|length > 1 %}
                     <div id="brand_filter" class="information-blocks">
-                        {% set column_size = (brands|length)/2 %}
+                        {% set column_size = ((brands|length)/2)|round(0, 'ceil')%}
                         <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
                         <div class="row">
                             <div class="col-xs-6">

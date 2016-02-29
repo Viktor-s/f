@@ -14,7 +14,7 @@
 {% block topbar %}
 <ol class="breadcrumb">
     <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-    <li><a href="{{ path('furniture_backend_sku_option_index') }}">Sku attribute</a></li>
+    <li><a href="{{ path('furniture_backend_sku_option_index') }}">{{ 'sylius.breadcrumb.option_variants.index'|trans }}</a></li>
     <li>{{ sku_option.name }}</li>
     <li>{{ 'sylius.breadcrumb.edit'|trans }}</li>
 </ol>
@@ -22,7 +22,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h1><i class="glyphicon glyphicon-pencil"></i> {{ 'sylius.product_attribute.update_header'|trans|raw }}</h1>
+    <h1><i class="glyphicon glyphicon-pencil"></i> {{ 'sylius.product_option_variants.update_header'|trans|raw }}</h1>
 </div>
 
 {{ form_errors(form) }}
