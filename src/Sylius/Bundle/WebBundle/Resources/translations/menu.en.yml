@@ -5,15 +5,23 @@ sylius:
     backend:
         menu:
             main:
+                archetypes: Product archetypes
                 assortment: Assortment
+                attributes: Configure attributes
                 blocks: Blocks
-                configuration: Configuration
-                countries: Countries
-                customer: Customer
-                content: Content
                 channels: Channels
-                dashboard: Dashboard
+                composite: Composities
+                composite_collection: Composite collections
+                composite_template: Composite templates
+                configuration: Configuration
+                content: Content
+                countries: Countries
                 currencies: Currencies
+                customer: Customer
+                customers: Customers
+                dashboard: Dashboard
+                emails: Emails
+                factory: Factory
                 general_settings: General settings
                 groups: Groups
                 homepage: Your store
@@ -25,75 +33,93 @@ sylius:
                 pages: Pages
                 payment_methods: Payment methods
                 payments: Payments
+                permissions: Permissions
+                product_categories: Product: Categories
+                product_part_material: Product part materials
+                product_part_type: Product part types
+                product_readiness: Product: Readiness
+                product_spaces: Product: Spaces
+                product_types: Product: Types
                 products: Products
                 promotions: Promotions
-                attributes: Configure attributes
-                archetypes: Product archetypes
+                report: Reports
+                retailer_profile: Retailer Profiles
+                roles: Roles
                 sales: Orders
                 shipments: Shipments
                 shipping_categories: Shipping categories
                 shipping_methods: Shipping methods
+                sku_attributes: Product option variants
+                specification: Specifications
                 stockables: Inventory levels
                 tax_categories: Taxation categories
                 tax_rates: Tax rates
                 taxation_settings: Taxation settings
                 taxonomies: Categorization
-                customers: Customers
                 zones: Zones
-                emails: Emails
-                roles: Roles
-                permissions: Permissions
-                report: Reports
             sidebar:
                 api_clients: API clients
+                archetypes: Product archetypes
                 assortment: Assortment
+                attributes: Configure attributes
                 blocks: Blocks
+                channels: Channels
+                composite: Composities
+                composite_collection: Composite collections
+                composite_template: Composite templates
                 configuration: Configuration
+                contact_requests: Requests
+                contact_topics: Configure Topics
                 content: Content
                 countries: Countries
-                channels: Channels
-                customer: Customer
-                dashboard: Dashboard
                 currencies: Currencies
+                customer: Customer
+                customers: Customers
+                dashboard: Dashboard
+                emails: Emails
+                factory: Factory
                 general_settings: General settings
                 groups: Groups
                 homepage: Back to frontend
                 locales: Locales
+                marketing: Marketing
+                menus: Menus
                 new_order: Add new order
                 new_promotion: Add new promotion
                 options: Manage options
                 orders: Current orders
                 pages: Pages
-                routes: Routes
-                redirects: Redirects
-                menus: Menus
                 payment_methods: Payment methods
                 payments: Payments
+                permissions: Permissions
+                product_categories: Product: Categories
+                product_part_material: Product part materials
+                product_part_type: Product part types
+                product_readiness: Product: Readiness
+                product_spaces: Product: Spaces
+                product_types: Product: Types
                 products: Products
                 promotions: Promotions
+                redirects: Redirects
                 report: Reports
-                attributes: Configure attributes
-                archetypes: Product archetypes
+                retailer_profile: Retailer Profiles
+                roles: Roles
+                routes: Routes
                 sales: Orders
                 security_settings: Security settings
                 shipments: Shipments
                 shipping_categories: Shipping categories
                 shipping_methods: Shipping methods
+                sku_attributes: Product option variants
                 slideshow: Slideshow
+                specification: Specifications
                 stockables: Inventory levels
+                support: Support
                 tax_categories: Taxation categories
                 tax_rates: Tax rates
                 taxation_settings: Taxation settings
                 taxonomies: Categorization
-                customers: Customers
                 zones: Zones
-                emails: Emails
-                roles: Roles
-                permissions: Permissions
-                marketing: Marketing
-                support: Support
-                contact_requests: Requests
-                contact_topics: Configure Topics
     frontend:
         menu:
             account:

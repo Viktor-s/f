@@ -7,16 +7,16 @@
 {% block topbar %}
 <ol class="breadcrumb">
     <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-    <li>Sku attribute</li>
+    <li>{{ 'sylius.breadcrumb.option_variants.index'|trans }}</li>
 </ol>
 {% endblock %}
 
 {% block content %}
 <div class="page-header">
     <div class="actions-menu">
-        {{ buttons.create(path('furniture_backend_sku_option_create'), 'Create attribute') }}
+        {{ buttons.create(path('furniture_backend_sku_option_create'), 'sylius.product_option_variants.create'|trans) }}
     </div>
-    <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'sylius.product_attribute.index_header'|trans|raw }}</h1>
+    <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'sylius.product_option_variants.index_header'|trans|raw }}</h1>
 </div>
 
 {{ pagination(sku_options) }}

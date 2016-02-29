@@ -50,18 +50,18 @@ class BackendMenuBuilder extends MenuBuilder
      */
     public function createSidebarMenu()
     {
-        $menu = $this->factory->createItem('root', array(
-            'childrenAttributes' => array(
+        $menu = $this->factory->createItem('root', [
+            'childrenAttributes' => [
                 'class' => 'nav'
-            )
-        ));
+            ]
+        ]);
 
         $menu->setCurrentUri($this->request->getRequestUri());
 
-        $childOptions = array(
-            'childrenAttributes' => array('class' => 'nav'),
-            'labelAttributes'    => array('class' => 'nav-header')
-        );
+        $childOptions = [
+            'childrenAttributes' => ['class' => 'nav'],
+            'labelAttributes'    => ['class' => 'nav-header'],
+        ];
 
         $this->addAssortmentMenu($menu, $childOptions, 'sidebar');
         $this->addSalesMenu($menu, $childOptions, 'sidebar');
@@ -91,36 +91,36 @@ class BackendMenuBuilder extends MenuBuilder
         ;
 
         if ($this->authorizationChecker->isGranted('sylius.product.index')) {
-            $child->addChild('products', array(
+            $child->addChild('products', [
                 'route' => 'sylius_backend_product_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-th-list'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.products', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.products', $section)));
 
-            $child->addChild('inventory', array(
+            $child->addChild('inventory', [
                 'route' => 'sylius_backend_inventory_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-tasks'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.stockables', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-tasks'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.stockables', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.product_category.index')) {
             $child->addChild('product_categories', [
                 'route' => 'furniture_backend_product_category',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
-            ])->setLabel('Product: Categories');
+            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.product_categories', $section))));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.product_type.index')) {
             $child->addChild('product_types', [
                 'route' => 'furniture_backend_product_type',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
-            ])->setLabel('Product: Types');
+            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.product_types', $section))));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.product_space.index')) {
             $child->addChild('product_spaces', [
                 'route' => 'furniture_backend_product_space',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
-            ])->setLabel('Product: Spaces');
+            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.product_spaces', $section))));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.product_style.index')) {
@@ -134,90 +134,91 @@ class BackendMenuBuilder extends MenuBuilder
             $child->addChild('product_readiness', [
                 'route' => 'furniture_backend_product_readiness_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
-            ])->setLabel('Product: Readiness');
+            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.product_readiness', $section))));
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_option.index')) {
-            $child->addChild('options', array(
-                'route' => 'sylius_backend_product_option_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-th'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.options', $section)));
+            $child->addChild('options',[
+                 'route'           => 'sylius_backend_product_option_index',
+                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-th'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.options', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_attribute.index')) {
-            $child->addChild('sku_attributes', array(
+            dump($section);
+            $child->addChild('sku_attributes', [
                 'route' => 'furniture_backend_sku_option_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
-            ))->setLabel('SKU Attribute types');
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt'],
+            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.sku_attributes', $section))));
 
-            $child->addChild('product_attributes', array(
+            $child->addChild('product_attributes', [
                 'route' => 'sylius_backend_product_attribute_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.attributes', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.attributes', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.product_part_material.index')) {
             $child->addChild('product_part_material', [
                 'route' => 'furniture_backend_product_part_material',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Product part materials');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.product_part_material', $section)));
             
             $child->addChild('factory', [
                 'route' => 'furniture_backend_factory_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Factory');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory', $section)));
         }
         
         if ($this->authorizationChecker->isGranted('furniture.product_part_type.index')) {
             $child->addChild('product_part_type', [
                 'route' => 'furniture_backend_product_part_type',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Product part types');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.product_part_type', $section)));
             
             $child->addChild('factory', [
                 'route' => 'furniture_backend_factory_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Factory');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory', $section)));
             
             $child->addChild('retailer_profile_index', [
                 'route' => 'furniture_backend_retailer_profile_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('retailer_profile');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.retailer_profile', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.composite_collection.index')) {
             $child->addChild('composite_collection', [
                 'route' => 'furniture_backend_composite_collection',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Composite collections');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.composite_collection', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.composite_template.index')) {
             $child->addChild('composite_template', [
                 'route' => 'furniture_backend_composite_template',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Composite templates');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.composite_template', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.composite.index')) {
             $child->addChild('composite', [
                 'route' => 'furniture_backend_composite',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Composities');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.composite', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.specification.index')) {
             $child->addChild('specification', [
                 'route' => 'furniture_backend_specification',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
-            ])->setLabel('Specifications');
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.specification', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_archetype.index')) {
-            $child->addChild('product_archetypes', array(
+            $child->addChild('product_archetypes', [
                 'route' => 'sylius_backend_product_archetype_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-compressed'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.archetypes', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-compressed'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.archetypes', $section)));
         }
 
         if (!$child->hasChildren()) {
@@ -240,34 +241,34 @@ class BackendMenuBuilder extends MenuBuilder
         ;
 
         if ($this->authorizationChecker->isGranted('sylius.simple_block.index')) {
-            $child->addChild('blocks', array(
+            $child->addChild('blocks', [
                 'route' => 'sylius_backend_block_overview',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-th-large'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.blocks', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-large'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.blocks', $section)));
         }
         if ($this->authorizationChecker->isGranted('sylius.static_content.index')) {
-            $child->addChild('Pages', array(
+            $child->addChild('Pages', [
                 'route' => 'sylius_backend_static_content_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-file'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.pages', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-file'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.pages', $section)));
         }
         if ($this->authorizationChecker->isGranted('sylius.menu.index')) {
-            $child->addChild('Menus', array(
+            $child->addChild('Menus', [
                 'route' => 'sylius_backend_menu_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-list-alt'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.menus', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.menus', $section)));
         }
         if ($this->authorizationChecker->isGranted('sylius.slideshow.index')) {
-            $child->addChild('Slideshow', array(
+            $child->addChild('Slideshow', [
                 'route' => 'sylius_backend_slideshow_block_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-film'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.slideshow', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-film'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.slideshow', $section)));
         }
         if ($this->authorizationChecker->isGranted('sylius.route.index')) {
-            $child->addChild('Routes', array(
+            $child->addChild('Routes', [
                 'route' => 'sylius_backend_route_index',
-                'labelAttributes' => array('icon' => 'glyphicon glyphicon-random'),
-            ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.routes', $section)));
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-random'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.routes', $section)));
         }
 
         if ($this->authorizationChecker->isGranted('furniture.post.index')) {
@@ -340,6 +341,7 @@ class BackendMenuBuilder extends MenuBuilder
                 'labelAttributes' => array('icon' => 'glyphicon glyphicon-envelope'),
             ))->setLabel($this->translate(sprintf('sylius.backend.menu.%s.contact_requests', $section)));
         }
+
         if ($this->authorizationChecker->isGranted('sylius.contact_topic.index')) {
             $child->addChild('contact_topics', array(
                 'route' => 'sylius_backend_contact_topic_index',
