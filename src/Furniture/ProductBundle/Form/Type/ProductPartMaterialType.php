@@ -34,7 +34,7 @@ class ProductPartMaterialType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                'label' => 'product_part_material.form.name'
+                'label' => 'product_part_material.name'
             ])
             ->add('factory', 'entity', [
                 'class' => Factory::class,

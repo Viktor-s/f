@@ -44,9 +44,32 @@ product_extension_option_value:
         value: Value
 
 product_part_material:
-    form:
+    breadcrumb:
+        index: Product part materials
+        create: Create material
+        update: Update material
+        option:
+            index: Options
+            create: Create option
+            update: Update option
+    create: Create product part material
+    index_header: Product part materials
+    manage: Manage product part materials
+    name: Name
+    no_results: Not found product part materials
+    option:
+        create: Create product part material option
+        index_header: Product part materials options
+        manage: Manage product part materials options
         name: Name
-        presentation: Presentation
+        no_results: Not found product part materials options
+        update: Update product part material option
+        value:
+            option: Option
+            value: Value
+    option_values: values
+    presentation: Presentation
+    update: Update product part material
 
 composite_collection:
     button:

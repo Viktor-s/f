@@ -7,7 +7,7 @@
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-        <li><a href="{{ path('furniture_backend_product_part_material') }}">Product part materials</a></li>
+        <li><a href="{{ path('furniture_backend_product_part_material') }}">{{ 'product_part_material.breadcrumb.index'|trans }}</a></li>
         <li>{{ product_part_material.name }}</li>
     </ol>
 {% endblock %}
@@ -102,8 +102,6 @@
                         Not found variants for this product part material.
                         You can
                         <a href="{{ path('furniture_backend_product_part_material_variant_create', {product_part_material: product_part_material.id}) }}">create</a>
-                        or
-                        <a href="#">generate</a>
                         variants for this product part material.
                     </td>
                 </tr>

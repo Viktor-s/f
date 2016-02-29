@@ -7,14 +7,15 @@
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-        <li><a href="{{ path('sylius_backend_product_attribute_index') }}">{{ 'product_part_material_option.breadcrumb.index'|trans }}</a></li>
-        <li>{{ 'create'|trans }}</li>
+        <li><a href="{{ path('furniture_backend_product_part_material') }}">{{ 'product_part_material.breadcrumb.index'|trans }}</a></li>
+        <li><a href="{{ path('sylius_backend_product_attribute_index') }}">{{ 'product_part_material.breadcrumb.option.index'|trans }}</a></li>
+        <li>{{ 'product_part_material.breadcrumb.option.create'|trans }}</li>
     </ol>
 {% endblock %}
 
 {% block content %}
     <div class="page-header">
-        <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'product_part_material_option.header.create'|trans }}</h1>
+        <h1><i class="glyphicon glyphicon-plus-sign"></i> {{ 'product_part_material.option.create'|trans }}</h1>
     </div>
 
     {{ form_errors(form) }}

@@ -28,10 +28,10 @@ class ProductPartMaterialOptionValueType extends AbstractType
         $builder
             ->add('option', 'entity', [
                 'class' => ProductPartMaterialOption::class,
-                'label' => 'product_part_material_option_value.form.option'
+                'label' => 'product_part_material.option.value.option'
             ])
             ->add('value', 'text', [
-                'label' => 'product_part_material_option_value.form.value'
+                'label' => 'product_part_material.option.value.value'
             ]);
     }
 
