@@ -35,3 +35,9 @@ services:
         class: Furniture\RetailerBundle\Security\Voter\RetailerFactoryRelationVoter
         tags:
             - { name: security.voter }
+
+    twig.extension.retailer:
+        class: Furniture\RetailerBundle\Twig\RetailerExtension
+        arguments: [ @retailer_profile.removal_checker.registry ]
+        tags:
+            - { name: twig.extension }

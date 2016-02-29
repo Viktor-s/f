@@ -1,0 +1,8 @@
+services:
+    retailer_profile.removal_checker.registry:
+        class: Furniture\RetailerBundle\RetailerRemoval\RemovalCheckerRegistry
+        arguments: [ @service_container ]
+
+    retailer_profile.removal_checker:
+        class: Furniture\RetailerBundle\RetailerRemoval\RetailerProfileRemovalChecker
+        arguments: [ @doctrine.orm.default_entity_manager ]
