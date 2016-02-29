@@ -26,7 +26,7 @@ class ProductPartMaterialOptionType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                'label' => 'product_part_material_option.form.name'
+                'label' => 'product_part_material.option.name'
             ]);
     }
 

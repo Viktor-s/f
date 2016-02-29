@@ -29,7 +29,7 @@ Furniture\ProductBundle\Entity\Product:
 
         productParts:
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
-            cascade: [persist]
+            cascade: [ persist ]
             mappedBy: product
             orphanRemoval: true
 
@@ -57,6 +57,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     child_product_id:
                         referencedColumnName: id
+
         bundleProducts:
             fetch: EXTRA_LAZY
             targetEntity: Product
