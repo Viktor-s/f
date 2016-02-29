@@ -7,7 +7,8 @@
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-        <li>{{ 'product_part_material_option.header.index'|trans }}</li>
+        <li><a href="{{ path('furniture_backend_product_part_material') }}">{{ 'product_part_material.breadcrumb.index'|trans }}</a></li>
+        <li>{{ 'product_part_material.breadcrumb.option.index'|trans }}</li>
     </ol>
 {% endblock %}
 
@@ -15,9 +16,9 @@
     <div class="page-header">
         <div class="actions-menu">
             {{ buttons.manage(path('furniture_backend_product_part_material'), 'product_part_material.manage'|trans) }}
-            {{ buttons.create(path('furniture_backend_product_part_material_option_create'), 'product_part_material_option.create'|trans) }}
+            {{ buttons.create(path('furniture_backend_product_part_material_option_create'), 'product_part_material.option.create'|trans) }}
         </div>
-        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_part_material_option.header.index'|trans|raw }}</h1>
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_part_material.option.index_header'|trans|raw }}</h1>
     </div>
 
     {{ pagination(product_part_material_options) }}
@@ -26,7 +27,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th>{{ sylius_resource_sort('name', 'product_part_material_option.name'|trans) }}</th>
+                <th>{{ sylius_resource_sort('name', 'product_part_material.option.name'|trans) }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -48,7 +49,7 @@
             </tbody>
         </table>
     {% else %}
-        {{ alerts.info('product_part_material_option.no_results'|trans) }}
+        {{ alerts.info('product_part_material.option.no_results'|trans) }}
     {% endif %}
 
     {{ pagination(product_part_material_options) }}

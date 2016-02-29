@@ -7,17 +7,17 @@
 {% block topbar %}
     <ol class="breadcrumb">
         <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
-        <li>Product part material</li>
+        <li>{{ 'product_part_material.breadcrumb.index'|trans }}</li>
     </ol>
 {% endblock %}
 
 {% block content %}
     <div class="page-header">
         <div class="actions-menu">
-            {{ buttons.manage(path('furniture_backend_product_part_material_option'), 'product_part_material_option.manage'|trans) }}
-            {{ buttons.create(path('furniture_backend_product_part_material_create'), 'product_part_material_option.create'|trans) }}
+            {{ buttons.manage(path('furniture_backend_product_part_material_option'), 'product_part_material.option.manage'|trans) }}
+            {{ buttons.create(path('furniture_backend_product_part_material_create'), 'product_part_material.create'|trans) }}
         </div>
-        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_part_material.header.index'|trans|raw }}</h1>
+        <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_part_material.index_header'|trans|raw }}</h1>
     </div>
 
     {{ pagination(product_part_materials) }}

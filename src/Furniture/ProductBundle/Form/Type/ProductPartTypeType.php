@@ -26,7 +26,7 @@ class ProductPartTypeType extends AbstractType
     {
         $builder
             ->add('code', 'text', [
-                'label' => 'product_part_material.form.name'
+                'label' => 'product_part_material.name'
             ])
         ;
 
