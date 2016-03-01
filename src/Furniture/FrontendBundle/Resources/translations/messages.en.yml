@@ -94,6 +94,7 @@ frontend:
             delivery_packaging: Delivery and Packaging
             address_warehouse: Address warehouse
             vacations: Vacations
+
     final_price: Final price
     finish: Finish
     finished: Finished
