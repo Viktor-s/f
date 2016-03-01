@@ -22,12 +22,12 @@ class ProductPartMaterialVariantRepository extends EntityRepository
 
         $result = $qb
             ->select('1')
-            ->from('product_part_material_variant', 'pmv')
-            ->innerJoin('pmv', 'product_part_material', 'pm', 'pm.id = pmv.product_extension_id')
-            ->innerJoin('pm', 'product_part_material_relation', 'pmr', 'pmr.product_part_material_id = pm.id')
-            ->innerJoin('pmr', 'furniture_product_part', 'pp', 'pp.id = pmr.product_part_id')
-            ->innerJoin('pp', 'product', 'p', 'p.id = pp.product_id')
-            ->andWhere('pmv.id = :variant')
+            ->from('product_part_material_variant', 'ppmv')
+            ->innerJoin('ppmv', 'product_part_material', 'ppm', 'ppm.id = ppmv.product_extension_id')
+            ->innerJoin('ppm', 'furniture_product_part_variant_selection', 'fppvs', 'fppvs.product_part_material_variant_id = ppmv.id')
+            ->innerJoin('fppvs', 'furniture_product_part', 'fpp', 'fpp.id = fppvs.product_part_id')
+            ->innerJoin('fpp', 'product', 'p', 'p.id = fpp.product_id')
+            ->andWhere('ppmv.id = :variant')
             ->setParameter('variant', $variant->getId())
             ->setMaxResults(1)
             ->execute()

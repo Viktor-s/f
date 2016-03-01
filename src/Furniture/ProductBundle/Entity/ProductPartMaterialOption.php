@@ -2,11 +2,7 @@
 
 namespace Furniture\ProductBundle\Entity;
 
-use FiveLab\Component\Exception\UnexpectedTypeException;
-use Sylius\Component\Translation\Model\AbstractTranslatable;
-use Sylius\Component\Translation\Model\TranslationInterface;
-use Sylius\Component\Variation\Model\Option as BaseOption;
-use Sylius\Component\Variation\Model\OptionValueInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product material option
@@ -19,6 +15,8 @@ class ProductPartMaterialOption
     protected $id;
 
     /**
+     * @Assert\NotBlank()
+     *
      * @var string
      */
     protected $name;
