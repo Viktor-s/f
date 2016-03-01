@@ -40,12 +40,10 @@ class ViewProductsVoter extends AbstractVoter
                 ->isAccessProducts();
         }
 
+        $retailerProfile = $user->getRetailerUserProfile()->getRetailerProfile();
+
         // Search relation between factory and user
-        $retailerRelation = $object->getRetailerRelationByRetailer(
-                $user
-                    ->getRetailerUserProfile()
-                    ->getRetailerProfile()
-                );
+        $retailerRelation = $object->getRetailerRelationByRetailer($retailerProfile);
 
         $accessInDefaults = $object->getDefaultRelation()->isAccessProducts();
 
