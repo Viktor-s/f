@@ -115,18 +115,18 @@
                                 {% set productVariant = item.getSkuItem.productVariant %}
                                 {% set product = productVariant.product %}
 
-                                <tr>
+                                <tr class="text-center">
                                     <td>{{ item.position }}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                         {% if product.images|length > 0 %}
                                             <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
                                         {% endif %}
                                     </td>
 
-                                    <td>{{ product.factory.name }}</td>
+                                    <td class="text-center">{{ product.factory.name }}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                         <div>{{ product.translate.name }}</div>
 
                                         {% if productVariant.activeFactoryCode %}
@@ -142,7 +142,7 @@
                                         {% endif %}
                                     </td>
 
-                                    <td>
+                                    <td class="text-left">
                                         <ul>
                                             {% for option in productVariant.options %}
                                                 <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
@@ -161,32 +161,32 @@
                                         </ul>
                                     </td>
 
-                                    <td>{{ item.note }}</td>
+                                    <td class="text-center">{{ item.note }}</td>
 
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ productVariant|sku_price|money }}</td>
-                                    <td>{{ item|specification_item_total_price|money }}</td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="text-center">{{ productVariant|sku_price|money }}</td>
+                                    <td class="text-center">{{ item|specification_item_total_price|money }}</td>
                                 </tr>
                             {% elseif item.customItem %}
                                 {% set custom_item = item.customItem %}
 
                                 <tr>
-                                    <td>{{ item.position }}</td>
+                                    <td class="text-center">{{ item.position }}</td>
 
-                                    <td>
+                                    <td class="text-center">
                                         {% if custom_item.image and custom_item.image.path %}
                                             <img src="{{ custom_item.image.path|imagine_filter('s100x100') }}" height="100" width="100" />
                                         {% endif %}
                                     </td>
 
-                                    <td>{{ custom_item.factoryName }}</td>
+                                    <td class="text-center">{{ custom_item.factoryName }}</td>
 
-                                    <td>{{ custom_item.name }}</td>
-                                    <td>{{ custom_item.options }}</td>
-                                    <td>{{ item.note }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ custom_item.price|money }}</td>
-                                    <td>{{ item|specification_item_total_price|money }}</td>
+                                    <td class="text-center">{{ custom_item.name }}</td>
+                                    <td class="text-left">{{ custom_item.options }}</td>
+                                    <td class="text-center">{{ item.note }}</td>
+                                    <td class="text-center">{{ item.quantity }}</td>
+                                    <td class="text-center">{{ custom_item.price|money }}</td>
+                                    <td class="text-center">{{ item|specification_item_total_price|money }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -327,9 +327,9 @@
                                         {{ productVariant.activeFactoryCode }}
                                     </td>
 
-                                    <td>{{ productVariant.product.name }}</td>
+                                    <td class="text-center">{{ productVariant.product.name }}</td>
 
-                                    <td>
+                                    <td class="text-left">
                                         <ul>
                                             {% for option in productVariant.options %}
                                                 <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
@@ -348,7 +348,7 @@
                                         </ul>
                                     </td>
 
-                                    <td>{{ item.note }}</td>
+                                    <td class="text-center">{{ item.note }}</td>
                                     <td class="text-center">{{ item.quantity }}</td>
                                     <td class="text-center">{{ productVariant.price|money }}</td>
                                 </tr>
