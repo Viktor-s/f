@@ -4,6 +4,7 @@ namespace Furniture\CommonBundle\Controller\Backend;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Readiness;
+use Furniture\ProductBundle\Form\Type\Filter\ProductPartMaterialFilterType;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileFilterType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationFilterType;
 use Sylius\Bundle\WebBundle\Controller\Backend\FormController as BaseFormController;
@@ -67,6 +68,30 @@ class FormController extends BaseFormController
         $form = $this->get('form.factory')->createNamed('criteria', 'sylius_product_filter', $data);
 
         return $this->render('SyliusWebBundle:Backend/Product:filterForm.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Create a product filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function productPartMaterialFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+
+        $em = $this->getDoctrine()->getManager();
+
+        if (!empty($data['factory'])) {
+            $data['factory'] = $em->find(Factory::class, $data['factory']);
+        }
+
+        $form = $this->get('form.factory')->createNamed('criteria', new ProductPartMaterialFilterType(), $data);
+
+        return $this->render('SyliusWebBundle:Backend/ProductPartMaterial:filterForm.html.twig', [
             'form' => $form->createView(),
         ]);
     }

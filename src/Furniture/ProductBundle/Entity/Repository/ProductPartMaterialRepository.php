@@ -3,11 +3,44 @@
 namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\ORM\EntityRepository;
 use Furniture\ProductBundle\Entity\ProductPartMaterial;
+use Sylius\Bundle\TranslationBundle\Doctrine\ORM\TranslatableResourceRepository;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-class ProductPartMaterialRepository extends EntityRepository
+class ProductPartMaterialRepository extends TranslatableResourceRepository
 {
+    /**
+     * Create filter paginator.
+     *
+     * @param array $criteria
+     *
+     * @return \Pagerfanta\PagerfantaInterface
+     */
+    public function createFilterPaginator($criteria = [])
+    {
+        $qb = parent::getCollectionQueryBuilder();
+        $allAliases = $qb->getAllAliases();
+
+        if (!empty($criteria['name'])) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        $qb->expr()->like($qb->expr()->lower($allAliases[0] . '.name'), ':name'),
+                        $qb->expr()->like($qb->expr()->lower($allAliases[1] . '.presentation'), ':name')
+                    )
+                )
+                ->setParameter('name', '%' . mb_strtolower($criteria['name']) . '%');
+        }
+
+        if (!empty($criteria['factory'])) {
+            $qb
+                ->andWhere($qb->expr()->eq($allAliases[0] . '.factory', ':factory'))
+                ->setParameter('factory', $criteria['factory']);
+        }
+
+        return $this->getPaginator($qb);
+    }
+
     /**
      * Has references to product?
      *
