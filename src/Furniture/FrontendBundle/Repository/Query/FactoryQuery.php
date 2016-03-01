@@ -31,9 +31,14 @@ class FactoryQuery
     private $retailer;
 
     /**
-     * @var RetailerProfile
+     * @var bool
      */
     private $retailerAccessControl = true;
+
+    /**
+     * @var bool
+     */
+    private $accessControl = true;
 
     /**
      * @var bool|null
@@ -342,5 +347,39 @@ class FactoryQuery
     public function isRetailerAccessControl()
     {
         return $this->retailerAccessControl;
+    }
+
+    /**
+     * With access control
+     *
+     * @return FactoryQuery
+     */
+    public function withAccessControl()
+    {
+        $this->accessControl = true;
+
+        return $this;
+    }
+
+    /**
+     * Without access control
+     *
+     * @return FactoryQuery
+     */
+    public function withoutAccessControl()
+    {
+        $this->accessControl = false;
+
+        return $this;
+    }
+
+    /**
+     * Is access control?
+     *
+     * @return bool
+     */
+    public function isAccessControl()
+    {
+        return $this->accessControl;
     }
 }
