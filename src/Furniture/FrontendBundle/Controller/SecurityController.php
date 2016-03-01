@@ -501,8 +501,9 @@ class SecurityController
             ));
         }
 
-        $user->resetVerifyEmailHash();
-        $this->em->flush($user);
+        $user->setVerifyEmailHash(null);
+        $this->em->persist($user);
+        $this->em->flush();
 
         $session = $request->getSession();
         $session->set('email-verify', $user->getUsernameCanonical());
