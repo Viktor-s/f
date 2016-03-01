@@ -106,7 +106,7 @@ class FactoryRetailerRelationType extends AbstractType
 
             $form = $event->getForm();
             $disabledAccessRights = $options['mode'] == 'from_retailer' && $relation->isFactoryAccept();
-            
+
             if ($options['mode'] == 'from_factory') {
                 if ($relation->getId()) {
                     // Edit saved relation
@@ -118,8 +118,8 @@ class FactoryRetailerRelationType extends AbstractType
                     ]);
                 } else {
                     $form->add('retailer', 'entity', [
-                        'label' => 'frontend.retailer',
-                        'class' => RetailerProfile::class,
+                        'label'         => 'frontend.retailer',
+                        'class'         => RetailerProfile::class,
                         'query_builder' => function (EntityRepository $er) use ($relation) {
                             if ($relation->getFactory()) {
                                 return $er->createQueryBuilder('r')
@@ -131,7 +131,7 @@ class FactoryRetailerRelationType extends AbstractType
                             } else {
                                 return $er->createQueryBuilder('r');
                             }
-                        }
+                        },
                     ]);
                 }
             }
@@ -201,17 +201,20 @@ class FactoryRetailerRelationType extends AbstractType
                     'label'    => 'frontend.discount',
                     'disabled' => $disabledAccessRights,
                 ]);
-                if ($relation->getId() && $relation->isDeal() ) {
-                    $form->add('active', 'checkbox', [
-                        'label'    => 'is Active',
-                    ]);
-                }
-                $form->add('_submit', 'submit', [
-                    'label' => 'frontend.save',
-                    'attr'  => [
-                        'class' => 'btn btn-success col-lg-offset-2',
-                    ],
+
+            if ($relation->getId() && $relation->isDeal()) {
+                $form->add('active', 'checkbox', [
+                    'required' => false,
+                    'label'    => 'Active',
                 ]);
+            }
+
+            $form->add('_submit', 'submit', [
+                'label' => 'frontend.save',
+                'attr'  => [
+                    'class' => 'btn btn-success col-lg-offset-2',
+                ],
+            ]);
         });
     }
 
