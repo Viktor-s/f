@@ -34,7 +34,7 @@ class ViewProductsVoter extends AbstractVoter
             return false;
         }
 
-        if (!$user->isRetailer()) {
+        if ($user->isNoRetailer()) {
             // This is a no retailer. Check by defaults for factory
             return $object->getDefaultRelation()
                 ->isAccessProducts();
@@ -52,7 +52,7 @@ class ViewProductsVoter extends AbstractVoter
         }
 
         if ($retailerRelation) {
-            return $retailerRelation->isAccessProducts();
+            return $retailerRelation->isDeal() && $retailerRelation->isAccessProducts();
         }
 
         return $accessInDefaults;

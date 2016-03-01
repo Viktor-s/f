@@ -269,7 +269,7 @@ class FactoryRetailerRelation
     }
     
     /**
-     * deal
+     * Is accepted from factory and retailer?
      * 
      * @return bool
      */
