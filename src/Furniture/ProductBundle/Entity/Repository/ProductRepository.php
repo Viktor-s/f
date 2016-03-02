@@ -131,7 +131,9 @@ class ProductRepository extends BaseProductRepositiry
             $andX->add($exprPriceTo);
         }
 
-        $queryBuilder->andWhere($andX);
+        if ($andX->count()) {
+            $queryBuilder->andWhere($andX);
+        }
 
         if (!empty($criteria['statuses'])) {
             $queryBuilder
