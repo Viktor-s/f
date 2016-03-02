@@ -70,6 +70,9 @@ product_part_material:
     option_values: values
     presentation: Presentation
     update: Update product part material
+    form:
+        name: Name
+        factory: Factory
 
 composite_collection:
     button:

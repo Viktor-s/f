@@ -6,6 +6,10 @@ furniture_backend_product_part_material:
         _controller: furniture.controller.product_part_material:indexAction
         _sylius:
             template: SyliusWebBundle:Backend/ProductPartMaterial:index.html.twig
+            sortable: true
+            repository:
+                method: createFilterPaginator
+                arguments: [$criteria]
 
 furniture_backend_product_part_material_create:
     path: /new

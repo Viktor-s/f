@@ -3,7 +3,6 @@
 namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Product;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepositiry;
 
@@ -97,6 +96,7 @@ class ProductRepository extends BaseProductRepositiry
     public function createFilterPaginator($criteria = [], $sorting = [], $deleted = false)
     {
         $queryBuilder = parent::getCollectionQueryBuilder();
+        $queryBuilder->leftJoin('product.variants', 'variant');
 
         if (!empty($criteria['name'])) {
             $queryBuilder
@@ -116,29 +116,22 @@ class ProductRepository extends BaseProductRepositiry
                 ->setParameter('factory', $criteria['factory']);
         }
 
-        if (!empty($criteria['priceFrom']) || !empty($criteria['priceTo'])) {
-            $queryBuilder->addSelect('variant');
+        // Price filter.
+        $andX = $queryBuilder->expr()->andX();
 
-            $exprPriceFrom = null;
-            $exprPriceTo = null;
-
-            if (!empty($criteria['priceFrom'])) {
-                $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
-                $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
-            }
-
-            if (!empty($criteria['priceTo'])) {
-                $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
-                $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
-            }
-
-            $queryBuilder->leftJoin('product.variants', 'variant', \Doctrine\ORM\Query\Expr\Join::WITH,
-                $queryBuilder->expr()->andX(
-                    $exprPriceFrom,
-                    $exprPriceTo
-                )
-            );
+        if (!empty($criteria['priceFrom'])) {
+            $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
+            $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
+            $andX->add($exprPriceFrom);
         }
+
+        if (!empty($criteria['priceTo'])) {
+            $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
+            $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
+            $andX->add($exprPriceTo);
+        }
+
+        $queryBuilder->andWhere($andX);
 
         if (!empty($criteria['statuses'])) {
             $queryBuilder

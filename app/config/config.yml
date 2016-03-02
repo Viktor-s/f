@@ -322,6 +322,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\ProductPartMaterial
+                repository: Furniture\ProductBundle\Entity\Repository\ProductPartMaterialRepository
                 translation:
                     model: Furniture\ProductBundle\Entity\ProductPartMaterialTranslation
                     mapping: ~

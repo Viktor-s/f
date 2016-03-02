@@ -77,7 +77,7 @@ class UsernameChangedSubscriber implements EventSubscriber
                     $user->setUsername($entity->getEmail());
                     $this->changeUsernameForUser($user);
 
-                    $uow->recomputeSingleEntityChangeSet($customerClassMetadata, $user);
+                    $uow->recomputeSingleEntityChangeSet($userClassMetadata, $user);
                     $kills[$user->getId()] = $user;
                 }
             } else if ($entity instanceof User) {
@@ -110,7 +110,7 @@ class UsernameChangedSubscriber implements EventSubscriber
     private function changeUsernameForUser(User $user)
     {
         $customer = $user->getCustomer();
-
+        // User was changed on frontend.
         if (empty($user->__disableVerifyEmail) && empty($customer->__disableVerifyEmail)) {
             $this->container->get('user.email_verifier')->verifyEmail($user);
         }

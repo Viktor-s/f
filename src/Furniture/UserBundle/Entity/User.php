@@ -75,6 +75,9 @@ class User extends BaseUser
         // We should clear confirmation token, because email/username changed
         $this->confirmationToken = null;
 
+        // We should clear verify email hash token, because email/username changed
+        $this->verifyEmailHash = null;
+
         return $this;
     }
 
@@ -297,9 +300,9 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function resetVerifyEmailHash()
+    public function setVerifyEmailHash($verifyEmailHash)
     {
-        $this->verifyEmailHash = null;
+        $this->verifyEmailHash = $verifyEmailHash;
 
         return $this;
     }
