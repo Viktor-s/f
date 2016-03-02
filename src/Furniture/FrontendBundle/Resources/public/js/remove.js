@@ -1,6 +1,6 @@
 ;(function ($, bootbox) {
     $(document).ready(function () {
-        $('[data-remove]').click(function () {
+        $('[data-remove], [data-confirm]').click(function () {
             var
                 message = $(this).data('message'),
                 href = $(this).attr('href');
