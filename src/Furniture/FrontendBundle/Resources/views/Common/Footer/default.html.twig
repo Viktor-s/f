@@ -18,18 +18,18 @@
             <img src="{{ asset('bundles/frontend/img/footer-logo.png') }}" alt="" class="footer-logo" />
         </div>
 
-            <div class="footer-bottom-navigation">
-                <div class="cell-view">
-                    <div class="footer-links">
-                        {{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}
-                    </div>
+        <div class="footer-bottom-navigation">
+            <div class="cell-view">
+                <div class="footer-links">
+                    {{ knp_menu_render('frontend.footer', {template: 'FrontendBundle:Common/Footer:menu.html.twig'}) }}
                 </div>
             </div>
+        </div>
 
-            <div class="copyright">
-                &#169 <a href="#">AgentA Solution</a>.
-                {{ 'frontend.all_right_reserved'|trans }}
-            </div>
+        <div class="copyright">
+            &#169 <a href="#">AgentA Solution</a>.
+            {{ 'frontend.all_right_reserved'|trans }}
+        </div>
     </footer>
 </div>
 {% endspaceless %}
