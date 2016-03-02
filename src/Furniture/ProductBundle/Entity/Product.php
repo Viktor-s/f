@@ -94,6 +94,7 @@ class Product extends BaseProduct
      * @var Collection|ProductScheme[]
      *
      * @Assert\Valid()
+     * @Assert\Count(min = 2, minMessage="Please create at least two product schemes.", groups={"SchemesCreate"})
      */
     private $productSchemes;
 

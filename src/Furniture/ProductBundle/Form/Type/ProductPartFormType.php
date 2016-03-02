@@ -11,6 +11,7 @@ use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductPartFormType extends AbstractType
 {
@@ -49,7 +50,7 @@ class ProductPartFormType extends AbstractType
                 'form_type' => new ProductPartTranslationFormType(),
                 // https://github.com/a2lix/TranslationFormBundle/issues/95
                 'empty_data' => function (FormInterface $form) {
-                    return new \Doctrine\Common\Collections\ArrayCollection();
+                    return new ArrayCollection();
                 },
             ])
             ->add('productPartMaterials', 'entity', [

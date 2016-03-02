@@ -33,6 +33,9 @@
     {% if part_error is defined %}
         <div class="alert alert-info">{{ part_error }}</div>
     {% else %}
+        {% if schemes_error is defined %}
+        <div class="alert alert-info">{{ schemes_error }}</div>
+        {% endif %}
         <table class="table" {{ block('widget_attributes') }} >
             <thead>
             <tr>
