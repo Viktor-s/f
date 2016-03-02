@@ -116,25 +116,22 @@ class ProductRepository extends BaseProductRepositiry
                 ->setParameter('factory', $criteria['factory']);
         }
 
-        if (!empty($criteria['priceFrom']) || !empty($criteria['priceTo'])) {
-            $exprPriceFrom = null;
-            $exprPriceTo = null;
-            $andX = $queryBuilder->expr()->andX();
+        // Price filter.
+        $andX = $queryBuilder->expr()->andX();
 
-            if (!empty($criteria['priceFrom'])) {
-                $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
-                $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
-                $andX->add($exprPriceFrom);
-            }
-
-            if (!empty($criteria['priceTo'])) {
-                $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
-                $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
-                $andX->add($exprPriceTo);
-            }
-
-            $queryBuilder->andWhere($andX);
+        if (!empty($criteria['priceFrom'])) {
+            $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
+            $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
+            $andX->add($exprPriceFrom);
         }
+
+        if (!empty($criteria['priceTo'])) {
+            $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
+            $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
+            $andX->add($exprPriceTo);
+        }
+
+        $queryBuilder->andWhere($andX);
 
         if (!empty($criteria['statuses'])) {
             $queryBuilder
