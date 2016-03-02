@@ -18,29 +18,29 @@ class FactoryRetailerRelation
      * @Assert\NotBlank()
      */
     private $factory;
-    
+
     /**
      * @var RetailerProfile
      */
     private $retailer;
-    
+
     /**
      * @var bool
      */
     private $accessProducts = false;
-    
+
     /**
      * @var bool
      */
     private $accessProductsPrices = false;
-    
+
     /**
      * The discount for user in percentage
      *
      * @var int
      */
     private $discount = 0;
-    
+
     /**
      * @var bool
      */
@@ -79,7 +79,7 @@ class FactoryRetailerRelation
 
         return $this;
     }
-    
+
     /**
      * Get factory
      *
@@ -89,7 +89,7 @@ class FactoryRetailerRelation
     {
         return $this->factory;
     }
-    
+
     /**
      * Set user
      *
@@ -103,7 +103,7 @@ class FactoryRetailerRelation
 
         return $this;
     }
-    
+
     /**
      * Get user
      *
@@ -113,7 +113,7 @@ class FactoryRetailerRelation
     {
         return $this->retailer;
     }
-    
+
     /**
      * Set right for access to products
      *
@@ -127,7 +127,7 @@ class FactoryRetailerRelation
 
         return $this;
     }
-    
+
     /**
      * Is access to products
      *
@@ -137,7 +137,7 @@ class FactoryRetailerRelation
     {
         return $this->accessProducts;
     }
-    
+
     /**
      * Set rights for access to product prices
      *
@@ -151,7 +151,7 @@ class FactoryRetailerRelation
 
         return $this;
     }
-    
+
     /**
      * Is rights for access to product prices
      *
@@ -161,7 +161,7 @@ class FactoryRetailerRelation
     {
         return $this->accessProductsPrices;
     }
-    
+
     /**
      * Set discount
      *
@@ -175,7 +175,7 @@ class FactoryRetailerRelation
 
         return $this;
     }
-    
+
     /**
      * Get discount
      *
@@ -215,7 +215,7 @@ class FactoryRetailerRelation
      */
     public function setActive($status)
     {
-        $this->active = (bool) $status;
+        $this->active = (bool)$status;
 
         return $this;
     }
@@ -229,7 +229,7 @@ class FactoryRetailerRelation
      */
     public function setRetailerAccept($accept)
     {
-        $this->retailerAccept = (bool) $accept;
+        $this->retailerAccept = (bool)$accept;
 
         return $this;
     }
@@ -253,7 +253,7 @@ class FactoryRetailerRelation
      */
     public function setFactoryAccept($accept)
     {
-        $this->factoryAccept = (bool) $accept;
+        $this->factoryAccept = (bool)$accept;
 
         return $this;
     }
@@ -267,18 +267,22 @@ class FactoryRetailerRelation
     {
         return $this->factoryAccept;
     }
-    
+
     /**
      * Is accepted from factory and retailer?
-     * 
+     *
      * @return bool
      */
-    public function isDeal(){
-        
-        if( $this->isFactoryAccept() && $this->isRetailerAccept() ){
+    public function isDeal()
+    {
+        if ($this->isNotActive()) {
+            return false;
+        }
+
+        if ($this->isFactoryAccept() && $this->isRetailerAccept()) {
             return true;
         }
-        
+
         return false;
     }
 }
