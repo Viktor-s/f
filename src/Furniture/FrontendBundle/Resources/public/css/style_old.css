@@ -281,7 +281,7 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 
 /*Desktops (>=992px)*/
 @media (max-width: 1199px) {
-    #content-block .content-center, .position-center{padding: 0 30px;}
+    .position-center{padding: 0 30px;}
     .boxed-layout .fullwidth-block{margin-left: -30px; margin-right: -30px;}
     .responsive-menu-toggle-class{display: block;}
 }
@@ -292,7 +292,7 @@ ol li:before{counter-increment: number; content: counter(number); color: #fff; f
 }
 /*Phones (<768px)*/
 @media (max-width: 767px) {
-    #content-block .content-center, .position-center{padding: 0 15px;}
+    .position-center{padding: 0 15px;}
 }
 
 /*-------------------------------------------------------------------------------------------------------------------------------*/
@@ -1445,7 +1445,6 @@ body:not(.mobile) .creative-square-box:hover:before{background: rgba(0,0,0,0.7);
     .header-wrapper.style-8 header .header-middle .open-cart-popup{position: relative; padding: 0 30px; color: #cee094;}
     .header-wrapper.style-8 header .header-middle .open-cart-popup *{position: relative;}
     .header-wrapper.style-8 header .header-middle .open-cart-popup:before{position: absolute; width: 100%; height: 55px; top: -20px; left: -1px; background: #7fa606; content: "";}
-    .header-wrapper.style-8 .fixed-header-margin{padding: 55px 0 100px 0!important;}
     .header-wrapper.style-8 header .submenu{bottom: 100%; top: auto; text-align: left;}
     .header-wrapper.style-8 header .submenu-links-line{top: auto; bottom: 100%;}
     .header-wrapper.style-8 header .full-width .submenu, body.style-8 header .full-width-columns .submenu{left: auto; right: 0;}
@@ -1812,7 +1811,7 @@ body.style-10 .product-slide-entry .subtitle:hover{color: #ca1515;}
 .map-box.type-3{height: 970px; margin-top: 0; margin-bottom: 20px;}
 #map-canvas{position: absolute; left: 0; top: 0; width: 100%; height: 100%;}
 .block-title.main-heading{font-size: 30px; font-weight: 400; line-height: 30px; margin-bottom: 20px; padding-bottom: 20px;}
-label{font-size: 13px; line-height: 14px; color: #313131; font-weight: 600; display: block; margin-bottom: 7px; padding-top: 5px;}
+/*label{font-size: 13px; line-height: 14px; color: #313131; font-weight: 600; display: block; margin-bottom: 7px; padding-top: 5px;}*/
 label span{color: #eb0101; font-size: 30px; line-height: 14px; display: inline-block; position: relative; vertical-align: bottom;}
 .simple-field{margin-bottom: 25px; width: 100%; border: 1px #e6e6e6 solid; font-size: 13px; line-height: 43px; color: #313131; height: 45px; padding: 0 20px; font-weight: 400;}
 input.simple-field:hover, textarea.simple-field:hover, input.simple-field:focus, textarea.simple-field:focus{background: #f7f7f7;}

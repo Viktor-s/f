@@ -83,13 +83,19 @@
     {# Attention: now we no use alerts #}
     {% block content_container %}
         <div id="content-block" class="container">
-            <div class="row content-center fixed-header-margin">
+            <div class="row">
                 <div class="col-sm-12">
                 {% set breadcumb_content = block('breadcrumb') %}
 
                 {% block breadcrumb_container %}
                     {% if breadcumb_content|trim|length > 0 %}
-                        <div class="breadcrumb-box">{{ breadcumb_content|raw }}</div>
+                        <div id="breadcrumb" class="">
+                            <div class="container">
+                                <div class="breadcrumb">
+                                    {{ breadcumb_content|raw }}
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endblock %}
 
