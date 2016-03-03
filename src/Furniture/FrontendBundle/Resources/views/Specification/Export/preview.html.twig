@@ -475,13 +475,13 @@
                     </div>
                 </div>
 
-                <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
+                <h5>{{ 'frontend.specficatior.client_label'|trans }}</h5>
 
                 <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
                     {{ specification.buyer|default('None') }}
                 </div>
 
-                <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
+                <h5>{{ 'frontend.specficatior.client_contact_label'|trans }}</h5>
                 <p>
                     {{ specification.buyer ? specification.buyer.email }}<br/>
                     {{ specification.buyer ? specification.buyer.phone }}
@@ -517,7 +517,7 @@
             <h5>Company address</h5>
             <p>{{ specification.creator.retailerProfile.address }}</p>
 
-            <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
+            <h5>{{ 'frontend.specficatior.client_contact_label'|trans }}</h5>
             <p>
                 Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
                 Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}

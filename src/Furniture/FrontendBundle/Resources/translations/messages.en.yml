@@ -95,7 +95,7 @@ frontend:
             address_warehouse: Address warehouse
             vacations: Vacations
 
-    final_price: Final price
+    final_price: Final price:
     finish: Finish
     finished: Finished
     finishes: Finishes
@@ -206,11 +206,18 @@ frontend:
     specifications: Specifications
     specficatior:
         specification_label: Specification
-        description_lable: Description
+        description_label: Description
+        document_label: Document:
+        email_label: E-mail:
+        name_label: Name:
+        manager_label: Manager:
+        phone_label: Tel.:
         page_reload_alert: Processing, wait ...
-        client_lable: Client
-        client_contact_lable: Contact information
-        notes: Notes
+        company_address_label: Company adress:
+        client_label: Client:
+        client_contact_label: Contact information:
+        created_label: Created:
+        notes: Notes:
         will_not_appear_in_specification: will no appear in specification
     taxonomy: Categories
     title:

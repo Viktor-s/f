@@ -68,20 +68,17 @@
 
     <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
-    <td class="price text-center">{{ product_variant|sku_price|money }}</td>
+    <td class="total price text-center">{{ product_variant|sku_price|money }}</td>
     <td class="total-price text-center">{{ specification_item|specification_item_total_price|money }}</td>
 
-    <td>
+    <td class="text-right">
         <div class="btn-block">
-            <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+            <a class="btn btn-primary btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
                 <i class="fa fa-pencil"></i>
                 {{ 'frontend.edit'|trans }}
             </a>
 
-            <a class="btn btn-danger btn-xs remove" href="#">
-                <i class="fa fa-trash-o"></i>
-                {{ 'frontend.remove'|trans }}
-            </a>
+            <a class="glyphicon glyphicon-remove mv-remove" aria-hidden="true" href="#"></a>
         </div>
     </td>
 </tr>
