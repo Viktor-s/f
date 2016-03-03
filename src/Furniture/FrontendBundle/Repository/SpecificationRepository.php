@@ -8,6 +8,8 @@ use Furniture\UserBundle\Entity\User;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\SpecificationBundle\Entity\Specification;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 class SpecificationRepository
 {
@@ -48,18 +50,27 @@ class SpecificationRepository
      * Find by
      *
      * @param SpecificationQuery $query
+     * @param int                $page
+     * @param int                $limit
      *
-     * @return Specification[]
-     *
-     * @todo: Add pagination
+     * @return Pagerfanta|Specification[]
      */
-    public function findBy(SpecificationQuery $query)
+    public function findBy(SpecificationQuery $query, $page = 1, $limit = 30)
     {
         $qb = $this->createQueryBuilderForSpecificationQuery($query);
 
-        return $qb
-            ->getQuery()
-            ->getResult();
+        if ($page === null) {
+            // Not use pagination
+            return $qb
+                ->getQuery()
+                ->getResult();
+        }
+
+        $pagination = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery(), false));
+        $pagination->setMaxPerPage($limit);
+        $pagination->setCurrentPage($page);
+
+        return $pagination;
     }
 
     /**

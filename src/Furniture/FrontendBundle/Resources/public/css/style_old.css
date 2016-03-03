@@ -1822,7 +1822,6 @@ textarea.simple-field.size-1{height: 138px;}
 .simple-drop-down.simple-field:after{width: 45px; height: 45px; line-height: 45px;}
 .simple-drop-down.simple-field.size-1:after{width: 35px; height: 35px; line-height: 35px;}
 .simple-drop-down.simple-field select{height: 45px; line-height: 43px; padding: 0 65px 0 20px;}
-select{background: #fff!important;}
 .simple-drop-down.simple-field.size-1 select{height: 35px; line-height: 33px; padding: 0 45px 0 10px;}
 .simple-field::-webkit-input-placeholder { color: #808080; opacity: 1;}
 .simple-field::-moz-placeholder { color: #808080; opacity: 1;} /* firefox 19+ */
@@ -1836,6 +1835,7 @@ select{background: #fff!important;}
 @media (max-width: 1199px) {
 
 }
+
 /* Tablets (>=768px)*/
 @media (max-width: 991px) {
     .map-box.type-1{left: auto; margin-left: 0; width: auto;}
@@ -1904,7 +1904,7 @@ select{background: #fff!important;}
 .square-button:hover, .square-button.active{background: #cd0000; border-color: #cd0000; color: #fff;}
 .page-selector .square-button{margin-right: 4px; margin-bottom: 15px;}
 .page-selector .square-button:last-child{margin-right: 0;}
-.page-selector .divider{display: inline-block; font-size: 18px; line-height: 18px; vertical-align: bottom; margin-right: 4px; margin-bottom: 15px;}
+.page-selector .divider, .pages-box .divider{display: inline-block; font-size: 18px; line-height: 18px; vertical-align: bottom; margin-right: 4px; margin-bottom: 15px;}
 .tags-box{font-size: 0;}
 .tags-box a{display: inline-block; margin: 0 10px 10px 0; line-height: 30px; padding: 0 15px; font-size: 13px; color: #7e7e7e; font-weight: 500; background: #f2f2f2;}
 .tags-box a:hover{color: #fff; background: #d14242;}
