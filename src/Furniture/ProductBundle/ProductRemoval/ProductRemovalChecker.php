@@ -69,10 +69,6 @@ class ProductRemovalChecker
             $reasonMessages[] = 'The product have a specification items.';
         }
 
-        if ($product->hasVariantsWithoutMaster()) {
-            $reasonMessages[] = 'The product have a SKU.';
-        }
-
         if (count($reasonMessages)) {
             return new Removal(false, $reasonMessages);
         }
