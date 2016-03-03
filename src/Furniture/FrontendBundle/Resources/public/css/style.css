@@ -1,102 +1,102 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic);
+@import url(ht/bundles/frontendtps://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic);
 
 /* font-family: "GothamProRegular"; */
 @font-face {
     font-family: "GothamProRegular";
-    src: url("fonts/GothamProRegular/GothamProRegular.eot");
-    src: url("fonts/GothamProRegular/GothamProRegular.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProRegular/GothamProRegular.woff") format("woff"),
-    url("fonts/GothamProRegular/GothamProRegular.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProRegular/GothamProRegular.eot");
+    src: url("./bundles/frontend./fonts/GothamProRegular/GothamProRegular.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProRegular/GothamProRegular.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProRegular/GothamProRegular.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProBold"; */
 @font-face {
     font-family: "GothamProBold";
-    src: url("fonts/GothamProBold/GothamProBold.eot");
-    src: url("fonts/GothamProBold/GothamProBold.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProBold/GothamProBold.woff") format("woff"),
-    url("fonts/GothamProBold/GothamProBold.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProBold/GothamProBold.eot");
+    src: url("./bundles/frontend./fonts/GothamProBold/GothamProBold.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProBold/GothamProBold.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProBold/GothamProBold.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProBlack"; */
 @font-face {
     font-family: "GothamProBlack";
-    src: url("fonts/GothamProBlack/GothamProBlack.eot");
-    src: url("fonts/GothamProBlack/GothamProBlack.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProBlack/GothamProBlack.woff") format("woff"),
-    url("fonts/GothamProBlack/GothamProBlack.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProBlack/GothamProBlack.eot");
+    src: url("./bundles/frontend./fonts/GothamProBlack/GothamProBlack.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProBlack/GothamProBlack.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProBlack/GothamProBlack.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProItalic"; */
 @font-face {
     font-family: "GothamProItalic";
-    src: url("fonts/GothamProItalic/GothamProItalic.eot");
-    src: url("fonts/GothamProItalic/GothamProItalic.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProItalic/GothamProItalic.woff") format("woff"),
-    url("fonts/GothamProItalic/GothamProItalic.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProItalic/GothamProItalic.eot");
+    src: url("./bundles/frontend./fonts/GothamProItalic/GothamProItalic.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProItalic/GothamProItalic.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProItalic/GothamProItalic.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProMedium"; */
 @font-face {
     font-family: "GothamProMedium";
-    src: url("fonts/GothamProMedium/GothamProMedium.eot");
-    src: url("fonts/GothamProMedium/GothamProMedium.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProMedium/GothamProMedium.woff") format("woff"),
-    url("fonts/GothamProMedium/GothamProMedium.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProMedium/GothamProMedium.eot");
+    src: url("./bundles/frontend./fonts/GothamProMedium/GothamProMedium.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProMedium/GothamProMedium.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProMedium/GothamProMedium.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProLight"; */
 @font-face {
     font-family: "GothamProLight";
-    src: url("fonts/GothamProLight/GothamProLight.eot");
-    src: url("fonts/GothamProLight/GothamProLight.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProLight/GothamProLight.woff") format("woff"),
-    url("fonts/GothamProLight/GothamProLight.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProLight/GothamProLight.eot");
+    src: url("./bundles/frontend./fonts/GothamProLight/GothamProLight.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProLight/GothamProLight.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProLight/GothamProLight.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProMediumItalic"; */
 @font-face {
     font-family: "GothamProMediumItalic";
-    src: url("fonts/GothamProMediumItalic/GothamProMediumItalic.eot");
-    src: url("fonts/GothamProMediumItalic/GothamProMediumItalic.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProMediumItalic/GothamProMediumItalic.woff") format("woff"),
-    url("fonts/GothamProMediumItalic/GothamProMediumItalic.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProMediumItalic/GothamProMediumItalic.eot");
+    src: url("./bundles/frontend./fonts/GothamProMediumItalic/GothamProMediumItalic.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProMediumItalic/GothamProMediumItalic.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProMediumItalic/GothamProMediumItalic.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProLightItalic"; */
 @font-face {
     font-family: "GothamProLightItalic";
-    src: url("fonts/GothamProLightItalic/GothamProLightItalic.eot");
-    src: url("fonts/GothamProLightItalic/GothamProLightItalic.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProLightItalic/GothamProLightItalic.woff") format("woff"),
-    url("fonts/GothamProLightItalic/GothamProLightItalic.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProLightItalic/GothamProLightItalic.eot");
+    src: url("./bundles/frontend./fonts/GothamProLightItalic/GothamProLightItalic.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProLightItalic/GothamProLightItalic.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProLightItalic/GothamProLightItalic.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProBoldItalic"; */
 @font-face {
     font-family: "GothamProBoldItalic";
-    src: url("fonts/GothamProBoldItalic/GothamProBoldItalic.eot");
-    src: url("fonts/GothamProBoldItalic/GothamProBoldItalic.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProBoldItalic/GothamProBoldItalic.woff") format("woff"),
-    url("fonts/GothamProBoldItalic/GothamProBoldItalic.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProBoldItalic/GothamProBoldItalic.eot");
+    src: url("./bundles/frontend./fonts/GothamProBoldItalic/GothamProBoldItalic.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProBoldItalic/GothamProBoldItalic.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProBoldItalic/GothamProBoldItalic.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 /* font-family: "GothamProBlackItalic"; */
 @font-face {
     font-family: "GothamProBlackItalic";
-    src: url("fonts/GothamProBlackItalic/GothamProBlackItalic.eot");
-    src: url("fonts/GothamProBlackItalic/GothamProBlackItalic.eot?#iefix")format("embedded-opentype"),
-    url("fonts/GothamProBlackItalic/GothamProBlackItalic.woff") format("woff"),
-    url("fonts/GothamProBlackItalic/GothamProBlackItalic.ttf") format("truetype");
+    src: url("./bundles/frontend./fonts/GothamProBlackItalic/GothamProBlackItalic.eot");
+    src: url("./bundles/frontend./fonts/GothamProBlackItalic/GothamProBlackItalic.eot?#iefix")format("embedded-opentype"),
+    url("./bundles/frontend./fonts/GothamProBlackItalic/GothamProBlackItalic.woff") format("woff"),
+    url("./bundles/frontend./fonts/GothamProBlackItalic/GothamProBlackItalic.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
@@ -593,11 +593,11 @@ span.total-price{
     padding-left: 15px;
 }
 #specifications-table ul,
-#specifications-export-table ul {
+.specifications-export-table ul {
     padding-left: 0;
 }
 #specifications-table ul li,
-#specifications-export-table ul li,
+.specifications-export-table ul li,
 .sidebar-block ul li {
     list-style: none;
 }
@@ -609,10 +609,10 @@ span.total-price{
     font-size: 15px;
     color: #333;
     padding-left: 15px;
-    background: url(../images/sb-arrow-rgt.png) no-repeat left center;
+    background: url(../bundles/frontend/img/sb-arrow-rgt.png) no-repeat left center;
 }
 .sidebar-block a.first-category.selected {
-    background: url(../images/sb-arrow-bt.png) no-repeat left center;
+    background: url(../bundles/frontend/img/sb-arrow-bt.png) no-repeat left center;
 }
 .collapser {
     margin: 8px 0;
@@ -646,7 +646,7 @@ input[type="checkbox"]:disabled + label::before {
 input[type="checkbox"]:checked:disabled + label::before {
     background-position: -171px -260px;
 }
-#specifications-export-table input[type="checkbox"] + label::before {
+.specifications-export-table input[type="checkbox"] + label::before {
     position: absolute;
     right: 0;
     top: 7px;
@@ -655,8 +655,8 @@ input[type="checkbox"]:checked:disabled + label::before {
     background-color: #fff;
     display: inline-block;
 }
-#specifications-export-table input[type="checkbox"]:checked + label::before {
-    background-image: url(../images/icon-checked.png);
+.specifications-export-table input[type="checkbox"]:checked + label::before {
+    background-image: url(../bundles/frontend/img/icon-checked.png);
     background-position: center;
     background-color: transparent;
     width: 17px;
@@ -813,7 +813,7 @@ label[for="sorting"]:before,
 .company-logo img {
     border: 1px solid #ededed;
 }
-#specifications-export-table td,
+.specifications-export-table td,
 #specification-table td{
     color: #8a8a8a;
 }
@@ -834,14 +834,14 @@ label[for="sorting"]:before,
 .table-bordered {
     border: 0 solid #ddd;
 }
-#specifications-export-table .product-image,
+.specifications-export-table .product-image,
 #specification-table .product-image {
     position: relative;
     overflow: hidden;
     width: 150px;
     margin: 0 auto;
 }
-#specifications-export-table .product-image a,
+.specifications-export-table .product-image a,
 #specification-table .product-image a {
     position: absolute;
     top: 0;
@@ -861,13 +861,13 @@ label[for="sorting"]:before,
 .checkbox-entry input:checked + span.check {
     background: #ca1515;
 }
-#specifications-export-table label {
+.specifications-export-table label {
     margin-bottom: 0;
 }
 .table>thead>tr>th {
     position: relative;
 }
-#specifications-export-table label {
+.specifications-export-table label {
     margin-right: 15px;
 }
 
@@ -880,7 +880,7 @@ label[for="sorting"]:before,
     font-weight:normal;
     text-indent:-99999px;
     overflow:hidden;
-    background:url('../img/your_product.png') no-repeat;
+    background:url('./bundles/frontend./img/your_product.png') no-repeat;
     width:490px;
     height:36px;
 }
@@ -895,7 +895,7 @@ label[for="sorting"]:before,
     display:inline-block;
     min-width:460px;
     position:relative;
-    /*background:url("../img/dropdown_slice.png") no-repeat -99999px;*/
+    /*background:url("./bundles/frontend./img/dropdown_slice.png") no-repeat -99999px;*/
 }
 
 .tzSelect .selectBox{
@@ -913,8 +913,8 @@ label[for="sorting"]:before,
 
     /* Use multiple backgrounds CSS3 */
 
-    background:url('../img/select_slice.png') repeat-x #ddd;
-    background-image:url('../img/select_slice.png'),url('../img/select_slice.png'),url('../img/select_slice.png'),url('../img/select_slice.png');
+    background:url('./bundles/frontend./img/select_slice.png') repeat-x #ddd;
+    background-image:url('./bundles/frontend./img/select_slice.png'),url('./bundles/frontend./img/select_slice.png'),url('./bundles/frontend./img/select_slice.png'),url('./bundles/frontend./img/select_slice.png');
     background-position:0 -136px, right -204px, 50% -68px, 0 0;
     background-repeat: no-repeat, no-repeat, no-repeat, repeat-x;
 
@@ -944,8 +944,12 @@ label[for="sorting"]:before,
 table.dataTable.table-condensed .sorting:after, table.dataTable.table-condensed .sorting_asc:after, table.dataTable.table-condensed .sorting_desc:after {
     right: 4px;
 }
-#specification-table th {
+#specification-table>thead>tr>th,
+table.specifications-export-table>thead>tr>th {
     vertical-align: top;
+}
+table.specifications-export-table>thead>tr>th:last-child {
+    min-width:90px;
 }
 .table-responsive {
     overflow: visible;

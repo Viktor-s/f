@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\Util\ViolationListUtils;
+use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\SpecificationBundle\Entity\Buyer;
@@ -243,7 +244,7 @@ class SpecificationBuyerController
      *
      * @return Response
      */
-    public function specifications($buyer)
+    public function specifications(Request $request, $buyer)
     {
         $buyer = $this->buyerRepository->find($buyerId = $buyer);
 
@@ -266,20 +267,68 @@ class SpecificationBuyerController
         /** @var \Furniture\UserBundle\Entity\User $creator */
         $creator = $this->tokenStorage->getToken()->getUser();
         $retailer = $creator->getRetailerUserProfile();
+        $specificationQuery = new SpecificationQuery();
+        $sorting = [
+            'all'      => [
+                'name'  => 'All',
+                'state' => false,
+            ],
+            'opened'   => [
+                'name'  => 'Opened',
+                'state' => false,
+            ],
+            'finished' => [
+                'name'  => 'Finished',
+                'state' => false,
+            ],
+        ];
 
         if ($retailer && $retailer->isRetailerAdmin()) {
             $profile = $retailer->getRetailerProfile();
             $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndRetailer($profile, $buyer);
             $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndRetailer($profile, $buyer);
+            $specificationQuery
+                ->withRetailer($profile)
+                ->withBuyer($buyer);
         } else {
             $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndUser($creator, $buyer);
             $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndUser($creator, $buyer);
+            $specificationQuery
+                ->withUser($creator)
+                ->withBuyer($buyer);
+        }
+
+        if ($request->query->has('sorting')) {
+            switch ($request->query->get('sorting')) {
+                case 'opened':
+                    $specificationQuery->opened();
+                    $sorting['opened']['state'] = true;
+                    break;
+
+                case 'finished':
+                    $specificationQuery->finished();
+                    $sorting['finished']['state'] = true;
+                    break;
+
+                default:
+                    $sorting['all']['state'] = true;
+            }
+        }
+
+        /* Create product paginator */
+        $currentPage = (int)$request->get('page', 1);
+        $specifications = $this->specificationRepository->findBy($specificationQuery);
+
+        if ($specifications->getNbPages() < $currentPage) {
+            $specifications->setCurrentPage(1);
+        } else {
+            $specifications->setCurrentPage($currentPage);
         }
 
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
-            'buyer' => $buyer,
-            'opened_specifications' => $openedSpecifications,
-            'finished_specifications' => $finishedSpecifications
+            'buyer'                   => $buyer,
+            'specifications'          => $specifications,
+            'sorting'                 => $sorting,
         ]);
 
         return new Response($content);

@@ -3341,14 +3341,6 @@ header.fixed-header nav {
 
 }
 
-.specifications-export-table thead .checkbox-entry {
-    padding: 0;
-}
-
-.specifications-export-table thead .checkbox-entry .check {
-    position: relative;
-}
-
 .specification-pretable-controls{
     position:absolute;
     top:0;
@@ -3668,12 +3660,6 @@ footer .copyright {
     padding: 0!important;
     font-size: 13px;
     line-height: 30px;
-}
-
-.checkbox-name {
-    font-size: 13px;
-    line-height: 14px;
-    color: #929292;
 }
 
 .checkbox-entry input:checked + span.check + .checkbox-name {

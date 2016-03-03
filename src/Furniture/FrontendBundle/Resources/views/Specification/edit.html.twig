@@ -1,4 +1,5 @@
 {% extends 'FrontendBundle:Specification:base.html.twig' %}
+{% use 'FrontendBundle:Specification:specification_edit_header.html.twig' %}
 {% form_theme form 'FrontendBundle:Form:base_horizontal.html.twig' %}
 
 {% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
@@ -37,88 +38,8 @@
 {% block content_with_edit %}
     {% set toolbar_position = 'top' %}
     {{ block('toolbar_actions') }}
-    <div class="row specification-edit-head">
-        <div class="col-md-4 col-sm-4">
-            <div class="block-spec-head">
-                <h3>{{ 'frontend.specification_edit'|trans }}</h3>
-            </div>
-            <table class="table table-stripped table-condensed specification-info">
-                <tr>
-                    <td>{{ 'frontend.specficatior.document_label'|trans }}</td>
-                    <td class="document-number editable" id="specification-document" data-toggle="tooltip" title="Click to edit">
-                        {{ specification.documentNumber }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.created_label'|trans }}</td>
-                    <td>{{ specification.createdAt.format('Y/m/d H:i') }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.client_label'|trans }}</td>
-                    <td  class="editable buyer" id="specification-buyer" data-toggle="tooltip" title="Click to edit">
-                        {{ specification.buyer|default('None') }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.email_label'|trans }}</td>
-                    <td>{{ specification.buyer ? specification.buyer.email }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.phone_label'|trans }}</td>
-                    <td>{{ specification.buyer ? specification.buyer.phone }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.name_label'|trans }}</td>
-                    <td class="name editable" id="specification-name" data-toggle="tooltip" title="Click to edit">
-                        {{ specification.name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ 'frontend.specficatior.notes'|trans }} <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}
-                    </td>
-                    <td class="description editable" id="specification-description" data-toggle="tooltip" title="Click to edit">{{ specification.description|default('None') }}</td>
-                </tr>
-                {% if specification.buyer and specification.buyer.hasSale() %}
-                <tr>
-                    <td>{{ 'frontend.sale'|trans }}</td>
-                    <td>{{ specification.buyer.sale }}%</td>
-                </tr>
-                {% endif %}
-            </table>
-        </div>
-        <div class="col-md-4 col-sm-4">
-            <div class="block-spec-head">
-                <h3>{{ specification.creator.retailerProfile.name }}</h3>
-            </div>
-            <table class="table table-stripped table-condensed">
-                <tr>
-                    <td>{{ 'frontend.specficatior.manager_label'|trans }}</td>
-                    <td>
-                        <span class="mg-name">{{ specification.creator.user.fullName }}</span>
-                        <span class="mg-mail">{{ specification.creator.user.customer.email }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.company_address_label'|trans }}</td>
-                    <td>{{ specification.creator.retailerProfile.address }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'frontend.specficatior.client_contact_label'|trans }}</td>
-                    <td>
-                        Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                        Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
-                    </td>
-                </tr>
-                <tr>
-            </table>
-        </div>
-        <div class="col-md-3  col-sm-3 col-md-offset-1  col-sm-offset-1">
-            <div class="thumbnail company-logo">
-                <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
-            </div>
-        </div>
-    </div>
+    {% set specification_block_title = 'frontend.specification_edit'|trans %}
+    {{ block('specification_edit_header') }}
     <div class="row">
         <div class="col-sm-12">
             <div class="table-responsive">

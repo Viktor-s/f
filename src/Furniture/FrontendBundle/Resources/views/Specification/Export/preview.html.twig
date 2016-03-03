@@ -1,5 +1,5 @@
 {% extends 'FrontendBundle:Specification/Export:base.html.twig' %}
-
+{% use 'FrontendBundle:Specification:specification_edit_header.html.twig' %}
 {% block title %}{{ 'frontend.title.preview'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
@@ -7,17 +7,13 @@
 
     <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ specification.name }}</a>
 
-    <a href="#">{{ 'frontend.title.preview'|trans }}</a>
+    <span class="active">{{ 'frontend.title.preview'|trans }}</span>
 {% endblock %}
 
 {% block content %}
+    {% set toolbar_position = 'top' %}
+    {{ block('toolbar_actions') }}
     <div class="information-blocks">
-        <h1 class="block-title">
-            {{ 'frontend.export_specification_preview'|trans }}
-        </h1>
-
-        <div class="clearfix"></div>
-
         <div class="pull-right">
             <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-success">
                 <i class="fa fa-edit"></i>
@@ -55,58 +51,57 @@
             <div role="tabpanel" class="tab-pane active" id="full">
                 <form action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
                     <input type="hidden" name="mode" value="full" />
+                    {% set specification_block_title = 'frontend.export_specification_preview'|trans %}
+                    {{ block('specification_edit_header') }}
 
-                    {{ block('specification_export_header') }}
-
-                    <table class="table specifications-export-table">
+                    <table class="table table-striped table-bordered table-condensed specifications-export-table">
                         <thead>
+                            <tr role="row">
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-id" name="fields[]" value="position" checked />
+                                    <label for="checkbox-for-id" class="checkbox-name">ID</label>
+                                </th>
 
-                        <tr class="table-title">
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="position" checked /><span class="check"></span></label>
-                                <hr/>#
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-image" name="fields[]" value="photo" checked />
+                                    <label for="checkbox-for-image" class="checkbox-name">{{ 'frontend.photo'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.photo'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-brand" name="fields[]" value="brand" checked />
+                                    <label for="checkbox-for-brand" class="checkbox-name">{{ 'frontend.brand'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="brand" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.brand'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-name" name="fields[]" value="name" checked />
+                                    <label for="checkbox-for-name" class="checkbox-name">{{ 'frontend.name'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.name'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-options" name="fields[]" value="options" checked />
+                                    <label for="checkbox-for-options" class="checkbox-name">{{ 'frontend.options'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.options'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-notes" name="fields[]" value="notes" checked />
+                                    <label for="checkbox-for-notes" class="checkbox-name">{{ 'frontend.notes'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.notes'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-quantity" name="fields[]" value="quantity" checked />
+                                    <label for="checkbox-for-quantity" class="checkbox-name">{{ 'frontend.quantity'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.quantity'|trans }}
-                            </th>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-price" name="fields[]" value="price" checked />
+                                    <label for="checkbox-for-price" class="checkbox-name">{{ 'frontend.price'|trans }}</label>
+                                </th>
 
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.price'|trans }}
-                            </th>
-
-                            <th class="text-center" style="min-width:90px;">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="total_price" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.total_price'|trans }}
-                            </th>
-                        </tr>
+                                <th class="text-center">
+                                    <input type="checkbox" id="checkbox-for-total-price" name="fields[]" value="total_price" checked />
+                                    <label for="checkbox-for-total-price" class="checkbox-name">{{ 'frontend.total_price'|trans }}</label>
+                                </th>
+                            </tr>
                         </thead>
 
                         <tbody>
@@ -455,74 +450,10 @@
             {% endfor %}
         </div>
     </div>
+    {% set toolbar_position = 'bottom' %}
+    {{ block('toolbar_actions') }}
 {% endblock %}
 
+{% block toolbar_actions %}
 
-{% block specification_export_header %}
-<div class="row specification-edit-head" style="margin-top: 40px;">
-    <div class="col-sm-3 information-entry">
-        <div class="information-blocks form-horizontal specification-info">
-            <div class="article-container style-1">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Document:</h5>
-                        <div class="document-number editable" id="specification-document">{{ specification.documentNumber }}</div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <h5>Created:</h5>
-                        <div>{{ specification.createdAt.format('Y/m/d H:i') }}</div>
-                    </div>
-                </div>
-
-                <h5>{{ 'frontend.specficatior.client_label'|trans }}</h5>
-
-                <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
-                    {{ specification.buyer|default('None') }}
-                </div>
-
-                <h5>{{ 'frontend.specficatior.client_contact_label'|trans }}</h5>
-                <p>
-                    {{ specification.buyer ? specification.buyer.email }}<br/>
-                    {{ specification.buyer ? specification.buyer.phone }}
-                </p>
-
-                <h5>Name</h5>
-                <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
-
-                {% if specification.buyer and specification.buyer.hasSale() %}
-                    <h5>{{ 'frontend.sale'|trans }}</h5>
-                    <p>{{ specification.buyer.sale }}%</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-4 information-entry">
-        <div class="information-blocks form-horizontal specification-info pull-right">
-            <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
-        </div>
-    </div>
-
-    <div class="col-sm-5 information-entry">
-        <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
-
-        <div class="article-container style-1">
-            <h5>Manager</h5>
-            <p>
-                {{ specification.creator.user.fullName }}<br />
-                {{ specification.creator.user.customer.email }}
-            </p>
-
-            <h5>Company address</h5>
-            <p>{{ specification.creator.retailerProfile.address }}</p>
-
-            <h5>{{ 'frontend.specficatior.client_contact_label'|trans }}</h5>
-            <p>
-                Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
-            </p>
-        </div>
-    </div>
-</div>
 {% endblock %}
