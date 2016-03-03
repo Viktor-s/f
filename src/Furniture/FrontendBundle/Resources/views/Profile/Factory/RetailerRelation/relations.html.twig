@@ -55,19 +55,41 @@
                             </td>
 
                             <td>
-                                <a href="{{ path('factory_profile_retailer_relation_approve', {relation: relation.id}) }}" class="btn btn-success btn-xs">{{ 'frontend.approve'|trans }}</a>
+                                <div class="btn btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a
+                                                href="{{ path('factory_profile_retailer_relation_approve', {relation: relation.id}) }}"
+                                                data-confirm data-message="Are you sure you want to approve a request?"
+                                            >
+                                                <span class="text-success">{{ 'frontend.approve'|trans }}</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                        </li>
+
+                                        <li>
+                                            <a
+                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
+                                                data-confirm data-message="Are you sure you want to remove a request?"
+                                            >
+                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
 
                                 <br />
 
-                                <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
 
-                                <br />
-
-                                <a
-                                        href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_retailer_relation'|trans }});"
-                                        >{{ 'frontend.remove'|trans }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -108,15 +130,27 @@
                             </td>
 
                             <td>
-                                <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
+                                <div class="btn btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
 
-                                <br />
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                        </li>
 
-                                <a
-                                        href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_retailer_relation'|trans }});"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                        <li>
+                                            <a
+                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
+                                                data-confirm data-message="Are you sure you want to remove a request?"
+                                            >
+                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -154,15 +188,27 @@
                             </td>
 
                             <td>
-                                <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
+                                <div class="btn btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions
+                                        <span class="caret"></span>
+                                    </button>
 
-                                <br />
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                        </li>
 
-                                <a
-                                        href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        onclick="return confirm({{ 'frontend.are_you_sure_remove_retailer_relation'|trans }});"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                        <li>
+                                            <a
+                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
+                                                data-confirm data-message="Are you sure you want to remove a relation?"
+                                            >
+                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
