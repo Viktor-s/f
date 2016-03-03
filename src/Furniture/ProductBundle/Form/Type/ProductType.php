@@ -34,12 +34,22 @@ class ProductType extends BaseProductType
             'validation_groups' => function (Form $form) {
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
                 $product = $form->getData();
+                $validationGroups = ['Default'];
 
                 if ($product->getId()) {
-                    return ['Update', 'Default'];
+                    $validationGroups = array_merge($validationGroups, ['Update']);
+                    // Check that product schemes was added and validate it.
+                    if ($product->isSchematicProductType()
+                        && count($product->getProductParts()) > 1
+                        && count($product->getProductSchemes()) > 0
+                    ) {
+                        $validationGroups = array_merge($validationGroups, ['SchemesCreate']);
+                    }
                 } else {
-                    return ['Create', 'Default'];
+                    $validationGroups = array_merge($validationGroups, ['Create']);
                 }
+
+                return $validationGroups;
             },
             'mode' => 'full'
         ));
@@ -147,6 +157,7 @@ class ProductType extends BaseProductType
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
                             'parts' => $product->getProductParts(),
+                            'schemes' => $product->getProductSchemes(),
                             'attr'  => [
                                 'data-remove-confirm' => 'Are you sure you want to remove scheme item?',
                             ],
