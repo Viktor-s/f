@@ -132,7 +132,7 @@ ul{list-style: none;}
     .wide-center{padding: 0 15px;}    
 }
 /*simple block and its title*/
-.information-blocks{margin-bottom: 70px;}
+.information-blocks{margin-top: 30px; margin-bottom: 70px;}
 #content-block .sidebar-column .information-blocks{margin-bottom: 40px;}
 .block-title{font-size: 20px; line-height: 24px; color: #2e2e2e; font-weight: 600; padding-bottom: 15px; border-bottom: 1px #ebebeb solid; margin-bottom: 25px;}
 .block-title.size-1{font-size: 16px;}
@@ -2039,7 +2039,7 @@ textarea.simple-field.size-1{height: 138px;}
 /* 21 - PORTFOLIO */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 .portfolio-container{position: relative;}
-.portfolio-navigation{font-size: 0; text-align: center; margin-bottom: 36px; padding-top: 32px; border-top: 1px #ebebeb solid; position: relative; z-index: 2;}
+.portfolio-navigation{font-size: 0; text-align: center; margin-bottom: 36px; padding-top: 32px; position: relative; z-index: 2;}
 .portfolio-navigation a{line-height: 33px; border: 1px #e3e3e3 solid; display: inline-block; font-size: 12px; font-weight: 500; color: #666666; padding: 0 20px; margin: 0 4px 8px 4px;}
 .portfolio-navigation a:hover, .portfolio-navigation a.active{background: #cd0000; border-color: #cd0000; color: #fff;}
 .portfolio-entry{margin-bottom: 45px; position: relative;}
