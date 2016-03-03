@@ -173,8 +173,9 @@
             </tr>
 
             <tr class="final-price{% if specification.sales|length == 0 %} hide{% endif %}">
-                <td colspan="8" class="text-right">{{ 'frontend.final_price'|trans }}</td>
-                <td rel="final-price" colspan="2">{{ specification|specification_total_price|money }}</td>
+                <td colspan="6"></td>
+                <td colspan="2" class="text-left">{{ 'frontend.final_price'|trans }}</td>
+                <td rel="final-price" colspan="2" style="text-align: left;">{{ specification|specification_total_price|money }}</td>
             </tr>
             </tfoot>        
         </table>
