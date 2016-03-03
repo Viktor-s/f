@@ -202,7 +202,7 @@ class FactoryRetailerRelationType extends AbstractType
                     'disabled' => $disabledAccessRights,
                 ]);
 
-            if ($relation->getId() && $relation->isDeal()) {
+            if ($relation->getId() && $relation->isFactoryAccept() && $relation->isRetailerAccept()) {
                 $form->add('active', 'checkbox', [
                     'required' => false,
                     'label'    => 'Active',
