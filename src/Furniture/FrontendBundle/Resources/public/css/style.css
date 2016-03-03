@@ -731,7 +731,7 @@ label[for="sorting"],
 .shop-grid-controls label {
     position: relative;
     margin-bottom: 0;
-    max-width: 200;
+    max-width: 200px;
 }
 
 label[for="sorting"]:after,
