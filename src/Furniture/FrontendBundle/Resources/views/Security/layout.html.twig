@@ -16,7 +16,7 @@
             '@FrontendBundle/Resources/public/css/idangerous.swiper.css'
             '@FrontendBundle/Resources/public/css/font-awesome.min.css'
             '@FrontendBundle/Resources/public/css/font-raleway.css'
-            '@FrontendBundle/Resources/public/css/style_old.css'
+            '@FrontendBundle/Resources/public/css/login.css'
         %}
             <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
         {% endstylesheets %}
@@ -44,17 +44,11 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
 
-    <style>
-        .login-box{
-            margin-top:20%;
-            min-height:330px
-        }
-    </style>
 </head>
 <body>
 {% include 'FrontendBundle:Common:page_loader.html.twig' %}
 
-<div id="content-block">
+<div id="content-block" class="container">
     <div class="content-center fixed-header-margin">
         <div class="content-push">
             <div class="information-blocks">
