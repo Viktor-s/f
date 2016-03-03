@@ -480,8 +480,8 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     font-size: 12px;
     line-height: 20px;
     font-family: 'Open Sans', sans-serif;
-    padding: 0px;
-    width: 85px;
+    padding: 0 5px;
+    min-width: 85px;
     border-radius: 3px;
     border: none;
 }
