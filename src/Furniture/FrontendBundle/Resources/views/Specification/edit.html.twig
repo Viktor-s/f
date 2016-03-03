@@ -4,8 +4,7 @@
 
 {% block breadcrumb %}
     {{ parent() }}
-
-    <a href="#">{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }}</a>
+    <span class="active">{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }}</span>
 {% endblock %}
 
 {% block content %}
@@ -17,12 +16,18 @@
 {% endblock %}
 
 {% block content_with_create %}
-    <div class="information-blocks">
-        <form action="" method="POST">
+    <div id="specification" class="col-sm-6 information-blocks">
+        <div class="page-header">
+            <h1>Create</h1>
+        </div>
+        <form action="" method="POST" class="form-horizontal">
             {{ form_widget(form) }}
 
             <div class="form-group">
-                <input class="btn btn-primary" type="submit" value="{{ 'frontend.save'|trans }}" />
+                <div class="col-sm-offset-3 col-sm-9 text-right">
+                    <a href="{{ path('specifications') }}" class="btn btn-primary">Cancel</a>
+                    <button type="submit" class="btn btn-success">{{ 'frontend.save'|trans }}</button>
+                </div>
             </div>
         </form>
     </div>
