@@ -69,7 +69,7 @@ class ProductRepository extends BaseProductRepositiry
             ->from('specification_item', 'si')
             ->innerJoin('si', 'sku_specification_item', 'ssi', 'ssi.speicifcation_item_id = si.id')
             ->innerJoin('ssi', 'product_variant', 'pv', 'pv.id = ssi.product_id')
-            ->innerJoin('pv', 'product', 'p', 'pv.product_id = pv.id')
+            ->innerJoin('pv', 'product', 'p', 'pv.product_id = p.id')
             ->andWhere('p.id = :product_id')
             ->setParameter('product_id', $product->getId())
             ->setMaxResults(1);
