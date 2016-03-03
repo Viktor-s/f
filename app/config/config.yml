@@ -77,7 +77,9 @@ twig:
             - SyliusResourceBundle::forms.html.twig
             - CmfMediaBundle:Form:fields.html.twig
             - SonataFormatterBundle:Form:formatter.html.twig
-
+    form_themes:
+            - 'FrontendBundle:Form:base_horizontal.html.twig'
+            - 'FrontendBundle:Form:base.html.twig'
     debug:            %kernel.debug%
     globals:
         #Browser key

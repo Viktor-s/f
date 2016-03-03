@@ -3657,7 +3657,7 @@ footer .copyright {
     margin-right: 7px;
     position: absolute;
     left: 0;
-    top: 6px;
+    top: 1px;
 }
 
 .checkbox-entry input:checked + span.check {

@@ -116,6 +116,9 @@ body {
 label {
     font-weight: 400;
 }
+label.base {
+    font-weight: 900;
+}
 .simple-search-form .simple-submit,
 a,.product-image .bottom-line,.product-image img {
     -moz-transition: all 0.15s ease-out;
@@ -348,11 +351,6 @@ input:focus::-webkit-input-placeholder {color:transparent;}
 }
 .navbar {
     margin-bottom: 0;
-}
-
-#content-block {
-    position: relative;
-    overflow: hidden;
 }
 
 .fixed-header-margin {
