@@ -145,48 +145,48 @@
                         </div>
                     {% else %}
                         {% if is_granted('VIEW_PRICE', product) %}
-                        <div class="add-to-specification detail-info-entry">
-                            <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
-                                <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
-                                    {{ 'frontend.add_to_specification'|trans }}
-                                    <span class="caret"></span>
-                                </button>
+                            <div class="add-to-specification detail-info-entry">
+                                <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
+                                    <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
+                                        {{ 'frontend.add_to_specification'|trans }}
+                                        <span class="caret"></span>
+                                    </button>
 
-                                <div class="dropdown-menu">
-                                    <div class="specification-search-form">
-                                        <form>
-                                            <input type="text" placeholder="Search for specification" class="dropdown-search search">
-                                            <div class="simple-submit">
-                                                <i class="fa fa-search"></i>
-                                            </div>
-                                        </form>
-                                    </div>  
-                                    <ul class="list specification-list">
-                                        {% if specificationsWithBuyer or specificationsWithoutBuyer %}
-                                            {% for specification in specificationsWithoutBuyer %}
-                                                <li>
-                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                </li>
-                                            {% endfor %}
-                                            {% for gspecification in specificationsWithBuyer %}
-                                                <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
-                                                {% for specification in gspecification.specifications %}
-                                                <li>
-                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                </li>
+                                    <div class="dropdown-menu">
+                                        <div class="specification-search-form">
+                                            <form>
+                                                <input type="text" placeholder="Search for specification" class="dropdown-search search">
+                                                <div class="simple-submit">
+                                                    <i class="fa fa-search"></i>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <ul class="list specification-list">
+                                            {% if specificationsWithBuyer or specificationsWithoutBuyer %}
+                                                {% for specification in specificationsWithoutBuyer %}
+                                                    <li>
+                                                        <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                                    </li>
                                                 {% endfor %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <li class="dropdown-header notice">No active specifications found</li>
-                                        {% endif %}
-                                    </ul>
+                                                {% for gspecification in specificationsWithBuyer %}
+                                                    <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
+                                                    {% for specification in gspecification.specifications %}
+                                                    <li>
+                                                        <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                                    </li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            {% else %}
+                                                <li class="dropdown-header notice">No active specifications found</li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
                                 </div>
+                                <div class="btn-group" style="width:300px;">
+
+                                </div>
+                                <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
                             </div>
-                            <div class="btn-group" style="width:300px;">
-                                
-                            </div>
-                            <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
-                        </div>
                         {% endif %}
                     {% endif %}
                 </div>

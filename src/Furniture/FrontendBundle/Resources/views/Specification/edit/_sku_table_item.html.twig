@@ -73,10 +73,17 @@
 
     <td class="text-right">
         <div class="btn-block">
-            <a class="btn btn-primary btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
-                <i class="fa fa-pencil"></i>
-                {{ 'frontend.edit'|trans }}
-            </a>
+            {% if is_granted('VIEW_PRODUCTS', product_variant.product.factory) %}
+                <a class="btn btn-primary btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+                    <i class="fa fa-pencil"></i>
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            {% else %}
+                <a class="btn btn-primary btn-xs" href="#" onclick="return false;" data-toggle="tooltip" title="This product currently unavalable">
+                    <i class="fa fa-pencil"></i>
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            {% endif %}
 
             <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="#"></a>
         </div>
