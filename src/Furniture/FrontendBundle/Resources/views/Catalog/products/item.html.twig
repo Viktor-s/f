@@ -1,16 +1,19 @@
 <div class="col-md-4 col-sm-4 shop-grid-item " data-factory="{{ product.factory.name }}">
     <div class="product-slide-entry">
         <div class="product-image">
-            <a href="{{ path('product', {'product':product.id}) }}" >
-            {% if product.getImage() %}
-                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
-            {% else %}
-                <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
-            {% endif %}
+            <a {% if is_granted('VIEW_PRICE', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %}>
+                {% if product.getImage() %}
+                    <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
+                {% else %}
+                    <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
+                {% endif %}
             </a>
-            <div class="bottom-line">
-                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
-            </div>
+            {% if is_granted('VIEW_PRICE', product) %}
+                <div class="bottom-line">
+                    <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
+                </div>
+            {% endif %}
+
         </div>        
         <h4 class="pgp-product-title"><a class="title" href="{{ path('product', {'product':product.id}) }}">
             {% if product.factoryCode != '' %}
@@ -27,9 +30,12 @@
                 {% endif %}
             </div>
         </div>
-        <div class="list-buttons">
-            <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>
-        </div>
+
+        {% if is_granted('VIEW_PRICE', product) %}
+            <div class="list-buttons">
+                <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>
+            </div>
+        {% endif %}
     </div>
     <div class="clear"></div>
 </div>
