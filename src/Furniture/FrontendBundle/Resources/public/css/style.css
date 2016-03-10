@@ -492,13 +492,9 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95b92b', endColorstr='#657c1d',GradientType=0 ); /* IE6-9 */
 }
 .btn-primary {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4f8cd9+0,4e89d5+21,4579be+95,39659d+100 */
-    background: rgb(79,140,217); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(79,140,217,1) 0%, rgba(78,137,213,1) 21%, rgba(69,121,190,1) 95%, rgba(57,101,157,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(79,140,217,1) 0%,rgba(78,137,213,1) 21%,rgba(69,121,190,1) 95%,rgba(57,101,157,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(79,140,217,1) 0%,rgba(78,137,213,1) 21%,rgba(69,121,190,1) 95%,rgba(57,101,157,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f8cd9', endColorstr='#39659d',GradientType=0 ); /* IE6-9 */
-
+    background: #307bbc;
+	border: 1px solid #307bbc;
+	border-bottom-color: #276499;
 }
 .form-control {
     border-radius: 0;
