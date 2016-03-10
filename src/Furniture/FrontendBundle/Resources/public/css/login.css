@@ -24,25 +24,15 @@ label {
     padding-top: 5px;
 }
 
-.checkbox-entry input + span.check {
-    cursor: pointer;
-    display: inline-block;
-    border: 1px #d9d9d9 solid;
-    width: 12px;
-    height: 12px;
-    vertical-align: middle;
-    color: #333232;
-    margin-right: 7px;
-    position: absolute;
-    left: 0;
-    top: 6px;
-    font-size: 30px;
-    line-height: 14px;
-}
-
 .login-box .checkbox-entry span.check {
     top: 1px;
 }
+
+.checkbox-entry input {
+    display: none;
+}
+
+/* styling buttons */
 
 .checkbox-entry {
     cursor: pointer;
@@ -55,8 +45,22 @@ label {
     margin-bottom: 15px;
 }
 
-.checkbox-entry input {
-    display: none;
+.checkbox-entry input + span.check {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
+.checkbox-entry input:checked + span.check {
+    background: #ca1515;
 }
 
 .simple-field {
