@@ -10,14 +10,17 @@ class FieldMapForFactory
      * @var array
      */
     private static $availableFields = [
-        'number',
+        'position',
         'factory_code',
         'type',
         'name',
         'options',
         'quantity',
         'notes',
-        'price'
+        'price',
+        'photo',
+        'brand',
+        'total_price'
     ];
 
     /**
@@ -48,13 +51,33 @@ class FieldMapForFactory
     }
 
     /**
+     * Has factory field
+     *
+     * @return bool
+     */
+    public function hasFieldBrand()
+    {
+        return in_array('brand', $this->fields);
+    }
+
+    /**
+     * Has field photo
+     *
+     * @return bool
+     */
+    public function hasFieldPhoto()
+    {
+        return in_array('photo', $this->fields);
+    }
+
+    /**
      * Has field number
      *
      * @return bool
      */
     public function hasFieldNumber()
     {
-        return in_array('number', $this->fields);
+        return in_array('position', $this->fields);
     }
 
     /**
@@ -125,5 +148,15 @@ class FieldMapForFactory
     public function hasFieldPrice()
     {
         return in_array('price', $this->fields);
+    }
+
+    /**
+     * Has field total price
+     *
+     * @return bool
+     */
+    public function hasFieldTotalPrice()
+    {
+        return in_array('total_price', $this->fields);
     }
 }
