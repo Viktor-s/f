@@ -1,6 +1,5 @@
 {% extends 'FrontendBundle:Specification:base.html.twig' %}
 {% use 'FrontendBundle:Specification:specification_edit_header.html.twig' %}
-{% form_theme form 'FrontendBundle:Form:base_horizontal.html.twig' %}
 
 {% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
 
@@ -10,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    {% form_theme form 'FrontendBundle:Form:base_horizontal.html.twig' %}
     {% if not specification.id %}
         {{ block('content_with_create') }}
     {% else %}
