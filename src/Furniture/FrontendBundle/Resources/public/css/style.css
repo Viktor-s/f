@@ -476,11 +476,10 @@ input:focus::-webkit-input-placeholder {color:transparent;}
 }
 .btn {
     font-size: 12px;
-    line-height: 20px;
+    line-height: 18px;
     font-family: 'Open Sans', sans-serif;
-    padding: 0 5px;
-    min-width: 85px;
-    border-radius: 3px;
+    padding: 0 10px;
+    border-radius: 0px;
     border: none;
 }
 .btn-success {
@@ -495,6 +494,17 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     background: #307bbc;
 	border: 1px solid #307bbc;
 	border-bottom-color: #276499;
+}
+.btn-primary:hover {
+    background: #2668a1;
+    border: 1px solid #2668a1;
+    border-bottom-color: #1f5583;
+}
+.btn-primary:active,
+.btn-primary:focus {
+    background: #4593d6;
+    border: 1px solid #4593d6;
+    border-bottom-color: #3878af;
 }
 .form-control {
     border-radius: 0;
