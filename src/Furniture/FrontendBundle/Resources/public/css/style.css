@@ -482,14 +482,6 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     border-radius: 0px;
     border: none;
 }
-.btn-success {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#95b92b+0,91b42a+21,7b9724+95,657c1d+100 */
-    background: rgb(149,185,43); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(149,185,43,1) 0%, rgba(145,180,42,1) 21%, rgba(123,151,36,1) 95%, rgba(101,124,29,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(149,185,43,1) 0%,rgba(145,180,42,1) 21%,rgba(123,151,36,1) 95%,rgba(101,124,29,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(149,185,43,1) 0%,rgba(145,180,42,1) 21%,rgba(123,151,36,1) 95%,rgba(101,124,29,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95b92b', endColorstr='#657c1d',GradientType=0 ); /* IE6-9 */
-}
 .btn-primary {
     background: #307bbc;
 	border: 1px solid #307bbc;
@@ -505,6 +497,132 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     background: #4593d6;
     border: 1px solid #4593d6;
     border-bottom-color: #3878af;
+}
+.btn-success {
+    background: #5ab95d;
+    border: 1px solid #5ab95d;
+    border-bottom-color: #49974c;
+}
+.btn-success:hover {
+    background: #52a554;
+    border: 1px solid #52a554;
+    border-bottom-color: #438745;
+}
+.btn-success:active,
+.btn-success:focus {
+    background: #68d56c;
+    border: 1px solid #68d56c;
+    border-bottom-color: #55ae58;
+}
+.btn-edit {
+    background: #dc0008;
+    border: 1px solid #dc0008;
+    border-bottom-color: #b30007;
+}
+.btn-edit:hover {
+    background: #c70007;
+    border: 1px solid #c70007;
+    border-bottom-color: #a20006;
+}
+.btn-edit:active,
+.btn-edit:focus {
+    background: #e92e35;
+    border: 1px solid #e92e35;
+    border-bottom-color: #be262b;
+}
+.btn-finish {
+    background: #8a8a8a;
+    border: 1px solid #8a8a8a;
+    border-bottom-color: #717171;
+}
+.btn-finish:hover {
+    background: #737373;
+    border: 1px solid #737373;
+    border-bottom-color: #5e5e5e;
+}
+.btn-finish:active,
+.btn-finish:focus {
+    background: #989494;
+    border: 1px solid #989494;
+    border-bottom-color: #7c7979;
+}
+.btn-export {
+    background: #333333;
+    border: 1px solid #333333;
+    border-bottom-color: #2a2a2a;
+}
+.btn-export:hover {
+    background: #202020;
+    border: 1px solid #202020;
+    border-bottom-color: #1a1a1a;
+}
+.btn-export:active,
+.btn-export:focus {
+    background: #4a4949;
+    border: 1px solid #4a4949;
+    border-bottom-color: #3c3c3c;
+}
+.btn-default {
+    color: #4a4949;
+    background: #fff;
+    border: 1px solid #cbcbcb;
+}
+.btn-default:hover {
+    background: #d7d7d7;
+    border: 1px solid #cbcbcb;
+}
+.btn-default:active,
+.btn-default:focus {
+    background: #e5e5e5;
+    border: 1px solid #cbcbcb;
+}
+.btn-warning {
+    background: #efad4d;
+    border: 1px solid #efad4d;
+    border-bottom-color: #c38d3f;
+}
+.btn-warning:hover {
+    background: #e49521;
+    border: 1px solid #e49521;
+    border-bottom-color: #ba7a1b;
+}
+.btn-warning:active,
+.btn-warning:focus {
+    background: #fcb856;
+    border: 1px solid #fcb856;
+    border-bottom-color: #ce9646;
+}
+.btn-danger {
+    background: #d9544f;
+    border: 1px solid #d9544f;
+    border-bottom-color: #b14540;
+}
+.btn-danger:hover {
+    background: #c52019;
+    border: 1px solid #c52019;
+    border-bottom-color: #a11a14;
+}
+.btn-danger:active,
+.btn-danger:focus {
+    background: #f3524c;
+    border: 1px solid #f3524c;
+    border-bottom-color: #c6433e;
+}
+.btn-info {
+    background: #5dbfdc;
+    border: 1px solid #5dbfdc;
+    border-bottom-color: #4c9cb3;
+}
+.btn-info:hover {
+    background: #38a2c2;
+    border: 1px solid #38a2c2;
+    border-bottom-color: #2e849e;
+}
+.btn-info:active,
+.btn-info:focus {
+    background: #7bdffd;
+    border: 1px solid #7bdffd;
+    border-bottom-color: #64b6ce;
 }
 .form-control {
     border-radius: 0;
