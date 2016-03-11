@@ -1131,3 +1131,6 @@ table.specifications-export-table>thead>tr>th:last-child {
 .pagination-sm>li:first-child>span {
     border-radius: 0;
 }
+.table-specification .tb-sp-actions {
+    width: 195px;
+}
