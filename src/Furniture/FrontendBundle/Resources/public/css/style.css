@@ -474,6 +474,10 @@ input:focus::-webkit-input-placeholder {color:transparent;}
 .form-horizontal .control-label {
     text-align: left;
 }
+a.btn,
+a.btn:hover {
+    color: #fff;
+}
 .btn {
     font-size: 12px;
     line-height: 18px;
@@ -481,6 +485,7 @@ input:focus::-webkit-input-placeholder {color:transparent;}
     padding: 0 10px;
     border-radius: 0px;
     border: none;
+
 }
 .btn-primary {
     background: #307bbc;
