@@ -1119,3 +1119,9 @@ table.specifications-export-table>thead>tr>th:last-child {
     text-align: center;
     color: inherit;
 }
+.pagination-sm>li:last-child>a, 
+.pagination-sm>li:last-child>span,
+.pagination-sm>li:first-child>a, 
+.pagination-sm>li:first-child>span {
+    border-radius: 0;
+}
