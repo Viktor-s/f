@@ -724,6 +724,10 @@ span.total-price{
     list-style: none;
 }
 
+.sidebar-block ul li > ul {
+    padding-left: 0;
+}
+
 .sidebar-block ul li label{
     color: #929292;
 }
@@ -736,7 +740,12 @@ span.total-price{
 .sidebar-block a.filter-category.collapsed {
     background: url(../bundles/frontend/img/sb-arrow-rgt.png) no-repeat left center;
 }
-
+.sidebar-block a.filter-category-more:before {
+    content: '- less';
+}
+.sidebar-block a.filter-category-more.collapsed:before {
+    content: '+ more';
+}
 input[type="checkbox"],
 input[type="radio"] {
     display:none;

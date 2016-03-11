@@ -1,15 +1,44 @@
-{% macro filter_panel(list, checked_list, name, title, show = 5) %}
+{% macro filter_panel(list, checked_list, name, title, show = 4) %}
     {% spaceless %}
         {% if list is not empty %}
+            {% set show = ((checked_list|length) > show ? checked_list|length : show) %}
+            {% set unchecked_show = ((checked_list|length) < show ? show - (checked_list|length) : 0) %}
+            {% set already_shown = [] %}
             <div class="panel">
                 <a href="#{{ name }}-filter" class="filter-category collapsed" data-toggle="collapse" aria-expanded="true" aria-controls="{{ name }}-filter">{{ title }}</a>
-                <ul class="collapse{% if checked_list is not empty%} in{% endif %}" id="{{ name }}-filter">
-                    {% for item in list %}
+                <ul class="collapse in" id="{{ name }}-filter">
+                {# Checked first #}
+                {% for item in list if checked_list is iterable and item.id in checked_list %}
+                    {% if loop.index <= show %}
+                        {% set already_shown = already_shown|merge([item.id]) %}
                         <li>
-                            <input id="checkbox-{{ name }}-{{ item.id }}" {% if checked_list is iterable and item.id in checked_list %} checked{% endif %} type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                            <input id="checkbox-{{ name }}-{{ item.id }}" checked type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
                             <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
                         </li>
-                    {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                {% for item in list if item.id not in already_shown %}
+                    {% if loop.index <= unchecked_show  %}
+                    {% set already_shown = already_shown|merge([item.id]) %}
+                    <li>
+                        <input id="checkbox-{{ name }}-{{ item.id }}" {% if checked_list is iterable and item.id in checked_list %} checked{% endif %} type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                        <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                {% if (list|length) > show %}
+                    <li class="collapsed-items">
+                        <ul class="collapse" id="{{ name }}-more-filter">
+                        {% for item in list if item.id not in already_shown %}
+                            <li>
+                                <input id="checkbox-{{ name }}-{{ item.id }}" {% if checked_list is iterable and item.id in checked_list %} checked{% endif %} type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                                <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        <a href="#{{ name }}-more-filter" class="filter-category-more collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="{{ name }}-more-filter"></a>
+                    </li>
+                {% endif %}
                 </ul>
             </div>
         {% endif %}
