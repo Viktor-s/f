@@ -198,6 +198,7 @@ frontend:
     session_is_disabled: Session data not provided.
     show: Show
     sku: SKU
+    sort_by: Sort by
     spaces: Spaces
     specfications_finished_not_found_for_buyer: "Not found finished specifications for client :buyer."
     specfications_not_found: Specifications not found.
