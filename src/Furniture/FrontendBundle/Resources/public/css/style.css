@@ -308,7 +308,6 @@ code {
     padding-right: 20px;
     border: 1px solid #ededed;
     width: 100%;
-    color: #333;
 }
 input:focus:-moz-placeholder {color:transparent;}
 input:focus::-webkit-input-placeholder {color:transparent;}
