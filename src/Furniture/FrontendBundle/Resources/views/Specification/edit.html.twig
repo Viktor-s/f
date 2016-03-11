@@ -1,5 +1,5 @@
 {% extends 'FrontendBundle:Specification:base.html.twig' %}
-{% use 'FrontendBundle:Specification:specification_edit_header.html.twig' %}
+{% from 'FrontendBundle:Macros:specification.html.twig' import specification_header, edit_toolbar %}
 
 {% block title %}{{ ('frontend.title.' ~ (specification.id ? 'edit' : 'create'))|trans }} :: {{ parent() }}{% endblock %}
 
@@ -36,10 +36,8 @@
 {% endblock %}
 
 {% block content_with_edit %}
-    {% set toolbar_position = 'top' %}
-    {{ block('toolbar_actions') }}
-    {% set specification_block_title = 'frontend.specification_edit'|trans %}
-    {{ block('specification_edit_header') }}
+    {{ edit_toolbar(specification, 'top') }}
+    {{ specification_header(specification, 'frontend.specification_edit'|trans) }}
     <div class="row">
         <div class="col-sm-12">
             <div class="table-responsive">
@@ -97,8 +95,7 @@
             </div>
         </div>
     </div>
-    {% set toolbar_position = 'bottom' %}
-    {{ block('toolbar_actions') }}
+    {{ edit_toolbar(specification, 'bottom') }}
 {% endblock %}
 
 {% block specification_sale %}
@@ -109,34 +106,6 @@
         <span>discount </span>
         <span id="specification-sale" class="edit" data-index="__index__">__sale__</span>
         <span>%: -</span><span class="discount_summ"></span>
-    </div>
-{% endblock %}
-
-{% block toolbar_actions %}
-    <div class="toolbar toolbar-{{ toolbar_position }}">
-        <div class="row">
-            <div class="col-md-3  col-sm-4">
-                <div class="simple-search-form">
-
-                    <input type="text" id="search-{{ toolbar_position }}" placeholder="Search in this specification">
-                    <div class="submit-icon">
-                        <i class="fa fa-search"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4  col-sm-5  col-sm-offset-3 col-md-offset-5">
-                <div class="text-right">
-                    <a href="#" id="add-custom-item-btn-{{ toolbar_position }}" class="btn btn-primary">AddCustom</a>
-                    {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
-                        <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
-                    {% endif %}
-                    {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
-                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
-                    {% endif %}
-                    <a class="glyphicon glyphicon-remove mv-remove" data-toggle="tooltip" title="Remove" aria-hidden="true" href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?"></a>
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
 

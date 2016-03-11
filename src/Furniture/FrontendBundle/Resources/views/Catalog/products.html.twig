@@ -1,7 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
-{% from 'FrontendBundle:Catalog/Macros:filter_panel.html.twig' import filter_panel %}
-{% from 'FrontendBundle:Catalog/Macros:sorting_panel.html.twig' import sorting_panel %}
+{% from 'FrontendBundle:Macros:products.html.twig' import filter_panel, sorting_panel %}
 
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
 

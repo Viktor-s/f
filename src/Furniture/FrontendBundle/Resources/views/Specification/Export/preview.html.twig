@@ -1,5 +1,6 @@
 {% extends 'FrontendBundle:Specification/Export:base.html.twig' %}
-{% use 'FrontendBundle:Specification:specification_edit_header.html.twig' %}
+{% from 'FrontendBundle:Macros:specification.html.twig' import specification_header, export_toolbar %}
+
 {% block title %}{{ 'frontend.title.preview'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
@@ -13,10 +14,8 @@
 {% block content %}
 <div class="table-responsive">
     <form id="specifications-export-form" action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
-        {% set toolbar_position = 'top' %}
-        {{ block('toolbar_actions') }}
-        {% set specification_block_title = 'frontend.export_specification_preview'|trans %}
-        {{ block('specification_edit_header') }}
+        {{ export_toolbar(specification, filters, 'top') }}
+        {{ specification_header(specification, 'frontend.export_specification_preview'|trans) }}
 
         <input type="hidden" name="mode" value="full" />
         <input type="hidden" name="factory_id" value="" />
@@ -235,45 +234,9 @@
             {% endif %}
             </tfoot>
         </table>
-        {% set toolbar_position = 'bottom' %}
-        {{ block('toolbar_actions') }}
+        {{ export_toolbar(specification, filters, 'bottom') }}
     </form>
 </div>
-{% endblock %}
-
-{% block toolbar_actions %}
-    <div class="toolbar toolbar-{{ toolbar_position }}">
-        <div class="row">
-            <div class="col-sm-3 col-xs-4 col-lg-1">
-                <label for="filter-{{ toolbar_position }}">
-                    <select id="filter-{{ toolbar_position }}" name="sorting" class="form-control" data-position="{{ toolbar_position }}">
-                        <option value="all">All</option>
-                        {% for name, options in filters %}
-                            <optgroup label="{{ name|upper }}" data-mode="{{ name }}">
-                                {% for id, option in options %}
-                                    <option value="{{ id }}">{{ option }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        {% endfor %}
-                    </select>
-                </label>
-            </div>
-            <div class="col-sm-4 col-sm-offset-5 col-xs-4 col-lg-3 col-lg-offset-8 text-right">
-                <button type="submit" class="btn btn-success" value="excel" name="format">
-                    <i class="fa fa-download"></i>
-                    {{ 'frontend.export_to_excel'|trans }}
-                </button>
-                <button type="submit" value="pdf" name="format" class="btn btn-danger">
-                    <i class="fa fa-download"></i>
-                    {{ 'frontend.export_to_pdf'|trans }}
-                </button>
-                <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-primary">
-                    <i class="fa fa-edit"></i>
-                    {{ 'frontend.edit'|trans }}
-                </a>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block footer_javascripts %}
