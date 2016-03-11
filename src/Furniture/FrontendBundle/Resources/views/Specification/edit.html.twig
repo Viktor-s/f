@@ -52,7 +52,7 @@
                             <th>{{ 'frontend.notes'|trans }}</th>
                             <th>{{ 'frontend.quantity'|trans }}</th>
                             <th class="text-center">{{ 'frontend.price'|trans }}</th>
-                            <th class="text-center">{{ 'frontend.total_price'|trans }}</th>
+                            <th class="total-price-column text-center">{{ 'frontend.total_price'|trans }}</th>
                             <th class="text-center">{{ 'frontend.actions'|trans }}</th>
                         </tr>
                     </thead>
@@ -67,10 +67,11 @@
                     </tbody>
                     <tfoot>
                         <tr class="total-price">
-                            <td colspan="3"></td>
-                            <td class="text-left editable" rel="volume" id="volume" title="Click to edit">{{ 'frontend.volume'|trans }} {{ specification.volume }}</td>
-                            <td class="text-right"></td>
-                            <td class="text-left editable" rel="weight" id="weight" title="Click to edit">{{ 'frontend.weight'|trans }} {{ specification.weight }}</td>
+                            <td colspan="2"></td>
+                            <td class="text-right">{{ 'frontend.volume'|trans }}</td>
+                            <td class="text-left editable" rel="volume" id="volume" title="Click to edit">{{ specification.volume }}</td>
+                            <td class="text-right">{{ 'frontend.weight'|trans }}</td>
+                            <td class="text-left editable" rel="weight" id="weight" title="Click to edit">{{ specification.weight }}</td>
                             <td colspan="3" class="text-right editable" id="add-extra-sale" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
                             <td><span rel="total-price" class="final-price"></span></td>
                         </tr>

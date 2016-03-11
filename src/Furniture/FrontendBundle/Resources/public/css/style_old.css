@@ -3423,10 +3423,6 @@ form.someclass input {
     max-height: 100%;
 }
 
-#specification-table td, #specification-table th {
-    text-align: center;
-}
-
 .sticky-popup-title.title-is-stuck {
     border-bottom: 1px #ebebeb solid;
 }

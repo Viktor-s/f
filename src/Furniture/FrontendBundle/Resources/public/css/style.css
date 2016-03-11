@@ -675,6 +675,7 @@ a.mv-remove {
     text-decoration: none;
 }
 span[rel="final-price"],
+span.final-price,
 span.total-price{
     padding-left: 8px;
 }
@@ -713,6 +714,15 @@ span.total-price{
 .sidebar-block ul {
     padding-left: 15px;
 }
+
+#specification-table th.total-price-column {
+    min-width: 80px;
+}
+
+#specification-table tbody td, #specification-table th {
+    text-align: center;
+}
+
 #specifications-table ul,
 .specifications-export-table ul {
     padding-left: 0;
