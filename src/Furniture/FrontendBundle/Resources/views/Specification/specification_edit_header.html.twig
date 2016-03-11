@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <td>
-                        {{ 'frontend.specficatior.notes'|trans }} <span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}
+                        {{ 'frontend.specficatior.notes'|trans }} <br/><span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}
                     </td>
                     <td class="description editable" id="specification-description" data-toggle="tooltip" title="Click to edit">{{ specification.description|default('None') }}</td>
                 </tr>
@@ -60,7 +60,7 @@
                 <tr>
                     <td>{{ 'frontend.specficatior.manager_label'|trans }}</td>
                     <td>
-                        <span class="mg-name">{{ specification.creator.user.fullName }}</span>
+                        <span class="mg-name">{{ specification.creator.user.fullName }}</span><br/>
                         <span class="mg-mail">{{ specification.creator.user.customer.email }}</span>
                     </td>
                 </tr>

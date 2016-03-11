@@ -345,15 +345,28 @@ class SpecificationController
         if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
             throw new AccessDeniedException();
         }
+        $groups= [
+            'factory' => [],
+            'custom' => [],
+        ];
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
         $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
+        foreach ($groupedItemsByFactory as $grouped) {
+            $factory = $grouped->getFactory();
+            $groups['factory'][$factory->getId()] = $factory->getName();
+        }
+
+        foreach ($groupedCustomItemsByFactory as $grouped) {
+            $factoryName = $grouped->getFactoryName();
+            $groups['custom'][md5($factoryName)] = $factoryName;
+        }
+
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
-            'specification'                   => $specification,
-            'grouped_items_by_factory'        => $groupedItemsByFactory,
-            'grouped_custom_items_by_factory' => $groupedCustomItemsByFactory,
+            'specification' => $specification,
+            'filters'       => $groups,
         ]);
 
         return new Response($content);
