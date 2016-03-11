@@ -5,7 +5,7 @@
             {% set unchecked_show = ((checked_list|length) < show ? show - (checked_list|length) : 0) %}
             {% set already_shown = [] %}
             <div class="panel">
-                <a href="#{{ name }}-filter" class="filter-category collapsed" data-toggle="collapse" aria-expanded="true" aria-controls="{{ name }}-filter">{{ title }}</a>
+                <a href="#{{ name }}-filter" class="filter-category" data-toggle="collapse" aria-expanded="true" aria-controls="{{ name }}-filter">{{ title }}</a>
                 <ul class="collapse in" id="{{ name }}-filter">
                 {# Checked first #}
                 {% for item in list if checked_list is iterable and item.id in checked_list %}
