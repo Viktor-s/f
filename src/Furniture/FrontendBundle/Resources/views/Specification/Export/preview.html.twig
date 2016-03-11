@@ -29,7 +29,10 @@
                         <input type="checkbox" id="checkbox-for-id" name="fields[]" value="position" checked />
                         <label for="checkbox-for-id" class="checkbox-name">ID</label>
                     </th>
-
+                    <th class="text-center">
+                        <input type="checkbox" id="checkbox-for-index" name="fields[]" value="number" checked />
+                        <label for="checkbox-for-index" class="checkbox-name">#</label>
+                    </th>
                     <th class="text-center">
                         <input type="checkbox" id="checkbox-for-image" name="fields[]" value="photo" checked />
                         <label for="checkbox-for-image" class="checkbox-name">{{ 'frontend.photo'|trans }}</label>
@@ -44,7 +47,18 @@
                         <input type="checkbox" id="checkbox-for-name" name="fields[]" value="name" checked />
                         <label for="checkbox-for-name" class="checkbox-name">{{ 'frontend.name'|trans }}</label>
                     </th>
-
+                    <th class="text-center">
+                        <input type="checkbox" id="checkbox-for-type" name="fields[]" value="type" checked />
+                        <label for="checkbox-for-type" class="checkbox-name">{{ 'frontend.type'|trans }}</label>
+                    </th>
+                    <th class="text-center">
+                        <input type="checkbox" id="checkbox-for-factory-code" name="fields[]" value="factory_code" checked />
+                        <label for="checkbox-for-factory-code" class="checkbox-name">{{ 'frontend.factory_code'|trans }}</label>
+                    </th>
+                    <th class="text-center">
+                        <input type="checkbox" id="checkbox-for-name2" name="fields[]" value="name" checked />
+                        <label for="checkbox-for-name2" class="checkbox-name">{{ 'frontend.name'|trans }}</label>
+                    </th>
                     <th class="text-center">
                         <input type="checkbox" id="checkbox-for-options" name="fields[]" value="options" checked />
                         <label for="checkbox-for-options" class="checkbox-name">{{ 'frontend.options'|trans }}</label>
@@ -81,7 +95,7 @@
 
                     <tr class="text-center">
                         <td>{{ item.position }}</td>
-
+                        <td class="loop-index">{{ loop.index }}</td>
                         <td class="text-center">
                             {% if product.images|length > 0 %}
                                 <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
@@ -105,6 +119,24 @@
                                 </div>
                             {% endif %}
                         </td>
+
+                        <td>
+                            {% if product.types|length %}
+                                <div>
+                                    {{ (product.types|first).translate.name }}
+                                </div>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if productVariant.activeFactoryCode %}
+                                <div>
+                                    {{ productVariant.activeFactoryCode }}
+                                </div>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ product.translate.name }}</td>
 
                         <td class="text-left">
                             <ul>
@@ -137,6 +169,7 @@
 
                     <tr>
                         <td class="text-center">{{ item.position }}</td>
+                        <td class="text-center">{{ loop.index}}</td>
 
                         <td class="text-center">
                             {% if custom_item.image and custom_item.image.path %}
@@ -147,12 +180,15 @@
                         <td class="text-center">{{ custom_item.factoryName }}</td>
 
                         <td class="text-center">{{ custom_item.name }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td class="text-left">{{ custom_item.options }}</td>
                         <td class="text-center">{{ item.note }}</td>
                         <td class="text-center">{{ item.quantity }}</td>
                         <td class="text-center">{{ custom_item.price|money }}</td>
                         <td class="text-center">{{ item|specification_item_total_price|money }}</td>
-                        <td>{{ custom_item.factoryName|md5 }}</td>
+                        <td>{{ custom_item.factoryName|default('Without name')|md5 }}</td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -166,23 +202,23 @@
 
                 <td class="text-left">{{ specification.volume }}</td>
 
-                <td class="text-right">
+                <td class="text-right" colspan="4">
                     <strong>{{ 'frontend.weight'|trans }}</strong>
                 </td>
 
                 <td class="text-left">{{ specification.weight }}</td>
 
                 <td class="text-right" colspan="3">
-                    <strong>{{ 'frontend.total_price'|trans }}</strong>
-                    {{ specification|specification_total_price(false)|money }}
+                    {{ 'frontend.total_price'|trans }}
                 </td>
+                <td><span class="total-price">{{ specification|specification_total_price(false)|money }}</span></td>
             </tr>
 
             {% if specification.sales|length > 0 %}
                 {% set price = specification|specification_total_price(false) %}
 
                 <tr>
-                    <td class="text-left" colspan="4">
+                    <td class="text-left" colspan="8">
                         {% for sale in specification.sales %}
                         {% set nowSale = (price / 100) * sale.sale %}
                         {% set price = price - nowSale %}
@@ -191,10 +227,10 @@
                         </div>
                         {% endfor %}
                     </td>
-                    <td colspan="5" class="text-right">
-                        <strong>{{ 'frontend.final_price'|trans }}</strong>
-                        {{ specification|specification_total_price|money }}
+                    <td colspan="4" class="text-right">
+                        {{ 'frontend.final_price'|trans }}
                     </td>
+                    <td><span class="final-price">{{ specification|specification_total_price|money }}</span></td>
                 </tr>
             {% endif %}
             </tfoot>
@@ -243,16 +279,28 @@
 {% block footer_javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        (function($) {
+        (function ($) {
+            var searchColumn = 13;
+            var hidenColumns = {
+                full: [1, 5, 6, 7],
+                factory: [0, 2, 3, 4, 12],
+                custom: [0, 2, 3, 5, 6, 7, 12]
+            };
+
             table = $('#specifications-export-table').dataTable({
-                dom: '<"top"><"bottom"lp><"clear">',
                 paging: false,
+                dom: '<"top"><"bottom"lp><"clear">',
                 bSort: false,
                 columnDefs: [
                     {
-                        targets: [ 9 ],
+                        targets: [searchColumn],
                         visible: false,
                         searchable: true
+                    },
+                    {
+                        targets: hidenColumns.full,
+                        visible: false,
+                        searchable: false
                     }
                 ]
             });
@@ -260,30 +308,48 @@
             var tableEdit = table.DataTable();
             tableEdit.draw();
 
-            $('#filter-top, #filter-bottom').on('change', function(e) {
+            $('#filter-top, #filter-bottom').on('change', function (e) {
                 var selected = $(this.options[this.selectedIndex]);
                 var mode = selected.closest('optgroup').data('mode');
-                var column = 9, factoryId = '', factoryName = '';
+                var factoryId = '', factoryName = '';
                 var reg = selected.val() !== 'all';
-                var smart = selected.val() === 'all';
-                var search = selected.val() !== 'all' ? '^' + selected.val() + '$': '';
+                var smart = !reg;
+                var search = selected.val() !== 'all' ? '^' + selected.val() + '$' : '';
                 var position = $(this).data('position');
-                tableEdit.column(column).search(search, reg, smart, true).draw();
 
-                if (selected.val() === 'all') {
+                // Search in table
+                tableEdit.column(searchColumn).search(search, reg, smart, true).draw();
+
+                if (typeof mode === "undefined") {
                     mode = 'full';
                     table.find('tfoot').show();
                 }
                 else {
                     table.find('tfoot').hide();
-                    if (mode === 'factory') {
-                        factoryId = selected.val();
-                    }
-                    else {
-                        factoryName = selected.text();
-                    }
+                    (mode === 'factory')
+                            ? factoryId = selected.val()
+                            : factoryName = selected.text();
                 }
-                // Set hidden values.
+
+
+                // Hide columns
+                tableEdit.columns().iterator('column', function (context, index) {
+                    if (index !== searchColumn) {
+                        var column = tableEdit.column(index);
+                        var visible = !($.inArray(index, hidenColumns[mode]) > -1);
+                        column.visible(visible);
+                    }
+                });
+
+                // Get visible filtered columns.
+                var currentRows = tableEdit.rows({search: 'applied'}).nodes();
+
+                // Set number column to loop iteration index.
+                $.each(currentRows, function (index, val) {
+                    $(val).find('td.loop-index').html(index + 1);
+                });
+
+                // Set hidden values of the form.
                 $('#specifications-export-form')
                         .find('input[type="hidden"][name="mode"]')
                         .val(mode)
@@ -295,12 +361,7 @@
                         .val(factoryName);
 
                 // Duplicate top and bottom filter value.
-                if (position === 'top') {
-                    $('#filter-bottom').val(selected.val());
-                }
-                else {
-                    $('#filter-top').val(selected.val());
-                }
+                $('#filter-top, #filter-bottom').val(selected.val());
             });
         })(jQuery);
     </script>

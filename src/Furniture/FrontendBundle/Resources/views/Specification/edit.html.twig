@@ -74,9 +74,8 @@
                             <td class="text-left editable" rel="volume" id="volume" title="Click to edit">{{ specification.volume }}</td>
                             <td class="text-right">{{ 'frontend.weight'|trans }}</td>
                             <td class="text-left editable" rel="weight" id="weight" title="Click to edit">{{ specification.weight }}</td>
-                            <td colspan="2" class="text-right editable" id="add-extra-sale" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
-                            <td id="table-total-price" class="text-left"></td>
-                            <td></td>
+                            <td colspan="3" class="text-right editable" id="add-extra-sale" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
+                            <td><span rel="total-price" class="final-price"></span></td>
                         </tr>
 
                         <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
@@ -88,10 +87,11 @@
                                     {% endfor %}
                                 {% endif %}
                             </td>
-                            <td colspan="6"></td>
-                            <td colspan="2" rowspan="1" class="text-right">
-                                {{ 'frontend.final_price'|trans }} <span rel="final-price">{{ specification|specification_total_price|money }}</span>
+                            <td colspan="4"></td>
+                            <td colspan="3" rowspan="1" class="text-right">
+                                {{ 'frontend.final_price'|trans }}
                             </td>
+                            <td><span rel="final-price" class="final-price">{{ specification|specification_total_price|money }}</span></td>
                         </tr>
                     </tfoot>
                 </table>
@@ -243,7 +243,7 @@
                                 type: 'get',
                                 success: function (res) {
                                     $('[rel="final-price"]').html(res.totalPriceWithExtraDisc);
-                                    $('#table-total-price').html(res.totalPrice);
+                                    $('[rel="total-price"]').html(res.totalPrice);
                                     $('#extra-sale-td .sale').each(function(i){
                                         var saleWrap = $(this);
                                         saleWrap.find('.discount_summ').html(res.salesAmounts[i]);       
