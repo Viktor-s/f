@@ -95,21 +95,21 @@
     border-radius: 10px;
 }
 
-.factory-contacts .contact .header
+.factory-contacts .contact .contact-header
 {
     padding-bottom: 10px;
     border-bottom: 1px solid #e1e1e1;
     line-height: 1.4em;
 }
 
-.factory-contacts .contact .header .name
+.factory-contacts .contact .contact-header .name
 {
     color: #222;
     font-weight: normal;
     padding-bottom: 4px;
 }
 
-.factory-contacts .contact .header .department
+.factory-contacts .contact .contact-header .department
 {
     font-size: 0.8em;
     color: #999;
