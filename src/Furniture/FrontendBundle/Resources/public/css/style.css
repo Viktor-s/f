@@ -860,7 +860,6 @@ input[type="checkbox"]:checked:disabled + label::before {
     max-width: 100%!important;
 }
 .shop-grid.grid-view .product-slide-entry .product-image a.thumbnail img {
-    max-height: 100%!important;
     top: 0;
     bottom: 0;
     left: 0;
