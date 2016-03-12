@@ -1263,3 +1263,90 @@ table.specifications-export-table>thead>tr>th:last-child {
     color: #3d3d3d;
     font-weight: 400;
 }
+
+.simple-drop-down.simple-field select {
+    height: 45px;
+    line-height: 43px;
+    padding: 0 65px 0 20px;
+}
+
+.simple-drop-down select {
+    height: 30px;
+    line-height: 28px;
+    border: 1px #ebebeb solid;
+    padding: 0 40px 0 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    color: #7c7c7c;
+}
+
+.simple-drop-down.simple-field {
+    width: auto;
+    border: none;
+    padding: 0;
+}
+
+.simple-drop-down.simple-field:after {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+}
+
+.simple-drop-down {
+    width: 130px;
+    position: relative;
+}
+
+.simple-drop-down:after {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px #ebebeb solid;
+    content: "\f107";
+    font-family: FontAwesome;
+    font-size: 12px;
+    color: #7c7c7c;
+    text-align: center;
+    cursor: pointer;
+    pointer-events: none;
+    line-height: 30px;
+    background: #fff;
+}
+
+
+.simple-drop-down.simple-field select {
+    height: 45px;
+    line-height: 43px;
+    padding: 0 65px 0 20px;
+}
+
+.simple-field::-webkit-input-placeholder {
+    color: #808080;
+    opacity: 1;
+}
+
+.simple-field::-moz-placeholder {
+    color: #808080;
+    opacity: 1;
+}
+
+/* firefox 19+ */
+.simple-field:-ms-input-placeholder {
+    color: #808080;
+    opacity: 1;
+}
+
+/* ie */
+.simple-field:-moz-placeholder {
+    color: #808080;
+    opacity: 1;
+}
