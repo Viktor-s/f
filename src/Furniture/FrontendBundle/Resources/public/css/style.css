@@ -705,11 +705,11 @@ span.total-price{
     background: #dc0008 !important;
     color: #fff;
 }
-.panel {
+.sidebar-block .panel {
     border: none;
     box-shadow: none;
     -webkit-box-shadow: none;
-    margin: 0
+    margin: 0 0 10px 0;
 }
 .sidebar-block ul {
     padding-left: 15px;
