@@ -1400,19 +1400,6 @@ table.specifications-export-table>thead>tr>th:last-child {
     text-align: center;
 }
 
-.navigation-banner-content .subtitle {
-    font-family: 'Dancing Script', cursive;
-    font-size: 40px;
-    line-height: 36px;
-    color: #d349bd;
-    margin-bottom: 3px;
-    transform: translateX(-50px) translateY(-50px);
-    -moz-transform: translateX(-50px) translateY(-50px);
-    -webkit-transform: translateX(-50px) translateY(-50px);
-    -ms-transform: translateX(-50px) translateY(-50px);
-    opacity: 0;
-}
-
 .light-text .navigation-banner-content .subtitle {
     color: #fff;
 }
@@ -1484,6 +1471,13 @@ table.specifications-export-table>thead>tr>th:last-child {
 
 .navigation-banner-swiper .pagination {
     display: none;
+}
+
+.navigation-banner-content .subtitle {
+    font-weight: 400;
+    font-size: 24px;
+    color: #8d9296;
+    font-family: 'Raleway', sans-serif;
 }
 
 /* Tablets (>=768px)*/

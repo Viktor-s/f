@@ -3344,10 +3344,3 @@ footer .copyright {
 .checkbox-entry input:checked + span.check + .checkbox-name {
     color: #313131;
 }
-
-.navigation-banner-content .subtitle {
-    font-weight: 400;
-    font-size: 24px;
-    color: #8d9296;
-    font-family: 'Raleway', sans-serif;
-}
