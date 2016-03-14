@@ -46,7 +46,7 @@
 
                     <td nowrap class="text-center">
                         {% if is_granted('EDIT', buyer) %}
-                            <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-primary btn-xs">{{ 'frontend.edit'|trans }}</a>
+                            <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
                         {% endif %}
 
                         {% if is_granted('REMOVE', buyer) %}
