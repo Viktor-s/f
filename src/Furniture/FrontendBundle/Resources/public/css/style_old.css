@@ -3288,13 +3288,6 @@ footer .copyright {
     float: right;
 }
 
-/* footer always bottom */
-#content-block:after {
-    content: "";
-    display: block;
-    height: 150px;
-}
-
 /* styling buttons */
 
 .checkbox-entry {

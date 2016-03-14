@@ -469,8 +469,8 @@ input:focus::-webkit-input-placeholder {color:transparent;}
 .form-horizontal .control-label {
     text-align: left;
 }
-a.btn,
-a.btn:hover {
+.btn,
+.btn:hover {
     color: #fff;
 }
 .btn {
@@ -719,7 +719,7 @@ span.total-price{
     min-width: 80px;
 }
 
-#specification-table tbody td, #specification-table th {
+#specification-table th {
     text-align: center;
 }
 
