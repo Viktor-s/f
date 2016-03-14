@@ -2038,6 +2038,11 @@ _:-ms-input-placeholder, :root .simple-drop-down select {
 .image-container {
     position: relative;
 }
+.image-container .mv-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 @media (max-width: 991px) {
     .blog-sidebar {
         padding-top: 25px;
