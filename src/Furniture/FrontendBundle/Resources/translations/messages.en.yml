@@ -144,6 +144,7 @@ frontend:
             account_disabled_contact_support: Your account has been disabled. Please contact support!
             session_is_disabled: Session data not provided.
             user_not_found: User not found.
+            relation_products_view: Please check View products checkbox.
         success:
             reset_password_success: New email was sent.
     mode: Mode

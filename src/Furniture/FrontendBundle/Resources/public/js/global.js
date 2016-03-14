@@ -558,7 +558,23 @@ $(function() {
             $("div.dropdown-menu").hide();
         };
     });
-    
+
+	// Add message to the page
+	$.appendMessage = function (message, type, ele) {
+		ele = ele || $('#messages');
+		type = type == 'error' ? 'danger' : type;
+		var messageEle = $('<div class="alert alert-' + type + '">' + message + '<a class="close" data-dismiss="alert" href="#">×</a></div>').hide();
+		ele.append(messageEle);
+		messageEle.show('slow');
+	};
+
+	// Clear messages on the page
+	$.clearMessages = function (ele) {
+		ele = ele || $('#messages');
+		ele.find('div.alert').hide('slow', function (){
+			ele.html('');
+		});
+	};
     //sticky filters in popup
     /*$(".sticky-popup-title").stick_in_parent({
         spacer: true,

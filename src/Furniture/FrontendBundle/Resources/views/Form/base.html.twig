@@ -116,10 +116,17 @@
 
 {% block checkbox_widget %}
     {% spaceless %}
-        <label class="checkbox-entry control-label base">
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default() ~ ' ' ~ block('form_label_class') ~ ' checkbox-entry')|trim}) -%}
+        {% if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default() ~ ' required')|trim}) %}
+        {%- endif -%}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
             <span class="check"></span>
-            {{ form.vars.label|trans({}, form.vars.translation_domain) }}
+            {{ (form.vars.label|trans({}, form.vars.translation_domain))|raw }}
         </label>
     {% endspaceless %}
 {% endblock %}
@@ -142,12 +149,12 @@
         {% if label is same as(false) %}
             <div class="{{ block('form_label_class') }}"></div>
         {% else %}
-            {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label base')|trim}) -%}
+            {%- set label_attr = label_attr|merge({class: (label_attr.class|default() ~ block('form_label_class'))|trim}) -%}
             {% if not compound -%}
                 {% set label_attr = label_attr|merge({'for': id}) %}
             {%- endif -%}
             {% if required -%}
-                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default() ~ ' required')|trim}) %}
             {%- endif -%}
             {% if label is empty -%}
                 {%- if label_format is not empty -%}
@@ -196,6 +203,10 @@
         </label>
     {% endif %}
 {% endblock checkbox_radio_label %}
+
+{% block form_label_class -%}
+     control-label base
+{%- endblock form_label_class %}
 
 {# Rows #}
 

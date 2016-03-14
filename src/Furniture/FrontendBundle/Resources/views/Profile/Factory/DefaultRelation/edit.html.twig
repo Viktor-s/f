@@ -9,7 +9,40 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'id': 'factory-default-relation'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var $accessProducts = $('#factory_default_relation_accessProducts');
+                var $accessPrice = $('#factory_default_relation_accessProductsPrices');
+                var requiredMessage = '{{ 'frontend.messages.errors.relation_products_view'|trans }}';
+
+                if (!$accessProducts.is(':checked')) {
+                    if (typeof $.appendMessage === "function") {
+                        $.appendMessage(requiredMessage, 'error');
+                    }
+                    $accessPrice.attr('checked', false).parent('label').hide();
+                }
+
+                $accessProducts.on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $accessPrice.parent('label').slideDown();
+                        if (typeof $.clearMessages === "function") {
+                            $.clearMessages();
+                        }
+                    }
+                    else {
+                        $accessPrice.attr('checked', false).parent('label').slideUp(function(){
+                            if (typeof $.appendMessage === "function") {
+                                $.appendMessage(requiredMessage, 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
 {% endblock %}
