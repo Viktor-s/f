@@ -2035,7 +2035,9 @@ _:-ms-input-placeholder, :root .simple-drop-down select {
 .blog-sidebar .inline-product-entry .content {
     margin-left: 90px;
 }
-
+.image-container {
+    position: relative;
+}
 @media (max-width: 991px) {
     .blog-sidebar {
         padding-top: 25px;
