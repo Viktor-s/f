@@ -14,7 +14,7 @@ specification:
         name: Name:
         description: Description
         sale: Sale
-        notes_with_will_not_appear_in_specification: Notes: (will no apper in specification)
+        notes_with_will_not_appear_in_specification: Notes: <br/>(will no apper in specification)
 
     excel:
         creation_date: Date
