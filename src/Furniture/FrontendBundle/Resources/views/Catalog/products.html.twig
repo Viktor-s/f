@@ -1,6 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
-{% from 'FrontendBundle:Macros:products.html.twig' import filter_panel, sorting_panel %}
+{% from 'FrontendBundle:Macros:products.html.twig' import filter_panel, sorting_panel, product_grid_view %}
 
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -37,7 +37,7 @@
         <div class="col-md-10 col-sm-9">
             <div class="row shop-grid grid-view">
             {% for product in products %}
-                {% include 'FrontendBundle:Catalog:products/item.html.twig' with {'product' : product} %}
+                {{ product_grid_view(product) }}
             {% endfor %}
             </div>
         </div>
