@@ -19,8 +19,7 @@ class FactoryDefaultRelation
     /**
      * @var bool
      *
-     * @Assert\Expression(
-     *     "this.isAccessProducts()",
+     * @Assert\IsTrue(
      *     message="Products view is required."
      * )
      */
