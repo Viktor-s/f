@@ -3344,3 +3344,16 @@ footer .copyright {
 .checkbox-entry input:checked + span.check + .checkbox-name {
     color: #313131;
 }
+
+/*ie*/
+_:-ms-input-placeholder, :root .simple-field.simple-drop-down select {
+    padding-right: 22px;
+}
+
+_:-ms-input-placeholder, :root .size-1.simple-field.simple-drop-down select {
+    padding-right: 14px;
+}
+
+_:-ms-input-placeholder, :root .simple-drop-down select {
+    padding-right: 10px;
+}

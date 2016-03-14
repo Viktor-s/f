@@ -53,7 +53,6 @@ class UsernameChangedSubscriber implements EventSubscriber
         $kills = [];
 
         $userClassMetadata = $em->getClassMetadata(User::class);
-        $customerClassMetadata = $em->getClassMetadata(Customer::class);
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof User) {

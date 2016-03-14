@@ -1,6 +1,5 @@
 frontend:
     access: Access
-    account_disabled: Account is disabled.
     actions: Actions
     add_to_specification: Add to specification
     address: Address
@@ -54,6 +53,7 @@ frontend:
     dumping: Extra discount
     edit: Edit
     email: Email
+    email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
     email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
     emails: Emails
@@ -138,6 +138,14 @@ frontend:
             factory:
                 statistics: Common statistics
                 map: Available retailers
+    messages:
+        errors:
+            account_disabled: Account is disabled.
+            account_disabled_contact_support: Your account has been disabled. Please contact support!
+            session_is_disabled: Session data not provided.
+            user_not_found: User not found.
+        success:
+            reset_password_success: New email was sent.
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions
@@ -180,7 +188,6 @@ frontend:
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
     reset_password_error: Email not send.
-    reset_password_success: New email was sent.
     retailer: Retailer
     retailer_profile: Retailer profile
     retailer_profile_side:
@@ -195,7 +202,6 @@ frontend:
     select_category: Category
     select_style: Style
     send_reset_password: Reset password again
-    session_is_disabled: Session data not provided.
     show: Show
     sku: SKU
     sort_by: Sort by
@@ -268,7 +274,6 @@ frontend:
     update_specification: Update specification
     user: User
     user_is_disabled_with_email: "User with email :email is disabled."
-    user_not_found: User not found.
     user_not_found_with_email: "Not found user with email :email."
     user_profile_side:
         update: Update profile

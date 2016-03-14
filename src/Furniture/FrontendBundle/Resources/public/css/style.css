@@ -1744,19 +1744,6 @@ table.specifications-export-table>thead>tr>th:last-child {
     position: absolute !important;
 }
 
-/*ie*/
-_:-ms-input-placeholder, :root .simple-field.simple-drop-down select {
-    padding-right: 22px;
-}
-
-_:-ms-input-placeholder, :root .size-1.simple-field.simple-drop-down select {
-    padding-right: 14px;
-}
-
-_:-ms-input-placeholder, :root .simple-drop-down select {
-    padding-right: 10px;
-}
-
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 18 - BLOG */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
