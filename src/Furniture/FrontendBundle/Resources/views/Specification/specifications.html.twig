@@ -1,6 +1,6 @@
 {% extends 'FrontendBundle:Specification:base.html.twig' %}
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
-{% use 'FrontendBundle:Specification:toolbar_actions.html.twig' %}
+{% from 'FrontendBundle:Macros:specification.html.twig' import list_toolbar %}
 {% use 'FrontendBundle:Specification:specifications_table.html.twig' %}
 
 {% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
@@ -12,17 +12,9 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ block('toolbar_actoions') }}
-        {% set not_found = 'frontend.specfications_not_found'|trans %}
-        {% if is_granted('SPECIFICATION_CREATE') %}
-        {% set not_found = not_found ~ '<a href="' ~ path('specification_create') ~ '">' ~ 'frontend.create'|trans ~ '</a>' %}
-        {% endif %}
+    {{ list_toolbar(sorting, paginator) }}
     {{ block('specifications_table') }}
-    <div class="row mv-actions">
-        <div class="col-xs-4 col-sm-6 col-lg-4 col-xs-push-8 col-sm-push-6 col-lg-push-8">
-            {{ paginator }}
-        </div>
-    </div>
+    {{ list_toolbar(sorting, paginator, false) }}
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -31,7 +23,7 @@
         $(document).ready(function () {
             $('select[name="sorting"]').on('change', function (e) {
                 var query = {[this.name]: $(this).val()};
-            window.location = window.location.origin + window.location.pathname + '?' + $.param(query)
+                window.location = window.location.origin + window.location.pathname + '?' + $.param(query)
             });
         })
     </script>

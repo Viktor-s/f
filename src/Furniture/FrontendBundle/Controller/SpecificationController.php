@@ -154,6 +154,11 @@ class SpecificationController
                     $sorting['all']['state'] = true;
             }
         }
+        else {
+            // By default show only opened specifications
+            $specificationQuery->opened();
+            $sorting['opened']['state'] = true;
+        }
 
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);

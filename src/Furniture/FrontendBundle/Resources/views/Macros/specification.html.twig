@@ -1,3 +1,25 @@
+{% macro list_toolbar(sorting, paginator, buttons = true) %}
+    <div class="row mv-actions">
+        <div class="col-sm-2 col-xs-4 col-lg-1">
+            <label for="sorting">
+                <select name="sorting" class="form-control">
+                    {% for key, value in sorting %}
+                        <option value="{{ key }}" {% if value.state %}selected{% endif %}>{{ value.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div class="col-sm-2 col-xs-4 col-lg-1">
+            {% if buttons %}
+                <a href="{{ path('specification_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}</a>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-xs-4 col-lg-4 col-sm-push-2 col-lg-push-6">
+            {{ paginator }}
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro edit_toolbar(specification, position)  %}
     <div class="toolbar toolbar-{{ position }}">
         <div class="row">
