@@ -1249,9 +1249,11 @@ table.specifications-export-table>thead>tr>th:last-child {
 .pagination-sm>li:first-child>span {
     border-radius: 0;
 }
-.table-specification .tb-sp-actions {
+
+.table-specification .tb-sp-actions,
+.clients-table .tb-sp-actions {
     width: 195px;
-}}
+}
 
 .fa {
     font: normal normal normal 14px/1 FontAwesome !important;
