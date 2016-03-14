@@ -338,9 +338,9 @@ class FrontendMenuBuilder
 
         // Check active state for factory retailer relation.
         if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
-            $menu->addChild('work_info', [
+            $menu->addChild('sales_conditions', [
                 'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.work_info')
+                'label' => $this->translator->trans('frontend.factory_side.menu.sales_conditions')
             ]);
         }
         

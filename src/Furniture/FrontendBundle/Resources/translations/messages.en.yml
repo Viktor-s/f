@@ -81,7 +81,7 @@ frontend:
         menu:
             general: General
             collections: Collections
-            work_info: Work info
+            sales_conditions: Sales conditions
             contacts: Contacts
             circulars: Circulars
             news: News
