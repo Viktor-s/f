@@ -828,7 +828,7 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 .product-slide-entry .product-image {
-    min-height: 185px;
+    max-height: 225px;
     overflow: hidden;
     position: relative;
 }
@@ -857,9 +857,10 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 .product-slide-entry .product-image a.thumbnail {
-    line-height: 185px;
+    line-height: 225px;
     text-align: center;
-    min-height: 185px;
+    max-height: 225px;
+    max-width: 300px;
     position: relative;
 }
 
