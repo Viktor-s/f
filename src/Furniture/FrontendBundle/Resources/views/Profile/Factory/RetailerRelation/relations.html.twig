@@ -26,7 +26,7 @@
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="user-requests">
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
                         <th class="text-center">{{ 'frontend.retailer'|trans }}</th>
@@ -55,41 +55,14 @@
                             </td>
 
                             <td>
-                                <div class="btn btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a
-                                                href="{{ path('factory_profile_retailer_relation_approve', {relation: relation.id}) }}"
-                                                data-confirm data-message="Are you sure you want to approve a request?"
-                                            >
-                                                <span class="text-success">{{ 'frontend.approve'|trans }}</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                                        </li>
-
-                                        <li>
-                                            <a
-                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                                data-confirm data-message="Are you sure you want to remove a request?"
-                                            >
-                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-
-                                <br />
-
-
+                                <a class="btn btn-success btn-xs"
+                                    href="{{ path('factory_profile_retailer_relation_approve', {relation: relation.id}) }}"
+                                    data-confirm data-message="Are you sure you want to approve a request?"
+                                >{{ 'frontend.approve'|trans }}</a>
+                                <a class="btn btn-edit btn-xs" href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true"
+                                   href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
+                                   data-remove data-message="Are you sure you want to remove a request?"></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -101,7 +74,7 @@
                 <div class="pull-right">
                     <a href="{{ path('factory_profile_retailer_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_retailer_relation'|trans }}</a>
                 </div>
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
                         <th class="text-center">{{ 'frontend.retailer'|trans }}</th>
@@ -130,27 +103,8 @@
                             </td>
 
                             <td>
-                                <div class="btn btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                                        </li>
-
-                                        <li>
-                                            <a
-                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                                data-confirm data-message="Are you sure you want to remove a request?"
-                                            >
-                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a class="btn btn-edit btn-xs" href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}" data-remove data-message="Are you sure you want to remove a request?"></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -159,7 +113,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="authorized-users">
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
                         <th class="text-center">{{ 'frontend.retailer'|trans }}</th>
@@ -188,27 +142,8 @@
                             </td>
 
                             <td>
-                                <div class="btn btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-default dropdown-toggle center-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
-                                        </li>
-
-                                        <li>
-                                            <a
-                                                href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}"
-                                                data-confirm data-message="Are you sure you want to remove a relation?"
-                                            >
-                                                <span class="text-danger">{{ 'frontend.remove'|trans }}</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a class="btn btn-edit btn-xs" href="{{ path('factory_profile_retailer_relation_edit', {relation: relation.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                                <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="{{ path('factory_profile_retailer_relation_remove', {relation: relation.id}) }}" data-remove data-message="Are you sure you want to remove a relation?"></a>
                             </td>
                         </tr>
                     {% endfor %}
