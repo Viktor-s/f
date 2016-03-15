@@ -20,17 +20,17 @@
     </td>
 
     <td class="product-info text-center">
-        <div>
-            <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
-                {{ product.translate.name }}
-            </a>
-        </div>
-
         {% if product.factoryCode %}
             <div>
                 {{ product.factoryCode }}
             </div>
         {% endif %}
+
+        <div>
+            <span class="product-title">
+                {{ product.translate.name }}
+            </span>
+        </div>
 
         {% if product.types|length %}
             <div>
