@@ -21,16 +21,24 @@ class FactoryRetailerRelation
 
     /**
      * @var RetailerProfile
+     * @Assert\NotBlank()
      */
     private $retailer;
 
     /**
      * @var bool
+     * @Assert\IsTrue(
+     *     message="Products view is required."
+     * )
      */
     private $accessProducts = false;
 
     /**
      * @var bool
+     * @Assert\Expression(
+     *     "this.isAccessProducts() or !this.isAccessProductsPrices()",
+     *     message="You can't select only Prices view. Please select View products too."
+     * )
      */
     private $accessProductsPrices = false;
 

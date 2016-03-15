@@ -8,29 +8,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            {% block right_content_container %}
-                <div class="col-md-9 col-md-push-3 information-entry">
-                    {% block page_content %}{% endblock %}
-                </div>
-            {% endblock %}
+    <div class="row">
+        {% block left_content_container %}
+            <div class="col-sm-3">
+                {% block left_content %}
+                    <div class="information-blocks">
+                        <div class="categories-list">
+                            <div class="block-title size-3">{{ 'frontend.retailer_profile'|trans }}</div>
 
-            {% block left_content_container %}
-                <div class="col-md-3 col-md-pull-9 information-entry blog-sidebar">
-                    {% block left_content %}
-                        <div class="information-blocks">
-                            <div class="categories-list">
-                                <div class="block-title size-3">{{ 'frontend.retailer_profile'|trans }}</div>
-
-                                {% if app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
-                                    {{ knp_menu_render('frontend.retailer_admin_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
-                                {% endif %}
-                            </div>
+                            {% if app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
+                                {{ knp_menu_render('frontend.retailer_admin_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
+                            {% endif %}
                         </div>
-                    {% endblock %}
-                </div>
-            {% endblock %}
-        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+        {% block right_content_container %}
+            <div class="col-sm-9">
+                {% block page_content %}{% endblock %}
+            </div>
+        {% endblock %}
     </div>
 {% endblock %}

@@ -480,7 +480,7 @@
                                     .replace(/__upload_url__/g, '{{ path('specification_api_specification_custom_item_upload_image', {item: 123}) }}'.replace(/123/, data.customId));
 
                                 row
-                                    .find('td').last()
+                                    .find('td').last().addClass('text-right')
                                     .html('<a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="#"></a>');
 
                                 row
@@ -496,38 +496,45 @@
 
                                 row
                                     .find('td:eq(1)')
-                                    .html(imageAjaxContainer);
+                                    .html(imageAjaxContainer)
+                                    .addClass('text-center');
 
                                 row
                                     .find('td:eq(2)')
                                     .data('index', 'factoryName')
                                     .data('type', 'text')
-                                    .data('server-type', 'custom-item');
+                                    .data('server-type', 'custom-item')
+                                    .addClass('text-center');
 
                                 row.find('td:eq(3)')
                                     .data('index', 'name')
                                     .data('type', 'text')
-                                    .data('server-type', 'custom-item');
+                                    .data('server-type', 'custom-item')
+                                    .addClass('text-center');
                             
                                 row.find('td:eq(4)')
                                     .data('index', 'options')
                                     .data('type', 'textarea')
-                                    .data('server-type', 'custom-item');
+                                    .data('server-type', 'custom-item')
+                                    .addClass('text-center');
 
                                 row.find('td:eq(5)')
                                     .data('index', 'note')
                                     .data('type', 'textarea')
-                                    .data('server-type', 'specification-item');
+                                    .data('server-type', 'specification-item')
+                                    .addClass('text-center');
 
                                 row.find('td:eq(6)')
                                     .data('index', 'quantity')
                                     .data('type', 'integer')
-                                    .data('server-type', 'specification-item');
+                                    .data('server-type', 'specification-item')
+                                    .addClass('text-center');
 
                                 row.find('td:eq(7)')
                                     .data('index', 'price')
                                     .data('type', 'price')
-                                    .data('server-type', 'custom-item');
+                                    .data('server-type', 'custom-item')
+                                    .addClass('text-center');
 
                                 tableEdit.row(row).draw();
                                 scrollToView(row);

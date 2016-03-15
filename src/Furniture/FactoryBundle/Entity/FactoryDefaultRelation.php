@@ -2,6 +2,8 @@
 
 namespace Furniture\FactoryBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class FactoryDefaultRelation
 {
     /**
@@ -16,11 +18,20 @@ class FactoryDefaultRelation
 
     /**
      * @var bool
+     *
+     * @Assert\IsTrue(
+     *     message="Products view is required."
+     * )
      */
     private $accessProducts = true;
 
     /**
      * @var bool
+     *
+     * @Assert\Expression(
+     *     "this.isAccessProducts() or !this.isAccessProductsPrices()",
+     *     message="You can't select only Prices view. Please select View products too."
+     * )
      */
     private $accessProductsPrices = true;
 

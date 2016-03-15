@@ -191,6 +191,7 @@ class FactoryRetailerRelationType extends AbstractType
                     'label'    => 'frontend.products_view',
                     'disabled' => $disabledAccessRights,
                     'required' => false,
+                    'data'     => true,
                 ])
                 ->add('accessProductsPrices', 'checkbox', [
                     'label'    => 'frontend.product_prices_view',

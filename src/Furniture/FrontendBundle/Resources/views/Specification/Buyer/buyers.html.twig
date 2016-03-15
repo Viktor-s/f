@@ -9,68 +9,68 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="line-entry text-right">
+    <div class="row mv-actions text-right">
+        <div class="col-sm-2 col-xs-4 col-lg-1 col-sm-push-10 col-xs-push-8 col-lg-push-11">
             <a class="btn btn-success" href="{{ path('specification_buyer_create') }}"><span>{{ 'frontend.create'|trans }}</span></a>
         </div>
-
-        <table class="table table-striped table-bordered table-condensed">
-            <thead>
-            <tr>
-                <th>{{ 'frontend.name'|trans }}</th>
-                <th>{{ 'frontend.contact'|trans }}</th>
-                <th>{{ 'frontend.address'|trans }}</th>
-                <th>{{ 'frontend.sale'|trans }}</th>
-                <th class="text-center">{{ 'frontend.actions'|trans }}</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            {% for buyer in buyers %}
-                <tr data-buyer-id="{{ buyer.id }}">
-                    <td>
-                        {{ buyer }}
-                    </td>
-
-                    <td>
-                        {{ buyer.email }}
-                        <br />
-                        {{ buyer.phone }}
-                    </td>
-
-                    <td>
-                        {{ buyer.address }}
-                    </td>
-
-                    <td>{{ buyer.sale|default('0') }}%</td>
-
-                    <td nowrap class="text-center">
-                        {% if is_granted('EDIT', buyer) %}
-                            <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-primary btn-xs">{{ 'frontend.edit'|trans }}</a>
-                        {% endif %}
-
-                        {% if is_granted('REMOVE', buyer) %}
-                            {% if buyer.countSpecifications == 0 %}
-                                <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" data-remove data-message="Are you sure you want to remove a user?"></a>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if is_granted('SPECIFICATIONS', buyer) and buyer.countSpecifications %}
-                            <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-success">{{ 'frontend.specifications'|trans }}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">
-                        {{ 'frontend.buyers_not_found'|trans }}
-                        <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
     </div>
+
+    <table class="clients-table table table-striped table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th>{{ 'frontend.name'|trans }}</th>
+            <th>{{ 'frontend.contact'|trans }}</th>
+            <th>{{ 'frontend.address'|trans }}</th>
+            <th>{{ 'frontend.sale'|trans }}</th>
+            <th class="tb-sp-actions text-center">{{ 'frontend.actions'|trans }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for buyer in buyers %}
+            <tr data-buyer-id="{{ buyer.id }}">
+                <td>
+                    {{ buyer }}
+                </td>
+
+                <td>
+                    {{ buyer.email }}
+                    <br />
+                    {{ buyer.phone }}
+                </td>
+
+                <td>
+                    {{ buyer.address }}
+                </td>
+
+                <td class="text-center">{{ buyer.sale|default('0') }}%</td>
+
+                <td nowrap class="text-right">
+                    {% if is_granted('EDIT', buyer) %}
+                        <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
+                    {% endif %}
+
+                    {% if is_granted('REMOVE', buyer) %}
+                        {% if buyer.countSpecifications == 0 %}
+                            <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" data-remove data-message="Are you sure you want to remove a user?"></a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if is_granted('SPECIFICATIONS', buyer) and buyer.countSpecifications %}
+                        <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-success">{{ 'frontend.specifications'|trans }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">
+                    {{ 'frontend.buyers_not_found'|trans }}
+                    <a href="{{ path('specification_buyer_create') }}">{{ 'frontend.create'|trans }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block footer_javascripts %}

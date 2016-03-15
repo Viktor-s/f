@@ -2,7 +2,7 @@
 <tr data-price="{{ custom_item.price }}" data-custom-id="{{ custom_item.id }}" data-id="{{ specification_item.id }}">
     <td class="text-center" data-index="position" data-server-type="custom-item" data-type="text">{{ specification_item.position }}</td>
 
-    <td>
+    <td class="text-center">
         <div class="image-ajax-container" data-full-name="custom[{{ custom_item.id }}][path]" data-url-upload="{{ path('specification_api_specification_custom_item_upload_image', {item: custom_item.id}) }}"{% if custom_item.image and custom_item.image.path %} data-image-path="{{ custom_item.image.path|imagine_filter('s150x150') }}"{% endif %}>
             <div class="image-upload">
                 <img data-src="holder.js/150x150?text=Choose image" />
@@ -21,21 +21,22 @@
         </div>
     </td>
 
-    <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
+    <td class="text-center" data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
 
-    <td data-index="name" data-type="text" data-server-type="custom-item">{{ custom_item.name }}</td>
+    <td class="text-center" data-index="name" data-type="text" data-server-type="custom-item">{{ custom_item.name }}</td>
 
-    <td data-index="options" data-type="textarea" data-server-type="custom-item">{{ custom_item.options }}</td>
+    <td class="text-center" data-index="options" data-type="textarea" data-server-type="custom-item">{{ custom_item.options }}</td>
 
-    <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
+    <td class="text-center" data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
-    <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
+    <td class="text-center" data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
-    <td data-index="price" data-type="price" data-server-type="custom-item">{{ custom_item.price|money }}</td>
-    <td>{{ specification_item|specification_item_total_price|money }}</td>
+    <td class="text-center" data-index="price" data-type="price" data-server-type="custom-item">{{ custom_item.price|money }}</td>
+    <td class="text-center">{{ specification_item|specification_item_total_price|money }}</td>
 
-    <td>
+    <td class="text-right">
         <div class="btn-block">
+            <span class="btn">Edit</span>
             <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="#"></a>
         </div>
     </td>

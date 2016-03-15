@@ -1,3 +1,25 @@
+{% macro list_toolbar(sorting, paginator, buttons = true) %}
+    <div class="row mv-actions">
+        <div class="col-sm-2 col-xs-4 col-lg-1">
+            <label for="sorting">
+                <select name="sorting" class="form-control">
+                    {% for key, value in sorting %}
+                        <option value="{{ key }}" {% if value.state %}selected{% endif %}>{{ value.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        <div class="col-sm-2 col-xs-4 col-lg-1">
+            {% if buttons %}
+                <a href="{{ path('specification_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}</a>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-xs-4 col-lg-4 col-sm-push-2 col-lg-push-6">
+            {{ paginator }}
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro edit_toolbar(specification, position)  %}
     <div class="toolbar toolbar-{{ position }}">
         <div class="row">
@@ -14,10 +36,10 @@
                 <div class="text-right">
                     <a href="#" id="add-custom-item-btn-{{ position }}" class="btn btn-primary">AddCustom</a>
                     {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
-                        <a class="btn btn-danger btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                        <a class="btn btn-finish btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
                     {% endif %}
                     {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
-                        <a class="btn btn-success btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                        <a class="btn btn-export btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
                     {% endif %}
                     <a class="glyphicon glyphicon-remove mv-remove" data-toggle="tooltip" title="Remove" aria-hidden="true" href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?"></a>
                 </div>
@@ -44,16 +66,15 @@
                 </label>
             </div>
             <div class="col-sm-4 col-sm-offset-5 col-xs-4 col-lg-3 col-lg-offset-8 text-right">
-                <button type="submit" class="btn btn-success" value="excel" name="format">
+                <button type="submit" class="btn btn-export" value="excel" name="format">
                     <i class="fa fa-download"></i>
                     {{ 'frontend.export_to_excel'|trans }}
                 </button>
-                <button type="submit" value="pdf" name="format" class="btn btn-danger">
+                <button type="submit" value="pdf" name="format" class="btn btn-export">
                     <i class="fa fa-download"></i>
                     {{ 'frontend.export_to_pdf'|trans }}
                 </button>
-                <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-primary">
-                    <i class="fa fa-edit"></i>
+                <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-edit btn-primary">
                     {{ 'frontend.edit'|trans }}
                 </a>
             </div>

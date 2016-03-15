@@ -3,7 +3,7 @@
 <tr data-price="{{ product_variant|sku_price }}" data-id="{{ specification_item.id }}" data-variant-id="{{product_variant.id}}">
     <td class="text-center" data-index="position" data-server-type="specification-item" data-type="text">{{ specification_item.position }}</td>
 
-    <td>
+    <td class="text-center">
         {% if product.image %}
             <div class="product-image">
                 <img src="{{ product.image.path|imagine_filter('s150x150') }}" />
@@ -11,7 +11,7 @@
         {% endif %}
     </td>
 
-    <td rel="brand">
+    <td class="text-center" rel="brand">
         <div class="factory-info">
             <div class="factory-name">
                 <a href="#">{{ product_variant.product.factory.name }}</a>
@@ -19,7 +19,7 @@
         </div>
     </td>
 
-    <td class="product-info">
+    <td class="product-info text-center">
         <div>
             <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
                 {{ product.translate.name }}
@@ -39,7 +39,7 @@
         {% endif %}
     </td>
 
-    <td>
+    <td class="text-center">
         <ul>
             {% for option in product_variant.options %}
                 <li>
@@ -64,9 +64,9 @@
         </ul>
     </td>
 
-    <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
+    <td class="text-center" data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
-    <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
+    <td class="text-center" data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
     <td class="total price text-center">{{ product_variant|sku_price|money }}</td>
     <td class="total-price text-center">{{ specification_item|specification_item_total_price|money }}</td>
@@ -74,13 +74,11 @@
     <td class="text-right">
         <div class="btn-block">
             {% if is_granted('VIEW_PRODUCTS', product_variant.product.factory) %}
-                <a class="btn btn-primary btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
-                    <i class="fa fa-pencil"></i>
+                <a class="btn btn-edit btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
                     {{ 'frontend.edit'|trans }}
                 </a>
             {% else %}
-                <a class="btn btn-primary btn-xs" href="#" onclick="return false;" data-toggle="tooltip" title="This product currently unavalable">
-                    <i class="fa fa-pencil"></i>
+                <a class="btn btn-edit btn-xs" href="#" onclick="return false;" data-toggle="tooltip" title="This product currently unavalable">
                     {{ 'frontend.edit'|trans }}
                 </a>
             {% endif %}
