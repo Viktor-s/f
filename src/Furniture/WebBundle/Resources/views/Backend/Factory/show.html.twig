@@ -14,7 +14,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1 style="float: left;">{{ factory.name }}</h1>
+        <h1 class="pull-left">Factory {{ factory.name }}</h1>
 
         <div class="actions-menu">
             {{ buttons.edit(path('furniture_backend_factory_update', {id: factory.id})) }}
@@ -28,20 +28,7 @@
 
         <div class="clearfix"></div>
     </div>
-
-    {% if factory.logoImage %}
-        <div class="row">
-            <div class="col-md-8">
-                <a href="{{ factory.logoImage.path|imagine_filter('sylius_large') }}" title="{{ factory.name }}" class="thumbnail">
-                    <img src="{{ factory.logoImage.path|imagine_filter('sylius_small') }}" alt="{{ factory.name }}" />
-                </a>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="row">
-        <div class="col-md-8">
-            {{ factory.description | raw }}
-        </div>
+        <iframe id="factory-preview" sandbox src="{{ path('factory_side_general', {_locale: 'en', factory: factory.id}) }}"></iframe>
     </div>
 {% endblock %}

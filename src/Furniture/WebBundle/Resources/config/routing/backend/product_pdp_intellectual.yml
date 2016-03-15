@@ -1,0 +1,27 @@
+furniture_backend_product_pdp_intellectual_index:
+    path: /
+    defaults:
+        _controller: furniture.controller.product_pdp_intellectual:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:index.html.twig
+
+furniture_backend_product_pdp_intellectual_create:
+    path: /new
+    defaults:
+        _controller: furniture.controller.product_pdp_intellectual:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:create.html.twig
+
+furniture_backend_product_pdp_intellectual_update:
+    path: /{id}/update
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_pdp_intellectual:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:update.html.twig
+
+furniture_backend_product_pdp_intellectual_delete:
+    path: /{id}/delete
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_pdp_intellectual:deleteAction

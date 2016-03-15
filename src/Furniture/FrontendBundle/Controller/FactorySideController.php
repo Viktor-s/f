@@ -241,6 +241,15 @@ class FactorySideController
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
 
+        // Check active state for factory retailer relation.
+        if (!$this->authorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+            ));
+        }
+
         $posts = $this->postRepository->findCircularsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:FactorySide:posts.html.twig', [

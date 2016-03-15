@@ -264,12 +264,15 @@ class CatalogController
             if ($factoryIds) {
                 $factoryQuery = new FactoryQuery();
                 $factoryQuery->withIds($factoryIds);
+                $factoryQuery->withoutAccessControl();
                 $factories = $this->factoryRepository->findBy($factoryQuery);
+
                 if(count($factories) == 1){
                     $ccQuery = new CompositeCollectionQuery();
                     $ccQuery->withFactories($factories);
                     $compositeСollections = $this->compositeCollectionRepository->findBy($ccQuery);
                 }
+
                 $productQuery->withFactories($factories);
             }
         }
@@ -296,6 +299,7 @@ class CatalogController
         }else{
             $products->setCurrentPage($currentPage);
         }
+
         // Create a brands query
         $brandsQuery= new FactoryQuery();
         if ($user->isRetailer()) {

@@ -1,0 +1,39 @@
+Furniture\ProductBundle\Entity\PdpIntellectualElement:
+    type: entity
+    table: product_pdp_intellectual_element
+
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        prependText:
+            type: text
+            column: prepend_text
+            nullable: true
+
+        appendText:
+            type: text
+            column: append_text
+            nullable: true
+
+    manyToOne:
+        expression:
+            targetEntity: Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
+            inversedBy: elements
+            joinColumn:
+                name: expression_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+        input:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPdpInput
+            joinColumn:
+                name: input_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT

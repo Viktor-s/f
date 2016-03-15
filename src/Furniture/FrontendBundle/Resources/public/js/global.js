@@ -40,7 +40,7 @@ $(function() {
 		if($('.menu-button').is(':visible')) _isresponsive = true;
 		else _isresponsive = false;
 
-		$('.fixed-header-margin').css({'padding-top':$('header').outerHeight(true)});
+		//$('.fixed-header-margin').css({'padding-top':$('header').outerHeight(true)});
 		$('.parallax-slide').css({'height':winH});
 	}
 
@@ -99,28 +99,28 @@ $(function() {
 	/*==============================*/
 	/* 06 - function on page scroll */
 	/*==============================*/
-	function scrollCalculations(){
-		winScr = $(window).scrollTop();
-		var headerComp = ($('header').outerHeight()<=200)?$('header').outerHeight():200;
-		if(winScr>=headerComp && !$('.header-demo').length) {
-			if(!$('header').hasClass('fixed-header')){
-				$('header').addClass('fixed-header');
-				if(!_ismobile) closePopups();
-			}
-		}
-		else {
-			if($('header').hasClass('fixed-header')){
-				$('header').removeClass('fixed-header');
-				if(!_ismobile) closePopups();
-			}
-		}
-		$('nav').addClass('disable-animation');
-	}
-
-	scrollCalculations();
-	$(window).scroll(function(){
-		scrollCalculations();
-	});
+	//function scrollCalculations(){
+	//	winScr = $(window).scrollTop();
+	//	var headerComp = ($('header').outerHeight()<=200)?$('header').outerHeight():200;
+	//	if(winScr>=headerComp && !$('.header-demo').length) {
+	//		if(!$('header').hasClass('fixed-header')){
+	//			$('header').addClass('fixed-header');
+	//			if(!_ismobile) closePopups();
+	//		}
+	//	}
+	//	else {
+	//		if($('header').hasClass('fixed-header')){
+	//			$('header').removeClass('fixed-header');
+	//			if(!_ismobile) closePopups();
+	//		}
+	//	}
+	//	$('nav').addClass('disable-animation');
+	//}
+    //
+	//scrollCalculations();
+	//$(window).scroll(function(){
+	//	scrollCalculations();
+	//});
 
 	/*=====================*/
 	/* 07 - swiper sliders */
@@ -558,7 +558,23 @@ $(function() {
             $("div.dropdown-menu").hide();
         };
     });
-    
+
+	// Add message to the page
+	$.appendMessage = function (message, type, ele) {
+		ele = ele || $('#messages');
+		type = type == 'error' ? 'danger' : type;
+		var messageEle = $('<div class="alert alert-' + type + '">' + message + '<a class="close" data-dismiss="alert" href="#">×</a></div>').hide();
+		ele.append(messageEle);
+		messageEle.show('slow');
+	};
+
+	// Clear messages on the page
+	$.clearMessages = function (ele) {
+		ele = ele || $('#messages');
+		ele.find('div.alert').hide('slow', function (){
+			ele.html('');
+		});
+	};
     //sticky filters in popup
     /*$(".sticky-popup-title").stick_in_parent({
         spacer: true,

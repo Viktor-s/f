@@ -1,7 +1,7 @@
 {% block root %}
 {% spaceless %}
-    <nav class="disable-animation">
-        <ul class="nav-list clearfix">
+    <nav class="main-nav">
+        <ul class="nav navbar-nav">
             {% for child in item.children %}
                 <li  class="simple-list {% if child.isCurrent() %}active{% endif %}">
                     <a href="{{ child.uri }}">{{ child.label }}</a>

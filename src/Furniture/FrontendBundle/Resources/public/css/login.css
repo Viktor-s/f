@@ -1,0 +1,275 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+}
+
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none;}
+blockquote footer:before, blockquote footer:after{display: none;}
+body *{-webkit-text-size-adjust:none;}
+.clear{clear:both; overflow:hidden; height:0px; font-size:0px; display: block;}
+input:focus, select:focus, textarea:focus, button:focus {outline: none;}
+a, a:link, a:visited, a:active, a:hover{cursor: pointer; text-decoration: none; outline: none;}
+ul{list-style: none;}
+
+label {
+    font-size: 13px;
+    line-height: 14px;
+    color: #313131;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 7px;
+    padding-top: 5px;
+}
+
+.login-box .checkbox-entry span.check {
+    top: 1px;
+}
+
+.checkbox-entry input {
+    display: none;
+}
+
+/* styling buttons */
+
+.checkbox-entry {
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    line-height: 14px;
+    font-weight: 500;
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 15px;
+}
+
+.checkbox-entry input + span.check {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
+.checkbox-entry input:checked + span.check {
+    background: #ca1515;
+}
+
+.simple-field {
+    margin-bottom: 25px;
+    width: 100%;
+    border: 1px #e6e6e6 solid;
+    font-size: 13px;
+    line-height: 43px;
+    color: #313131;
+    height: 45px;
+    padding: 0 20px;
+    font-weight: 400;
+}
+
+.login-box {
+    background: #fcfcfc;
+    border: 1px #ebebeb solid;
+    padding: 50px 55px;
+    margin-top: 10%;
+    min-height: 330px
+}
+
+.login-box .checkbox-entry {
+    padding-top: 0;
+}
+
+.login-box .checkbox-entry span.check {
+    top: 1px;
+}
+
+/* Tablets (>=768px)*/
+@media (max-width: 991px) {
+    .login-box {
+        padding: 20px 25px;
+    }
+}
+
+/*Phones (<768px)*/
+@media (max-width: 767px) {
+    .login-box {
+        min-height: 0;
+        padding: 25px;
+    }
+
+    .login-box .button {
+        display: block;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.article-container {
+    font-size: 13px;
+    line-height: 22px;
+    color: #808080;
+    margin-bottom: 25px;
+}
+
+.article-container b {
+    font-weight: 500;
+    color: #2e2e2e;
+}
+
+.article-container a {
+    color: #d14242;
+}
+
+.article-container li a {
+    color: #808080;
+}
+
+.article-container a:hover {
+    color: #2e2e2e;
+}
+
+.article-container.columns-2 {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    -webkit-column-gap: 30px;
+    -moz-column-gap: 30px;
+    column-gap: 30px;
+}
+
+.article-container.columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-gap: 30px;
+    -moz-column-gap: 30px;
+    column-gap: 30px;
+}
+
+.article-container p, .article-container ul, .article-container ol, .article-container img {
+    margin-bottom: 15px;
+}
+
+.article-container ol li {
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.article-container ul li {
+    padding: 4px 0 4px 10px;
+}
+
+.article-container ul li:before {
+    content: "\f105";
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.article-container h1, .h1 {
+    font-size: 32px;
+    line-height: 32px;
+    color: #2e2e2e;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.article-container h2, .h2 {
+    font-size: 28px;
+    line-height: 34px;
+    color: #262626;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.article-container h3, .h3 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    margin-bottom: 11px;
+    color: #000;
+}
+
+.article-container h4, .h4 {
+    font-size: 14px;
+    line-height: 22px;
+    color: #262626;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.article-container h5, .h5 {
+    font-size: 13px;
+    line-height: 30px;
+    color: #262626;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.article-container h5 .fa, .h5 .fa {
+    font-size: 20px;
+    color: #d14242;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -3px;
+    margin-right: 5px;
+}
+
+.article-container h6, .h6 {
+    font-size: 11px;
+    line-height: 18px;
+    color: #262626;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.article-container.style-1 {
+    font-size: 14px;
+    line-height: 25px;
+    font-weight: 300;
+}
+
+.button{font-weight: 700; font-size: 12px; line-height: 14px; color: #373737; text-transform: uppercase; text-align: center; padding: 8px 10px; display: inline-block; margin-bottom: 12px; cursor: pointer; min-width: 127px; border: 2px #dadada solid; background: transparent; position: relative;}
+.button .fa{margin-right: 5px;}
+.button.style-2{background: #f2f2f2; border-color: #f2f2f2;}
+.button.style-9{border-color: rgba(255,255,255,0.5);}
+.button.style-1:hover, .button.style-9:hover{background: #fff; border: 2px transparent solid;}
+.button.style-2:hover{background: #fff;}
+.button.style-3{font-size: 12px; line-height: 16px; font-weight: 700; color: #333232; text-transform: uppercase; background: #f0f0f0; display: inline-block; text-align: center; border: 2px #f0f0f0 solid; padding: 10px 5px; min-width: 0;}
+.button.style-4{font-size: 12px; line-height: 16px; font-weight: 700; color: #fff; text-transform: uppercase; background: #ca1515; display: inline-block; text-align: center; border: 2px #ca1515 solid; padding: 10px 5px; min-width: 0;}
+.button.style-3:hover, .button.style-4:hover{background: transparent!important; color: #333232!important;}
+.button.style-5{border-color: #fff; background: #fff;}
+.button.style-5:hover{background: transparent; border-color: #bfbfbf;}
+.button.style-6{border-color: #fff; background: #fff;}
+.button.style-6:hover{color: #fff; background: transparent; border-color: #bfbfbf;}
+.button.style-7{background: rgba(241, 126, 14, 0.9); border-color: rgba(241, 126, 14, 0.9); color: #fff;}
+.button.style-7:hover{background: transparent;}
+.button.style-8{background: transparent; color: #fff; border-color: rgba(204, 204, 204, 0.2);}
+.button.style-8:hover{border-color: rgba(204, 204, 204, 1);}
+.button.style-10, .button.style-12, .button.style-18{font-size: 14px; line-height: 18px; padding: 11px 40px; text-transform: uppercase; font-weight: 700; color: #fff; border: 2px #262626 solid; background: #262626; letter-spacing: 2px;}
+.button.style-10:hover, .button.style-12:hover{background: #fff; color: #262626;}
+.button.style-11{font-size: 13px; color: #262626; font-weight: 700; text-transform: uppercase; line-height: 18px; padding: 12px 40px; border: 1px #fff solid; background: #fff;}
+.button.style-11:hover{color: #808080;}
+.button.style-12{border-color: #ca1515; background: #ca1515;}
+.button.style-14{border-color: #272727; background: #272727; font-size: 12px; color: #fff; font-weight: 600; line-height: 16px; padding: 10px 20px; min-width: 0;}
+.button.style-14:hover{background: transparent; color: #272727;}
+.button.style-15, .button.style-16, .button.style-15, .button.style-17{border: 1px #e0e0e0 solid; font-size: 12px; font-weight: 700; line-height: 17px; padding: 9px 18px; background: #fff; color: #2e2e2e; min-width: 0;}
+.button.style-16, .button.style-15:hover{background: #f0f0f0; border-color: #f0f0f0;}
+.button.style-16:hover{background: #fff; border-color: #e0e0e0;}
+.button.style-17{border-color: #ca1515; background: #ca1515; color: #fff;}
+.button.style-17:hover{background: transparent; color: #2e2e2e;}
+.button.style-18{background: #f2f2f2; border-color: #f2f2f2; color: #333;}
+.button.style-18:hover{background: transparent;}
+.button.style-19{background: #ca1515; border-color: #ca1515; color: #fff;}
+.button.style-19:hover{background: transparent;}

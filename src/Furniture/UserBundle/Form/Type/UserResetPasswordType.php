@@ -98,7 +98,7 @@ class UserResetPasswordType extends AbstractType
                 $user = $data['user'];
 
                 if ($user->isDisabled()) {
-                    $form->addError(new FormError('Your account has been disabled. Please contact support!.'));
+                    $form->addError(new FormError('Your account has been disabled. Please contact support!'));
                 }
 
                 if (!isset($data['password'])) {

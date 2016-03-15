@@ -1,6 +1,7 @@
 Furniture\ProductBundle\Entity\ProductPartMaterialVariant:
     type: entity
     table: product_part_material_variant
+    repositoryClass: Furniture\ProductBundle\Entity\Repository\ProductPartMaterialVariantRepository
 
     id:
         id:

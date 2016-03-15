@@ -4,6 +4,7 @@ namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\HttpFoundation\PhpExcelResponse;
+use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\SpecificationBundle\Entity\Specification;
@@ -99,9 +100,11 @@ class SpecificationController
     /**
      * List specifications
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function specifications()
+    public function specifications(Request $request)
     {
         if (!$this->authorizationChecker->isGranted('SPECIFICATION_LIST')) {
             throw new AccessDeniedException(sprintf(
@@ -112,20 +115,64 @@ class SpecificationController
 
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
+        $specificationQuery = new SpecificationQuery();
+        $sorting = [
+            'all'      => [
+                'name'  => 'All',
+                'state' => false,
+            ],
+            'opened'   => [
+                'name'  => 'Opened',
+                'state' => false,
+            ],
+            'finished' => [
+                'name'  => 'Finished',
+                'state' => false,
+            ],
+        ];
 
         if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
             $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
-
-            $openedSpecifications = $this->specificationRepository->findOpenedForRetailer($retailer);
-            $finishedSpecifications = $this->specificationRepository->findFinishedForRetailer($retailer);
+            $specificationQuery->withRetailer($retailer);
         } else {
-            $openedSpecifications = $this->specificationRepository->findOpenedForUser($user);
-            $finishedSpecifications = $this->specificationRepository->findFinishedForUser($user);
+            $specificationQuery->withUser($user);
+        }
+
+        if ($request->query->has('sorting')) {
+            switch ($request->query->get('sorting')) {
+                case 'opened':
+                    $specificationQuery->opened();
+                    $sorting['opened']['state'] = true;
+                    break;
+
+                case 'finished':
+                    $specificationQuery->finished();
+                    $sorting['finished']['state'] = true;
+                    break;
+
+                default:
+                    $sorting['all']['state'] = true;
+            }
+        }
+        else {
+            // By default show only opened specifications
+            $specificationQuery->opened();
+            $sorting['opened']['state'] = true;
+        }
+
+        /* Create product paginator */
+        $currentPage = (int)$request->get('page', 1);
+        $specifications = $this->specificationRepository->findBy($specificationQuery);
+
+        if ($specifications->getNbPages() < $currentPage) {
+            $specifications->setCurrentPage(1);
+        } else {
+            $specifications->setCurrentPage($currentPage);
         }
 
         $content = $this->twig->render('FrontendBundle:Specification:specifications.html.twig', [
-            'opened_specifications'   => $openedSpecifications,
-            'finished_specifications' => $finishedSpecifications,
+            'specifications' => $specifications,
+            'sorting'        => $sorting,
         ]);
 
         return new Response($content);
@@ -303,15 +350,28 @@ class SpecificationController
         if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
             throw new AccessDeniedException();
         }
+        $groups= [
+            'factory' => [],
+            'custom' => [],
+        ];
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
         $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
+        foreach ($groupedItemsByFactory as $grouped) {
+            $factory = $grouped->getFactory();
+            $groups['factory'][$factory->getId()] = $factory->getName();
+        }
+
+        foreach ($groupedCustomItemsByFactory as $grouped) {
+            $factoryName = $grouped->getFactoryName();
+            $groups['custom'][md5($factoryName)] = $factoryName;
+        }
+
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
-            'specification'                   => $specification,
-            'grouped_items_by_factory'        => $groupedItemsByFactory,
-            'grouped_custom_items_by_factory' => $groupedCustomItemsByFactory,
+            'specification' => $specification,
+            'filters'       => $groups,
         ]);
 
         return new Response($content);

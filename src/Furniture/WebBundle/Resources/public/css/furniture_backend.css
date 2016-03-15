@@ -103,7 +103,7 @@ div[data-target="move"]
 .select2-container .select2-choice .select2-arrow b {
 	position: relative;
 }
-
+/**
 .select2-container .select2-choice .select2-arrow b:after {
     content: " ";
     display: block;
@@ -118,7 +118,7 @@ div[data-target="move"]
     z-index: 2;
     border-bottom: none;
 }
-
+*/
 .select2-container.form-control .select2-choice .select2-arrow {
     border-left: 1px solid rgb(239, 237, 230);
 }

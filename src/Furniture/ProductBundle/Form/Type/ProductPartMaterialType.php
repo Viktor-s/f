@@ -22,7 +22,8 @@ class ProductPartMaterialType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProductPartMaterial::class
+            'data_class'         => ProductPartMaterial::class,
+            'cascade_validation' => true,
         ]);
     }
 
@@ -33,14 +34,14 @@ class ProductPartMaterialType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                'label' => 'product_part_material.form.name'
+                'label' => 'product_part_material.name'
             ])
             ->add('factory', 'entity', [
                 'class' => Factory::class,
                 'required' => false,
             ])
             ->add('translations', 'a2lix_translationsForms', [
-                'form_type' => new ProductPartMaterialTranslationType()
+                'form_type' => new ProductPartMaterialTranslationType(),
             ])
             ->add('optionValues', 'collection', [
                 'type' => new ProductPartMaterialOptionValueType(),

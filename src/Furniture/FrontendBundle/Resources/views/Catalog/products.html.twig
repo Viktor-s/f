@@ -1,5 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
+{% from 'FrontendBundle:Macros:products.html.twig' import filter_panel, sorting_panel, product_grid_view %}
 
 {% block title %} {{ 'frontend.products'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -9,222 +10,37 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
-                <div class="page-selector">
-                    {{ pagination(products) }}
-
-                    <div class="shop-grid-controls">
-                        <div class="entry">
-                            <div class="inline-text">Sorty by</div>
-                            <div class="simple-drop-down">
-                                <select name="sorting">
-                                    <option>Position</option>
-                                    <option>Price</option>
-                                    <option>Category</option>
-                                    <option>Rating</option>
-                                    <option>Color</option>
-                                </select>
-                            </div>
-                            <div class="sort-button"></div>
-                        </div>
-                        <div class="entry">
-                            <div class="view-button active grid"><i class="fa fa-th"></i></div>
-                            <div class="view-button list"><i class="fa fa-list"></i></div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-
-                <div class="row shop-grid grid-view">
-                    {% for product in products %}
-                        {% include 'FrontendBundle:Catalog:products/item.html.twig' with {'product' : product} %}
-                    {% endfor %}
-                </div>
-
-                <div class="page-selector">
-                    <div class="description">Showing: {{ products.getCurrentPageOffsetStart() }}-{{ products.getCurrentPageOffsetEnd() }} of {{ products.getNbResults() }}</div>
-                    {{ pagination(products) }}
-                    <div class="clear"></div>
-                </div>
-            </div>
-
-            {# Left side catalog menu #}
-            <div class="col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 blog-sidebar">
+    {{ sorting_panel('top', pagination(products)) }}
+    <div class="row">
+        {# Left side catalog menu #}
+        <div class="col-md-2 col-sm-3">
+            <div class="sidebar-block">
                 {# Catalog space selector #}
-                <div class="information-blocks">
-                    <div class="block-title size-2">{{ 'frontend.catalog.space_selector'| trans }}</div>
-
-                    {% set column_size = ((spaces|length) / 2)|round(0, 'ceil') %}
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for space in spaces %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
-
-                                <label class="checkbox-entry">
-                                    <input{% if space_ids is iterable and space.id in space_ids %} checked{% endif %} type="checkbox" value="{{ space.id }}" live-form name="space[]" />
-                                    <span class="check"></span>
-                                    {{ space.translate.name}}
-                                </label>
-
-                                {% set k = k + 1 %}
-                            {% endfor %}
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                {{ filter_panel(spaces, space_ids, 'space', 'frontend.catalog.space_selector'| trans) }}
 
                 {# Category selector #}
-                <div class="information-blocks">
-                    <div class="block-title size-2">{{ 'frontend.catalog.category_selector'| trans }}</div>
-
-                    {% set column_size = ((categories|length) / 2)|round(0, 'ceil') %}
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for category in categories %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                {% set k = 1 %}
-                                {% endif %}
-
-                                <label class="checkbox-entry">
-                                    <input{% if category_ids is iterable and category.id in category_ids %} checked{% endif %} type="checkbox" value="{{ category.id }}" live-form name="category[]" />
-                                    <span class="check"></span>
-                                    {{ category.translate.name}}
-                                </label>
-
-                                {% set k = k + 1 %}
-                            {% endfor %}
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                {{ filter_panel(categories, category_ids, 'category', 'frontend.catalog.category_selector'| trans) }}
 
                 {# Type selector #}
-                <div class="information-blocks">
-                    <div class="block-title size-2">{{ 'frontend.catalog.type_selector'| trans }}</div>
-
-                    {% set column_size = ((types|length) / 2)|round(0, 'ceil') %}
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for type in types %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
-
-                                <label class="checkbox-entry">
-                                    <input{% if type_ids is iterable and type.id in type_ids %} checked{% endif %} type="checkbox" value="{{ type.id }}" live-form name="type[]" />
-                                    <span class="check"></span>
-                                    {{ type.translate.name}}
-                                </label>
-
-                                {% set k = k + 1 %}
-                            {% endfor %}
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                {{ filter_panel(types, type_ids, 'type', 'frontend.catalog.type_selector'| trans) }}
 
                 {# Catalog brand selector #}
-                {% if brands|length > 1 %}
-                    <div id="brand_filter" class="information-blocks">
-                        {% set column_size = (brands|length)/2 %}
-                        <div class="block-title size-2">{{ 'frontend.catalog.brand_filter'| trans }}</div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                {% set k = 1 %}
-                                {% for factory in brands %}
-                                    {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                        {% set k = 1 %}
-                                    {% endif %}
-                                    <label class="checkbox-entry">
-                                        <input{% if factory_ids is iterable and factory.id in factory_ids %} checked{% endif %} type="checkbox" value="{{ factory.id }}" live-form name="brand[]" />
-                                        <span class="check"></span>
-                                        {{ factory.name }}
-                                    </label>
-                                    {% set k = k + 1 %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
+                {{ filter_panel(brands, factory_ids, 'brand', 'frontend.catalog.brand_filter'| trans) }}
 
                 {# Style selector #}
-                <div class="information-blocks">
-                    <div class="block-title size-2">{{ 'frontend.catalog.style_selector'| trans }}</div>
-
-                    {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for style in styles %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
-
-                                <label class="checkbox-entry">
-                                    <input{% if style_ids is iterable and style.id in style_ids %} checked{% endif %} type="checkbox" value="{{ style.id }}" live-form name="style[]" />
-                                    <span class="check"></span>
-                                    {{ style.translate.name}}
-                                </label>
-
-                                {% set k = k + 1 %}
-                            {% endfor %}
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                {{ filter_panel(styles, style_ids, 'style', 'frontend.catalog.style_selector'| trans) }}
 
                 {# Composite collection selector #}
-                {% if composite_collections != false %}
-                <div class="information-blocks">
-                    <div class="block-title size-2">{{ 'frontend.catalog.composite_collection_selector'| trans }}</div>
-
-                    {% set column_size = ((styles|length) / 2)|round(0, 'ceil') %}
-                    <div class="row">
-                        <div class="col-xs-6">
-                            {% set k = 1 %}
-                            {% for collection in composite_collections %}
-                                {% if k > column_size %}
-                                    </div>
-                                    <div class="col-xs-6">
-                                    {% set k = 1 %}
-                                {% endif %}
-
-                                <label class="checkbox-entry">
-                                    <input{% if composite_collection_ids is iterable and collection.id in composite_collection_ids %} checked{% endif %} type="checkbox" value="{{ collection.id }}" live-form name="cc[]" />
-                                    <span class="check"></span>
-                                    {{ collection.translate.presentation }}
-                                </label>
-
-                                {% set k = k + 1 %}
-                            {% endfor %}
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                {% endif %}
+                {{ filter_panel(composite_collections, composite_collection_ids, 'cc', 'frontend.catalog.composite_collection_selector'| trans) }}
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-9">
+            <div class="row shop-grid grid-view">
+            {% for product in products %}
+                {{ product_grid_view(product) }}
+            {% endfor %}
             </div>
         </div>
     </div>
+    {{ sorting_panel('bottom', pagination(products)) }}
 {% endblock %}

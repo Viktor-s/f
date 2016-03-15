@@ -9,7 +9,9 @@ use Furniture\ProductBundle\Entity\ProductPartType;
 use Furniture\ProductBundle\Entity\ProductPart;
 use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductPartFormType extends AbstractType
 {
@@ -45,7 +47,11 @@ class ProductPartFormType extends AbstractType
     {
         $builder
             ->add('translations', 'a2lix_translationsForms', [
-                'form_type' => new ProductPartTranslationFormType()
+                'form_type' => new ProductPartTranslationFormType(),
+                // https://github.com/a2lix/TranslationFormBundle/issues/95
+                'empty_data' => function (FormInterface $form) {
+                    return new ArrayCollection();
+                },
             ])
             ->add('productPartMaterials', 'entity', [
                 'class' => ProductPartMaterial::class,

@@ -35,7 +35,9 @@
                     <div class="pull-right">
                     {{ buttons.show(path('sylius_backend_customer_index', {criteria: {retailerId: retailer_profile.id}}), 'Users') }}
                     {{ buttons.edit(path('furniture_backend_retailer_profile_update', {'id': retailer_profile.id})) }}
+                {% if is_retailer_profile_can_remove(retailer_profile) %}
                     {{ buttons.delete(path('furniture_backend_retailer_profile_delete', {'id': retailer_profile.id})) }}
+                {% endif %}
                    </div>
                 </td>
             </tr>

@@ -1,0 +1,34 @@
+Furniture\ProductBundle\Entity\PdpIntellectualRoot:
+    type: entity
+    table: product_pdp_intellectual_root
+
+    id:
+        id:
+            column: id
+            type: integer
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: string
+            column: name
+
+    oneToOne:
+        expression:
+            targetEntity: Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
+            cascade: [ persist ]
+            joinColumn:
+                name: expression_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: RESTRICT
+
+    manyToOne:
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

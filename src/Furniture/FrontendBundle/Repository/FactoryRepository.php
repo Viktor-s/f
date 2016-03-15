@@ -152,39 +152,41 @@ class FactoryRepository
         // Check granted to access
         $qb->innerJoin('f.defaultRelation', 'fdr');
 
-        if ($query->hasRetailer()) {
-            if ($query->isRetailerAccessControl()) {
-                $qb
-                    ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
-                    ->setParameter('retailer', $query->getRetailer())
-                    ->setParameter('retailer_accept', true)
-                    ->setParameter('factory_accept', true);
+        if ($query->isAccessControl()) {
+            if ($query->hasRetailer()) {
+                if ($query->isRetailerAccessControl()) {
+                    $qb
+                        ->leftJoin(FactoryRetailerRelation::class, 'frr', 'WITH', 'frr.factory = f.id AND frr.retailer = :retailer AND frr.retailerAccept = :retailer_accept AND frr.factoryAccept = :factory_accept')
+                        ->setParameter('retailer', $query->getRetailer())
+                        ->setParameter('retailer_accept', true)
+                        ->setParameter('factory_accept', true);
 
-                $orExpr = $qb->expr()->orX();
-                $orExpr
-                    ->add('frr.accessProducts = :retailer_access_products')
-                    ->add('fdr.accessProducts = :default_access_products');
+                    $orExpr = $qb->expr()->orX();
+                    $orExpr
+                        ->add('frr.accessProducts = :retailer_access_products')
+                        ->add('fdr.accessProducts = :default_access_products');
 
+                    $qb
+                        ->andWhere($orExpr)
+                        ->setParameter('retailer_access_products', true)
+                        ->setParameter('default_access_products', true);
+                }
+
+                if ($query->getRetailer()->isDemo()) {
+                    // Should filtered by demo
+                    $demoFactoryIds = array_map(function (Factory $factory) {
+                        return $factory->getId();
+                    }, $query->getRetailer()->getDemoFactories()->toArray());
+
+                    $qb
+                        ->andWhere('f.id IN (:demo_factories)')
+                        ->setParameter('demo_factories', $demoFactoryIds);
+                }
+            } else {
                 $qb
-                    ->andWhere($orExpr)
-                    ->setParameter('retailer_access_products', true)
+                    ->andWhere('fdr.accessProducts = :default_access_products')
                     ->setParameter('default_access_products', true);
             }
-
-            if ($query->getRetailer()->isDemo()) {
-                // Should filtered by demo
-                $demoFactoryIds = array_map(function (Factory $factory) {
-                    return $factory->getId();
-                }, $query->getRetailer()->getDemoFactories()->toArray());
-
-                $qb
-                    ->andWhere('f.id IN (:demo_factories)')
-                    ->setParameter('demo_factories', $demoFactoryIds);
-            }
-        } else {
-            $qb
-                ->andWhere('fdr.accessProducts = :default_access_products')
-                ->setParameter('default_access_products', true);
         }
 
         return $qb;

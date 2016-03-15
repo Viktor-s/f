@@ -4,7 +4,9 @@ namespace Furniture\ProductBundle\Twig;
 
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Entity\ProductPartMaterial;
 use Furniture\ProductBundle\Entity\ProductPartMaterialOption;
+use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartType;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\Entity\Space;
@@ -37,17 +39,19 @@ class ProductExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'is_product_variant_can_remove'              => new \Twig_Function_Method($this, 'isProductVariantCanRemove'),
-            'is_product_variant_can_hard_remove'         => new \Twig_Function_Method($this, 'isProductVariantCanHardRemove'),
-            'is_product_attribute_can_remove'            => new \Twig_Function_Method($this, 'isProductAttributeCanRemove'),
-            'is_sku_option_can_remove'                   => new \Twig_Function_Method($this, 'isSkuOptionCanRemove'),
-            'is_product_can_remove'                      => new \Twig_Function_Method($this, 'isProductCanRemove'),
-            'is_product_type_can_remove'                 => new \Twig_Function_Method($this, 'isProductTypeCanRemove'),
-            'is_product_space_can_remove'                => new \Twig_Function_Method($this, 'isProductSpaceCanRemove'),
-            'is_product_style_can_remove'                => new \Twig_Function_Method($this, 'isProductStyleCanRemove'),
-            'is_product_category_can_remove'             => new \Twig_Function_Method($this, 'isProductCategoryCanRemove'),
-            'is_product_part_material_option_can_remove' => new \Twig_Function_Method($this, 'isProductPartMaterialOptionCanRemove'),
-            'is_product_part_type_can_remove'            => new \Twig_Function_Method($this, 'isProductPartTypeCanRemove'),
+            'is_product_variant_can_remove'               => new \Twig_Function_Method($this, 'isProductVariantCanRemove'),
+            'is_product_variant_can_hard_remove'          => new \Twig_Function_Method($this, 'isProductVariantCanHardRemove'),
+            'is_product_attribute_can_remove'             => new \Twig_Function_Method($this, 'isProductAttributeCanRemove'),
+            'is_sku_option_can_remove'                    => new \Twig_Function_Method($this, 'isSkuOptionCanRemove'),
+            'is_product_can_remove'                       => new \Twig_Function_Method($this, 'isProductCanRemove'),
+            'is_product_type_can_remove'                  => new \Twig_Function_Method($this, 'isProductTypeCanRemove'),
+            'is_product_space_can_remove'                 => new \Twig_Function_Method($this, 'isProductSpaceCanRemove'),
+            'is_product_style_can_remove'                 => new \Twig_Function_Method($this, 'isProductStyleCanRemove'),
+            'is_product_category_can_remove'              => new \Twig_Function_Method($this, 'isProductCategoryCanRemove'),
+            'is_product_part_material_can_remove'         => new \Twig_Function_Method($this, 'isProductPartMaterialCanRemove'),
+            'is_product_part_material_variant_can_remove' => new \Twig_Function_Method($this, 'isProductPartMaterialVariantCanRemove'),
+            'is_product_part_material_option_can_remove'  => new \Twig_Function_Method($this, 'isProductPartMaterialOptionCanRemove'),
+            'is_product_part_type_can_remove'             => new \Twig_Function_Method($this, 'isProductPartTypeCanRemove'),
         ];
     }
 
@@ -183,6 +187,36 @@ class ProductExtension extends \Twig_Extension
         return $this->removalCheckerRegistry
             ->getProductCategoryRemovalChecker()
             ->canHardRemove($category)
+            ->canRemove();
+    }
+
+    /**
+     * Is product part material can remove?
+     *
+     * @param ProductPartMaterial $material
+     *
+     * @return bool
+     */
+    public function isProductPartMaterialCanRemove(ProductPartMaterial $material)
+    {
+        return $this->removalCheckerRegistry
+            ->getProductPartMaterialRemovalChecker()
+            ->canHardRemove($material)
+            ->canRemove();
+    }
+
+    /**
+     * Is product part material variant can remove?
+     *
+     * @param ProductPartMaterialVariant $variant
+     *
+     * @return bool
+     */
+    public function isProductPartMaterialVariantCanRemove(ProductPartMaterialVariant $variant)
+    {
+        return $this->removalCheckerRegistry
+            ->getProductPartMaterialVariantRemovalChecker()
+            ->canHardRemove($variant)
             ->canRemove();
     }
 

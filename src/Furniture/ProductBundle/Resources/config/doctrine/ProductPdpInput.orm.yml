@@ -1,6 +1,7 @@
 Furniture\ProductBundle\Entity\ProductPdpInput:
     type: entity
     table: product_pdp_input
+    repositoryClass: Furniture\ProductBundle\Entity\Repository\ProductPdpInputRepository
 
     id:
         id:
@@ -13,11 +14,13 @@ Furniture\ProductBundle\Entity\ProductPdpInput:
         position:
             type: integer
             name: position
+
         type:
             type: integer
             name: type
             options:
                 default: 0
+
         forSchemes:
             type: boolean
             nullable: true

@@ -19,12 +19,12 @@ class ProductPdpInput
      * input select inline form
      */
     const SELECT_INLINE_TYPE = 1;
-    
+
     /**
      * input select popup form
      */
     const SELECT_POPUP_TYPE = 2;
-    
+
     /**
      * @var int
      */
@@ -51,22 +51,20 @@ class ProductPdpInput
     private $productPart;
 
     /**
-     *
      * @var int
      */
     private $forSchemes;
-    
+
     /**
      * @var int
      */
     private $position = 0;
 
     /**
-     *
      * @var int
      */
-    private $type;
-    
+    private $type = self::SELECT_DEFAULT_TYPE;
+
     /**
      * Get id
      *
@@ -127,28 +125,30 @@ class ProductPdpInput
     }
 
     /**
-     * 
+     *
      * Get option values which exists on product variants
-     * 
+     *
      * @return array
      */
-    public function getOptionValues() {
+    public function getOptionValues()
+    {
         $criteria = new Criteria();
         $criteria->andWhere($criteria->expr()->eq('option_id', $this->getOption()->getId()));
-        
+
         $values = [];
-        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
-            
-        }else{
+        if ($this->getConfig()->getProduct()->hasProductVariantsPatterns()) {
+
+        } else {
             foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
                 /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
                 $value = $variant->getOptions()->matching($criteria)->first();
                 $values[$value->getId()] = $value;
             }
         }
+
         return $values;
     }
-    
+
     /**
      * Set product part
      *
@@ -174,50 +174,55 @@ class ProductPdpInput
     }
 
     /**
-     * Get array of \Furniture\ProductBundle\Entity\ProductPartVariantSelection
-     * 
-     * @return \Furniture\ProductBundle\Entity\ProductPartVariantSelection[]
+     * Get array of ProductPartVariantSelection
+     *
+     * @return ProductPartVariantSelection[]
      */
     public function getProductPartMaterialsVariantSelections()
     {
         $criteria = new Criteria();
-        
+
         $variantSelections = [];
-        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
+
+        if ($this->getConfig()->getProduct()->hasProductVariantsPatterns()) {
             $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
-            foreach($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern){
+
+            foreach ($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern) {
                 $vss = $pattern->getPartPatternVariantSelections()->matching($criteria);
-                if($vss->count()){
-                    foreach($vss as $variantSelection){
+                if ($vss->count()) {
+                    foreach ($vss as $variantSelection) {
                         $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
                     }
                 }
             }
-        }else{
+        } else {
             $criteria->andWhere($criteria->expr()->eq('productPart', $this->getProductPart()));
+
             foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
-                /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-                if($variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first()){
+                /* @var $variant ProductVariant */
+                if ($variantSelection = $variant->getProductPartVariantSelections()->matching($criteria)->first()) {
                     $variantSelections[$variantSelection->getProductPartMaterialVariant()->getId()] = $variantSelection;
                 }
             }
         }
+
         return $variantSelections;
     }
 
-    public function getProductPartMaterialsVariantGrouped(){
-        
+    public function getProductPartMaterialsVariantGrouped()
+    {
         $grouped = new ArrayCollection();
-        
-        foreach($this->getProductPartMaterialsVariantSelections() as $variantSelection){
+
+        foreach ($this->getProductPartMaterialsVariantSelections() as $variantSelection) {
             $productPartMaterialVariant = $variantSelection->getProductPartMaterialVariant();
             $productPartMaterial = $productPartMaterialVariant->getProductPartMaterial();
             #создать новый обьект для групировки!
-            if(!$grouped->containsKey($productPartMaterial->getId())){
+            if (!$grouped->containsKey($productPartMaterial->getId())) {
                 $grouped[$productPartMaterial->getId()] = new ProductPartMaterialVariantGrouped($productPartMaterial);
             }
             $grouped[$productPartMaterial->getId()]->add($productPartMaterialVariant);
         }
+
         return $grouped;
     }
 
@@ -247,50 +252,57 @@ class ProductPdpInput
     }
 
     /**
-     * 
+     *
      * Get sku option variants which exists on product variants
-     * 
+     *
      * @return array
      */
-    public function getSkuOptionVariants() {
+    public function getSkuOptionVariants()
+    {
         $criteria = new Criteria();
-        
+
         $variants = [];
-        if($this->getConfig()->getProduct()->hasProductVariantsPatterns()){
+        if ($this->getConfig()->getProduct()->hasProductVariantsPatterns()) {
             $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
-            foreach($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern){
+            foreach ($this->getConfig()->getProduct()->getProductVariantsPatterns() as $pattern) {
                 $vss = $pattern->getSkuOptionValues()->matching($criteria);
-                if($vss->count()){
-                    foreach($vss as $variant){
+                if ($vss->count()) {
+                    foreach ($vss as $variant) {
                         $variants[$variant->getId()] = $variant;
                     }
                 }
             }
-        }else{
+        } else {
             $criteria->andWhere($criteria->expr()->eq('skuOptionType', $this->getSkuOption()));
             foreach ($this->getConfig()->getProduct()->getVariants() as $variant) {
                 /* @var $variant \Furniture\ProductBundle\Entity\ProductVariant */
-                if($variant = $variant->getSkuOptions()->matching($criteria)->first()){
+                if ($variant = $variant->getSkuOptions()->matching($criteria)->first()) {
                     $variants[$variant->getId()] = $variant;
                 }
             }
         }
+
         return $variants;
     }
-    
-    public function setForSchemes($status){
+
+    public function setForSchemes($status)
+    {
         $this->forSchemes = $status;
+
         return $this;
     }
-    
-    public function isForSchemes(){
+
+    public function isForSchemes()
+    {
         return $this->forSchemes;
     }
 
-    public function getSchemes(){
-        if($this->isForSchemes()){
+    public function getSchemes()
+    {
+        if ($this->isForSchemes()) {
             return $this->getConfig()->getProduct()->getProductSchemes();
         }
+
         return null;
     }
 
@@ -319,31 +331,34 @@ class ProductPdpInput
     }
 
     /**
-     * 
+     *
      * @return int
      */
     public function getType()
     {
         return $this->type;
     }
-    
+
     /**
-     * 
+     *
      * @param int $type
+     *
      * @return \Furniture\ProductBundle\Entity\ProductPdpInput
      */
     public function  setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
-    
-    public function getHumanNameDetailed(){
+
+    public function getHumanNameDetailed()
+    {
         if ($this->productPart) {
             /** @var ProductPartTranslation $translation */
             $translation = $this->productPart->translate();
 
-            return $translation->getLabel().' ('.$this->productPart->getProductPartType()->getCode().')';
+            return $translation->getLabel() . ' (' . $this->productPart->getProductPartType()->getCode() . ')';
         } else if ($this->skuOption) {
             return sprintf(
                 '%s',
@@ -360,7 +375,7 @@ class ProductPdpInput
             return 'Undefined';
         }
     }
-    
+
     /**
      * Get human name
      *

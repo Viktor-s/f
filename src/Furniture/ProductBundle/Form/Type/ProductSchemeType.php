@@ -8,7 +8,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductSchemeType extends AbstractType
 {
@@ -34,6 +36,10 @@ class ProductSchemeType extends AbstractType
 
         $builder->add('translations', 'a2lix_translationsForms', [
             'form_type' => new ProductSchemeTranslationType(),
+            // https://github.com/a2lix/TranslationFormBundle/issues/95
+            'empty_data' => function (FormInterface $form) {
+                return new ArrayCollection();
+            },
         ]);
 
         // Add event for add fields to form, because we should has a scheme data

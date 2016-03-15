@@ -107,7 +107,13 @@ $.widget('furniture.pdp_inline_select', {
                 this.selectButton.addClass('hidden');
                 this.showSelected.removeClass('hidden');
                 //Replace image
-                this.showSelected.find('img').attr('src', item.find('img').attr('src'));
+                var cloneImage = item.find('img').clone();
+                if (typeof imageLazyLoad === 'function'
+                    && typeof cloneImage.data('src') !== undefined) {
+                    (new imageLazyLoad(cloneImage.get(0))).load()
+                }
+
+                this.showSelected.find('img').replaceWith(cloneImage);
                 //Replace label
                 this.showSelected.find('.caption').text(item.find('.caption').text());
              },
@@ -143,6 +149,13 @@ $.widget('furniture.pdp_inline_select', {
                 $('#'+opener.data('popup-id')).removeClass('visible');
             }, 500);
          });
+
+         // Click on material if it is only one in popup
+         var popupMaterials = element.find('.material-entry[data-input-variant]');
+
+         if (popupMaterials.length == 1) {
+             $(popupMaterials).click();
+         }
          
          $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');

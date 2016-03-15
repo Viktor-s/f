@@ -2,6 +2,7 @@
 
 namespace Furniture\SpecificationBundle\Security\Voter;
 
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\SpecificationBundle\Entity\CustomSpecificationItem;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
@@ -39,16 +40,16 @@ class CustomSpecificationItemVoter extends AbstractVoter
             return false;
         }
 
-        if ($attribute == 'CREATE') {
-            return true;
-        }
+//        if ($attribute == 'CREATE') {
+//            return true;
+//        }
 
         if(!$object instanceof CustomSpecificationItem)
             return false;
-        
+
         /** @var CustomSpecificationItem $object */
         $owner = $object->getSpecificationItem()->getSpecification()->getCreator();
-        
+
         if ($user->getRetailerUserProfile()->isRetailerAdmin()
                 && $user->getRetailerUserProfile()->getRetailerProfile()->getId() == $owner->getRetailerProfile()->getId()
                 ) {

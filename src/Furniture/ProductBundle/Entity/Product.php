@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\ProductBundle\Validator\Constraint\ProductSchemesUnique;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
@@ -94,6 +95,8 @@ class Product extends BaseProduct
      * @var Collection|ProductScheme[]
      *
      * @Assert\Valid()
+     * @Assert\Count(min = 2, minMessage="Please create at least two product schemes.", groups={"SchemesCreate"})
+     * @ProductSchemesUnique(groups={"SchemesCreate"})
      */
     private $productSchemes;
 

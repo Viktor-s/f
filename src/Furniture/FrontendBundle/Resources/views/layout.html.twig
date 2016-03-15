@@ -5,7 +5,8 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-
+    <link rel="shortcut icon" href="/bundles/frontend/img/favicon-6.ico">
+    <title>{% block title %}{{ 'frontend.title.index'|trans }}{% endblock %}</title>
     {% block head_meta_common %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -13,20 +14,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% endblock %}
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700&amp;subset=latin,cyrillic" rel="stylesheet" type="text/css" />
-
     {% block stylesheets %}
         {% stylesheets output='/css/*.min.css'
             '@FrontendBundle/Resources/public/css/bootstrap.min.css'
             '@FrontendBundle/Resources/public/css/idangerous.swiper.css'
             '@FrontendBundle/Resources/public/css/font-awesome.min.css'
             '@FrontendBundle/Resources/public/css/factory-side.css'
-            '@FrontendBundle/Resources/public/css/style.css'
             '@FrontendBundle/Resources/public/css/dataTables.bootstrap.min.css'
             '@FrontendBundle/Resources/public/js/fancybox/source/jquery.fancybox.css'
             '@FrontendBundle/Resources/public/css/select2/select2.min.css'
             '@FrontendBundle/Resources/public/css/select2/select2-bootstrap.min.css'
+            '@FrontendBundle/Resources/public/css/style_old.css'
+            '@FrontendBundle/Resources/public/css/style.css'
         %}
+
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
     {% endblock %}
@@ -43,7 +44,6 @@
             '@FrontendBundle/Resources/public/js/jquery.jscrollpane.min.js'
             '@FrontendBundle/Resources/public/js/jquery.sticky-kit.min.js'
             '@FrontendBundle/Resources/public/js/idangerous.swiper.min.js'
-            '@FrontendBundle/Resources/public/js/bootstrap.min.js'
             '@FrontendBundle/Resources/public/js/bootbox.min.js'
             '@FrontendBundle/Resources/public/js/jquery.jeditable.js'
             '@FrontendBundle/Resources/public/js/dataTables.bootstrap.min.js'
@@ -66,31 +66,49 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
-
-    <link rel="shortcut icon" href="/bundles/frontend/img/favicon-6.ico">
-
-    <title>{% block title %}{{ 'frontend.title.index'|trans }}{% endblock %}</title>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body class="style-16">
+<body>
     {% include 'FrontendBundle:Common:page_loader.html.twig' %}
-
+    {% block header_container %}
+        {% include 'FrontendBundle:Common/Header:header.html.twig' %}
+    {% endblock %}
     {# Attention: now we no use alerts #}
-
     {% block content_container %}
-        <div id="content-block">
-            {% block header_container %}
-                {% include 'FrontendBundle:Common/Header:header.html.twig' %}
-            {% endblock %}
-            <div class="content-center fixed-header-margin" style="padding-top: 248px;">
+        <div id="content-block" class="container">
+            <div class="row">
+                <div class="col-sm-12">
                 {% set breadcumb_content = block('breadcrumb') %}
 
                 {% block breadcrumb_container %}
                     {% if breadcumb_content|trim|length > 0 %}
-                        <div class="breadcrumb-box">{{ breadcumb_content|raw }}</div>
+                        <div id="breadcrumb" class="">
+                            <div class="container">
+                                <div class="breadcrumb">
+                                    {{ breadcumb_content|raw }}
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endblock %}
-
+                <div id="messages">
+                {% block messages %}
+                    {% for type in ['success', 'info', 'warning', 'error'] %}
+                        {% for flash in app.session.flashbag.get(type) %}
+                            <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                                <a class="close" data-dismiss="alert" href="#">×</a>
+                                {{ flash }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
+                </div>
                 {% block content %}{% endblock %}
+                </div>
             </div>
         </div>
     {% endblock %}

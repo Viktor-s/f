@@ -25,7 +25,9 @@
         {{ form_row(form.retailerUserProfile.phones) }}
         {{ form_row(form.retailerUserProfile.retailerMode) }}
 
-        {{ employee.id ? form_row(form.enabled) }}
+        {% if employee.id %}
+            {{ form_row(form.enabled) }}
+        {% endif %}
 
         {{ form_rest(form) }}
 

@@ -332,6 +332,21 @@ class ProductController
                         $factory->getName()
                     ));
                 }
+            } else if ($retailerProfile) {
+                $factory = $product->getFactory();
+
+                if ($factory) {
+                    if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
+                        throw new NotFoundHttpException(sprintf(
+                            'The active retailer "%s" not have rights for view product "%s [%d]" from factory "%s [%d]".',
+                            $retailerProfile->getName(),
+                            $product->getName(),
+                            $product->getId(),
+                            $factory->getName(),
+                            $factory->getId()
+                        ));
+                    }
+                }
             }
         }
     }

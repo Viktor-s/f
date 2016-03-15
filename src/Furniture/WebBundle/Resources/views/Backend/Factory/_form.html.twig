@@ -1,9 +1,12 @@
 {% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
-
+{% import "A2lixTranslationFormBundle::macros.html.twig" as a2lixTranslations %}
+{% set mainFields = ['description', 'shortDescription', 'address', 'collectionContent'] %}
+{% set workInfoFields = ['workInfoContent', 'description', 'bankDetails', 'productTime', 'deliveryAndPackaging', 'vacations'] %}
 <div>
     <ul class="nav nav-tabs">
         <li class="active"><a href="#main" data-toggle="tab">Main</a></li>
         <li><a href="#images" data-toggle="tab">Images</a></li>
+        <li><a href="#work-info" data-toggle="tab">Sales conditions</a></li>
         <li><a href="#contacts" data-toggle="tab">Contacts</a></li>
     </ul>
 
@@ -12,11 +15,15 @@
             {{ form_row( form.logoImage ) }}
             {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
             {{ form_row(form.enabled, {'attr': {'class': 'input-lg'}}) }}
-            {{ form_row(form.translations, {'attr': {'class': 'input-lg'}}) }}
+            {{ a2lixTranslations.partialTranslations(form.translations, mainFields) }}
         </div>
 
         <div class="tab-pane" id="images">
             {{ form_widget(form.images) }}
+        </div>
+
+        <div class="tab-pane" id="work-info">
+            {{ a2lixTranslations.partialTranslations(form.translations, workInfoFields) }}
         </div>
 
         <div class="tab-pane" id="contacts">

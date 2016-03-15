@@ -4,7 +4,9 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
+use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,6 +17,7 @@ use Furniture\ProductBundle\Entity\ProductPart;
 use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Entity\ProductScheme;
+use Symfony\Component\Validator\ConstraintViolation;
 
 class ProductVariantType extends BaseProductVariantType
 {
@@ -63,6 +66,35 @@ class ProductVariantType extends BaseProductVariantType
                     ]);
                 }
             });
+
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+                // Validate product variant options.
+                $errors = [];
+                $form = $event->getForm();
+
+                foreach ($form->get('productPartVariantSelections')->all() as $key => $ele) {
+                    if (empty($ele->getNormData())) {
+                        $errors[] = [
+                            'message'      => 'Product variant options should not be empty.',
+                            'propertyPath' => 'productPartVariantSelections.' . $key,
+                        ];
+                    }
+                }
+
+                if (count($errors)) {
+                    foreach ($errors as $error) {
+                        // Format should be: children[businessAddress].children[postalCode]
+                        list($first, $second) = explode('.', $error['propertyPath']);
+                        $propertyPath = sprintf('children[%s].children[%d]', $first, $second);
+                        $vm = new ViolationMapper();
+                        // Convert error to violation.
+                        $constraint = new ConstraintViolation(
+                            $error['message'], $error['message'], [], '', $propertyPath, null
+                        );
+                        $vm->mapViolation($constraint, $form);
+                    }
+                }
+            });
             
             $dataCollector = [
                 'part' => [],
@@ -80,7 +112,7 @@ class ProductVariantType extends BaseProductVariantType
 
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
             $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType', [
-                'product_varant_object' => $variant
+                'product_variant_object' => $variant
             ]);
 
             $callbackTransformer = new CallbackTransformer(
@@ -96,26 +128,30 @@ class ProductVariantType extends BaseProductVariantType
 
                 function ($selection) use ($variant, $dataCollector) {
                     $arrCollection = new ArrayCollection();
-
                     foreach ($selection as $value) {
-                        list($productPartId, $productPartMaterialVariantId) = explode('_', $value);
+                        if (!empty($value)) {
+                            list($productPartId, $productPartMaterialVariantId) = explode('_', $value);
 
-                        $value = null;
-                        foreach ($variant->getProductPartVariantSelections() as $vs) {
-                            if ($vs->getProductPart()->getId() == $productPartId && $vs->getProductPartMaterialVariant()->getId() == $productPartMaterialVariantId
-                            ) {
-                                $value = $vs;
+                            $value = null;
+                            foreach ($variant->getProductPartVariantSelections() as $vs) {
+                                if ($vs->getProductPart()->getId() == $productPartId
+                                    && $vs->getProductPartMaterialVariant()->getId() == $productPartMaterialVariantId
+                                ) {
+                                    $value = $vs;
+                                }
                             }
-                        }
 
-                        if (!$value) {
-                            $value = new ProductPartVariantSelection();
-                            $value->setProductPart($dataCollector['part'][$productPartId]);
-                            $value->setProductPartMaterialVariant($dataCollector['materialVariant'][$productPartMaterialVariantId]);
-                        }
+                            if (!$value) {
+                                $value = new ProductPartVariantSelection();
+                                $value->setProductPart($dataCollector['part'][$productPartId]);
+                                $value->setProductPartMaterialVariant(
+                                    $dataCollector['materialVariant'][$productPartMaterialVariantId]
+                                );
+                            }
 
-                        $arrCollection->add($value);
-                    };
+                            $arrCollection->add($value);
+                        }
+                    }
 
                     return $arrCollection;
                 }

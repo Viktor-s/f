@@ -5,21 +5,23 @@ Furniture\ProductBundle\Entity\Product:
     oneToMany:
         productSchemes:
             targetEntity: Furniture\ProductBundle\Entity\ProductScheme
-            cascade: [persist]
+            cascade: [ persist ]
             mappedBy: product
             orphanRemoval: true
             orderBy:
                 id: ASC
+
         productVariantsPatterns:
             targetEntity: Furniture\ProductBundle\Entity\ProductVariantsPattern
+            cascade: [ persist ]
             mappedBy: product
             orphanRemoval: true
-            fetch: EXTRA_LAZY
             orderBy:
                 id: ASC
+
         skuOptionVariants:
             targetEntity: Furniture\SkuOptionBundle\Entity\SkuOptionVariant
-            cascade: [persist]
+            cascade: [ persist ]
             mappedBy: product
             orphanRemoval: true
             orderBy:
@@ -27,7 +29,7 @@ Furniture\ProductBundle\Entity\Product:
 
         productParts:
             targetEntity: Furniture\ProductBundle\Entity\ProductPart
-            cascade: [persist]
+            cascade: [ persist ]
             mappedBy: product
             orphanRemoval: true
 
@@ -44,7 +46,7 @@ Furniture\ProductBundle\Entity\Product:
     manyToMany:
         subProducts:
             targetEntity: Product
-            cascade: [persist]
+            cascade: [ persist ]
             inversedBy: bundleProducts
             joinTable:
                 name: bundle_products_relation
@@ -55,6 +57,7 @@ Furniture\ProductBundle\Entity\Product:
                 inverseJoinColumns:
                     child_product_id:
                         referencedColumnName: id
+
         bundleProducts:
             fetch: EXTRA_LAZY
             targetEntity: Product

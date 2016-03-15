@@ -1,0 +1,56 @@
+{% block specifications_table %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed table-specification">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>{{ 'frontend.manager'|trans }}</th>
+                <th>{{ 'frontend.name'|trans }}</th>
+                <th>{{ 'frontend.buyer'|trans }}</th>
+                <th>{{ 'frontend.last_modified'|trans }}</th>
+                <th>{{ 'frontend.total_price'|trans }}</th>
+                <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for specification in specifications %}
+                <tr>
+                    <td>{{ specification.id }}</td>
+                    <td>{{ specification.creator.user.fullName }}</td>
+                    <td>{{ specification.name }}</td>
+                    <td>{{ specification.buyer }}</td>
+                    <td>{{ specification.updatedAt.format('Y/m/d H:i') }}</td>
+                    <td>{{ specification|specification_total_price|money }}</td>
+                    <td class="text-right">
+                        {% if specification.finishedAt is empty %}
+                            {% if is_granted('EDIT', specification) %}
+                                <a class="btn btn-edit btn-xs" href="{{ path('specification_edit', {specification: specification.id}) }}">{{ 'frontend.edit'|trans }}</a>
+                            {% endif %}
+
+                            {% if is_granted('FINISH', specification) and specification.items|length > 0 %}
+                                <a class="btn btn-finish btn-xs" data-remove data-message="Are you sure  you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                            {% endif %}
+
+                            {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                                <a class="btn btn-export btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                            {% endif %}
+                            {% if is_granted('REMOVE', specification) %}
+                                <a href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?" class="glyphicon glyphicon-remove mv-remove" aria-hidden="true"></a>
+                            {% endif %}
+                        {% else %}
+                            {{ 'frontend.finished'|trans }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">
+                    {{ 'frontend.specfications_not_found'|trans }}&nbsp;
+                    {{ (is_granted('SPECIFICATION_CREATE') ? '<a href="' ~ path('specification_create') ~ '">' ~ 'frontend.create'|trans ~ '</a>')|raw }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

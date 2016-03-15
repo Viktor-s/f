@@ -253,6 +253,12 @@ sylius_resource:
                 controller: Furniture\ProductBundle\Controller\ProductVariantsPatternModifierController
                 model: Furniture\ProductBundle\Entity\ProductVariantsPatternModifier
 
+        furniture.product_pdp_intellectual:
+            driver: doctrine/orm
+            classes:
+                controller: Furniture\ProductBundle\Controller\ProductPdpIntellectualController
+                model: Furniture\ProductBundle\Entity\PdpIntellectualRoot
+
         furniture.product_category:
             driver: doctrine/orm
             classes:
@@ -316,6 +322,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\ProductPartMaterial
+                repository: Furniture\ProductBundle\Entity\Repository\ProductPartMaterialRepository
                 translation:
                     model: Furniture\ProductBundle\Entity\ProductPartMaterialTranslation
                     mapping: ~

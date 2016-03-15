@@ -6,11 +6,11 @@
         controlUnauthorizedError = function (e)
         {
             if (e.status == 401) {
-                window.location = '/login';
+                window.location = '/';
 
                 return false;
             } else if (e.status == 403) {
-                window.location = '/login';
+                window.location = '/';
             }
         };
 

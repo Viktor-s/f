@@ -36,6 +36,7 @@ class SkuOptionTypeRemovalChecker
 
         /** @var \Furniture\SkuOptionBundle\Entity\Repository\SkuOptionTypeRepository $skuOptionRepository */
         $skuOptionRepository = $this->em->getRepository(SkuOptionType::class);
+
         if ($skuOptionRepository->hasReferencedToProduct($skuOption)) {
             $reasonMessages[] = 'Has references to product.';
         }

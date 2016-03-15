@@ -20,6 +20,7 @@
             {{ buttons.show(path('furniture_backend_product_pattern_index', {'productId': product.id}), 'Patterns') }}
             {{ buttons.show(path('furniture_backend_product_pattern_modifier_index', {productId: product.id}), 'Modifiers') }}
             {{ buttons.edit(path('furniture_backend_product_pdp_config', {'id': product.id}), 'PDP') }}
+            {{ buttons.show(path('furniture_backend_product_pdp_intellectual_index', {productId: product.id}), 'PDP Intellectual') }}
             {{ buttons.edit(path('sylius_backend_product_update', {'id': product.id})) }}
 
             {% if is_product_can_remove(product) %}
