@@ -860,7 +860,7 @@ input[type="checkbox"]:checked:disabled + label::before {
 .product-slide-entry .product-image a.thumbnail {
     line-height: 225px;
     text-align: center;
-    max-height: 225px;
+    min-height: 225px;
     max-width: 300px;
     position: relative;
 }
