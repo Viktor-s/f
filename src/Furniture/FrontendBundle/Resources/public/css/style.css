@@ -728,7 +728,8 @@ span.total-price{
     padding-left: 0;
 }
 
-#specification-table .product-title {
+#specification-table .product-title,
+#specifications-export-table .product-title {
     font-weight: 900;
     color: #000;
     white-space: nowrap;

@@ -11,7 +11,7 @@
         {% endif %}
     </td>
 
-    <td class="text-center" rel="brand">
+    <td rel="brand">
         <div class="factory-info">
             <div class="factory-name">
                 <a href="#">{{ product_variant.product.factory.name }}</a>
@@ -19,7 +19,7 @@
         </div>
     </td>
 
-    <td class="product-info text-center">
+    <td class="product-info">
         {% if product.factoryCode %}
             <div>
                 {{ product.factoryCode }}
@@ -39,7 +39,7 @@
         {% endif %}
     </td>
 
-    <td class="text-center">
+    <td>
         <ul>
             {% for option in product_variant.options %}
                 <li>
@@ -64,7 +64,7 @@
         </ul>
     </td>
 
-    <td class="text-center" data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
+    <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
     <td class="text-center" data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 

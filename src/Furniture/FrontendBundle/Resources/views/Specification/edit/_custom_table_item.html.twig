@@ -21,13 +21,21 @@
         </div>
     </td>
 
-    <td class="text-center" data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
+    <td data-index="factoryName" data-type="text" data-server-type="custom-item">{{ custom_item.factoryName }}</td>
 
-    <td class="text-center" data-index="name" data-type="text" data-server-type="custom-item">{{ custom_item.name }}</td>
+    <td data-index="name" data-type="text" data-server-type="custom-item">
+        <div>
+            <span class="product-title">
+            {% if custom_item.name is not empty %}
+            {{ custom_item.name }}
+            {% endif %}
+            </span>
+        </div>
+    </td>
 
-    <td class="text-center" data-index="options" data-type="textarea" data-server-type="custom-item">{{ custom_item.options }}</td>
+    <td data-index="options" data-type="textarea" data-server-type="custom-item">{{ custom_item.options }}</td>
 
-    <td class="text-center" data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
+    <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
     <td class="text-center" data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
