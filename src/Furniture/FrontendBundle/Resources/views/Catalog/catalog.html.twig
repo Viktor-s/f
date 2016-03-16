@@ -3,8 +3,8 @@
 {% block title %} {{ 'frontend.spaces'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
-    <a href="{{ path('homepage') }}">{{ 'frontend.title.spaces'|trans }}</a>
-    <a href="#">{{ 'frontend.title.spaces'|trans }}</a>
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
+    <span class="active">{{ 'frontend.title.spaces'|trans }}</span>
 {% endblock %}
 
 {% block content %}
