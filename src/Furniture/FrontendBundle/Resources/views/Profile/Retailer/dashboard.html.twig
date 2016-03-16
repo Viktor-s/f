@@ -12,15 +12,14 @@
     {% if app.user.isRetailer() %}
         <div class="row">
             <div class="pull-right">
-                <a href="{{ path('retailer_profile_edit') }}" class="btn btn-success">
-                    <i class="fa fa-edit"></i>
+                <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit">
                     {{ 'frontend.edit'|trans }}
                 </a>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-sm-6">
                 {% if is_granted('RETAILER_EDIT', retailer) %}
                     <div class="image-ajax-container" data-full-name="logo[path]" data-url-upload="{{ path('retailer_profile_logo_upload') }}"{% if retailer.logoImage and retailer.logoImage.path %} data-image-path="{{ retailer.logoImage.path|imagine_filter('s200x200') }}"{% endif %}>
                         <div class="image-upload">
@@ -49,9 +48,8 @@
                     {% endif %}
                 {% endif %}
             </div>
-
-            <div class="col-md-9">
-                <div class="article-container style-1">
+            <div class="col-sm-6">
+                <div class="retailer-dashboard article-container style-1">
                     <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
@@ -64,18 +62,22 @@
                     {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
                         <div class="phones">
                             <b>Phones:</b>
-                            {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
-                                <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
-                            {% endfor %}
+                            <ul>
+                                {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
+                                    <li>{{ phone }}{% if not loop.last %}, {% endif %}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
                             <b>Emails:</b>
-                            {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
-                                <span class="item">{{ email }}{% if not loop.last %},{% endif %}</span>
-                            {% endfor %}
+                            <ul>
+                                {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
+                                    <li>{{ email }}{% if not loop.last %},{% endif %}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
 

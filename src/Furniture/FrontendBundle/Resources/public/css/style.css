@@ -142,7 +142,7 @@ a,.product-image .bottom-line,.product-image img {
 }
 .foot-nav li a {
     border-right: 1px solid #a0a0a0;
-    padding: 0px 12px;
+    padding: 0 12px;
 }
 .foot-nav li:first-child a {
     padding-left: 0;
@@ -304,8 +304,7 @@ code {
 .simple-search-form input[type="text"] {
     height: 20px;
     line-height: 20px;
-    padding: 0 28px 0 8px;
-    padding-right: 20px;
+    padding: 0 20px 0 8px;
     border: 1px solid #ededed;
     width: 100%;
 }
@@ -727,6 +726,14 @@ span.total-price{
 .specifications-export-table ul {
     padding-left: 0;
 }
+
+#specification-table .product-title,
+#specifications-export-table .product-title {
+    font-weight: 900;
+    color: #000;
+    white-space: nowrap;
+}
+
 #specifications-table ul li,
 .specifications-export-table ul li,
 .sidebar-block ul li {
@@ -792,9 +799,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     display: inline-block;
 }
 .specifications-export-table input[type="checkbox"]:checked + label::before {
-    background-image: url(../bundles/frontend/img/icon-checked.png);
-    background-position: center;
-    background-color: transparent;
+    background: transparent url(../bundles/frontend/img/icon-checked.png) center;
     width: 17px;
     right: -3px;
 }
@@ -814,6 +819,66 @@ input[type="checkbox"]:checked:disabled + label::before {
     display: block;
 }
 
+/**
+ * User/Retailer/Factory Profile
+ */
+.retailer-dashboard h3,
+.user-dashboard h3 {
+    margin-top: 0;
+}
+
+.retailer-dashboard .phones,
+.retailer-dashboard .emails,
+.user-dashboard .phones,
+.user-dashboard .emails {
+    display: table;
+}
+
+.retailer-dashboard .phones ul li,
+.retailer-dashboard .emails ul li,
+.user-dashboard .phones ul li,
+.user-dashboard .emails ul li {
+    padding-top: 0;
+}
+
+.retailer-dashboard .phones ul li:before,
+.retailer-dashboard .emails ul li:before,
+.user-dashboard .phones ul li:before,
+.user-dashboard .emails ul li:before {
+    content: none;
+}
+
+.retailer-dashboard .phones b,
+.retailer-dashboard .phones ul,
+.retailer-dashboard .emails b,
+.retailer-dashboard .emails ul,
+.user-dashboard .phones b,
+.user-dashboard .phones ul,
+.user-dashboard .emails b,
+.user-dashboard .emails ul {
+    display: table-cell;
+    vertical-align: top;
+}
+
+/**
+ * Select2 styles override
+ */
+.select2-container--default .select2-selection--single {
+    border-radius: 0;
+    border-color: #ededed;
+}
+.select2-container .select2-selection--single {
+    height: 20px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 20px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 18px;
+}
+
 /*ProductsGrid */
 .product-slide-entry {
     text-align: left;
@@ -821,7 +886,7 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 .product-slide-entry .product-image {
-    min-height: 185px;
+    max-height: 225px;
     overflow: hidden;
     position: relative;
 }
@@ -850,9 +915,10 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 .product-slide-entry .product-image a.thumbnail {
-    line-height: 185px;
+    line-height: 225px;
     text-align: center;
-    min-height: 185px;
+    min-height: 225px;
+    max-width: 300px;
     position: relative;
 }
 
@@ -1091,11 +1157,31 @@ label[for="filter-bottom"]:before,
     font-weight: 500;
     position: relative;
     padding-left: 22px;
-    margin-bottom: 15px;
 }
+
+.checkbox-entry input + span.check {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
 .checkbox-entry input:checked + span.check {
     background: #ca1515;
 }
+
+.help-block {
+    clear: both;
+    margin-bottom: 0;
+}
+
 .specifications-export-table label {
     margin-bottom: 0;
 }
@@ -1158,12 +1244,7 @@ label[for="filter-bottom"]:before,
     color:#666666;
 
     /* Use multiple backgrounds CSS3 */
-
-    background:url('./bundles/frontend/img/select_slice.png') repeat-x #ddd;
-    background-image:url('./bundles/frontend/img/select_slice.png'),url('./bundles/frontend/img/select_slice.png'),url('./bundles/frontend/img/select_slice.png'),url('./bundles/frontend/img/select_slice.png');
-    background-position:0 -136px, right -204px, 50% -68px, 0 0;
-    background-repeat: no-repeat, no-repeat, no-repeat, repeat-x;
-
+    background: #ddd url('./bundles/frontend/img/select_slice.png'), url('./bundles/frontend/img/select_slice.png'), url('./bundles/frontend/img/select_slice.png'), url('./bundles/frontend/img/select_slice.png') no-repeat, no-repeat, no-repeat, repeat-x 0 -136px, right -204px, 50% -68px, 0 0;
     cursor:pointer;
 
     -moz-border-radius:3px;
@@ -1255,6 +1336,21 @@ table.specifications-export-table>thead>tr>th:last-child {
     width: 195px;
 }
 
+.relation-tables .request-action {
+    margin: 10px 0;
+}
+
+.relation-tables.retailer table .tb-sp-actions {
+    width: 120px;
+}
+
+.retailer-employees .tb-sp-actions {
+    width: 80px;
+}
+
+.relation-tables table .tb-sp-actions {
+    width: 160px;
+}
 .fa {
     font: normal normal normal 14px/1 FontAwesome !important;
 }
@@ -1321,7 +1417,7 @@ table.specifications-export-table>thead>tr>th:last-child {
     right: 0;
     border: 1px #ebebeb solid;
     content: "\f107";
-    font-family: FontAwesome;
+    font-family: FontAwesome, sans-serif;
     font-size: 12px;
     color: #7c7c7c;
     text-align: center;
@@ -1595,8 +1691,7 @@ table.specifications-export-table>thead>tr>th:last-child {
 
 .factory-slide-entry {
     max-width: 310px;
-    margin: 0 auto;
-    margin-bottom: 50px;
+    margin: 0 auto 50px;
 }
 
 .factory-slide-entry .factory-image {
@@ -1863,7 +1958,6 @@ table.specifications-export-table>thead>tr>th:last-child {
     font-size: 13px;
     color: #fff;
     font-weight: 600;
-    color: #fff;
     line-height: 25px;
     text-transform: uppercase;
 }
@@ -1875,7 +1969,6 @@ table.specifications-export-table>thead>tr>th:last-child {
 .blog-entry .description {
     font-size: 14px;
     line-height: 24px;
-    margin-bottom: 12px;
     color: #808080;
     font-weight: 300;
     margin-bottom: 15px;

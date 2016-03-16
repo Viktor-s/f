@@ -11,28 +11,26 @@
 {% block page_content %}
     {% if is_granted('RETAILER_EMPLOYEE_CREATE') %}
         <div class="pull-right">
-            <a href="{{ path('retailer_profile_employee_create') }}" class="btn btn-success">
-                <i class="fa fa-plus"></i>
-                {{ 'frontend.create'|trans }}
-            </a>
+            <a href="{{ path('retailer_profile_employee_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}</a>
+            <p class="lead-text"></p>
         </div>
     {% endif %}
 
-    <table class="table retailer-employees">
+    <table class="retailer-employees table table-striped table-bordered table-condensed">
         <thead>
         <tr>
-            <th class="text-center">{{ 'frontend.manager'|trans }}</th>
-            <th class="text-center">{{ 'frontend.position'|trans }}</th>
-            <th class="text-center">{{ 'frontend.created'|trans }}</th>
-            <th class="text-center">{{ 'frontend.enabled'|trans }}</th>
-            <th class="text-center">{{ 'frontend.access'|trans }}</th>
-            <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+            <th>{{ 'frontend.manager'|trans }}</th>
+            <th>{{ 'frontend.position'|trans }}</th>
+            <th>{{ 'frontend.created'|trans }}</th>
+            <th>{{ 'frontend.enabled'|trans }}</th>
+            <th>{{ 'frontend.access'|trans }}</th>
+            <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
         </tr>
         </thead>
 
         <tbody>
         {% for employee in employees %}
-            <tr class="text-center{% if employee.id == app.user.id %} info{% endif %}">
+            <tr class="{% if employee.id == app.user.id %}info{% endif %}">
                 <td>
                     <div class="full-name">{{ employee.customer.firstName }} {{ employee.customer.lastName }}</div>
                     <div class="username">{{ employee.username }}</div>
@@ -47,11 +45,11 @@
                     </div>
                 </td>
 
-                <td>
+                <td class="text-center">
                     <i class="glyphicon glyphicon-{{ employee.enabled ? 'ok' : 'remove' }}"></i>
                 </td>
 
-                <td>
+                <td class="text-center">
                     <span class="label label-success">
                         {% if employee.isRetailer() and employee.retailerUserProfile.isRetailerAdmin() %}
                             {{ 'frontend.admin'|trans }}
@@ -63,27 +61,20 @@
                     </span>
                 </td>
 
-                <td nowrap>
+                <td nowrap  class="text-right">
                     {% if is_granted('RETAILER_EMPLOYEE_EDIT', employee) %}
-                        <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}" class="btn btn-info btn-xs">
-                            <i class="fa fa-edit"></i>
-                            Edit
-                        </a>
+                        <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
                     {% endif %}
 
                     {% if employee.id != app.user.id %}
                         {% if employee.enabled %}
                             {% if is_granted('RETAILER_EMPLOYEE_REMOVE', employee) %}
-                                <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}" class="btn btn-danger btn-xs employee-remove">
-                                    <i class="fa fa-remove"></i>
-                                    Disable
+                                <a href="{{ path('retailer_profile_employee_remove', {employee: employee.id}) }}"
+                                    class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true"
+                                    title="Disable" data-toggle="tooltip"
+                                    data-remove data-message="Are you sure you want to disable this user?">
                                 </a>
                             {% endif %}
-                        {% else %}
-                            <span style="cursor: default;" class="btn btn-warning">
-                                <i class="fa fa-archive"></i>
-                                    Disabled
-                            </span>
                         {% endif %}
                     {% endif %}
                 </td>

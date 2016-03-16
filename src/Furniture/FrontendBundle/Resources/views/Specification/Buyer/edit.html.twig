@@ -9,13 +9,19 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <form action="" method="POST" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
+<div class="row">
+    <div class="col-sm-6">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
 
-            <input class="btn btn-success" type="submit" value="{{ 'frontend.save'|trans }}" />
-        </form>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9 text-right">
+                <button class="btn btn-success" type="submit">{{ 'frontend.save'|trans }}</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
+</div>
 {% endblock %}
 
 {% block footer_javascripts %}

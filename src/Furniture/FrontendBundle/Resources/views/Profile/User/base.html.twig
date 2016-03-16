@@ -10,22 +10,21 @@
 {% block content %}
     <div class="information-blocks">
         <div class="row">
-            {% block right_content_container %}
-                <div class="col-md-9 col-md-push-3 information-entry">
-                {% block page_content %}{% endblock %}
-            </div>
-        {% endblock %}
-
-        {% block left_content_container %}
-            <div class="col-md-3 col-md-pull-9 information-entry blog-sidebar">
-                {% block left_content %}
-                    <div class="information-blocks">
-                        <div class="categories-list">
-                            <div class="block-title size-3">{{ 'frontend.title.user_profile'|trans }}</div>
-                            {{ knp_menu_render('frontend.user_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
+            {% block left_content_container %}
+                <div class="col-sm-3 blog-sidebar">
+                    {% block left_content %}
+                        <div class="information-blocks">
+                            <div class="categories-list">
+                                <div class="block-title size-3">{{ 'frontend.title.user_profile'|trans }}</div>
+                                {{ knp_menu_render('frontend.user_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
+                            </div>
                         </div>
-                    </div>
-                {% endblock %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block right_content_container %}
+            <div class="col-sm-9">
+                {% block page_content %}{% endblock %}
             </div>
         {% endblock %}
     </div>

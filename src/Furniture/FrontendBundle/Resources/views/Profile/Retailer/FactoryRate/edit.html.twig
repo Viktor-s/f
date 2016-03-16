@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'class': 'col-sm-9'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
     {% if not rate.id %}

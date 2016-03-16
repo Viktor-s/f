@@ -27,23 +27,27 @@ class RetailerProfileType extends AbstractType
     {
         $builder
             ->add('name', 'text', [
-                'required' => true
+                'required' => true,
+                'label'    => 'frontend.name',
             ])
             ->add('website', 'text', [
-                'required' => false
+                'required' => false,
+                'label'    => 'frontend.website',
             ])
             ->add('subtitle', 'text', [
-                'required' => false
+                'required' => false,
+                'label'    => 'frontend.subtitle',
             ])
             ->add('description', 'textarea', [
-                'required' => false
+                'required' => false,
+                'label' => 'frontend.description'
             ])
             ->add('phones', 'text', [
-                'label' => 'furniture_retailer_profile.form.phones',
+                'label' => 'frontend.phones_contact',
                 'required' => false
             ])
             ->add('emails', 'text', [
-                'label' => 'furniture_retailer_profile.form.emails',
+                'label' => 'frontend.emails_contact',
                 'required' => false
             ]);
 

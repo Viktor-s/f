@@ -214,6 +214,11 @@ class CustomSpecificationItemController
 
         $this->em->flush();
 
+        // Markup parametr should be url encoded.
+        if ($request->request->has('markup')) {
+            $value = sprintf( urldecode($request->request->get('markup')), $value);
+        }
+
         return new Response($value);
     }
 

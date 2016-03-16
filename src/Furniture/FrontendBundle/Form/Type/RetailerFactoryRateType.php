@@ -102,7 +102,7 @@ class RetailerFactoryRateType extends AbstractType
             ->add('_submit', 'submit', [
                 'label' => 'frontend.save',
                 'attr'  => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-success',
                 ],
             ]);
     }

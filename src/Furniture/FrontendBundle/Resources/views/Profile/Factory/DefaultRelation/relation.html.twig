@@ -9,17 +9,21 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="information-blocks default-relation">
-        <a href="{{ path('factory_profile_default_relation_edit') }}" class="btn btn-primary">{{ 'frontend.edit'|trans }}</a>
-
-        <div class="group-item">
-            <div class="col-lg-2">{{ 'frontend.products_view'|trans }}</div>
-            <div class="col-lg-10"><i class="fa fa-{{ default_relation.accessProducts ? 'check' : 'remove' }}"></i></div>
+    <div class="page-header">
+        <h1>{{ 'frontend.title.default_relation'|trans }}</h1>
+    </div>
+    <div>
+        <a href="{{ path('factory_profile_default_relation_edit') }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
+    </div>
+    <p class="lead-text"></p>
+    <div class="list-group col-sm-3">
+        <div class="list-group-item">
+            <i class="pull-right fa fa-{{ default_relation.accessProducts ? 'check' : 'remove' }}"></i>
+            {{ 'frontend.products_view'|trans }}
         </div>
-
-        <div class="group-item">
-            <div class="col-lg-2">{{ 'frontend.product_prices_view'|trans }}</div>
-            <div class="col-lg-10"><i class="fa fa-{{ default_relation.accessProductsPrices ? 'check' : 'remove' }}"></i></div>
+        <div class="list-group-item">
+            <i class="pull-right fa fa-{{ default_relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
+            {{ 'frontend.product_prices_view'|trans }}
         </div>
     </div>
 {% endblock %}

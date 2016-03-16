@@ -44,16 +44,16 @@
                 <table id="specification-table" class="table table-striped table-bordered table-condensed" data-specification-id="{{ specification.id }}" >
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th class="text-center">{{ 'frontend.image'|trans }}</th>
+                            <th>#</th>
+                            <th>{{ 'frontend.image'|trans }}</th>
                             <th>{{ 'frontend.brand'|trans }}</th>
                             <th>{{ 'frontend.name'|trans }}</th>
                             <th>{{ 'frontend.options'|trans }}</th>
                             <th>{{ 'frontend.notes'|trans }}</th>
                             <th>{{ 'frontend.quantity'|trans }}</th>
-                            <th class="text-center">{{ 'frontend.price'|trans }}</th>
-                            <th class="total-price-column text-center">{{ 'frontend.total_price'|trans }}</th>
-                            <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                            <th>{{ 'frontend.price'|trans }}</th>
+                            <th class="total-price-column">{{ 'frontend.total_price'|trans }}</th>
+                            <th>{{ 'frontend.actions'|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -269,12 +269,22 @@
                                     scrollToView(tr);
                                 },
                                 "submitdata": function ( value, settings ) {
-                                    return {
+                                    var data = {
                                         id: itemIndex
                                     };
+                                    // Add markup for name field.
+                                    if (itemIndex == 'name') {
+                                      data.markup = encodeURIComponent('<div><span class="product-title">%s</span></div>');
+                                    }
+
+                                    return data;
                                 },
                                 "indicator": function(){
                                     return progressBasr;
+                                },
+                                'data': function(value, settings) {
+                                    // Trim html tags from value.
+                                    return jQuery(value).length ? jQuery(value).text().trim() : value;
                                 },
                                 "height": "100%",
                                 "width": "100%"
@@ -503,26 +513,22 @@
                                     .find('td:eq(2)')
                                     .data('index', 'factoryName')
                                     .data('type', 'text')
-                                    .data('server-type', 'custom-item')
-                                    .addClass('text-center');
+                                    .data('server-type', 'custom-item');
 
                                 row.find('td:eq(3)')
                                     .data('index', 'name')
                                     .data('type', 'text')
-                                    .data('server-type', 'custom-item')
-                                    .addClass('text-center');
+                                    .data('server-type', 'custom-item');
                             
                                 row.find('td:eq(4)')
                                     .data('index', 'options')
                                     .data('type', 'textarea')
-                                    .data('server-type', 'custom-item')
-                                    .addClass('text-center');
+                                    .data('server-type', 'custom-item');
 
                                 row.find('td:eq(5)')
                                     .data('index', 'note')
                                     .data('type', 'textarea')
-                                    .data('server-type', 'specification-item')
-                                    .addClass('text-center');
+                                    .data('server-type', 'specification-item');
 
                                 row.find('td:eq(6)')
                                     .data('index', 'quantity')
@@ -567,14 +573,14 @@
                                         complete: function () {
                                             tr.removeClass('danger');
                                             a.prop('disabled', false);
-                                            console.log('complete remove');
+//                                            console.log('complete remove');
                                             trTotalPriceSpecificationUpdater();
                                         },
                                         error: function () {
                                             alert('Error with remove specification item. Please try again.');
                                         },
                                         success: function () {
-                                            console.log('success remove');
+//                                            console.log('success remove');
                                             tr.animate({
                                                 height: '0px'
                                             }, 50, 'swing', function () {
