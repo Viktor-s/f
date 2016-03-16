@@ -73,6 +73,7 @@ class RetailerEmployeeType extends AbstractType
                 [
                     'email_disabled'     => (bool)$employee->getId(),
                     'last_name_disabled' => (bool)$employee->getId(),
+                    'first_name_disabled' => (bool)$employee->getId(),
                 ]
             )
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());
