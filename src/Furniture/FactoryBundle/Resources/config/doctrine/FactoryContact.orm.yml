@@ -27,6 +27,7 @@ Furniture\FactoryBundle\Entity\FactoryContact:
         address:
             type: string
             name: address
+            nullable: true
 
         phones:
             type: json_array
