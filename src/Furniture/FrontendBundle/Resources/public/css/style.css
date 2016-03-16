@@ -1347,7 +1347,8 @@ table.specifications-export-table>thead>tr>th:last-child {
     width: 120px;
 }
 
-.retailer-employees .tb-sp-actions {
+.retailer-employees .tb-sp-actions,
+.factory-rates .tb-sp-actions {
     width: 80px;
 }
 
