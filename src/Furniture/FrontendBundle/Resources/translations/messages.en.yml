@@ -34,7 +34,7 @@ frontend:
         composite_collection_selector: Collections
     characteristics: Characteristics
     click_to_edit: Click to edit
-    coefficient: Coefficient
+    coefficient: Coefficient:
     contact: Contact
     content_user_profile: User profile
     create: Create
@@ -45,18 +45,19 @@ frontend:
     created_at: Created at
     creator: Creator
     default_relation: Default relation
-    description: Description
+    description: Description:
     detailed: Detailed
     discount: Discount
     discount_value: 'Discount :discount%'
     downlod_file_with_number: "Download :number"
-    dumping: Extra discount
+    dumping: Extra discount:
     edit: Edit
-    email: Email
+    email: Email:
     email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
     email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
     emails: Emails
+    emails_contact: Contact emails:
     employee: Employee
     employees: Employees
     enabled: Enabled
@@ -66,7 +67,7 @@ frontend:
     export_to_pdf: PDF
     export_specification_preview: Export specification - preview
     factories: Brands
-    factory: Brand
+    factory: Brand:
     factory_code: Factory code
     factory_profile: Factory profile
     factory_rates: Factory conditions
@@ -99,7 +100,7 @@ frontend:
     finish: Finish
     finished: Finished
     finishes: Finishes
-    first_name: First name
+    first_name: First name:
     forgot_password: Forgot password?
     full: Full
     image: Image
@@ -108,7 +109,7 @@ frontend:
         ru: Russian
         it: Italian
     last_modified: Last modified
-    last_name: Last name
+    last_name: Last name:
     login:
         login: Login
         username: Username
@@ -152,7 +153,7 @@ frontend:
     need_reset_password: We sent you a verification email, please check email and follow instructions
     new_arrivals: New arrivals
     new_factories: New Brands
-    new_password: New password
+    new_password: New password:
     new_specification: New specification
     note: Note
     notes: Notes
@@ -162,11 +163,11 @@ frontend:
     password: Password
     pdf: PDF
     phones: Phones
-    phones_contact: Contact phones
+    phones_contact: Contact phones:
     photo: Photo
     please_enter_new_password: "Please enter a new password for your account."
     please_enter_your_email: "Please enter your account email."
-    position: Position
+    position: Position:
     price: Price
     product:
         media_tab:
@@ -184,7 +185,7 @@ frontend:
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
     remove: Remove
     goto_home: Return to home
-    repeat_password: Repeat password
+    repeat_password: Repeat password:
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
@@ -194,7 +195,7 @@ frontend:
     retailer_profile_side:
         managers:
             email_exists_error: Already in use!
-            create_confirmation: "We'll send confirmation mail on specified email address"
+            create_confirmation: "We'll send confirmation email on specified email address."
             email_change_confirmation: "Are you sure you want change your email? If you proceed you'll be logged out and mail with email confirmation instructions will be send to new email."
     retailer_relations: User relations
     retailer_requests: Retailer requests
@@ -227,6 +228,7 @@ frontend:
         created_label: Created:
         notes: Notes:
         will_not_appear_in_specification: will no appear in specification
+    subtitle: Subtitle:
     taxonomy: Categories
     title:
         spaces: Spaces
@@ -282,5 +284,5 @@ frontend:
     username: Username
     volume: Volume
     weight: Weight
-    website: Website
+    website: Website:
     you_not_have_factory_rates: You not have factory conditions.

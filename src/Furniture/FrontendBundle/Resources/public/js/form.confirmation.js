@@ -3,7 +3,9 @@
         $('form[data-confirm]').on('submit', function(e, options) {
             options = options || {};
             if ($(this).data('confirm') === true) {
-                var message = $(this).data('message');
+                var message = $.trim($(this).data('message')).length > 0
+                    ? $.trim($(this).data('message'))
+                    : 'Please confirm this action!';
                 if (!options.confirm) {
                     bootbox.confirm(message, function(result) {
                         if (result) {

@@ -9,11 +9,9 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="col-sm-6">
-        {{ form_start(form, {'attr': {'id': 'retailer-factory-relation'}}) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
+    {{ form_start(form, {'attr': {'id': 'retailer-factory-relation', 'class': 'col-sm-9'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
     {% if not relation.id %}
         <script type="text/javascript">
             (function ($) {

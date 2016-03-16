@@ -9,23 +9,25 @@
 {% endblock %}
 
 {% block page_content %}
-    <form class="form" method="POST" action="" data-confirm>
-        {% if form.vars.errors|length > 0 %}
-            {{ form_errors(form) }}
-        {% endif %}
+    {{ form_start(form, {'attr': {'class': 'col-sm-9', 'data-confirm': 'true'}}) }}
+    {% if form.vars.errors|length > 0 %}
+        {{ form_errors(form) }}
+    {% endif %}
 
-        {{ form_row(form.email) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-        {{ form_row(form.retailerUserProfile.position) }}
-        {{ form_row(form.retailerUserProfile.phones) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.retailerUserProfile.position) }}
+    {{ form_row(form.retailerUserProfile.phones) }}
 
-        {{ form_rest(form) }}
+    {{ form_rest(form) }}
 
-        <div class="text-center">
-            <input type="submit" class="btn btn-success" value="Save" />
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9 text-right">
+            <button type="submit" class="btn btn-success">{{ 'frontend.save'|trans }}</button>
         </div>
-    </form>
+    </div>
+    {{ form_end(form) }}
     <script>
         (function($) {
             var email = "{{ app.user.email }}";
