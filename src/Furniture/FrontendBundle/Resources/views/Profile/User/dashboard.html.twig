@@ -9,7 +9,7 @@
 {% block page_content %}
     <div class="row">
         {% if app.user.isRetailer() %}
-            <div class="col-sm-6">
+            <div class="col-sm-6 text-center">
                 {% if app.user.retailerUserProfile.retailerProfile.logoImage and app.user.retailerUserProfile.retailerProfile.logoImage.path %}
                     <img src="{{ app.user.retailerUserProfile.retailerProfile.logoImage.path|imagine_filter('s200x200') }}" />
                 {% else %}

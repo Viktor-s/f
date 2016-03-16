@@ -2120,6 +2120,11 @@ table.specifications-export-table>thead>tr>th:last-child {
 .image-container {
     position: relative;
 }
+
+.retailer-profile .image-container {
+    display: inline-block;
+}
+
 .image-container .mv-remove {
     position: absolute;
     top: 0;

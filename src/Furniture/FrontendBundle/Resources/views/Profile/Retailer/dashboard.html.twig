@@ -18,8 +18,8 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-6">
+        <div class="row retailer-profile">
+            <div class="col-sm-6 text-center">
                 {% if is_granted('RETAILER_EDIT', retailer) %}
                     <div class="image-ajax-container" data-full-name="logo[path]" data-url-upload="{{ path('retailer_profile_logo_upload') }}"{% if retailer.logoImage and retailer.logoImage.path %} data-image-path="{{ retailer.logoImage.path|imagine_filter('s200x200') }}"{% endif %}>
                         <div class="image-upload">
@@ -35,7 +35,7 @@
                                 <img min-width="200" min-height="200" src="" />
                             </div>
 
-                            <a class="mv-remove" href="#remove-image">
+                            <a class="mv-remove" href="#remove-image" data-toggle="tooltip" title="Remove image">
                                 <i class="fa fa-remove"></i>
                             </a>
                         </div>
