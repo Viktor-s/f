@@ -129,7 +129,7 @@
 
                     <tbody>
                     {% for relation in authorized_relations %}
-                        <tr>
+                        <tr class="{% if not relation.active %} danger{% endif %}">
                             <td>{{ relation.retailer.name }}</td>
 
                             <td class="text-center">
