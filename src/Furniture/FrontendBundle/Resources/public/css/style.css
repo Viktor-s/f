@@ -820,7 +820,7 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 /**
- * User/Retailer Profile
+ * User/Retailer/Factory Profile
  */
 .retailer-dashboard h3,
 .user-dashboard h3 {

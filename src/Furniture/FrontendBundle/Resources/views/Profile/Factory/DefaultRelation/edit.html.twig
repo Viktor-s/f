@@ -9,7 +9,10 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form, {'attr': {'id': 'factory-default-relation'}}) }}
+    <div class="page-header">
+        <h1>{{ 'frontend.title.default_relation_edit'|trans }}</h1>
+    </div>
+    {{ form_start(form, {'attr': {'id': 'factory-default-relation', 'class': 'col-sm-9'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
 

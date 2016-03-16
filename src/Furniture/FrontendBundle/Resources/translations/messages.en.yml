@@ -258,9 +258,11 @@ frontend:
         factory_rates: Factory conditions
         user_relations: User relations
         retailer_relations: Retailer relations
+        retailer_relations_create: Create retailer relations
         user_profile: My profile
         factory_relations: Factory relations
         default_relation: Default relation
+        default_relation_edit: Edit default relation
         view: View
         taxonomy: Categories
         factory_side: Factory
