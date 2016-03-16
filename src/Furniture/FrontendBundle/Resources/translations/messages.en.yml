@@ -2,7 +2,7 @@ frontend:
     access: Access
     actions: Actions
     add_to_specification: Add to specification
-    address: Address
+    address: Address:
     admin: Admin
     agenta_solution: AgentA Solution
     all: All
@@ -56,7 +56,7 @@ frontend:
     email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
     email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
-    emails: Emails
+    emails: Emails:
     emails_contact: Contact emails:
     employee: Employee
     employees: Employees
@@ -162,7 +162,7 @@ frontend:
     options: Options
     password: Password
     pdf: PDF
-    phones: Phones
+    phones: Phones:
     phones_contact: Contact phones:
     photo: Photo
     please_enter_new_password: "Please enter a new password for your account."
