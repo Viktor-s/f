@@ -1331,13 +1331,16 @@ table.specifications-export-table>thead>tr>th:last-child {
     border-radius: 0;
 }
 
-.table-specification .tb-sp-actions,
-.clients-table .tb-sp-actions {
+.relation-tables .request-action {
+    margin: 10px 0;
+}
+
+.table-specification .tb-sp-actions {
     width: 195px;
 }
 
-.relation-tables .request-action {
-    margin: 10px 0;
+.clients-table .tb-sp-actions {
+    width: 180px;
 }
 
 .relation-tables.retailer table .tb-sp-actions {
