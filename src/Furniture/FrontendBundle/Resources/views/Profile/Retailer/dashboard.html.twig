@@ -22,7 +22,7 @@
             <div class="col-sm-6 text-center">
                 {% if is_granted('RETAILER_EDIT', retailer) %}
                     <div class="image-ajax-container" data-full-name="logo[path]" data-url-upload="{{ path('retailer_profile_logo_upload') }}"{% if retailer.logoImage and retailer.logoImage.path %} data-image-path="{{ retailer.logoImage.path|imagine_filter('s200x200') }}"{% endif %}>
-                        <div class="image-upload">
+                        <div class="image-upload" data-toggle="tooltip" title="Click to upload new logo">
                             <img data-src="holder.js/200x200?text=Choose image" />
                         </div>
 

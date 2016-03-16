@@ -244,6 +244,7 @@ frontend:
         buyers: Clients
         specifications: Specifications
         products: Products
+        password_change: Change password
         catalog: Products
         buyers: Clients
         list: List
@@ -254,13 +255,19 @@ frontend:
         factory_profile: Factory profile
         content_user_profile: User profile
         retailer_profile: Retailer profile
+        retailer_profile_edit: Edit retailer profile
         dashboard: Settings
         factory_rates: Factory conditions
+        factory_rates_edit: Edit factory conditions
+        factory_rates_create: Create factory conditions
         user_relations: User relations
         retailer_relations: Retailer relations
         retailer_relations_create: Create retailer relations
         user_profile: My profile
+        user_profile_edit: Update profile
         factory_relations: Factory relations
+        factory_relations_create: Create request to factory
+        factory_relations_edit: Edit request to factory
         default_relation: Default relation
         default_relation_edit: Edit default relation
         view: View
@@ -269,7 +276,10 @@ frontend:
         general: General
         brands: Brands
         employees: Employees
+        manager_create: Create Manager
+        manager_edit: Edit Manager
         managers: Managers
+        managers_list: Managers list
     to_factory_requests: Requests to factory
     to_retailer_requests: Requests to retailers
     total_price: Total price:

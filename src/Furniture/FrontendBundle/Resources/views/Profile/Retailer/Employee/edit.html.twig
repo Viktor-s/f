@@ -13,6 +13,9 @@
 {% endblock %}
 
 {% block page_content %}
+    <div class="page-header">
+        <h1>{{ employee.id ? 'frontend.title.manager_edit'|trans:'frontend.title.manager_create'|trans }}</h1>
+    </div>
     {{ form_start(form, {'attr': {'class': 'col-sm-9', 'data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
     {% if form.vars.errors|length %}
         {{ form_errors(form) }}

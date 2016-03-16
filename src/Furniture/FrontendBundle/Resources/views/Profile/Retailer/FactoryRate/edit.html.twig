@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block page_content %}
+    <div class="page-header">
+        <h1>{{ rate.id ? 'frontend.title.factory_rates_edit'|trans : 'frontend.title.factory_rates_create'|trans }}</h1>
+    </div>
     {{ form_start(form, {'attr': {'class': 'col-sm-9'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
