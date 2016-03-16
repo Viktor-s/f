@@ -38,11 +38,7 @@
                         }
                     }
                     else {
-                        $accessPrice.attr('checked', false).parent('label').slideUp(function(){
-                            if (typeof $.appendMessage === "function") {
-                                $.appendMessage(requiredMessage, 'error');
-                            }
-                        });
+                        $accessPrice.attr('checked', false).parent('label').slideUp();
                     }
                 });
             });
