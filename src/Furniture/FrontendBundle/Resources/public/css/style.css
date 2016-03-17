@@ -731,7 +731,6 @@ span.total-price{
 #specifications-export-table .product-title {
     font-weight: 900;
     color: #000;
-    white-space: nowrap;
 }
 
 #specifications-table ul li,
@@ -1843,6 +1842,20 @@ table.specifications-export-table>thead>tr>th:last-child {
 
 .header-demo header {
     position: absolute !important;
+}
+
+.dl-horizontal dt {
+    text-overflow: initial;
+}
+
+dt {
+    font-weight: bold;
+    line-height: 23px;
+}
+
+dd {
+    line-height: 23px;
+    margin-bottom: 10px;
 }
 
 /*-------------------------------------------------------------------------------------------------------------------------------*/

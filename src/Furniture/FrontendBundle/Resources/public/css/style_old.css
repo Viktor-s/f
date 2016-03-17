@@ -3051,18 +3051,6 @@ header.fixed-header nav {
     margin-bottom: 30px;
 }
 
-dl {}
-.dl-horizontal dl {}
-.dl-horizontal dt {text-overflow: initial;}
-dt {
-    font-weight: bold;
-    line-height: 23px !important;
-}
-dd {
-    line-height: 23px !important;
-    margin-bottom: 10px;
-}
-
 
 form.someclass {
   position: absolute;
