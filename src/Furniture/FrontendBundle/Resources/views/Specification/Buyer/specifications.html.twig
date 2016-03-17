@@ -1,6 +1,6 @@
 {% extends 'FrontendBundle:Specification/Buyer:base.html.twig' %}
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
-{% use 'FrontendBundle:Specification:toolbar_actions.html.twig' %}
+{% from 'FrontendBundle:Macros:specification.html.twig' import list_toolbar %}
 {% use 'FrontendBundle:Specification:specifications_table.html.twig' %}
 
 {% block title %}{{ 'frontend.specifications'|trans }} :: {{ buyer.fullName }}{% endblock %}
@@ -14,11 +14,8 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ block('toolbar_actoions') }}
-
-    <div class="information-blocks">
-        <h1 class="block-title">{{ buyer.fullName }}</h1>
-    </div>
+    {{ list_toolbar(sorting, paginator) }}
+    <h1 class="block-title">{{ buyer.fullName }}</h1>
     {% set not_found = 'frontend.specfications_opened_not_found_for_buyer'|trans({':buyer': buyer.fullName}) %}
     {% if is_granted('SPECIFICATION_CREATE') %}
         {% set not_found = not_found ~ ' <a href="' ~ path('specification_create', {buyer: buyer.id}) ~ '">' ~ 'frontend.create'|trans ~ '</a>' %}

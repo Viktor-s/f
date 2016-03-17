@@ -1072,18 +1072,19 @@ select[name="sorting"] {
     cursor:pointer;
     min-width: 90px;
 }
-label[for="sorting"],
-label[for="filter-top"],
-label[for="filter-bottom"],
+
+.filter-wrapper,
 .shop-grid-controls label {
     position: relative;
     margin-bottom: 0;
     max-width: 200px;
 }
 
-label[for="sorting"]:after,
-label[for="filter-top"]:after,
-label[for="filter-bottom"]:after,
+.filter-wrapper {
+    width: 100%;
+}
+
+.filter-wrapper:after,
 .shop-grid-controls label:after {
     content:'>';
     font:11px "Consolas", monospace;
@@ -1097,9 +1098,8 @@ label[for="filter-bottom"]:after,
     position:absolute;
     pointer-events:none;
 }
-label[for="sorting"]:before,
-label[for="filter-top"]:before,
-label[for="filter-bottom"]:before,
+
+.filter-wrapper:before,
 .shop-grid-controls label:before {
     content:'';
     right:0;
