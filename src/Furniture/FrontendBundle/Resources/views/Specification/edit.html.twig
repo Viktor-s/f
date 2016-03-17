@@ -36,6 +36,7 @@
 {% endblock %}
 
 {% block content_with_edit %}
+<div class="specification-edit">
     {{ edit_toolbar(specification, 'top') }}
     {{ specification_header(specification, 'frontend.specification_edit'|trans) }}
     <div class="row">
@@ -97,6 +98,7 @@
         </div>
     </div>
     {{ edit_toolbar(specification, 'bottom') }}
+</div>
 {% endblock %}
 
 {% block specification_sale %}

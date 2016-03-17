@@ -21,28 +21,26 @@
 {% endmacro %}
 
 {% macro edit_toolbar(specification, position)  %}
-    <div class="toolbar toolbar-{{ position }}">
-        <div class="row">
-            <div class="col-md-3  col-sm-4">
-                <div class="simple-search-form">
+    <div class="row toolbar toolbar-{{ position }}">
+        <div class="col-md-3  col-sm-4">
+            <div class="simple-search-form">
 
-                    <input type="text" id="search-{{ position }}" placeholder="Search in this specification">
-                    <div class="submit-icon">
-                        <i class="fa fa-search"></i>
-                    </div>
+                <input type="text" id="search-{{ position }}" placeholder="Search in this specification">
+                <div class="submit-icon">
+                    <i class="fa fa-search"></i>
                 </div>
             </div>
-            <div class="col-md-4  col-sm-5  col-sm-offset-3 col-md-offset-5">
-                <div class="text-right">
-                    <a href="#" id="add-custom-item-btn-{{ position }}" class="btn btn-primary">AddCustom</a>
-                    {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
-                        <a class="btn btn-finish btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
-                    {% endif %}
-                    {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
-                        <a class="btn btn-export btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
-                    {% endif %}
-                    <a class="glyphicon glyphicon-remove mv-remove" data-toggle="tooltip" title="Remove" aria-hidden="true" href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?"></a>
-                </div>
+        </div>
+        <div class="col-md-4  col-sm-5  col-sm-offset-3 col-md-offset-5">
+            <div class="text-right">
+                <a href="#" id="add-custom-item-btn-{{ position }}" class="btn btn-primary">AddCustom</a>
+                {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
+                    <a class="btn btn-finish btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                {% endif %}
+                {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                    <a class="btn btn-export btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                {% endif %}
+                <a class="glyphicon glyphicon-remove mv-remove" data-toggle="tooltip" title="Remove" aria-hidden="true" href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?"></a>
             </div>
         </div>
     </div>

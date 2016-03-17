@@ -296,7 +296,6 @@ code {
     height: 20px;
     background: #161616;
     border: none;
-    color: #ffffff;
     font-size: 12px;
     position: relative;
 }
@@ -308,11 +307,19 @@ code {
     border: 1px solid #ededed;
     width: 100%;
 }
-input:focus:-moz-placeholder {color:transparent;}
-input:focus::-webkit-input-placeholder {color:transparent;}
+
+input:focus:-moz-placeholder {
+    color: transparent;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
 .header .simple-search-form input[type="text"] {
     background: #161616;
     border: none;
+    color: #ffffff;
 }
 
 .simple-search-form .simple-submit {
