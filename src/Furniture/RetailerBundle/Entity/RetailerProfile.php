@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RetailerProfile extends AbstractTranslatable implements AddressMarkerInterface
 {
@@ -29,6 +30,7 @@ class RetailerProfile extends AbstractTranslatable implements AddressMarkerInter
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $name;
 
