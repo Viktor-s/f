@@ -80,7 +80,7 @@
     </div>
 {% endmacro %}
 
-{% macro specification_header(specification, title)  %}
+{% macro specification_header(specification, title, edit = true)  %}
     {% spaceless %}
         <div class="row specification-edit-head">
             <div class="col-md-4 col-sm-4">
@@ -90,7 +90,7 @@
                 <table class="table table-stripped table-condensed specification-info">
                     <tr>
                         <td>{{ 'frontend.specficatior.document_label'|trans }}</td>
-                        <td class="document-number editable" id="specification-document" data-toggle="tooltip" title="Click to edit">
+                        <td class="document-number{% if edit is same as(true) %} editable{% endif %}" id="specification-document" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
                             {{ specification.documentNumber }}
                         </td>
                     </tr>
@@ -100,7 +100,7 @@
                     </tr>
                     <tr>
                         <td>{{ 'frontend.specficatior.client_label'|trans }}</td>
-                        <td  class="editable buyer" id="specification-buyer" data-toggle="tooltip" title="Click to edit">
+                        <td  class="buyer{% if edit is same as(true) %} editable{% endif %}" id="specification-buyer" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
                             {{ specification.buyer|default('None') }}
                         </td>
                     </tr>
@@ -114,7 +114,7 @@
                     </tr>
                     <tr>
                         <td>{{ 'frontend.specficatior.name_label'|trans }}</td>
-                        <td class="name editable" id="specification-name" data-toggle="tooltip" title="Click to edit">
+                        <td class="name{% if edit is same as(true) %} editable{% endif %}" id="specification-name" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
                             {{ specification.name }}
                         </td>
                     </tr>
@@ -122,7 +122,7 @@
                         <td>
                             {{ 'frontend.specficatior.notes'|trans }} <br/><span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}
                         </td>
-                        <td class="description editable" id="specification-description" data-toggle="tooltip" title="Click to edit">{{ specification.description|default('None') }}</td>
+                        <td class="description{% if edit is same as(true) %} editable{% endif %}" id="specification-description" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>{{ specification.description|default('None') }}</td>
                     </tr>
                     {% if specification.buyer and specification.buyer.hasSale() %}
                         <tr>

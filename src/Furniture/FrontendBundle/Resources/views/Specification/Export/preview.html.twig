@@ -15,7 +15,7 @@
 <div class="table-responsive">
     <form id="specifications-export-form" action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
         {{ export_toolbar(specification, filters, 'top') }}
-        {{ specification_header(specification, 'frontend.export_specification_preview'|trans) }}
+        {{ specification_header(specification, 'frontend.export_specification_preview'|trans, false) }}
 
         <input type="hidden" name="mode" value="full" />
         <input type="hidden" name="factory_id" value="" />
