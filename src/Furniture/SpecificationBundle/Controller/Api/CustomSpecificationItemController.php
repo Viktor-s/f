@@ -172,7 +172,7 @@ class CustomSpecificationItemController
         }
 
         $id = $request->request->get('id');
-        $value = $request->request->get('value');
+        $value = trim($request->request->get('value'));
 
         if ($value == 'None') {
             return new Response('None');
@@ -215,7 +215,7 @@ class CustomSpecificationItemController
         $this->em->flush();
 
         // Markup parametr should be url encoded.
-        if ($request->request->has('markup')) {
+        if ($request->request->has('markup') && !empty($value)) {
             $value = sprintf( urldecode($request->request->get('markup')), $value);
         }
 

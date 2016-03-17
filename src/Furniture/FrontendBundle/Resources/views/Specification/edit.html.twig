@@ -70,11 +70,12 @@
                         <tr class="total-price">
                             <td colspan="2"></td>
                             <td class="text-right">{{ 'frontend.volume'|trans }}</td>
-                            <td class="text-left editable" rel="volume" id="volume" title="Click to edit">{{ specification.volume }}</td>
+                            <td class="text-left editable" rel="volume" id="volume" data-toggle="tooltip" title="Click to edit">{{ specification.volume }}</td>
                             <td class="text-right">{{ 'frontend.weight'|trans }}</td>
-                            <td class="text-left editable" rel="weight" id="weight" title="Click to edit">{{ specification.weight }}</td>
-                            <td colspan="3" class="text-right editable" id="add-extra-sale" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
-                            <td><span rel="total-price" class="final-price"></span></td>
+                            <td class="text-left editable" rel="weight" id="weight" data-toggle="tooltip" title="Click to edit">{{ specification.weight }}</td>
+                            <td colspan="2"></td>
+                            <td class="text-right editable" id="add-extra-sale" data-toggle="tooltip" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
+                            <td><span rel="total-price" class="total-price"></span></td>
                         </tr>
 
                         <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
@@ -87,7 +88,8 @@
                                 {% endif %}
                             </td>
                             <td colspan="4"></td>
-                            <td colspan="3" rowspan="1" class="text-right">
+                            <td colspan="2"></td>
+                            <td class="text-right">
                                 {{ 'frontend.final_price'|trans }}
                             </td>
                             <td><span rel="final-price" class="final-price">{{ specification|specification_total_price|money }}</span></td>
