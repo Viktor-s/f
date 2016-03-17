@@ -819,6 +819,56 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 /**
+ * Product PDP
+ */
+/** Product Gallery*/
+.product-gallery-wrapper {
+    max-width: 570px;
+}
+
+.product-gallery-wrapper .zoom-wapper {
+    height: 480px;
+    overflow: hidden;
+}
+
+.product-gallery-wrapper .zoomWrapper {
+    width: 100% !important;
+}
+
+.product-gallery-wrapper .zoom-wapper {
+    position: relative;
+}
+
+.product-gallery-wrapper .zoom-wapper img#gallery-zoom {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow: auto;
+}
+
+.product-gallery-wrapper .swiper-slide {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-gallery-wrapper .swiper-slide img {
+    display: block;
+    width: auto;
+    height: 100px;
+    position: relative;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+}
+
+
+/**
  * User/Retailer/Factory Profile
  */
 .retailer-dashboard h3,
