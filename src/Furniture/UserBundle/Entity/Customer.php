@@ -34,7 +34,7 @@ class Customer extends BaseCustomer
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"RetailerProfileCreate"})
+     * @Assert\NotBlank(groups={"RetailerProfileFrontendCreate", "RetailerProfileFrontendUpdate"})
      */
     protected $lastName;
 
