@@ -26,11 +26,15 @@ class UserType extends BaseUserType
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
+
+        $resolver->setDefaults([
+            'create_action' => false,
+        ]);
     }
 
     /**
@@ -47,6 +51,11 @@ class UserType extends BaseUserType
                 'multiple' => false,
                 'required' => false,
             ]);
+
+        // Remove enabled checkbox while create Customer. Set this value in controller.
+        if ($options['create_action']) {
+            $builder->remove('enabled');
+        }
 
         $builder->add('retailerUserProfile', new RetailerUserProfileType());
 

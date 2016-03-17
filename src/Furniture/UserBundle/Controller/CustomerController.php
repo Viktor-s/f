@@ -66,13 +66,15 @@ class CustomerController extends BaseCustomerController
     public function createAction(Request $request)
     {
         $this->isGrantedOr403('create');
-
+        /** @var Customer $resource */
         $resource = $this->createNew();
         $form = $this->getForm($resource);
 
         if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
             // We edit user in administration, and the user not should verify email
             $resource->__disableVerifyEmail = true;
+            // Set enabled true by default.
+            $resource->getUser()->setEnabled(true);
             $resource = $this->domainManager->create($form->getData());
 
             if ($resource instanceof ResourceEvent) {
