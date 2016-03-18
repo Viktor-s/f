@@ -296,7 +296,6 @@ code {
     height: 20px;
     background: #161616;
     border: none;
-    color: #ffffff;
     font-size: 12px;
     position: relative;
 }
@@ -308,11 +307,19 @@ code {
     border: 1px solid #ededed;
     width: 100%;
 }
-input:focus:-moz-placeholder {color:transparent;}
-input:focus::-webkit-input-placeholder {color:transparent;}
+
+input:focus:-moz-placeholder {
+    color: transparent;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
 .header .simple-search-form input[type="text"] {
     background: #161616;
     border: none;
+    color: #ffffff;
 }
 
 .simple-search-form .simple-submit {
@@ -731,7 +738,6 @@ span.total-price{
 #specifications-export-table .product-title {
     font-weight: 900;
     color: #000;
-    white-space: nowrap;
 }
 
 #specifications-table ul li,
@@ -818,6 +824,56 @@ input[type="checkbox"]:checked:disabled + label::before {
     font-size: 0;
     display: block;
 }
+
+/**
+ * Product PDP
+ */
+/** Product Gallery*/
+.product-gallery-wrapper {
+    max-width: 570px;
+}
+
+.product-gallery-wrapper .zoom-wapper {
+    height: 480px;
+    overflow: hidden;
+}
+
+.product-gallery-wrapper .zoomWrapper {
+    width: 100% !important;
+}
+
+.product-gallery-wrapper .zoom-wapper {
+    position: relative;
+}
+
+.product-gallery-wrapper .zoom-wapper img#gallery-zoom {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow: auto;
+}
+
+.product-gallery-wrapper .swiper-slide {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-gallery-wrapper .swiper-slide img {
+    display: block;
+    width: auto;
+    height: 100px;
+    position: relative;
+    left: 50%;
+    -webkit-transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+}
+
 
 /**
  * User/Retailer/Factory Profile
@@ -1016,18 +1072,19 @@ select[name="sorting"] {
     cursor:pointer;
     min-width: 90px;
 }
-label[for="sorting"],
-label[for="filter-top"],
-label[for="filter-bottom"],
+
+.filter-wrapper,
 .shop-grid-controls label {
     position: relative;
     margin-bottom: 0;
     max-width: 200px;
 }
 
-label[for="sorting"]:after,
-label[for="filter-top"]:after,
-label[for="filter-bottom"]:after,
+.filter-wrapper {
+    width: 100%;
+}
+
+.filter-wrapper:after,
 .shop-grid-controls label:after {
     content:'>';
     font:11px "Consolas", monospace;
@@ -1041,9 +1098,8 @@ label[for="filter-bottom"]:after,
     position:absolute;
     pointer-events:none;
 }
-label[for="sorting"]:before,
-label[for="filter-top"]:before,
-label[for="filter-bottom"]:before,
+
+.filter-wrapper:before,
 .shop-grid-controls label:before {
     content:'';
     right:0;
@@ -1331,20 +1387,24 @@ table.specifications-export-table>thead>tr>th:last-child {
     border-radius: 0;
 }
 
-.table-specification .tb-sp-actions,
-.clients-table .tb-sp-actions {
+.relation-tables .request-action {
+    margin: 10px 0;
+}
+
+.table-specification .tb-sp-actions {
     width: 195px;
 }
 
-.relation-tables .request-action {
-    margin: 10px 0;
+.clients-table .tb-sp-actions {
+    width: 180px;
 }
 
 .relation-tables.retailer table .tb-sp-actions {
     width: 120px;
 }
 
-.retailer-employees .tb-sp-actions {
+.retailer-employees .tb-sp-actions,
+.factory-rates .tb-sp-actions {
     width: 80px;
 }
 
@@ -1841,6 +1901,20 @@ table.specifications-export-table>thead>tr>th:last-child {
     position: absolute !important;
 }
 
+.dl-horizontal dt {
+    text-overflow: initial;
+}
+
+dt {
+    font-weight: bold;
+    line-height: 23px;
+}
+
+dd {
+    line-height: 23px;
+    margin-bottom: 10px;
+}
+
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 18 - BLOG */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
@@ -2120,6 +2194,11 @@ table.specifications-export-table>thead>tr>th:last-child {
 .image-container {
     position: relative;
 }
+
+.retailer-profile .image-container {
+    display: inline-block;
+}
+
 .image-container .mv-remove {
     position: absolute;
     top: 0;

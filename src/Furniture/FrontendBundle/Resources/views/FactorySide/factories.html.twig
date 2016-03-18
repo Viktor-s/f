@@ -2,6 +2,11 @@
 
 {% block title %}{{ 'frontend.title.brands'|trans }} :: {{ parent() }}{% endblock %}
 
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
+    <span class="active">{{ 'frontend.title.factories'|trans }}</span>
+{% endblock %}
+
 {% block content %}
     <div class="information-blocks">
         <div class="row">

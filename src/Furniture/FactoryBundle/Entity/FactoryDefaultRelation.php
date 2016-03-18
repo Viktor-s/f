@@ -18,10 +18,6 @@ class FactoryDefaultRelation
 
     /**
      * @var bool
-     *
-     * @Assert\IsTrue(
-     *     message="Products view is required."
-     * )
      */
     private $accessProducts = true;
 

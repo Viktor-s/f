@@ -34,6 +34,13 @@ class Customer extends BaseCustomer
     /**
      * @var string
      *
+     * @Assert\NotBlank(groups={"RetailerProfileFrontendCreate", "RetailerProfileFrontendUpdate"})
+     */
+    protected $lastName;
+
+    /**
+     * @var string
+     *
      * @Assert\NotBlank(groups={"Create", "Update", "RetailerProfileCreate"})
      */
     protected $gender = CustomerInterface::UNKNOWN_GENDER;

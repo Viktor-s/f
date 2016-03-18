@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form, {'attr': {'class': 'col-sm-9','data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
+    {{ form_start(form, {'attr': {'class': 'col-sm-9', 'data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
     {% if form.vars.errors|length %}
         {{ form_errors(form) }}
     {% endif %}

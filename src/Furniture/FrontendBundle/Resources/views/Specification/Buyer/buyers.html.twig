@@ -5,7 +5,7 @@
 {% block breadcrumb %}
     {{ parent() }}
 
-    <a href="{{ path('specification_buyers') }}">{{ 'frontend.title.list'|trans }}</a>
+    <span class="active">{{ 'frontend.title.list'|trans }}</span>
 {% endblock %}
 
 {% block content %}
@@ -46,6 +46,10 @@
                 <td class="text-center">{{ buyer.sale|default('0') }}%</td>
 
                 <td nowrap class="text-right">
+                    {% if is_granted('SPECIFICATIONS', buyer) and buyer.countSpecifications %}
+                        <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-success">{{ 'frontend.specifications'|trans }}</a>
+                    {% endif %}
+                    
                     {% if is_granted('EDIT', buyer) %}
                         <a href="{{ path('specification_buyer_edit', {buyer: buyer.id}) }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
                     {% endif %}
@@ -54,10 +58,6 @@
                         {% if buyer.countSpecifications == 0 %}
                             <a href="{{ path('specification_buyer_remove', {buyer: buyer.id}) }}" class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" data-remove data-message="Are you sure you want to remove a user?"></a>
                         {% endif %}
-                    {% endif %}
-
-                    {% if is_granted('SPECIFICATIONS', buyer) and buyer.countSpecifications %}
-                        <a href="{{ path('specification_buyer_specifications', {buyer: buyer.id}) }}" class="btn btn-xs btn-success">{{ 'frontend.specifications'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

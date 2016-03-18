@@ -36,15 +36,15 @@ class RetailerEmployeeType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'        => User::class,
-                'validation_groups' => function (Form $form) {
+                'data_class'         => User::class,
+                'cascade_validation' => true,
+                'validation_groups'  => function (Form $form) {
                     $user = $form->getData();
 
                     if ($user->getId()) {
-                        return ['Update', 'RetailerProfileUpdate'];
-                    }
-                    else {
-                        return ['RetailerProfileCreate'];
+                        return ['Update', 'RetailerProfileUpdate', 'RetailerProfileFrontendUpdate'];
+                    } else {
+                        return ['RetailerProfileCreate', 'RetailerProfileFrontendCreate'];
                     }
                 },
             ]
@@ -73,6 +73,7 @@ class RetailerEmployeeType extends AbstractType
                 [
                     'email_disabled'     => (bool)$employee->getId(),
                     'last_name_disabled' => (bool)$employee->getId(),
+                    'first_name_disabled' => (bool)$employee->getId(),
                 ]
             )
             ->add('retailerUserProfile', new RetailerEmployeeUserProfileType());

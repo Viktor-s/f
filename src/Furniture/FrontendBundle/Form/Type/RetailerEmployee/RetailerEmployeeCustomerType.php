@@ -34,9 +34,10 @@ class RetailerEmployeeCustomerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Customer::class,
-            'email_disabled' => false,
-            'last_name_disabled' => false,
+           'data_class'          => Customer::class,
+           'email_disabled'      => false,
+           'last_name_disabled'  => false,
+           'first_name_disabled' => false,
         ]);
     }
 
@@ -47,15 +48,15 @@ class RetailerEmployeeCustomerType extends AbstractType
     {
         $builder
             ->add('email', 'email', [
-                'label' => 'frontend.email',
+                'label'    => 'frontend.email',
                 'disabled' => $options['email_disabled'],
             ])
             ->add('firstName', 'text', [
-                'label' => 'frontend.first_name',
+                'label'    => 'frontend.first_name',
+                'disabled' => $options['first_name_disabled'],
             ])
             ->add('lastName', 'text', [
                 'label'    => 'frontend.last_name',
-                'required' => false,
                 'disabled' => $options['last_name_disabled'],
             ]);
 

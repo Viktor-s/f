@@ -27,6 +27,10 @@ class UserType extends BaseUserType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
+
+        $resolver->setDefaults([
+           'create_action' => false,
+       ]);
     }
 
     /**
@@ -42,5 +46,10 @@ class UserType extends BaseUserType
         // Remove non used fields
         $builder
             ->remove('authorizationRoles');
+
+        // Remove enabled checkbox while create Customer. Set this value in controller.
+        if ($options['create_action']) {
+            $builder->remove('enabled');
+        }
     }
 }
