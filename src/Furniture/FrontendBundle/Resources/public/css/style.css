@@ -934,7 +934,12 @@ input[type="checkbox"]:checked:disabled + label::before {
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 18px;
 }
-
+.select2-container--default .select2-results>.select2-results__options {
+    overflow-x: hidden;
+}
+.select2-container--default .select2-results__group {
+    font-weight: bold;
+}
 /*ProductsGrid */
 .product-slide-entry {
     text-align: left;
@@ -1058,7 +1063,9 @@ h6.pgp-product-factory {
 h4.pgp-product-title a:hover {
     text-decoration: none;
 }
-select[name="sorting"] {
+
+.filter-wrapper select,
+.filter-wrapper .select2-container .select2-selection--single {
     padding: 0 23px 1px 3px;
     margin: 0;
     background: #e8e8e8;
@@ -1071,6 +1078,7 @@ select[name="sorting"] {
     appearance:none;
     cursor:pointer;
     min-width: 90px;
+    width: 100%;
 }
 
 .filter-wrapper,
@@ -1100,15 +1108,61 @@ select[name="sorting"] {
 }
 
 .filter-wrapper:before,
-.shop-grid-controls label:before {
+.shop-grid-controls label:before,
+.filter-wrapper .select2-container .select2-selection--single .select2-selection__arrow {
     content:'';
     right:0;
     top:0;
-    width:20px; height:20px;
+    width:20px;
+    height:20px;
     background:#cecece;
     position:absolute;
     pointer-events:none;
     display:block;
+}
+
+.filter-wrapper .select2-container {
+    height: 20px;
+}
+
+.filter-wrapper .select2-container .select2-selection--single .select2-selection__arrow b {
+    border: none;
+}
+
+.filter-wrapper .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-right: 0;
+}
+
+.filter-wrapper .select2-container .select2-selection--single .select2-selection__rendered i {
+    color: #999;
+    font-size: 0.7em;
+    padding-left: 6px;
+}
+
+/* Dropdown */
+.filter-dropdown.select2-container .select2-dropdown {
+    border-radius: 0;
+}
+
+.filter-dropdown.select2-container .select2-results__option {
+    padding: 0;
+}
+
+.filter-dropdown.select2-container .select2-results__option .select2-results__option {
+    padding-left: 1em;
+}
+
+.filter-dropdown.select2-container .select2-results>.select2-results__options {
+    max-height: 250px;
+}
+
+.filter-dropdown.select2-container .select2-results__option[aria-selected=true] {
+    background-color: #ededed;
+}
+
+.filter-dropdown.select2-container .select2-results__option--highlighted[aria-selected] {
+    background-color: #5897fb;
+    color: white;
 }
 
 .sort-block {

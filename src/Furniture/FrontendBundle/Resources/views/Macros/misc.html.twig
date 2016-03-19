@@ -42,3 +42,32 @@
     {% endif %}
 {% endspaceless %}
 {% endmacro %}
+
+{% macro sorting_select(choices, attr = {}) %}
+    <select {% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% for key, value in choices %}
+            {% if value is iterable %}
+                <optgroup label="{{ key|replace('_', ' ')|title }}" data-mode="{{ key }}">
+                    {% for id, val in value %}
+                        <option value="{{ id }}" {% if choices.isSelectedItem(id) %}selected{% endif %}>{{ val }}</option>
+                    {% endfor %}
+                </optgroup>
+            {% else %}
+                <option value="{{ key }}" {% if choices.isSelectedItem(key) %}selected{% endif %}>{{ value }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro sorting_label(label, attr = {}) %}
+    <label{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {{ label|trans }}
+    </label>
+{% endmacro %}
+
+{% macro sorting_widget(options) %}
+    {{ _self.sorting_label(options['label'], options['label_attr']) }}
+    {% if options['type'] == 'select' %}
+    {{ _self.sorting_select(options['choices'], options['attr']) }}
+    {% endif %}
+{% endmacro %}

@@ -4,9 +4,11 @@ namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Furniture\CommonBundle\HttpFoundation\PhpExcelResponse;
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\ExporterInterface;
 use Furniture\SpecificationBundle\Exporter\Client\FieldMapForClient;
@@ -21,6 +23,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 
 class SpecificationController
 {
@@ -115,26 +118,60 @@ class SpecificationController
 
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
+        /** @var RetailerUserProfile $retailerProfile */
+        $retailerUserProfile = $user->getRetailerUserProfile();
+        $retailer = $retailerUserProfile->getRetailerProfile();
         $specificationQuery = new SpecificationQuery();
-        $sorting = [
-            'all'      => [
-                'name'  => 'All',
-                'state' => false,
-            ],
-            'opened'   => [
-                'name'  => 'Opened',
-                'state' => false,
-            ],
-            'finished' => [
-                'name'  => 'Finished',
-                'state' => false,
-            ],
-        ];
+        $sorting = new SimpleChoiceList();
+        $sortingState = 'opened';
+        $sortingUser = null;
 
-        if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
-            $retailer = $user->getRetailerUserProfile()->getRetailerProfile();
+        if ($retailerUserProfile->isRetailerAdmin()) {
+            $adminChoices = [
+                'all' => [
+                    'opened'   => 'Opened',
+                    'finished' => 'Finished',
+                ],
+            ];
+            /** @var RetailerUserProfile $retailerUserProfile */
+            foreach ($retailer->getRetailerUserProfiles() as $retailUserProfile) {
+                if ($retailUserProfile->getId() == $retailerUserProfile->getId()) {
+                    $adminChoices['my'] = [
+                        'opened__'.$user->getId()   => 'Opened',
+                        'finished__'.$user->getId() => 'Finished',
+                    ];
+                } else {
+                    $retailerUser = $retailUserProfile->getUser();
+                    $fullName = str_replace(' ', '_',
+                        sprintf(
+                            '%s %s',
+                            strtolower($retailerUser->getFullName()),
+                            $retailerUser->getEmail()
+                        )
+                    );
+                    $adminChoices[$fullName] = [
+                        'opened__'.$retailerUser->getId()   => 'Opened',
+                        'finished__'.$retailerUser->getId() => 'Finished',
+                    ];
+                }
+
+                if ($request->query->has('sorting_user')
+                    && $retailUserProfile->getUser()->getId() === intval($request->query->get('sorting_user'))
+                ) {
+                    $specificationQuery->withUser($retailUserProfile->getUser());
+                    $sortingUser = $retailUserProfile->getUser()->getId();
+                }
+            }
+
+            $sorting->addChoices($adminChoices);
             $specificationQuery->withRetailer($retailer);
         } else {
+            $choices = [
+                'all'      => 'All',
+                'opened'   => 'Opened',
+                'finished' => 'Finished',
+            ];
+            $sorting->addChoices($choices);
             $specificationQuery->withUser($user);
         }
 
@@ -142,23 +179,25 @@ class SpecificationController
             switch ($request->query->get('sorting')) {
                 case 'opened':
                     $specificationQuery->opened();
-                    $sorting['opened']['state'] = true;
+                    $sortingState = 'opened';
                     break;
 
                 case 'finished':
                     $specificationQuery->finished();
-                    $sorting['finished']['state'] = true;
+                    $sortingState = 'finished';
                     break;
-
-                default:
-                    $sorting['all']['state'] = true;
             }
         }
         else {
             // By default show only opened specifications
             $specificationQuery->opened();
-            $sorting['opened']['state'] = true;
         }
+
+        $selectedSortingItem = empty($sortingUser)
+            ? $sortingState
+            : sprintf('%s__%s', $sortingState, $sortingUser);
+
+        $sorting->setSelectedItem($selectedSortingItem);
 
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);
@@ -350,15 +389,14 @@ class SpecificationController
         if (!$this->authorizationChecker->isGranted('EXPORT', $specification)) {
             throw new AccessDeniedException();
         }
-        $groups= [
-            'factory' => [],
-            'custom' => [],
-        ];
+
+        $sorting = new SimpleChoiceList(['all' => 'All'], ['selected' => 'all']);
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
         $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
+        $groups = [];
         foreach ($groupedItemsByFactory as $grouped) {
             $factory = $grouped->getFactory();
             $groups['factory'][$factory->getId()] = $factory->getName();
@@ -369,9 +407,11 @@ class SpecificationController
             $groups['custom'][md5($factoryName)] = $factoryName;
         }
 
+        $sorting->addChoices($groups);
+
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
             'specification' => $specification,
-            'filters'       => $groups,
+            'filters'       => $sorting,
         ]);
 
         return new Response($content);
@@ -559,8 +599,8 @@ class SpecificationController
         }
 
         $replaces = [
-            '"' => '',
-            "\s" => '-'
+            '"'  => '',
+            "\s" => '-',
         ];
         $name = strtr($name, $replaces);
 

@@ -32,10 +32,21 @@
     {{ parent() }}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('select[name="sorting"]').on('change', function (e) {
-                var query = {[this.name]: $(this).val()};
-            window.location = window.location.origin + window.location.pathname + '?' + $.param(query)
-        });
+
+            var $select2 = $('select[name="sorting"]').select2({
+                minimumResultsForSearch: Infinity,
+
+                dropdownAutoWidth : true,
+            })
+            $select2.on('change', function (e) {
+                var query = {};
+                query[this.name] = $(this).val();
+                window.location = window.location.origin + window.location.pathname + '?' + $.param(query);
+            });
+
+            $.each($select2, function(idx, val) {
+                $(val).data('select2').$dropdown.addClass('filter-dropdown')
+            });
         })
     </script>
 {% endblock %}

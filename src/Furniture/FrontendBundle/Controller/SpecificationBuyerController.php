@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
@@ -268,20 +269,12 @@ class SpecificationBuyerController
         $creator = $this->tokenStorage->getToken()->getUser();
         $retailer = $creator->getRetailerUserProfile();
         $specificationQuery = new SpecificationQuery();
-        $sorting = [
-            'all'      => [
-                'name'  => 'All',
-                'state' => false,
-            ],
-            'opened'   => [
-                'name'  => 'Opened',
-                'state' => false,
-            ],
-            'finished' => [
-                'name'  => 'Finished',
-                'state' => false,
-            ],
+        $choices = [
+            'all' => 'All',
+            'opened' => 'Opened',
+            'finished' => 'Finished',
         ];
+        $sorting = new SimpleChoiceList($choices);
 
         if ($retailer && $retailer->isRetailerAdmin()) {
             $profile = $retailer->getRetailerProfile();
@@ -302,17 +295,22 @@ class SpecificationBuyerController
             switch ($request->query->get('sorting')) {
                 case 'opened':
                     $specificationQuery->opened();
-                    $sorting['opened']['state'] = true;
+                    $sorting->setSelectedItem('opened');
                     break;
 
                 case 'finished':
                     $specificationQuery->finished();
-                    $sorting['finished']['state'] = true;
+                    $sorting->setSelectedItem('finished');
                     break;
 
                 default:
-                    $sorting['all']['state'] = true;
+                    $sorting->setSelectedItem('all');
             }
+        }
+        else {
+            // By default show only opened specifications
+            $specificationQuery->opened();
+            $sorting->setSelectedItem('opened');
         }
 
         /* Create product paginator */
