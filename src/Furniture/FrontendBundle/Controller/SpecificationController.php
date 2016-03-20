@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Furniture\CommonBundle\HttpFoundation\PhpExcelResponse;
 use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
@@ -141,18 +142,23 @@ class SpecificationController
                         'finished__'.$user->getId() => 'Finished',
                     ];
                 } else {
-                    $retailerUser = $retailUserProfile->getUser();
-                    $fullName = str_replace(' ', '_',
-                        sprintf(
-                            '%s %s',
-                            strtolower($retailerUser->getFullName()),
-                            $retailerUser->getEmail()
-                        )
-                    );
-                    $adminChoices[$fullName] = [
-                        'opened__'.$retailerUser->getId()   => 'Opened',
-                        'finished__'.$retailerUser->getId() => 'Finished',
-                    ];
+                    try {
+                        $retailerUser = $retailUserProfile->getUser();
+                        $fullName = str_replace(' ', '_',
+                            sprintf(
+                                '%s %s',
+                                strtolower($retailerUser->getFullName()),
+                                $retailerUser->getEmail()
+                            )
+                        );
+                        $adminChoices[$fullName] = [
+                            'opened__'.$retailerUser->getId()   => 'Opened',
+                            'finished__'.$retailerUser->getId() => 'Finished',
+                        ];
+                    }
+                    catch (EntityNotFoundException $e) {
+                        continue;
+                    }
                 }
 
                 if ($request->query->has('sorting_user')
