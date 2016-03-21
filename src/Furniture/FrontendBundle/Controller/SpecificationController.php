@@ -133,18 +133,17 @@ class SpecificationController
                     'opened'   => 'Opened',
                     'finished' => 'Finished',
                 ],
+                'my' => [
+                    'opened__'.$user->getId()   => 'Opened',
+                    'finished__'.$user->getId() => 'Finished',
+                ],
             ];
             // Disable softdeleteable filter, because retailer user profile can contain deleted users.
             $this->em->getFilters()->disable('softdeleteable');
             /** @var RetailerUserProfile $retailerUserProfile */
             foreach ($retailer->getRetailerUserProfiles() as $retailUserProfile) {
                 if (!$retailUserProfile->getUser()->isDeleted()) {
-                    if ($retailUserProfile->getId() == $retailerUserProfile->getId()) {
-                        $adminChoices['my'] = [
-                            'opened__'.$user->getId()   => 'Opened',
-                            'finished__'.$user->getId() => 'Finished',
-                        ];
-                    } else {
+                    if ($retailUserProfile->getId() !== $retailerUserProfile->getId()) {
                         $retailerUser = $retailUserProfile->getUser();
                         $fullName = str_replace(' ', '_',
                                                 sprintf(
