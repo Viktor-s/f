@@ -2796,7 +2796,7 @@ dd {
     font-size: 12px;
     line-height: 12px;
     color: #808080;
-    margin-top: 5px;
+    padding: 5px;
 }
 
 .accordeon-title.active:after {
