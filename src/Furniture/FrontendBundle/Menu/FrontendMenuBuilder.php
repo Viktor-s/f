@@ -195,7 +195,8 @@ class FrontendMenuBuilder
 
         $menu->addChild('sitemap', [
             'uri' => '#',
-            'label' => $this->translator->trans('frontend.menu_items.footer.sitemap')
+            'label' => $this->translator->trans('frontend.menu_items.footer.sitemap'),
+            'display' => false,
         ]);
 
         $menu->addChild('terms_and_condition', [
@@ -205,7 +206,8 @@ class FrontendMenuBuilder
 
         $menu->addChild('advanced_search', [
             'uri' => '#',
-            'label' => $this->translator->trans('frontend.menu_items.footer.advanced_search')
+            'label' => $this->translator->trans('frontend.menu_items.footer.advanced_search'),
+            'display' => false,
         ]);
 
         $menu->addChild('privacy_policy', [
