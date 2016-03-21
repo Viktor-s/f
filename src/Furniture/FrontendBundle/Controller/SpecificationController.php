@@ -138,24 +138,26 @@ class SpecificationController
             $this->em->getFilters()->disable('softdeleteable');
             /** @var RetailerUserProfile $retailerUserProfile */
             foreach ($retailer->getRetailerUserProfiles() as $retailUserProfile) {
-                if ($retailUserProfile->getId() == $retailerUserProfile->getId()) {
-                    $adminChoices['my'] = [
-                        'opened__'.$user->getId()   => 'Opened',
-                        'finished__'.$user->getId() => 'Finished',
-                    ];
-                } else {
-                    $retailerUser = $retailUserProfile->getUser();
-                    $fullName = str_replace(' ', '_',
-                        sprintf(
-                            '%s %s',
-                            strtolower($retailerUser->getFullName()),
-                            $retailerUser->getEmail()
-                        )
-                    );
-                    $adminChoices[$fullName] = [
-                        'opened__'.$retailerUser->getId()   => 'Opened',
-                        'finished__'.$retailerUser->getId() => 'Finished',
-                    ];
+                if (!$retailUserProfile->getUser()->isDeleted()) {
+                    if ($retailUserProfile->getId() == $retailerUserProfile->getId()) {
+                        $adminChoices['my'] = [
+                            'opened__'.$user->getId()   => 'Opened',
+                            'finished__'.$user->getId() => 'Finished',
+                        ];
+                    } else {
+                        $retailerUser = $retailUserProfile->getUser();
+                        $fullName = str_replace(' ', '_',
+                                                sprintf(
+                                                    '%s %s',
+                                                    strtolower($retailerUser->getFullName()),
+                                                    $retailerUser->getEmail()
+                                                )
+                        );
+                        $adminChoices[$fullName] = [
+                            'opened__'.$retailerUser->getId()   => 'Opened',
+                            'finished__'.$retailerUser->getId() => 'Finished',
+                        ];
+                    }
                 }
 
                 if ($request->query->has('sorting_user')
