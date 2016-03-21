@@ -134,6 +134,8 @@ class SpecificationController
                     'finished' => 'Finished',
                 ],
             ];
+            // Disable softdeleteable filter, because retailer user profile can contain deleted users.
+            $this->em->getFilters()->disable('softdeleteable');
             /** @var RetailerUserProfile $retailerUserProfile */
             foreach ($retailer->getRetailerUserProfiles() as $retailUserProfile) {
                 if ($retailUserProfile->getId() == $retailerUserProfile->getId()) {
@@ -142,23 +144,18 @@ class SpecificationController
                         'finished__'.$user->getId() => 'Finished',
                     ];
                 } else {
-                    try {
-                        $retailerUser = $retailUserProfile->getUser();
-                        $fullName = str_replace(' ', '_',
-                            sprintf(
-                                '%s %s',
-                                strtolower($retailerUser->getFullName()),
-                                $retailerUser->getEmail()
-                            )
-                        );
-                        $adminChoices[$fullName] = [
-                            'opened__'.$retailerUser->getId()   => 'Opened',
-                            'finished__'.$retailerUser->getId() => 'Finished',
-                        ];
-                    }
-                    catch (EntityNotFoundException $e) {
-                        continue;
-                    }
+                    $retailerUser = $retailUserProfile->getUser();
+                    $fullName = str_replace(' ', '_',
+                        sprintf(
+                            '%s %s',
+                            strtolower($retailerUser->getFullName()),
+                            $retailerUser->getEmail()
+                        )
+                    );
+                    $adminChoices[$fullName] = [
+                        'opened__'.$retailerUser->getId()   => 'Opened',
+                        'finished__'.$retailerUser->getId() => 'Finished',
+                    ];
                 }
 
                 if ($request->query->has('sorting_user')
@@ -168,6 +165,8 @@ class SpecificationController
                     $sortingUser = $retailUserProfile->getUser()->getId();
                 }
             }
+            // Re enable softdeleteable filter.
+            $this->em->getFilters()->enable('softdeleteable');
 
             $sorting->addChoices($adminChoices);
             $specificationQuery->withRetailer($retailer);
