@@ -2,30 +2,30 @@
 {% spaceless %}
     {% if paginator.haveToPaginate()|default(false) %}
         <ul class="pagination pagination-sm pull-right">
-            {% if(paginator.hasPreviousPage()) %}
-                <li>
-                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1 }))) }}" aria-label="Previous">
-                        <span aria-hidden="true">&lsaquo;</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.previousPage }))) }}">
-                        {{ paginator.previousPage }}
-                    </a>
-                </li>
-            {% endif %}
+        {% if(paginator.hasPreviousPage()) %}
+            <li>
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1 }))) }}" aria-label="Previous">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.previousPage }))) }}">
+                    {{ paginator.previousPage }}
+                </a>
+            </li>
+        {% endif %}
             <li class="active">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.currentPage }))) }}">
                     {{ paginator.currentPage }}
                 </a>
             </li>
-            {% if(paginator.hasNextPage()) %}
+        {% if(paginator.hasNextPage()) %}
             <li>
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nextPage }))) }}">
                     {{ paginator.nextPage }}
                 </a>
             </li>
-            {% if( paginator.currentPage == 1 ) %}
+            {% if( paginator.currentPage == 1 and paginator.nbPages >= paginator.nextPage+1) %}
             <li>
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.nextPage+1) }))) }}">
                     {{ (paginator.nextPage+1) }}
@@ -37,7 +37,7 @@
                     <span aria-hidden="true">&rsaquo;</span>
                 </a>
             </li>
-            {% endif %}
+        {% endif %}
         </ul>
     {% endif %}
 {% endspaceless %}

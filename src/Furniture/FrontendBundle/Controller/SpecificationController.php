@@ -208,10 +208,10 @@ class SpecificationController
 
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);
-        $specifications = $this->specificationRepository->findBy($specificationQuery, $currentPage);
+        $specifications = $this->specificationRepository->findBy($specificationQuery);
 
         if ($specifications->getNbPages() < $currentPage) {
-            $specifications->setCurrentPage(1);
+            $specifications->setCurrentPage($specifications->getNbPages());
         } else {
             $specifications->setCurrentPage($currentPage);
         }
