@@ -11,6 +11,9 @@
                     </div>
                     <div class="caption" style="background: white none repeat scroll 0% 0%;">>Havana - ND Opaque walnut, indian ink coloured Havana - ND Opaque walnut, indian ink coloured </div>
                 </div>
+                <div class="variant-unavailable hidden">
+                    {{ 'frontend.unavailable'|trans }}
+                </div>
             </a>
         </div>
     </div>
@@ -55,7 +58,7 @@
                                             </div>
                                             <div class="col-sm-8 popup-material-grid" data-sticky_column>
                                                 {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
-                                                    <div class="material-entry" data-input-variant="{{ productPartMaterialVariant.id }}">
+                                                    <div class="material-entry{% if not productPartMaterialVariant.available %} unavailable{% endif %}" data-input-variant="{{ productPartMaterialVariant.id }}">
                                                         <div class="image">
                                                             {% if productPartMaterialVariant.image %}
                                                                 <img data-src="{{ productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
@@ -64,6 +67,11 @@
                                                             {% endif %}
                                                         </div>
                                                         <div class="caption">{{ productPartMaterialVariant.name }}</div>
+                                                        {% if not productPartMaterialVariant.available %}
+                                                            <div class="variant-unavailable">
+                                                                {{ 'frontend.unavailable'|trans }}
+                                                            </div>
+                                                        {% endif %}
                                                     </div>
                                                 {% endfor %}
                                             </div><!-- col-sm-8 -->

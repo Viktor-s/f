@@ -8,13 +8,13 @@ $.widget('furniture.pdp_default_select', {
     options: {
         data_container: {},
     },
-     _create: function () {
+    _create: function () {
         
-         var data_container = this.options.data_container;
-         var element = this.element;
-         element.prop('selectedIndex', -1);
+        var data_container = this.options.data_container;
+        var element = this.element;
+        element.prop('selectedIndex', -1);
          
-         if(element.is('input:hidden')){
+        if(element.is('input:hidden')){
             var selectedInput = element.data('input-id');
             var selectedVariant = element.data('input-variant');
             
@@ -25,45 +25,44 @@ $.widget('furniture.pdp_default_select', {
                     data_container.setFilters(filters);
                 }
             });
-         }else{
+        }else{
             element.change(function(e){
-               var el = $(this);
-               var selectedInput = el.parents('.simple-drop-down.simple-field').first().data('input-id');
-               var selectedVariant = el.find(":selected").data('input-variant');
-               var filters = data_container.getFilters();
+                var el = $(this);
+                var selectedInput = el.parents('.simple-drop-down.simple-field').first().data('input-id');
+                var selectedVariant = el.find(":selected").data('input-variant');
+                var filters = data_container.getFilters();
 
-               filters[selectedInput] = selectedVariant;
-               data_container.setFilters(filters);
-           });
+                filters[selectedInput] = selectedVariant;
+                data_container.setFilters(filters);
+            });
 
-           $(document).on('filter:update', function (event) {
-               var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
-               if( !data_container.getFilters()[selectInput] ){
-                   element.prop('selectedIndex', -1);
-               }
-               element.find("option").each(function(){
-                   var selectVariant = $(this).data('input-variant');
-                   if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
-                       $(this).css('background','#E0E0E0');
-                   }else{
-                       $(this).css('background','white');
-                   }
-               });
-           });
-       }
-        
-     }
+            $(document).on('filter:update', function (event) {
+                var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
+                if( !data_container.getFilters()[selectInput] ){
+                    element.prop('selectedIndex', -1);
+                }
+                element.find("option").each(function(){
+                    var selectVariant = $(this).data('input-variant');
+                    if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
+                        $(this).css('background','#E0E0E0');
+                    }else{
+                        $(this).css('background','white');
+                    }
+                });
+            });
+        }
+    }
 });
 
 $.widget('furniture.pdp_inline_select', {
     options: {
         data_container: {},
     },
-     _create: function () {
-         var data_container = this.options.data_container;
-         var element = this.element;
+    _create: function () {
+        var data_container = this.options.data_container;
+        var element = this.element;
          
-         element.find('.entry').click(function(){
+        element.find('.entry').click(function(){
             var el = $(this);
             var selectedInput = element.data('input-id');
             var selectedVariant = el.data('input-variant');
@@ -71,9 +70,9 @@ $.widget('furniture.pdp_inline_select', {
             
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
-         });
+        });
          
-         $(document).on('filter:update', function (event) {
+        $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
             if( !data_container.getFilters()[selectInput] ){
                 element.find('.entry.active').removeClass('active');
@@ -92,18 +91,18 @@ $.widget('furniture.pdp_inline_select', {
      }
  });
  
- $.widget('furniture.pdp_popup_select', {
+$.widget('furniture.pdp_popup_select', {
     options: {
         data_container: {},
     },
-     _create: function () {
+    _create: function () {
          var data_container = this.options.data_container;
          var element = this.element;
          
-         var selectedBtn = {
-             selectButton: element.find('a.button-content'),
-             showSelected: element.find('a.pdp-button'),
-             select: function(item){
+        var selectedBtn = {
+            selectButton: element.find('a.button-content'),
+            showSelected: element.find('a.pdp-button'),
+            select: function(item){
                 this.selectButton.addClass('hidden');
                 this.showSelected.removeClass('hidden');
                 //Replace image
@@ -116,12 +115,22 @@ $.widget('furniture.pdp_inline_select', {
                 this.showSelected.find('img').replaceWith(cloneImage);
                 //Replace label
                 this.showSelected.find('.caption').text(item.find('.caption').text());
-             },
-             unselect: function(){
+                // Unavailable materials logic.
+                var unavailable = item.find('.variant-unavailable');
+                if (unavailable.length > 0) {
+                    this.showSelected.addClass('unavailable');
+                    this.showSelected.find('.variant-unavailable').removeClass('hidden');
+                }
+                else {
+                    this.showSelected.removeClass('unavailable');
+                    this.showSelected.find('.variant-unavailable').addClass('hidden');
+                }
+            },
+            unselect: function(){
                 this.showSelected.addClass('hidden');
                 this.selectButton.removeClass('hidden');
-             }
-         };
+            }
+        };
          
          var opener = element.find('a.pdp-button, a.button-content');
          opener.click(function(){
@@ -129,7 +138,7 @@ $.widget('furniture.pdp_inline_select', {
             return false;
          });
         
-        //Select element
+         //Select element
          element.find('.material-selector .material-entry').on('click', function () {
             var el = $(this);
             $(this).parent().find('.active').removeClass('active');
@@ -148,16 +157,16 @@ $.widget('furniture.pdp_inline_select', {
             setTimeout(function(){
                 $('#'+opener.data('popup-id')).removeClass('visible');
             }, 500);
-         });
+        });
 
          // Click on material if it is only one in popup
-         var popupMaterials = element.find('.material-entry[data-input-variant]');
+        var popupMaterials = element.find('.material-entry[data-input-variant]');
 
-         if (popupMaterials.length == 1) {
-             $(popupMaterials).click();
-         }
+        if (popupMaterials.length == 1) {
+            $(popupMaterials).click();
+        }
          
-         $(document).on('filter:update', function (event) {
+        $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
             
             if( !data_container.getFilters()[selectInput] ){
@@ -179,6 +188,5 @@ $.widget('furniture.pdp_inline_select', {
                 selectedBtn.select($(this));
             });
         });
-         
      }
- });
+});

@@ -2311,6 +2311,398 @@ dd {
     margin-left: 0;
 }
 
+/**
+ * AgentA Solution styles
+ */
+
+.text-center th {
+    border-bottom: none !important;
+}
+.table-title th {
+    border-top: none!important;
+}
+
+.cell-view-inner{
+    padding: 20px;
+    float: left;
+    /*background: url(../content/transparent/box-bg.png);*/
+}
+
+.align-2 .cell-view-inner{
+    float: right;
+}
+
+.swiper-slide.active .navigation-banner-content .cell-view-inner{
+    background:rgba(0,0,0,0.6);
+    -webkit-transition: background .5s ease-out;
+    -moz-transition: background .5s ease-out;
+    -o-transition: background .5s ease-out;
+    transition: background .5s ease-out;
+    transition-delay: .2s;
+}
+
+.product-detail-box .options-selector .popup-button .pdp-button {
+    position: relative;
+}
+
+.agenta-popup .popup-container {
+    max-width: none;
+    width: 90%;
+}
+
+.agenta-popup .popup-container-wr {
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.agenta-popup .material-entry {
+    position: relative;
+    min-height: 1px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.agenta-popup .material-entry .variant-unavailable,
+.product-detail-box .options-selector .variant-unavailable {
+    color: #dc0008;
+    font-weight: 900;
+    position: absolute;
+    top: 35%;
+    left: 0;
+    text-transform: uppercase;
+    z-index: 9;
+}
+
+.agenta-popup .material-entry .variant-unavailable {
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.product-detail-box .options-selector .pdp-button.unavailable:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.product-detail-box .options-selector .pdp-button .variant-unavailable {
+    bottom: 0;
+    right: 0;
+    font-size: 21px;
+    -webkit-transform: rotate(15deg);
+    -ms-transform: rotate(15deg);
+    transform: rotate(15deg);
+}
+
+.agenta-popup .information-blocks {
+    margin-bottom: 30px;
+}
+
+.material-selector .material-entry.unavailable:before,
+.material-selector .material-entry:after {
+    border: 2px solid;
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -1px;
+    right: -1px;
+    bottom: -2px;
+}
+
+.material-selector .material-entry.unavailable:before {
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.material-selector .material-entry:after {
+    border-color: #d9d9d9;
+    opacity: 0;
+}
+
+.material-selector .material-entry.active:after {
+    opacity: 1;
+    border: 2px #262626 solid;
+}
+
+.material-selector .material-entry:hover:after {
+    opacity: 1;
+}
+
+.agenta-popup .image{
+    border: 1px #e6e6e6 solid;
+    text-align: center;
+    padding: 2px;
+}
+
+.agenta-popup .image img{
+    width: 100%;
+    max-width: 100px;
+    display: block;
+}
+
+.agenta-popup .caption{
+    text-align: center;
+    font-size: 12px;
+    line-height: 12px;
+    color: #808080;
+    margin-top: 5px;
+}
+.accordeon-title.active:after{
+    content: "\f106";
+}
+.accordeon-entry{
+    display: block;
+}
+.accordeon-entry.active{
+    display: none;
+}
+.accordeon h3{
+    font-size: 24px;
+}
+.pgp-product-factory {
+    margin-bottom: 5px;
+    color: #696969;
+    font-size: 12px;
+    line-height: 12px;
+}
+header.fixed-header nav {
+    text-align: left;
+}
+
+.add-to-specification .dropdown-menu{
+    width:280px;
+    border-radius:0 ;
+    top:42px;
+    padding-bottom: 5px;
+}
+.add-to-specification .specification-list a{
+    font-size: 16px;
+}
+.add-to-specification .dropdown-menu .divider{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.specification-list.list {
+    max-height: 150px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.specification-added{
+    display: none;
+}
+
+.specification-edit-head .editable form{
+    margin-top: -6px;
+}
+
+.image-ajax-container .image-container{ text-align: center; }
+.image-ajax-container .image-container a.remove{ margin-top: 4px; }
+.image-ajax-container.error .image-container img,
+.image-ajax-container.error .image-upload img{ border: 1px solid #b94a48; }
+.image-ajax-container .error-container { color: #b94a48; font-size: 0.85em; }
+
+.datetime
+{
+    text-align: center;
+    color: #888;
+    font-size: 0.85em;
+}
+
+.datetime .time
+{
+    color: #999;
+    font-size: 0.8em;
+}
+
+.retailer-employees .username,
+.retailer-employees .full-name
+{
+    font-size:0.8em;
+    color: #777;
+}
+
+#specification-table_wrapper{
+
+}
+#specification-table_filter{
+
+}
+
+.specification-pretable-controls{
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+.specification-edit-head{
+    margin-bottom: 30px;
+}
+
+
+form.someclass {
+    position: absolute;
+    bottom: 100%;
+    box-shadow: 3px 3px 3px #000;
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    background: #ffffff;
+}
+form.someclass input {
+    max-width: 100%;
+}
+
+.add-to-specification .dropdown-menu>li>a:focus, .add-to-specification .dropdown-menu>li>a:hover {
+    background: #DADADA;
+}
+
+.popup-container .block-title {
+    border-bottom: none;
+    padding: 20px 20px 20px 0;
+    margin: 0;
+    background: #ffffff;
+    z-index: 2;
+}
+
+.dropdown-menu .specification-list>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.specification-list .dropdown-header {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/**Styling editable**/
+
+#specification-table td, .editable {
+    position: relative;
+}
+
+#specification-table td form, .editable form {
+    position: absolute;
+    bottom: 115%;
+    left: -30px;
+    min-width: 70px;
+    display: inline-block;
+    padding: 5px 10px;
+    background: #BFF2FF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 3px 1px 6px #92A1F3;
+    -moz-box-shadow: 3px 1px 6px #92A1F3;
+    box-shadow: 3px 1px 6px #92A1F3;
+}
+#specification-table td form:after, .editable form:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -13px;
+    border-style: solid;
+    border-width: 13px 13px 0 13px;
+    border-color: #BFF2FF transparent transparent transparent;
+}
+
+#specification-table td form input, .editable form input {
+    color: #96CDFD;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    float: left;
+}
+#specification-table td form input:focus, .editable form input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.editable form button {
+    margin-top: 5px;
+}
+
+#specification-table td form button {
+    float: left;
+}
+.edit {
+    position: relative;
+}
+
+#specification-sale.edit form {
+    bottom: 155%;
+}
+
+.product-gallery.swiper-container {
+    height: 570px!important;
+}
+
+.product-gallery .swiper-slide:before {
+    content: "";
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -4px;
+}
+
+.product-gallery .product-zoom-image {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.product-gallery .product-zoom-image img{
+    width: 100%;
+    height: auto;
+}
+
+.information-entry .factory-info .factory-cover .logo {
+    width: 250px;
+    height: 160px;
+    margin-left: -125px;
+    text-align: center;
+    background: #ffffff;
+}
+.information-entry .factory-info .factory-cover .logo img {
+    width: auto;
+    max-height: 100%;
+}
+
+.sticky-popup-title.title-is-stuck {
+    border-bottom: 1px #ebebeb solid;
+}
+
+.popup-material-grid.col-sm-8 {
+    float:right;
+    width: 65%;
+}
+
+/**
+ * Reset password form
+ */
+form #reset_password {
+    padding-top: 20px;
+}
+
 @media (max-width: 480px) {
     .blog-landing-box.type-2 .date {
         left: 0;

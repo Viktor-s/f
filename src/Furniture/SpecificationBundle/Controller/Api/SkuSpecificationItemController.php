@@ -3,6 +3,8 @@
 namespace Furniture\SpecificationBundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\Exceptions\NotAvailableException;
+use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\SpecificationBundle\Entity\SpecificationItem;
 use Furniture\SpecificationBundle\Entity\SkuSpecificationItem;
 use Furniture\SpecificationBundle\Form\Type\SkuSpecificationItemSingleType;
@@ -211,6 +213,21 @@ class SkuSpecificationItemController
                     'The specification with identifier "%s" is finished.',
                     $specification->getId()
                 ));
+            }
+
+            $selectedVariants = $specificationItem->getSkuItem()->getProductVariant()->getProductPartVariantSelections();
+
+            /** @var ProductPartVariantSelection $productPartVariantSelection */
+            foreach ($selectedVariants as $productPartVariantSelection) {
+                $productPartMaterialVariant = $productPartVariantSelection->getProductPartMaterialVariant();
+                if (!$productPartMaterialVariant->isAvailable()) {
+                    throw new NotAvailableException(
+                        sprintf(
+                            'Selected product part material variant "%s" is not available.',
+                            $productPartMaterialVariant->__toString()
+                        )
+                    );
+                }
             }
 
             $this->em->persist($specificationItem);

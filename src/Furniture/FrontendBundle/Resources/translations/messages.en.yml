@@ -275,6 +275,7 @@ frontend:
     total_price: Total price:
     total_quantities: Total quantities
     type: Type
+    unavailable: Unavailable
     update: Update
     update_specification: Update specification
     user: User
