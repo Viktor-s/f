@@ -5,7 +5,7 @@ namespace Furniture\FrontendBundle\Twig;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Menu\FrontendMenuBuilder;
 use Knp\Menu\Twig\Helper as KnpMenuHelper;
-use Furniture\FrontendBundle\Util\UrlFormatter;
+use Furniture\CommonBundle\Util\UrlFormatter;
 
 class FrontendExtension extends \Twig_Extension
 {
