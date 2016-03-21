@@ -695,33 +695,6 @@ footer{position: relative;}
     .company-information-box .text{margin-left: 0;}
 }
 
-/* 04.04 - products slider */
-.swiper-tabs{position: relative;}
-.swiper-tabs:before{position: absolute; left: 0; bottom: 24px; width: 100%; height: 1px; background: #ebebeb; content: "";}
-.swiper-tabs .block-title{float: left; border-bottom: none; position: relative; padding-left: 7px; padding-right: 7px; margin-right: 15px; font-weight: 400; color: #a1a1a1;}
-.swiper-tabs .block-title.active{font-weight: 600; color: #2e2e2e;}
-.swiper-tabs .block-title:hover{color: #2e2e2e;}
-.swiper-tabs .block-title:before{position: absolute; left: 0; height: 3px; bottom: -2px; content: ""; background: #03b4ea; width: 0;}
-.swiper-tabs .block-title.active:before{width: 100%;}
-.tabs-entry{display: none;}
-.tabs-entry:first-child{display: block;}
-.swiper-tabs .title, .links-drop-down .title{display: none;}
-/**/
-@media (min-width: 768px){
-    .swiper-tabs .list, .links-drop-down .list{display: block!important;}
-}
-/*Phones (<768px)*/
-@media (max-width: 767px) {
-    .swiper-tabs .block-title{float: none; display: block; margin-right: 0; margin-bottom: 0;}
-    .swiper-tabs{margin-bottom: 25px;}
-    .swiper-tabs .title, .links-drop-down .title{display: block; padding: 0 40px 0 15px; white-space: nowrap; white-space: nowrap; line-height: 40px; border: 2px #f0f0f0 solid; font-size: 16px; position: relative; cursor: pointer; text-align: left;}
-    .swiper-tabs .title:after, .links-drop-down .title:after{line-height: 40px; height: 40px; width: 40px; text-align: center; font-family: FontAwesome; content: "\f107"; position: absolute; top: 0; right: 0;}
-    .swiper-tabs .title.active:after, .links-drop-down .title.active:after{content: "\f106";}
-    .swiper-tabs .list .block-title{ padding-top: 15px; display: block!important;}
-    .swiper-tabs:before{display: none;}
-    .swiper-tabs .list, .links-drop-down .list{display: none;}
-}
-
 /* 04.05 - sales blocks */
 .sale-entry{overflow: hidden; border: 2px #f2f2f2 solid; min-height: 70px; padding: 35px 0; position: relative; display: block;}
 .sale-entry .sale-price{font-size: 16px; line-height: 24px; color: #2e2e2e; text-transform: uppercase; font-weight: 700; width: 190px; text-align: center; border-right: 1px #f2f2f2 solid; float: left; display: block; position: relative; z-index: 1;}
