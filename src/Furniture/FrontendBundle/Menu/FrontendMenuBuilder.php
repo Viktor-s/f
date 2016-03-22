@@ -102,14 +102,20 @@ class FrontendMenuBuilder
             return $menu;
         }
 
+        $isDemo = $user
+                ->getRetailerUserProfile()
+                ->getRetailerProfile()
+                ->isDemo();
+
         $menu->addChild('home', [
             'route' => 'homepage',
-            'label' => $this->translator->trans('frontend.menu_items.header.homepage')
+            'label' => $this->translator->trans('frontend.menu_items.header.homepage'),
+            'display' => !$isDemo,
         ]);
 
         $menu->addChild('factories', [
             'uri' => $this->urlGenerator->generate('factory_side_list'),
-            'label' => $this->translator->trans('frontend.menu_items.header.factories')
+            'label' => $this->translator->trans('frontend.menu_items.header.factories'),
         ]);
 
         $menu->addChild('products', [
@@ -310,15 +316,6 @@ class FrontendMenuBuilder
      */
     public function createFactorySideMenu(Factory $factory)
     {
-        /** @var \Furniture\UserBundle\Entity\User $activeUser */
-        $activeUser = $this->tokenStorage->getToken()->getUser();
-        $factoryRetailerRelation = null;
-
-        if ($activeUser->isRetailer()) {
-            $retailerUserProfile = $activeUser->getRetailerUserProfile();
-            $factoryRetailerRelation = $factory->getRetailerRelationByRetailer($retailerUserProfile->getRetailerProfile());
-        }
-
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [

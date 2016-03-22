@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,7 +31,7 @@ class HomepageController
      * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
     private $tokenStorage;
-    
+
     /**
      * Construct
      *
@@ -68,15 +69,22 @@ class HomepageController
      */
     public function home()
     {
+        /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
         if(!$user)
             throw new NotFoundHttpException('Logged in user not found!');
         
-        if($user->isFactory())
+        if($user->isFactory()) {
             return new RedirectResponse($this->urlGenerator->generate('factory'));
+        }
 
-        $content = $this->twig->render('FrontendBundle::homepage.html.twig', [
-        ]);
+        if ($user->isRetailer()
+            && $user->getRetailerUserProfile()->getRetailerProfile()->isDemo()
+        ) {
+            return new RedirectResponse($this->urlGenerator->generate('products'));
+        }
+
+        $content = $this->twig->render('FrontendBundle::homepage.html.twig', []);
         
         return new Response($content);
     }
