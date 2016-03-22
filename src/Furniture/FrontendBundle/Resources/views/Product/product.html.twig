@@ -37,164 +37,157 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            <div class="col-sm-6 information-entry">
-                <div class="tabs-container">
-                    <div class="swiper-tabs tabs-switch">
-                        <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
-                        <div class="list">
-                            <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
-                            <a class="block-title">{{ 'frontend.product.media_tab.model'|trans }}</a>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="tabs-entry">
-                            {% if product.images|length > 0 %}
-                            <div class="product-gallery-wrapper">
-                                <div class="product-gallery">
-                                    <div class="zoom-wapper">
-                                        <img id="gallery-zoom"
-                                             src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
-                                             alt="{{ product.name }}"
-                                             data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
-                                    </div>
-                                    <div id="product-gallery">
-                                        <div class="swiper-hidden-edges">
-                                            <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
-                                                <div class="swiper-wrapper">
-                                            {% if product.images|length > 0 %}
-                                                {% for image in product.images %}
-                                                    <div class="swiper-slide">
-                                                        <div class="paddings-container">
-                                                            <a href="#" class="gallery-image"
-                                                               data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
-                                                               data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
-                                                                <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
-                                                                     alt="{{ product.name }}" />
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            {% endif %}
+    <div class="product-pdp row">
+        <div class="tabs-container col-sm-6">
+            <div class="swiper-tabs tabs-switch">
+                <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
+                <div class="list">
+                    <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
+                    <a class="block-title">{{ 'frontend.product.media_tab.model'|trans }}</a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div>
+                <div class="tabs-entry">
+                    {% if product.images|length > 0 %}
+                    <div class="product-gallery-wrapper">
+                        <div class="product-gallery">
+                            <div class="zoom-wapper">
+                                <img id="gallery-zoom"
+                                     src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
+                                     alt="{{ product.name }}"
+                                     data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
+                            </div>
+                            <div id="product-gallery">
+                                <div class="swiper-hidden-edges">
+                                    <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                                        <div class="swiper-wrapper">
+                                    {% if product.images|length > 0 %}
+                                        {% for image in product.images %}
+                                            <div class="swiper-slide">
+                                                <div class="paddings-container">
+                                                    <a href="#" class="gallery-image"
+                                                       data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                       data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
+                                                        <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                             alt="{{ product.name }}" />
+                                                    </a>
                                                 </div>
-                                                <div class="pagination"></div>
                                             </div>
+                                        {% endfor %}
+                                    {% endif %}
                                         </div>
+                                        <div class="pagination"></div>
                                     </div>
                                 </div>
                             </div>
-                            {% endif %}
                         </div>
-                        <div class="tabs-entry">
-                            <div style="width:540px;height:360px" id="model_viewer">
-                            </div>
-                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="tabs-entry">
+                    <div style="width:540px;height:360px" id="model_viewer">
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="col-sm-6 information-entry">
-                <div class="product-detail-box">
-                    <h1 class="product-title" style="margin-bottom: 7px;">
-                        {% if product.factoryCode != '' %}
-                            <small id="factory-code-view" ></small> 
-                        {% endif %}
-                        {{ product.name }}
-                    </h1>
-                    <h5 class="product-title--factory" style="padding-bottom: 10px;">
-                        <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a> 
-                        {% if not product.types.isEmpty() %}
-                            <span style="margin:0 5px;">></span> 
-                            <a href="{{ path('products', {type: [product.types.first.id]}) }}">
-                            {{ product.types.first }}
-                            </a>
-                        {% endif %}
-                    </h5>
+        <div class="product-detail-box col-sm-6">
+            <h1 class="product-title" style="margin-bottom: 7px;">
+                {% if product.factoryCode != '' %}
+                    <small id="factory-code-view" ></small>
+                {% endif %}
+                {{ product.name }}
+            </h1>
+            <h5 class="product-title--factory" style="padding-bottom: 10px;">
+                <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a>
+                {% if not product.types.isEmpty() %}
+                    <span style="margin:0 5px;">></span>
+                    <a href="{{ path('products', {type: [product.types.first.id]}) }}">
+                    {{ product.types.first }}
+                    </a>
+                {% endif %}
+            </h5>
 
+            <div class="product-description detail-info-entry">{{ product.description|raw }}</div>
+        {% if is_granted('VIEW_PRICE', product) %}
+            <div class="price detail-info-entry">
+                <div class="current" id="prices"></div>
+            </div>
+        {% endif %}
+            <div class="options-selector detail-info-entry">
+                {% for input in product.PdpConfig.inputs %}
+                    {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
+                    {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:inline_select.html.twig' with {'input':input} %}
+                    {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:popup_select.html.twig' with {'input':input} %}
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-                    <div class="product-description detail-info-entry">{{ product.description|raw }}</div>
+            {% if is_granted('VIEW_PRICE', product) %}
+                <div class="quantity-selector detail-info-entry">
+                    <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
+                    <div class="entry number-minus">&nbsp;</div>
+                    <div class="entry number">{{ quantity }}</div>
+                    <div class="entry number-plus">&nbsp;</div>
+                </div>
+            {% endif %}
+
+            {% if update_specification_item %}
                 {% if is_granted('VIEW_PRICE', product) %}
-                    <div class="price detail-info-entry">
-                        <div class="current" id="prices"></div>
+                    <div class="update-specification-item detail-info-entry">
+                        <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
                     </div>
                 {% endif %}
-                    <div class="options-selector detail-info-entry">
-                        {% for input in product.PdpConfig.inputs %}
-                            {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
-                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:inline_select.html.twig' with {'input':input} %}
-                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:popup_select.html.twig' with {'input':input} %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+            {% else %}
+                {% if is_granted('VIEW_PRICE', product) %}
+                    <div class="add-to-specification detail-info-entry">
+                        <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
+                            <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
+                                {{ 'frontend.add_to_specification'|trans }}
+                                <span class="caret"></span>
+                            </button>
 
-                    {% if is_granted('VIEW_PRICE', product) %}
-                        <div class="quantity-selector detail-info-entry">
-                            <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
-                            <div class="entry number-minus">&nbsp;</div>
-                            <div class="entry number">{{ quantity }}</div>
-                            <div class="entry number-plus">&nbsp;</div>
-                        </div>
-                    {% endif %}
-
-                    {% if update_specification_item %}
-                        {% if is_granted('VIEW_PRICE', product) %}
-                            <div class="update-specification-item detail-info-entry">
-                                <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
-                            </div>
-                        {% endif %}
-                    {% else %}
-                        {% if is_granted('VIEW_PRICE', product) %}
-                            <div class="add-to-specification detail-info-entry">
-                                <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
-                                    <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
-                                        {{ 'frontend.add_to_specification'|trans }}
-                                        <span class="caret"></span>
-                                    </button>
-
-                                    <div class="dropdown-menu">
-                                        <div class="specification-search-form">
-                                            <form>
-                                                <input type="text" placeholder="Search for specification" class="dropdown-search search">
-                                                <div class="simple-submit">
-                                                    <i class="fa fa-search"></i>
-                                                </div>
-                                            </form>
+                            <div class="dropdown-menu">
+                                <div class="specification-search-form">
+                                    <form>
+                                        <input type="text" placeholder="Search for specification" class="dropdown-search search">
+                                        <div class="simple-submit">
+                                            <i class="fa fa-search"></i>
                                         </div>
-                                        <ul class="list specification-list">
-                                            {% if specificationsWithBuyer or specificationsWithoutBuyer %}
-                                                {% for specification in specificationsWithoutBuyer %}
-                                                    <li>
-                                                        <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                    </li>
-                                                {% endfor %}
-                                                {% for gspecification in specificationsWithBuyer %}
-                                                    <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
-                                                    {% for specification in gspecification.specifications %}
-                                                    <li>
-                                                        <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                    </li>
-                                                    {% endfor %}
-                                                {% endfor %}
-                                            {% else %}
-                                                <li class="dropdown-header notice">No active specifications found</li>
-                                            {% endif %}
-                                        </ul>
-                                    </div>
+                                    </form>
                                 </div>
-                                <div class="btn-group" style="width:300px;">
-
-                                </div>
-                                <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
+                                <ul class="list specification-list">
+                                    {% if specificationsWithBuyer or specificationsWithoutBuyer %}
+                                        {% for specification in specificationsWithoutBuyer %}
+                                            <li>
+                                                <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        {% for gspecification in specificationsWithBuyer %}
+                                            <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
+                                            {% for specification in gspecification.specifications %}
+                                            <li>
+                                                <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="dropdown-header notice">No active specifications found</li>
+                                    {% endif %}
+                                </ul>
                             </div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
+                        </div>
+                        <div class="btn-group" style="width:300px;">
+
+                        </div>
+                        <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
