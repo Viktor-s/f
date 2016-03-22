@@ -2807,7 +2807,7 @@ dd {
 }
 
 .accordeon .accordeon-title h4 {
-    font-weight: 900;
+    font-weight: 600;
 }
 
 .accordeon-title.active:after {
@@ -2941,10 +2941,11 @@ form.someclass input {
 }
 
 .popup-container .block-title {
+    background-color: #fff;
     border-bottom: none;
-    padding: 20px 20px 20px 0;
     margin: 0;
-    background: #ffffff;
+    padding: 20px 20px 20px 0;
+    text-transform: capitalize;
     z-index: 2;
 }
 
