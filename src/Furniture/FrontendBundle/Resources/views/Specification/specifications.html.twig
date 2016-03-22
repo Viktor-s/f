@@ -12,9 +12,9 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(sorting, paginator) }}
+    {{ list_toolbar(filters, paginator) }}
     {{ block('specifications_table') }}
-    {{ list_toolbar(sorting, paginator, false) }}
+    {{ list_toolbar(filters, paginator, false) }}
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -82,7 +82,7 @@
                 return $('<span>' + item.text + '<i>My</i></span>');
             }
 
-            var $select2 = $('select[name="sorting"]').select2({
+            var $select2 = $('select[name="filter"]').select2({
                 matcher: modelMatcher,
                 minimumResultsForSearch: {{ app.user.retailerUserProfile.isRetailerAdmin ? 10 : 'Infinity' }},
                 dropdownAutoWidth : true,
@@ -97,7 +97,7 @@
                 if (-1 !== value.search('__')) {
                     var arr = value.split('__');
                     query[name] = arr[0];
-                    query['sorting_user'] = arr[1];
+                    query['filter_user'] = arr[1];
                 }
                 else {
                     query[name] = value;

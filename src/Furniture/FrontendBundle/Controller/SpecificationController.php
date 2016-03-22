@@ -123,21 +123,16 @@ class SpecificationController
         $retailerUserProfile = $user->getRetailerUserProfile();
         $retailer = $retailerUserProfile->getRetailerProfile();
         $specificationQuery = new SpecificationQuery();
-        $sorting = new SimpleChoiceList();
+        $filters = new SimpleChoiceList();
         $sortingState = 'opened';
         $sortingUser = null;
 
         if ($retailerUserProfile->isRetailerAdmin()) {
-            $adminChoices = [
-                'all' => [
-                    'opened'   => 'Opened',
-                    'finished' => 'Finished',
-                ],
-                'my' => [
-                    'opened__'.$user->getId()   => 'Opened',
-                    'finished__'.$user->getId() => 'Finished',
-                ],
-            ];
+            $filters->addChoice('opened', 'Opened', ['group' => 'all']);
+            $filters->addChoice('finished', 'Finished', ['group' => 'all']);
+            $filters->addChoice('opened__'.$user->getId(), 'Opened', ['group' => 'my']);
+            $filters->addChoice('finished__'.$user->getId(), 'Finished', ['group' => 'my']);
+
             // Disable softdeleteable filter, because retailer user profile can contain deleted users.
             $this->em->getFilters()->disable('softdeleteable');
             /** @var RetailerUserProfile $retailerUserProfile */
@@ -152,15 +147,13 @@ class SpecificationController
                                                     $retailerUser->getEmail()
                                                 )
                         );
-                        $adminChoices[$fullName] = [
-                            'opened__'.$retailerUser->getId()   => 'Opened',
-                            'finished__'.$retailerUser->getId() => 'Finished',
-                        ];
+                        $filters->addChoice('opened__'.$retailerUser->getId(), 'Opened', ['group' => $fullName]);
+                        $filters->addChoice('finished__'.$retailerUser->getId(), 'Finished', ['group' => $fullName]);
                     }
                 }
 
-                if ($request->query->has('sorting_user')
-                    && $retailUserProfile->getUser()->getId() === intval($request->query->get('sorting_user'))
+                if ($request->query->has('filter_user')
+                    && $retailUserProfile->getUser()->getId() === intval($request->query->get('filter_user'))
                 ) {
                     $specificationQuery->withUser($retailUserProfile->getUser());
                     $sortingUser = $retailUserProfile->getUser()->getId();
@@ -168,21 +161,16 @@ class SpecificationController
             }
             // Re enable softdeleteable filter.
             $this->em->getFilters()->enable('softdeleteable');
-
-            $sorting->addChoices($adminChoices);
             $specificationQuery->withRetailer($retailer);
         } else {
-            $choices = [
-                'all'      => 'All',
-                'opened'   => 'Opened',
-                'finished' => 'Finished',
-            ];
-            $sorting->addChoices($choices);
+            $filters->addChoice('all', 'All');
+            $filters->addChoice('opened', 'Opened');
+            $filters->addChoice('finished', 'Finished');
             $specificationQuery->withUser($user);
         }
 
-        if ($request->query->has('sorting')) {
-            switch ($request->query->get('sorting')) {
+        if ($request->query->has('filter')) {
+            switch ($request->query->get('filter')) {
                 case 'opened':
                     $specificationQuery->opened();
                     $sortingState = 'opened';
@@ -203,7 +191,7 @@ class SpecificationController
             ? $sortingState
             : sprintf('%s__%s', $sortingState, $sortingUser);
 
-        $sorting->setSelectedItem($selectedSortingItem);
+        $filters->setSelectedItem($selectedSortingItem);
 
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);
@@ -217,7 +205,7 @@ class SpecificationController
 
         $content = $this->twig->render('FrontendBundle:Specification:specifications.html.twig', [
             'specifications' => $specifications,
-            'sorting'        => $sorting,
+            'filters'        => $filters,
         ]);
 
         return new Response($content);
@@ -396,28 +384,25 @@ class SpecificationController
             throw new AccessDeniedException();
         }
 
-        $sorting = new SimpleChoiceList(['all' => 'All'], ['selected' => 'all']);
+        $filters = new SimpleChoiceList(['all' => 'All'], ['selected' => 'all']);
 
         // Group items
         $groupedItemsByFactory = $specification->getGroupedVariantItemsByFactory();
         $groupedCustomItemsByFactory = $specification->getGroupedCustomItemsByFactory();
 
-        $groups = [];
         foreach ($groupedItemsByFactory as $grouped) {
             $factory = $grouped->getFactory();
-            $groups['factory'][$factory->getId()] = $factory->getName();
+            $filters->addChoice($factory->getId(), $factory->getName(), ['group' => 'factory']);
         }
 
         foreach ($groupedCustomItemsByFactory as $grouped) {
             $factoryName = $grouped->getFactoryName();
-            $groups['custom'][md5($factoryName)] = $factoryName;
+            $filters->addChoice(md5($factoryName), $factoryName, ['group' => 'custom']);
         }
-
-        $sorting->addChoices($groups);
 
         $content = $this->twig->render('FrontendBundle:Specification/Export:preview.html.twig', [
             'specification' => $specification,
-            'filters'       => $sorting,
+            'filters'       => $filters,
         ]);
 
         return new Response($content);

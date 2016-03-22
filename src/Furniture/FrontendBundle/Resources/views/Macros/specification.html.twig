@@ -3,7 +3,7 @@
     <div class="row mv-actions">
         <div class="col-sm-2 col-xs-4 col-lg-2">
             <div class="filter-wrapper">
-                {{ sorting_select(filters, {'name': 'sorting', 'class': 'form-control'}) }}
+                {{ sorting_select(filters, {'name': 'filter', 'class': 'form-control'}) }}
             </div>
         </div>
         <div class="col-sm-2 col-xs-4 col-lg-1">
@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col-sm-3 col-xs-4 col-lg-2">
                 <div class="filter-wrapper">
-                    {{ sorting_select(filters, {'id': 'filter-'~position, 'name': 'sorting', 'class': 'form-control', 'data-position': position}) }}
+                    {{ sorting_select(filters, {'id': 'filter-'~position, 'name': 'filter', 'class': 'form-control', 'data-position': position}) }}
                 </div>
             </div>
             <div class="col-sm-4 col-sm-offset-5 col-xs-4 col-lg-3 col-lg-offset-7 text-right">

@@ -274,7 +274,7 @@ class SpecificationBuyerController
             'opened' => 'Opened',
             'finished' => 'Finished',
         ];
-        $sorting = new SimpleChoiceList($choices);
+        $filters = new SimpleChoiceList($choices);
 
         if ($retailer && $retailer->isRetailerAdmin()) {
             $profile = $retailer->getRetailerProfile();
@@ -291,26 +291,26 @@ class SpecificationBuyerController
                 ->withBuyer($buyer);
         }
 
-        if ($request->query->has('sorting')) {
-            switch ($request->query->get('sorting')) {
+        if ($request->query->has('filter')) {
+            switch ($request->query->get('filter')) {
                 case 'opened':
                     $specificationQuery->opened();
-                    $sorting->setSelectedItem('opened');
+                    $filters->setSelectedItem('opened');
                     break;
 
                 case 'finished':
                     $specificationQuery->finished();
-                    $sorting->setSelectedItem('finished');
+                    $filters->setSelectedItem('finished');
                     break;
 
                 default:
-                    $sorting->setSelectedItem('all');
+                    $filters->setSelectedItem('all');
             }
         }
         else {
             // By default show only opened specifications
             $specificationQuery->opened();
-            $sorting->setSelectedItem('opened');
+            $filters->setSelectedItem('opened');
         }
 
         /* Create product paginator */
@@ -326,7 +326,7 @@ class SpecificationBuyerController
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
             'buyer'                   => $buyer,
             'specifications'          => $specifications,
-            'sorting'                 => $sorting,
+            'filters'                 => $filters,
         ]);
 
         return new Response($content);
