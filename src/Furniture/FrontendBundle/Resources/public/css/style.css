@@ -1012,9 +1012,16 @@ input[type="checkbox"]:checked:disabled + label::before {
  * Product PDP
  */
 
+.product-pdp .swiper-tabs {
+    display: none;
+}
+
+.product-pdp .product-detail-box h1.product-title {
+    margin-top: 0;
+}
+
 .swiper-tabs {
     position: relative;
-    display: none;
 }
 
 .swiper-tabs:before {
