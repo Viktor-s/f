@@ -124,7 +124,6 @@ class SpecificationController
         $retailer = $retailerUserProfile->getRetailerProfile();
         $specificationQuery = new SpecificationQuery();
         $filters = new SimpleChoiceList();
-        $sortingState = 'opened';
         $sortingUser = null;
 
         if ($retailerUserProfile->isRetailerAdmin()) {
@@ -163,28 +162,27 @@ class SpecificationController
             $this->em->getFilters()->enable('softdeleteable');
             $specificationQuery->withRetailer($retailer);
         } else {
-            $filters->addChoice('all', 'All');
-            $filters->addChoice('opened', 'Opened');
-            $filters->addChoice('finished', 'Finished');
+            $filters->addChoice('opened', 'Opened', ['group' => 'my']);
+            $filters->addChoice('finished', 'Finished', ['group' => 'my']);
             $specificationQuery->withUser($user);
         }
 
         if ($request->query->has('filter')) {
             switch ($request->query->get('filter')) {
-                case 'opened':
-                    $specificationQuery->opened();
-                    $sortingState = 'opened';
-                    break;
-
                 case 'finished':
                     $specificationQuery->finished();
                     $sortingState = 'finished';
                     break;
+
+                default:
+                    $specificationQuery->opened();
+                    $sortingState = 'opened';
             }
         }
         else {
             // By default show only opened specifications
             $specificationQuery->opened();
+            $sortingState = 'opened';
         }
 
         $selectedSortingItem = empty($sortingUser)

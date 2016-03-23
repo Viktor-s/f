@@ -101,6 +101,33 @@ class PostRepository
     }
 
     /**
+     * Find news for factories
+     *
+     * @param int   $limit
+     * @return Post
+     */
+    public function findNewsForSlider($limit = 30)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->from(Post::class, 'p')
+            ->select('p')
+            ->innerJoin('p.factory', 'f')
+            ->where('p.useOnSlider = true')
+            ->andWhere('f.enabled = true')
+            ->andWhere('p.publishedAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('p.publishedAt', 'DESC');
+
+        if ($limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find circulars for factory
      *
      * @param Factory $factory

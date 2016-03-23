@@ -137,12 +137,17 @@ class PricingExtension extends \Twig_Extension
     {
         $currency = $this->currencyContext->getCurrency();
         $amount = str_replace(' ', '', $this->moneyHelper->formatAmount($amount, $currency));
+        $suffix = preg_replace('/[0-9\.]+/', '', $amount);
 
-        if ($precision === 0) {
-            $amount = ceil((float)$amount) . preg_replace('/[0-9\.]+/', '', $amount);
-        } else if ($precision > 0) {
-            $amount = round((float)$amount, $precision) . preg_replace('/[0-9]+/', '', $amount);
+        if (false !== $precision) {
+            $amount = (0 === $precision) ? ceil((float)$amount) : round((float)$amount, $precision);
+            $amount = number_format($amount, $precision, '.', ' ');
+        } else {
+            $amount = substr($amount, 0, -strlen($suffix));
+            $amount = trim(number_format($amount, 2, '.', ' '), '0.');
         }
+
+        $amount = sprintf('%s %s', $amount, $suffix);
 
         return $amount;
     }

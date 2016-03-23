@@ -140,30 +140,34 @@ $.widget('furniture.pdp_popup_select', {
         
          //Select element
          element.find('.material-selector .material-entry').on('click', function () {
-            var el = $(this);
-            $(this).parent().find('.active').removeClass('active');
-            el.addClass('active');
-            selectedBtn.select(el);
+             var el = $(this);
+             if (el.data('available')) {
+                 $(this).parent().find('.active').removeClass('active');
+                 el.addClass('active');
+                 selectedBtn.select(el);
+             }
         });
          
         element.find('.material-entry[data-input-variant]').click(function(){
             var el = $(this);
-            var selectedInput = element.data('input-id');
-            var selectedVariant = el.data('input-variant');
-            filters = data_container.getFilters();
-            filters[selectedInput] = selectedVariant;
-            data_container.setFilters(filters);
-            $('#'+opener.data('popup-id')).removeClass('active');
-            setTimeout(function(){
-                $('#'+opener.data('popup-id')).removeClass('visible');
-            }, 500);
+            if (el.data('available')) {
+                var selectedInput = element.data('input-id');
+                var selectedVariant = el.data('input-variant');
+                filters = data_container.getFilters();
+                filters[selectedInput] = selectedVariant;
+                data_container.setFilters(filters);
+                $('#' + opener.data('popup-id')).removeClass('active');
+                setTimeout(function () {
+                    $('#' + opener.data('popup-id')).removeClass('visible');
+                }, 500);
+            }
         });
 
          // Click on material if it is only one in popup
         var popupMaterials = element.find('.material-entry[data-input-variant]');
 
         if (popupMaterials.length == 1) {
-            $(popupMaterials).click();
+            $(popupMaterials).trigger('click');
         }
          
         $(document).on('filter:update', function (event) {
