@@ -574,10 +574,6 @@ input:focus::-webkit-input-placeholder {
 }
 
 /** Content **/
-.home-slider {
-    padding-top: 75px;
-}
-
 .block-spec-head,
 .page-header {
 
@@ -1917,8 +1913,7 @@ table.specifications-export-table > thead > tr > th:last-child {
 }
 
 .home-slider, .home-factories {
-    margin-top: 30px;
-    margin-bottom: 70px;
+    margin: 30px 0;
 }
 
 .navigation-banner-wrapper {
