@@ -49,6 +49,7 @@ class AppKernel extends Kernel
             new Sonata\FormatterBundle\SonataFormatterBundle(),
             new Furniture\PricingBundle\PricingBundle(),
             new Furniture\GoogleServicesBundle\GoogleServicesBundle(),
+            new Furniture\PostgresSearchBundle\PostgresSearchBundle(),
         );
 
         if (in_array($this->environment, array('dev', 'test'))) {
