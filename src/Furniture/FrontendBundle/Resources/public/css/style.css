@@ -1060,7 +1060,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     height: 3px;
     bottom: -2px;
     content: "";
-    background: #03b4ea;
+    background: #a1a1a1;
     width: 0;
 }
 
