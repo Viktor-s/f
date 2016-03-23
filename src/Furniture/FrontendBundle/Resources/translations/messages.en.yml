@@ -242,6 +242,7 @@ frontend:
         circulars: Circulars
         navigation: Navigation
         buyers: Clients
+        search: Search results
         specifications: Specifications
         products: Products
         catalog: Products

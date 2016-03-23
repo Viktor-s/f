@@ -28,7 +28,7 @@ class HomepageController
 
     /**
      *
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     * @var TokenStorageInterface
      */
     private $tokenStorage;
 

@@ -209,4 +209,11 @@ services:
             - @router
             - @doctrine.orm.default_entity_manager
             - @sylius.user.password_updater
+    frontend.controller.search:
+        class: Furniture\FrontendBundle\Controller\SearchController
+        arguments:
+            - @twig
+            - @security.token_storage
+            - @doctrine.orm.default_entity_manager
+            - @router
         

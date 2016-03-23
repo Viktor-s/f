@@ -1,0 +1,8 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block title %}{{ 'frontend.title.search'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'|trans }}</a>
+    <a href="{{ path('search_results') }}">{{ 'frontend.title.search'|trans }}</a>
+{% endblock %}
