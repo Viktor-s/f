@@ -72,10 +72,3 @@ user_profile:
 _security:
     resource: @FrontendBundle/Resources/config/routing/security.yml
     prefix: /
-
-search_results:
-    path: /{_locale}/search-results
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.factory.retailer:map
