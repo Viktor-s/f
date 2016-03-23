@@ -45,10 +45,12 @@ class PostgresSearchExtension extends Extension implements PrependExtensionInter
             'orm'  => [
                 'dql' => [
                     'string_functions' => [
-                        'tsquery'         => 'Furniture\PostgresSearchBundle\DQL\TsqueryFunction',
                         'plainto_tsquery' => 'Furniture\PostgresSearchBundle\DQL\PlainToTsqueryFunction',
-                        'tsrank'          => 'Furniture\PostgresSearchBundle\DQL\TsrankFunction',
-                        'tsheadline'      => 'Furniture\PostgresSearchBundle\DQL\TsheadlineFunction',
+                        'setweight'       => 'Furniture\PostgresSearchBundle\DQL\SetWeightFunction',
+                        'to_tsvector'     => 'Furniture\PostgresSearchBundle\DQL\TsvectorFunction',
+                        'to_tsquery'      => 'Furniture\PostgresSearchBundle\DQL\TsqueryFunction',
+                        'ts_rank'         => 'Furniture\PostgresSearchBundle\DQL\TsrankFunction',
+                        'ts_headline'     => 'Furniture\PostgresSearchBundle\DQL\TsheadlineFunction',
                     ],
                 ],
             ],

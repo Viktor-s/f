@@ -46,7 +46,7 @@
                         {% if app.user.isRetailer() %}
                             <div class="header-simple-search">
                                 <div class="simple-search-form">
-                                    <form>
+                                    <form action="{{ path('search_results') }}" method="get">
                                         <input type="text" name="s" />
                                         <div class="simple-submit">
                                             <i class="fa fa-search"></i>

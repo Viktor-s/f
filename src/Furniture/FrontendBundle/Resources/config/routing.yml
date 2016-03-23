@@ -76,7 +76,7 @@ _security:
 #Search results
 search_results:
     path: /{_locale}/search-results
-        methods: [ GET ]
-        requirements: { _locale: %available_locales% }
-        defaults:
-            _controller: frontend.controller.search:index
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.search:index

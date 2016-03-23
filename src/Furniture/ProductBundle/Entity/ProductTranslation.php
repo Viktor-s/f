@@ -23,4 +23,29 @@ class ProductTranslation extends BaseProductTranslation
      * @var string
      */
     protected $description;
+
+    /**
+     * @var string
+     */
+    private $searchTsv = '';
+
+    /**
+     * @return string
+     */
+    public function getSearchTsv()
+    {
+        return $this->searchTsv;
+    }
+
+    /**
+     * @param string $searchTsv
+     * @return ProductTranslation
+     */
+    public function setSearchTsv($searchTsv)
+    {
+        $this->searchTsv = $searchTsv;
+
+        return $this;
+    }
+
 }

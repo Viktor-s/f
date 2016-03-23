@@ -7,3 +7,11 @@ Furniture\ProductBundle\Entity\ProductTranslation:
             column: description
             type: text
             nullable: true
+    fields:
+        searchTsv:
+            type: tsvector
+            column: search_tsv
+            default: ''
+            options:
+                searchOptions:
+                    searchFields: [name, description]

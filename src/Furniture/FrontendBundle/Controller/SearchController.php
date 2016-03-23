@@ -3,7 +3,7 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -53,7 +53,7 @@ class SearchController
 
     public function index(Request $request)
     {
-        $content = $this->twig->render('search_results.html.twig', []);
+        $content = $this->twig->render('FrontendBundle:Search:search_results.html.twig', []);
 
         return new Response($content);
     }

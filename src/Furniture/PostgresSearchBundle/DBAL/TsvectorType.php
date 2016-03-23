@@ -59,7 +59,7 @@ class TsvectorType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return 'to_tsvector';
+        return 'tsvector';
     }
 
     /**
