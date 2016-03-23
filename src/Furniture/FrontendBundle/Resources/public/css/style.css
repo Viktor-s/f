@@ -2713,50 +2713,28 @@ dd {
     width: 100px;
     display: inline-block;
     vertical-align: top;
+}
+
+.agenta-popup .material-entry.available {
     cursor: pointer;
 }
 
 .agenta-popup .material-entry .variant-unavailable,
-.product-detail-box .options-selector .variant-unavailable {
+.product-detail-box .options-selector .pdp-button .variant-unavailable {
     color: #dc0008;
+    font-size: 12px;
     font-weight: 900;
-    position: absolute;
-    top: 35%;
-    left: 0;
     text-transform: uppercase;
-    z-index: 9;
-}
-
-.agenta-popup .material-entry .variant-unavailable {
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.product-detail-box .options-selector .pdp-button.unavailable:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, .5);
 }
 
 .product-detail-box .options-selector .pdp-button .variant-unavailable {
-    bottom: 0;
-    right: 0;
-    font-size: 21px;
-    -webkit-transform: rotate(15deg);
-    -ms-transform: rotate(15deg);
-    transform: rotate(15deg);
+    padding-top: 5px;
 }
 
 .agenta-popup .information-blocks {
     margin-bottom: 30px;
 }
 
-.material-selector .material-entry.unavailable:before,
 .material-selector .material-entry:after {
     border: 2px solid;
     content: "";
@@ -2767,22 +2745,21 @@ dd {
     bottom: -2px;
 }
 
-.material-selector .material-entry.unavailable:before {
+.material-selector .material-entry.unavailable:after {
     border-color: transparent;
-    background-color: rgba(255, 255, 255, .5);
 }
 
-.material-selector .material-entry:after {
+.material-selector .material-entry.available:after {
     border-color: #d9d9d9;
     opacity: 0;
 }
 
 .material-selector .material-entry.active:after {
     opacity: 1;
-    border: 2px #262626 solid;
+    border-color: #262626;
 }
 
-.material-selector .material-entry:hover:after {
+.material-selector .material-entry.available:hover:after {
     opacity: 1;
 }
 
