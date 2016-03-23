@@ -144,7 +144,7 @@ class PricingExtension extends \Twig_Extension
             $amount = number_format($amount, $precision, '.', ' ');
         } else {
             $amount = substr($amount, 0, -strlen($suffix));
-            $amount = trim(number_format($amount, 2, '.', ' '), '0');
+            $amount = trim(number_format($amount, 2, '.', ' '), '0.');
         }
 
         $amount = sprintf('%s %s', $amount, $suffix);
