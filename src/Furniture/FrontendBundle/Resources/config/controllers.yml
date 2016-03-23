@@ -6,6 +6,7 @@ services:
             - @router
             - %available_locales%
             - @security.token_storage
+            - @frontend.repository.post
 
     frontend.controller.catalog:
         class: Furniture\FrontendBundle\Controller\CatalogController

@@ -34,6 +34,12 @@ Furniture\PostBundle\Entity\Post:
             type: datetime
             name: published_at
 
+        useOnSlider:
+            type: boolean
+            column: on_slider
+            nullable: false
+            default: false
+
     manyToOne:
         creator:
             targetEntity: Furniture\UserBundle\Entity\User

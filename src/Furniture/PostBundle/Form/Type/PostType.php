@@ -87,7 +87,8 @@ class PostType extends AbstractType
             ])
             ->add('translations', 'a2lix_translationsForms', [
                 'form_type' => new PostTranslationType()
-            ]);
+            ])
+            ->add('useOnSlider');
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var Post $post */
