@@ -2722,6 +2722,13 @@ dd {
     text-transform: uppercase;
 }
 
+.agenta-popup .material-entry .variant-unavailable {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+}
+
 .product-detail-box .options-selector .pdp-button .variant-unavailable {
     padding-top: 5px;
 }
@@ -2762,6 +2769,7 @@ dd {
     border: 1px #e6e6e6 solid;
     text-align: center;
     padding: 2px;
+    position: relative;
 }
 
 .agenta-popup .image img {
