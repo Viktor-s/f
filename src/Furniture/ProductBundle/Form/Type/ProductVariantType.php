@@ -37,7 +37,7 @@ class ProductVariantType extends BaseProductVariantType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label'        => 'sylius.form.variant.images'
+                'label'        => 'sylius.form.variant.images',
             ]);
 
         if (!$options['master']) {
@@ -62,43 +62,51 @@ class ProductVariantType extends BaseProductVariantType
                             return $er->createQueryBuilder('ps')
                                 ->andWhere('ps.product = :product')
                                 ->setParameter('product', $product);
-                        }
+                        },
                     ]);
                 }
             });
 
+            // Validation of ProductPartMaterialSelections. Kostyl.
+            // @TODO: This should be moved to Entity Constrains.
             $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
                 // Validate product variant options.
                 $errors = [];
                 $form = $event->getForm();
 
-                foreach ($form->get('productPartVariantSelections')->all() as $key => $ele) {
-                    if (empty($ele->getNormData())) {
-                        $errors[] = [
-                            'message'      => 'Product variant options should not be empty.',
-                            'propertyPath' => 'productPartVariantSelections.' . $key,
-                        ];
-                    }
+
+                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
+                $variant = $event->getData();
+
+                $allowedProductParts = [];
+
+                foreach ($variant->getProductScheme()->getProductParts() as $productPart) {
+                    $allowedProductParts[] = $productPart->getId();
                 }
 
-                if (count($errors)) {
-                    foreach ($errors as $error) {
-                        // Format should be: children[businessAddress].children[postalCode]
-                        list($first, $second) = explode('.', $error['propertyPath']);
-                        $propertyPath = sprintf('children[%s].children[%d]', $first, $second);
-                        $vm = new ViolationMapper();
-                        // Convert error to violation.
-                        $constraint = new ConstraintViolation(
-                            $error['message'], $error['message'], [], '', $propertyPath, null
-                        );
-                        $vm->mapViolation($constraint, $form);
+                /** @var ArrayCollection $submittedVariantSelectionsNormalData */
+                $submittedVariantSelectionsNormalData = $form->get('productPartVariantSelections')->getNormData();
+
+                if (count($allowedProductParts) > $submittedVariantSelectionsNormalData->count()) {
+                    /** @var productPartVariantSelection $selection */
+                    foreach ($form->get('productPartVariantSelections')->all() as $key => $ele) {
+                        if (!$submittedVariantSelectionsNormalData->containsKey($key)) {
+                            $message = 'Product variant options should not be empty.';
+                            $propertyPath = sprintf('children[productPartVariantSelections].children[%d]', $key);
+                            $vm = new ViolationMapper();
+                            // Convert error to violation.
+                            $constraint = new ConstraintViolation(
+                                $message, $message, [], '', $propertyPath, null
+                            );
+                            $vm->mapViolation($constraint, $form);
+                        }
                     }
                 }
             });
             
             $dataCollector = [
                 'part' => [],
-                'materialVariant' => []
+                'materialVariant' => [],
             ];
 
             foreach ($variant->getProduct()->getProductParts() as $productPart) {
@@ -112,7 +120,7 @@ class ProductVariantType extends BaseProductVariantType
 
             $builder->add('skuOptions', new ProductVariantSkuOptions($variant));
             $builder->add('productPartVariantSelections', 'ProductVariantPartMaterialsType', [
-                'product_variant_object' => $variant
+                'product_variant_object' => $variant,
             ]);
 
             $callbackTransformer = new CallbackTransformer(
