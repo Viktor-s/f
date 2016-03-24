@@ -151,19 +151,26 @@
 
 .factory-info .factory-cover .logo
 {
-    width: 160px;
+    width: 250px;
     height: 160px;
+    text-align: center;
+    background: #ffffff;
     position: absolute;;
-    top: 100%;
-    left: 50%;
-    margin-top: -80px;
-    margin-left: -80px;
+    left: 0;
+    right: 0;
+    bottom: -80px;
+    margin: auto;
 }
 
-.factory-info .factory-cover .logo img
-{
-    width: 160px;
-    height: 160px;
+.factory-info .factory-cover .logo img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .factory-info .factory-title
