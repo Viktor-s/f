@@ -1922,7 +1922,8 @@ table.specifications-export-table > thead > tr > th:last-child {
 }
 
 .navigation-banner-wrapper.align-1 {
-    background-position: right top;
+    background-position: 0 0;
+    background-repeat: no-repeat;
 }
 
 .navigation-banner-wrapper.align-2 {
