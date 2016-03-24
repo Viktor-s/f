@@ -1493,14 +1493,13 @@ h4.pgp-product-title a:hover {
 }
 
 .filter-wrapper .select2-container .select2-selection--single .select2-selection__rendered i {
-    color: #999;
-    font-size: 0.7em;
     padding-left: 6px;
 }
 
 /* Dropdown */
 .filter-dropdown.select2-container .select2-dropdown {
     border-radius: 0;
+    width: 400px!important;
 }
 
 .filter-dropdown.select2-container .select2-results__option {

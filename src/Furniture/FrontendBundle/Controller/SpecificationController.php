@@ -141,7 +141,7 @@ class SpecificationController
                         $retailerUser = $retailUserProfile->getUser();
                         $fullName = str_replace(' ', '_',
                                                 sprintf(
-                                                    '%s %s',
+                                                    '%s (%s)',
                                                     strtolower($retailerUser->getFullName()),
                                                     $retailerUser->getEmail()
                                                 )
