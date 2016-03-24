@@ -2717,9 +2717,10 @@ dd {
 .agenta-popup .material-entry .variant-unavailable,
 .product-detail-box .options-selector .pdp-button .variant-unavailable {
     color: #dc0008;
-    font-size: 12px;
-    font-weight: 900;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
+    opacity: .5;
 }
 
 .agenta-popup .material-entry .variant-unavailable {
@@ -2748,7 +2749,8 @@ dd {
 }
 
 .material-selector .material-entry.unavailable:after {
-    border-color: transparent;
+    border-color: #dc0008;
+    opacity: .5;
 }
 
 .material-selector .material-entry.available:after {
