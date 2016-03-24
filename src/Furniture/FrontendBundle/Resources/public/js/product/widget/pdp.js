@@ -164,10 +164,11 @@ $.widget('furniture.pdp_popup_select', {
         });
 
          // Click on material if it is only one in popup
-        var popupMaterials = element.find('.material-entry[data-input-variant]');
-
-        if (popupMaterials.length == 1) {
-            $(popupMaterials).trigger('click');
+        if (element.is(':visible')) {
+            var popupMaterials = element.find('.material-entry[data-input-variant]');
+            if (popupMaterials.length == 1) {
+                $(popupMaterials).trigger('click');
+            }
         }
          
         $(document).on('filter:update', function (event) {

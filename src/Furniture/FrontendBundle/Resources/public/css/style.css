@@ -1008,6 +1008,34 @@ input[type="checkbox"]:checked:disabled + label::before {
  * Product PDP
  */
 
+.button-content.button.style-12 {
+    margin-bottom: 0;
+}
+.pdp-button {
+    height: 90px;
+    display: block;
+    vertical-align: middle;
+    width: 260px;
+}
+.material-entry.selected img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.material-entry.selected .caption {
+    text-align: left;
+    font-size: 12px;
+    line-height: 12px;
+    color: #808080;
+    text-transform: none;
+    font-weight: normal;
+}
+.material-entry.selected .image {
+    width: 75px;
+    height: 75px;
+    float: left;
+    margin-right: 10px;
+}
+
 .product-pdp .swiper-tabs {
     display: none;
 }
