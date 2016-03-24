@@ -34,13 +34,13 @@ class PricingExtension extends \Twig_Extension
      * @var \Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller
      */
     protected $productPatternVariantPriceCompiller;
-    
+
     /**
      * Construct
      *
-     * @param PriceCalculator          $calculator
-     * @param CurrencyContextInterface $currencyContext
-     * @param MoneyHelper              $moneyHelper
+     * @param PriceCalculator                                               $calculator
+     * @param CurrencyContextInterface                                      $currencyContext
+     * @param MoneyHelper                                                   $moneyHelper
      * @param \Furniture\ProductBundle\Pattern\ProductVariantPriceCompiller $productPatternVariantPriceCompiller
      */
     public function __construct(
@@ -67,7 +67,7 @@ class PricingExtension extends \Twig_Extension
             'specification_item_total_price' => new \Twig_Filter_Method($this, 'specificationItemTotalPrice'),
             'specification_total_price'      => new \Twig_Filter_Method($this, 'specificationTotalPrice'),
             'money'                          => new \Twig_Filter_Method($this, 'money'),
-            'pattern_price'              => new \Twig_Filter_Method($this, 'patternPrice'),
+            'pattern_price'                  => new \Twig_Filter_Method($this, 'patternPrice'),
         ];
     }
 
@@ -120,7 +120,8 @@ class PricingExtension extends \Twig_Extension
         return $this->calculator->calculateForSpecification($specification, $useSales);
     }
 
-    public function patternPrice(ProductVariantsPattern $pattern){
+    public function patternPrice(ProductVariantsPattern $pattern)
+    {
         return $this->calculator->calculateForPattern($pattern);
     }
 
@@ -144,7 +145,7 @@ class PricingExtension extends \Twig_Extension
             $amount = number_format($amount, $precision, '.', ' ');
         } else {
             $amount = substr($amount, 0, -strlen($suffix));
-            $amount = trim(number_format($amount, 2, '.', ' '), '0.');
+            $amount = trim(number_format($amount, 2, '.', ' '));
         }
 
         $amount = sprintf('%s %s', $amount, $suffix);
