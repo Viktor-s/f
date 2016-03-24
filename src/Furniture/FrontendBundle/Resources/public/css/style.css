@@ -2751,7 +2751,7 @@ dd {
 
 .material-selector .material-entry.unavailable:after {
     border-color: #dc0008;
-    opacity: .5;
+    opacity: .3;
 }
 
 .material-selector .material-entry.available:after {
