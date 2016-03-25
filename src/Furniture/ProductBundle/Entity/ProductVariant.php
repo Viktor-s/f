@@ -305,7 +305,9 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
     public function validate(ExecutionContextInterface $context)
     {
         // Validate ProductVariantSelection
-        if ($this->getProductScheme()->getProductParts()->count() > $this->getProductPartVariantSelections()->count()) {
+        if (!empty($this->getProductScheme())
+            && $this->getProductScheme()->getProductParts()->count() > $this->getProductPartVariantSelections()->count()
+        ) {
             /** @var Collection $selections */
             $selections = $this->getProductPartVariantSelections();
             /** @var ProductPart $element */
