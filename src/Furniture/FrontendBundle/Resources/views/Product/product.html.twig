@@ -127,7 +127,7 @@
                 {% endfor %}
             </div>
 
-            {% if is_granted('VIEW_PRICE', product) %}
+            {% if is_granted('VIEW_PRODUCTS', product) %}
                 <div class="quantity-selector detail-info-entry">
                     <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
                     <div class="entry number-minus">&nbsp;</div>
