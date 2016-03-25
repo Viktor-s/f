@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Sylius\Bundle\CoreBundle\Form\Type\ProductVariantType as BaseProductVariantType;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -43,21 +44,21 @@ class ProductVariantType extends BaseProductVariantType
         if (!$options['master']) {
             /* PISEC PODKRALSA NEZAMETNO ....................................... */
             $variant = $builder->getData();
-            
+
             $builder->add('factoryCode');
-            
+
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
                 $variant = $event->getData();
                 $product = $variant->getProduct();
 
-                $disabled = (bool) $variant->getId();
+                $disabled = (bool)$variant->getId();
 
                 if ($variant->getProduct()->isSchematicProductType()) {
                     $event->getForm()->add('productScheme', 'entity', [
-                        'class' => ProductScheme::class,
-                        'property' => 'name',
-                        'disabled' => $disabled,
+                        'class'         => ProductScheme::class,
+                        'property'      => 'name',
+                        'disabled'      => $disabled,
                         'query_builder' => function (EntityRepository $er) use ($product) {
                             return $er->createQueryBuilder('ps')
                                 ->andWhere('ps.product = :product')
@@ -67,45 +68,8 @@ class ProductVariantType extends BaseProductVariantType
                 }
             });
 
-            // Validation of ProductPartMaterialSelections. Kostyl.
-            // @TODO: This should be moved to Entity Constrains.
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
-                // Validate product variant options.
-                $errors = [];
-                $form = $event->getForm();
-
-
-                /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
-                $variant = $event->getData();
-
-                $allowedProductParts = [];
-
-                foreach ($variant->getProductScheme()->getProductParts() as $productPart) {
-                    $allowedProductParts[] = $productPart->getId();
-                }
-
-                /** @var ArrayCollection $submittedVariantSelectionsNormalData */
-                $submittedVariantSelectionsNormalData = $form->get('productPartVariantSelections')->getNormData();
-
-                if (count($allowedProductParts) > $submittedVariantSelectionsNormalData->count()) {
-                    /** @var productPartVariantSelection $selection */
-                    foreach ($form->get('productPartVariantSelections')->all() as $key => $ele) {
-                        if (!$submittedVariantSelectionsNormalData->containsKey($key)) {
-                            $message = 'Product variant options should not be empty.';
-                            $propertyPath = sprintf('children[productPartVariantSelections].children[%d]', $key);
-                            $vm = new ViolationMapper();
-                            // Convert error to violation.
-                            $constraint = new ConstraintViolation(
-                                $message, $message, [], '', $propertyPath, null
-                            );
-                            $vm->mapViolation($constraint, $form);
-                        }
-                    }
-                }
-            });
-            
             $dataCollector = [
-                'part' => [],
+                'part'            => [],
                 'materialVariant' => [],
             ];
 
@@ -128,7 +92,7 @@ class ProductVariantType extends BaseProductVariantType
                     $arrCollection = new ArrayCollection();
 
                     foreach ($selection as $value) {
-                        $arrCollection->add($value->getProductPart()->getId() . '_' . $value->getProductPartMaterialVariant()->getId());
+                        $arrCollection->add($value->getProductPart()->getId().'_'.$value->getProductPartMaterialVariant()->getId());
                     }
 
                     return $arrCollection;
@@ -175,5 +139,22 @@ class ProductVariantType extends BaseProductVariantType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
+
+        $options = $resolver->resolve();
+        $defaultValidationGroups = !empty($options['validation_groups']) ? $options['validation_groups'] : [];
+        $resolver->setDefaults(
+            [
+                'validation_groups' => function (Form $form) use ($defaultValidationGroups) {
+                    /** @var ProductVariant $productVariant */
+                    $productVariant = $form->getData();
+
+                    if ($productVariant->isMaster()) {
+                        return $defaultValidationGroups;
+                    } else {
+                        return array_merge($defaultValidationGroups, ['CreateProductVariant']);
+                    }
+                },
+            ]
+        );
     }
 }
