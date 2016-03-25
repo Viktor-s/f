@@ -150,10 +150,10 @@
 
 .factory-info .factory-cover .logo
 {
-    width: auto;
+    width: 250px;
     height: 160px;
     text-align: center;
-    background-color: transparent;
+    background-color: #fff;
     position: absolute;
     bottom: -80px;
     left: 0;
