@@ -196,7 +196,7 @@ a, .product-image .bottom-line, .product-image img {
 /* Not required for template or sticky footer method. */
 
 body > .container {
-    padding: 0 15px 0;
+    padding: 0 15px 30px;
 }
 
 .container .text-muted {
