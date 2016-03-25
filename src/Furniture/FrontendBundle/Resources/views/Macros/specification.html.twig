@@ -1,12 +1,9 @@
-{% macro list_toolbar(sorting, paginator, buttons = true) %}
+{% macro list_toolbar(filters, paginator, buttons = true) %}
+    {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
     <div class="row mv-actions">
         <div class="col-sm-2 col-xs-4 col-lg-2">
             <div class="filter-wrapper">
-                <select name="sorting" class="form-control">
-                    {% for key, value in sorting %}
-                        <option value="{{ key }}" {% if value.state %}selected{% endif %}>{{ value.name }}</option>
-                    {% endfor %}
-                </select>
+                {{ sorting_select(filters, {'name': 'filter', 'class': 'form-control'}) }}
             </div>
         </div>
         <div class="col-sm-2 col-xs-4 col-lg-1">
@@ -46,20 +43,12 @@
 {% endmacro %}
 
 {% macro export_toolbar(specification, filters, position) %}
+    {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
     <div class="toolbar toolbar-{{ position }}">
         <div class="row">
             <div class="col-sm-3 col-xs-4 col-lg-2">
                 <div class="filter-wrapper">
-                    <select id="filter-{{ position }}" name="sorting" class="form-control" data-position="{{ position }}">
-                        <option value="all">All</option>
-                        {% for name, options in filters if options is not empty %}
-                            <optgroup label="{{ name|upper }}" data-mode="{{ name }}">
-                                {% for id, option in options %}
-                                    <option value="{{ id }}">{{ option }}</option>
-                                {% endfor %}
-                            </optgroup>
-                        {% endfor %}
-                    </select>
+                    {{ sorting_select(filters, {'id': 'filter-'~position, 'name': 'filter', 'class': 'form-control', 'data-position': position}) }}
                 </div>
             </div>
             <div class="col-sm-4 col-sm-offset-5 col-xs-4 col-lg-3 col-lg-offset-7 text-right">

@@ -8,6 +8,9 @@
                 <div class="material-entry selected">{# add hidden class #}
                     <div class="image">
                         <img src="" alt="">
+                        <div class="variant-unavailable hidden">
+                            {{ 'frontend.unavailable'|trans }}
+                        </div>
                     </div>
                     <div class="caption" style="background: white none repeat scroll 0% 0%;">>Havana - ND Opaque walnut, indian ink coloured Havana - ND Opaque walnut, indian ink coloured </div>
                 </div>
@@ -24,10 +27,7 @@
                         {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
                             <div class="accordeon">
                                 <div class="accordeon-title row">
-                                    <div class="filter-title col-sm-4">  
-                                        <h4></h4>
-                                    </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-12">
                                         <h4>{{ groupedVariant.productPartMaterial.presentation }}</h4>
                                     </div>
                                 </div>
@@ -55,12 +55,17 @@
                                             </div>
                                             <div class="col-sm-8 popup-material-grid" data-sticky_column>
                                                 {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
-                                                    <div class="material-entry" data-input-variant="{{ productPartMaterialVariant.id }}">
+                                                    <div class="material-entry {{ productPartMaterialVariant.available ? 'available' : 'unavailable' }}" data-input-variant="{{ productPartMaterialVariant.id }}" data-available="{{ productPartMaterialVariant.available ? 'true': 'false' }}">
                                                         <div class="image">
                                                             {% if productPartMaterialVariant.image %}
                                                                 <img data-src="{{ productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
                                                             {% else %}
                                                                 <img src="/img/100x100.png" alt="">
+                                                            {% endif %}
+                                                            {% if not productPartMaterialVariant.available %}
+                                                                <div class="variant-unavailable">
+                                                                    {{ 'frontend.unavailable'|trans }}
+                                                                </div>
                                                             {% endif %}
                                                         </div>
                                                         <div class="caption">{{ productPartMaterialVariant.name }}</div>

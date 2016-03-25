@@ -2,7 +2,7 @@
 {% spaceless %}
     <nav class="main-nav">
         <ul class="nav navbar-nav">
-            {% for child in item.children %}
+            {% for child in item.children if child.displayed %}
                 <li  class="simple-list {% if child.isCurrent() %}active{% endif %}">
                     <a href="{{ child.uri }}">{{ child.label }}</a>
                 </li>

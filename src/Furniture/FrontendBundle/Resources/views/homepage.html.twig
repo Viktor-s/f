@@ -34,53 +34,52 @@
 {% endblock %}
 
 {% block stub_of_content %}
-<div class="home-slider">
-    <div class="row">
-
-        <div class="col-md-2 col-md-push-10" style="display:none;">
-            <div class="sidebar-navigation">
-                <div class="title">Special offers:<i class="fa fa-angle-down"></i></div>
-                <div class="list">
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Selva</span></a>
-                    <a class="entry active" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>i4 Mariani</span></a>
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Antonello Italia</span></a>
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Kartell</span></a>
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Arceos</span></a>
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Misura salotti</span></a>
-                    <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Passini</span></a>
+    <div class="home-slider">
+        <div class="row">
+            <div class="col-md-2 col-md-push-10" style="display:none;">
+                <div class="sidebar-navigation">
+                    <div class="title">Special offers:<i class="fa fa-angle-down"></i></div>
+                    <div class="list">
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Selva</span></a>
+                        <a class="entry active" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>i4 Mariani</span></a>
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Antonello Italia</span></a>
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Kartell</span></a>
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Arceos</span></a>
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Misura salotti</span></a>
+                        <a class="entry" href="index-furniture.html#"><span><i class="fa fa-angle-right"></i>Passini</span></a>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-md-12">
+                <div class="navigation-banner-swiper">
+                    <div class="swiper-container" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
+                        <div class="swiper-wrapper">
+                            {% for post in news %}
+                                <div class="swiper-slide active" data-val="0">
+                                    <div class="navigation-banner-wrapper light-text align-1" style="background-image: url({{ post.images|first ? '/media/image/' ~ post.images|first.path : ''}});">
+                                        <div class="navigation-banner-content">
+                                            <div class="cell-view">
+                                                <div class="cell-view-inner">
+                                                    <h2 class="subtitle">{{ post.displayName }}</h2>
 
-        <div class="col-md-12">
-
-            <div class="navigation-banner-swiper">
-                <div class="swiper-container" data-autoplay="0" data-loop="1" data-speed="500" data-center="0" data-slides-per-view="1">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide active" data-val="0">
-                            <div class="navigation-banner-wrapper light-text align-1" style="background-image: url(/content/specials/news.jpg); background-position: right -100px;">
-                                <div class="navigation-banner-content">
-                                    <div class="cell-view">
-                                        <div class="cell-view-inner">
-                                            <h2 class="subtitle">ЗЕЛЕНЫЙ, СИНИЙ, ГОЛУБОЙ - КАКОЙ? БИРЮЗОВЫЙ!</h2>
-                                            
-                                            <div class="description" style="font-family: sans-serif; ">Тенденции последних лет ведут к упрощению колористики в интерьере, цвета становятся более пастельными, «выстиранными».</div>
-                                            <div class="info">
-                                                <a class="button style-1" href="{{ path('factory_side_news_view', { factory: 6, slug: 'colors'}) }}">Читать далее</a>
+                                                    <div class="description" style="font-family: sans-serif; ">{{ post.translate.shortDescription }}</div>
+                                                    <div class="info">
+                                                        <a class="button style-1" href="{{ path('factory_side_news_view', { factory: post.factory.id, slug: post.slug}) }}">Читать далее</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="clear"></div>
                                     </div>
                                 </div>
-                                <div class="clear"></div>
-                            </div>
+                            {% endfor %}
                         </div>
+                        <div class="clear"></div>
+                        <div class="pagination"></div>
                     </div>
-                    <div class="clear"></div>
-                    <div class="pagination"></div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 {% endblock %}

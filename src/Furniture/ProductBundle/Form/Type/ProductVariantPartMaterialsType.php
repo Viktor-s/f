@@ -52,8 +52,6 @@ class ProductVariantPartMaterialsType extends AbstractType
             $defaultValues[] = $ppvs->getProductPart()->getId() . '_' . $ppvs->getProductPartMaterialVariant()->getId();
         }
 
-        $i = 0;
-
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $productVariant->getProduct();
 
@@ -74,7 +72,7 @@ class ProductVariantPartMaterialsType extends AbstractType
                 $choiceList = new ChoiceList($choiceValues, $choiceLabels);
                 $values = array_intersect($choiceList->getChoices(), $defaultValues);
 
-                $builder->add($i, 'choice', [
+                $builder->add($productPart->getId(), 'choice', [
                     'label'       => $productPart->getLabel(),
                     'choice_list' => $choiceList,
                     'required'    => false,
@@ -83,8 +81,6 @@ class ProductVariantPartMaterialsType extends AbstractType
                     ],
                     'data' => array_shift($values),
                 ]);
-
-                $i++;
             }
         }
     }

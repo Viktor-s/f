@@ -3,6 +3,7 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\CommonBundle\Util\ViolationListUtils;
 use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
@@ -268,20 +269,12 @@ class SpecificationBuyerController
         $creator = $this->tokenStorage->getToken()->getUser();
         $retailer = $creator->getRetailerUserProfile();
         $specificationQuery = new SpecificationQuery();
-        $sorting = [
-            'all'      => [
-                'name'  => 'All',
-                'state' => false,
-            ],
-            'opened'   => [
-                'name'  => 'Opened',
-                'state' => false,
-            ],
-            'finished' => [
-                'name'  => 'Finished',
-                'state' => false,
-            ],
+        $choices = [
+            'all' => 'All',
+            'opened' => 'Opened',
+            'finished' => 'Finished',
         ];
+        $filters = new SimpleChoiceList($choices);
 
         if ($retailer && $retailer->isRetailerAdmin()) {
             $profile = $retailer->getRetailerProfile();
@@ -298,21 +291,26 @@ class SpecificationBuyerController
                 ->withBuyer($buyer);
         }
 
-        if ($request->query->has('sorting')) {
-            switch ($request->query->get('sorting')) {
+        if ($request->query->has('filter')) {
+            switch ($request->query->get('filter')) {
                 case 'opened':
                     $specificationQuery->opened();
-                    $sorting['opened']['state'] = true;
+                    $filters->setSelectedItem('opened');
                     break;
 
                 case 'finished':
                     $specificationQuery->finished();
-                    $sorting['finished']['state'] = true;
+                    $filters->setSelectedItem('finished');
                     break;
 
                 default:
-                    $sorting['all']['state'] = true;
+                    $filters->setSelectedItem('all');
             }
+        }
+        else {
+            // By default show only opened specifications
+            $specificationQuery->opened();
+            $filters->setSelectedItem('opened');
         }
 
         /* Create product paginator */
@@ -328,7 +326,7 @@ class SpecificationBuyerController
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
             'buyer'                   => $buyer,
             'specifications'          => $specifications,
-            'sorting'                 => $sorting,
+            'filters'                 => $filters,
         ]);
 
         return new Response($content);

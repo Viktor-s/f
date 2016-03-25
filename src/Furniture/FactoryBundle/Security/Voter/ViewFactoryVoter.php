@@ -36,7 +36,9 @@ class ViewFactoryVoter extends AbstractVoter
 
         switch ($attribute) {
             case 'ACTIVE_RELATION':
-                if (!$user->isRetailer()) {
+                if (!$user->isRetailer()
+                    || $user->getRetailerUserProfile()->getRetailerProfile()->isDemo()
+                ) {
                     return false;
                 }
 

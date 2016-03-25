@@ -1,6 +1,6 @@
 <?php
 
-namespace Furniture\FrontendBundle\Util;
+namespace Furniture\CommonBundle\Util;
 
 class UrlFormatter
 {

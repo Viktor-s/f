@@ -14,7 +14,7 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(sorting, paginator) }}
+    {{ list_toolbar(filters, paginator) }}
     <h1 class="block-title">{{ buyer.fullName }}</h1>
     {% set not_found = 'frontend.specfications_opened_not_found_for_buyer'|trans({':buyer': buyer.fullName}) %}
     {% if is_granted('SPECIFICATION_CREATE') %}
@@ -32,10 +32,21 @@
     {{ parent() }}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('select[name="sorting"]').on('change', function (e) {
-                var query = {[this.name]: $(this).val()};
-            window.location = window.location.origin + window.location.pathname + '?' + $.param(query)
-        });
+
+            var $select2 = $('select[name="filter"]').select2({
+                minimumResultsForSearch: Infinity,
+
+                dropdownAutoWidth : true,
+            });
+            $select2.on('change', function (e) {
+                var query = {};
+                query[this.name] = $(this).val();
+                window.location = window.location.origin + window.location.pathname + '?' + $.param(query);
+            });
+
+            $.each($select2, function(idx, val) {
+                $(val).data('select2').$dropdown.addClass('filter-dropdown')
+            });
         })
     </script>
 {% endblock %}

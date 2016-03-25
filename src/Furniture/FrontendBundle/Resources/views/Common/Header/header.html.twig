@@ -16,7 +16,7 @@
                 </div>
                 <div id="bs-navbar" class="collapse navbar-collapse">
                     <div class="pull-left main-menu">
-                        <div class="title">{{ 'frontend.question_and_call'|trans({':phone': '+380630776632'})|raw }}</div>
+                        <div class="site-name"></div>
                         {% if app.user.isFactory() %}
                             {{ knp_menu_render('frontend.header.factory', {template: 'FrontendBundle:Common/Header:menu.html.twig'}) }}
                         {% elseif app.user.isRetailer() %}
@@ -25,7 +25,7 @@
                             Undefined user type!
                         {% endif %}
                     </div>
-                    <div class="header-right">
+                    <div class="header-right pull-right">
                         <div class="line-entry">
                             <a class="header-functionality-entry" href="{{ path('user_profile') }}">
                                 <i class="fa fa-user"></i><span>{{ 'frontend.button.user_profile'|trans }}</span>

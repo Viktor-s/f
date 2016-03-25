@@ -34,54 +34,9 @@ product:
         _controller: frontend.controller.product:product
 
 # Specifications
-specifications:
-    path: /{_locale}/specifications
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.specification:specifications
-
-specification_create:
-    path: /{_locale}/specifications/new
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.specification:edit
-
-specification_edit:
-    path: /{_locale}/specifications/{specification}/edit
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales%, specification: \d+ }
-    defaults:
-        _controller: frontend.controller.specification:edit
-
-specification_remove:
-    path: /{_locale}/specifications/{specification}/remove
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, specification: \d+ }
-    defaults:
-        _controller: frontend.controller.specification:remove
-
-specification_finish:
-    path: /{_locale}/specifications/{specification}/finish
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, specification: \d+ }
-    defaults:
-        _controller: frontend.controller.specification:finish
-
-specification_export_preview:
-    path: /{_locale}/specifications/{specification}/export/preview
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, specification: \d+ }
-    defaults:
-        _controller: frontend.controller.specification:exportPreview
-
-specification_export:
-    path: /{_locale}/specifications/{specification}/export
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, specification: \d+ }
-    defaults:
-        _controller: frontend.controller.specification:export
+specificaitons:
+    prefix: /{_locale}/specifications
+    resource: @FrontendBundle/Resources/config/routing/specifications.yml
 
 # Specification buyers
 specificaiton_buyers:

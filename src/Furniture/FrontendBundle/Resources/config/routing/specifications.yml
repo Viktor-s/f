@@ -1,0 +1,48 @@
+specifications:
+    path: /
+    methods: [ GET ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification:specifications
+
+specification_create:
+    path: /new
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.specification:edit
+
+specification_edit:
+    path: /{specification}/edit
+    methods: [ GET, POST ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:edit
+
+specification_remove:
+    path: /{specification}/remove
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:remove
+
+specification_finish:
+    path: /{specification}/finish
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:finish
+
+specification_export_preview:
+    path: /{specification}/export/preview
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:exportPreview
+
+specification_export:
+    path: /{specification}/export
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, specification: \d+ }
+    defaults:
+        _controller: frontend.controller.specification:export

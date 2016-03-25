@@ -81,6 +81,11 @@ class Post extends AbstractTranslatable
     private $files;
 
     /**
+     * @var boolean
+     */
+    private $useOnSlider = false;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -405,6 +410,27 @@ class Post extends AbstractTranslatable
 
         return $this;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isUseOnSlider()
+    {
+        return $this->useOnSlider;
+    }
+
+    /**
+     * @param boolean $useOnSlider
+     * @return Post
+     */
+    public function setUseOnSlider($useOnSlider)
+    {
+        $this->useOnSlider = $useOnSlider;
+
+        return $this;
+    }
+
+
 
     /**
      * Is news?

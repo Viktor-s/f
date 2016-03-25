@@ -21,15 +21,15 @@
             </div>
             <div class="logo">
                 {% if factory.logoImage %}
-                    <img src="/media/image/{{ factory.logoImage.path }}" width="160" height="250" alt="{{ factory.name }}" />
+                    <img src="/media/image/{{ factory.logoImage.path }}" width="250" height="160" alt="{{ factory.name }}" />
                 {% else %}
-                    <img src="http://dummyimage.com/160x250/cccccc/000000" width="160" height="250" alt="{{ factory.name }}" />
+                    <img src="http://dummyimage.com/160x250/cccccc/000000" width="250" height="160" alt="{{ factory.name }}" />
                 {% endif %}
             </div>
         </div>
 
         <div class="factory-title">
-            <h3>{{ factory.name }}</h3>
+            {#<h3>{{ factory.name }}</h3>#}
 
             {% if factory.translate.address %}
                 <div class="address">
