@@ -94,7 +94,7 @@
     <div class="col-md-{{ grid }} col-sm-{{ grid }} shop-grid-item " data-factory="{{ product.factory.name }}">
         <div class="product-slide-entry">
             <div class="product-image">
-                <a {% if is_granted('VIEW_PRODUCTS', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
+                <a {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
                     <div class="top-line text-center">
                         <div class="price">
                             <div class="current">
@@ -111,13 +111,13 @@
                     </div>
                 </a>
                 <div class="bottom-line text-right">
-                    {% if is_granted('VIEW_PRICE', product) %}
+                    {% if is_granted('VIEW_PRODUCTS', product.factory) %}
                         <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
                     {% endif %}
                 </div>
             </div>
             <h4 class="pgp-product-title">
-                <a class="title" {% if is_granted('VIEW_PRODUCTS', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %}>
+                <a class="title" {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %}>
                     {% if product.factoryCode != '' %}
                         <small>{{ product.factoryCode }}</small>
                     {% endif %}
