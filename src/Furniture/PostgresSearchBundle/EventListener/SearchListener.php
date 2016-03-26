@@ -10,6 +10,7 @@ namespace Furniture\PostgresSearchBundle\EventListener;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Furniture\ProductBundle\Entity\ProductTranslation;
 
 class SearchListener
 {
@@ -26,12 +27,44 @@ class SearchListener
                 }
 
                 $fieldMapping = $metadata->getFieldMapping($field);
+
                 if (!isset($fieldMapping['options']['searchOptions']['searchFields'])) {
                     continue;
                 }
 
                 $searchFields = $fieldMapping['options']['searchOptions']['searchFields'];
+
+                $locale = null;
+                $defaultLanguage = null;
+
+                if (isset($fieldMapping['options']['searchOptions']['defaultLanguage'])) {
+                    $defaultLanguage = $fieldMapping['options']['searchOptions']['defaultLanguage'];
+                }
+
+                if (isset($fieldMapping['options']['searchOptions']['localeField'])) {
+                    $localeField = $fieldMapping['options']['searchOptions']['localeField'];
+                    if (in_array($localeField, $metadata->getFieldNames())) {
+                        $getter = 'get'.ucfirst($localeField);
+                        if (!method_exists($entity, $getter)) {
+                            throw new AnnotationException(
+                                'Getter '.$getter.' for locale field does not exists.'
+                            );
+                        }
+                        if (isset($fieldMapping['options']['searchOptions']['languageMapping'])
+                            && in_array($entity->$getter(), $fieldMapping['options']['searchOptions']['languageMapping'])) {
+                            $locale = $fieldMapping['options']['searchOptions']['languageMapping'][$entity->$getter()];
+                        } else {
+                            $locale = $defaultLanguage;
+                        }
+                    }
+                }
+
                 $searchData = [];
+
+                if ($locale) {
+                    $searchData['locale'] = [$locale];
+                }
+
                 foreach ($searchFields as $searchField) {
                     $getter = 'get'.ucfirst($searchField);
 
@@ -50,8 +83,10 @@ class SearchListener
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
+
             $changeSet = $uow->getEntityChangeSet($entity);
             $metadata = $em->getClassMetadata(get_class($entity));
+
             foreach ($metadata->getFieldNames() as $field) {
                 if ($metadata->getTypeOfField($field) != 'tsvector') {
                     continue;
@@ -64,11 +99,13 @@ class SearchListener
 
                 $updateNeeded = false;
                 $searchFields = $fieldMapping['options']['searchOptions']['searchFields'];
+
                 if (isset($fieldMapping['options']['searchOptions']['triggerRecompute'])) {
                     $triggerRecompute = $fieldMapping['options']['searchOptions']['triggerRecompute'];
                 } else {
                     $triggerRecompute = [];
                 }
+
                 foreach ($changeSet as $fieldName => $value) {
                     if (in_array($fieldName, $searchFields) || in_array($fieldName, $triggerRecompute)) {
                         $updateNeeded = true;
@@ -80,7 +117,37 @@ class SearchListener
                     continue;
                 }
 
+                $locale = null;
+                $defaultLanguage = null;
+
+                if (isset($fieldMapping['options']['searchOptions']['defaultLanguage'])) {
+                    $defaultLanguage = $fieldMapping['options']['searchOptions']['defaultLanguage'];
+                }
+
+                if (isset($fieldMapping['options']['searchOptions']['localeField'])) {
+                    $localeField = $fieldMapping['options']['searchOptions']['localeField'];
+                    if (in_array($localeField, $metadata->getFieldNames())) {
+                        $getter = 'get'.ucfirst($localeField);
+                        if (!method_exists($entity, $getter)) {
+                            throw new AnnotationException(
+                                'Getter '.$getter.' for locale field does not exists.'
+                            );
+                        }
+                        if (isset($fieldMapping['options']['searchOptions']['languageMapping'])
+                            && in_array($entity->$getter(), $fieldMapping['options']['searchOptions']['languageMapping'])) {
+                            $locale = $fieldMapping['options']['searchOptions']['languageMapping'][$entity->$getter()];
+                        } else {
+                            $locale = $defaultLanguage;
+                        }
+                    }
+                }
+
                 $searchData = [];
+
+                if ($locale) {
+                    $searchData['locale'] = [$locale];
+                }
+
                 foreach ($searchFields as $searchField) {
                     $getter = 'get'.ucfirst($searchField);
 
@@ -89,7 +156,6 @@ class SearchListener
                             'Getter '.$getter.' for search field does not exists.'
                         );
                     }
-
                     $searchData[] = $entity->$getter();
                 }
 

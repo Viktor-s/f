@@ -1,5 +1,14 @@
 {% extends 'FrontendBundle:Search:base.html.twig' %}
+{% from 'FrontendBundle:Macros:products.html.twig' import filter_panel, sorting_panel, product_grid_view %}
 
 {% block content %}
-    
+    <div class="row">
+        <div class="col-md-10 col-sm-9 col-md-push-2 col-sm-push-3">
+            <div class="row shop-grid grid-view">
+                {% for product in products %}
+                    {{ product_grid_view(product) }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

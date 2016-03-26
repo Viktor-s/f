@@ -14,4 +14,14 @@ Furniture\ProductBundle\Entity\ProductTranslation:
             default: ''
             options:
                 searchOptions:
-                    searchFields: [name, description]
+                    searchFields:
+                        - name
+                        - description
+                    localeField: locale
+                    defaultLanguage: english
+                    languageMapping:
+                        en_US: english
+                        en_GB: english
+                        es_ES: spanish
+                        de_DE: german
+                        it_IT: italian

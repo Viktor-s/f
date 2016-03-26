@@ -217,4 +217,5 @@ services:
             - @security.token_storage
             - @doctrine.orm.default_entity_manager
             - @router
+            - @sylius.translation.locale_provider
         

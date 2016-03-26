@@ -19,7 +19,7 @@ class TsvectorType extends Type
      */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
-        return sprintf('to_tsvector(%s)', $sqlExpr);
+        return sprintf('to_tsvector(%s)',$sqlExpr);
     }
 
     /**
@@ -28,22 +28,24 @@ class TsvectorType extends Type
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         $result = '';
+        $locale = null;
 
         if (is_array($value)) {
+            if (array_key_exists('locale', $value)) {
+                $locale = $value['locale'][0];
+                unset($value['locale']);
+            }
             foreach ($value as $item) {
                 if (is_array($item)) {
                     $item = implode(' ', $item);
                 }
-                $result .= $item . ' ';
+                $result .= $item.' ';
             }
-        }
-        else if (is_string($value)) {
+        } else if (is_string($value)) {
             $result = $value;
         }
 
-        $result = trim($result);
-
-        return $result;
+        return $result = trim($result);
     }
 
     /**
