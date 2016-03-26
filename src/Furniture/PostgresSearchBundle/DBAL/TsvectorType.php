@@ -28,13 +28,8 @@ class TsvectorType extends Type
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         $result = '';
-        $locale = null;
 
         if (is_array($value)) {
-            if (array_key_exists('locale', $value)) {
-                $locale = $value['locale'][0];
-                unset($value['locale']);
-            }
             foreach ($value as $item) {
                 if (is_array($item)) {
                     $item = implode(' ', $item);

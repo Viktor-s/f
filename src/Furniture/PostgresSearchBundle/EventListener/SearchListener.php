@@ -34,36 +34,7 @@ class SearchListener
 
                 $searchFields = $fieldMapping['options']['searchOptions']['searchFields'];
 
-                $locale = null;
-                $defaultLanguage = null;
-
-                if (isset($fieldMapping['options']['searchOptions']['defaultLanguage'])) {
-                    $defaultLanguage = $fieldMapping['options']['searchOptions']['defaultLanguage'];
-                }
-
-                if (isset($fieldMapping['options']['searchOptions']['localeField'])) {
-                    $localeField = $fieldMapping['options']['searchOptions']['localeField'];
-                    if (in_array($localeField, $metadata->getFieldNames())) {
-                        $getter = 'get'.ucfirst($localeField);
-                        if (!method_exists($entity, $getter)) {
-                            throw new AnnotationException(
-                                'Getter '.$getter.' for locale field does not exists.'
-                            );
-                        }
-                        if (isset($fieldMapping['options']['searchOptions']['languageMapping'])
-                            && in_array($entity->$getter(), $fieldMapping['options']['searchOptions']['languageMapping'])) {
-                            $locale = $fieldMapping['options']['searchOptions']['languageMapping'][$entity->$getter()];
-                        } else {
-                            $locale = $defaultLanguage;
-                        }
-                    }
-                }
-
                 $searchData = [];
-
-                if ($locale) {
-                    $searchData['locale'] = [$locale];
-                }
 
                 foreach ($searchFields as $searchField) {
                     $getter = 'get'.ucfirst($searchField);
@@ -117,36 +88,7 @@ class SearchListener
                     continue;
                 }
 
-                $locale = null;
-                $defaultLanguage = null;
-
-                if (isset($fieldMapping['options']['searchOptions']['defaultLanguage'])) {
-                    $defaultLanguage = $fieldMapping['options']['searchOptions']['defaultLanguage'];
-                }
-
-                if (isset($fieldMapping['options']['searchOptions']['localeField'])) {
-                    $localeField = $fieldMapping['options']['searchOptions']['localeField'];
-                    if (in_array($localeField, $metadata->getFieldNames())) {
-                        $getter = 'get'.ucfirst($localeField);
-                        if (!method_exists($entity, $getter)) {
-                            throw new AnnotationException(
-                                'Getter '.$getter.' for locale field does not exists.'
-                            );
-                        }
-                        if (isset($fieldMapping['options']['searchOptions']['languageMapping'])
-                            && in_array($entity->$getter(), $fieldMapping['options']['searchOptions']['languageMapping'])) {
-                            $locale = $fieldMapping['options']['searchOptions']['languageMapping'][$entity->$getter()];
-                        } else {
-                            $locale = $defaultLanguage;
-                        }
-                    }
-                }
-
                 $searchData = [];
-
-                if ($locale) {
-                    $searchData['locale'] = [$locale];
-                }
 
                 foreach ($searchFields as $searchField) {
                     $getter = 'get'.ucfirst($searchField);

@@ -18,7 +18,8 @@ class Version20160326221951 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-//        $this->addSql("CREATE EXTENSION unaccent;");
+        // Create extension require root user previlegious.
+        // $this->addSql("CREATE EXTENSION unaccent;");
         $this->addSql("CREATE OR REPLACE FUNCTION product_translation_trigger() RETURNS trigger AS $$
                         DECLARE lang varchar;
                         BEGIN
@@ -49,6 +50,7 @@ class Version20160326221951 extends AbstractMigration
 
         $this->addSql("DROP TRIGGER IF EXISTS productTranslationTsVectorUpdate ON product_translation;");
         $this->addSql("DROP FUNCTION IF EXISTS product_translation_trigger();");
-//        $this->addSql("DROP EXTENSION IF EXISTS unaccent;");
+        // Create extension require root user previlegious.
+        // $this->addSql("DROP EXTENSION IF EXISTS unaccent;");
     }
 }
