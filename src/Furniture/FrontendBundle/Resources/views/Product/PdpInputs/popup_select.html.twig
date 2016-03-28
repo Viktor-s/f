@@ -34,7 +34,7 @@
                                 <div class="accordeon-entry" style="display: block;">
                                     <div class="article-container style-1 material-selector">
                                         <div class="row">
-                                            <div class="col-sm-4 sticky-filter" data-sticky_column>
+                                            <div class="col-sm-3 sticky-filter" data-sticky_column>
                                                 {% for groupedOptionValues in groupedVariant.productPartMaterial.groupedOptionValues %}
                                                     <div class="row information-blocks">
                                                         <div class="col-sm-12">
@@ -50,7 +50,7 @@
                                                     </div>
                                                 {% endfor %}
                                             </div>
-                                            <div class="col-sm-8 popup-material-grid" data-sticky_column>
+                                            <div class="col-sm-9 popup-material-grid" data-sticky_column>
                                                 {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
                                                     <div class="material-entry {{ productPartMaterialVariant.available ? 'available' : 'unavailable' }}" data-input-variant="{{ productPartMaterialVariant.id }}" data-available="{{ productPartMaterialVariant.available ? 'true': 'false' }}">
                                                         <div class="image">
