@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ sorting_panel('top', pagination(products)) }}
+    {{ sorting_panel(filters, 'top', pagination(products)) }}
     <div class="row">
         {# Left side catalog menu #}
         <div class="col-md-2 col-sm-3">
@@ -42,5 +42,5 @@
             </div>
         </div>
     </div>
-    {{ sorting_panel('bottom', pagination(products)) }}
+    {{ sorting_panel(filters, 'bottom', pagination(products)) }}
 {% endblock %}
