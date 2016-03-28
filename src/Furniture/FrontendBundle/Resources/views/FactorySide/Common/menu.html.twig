@@ -1,16 +1,15 @@
 {% block root %}
 {% spaceless %}
-<div class="portfolio-navigation">
-    <div class="links-drop-down">
-        <div class="title">Select</div>
-        <div class="list">
-        {% for child in item.children if child.displayed %}
+<div class="factory-navigation">
+    <ul class="nav nav-pills">
+    {% for child in item.children if child.displayed %}
+        <li>
             <a {% if child.isCurrent() %} class="active" {% endif %} href="{{ child.uri }}">
                 {{ child.label }}
             </a>
-        {% endfor %}
-        </div>
-    </div>
+        </li>
+    {% endfor %}
+    </ul>
 </div>
 {% endspaceless %}
 {% endblock %}

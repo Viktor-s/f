@@ -943,6 +943,10 @@ input[type="radio"] {
     display: none;
 }
 
+label.checkbox-entry {
+    padding-left: 0;
+}
+
 input[type="checkbox"] + label,
 input[type="radio"] + label {
     cursor: pointer;
@@ -955,9 +959,6 @@ input[type="checkbox"] + label::before {
     width: 10px;
     margin: 0 5px 0 0;
     background-color: #e8e8e8;
-}
-
-input[type="checkbox"] + label::before {
 }
 
 input[type="checkbox"]:checked + label::before {
@@ -1664,34 +1665,6 @@ h4.pgp-product-title a:hover {
     font-size: 12px;
 }
 
-.checkbox-entry {
-    cursor: pointer;
-    display: block;
-    font-size: 13px;
-    line-height: 14px;
-    font-weight: 500;
-    position: relative;
-    padding-left: 22px;
-}
-
-.checkbox-entry input + span.check {
-    cursor: pointer;
-    display: inline-block;
-    border: 1px #d9d9d9 solid;
-    width: 12px;
-    height: 12px;
-    vertical-align: middle;
-    color: #333232;
-    margin-right: 7px;
-    position: absolute;
-    left: 0;
-    top: 1px;
-}
-
-.checkbox-entry input:checked + span.check {
-    background: #ca1515;
-}
-
 .help-block {
     clear: both;
     margin-bottom: 0;
@@ -2229,14 +2202,14 @@ table.specifications-export-table > thead > tr > th:last-child {
     position: absolute;
 }
 
-.blog-entry.factories-grid {
+.factories-grid.blog-entry {
     text-align: center;
 }
 
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 00 - CSS ANIMATIONS */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
-.sidebar-navigation .entry:before, .sidebar-navigation .entry, .button, .socials-box a, .socials-box a .fa, .search-drop-down .category-entry, .search-button, .header-functionality-entry, footer a, .product-slide-entry .title, .product-slide-entry .tag, .inline-product-entry .title, .inline-product-entry .image, .list-type-1 a, .hover-class-1:after, .hover-label, .menu-slider-arrows a .fa, .bottom-line-a, .top-line-a, .fixed-header-square-button .fa, .read-more, .product-mix-info, .simple-search-form .simple-submit, .departmets-drop-down .list a, .copyright a, .styled-form .submit-wrapper, .socials-box a .fa, .sidebar-logos-row a img, a.sale-entry:before, a.sale-entry .sale-price, a.sale-entry .sale-price span, a.sale-entry .sale-description, .breadcrumb-box a, .icon-entry .image, .quantity-selector .entry.number-minus, .quantity-selector .entry.number-plus, .tabs-container.style-1 .tab-switcher, .size-selector .entry:after, .color-selector .entry:after, .color-selector .entry:before, .blog-entry .title, .blog-entry .subtitle a, .blog-entry .subtitle a b, .blog-entry .readmore, .square-button, .tags-box a, .categories-list ul li a, .container-404 .text a, .portfolio-navigation a, .portfolio-entry .title, .action-button, .hover-layer, .continue-link, .accordeon-title, .traditional-cart-entry .tag, .traditional-cart-entry .title, .remove-button, .cart-summary-box .simple-link, .checkout-progress-widget a.step-entry, .simple-field, .column-article-entry .title, .product-slide-entry .subtitle, .parallax-view, .simple-form .submit, .latest-entries-heading .latest-more, .demo-categories-entry .title, .demo-categories-entry .list a, .sale-entry-border, .sale-entry-border:before, .color-text-widget, .color-text-widget .cell-view, .color-text-widget .title, .color-text-widget .description, .sale-entry, .simple-search-form, .special-item-entry > img {
+.sidebar-navigation .entry:before, .sidebar-navigation .entry, .button, .socials-box a, .socials-box a .fa, .search-drop-down .category-entry, .search-button, .header-functionality-entry, footer a, .product-slide-entry .title, .product-slide-entry .tag, .inline-product-entry .title, .inline-product-entry .image, .list-type-1 a, .hover-class-1:after, .hover-label, .menu-slider-arrows a .fa, .bottom-line-a, .top-line-a, .fixed-header-square-button .fa, .read-more, .product-mix-info, .simple-search-form .simple-submit, .departmets-drop-down .list a, .copyright a, .styled-form .submit-wrapper, .socials-box a .fa, .sidebar-logos-row a img, a.sale-entry:before, a.sale-entry .sale-price, a.sale-entry .sale-price span, a.sale-entry .sale-description, .breadcrumb-box a, .icon-entry .image, .quantity-selector .entry.number-minus, .quantity-selector .entry.number-plus, .tabs-container.style-1 .tab-switcher, .size-selector .entry:after, .color-selector .entry:after, .color-selector .entry:before, .blog-entry .title, .blog-entry .subtitle a, .blog-entry .subtitle a b, .blog-entry .readmore, .square-button, .tags-box a, .categories-list ul li a, .container-404 .text a, .factory-navigation a, .portfolio-entry .title, .action-button, .hover-layer, .continue-link, .accordeon-title, .traditional-cart-entry .tag, .traditional-cart-entry .title, .remove-button, .cart-summary-box .simple-link, .checkout-progress-widget a.step-entry, .simple-field, .column-article-entry .title, .product-slide-entry .subtitle, .parallax-view, .simple-form .submit, .latest-entries-heading .latest-more, .demo-categories-entry .title, .demo-categories-entry .list a, .sale-entry-border, .sale-entry-border:before, .color-text-widget, .color-text-widget .cell-view, .color-text-widget .title, .color-text-widget .description, .sale-entry, .simple-search-form, .special-item-entry > img {
     -moz-transition: all 0.15s ease-out;
     -o-transition: all 0.15s ease-out;
     -webkit-transition: all 0.15s ease-out;
@@ -3087,7 +3060,73 @@ form #reset_password {
     }
 }
 
+.factory-navigation {
+    font-size: 0;
+    text-align: center;
+    margin-bottom: 36px;
+    padding-top: 32px;
+    position: relative;
+    z-index: 2;
+}
+
+.factory-navigation ul.nav li {
+    float: none;
+    display: inline-block;
+}
+
+.factory-navigation ul.nav li a {
+    line-height: 33px;
+    border: 1px #e3e3e3 solid;
+    border-radius: 0;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666666;
+    padding: 0 20px;
+    margin: 0 4px 8px 4px;
+}
+
+.factory-navigation ul.nav li a:hover, .factory-navigation ul.nav li a.active {
+    background-color: #cd0000;
+    border-color: #cd0000;
+    color: #fff;
+}
+
 /*blog list*/
+
+.hover-class-1 .hover-label {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    margin-top: -10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    font-weight: 600;
+    z-index: 1;
+    left: -100%;
+}
+
+.hover-class-1:after {
+    background-color: #5f573a;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    opacity: 0;
+}
+
+body:not(.mobile) .hover-class-1:hover .hover-label {
+    left: 0;
+}
+
+body:not(.mobile) .hover-class-1:hover:after {
+    opacity: 0.7;
+}
+
 @media (min-width: 768px) {
     .blog-landing-box.type-3 .blog-entry .image {
         float: left;

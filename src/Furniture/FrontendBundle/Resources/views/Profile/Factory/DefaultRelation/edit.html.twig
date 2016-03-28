@@ -32,13 +32,13 @@
 
                 $accessProducts.on('change', function() {
                     if ($(this).is(':checked')) {
-                        $accessPrice.parent('label').slideDown();
+                        $accessPrice.parents('.form-group').slideDown();
                         if (typeof $.clearMessages === "function") {
                             $.clearMessages();
                         }
                     }
                     else {
-                        $accessPrice.attr('checked', false).parent('label').slideUp();
+                        $accessPrice.attr('checked', false).parents('.form-group').slideUp();
                     }
                 });
             });

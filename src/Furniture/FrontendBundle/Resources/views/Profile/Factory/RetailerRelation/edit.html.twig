@@ -15,7 +15,6 @@
     {{ form_start(form, {'attr': {'id': 'retailer-factory-relation', 'class': 'col-sm-9'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
-    {% if not relation.id %}
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
@@ -28,31 +27,31 @@
                     if (typeof $.appendMessage === "function") {
                         $.appendMessage(requiredMessage, 'error');
                     }
-                    $accessPrice.attr('checked', false).parent('label').hide();
+                    $accessPrice.attr('checked', false).parents('.form-group').hide();
                 }
 
                 $accessProducts.on('change', function() {
                     if ($(this).is(':checked')) {
-                        $accessPrice.parent('label').slideDown();
+                        $accessPrice.parents('.form-group').slideDown();
                         if (typeof $.clearMessages === "function") {
                             $.clearMessages();
                         }
                     }
                     else {
-                        $accessPrice.attr('checked', false).parent('label').slideUp(function(){
+                        $accessPrice.attr('checked', false).parents('.form-group').slideUp(function(){
                             if (typeof $.appendMessage === "function") {
                                 $.appendMessage(requiredMessage, 'error');
                             }
                         });
                     }
                 });
-
+                {% if not relation.id %}
                 $('#retailer_factory_relation_retailer').select2({
                     placeholder: "Select retailer",
                     allowClear: false
                 }).select2("val", "");
+                {% endif %}
             });
         })(jQuery);
     </script>
-    {% endif %}
 {% endblock %}
