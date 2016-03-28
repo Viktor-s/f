@@ -18,10 +18,8 @@ class Version20160323221951 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE product_translation ADD search_tsv tsvector NULL');
+        $this->addSql('ALTER TABLE product_translation ADD search_tsv tsvector DEFAULT NULL');
         $this->addSql('COMMENT ON COLUMN product_translation.search_tsv IS \'(DC2Type:tsvector)\'');
-        $this->addSql('UPDATE product_translation SET search_tsv = \'\'');
-        $this->addSql('ALTER TABLE product_translation ALTER search_tsv SET NOT NULL');
     }
 
     /**

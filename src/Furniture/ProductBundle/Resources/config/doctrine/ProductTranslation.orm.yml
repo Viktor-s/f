@@ -11,6 +11,7 @@ Furniture\ProductBundle\Entity\ProductTranslation:
         searchTsv:
             type: tsvector
             column: search_tsv
+            nullable: true
             default: ''
             options:
                 searchOptions:
