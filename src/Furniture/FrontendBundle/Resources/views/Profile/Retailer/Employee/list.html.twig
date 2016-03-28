@@ -22,8 +22,8 @@
             <th>{{ 'frontend.manager'|trans }}</th>
             <th>{{ 'frontend.position'|trans }}</th>
             <th>{{ 'frontend.created'|trans }}</th>
-            <th>{{ 'frontend.enabled'|trans }}</th>
-            <th>{{ 'frontend.access'|trans }}</th>
+            <th class="tb-sp-enable">{{ 'frontend.enabled'|trans }}</th>
+            <th class="tb-sp-access">{{ 'frontend.access'|trans }}</th>
             <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
         </tr>
         </thead>
@@ -61,7 +61,7 @@
                     </span>
                 </td>
 
-                <td nowrap  class="text-right">
+                <td nowrap>
                     {% if is_granted('RETAILER_EMPLOYEE_EDIT', employee) %}
                         <a href="{{ path('retailer_profile_employee_edit', {employee: employee.id}) }}" class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
                     {% endif %}

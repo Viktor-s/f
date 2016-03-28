@@ -1801,11 +1801,15 @@ table.specifications-export-table > thead > tr > th:last-child {
 
 .retailer-employees .tb-sp-actions,
 .factory-rates .tb-sp-actions {
-    width: 80px;
+    width: 75px;
 }
 
 .relation-tables table .tb-sp-actions {
     width: 160px;
+}
+
+.retailer-employees .tb-sp-access, .retailer-employees .tb-sp-enable {
+    width: 75px;
 }
 
 .fa {
