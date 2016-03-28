@@ -40,12 +40,9 @@
                                                         <div class="block-title size-2">{{ groupedOptionValues.name }}</div>
                                                         <div class="row">
                                                             {% for gOptionValue in groupedOptionValues.values %}
-                                                                <div class="col-xs-12">  
-                                                                    <label class="checkbox-entry">
-                                                                        <input type="checkbox" data-option-id="{{ gOptionValue.option.id }}" value="{{ gOptionValue.id }}">
-                                                                        <span class="check"></span>
-                                                                        {{ gOptionValue.value }}
-                                                                    </label>
+                                                                <div class="col-xs-12">
+                                                                    <input type="checkbox" id="popup-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" data-option-id="{{ gOptionValue.option.id }}" value="{{ gOptionValue.id }}">
+                                                                    <label for="popup-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" class="checkbox-entry">{{ gOptionValue.value }}</label>
                                                                 </div>
                                                             {% endfor %}
                                                             <div class="clearfix"></div>
