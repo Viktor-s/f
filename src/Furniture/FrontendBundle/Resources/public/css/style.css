@@ -2690,59 +2690,6 @@ dd {
     transition-delay: .2s;
 }
 
-.product-detail-box .options-selector .popup-button .pdp-button {
-    position: relative;
-}
-
-.agenta-popup .popup-container {
-    max-width: none;
-    width: 90%;
-}
-
-.agenta-popup .popup-container-wr {
-    height: 80vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.agenta-popup .material-entry {
-    position: relative;
-    min-height: 1px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    width: 100px;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.agenta-popup .material-entry.available {
-    cursor: pointer;
-}
-
-.agenta-popup .material-entry .variant-unavailable,
-.product-detail-box .options-selector .pdp-button .variant-unavailable {
-    color: #dc0008;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    opacity: .5;
-}
-
-.agenta-popup .material-entry .variant-unavailable {
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    right: 0;
-}
-
-.product-detail-box .options-selector .pdp-button .variant-unavailable {
-    padding-top: 5px;
-}
-
-.agenta-popup .information-blocks {
-    margin-bottom: 30px;
-}
-
 .overlay-popup {
     position: fixed;
     width: 100%;
@@ -2793,7 +2740,6 @@ dd {
 .overlay-popup .popup-container {
     padding: 0 45px 45px;
     background: #fff;
-    max-width: 860px;
     margin: 0 auto;
     text-align: left;
     position: relative;
@@ -2865,6 +2811,59 @@ dd {
     top: 0;
     height: 100%;
     width: auto;
+}
+
+.product-detail-box .options-selector .popup-button .pdp-button {
+    position: relative;
+}
+
+.agenta-popup .popup-container {
+    max-width: none;
+    width: 90%;
+}
+
+.agenta-popup .popup-container-wr {
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.agenta-popup .material-entry {
+    position: relative;
+    min-height: 1px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.agenta-popup .material-entry.available {
+    cursor: pointer;
+}
+
+.agenta-popup .material-entry .variant-unavailable,
+.product-detail-box .options-selector .pdp-button .variant-unavailable {
+    color: #dc0008;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: .5;
+}
+
+.agenta-popup .material-entry .variant-unavailable {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+}
+
+.product-detail-box .options-selector .pdp-button .variant-unavailable {
+    padding-top: 5px;
+}
+
+.agenta-popup .information-blocks {
+    margin-bottom: 30px;
 }
 
 .newsletter-title {

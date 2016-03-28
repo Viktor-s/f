@@ -822,7 +822,7 @@ header .line-entry{white-space: nowrap;}
 .quantity-selector .entry{border: 1px #d1d1d1 solid; height: 37px; line-height: 35px; width: 37px; margin-left: -1px; display: inline-block; cursor: pointer; position: relative; font-size: 12px; color: #4c4c4c; text-align: center; user-select: none; -webkit-user-select: none; -moz-user-select: none;}
 .quantity-selector .entry.number-minus:before, .quantity-selector .entry.number-plus:before{content: ""; width: 10px; height: 1px; background: #4d4d4d; left: 50%; margin-left: -5px; top: 50%; position: absolute;}
 .quantity-selector .entry.number-plus:after{content: ""; height: 10px; width: 1px; background: #4d4d4d; left: 50%; margin-left: -1px; top: 50%; margin-top: -5px; position: absolute;}
-.quantity-selector .entry.number{cursor: default; width: 44px; padding: 0 5px; width: auto; min-width: 44px;}
+.quantity-selector .entry.number{cursor: default; padding: 0 5px; width: auto; min-width: 44px;}
 .quantity-selector .entry.number-minus:hover, .quantity-selector .entry.number-plus:hover{background: #ca1515;}
 .quantity-selector .entry.number-minus{
     margin-left: 0;
