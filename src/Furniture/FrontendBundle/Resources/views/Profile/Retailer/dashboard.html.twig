@@ -11,7 +11,7 @@
 {% block page_content %}
     {% if app.user.isRetailer() %}
         <div class="row">
-            <div class="pull-right">
+            <div class="col-sm-1 col-sm-push-11">
                 <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit">
                     {{ 'frontend.edit'|trans }}
                 </a>
