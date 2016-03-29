@@ -290,11 +290,11 @@ class CatalogController
                     $filters->setSelectedItem('new');
                     break;
                 case 'actual':
-                    $productQuery->withOnlyAvailable();
+//                    $productQuery->withOnlyAvailable();
                     $filters->setSelectedItem('actual');
                     break;
                 default:
-                    $productQuery->withoutOnlyAvailable();
+//                    $productQuery->withoutOnlyAvailable();
                     $filters->setSelectedItem('all');
             }
         }
