@@ -2,23 +2,27 @@
 
 namespace Furniture\FactoryBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
-class FactoryRetailerRelationType extends AbstractType
+class FactoryRetailerRelationFilterType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * @var ObjectManager
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => FactoryRetailerRelation::class,
-            'admin_side_access' => false,
-        ));
+    private $em;
+
+    /**
+     * @param $em
+     */
+    public function __construct($em) {
+        $this->em = $em;
     }
 
     /**
@@ -26,31 +30,51 @@ class FactoryRetailerRelationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var FactoryRetailerRelation $entity */
-        $entity = $builder->getForm()->getData();
-        $readOnly = $entity->getId() ? true : false;
-
-        if ($options['admin_side_access'] && $readOnly) {
-            $builder->add('retailer', 'entity_hidden', [
-                'class' => get_class($entity->getRetailer())
+        $builder
+            ->add('retailer', 'entity', [
+                'class' => RetailerProfile::class,
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Retailer',
+                ],
+                'query_builder' => function(EntityRepository $er ) {
+                    return $er
+                        ->createQueryBuilder('rp')
+                        ->join(FactoryRetailerRelation::class, 'fur', 'WITH', 'fur.retailer = rp.id');
+                },
+                'data' => !empty($options['data']['retailer'])
+                    ? $this->em->getReference(RetailerProfile::class, $options['data']['retailer'])
+                    : null,
+            ])
+            ->add('factory', 'entity', [
+                'class' => Factory::class,
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Factory',
+                ],
+                'query_builder' => function(EntityRepository $er ) {
+                    return $er
+                        ->createQueryBuilder('f')
+                        ->join(FactoryRetailerRelation::class, 'fur', 'WITH', 'fur.factory = f.id');
+                },
+                'data' => !empty($options['data']['factory'])
+                    ? $this->em->getReference(Factory::class, $options['data']['factory'])
+                    : null,
+            ])
+            ->add('status', 'choice', [
+                'choices' => [
+                    'all' => 'All',
+                    'approve' => 'Approved',
+                    'decline' => 'Declined',
+                    'wait' => 'Waiting',
+                ],
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Status',
+                ]
             ]);
-        }
-        else {
-            $builder->add('retailer', 'entity', [
-                'class' => 'Furniture\RetailerBundle\Entity\RetailerProfile',
-                'multiple'  => false,
-                'expanded'  => false,
-                'read_only' => $readOnly,
-                'query_builder' => function(EntityRepository $r) {
-                    return $r->createQueryBuilder('rp');
-                }
-            ]);
-        }
-
-        $builder->add('active', 'checkbox', ['label' => 'Activate rule'])
-            ->add('accessProducts', 'checkbox', ['label' => 'Can see product list'])
-            ->add('accessProductsPrices', 'checkbox', ['label' => 'Can work with prices'])
-            ->add('discount', 'integer', ['label' => 'Set price discount']);
     }
 
     /**
@@ -58,6 +82,6 @@ class FactoryRetailerRelationType extends AbstractType
      */
     public function getName()
     {
-        return 'factory_retailer_relation';
+        return 'factory_retailer_relation_filter';
     }
 }

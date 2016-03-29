@@ -74,11 +74,6 @@
             </call>
         </service>
 
-        <service id="form.type.factoriy_retailer_relation_filter" class="Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationFilterType">
-            <argument type="service" id="security.token_storage" />
-            <tag name="form.type" alias="factory_retailer_relation_filter" />
-        </service>
-
         <service id="sylius.menu_builder.frontend" class="%sylius.menu_builder.frontend.class%">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="security.context" />

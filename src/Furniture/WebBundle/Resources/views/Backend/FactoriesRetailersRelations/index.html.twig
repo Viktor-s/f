@@ -16,7 +16,9 @@
 <div class="page-header">
     <h1><i class="glyphicon glyphicon-list-alt"></i> Manage relations</h1>
 </div>
-    {% render(controller('sylius.controller.backend.form:filterAction', {'type': 'factory_retailer_relation_filter', 'template': 'SyliusWebBundle:Backend/FactoriesRetailersRelations:filterForm.html.twig'})) %}
+
+{% render(controller('sylius.controller.backend.form:factoriesRetailersRelationsFilterAction')) %}
+
 {{ pagination(factories_retialers_relations) }}
 {{ admin_list(factories_retialers_relations) }}
 {{ pagination(factories_retialers_relations) }}
