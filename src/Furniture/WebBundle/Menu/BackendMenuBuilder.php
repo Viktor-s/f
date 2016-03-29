@@ -167,6 +167,13 @@ class BackendMenuBuilder extends MenuBuilder
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory', $section)));
         }
+
+        if ($this->authorizationChecker->isGranted('furniture.factories_retialers_relations.index')) {
+            $child->addChild('factory_retail_relations', [
+                'route'           => 'furniture_backend_factories_retailers_relations_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory_retailer_relations', $section)));
+        }
         
         if ($this->authorizationChecker->isGranted('furniture.product_part_type.index')) {
             $child->addChild('product_part_type', [

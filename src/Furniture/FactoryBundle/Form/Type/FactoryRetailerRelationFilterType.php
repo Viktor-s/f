@@ -31,20 +31,9 @@ class FactoryRetailerRelationType extends AbstractType
         $readOnly = $entity->getId() ? true : false;
 
         if ($options['admin_side_access'] && $readOnly) {
-            $builder
-                ->add('retailer', 'entity_hidden', [
-                    'class' => get_class($entity->getRetailer())
-                ])
-                ->add('factoryAccept', 'checkbox', [
-                    'label' => 'Accepted by factory'
-                ])
-                ->add(
-                    'retailerAccept',
-                    ($entity->isRetailerAccept() ? 'hidden' : 'checkbox'),
-                    [
-                        'label' => 'Accepted by retailer',
-                    ]
-                );
+            $builder->add('retailer', 'entity_hidden', [
+                'class' => get_class($entity->getRetailer())
+            ]);
         }
         else {
             $builder->add('retailer', 'entity', [

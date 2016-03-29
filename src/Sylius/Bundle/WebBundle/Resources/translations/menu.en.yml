@@ -22,6 +22,7 @@ sylius:
                 dashboard: Dashboard
                 emails: Emails
                 factory: Factory
+                factory_retailer_relations: Factory Retailers relations
                 general_settings: General settings
                 groups: Groups
                 homepage: Your store
@@ -78,6 +79,7 @@ sylius:
                 dashboard: Dashboard
                 emails: Emails
                 factory: Factory
+                factory_retailer_relations: Factory Retailers relations
                 general_settings: General settings
                 groups: Groups
                 homepage: Back to frontend
