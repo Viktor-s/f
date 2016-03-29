@@ -943,7 +943,13 @@ input[type="radio"] {
     display: none;
 }
 
-label.checkbox-entry {
+.checkbox-entry {
+    cursor: pointer;
+    display: block;
+    font-size: 13px;
+    line-height: 14px;
+    font-weight: 500;
+    position: relative;
     padding-left: 0;
 }
 
@@ -2703,10 +2709,6 @@ dd {
 
 .overlay-popup.visible {
     left: 0;
-}
-
-.overlay-popup *:last-child {
-    margin-bottom: 0 !important;
 }
 
 .overlay-popup .close-layer {
