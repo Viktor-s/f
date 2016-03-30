@@ -71,6 +71,7 @@ frontend:
     factory_code: Factory code
     factory_profile: Factory profile
     factory_rates: Factory conditions
+    factory_partners: Partners
     factory_relations: Factory relations
     factory_requests: Factory requests
     factory_side:

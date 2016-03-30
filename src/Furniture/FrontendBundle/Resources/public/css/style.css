@@ -2550,12 +2550,6 @@ dd {
     margin-bottom: 50px;
 }
 
-.categories-list {
-}
-
-.categories-list ul {
-}
-
 .categories-list ul li {
     border-top: 1px #f0f0f0 solid;
     border-bottom: 1px #f0f0f0 solid;
@@ -3082,14 +3076,6 @@ header.fixed-header nav {
     color: #777;
 }
 
-#specification-table_wrapper {
-
-}
-
-#specification-table_filter {
-
-}
-
 .specification-pretable-controls {
     position: absolute;
     top: 0;
@@ -3498,4 +3484,15 @@ body:not(.mobile) .hover-class-1:hover:after {
     .blog-entry .content {
         margin-left: 0;
     }
+}
+
+.brands-filter .block-title {
+    border: none;
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.brands-filter select {
+    display: inline-block;
+    width: 65%;
 }

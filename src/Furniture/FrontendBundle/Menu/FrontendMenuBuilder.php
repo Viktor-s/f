@@ -113,10 +113,10 @@ class FrontendMenuBuilder
             'display' => !$isDemo,
         ]);
 
-        $menu->addChild('factories', [
-            'uri' => $this->urlGenerator->generate('factory_side_list'),
-            'label' => $this->translator->trans('frontend.menu_items.header.factories'),
-        ]);
+//        $menu->addChild('factories', [
+//            'uri' => $this->urlGenerator->generate('factory_side_list'),
+//            'label' => $this->translator->trans('frontend.menu_items.header.factories'),
+//        ]);
 
         $menu->addChild('products', [
             'uri' => $this->urlGenerator->generate('products', []),
@@ -265,14 +265,14 @@ class FrontendMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
+        $menu->addChild('factory_partners', [
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners'),
+            'label' => $this->translator->trans('frontend.factory_partners')
+        ]);
+
         $menu->addChild('factory_rates', [
             'uri' => $this->urlGenerator->generate('retailer_profile_factory_rates'),
             'label' => $this->translator->trans('frontend.factory_rates')
-        ]);
-
-        $menu->addChild('factory_relations', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_factory_relations'),
-            'label' => $this->translator->trans('frontend.factory_relations')
         ]);
 
         $menu->addChild('employees', [

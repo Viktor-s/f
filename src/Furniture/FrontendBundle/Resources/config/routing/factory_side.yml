@@ -1,9 +1,9 @@
-factory_side_list:
-    path: /
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.factory_side:factories
+#factory_side_list:
+#    path: /
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.factory_side:factories
     
 factory_side_general:
     path: /{factory}

@@ -156,6 +156,8 @@ services:
             - @twig
             - @frontend.repository.factory_retailer_relation
             - @frontend.repository.factory
+            - @frontend.repository.product_style
+            - @frontend.repository.product_category
             - @doctrine.orm.default_entity_manager
             - @security.token_storage
             - @security.authorization_checker

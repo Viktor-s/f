@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
+use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
+use Furniture\FrontendBundle\Repository\ProductStyleRepository;
+use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,6 +37,16 @@ class FactoryRelationController
      * @var FactoryRepository
      */
     private $factoryRepository;
+
+    /**
+     * @var ProductStyleRepository
+     */
+    private $productStyleRepository;
+
+    /**
+     * @var ProductCategoryRepository
+     */
+    private $productCategoryRepository;
 
     /**
      * @var EntityManagerInterface
@@ -65,6 +78,9 @@ class FactoryRelationController
      *
      * @param \Twig_Environment                 $twig
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
+     * @param FactoryRepository                 $factoryRepository
+     * @param ProductStyleRepository            $productStyleRepository
+     * @param ProductCategoryRepository         $productCategoryRepository
      * @param EntityManagerInterface            $entityManager
      * @param TokenStorageInterface             $tokenStorage
      * @param AuthorizationCheckerInterface     $authorizationChecker
@@ -75,6 +91,8 @@ class FactoryRelationController
         \Twig_Environment $twig,
         FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         FactoryRepository $factoryRepository,
+        ProductStyleRepository $productStyleRepository,
+        ProductCategoryRepository $productCategoryRepository,
         EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -85,11 +103,96 @@ class FactoryRelationController
         $this->twig = $twig;
         $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
         $this->factoryRepository = $factoryRepository;
+        $this->productStyleRepository = $productStyleRepository;
+        $this->productCategoryRepository = $productCategoryRepository;
         $this->em = $entityManager;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->urlGenerator = $urlGenerator;
         $this->formFactory = $formFactory;
+    }
+
+    /**
+     * View factories
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function factories(Request $request)
+    {
+        $styles = $this->productStyleRepository->findAllOnlyRoot();
+        $categories = $this->productCategoryRepository->findAllOnlyRoot();
+
+        // Resolve selected style
+        $selectedStyle = null;
+
+        if ($request->query->has('style')) {
+            foreach ($styles as $style) {
+                if ($style->getId() == $request->query->get('style')) {
+                    $selectedStyle = $style;
+                    break;
+                }
+            }
+        }
+
+        // Resolve selected category
+        $selectedCategory = null;
+
+        if ($request->query->has('category')) {
+            foreach ($categories as $category) {
+                if ($category->getId() == $request->query->get('category')) {
+                    $selectedCategory = $category;
+                    break;
+                }
+            }
+        }
+
+        // Create and populate query for search factories
+        $query = new FactoryQuery();
+
+        if ($selectedStyle) {
+            $query->withStyle($selectedStyle);
+        }
+
+        if ($selectedCategory) {
+            $query->withCategory($selectedCategory);
+        }
+
+        /** @var \Furniture\UserBundle\Entity\User $activeUser */
+        $activeUser = $this->tokenStorage->getToken()->getUser();
+        $query->withRetailerFromUser($activeUser);
+
+        $retailerProfile = null;
+
+        if ($activeUser->getRetailerUserProfile()) {
+            $retailerProfile = $activeUser->getRetailerUserProfile()
+                ->getRetailerProfile();
+        }
+
+        if ($retailerProfile) {
+            $query
+                ->withRetailer($retailerProfile)
+                ->withoutRetailerAccessControl();
+
+            if ($retailerProfile->isDemo()) {
+                $query
+                    ->withoutOnlyEnabledOrDisabled()
+                    ->withoutRetailerAccessControl();
+            }
+        }
+
+        $factories = $this->factoryRepository->findBy($query);
+
+        $content = $this->twig->render('FrontendBundle:Profile/Retailer:factories.html.twig', [
+            'factories'         => $factories,
+            'styles'            => $styles,
+            'selected_style'    => $selectedStyle,
+            'categories'        => $categories,
+            'selected_category' => $selectedCategory,
+        ]);
+
+        return new Response($content);
     }
 
     /**
