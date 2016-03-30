@@ -319,12 +319,12 @@ class FrontendMenuBuilder
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [
-            'uri' => $this->urlGenerator->generate('factory_side_general', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_general', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.general')
         ]);
 
         $menu->addChild('news', [
-            'uri' => $this->urlGenerator->generate('factory_side_news', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_news', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.news')
         ]);
 
@@ -336,21 +336,21 @@ class FrontendMenuBuilder
 //        }
 
         // Check active state for factory retailer relation.
-        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
-            $menu->addChild('work_info', [
-                'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.sales_conditions')
-            ]);
-        }
+//        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+//            $menu->addChild('work_info', [
+//                'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
+//                'label' => $this->translator->trans('frontend.factory_side.menu.sales_conditions')
+//            ]);
+//        }
         
         $menu->addChild('contacts', [
-            'uri' => $this->urlGenerator->generate('factory_side_contacts', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_contacts', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.contacts')
         ]);
         // Check active state for factory retailer relation.
         if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
             $menu->addChild('circulars', [
-                'uri' => $this->urlGenerator->generate('factory_side_circulars', ['factory' => $factory->getId()]),
+                'uri' => $this->urlGenerator->generate('retailer_profile_partners_circulars', ['factory' => $factory->getId()]),
                 'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
             ]);
         }
@@ -363,27 +363,29 @@ class FrontendMenuBuilder
         };
         
         switch($this->requestStack->getMasterRequest()->get('_route')){
-            case 'factory_side_general':
+            case 'retailer_profile_partners_general':
                 $setActiveForMenuItem('general');
                 break;
 
-            case 'factory_side_news':
+            case 'retailer_profile_partners_news':
+            case 'retailer_profile_partners_news_view':
                 $setActiveForMenuItem('news');
                 break;
 
-            case 'factory_side_collections':
+            case 'retailer_profile_partners_collections':
                 $setActiveForMenuItem('collections');
                 break;
 
-            case 'factory_side_work_info':
+            case 'retailer_profile_partners_work_info':
                 $setActiveForMenuItem('work_info');
                 break;
 
-            case 'factory_side_contacts':
+            case 'retailer_profile_partners_contacts':
                 $setActiveForMenuItem('contacts');
                 break;
 
-            case 'factory_side_circulars':
+            case 'retailer_profile_partners_circulars':
+            case 'retailer_profile_partners_circular':
                 $setActiveForMenuItem('circulars');
                 break;
                 

@@ -239,6 +239,7 @@ frontend:
         index: Agenta
         homepage: Homepage
         factories: Brands
+        general: General
         news: News
         circulars: Circulars
         navigation: Navigation
@@ -251,6 +252,7 @@ frontend:
         create: Create
         edit: Edit
         preview: Preview
+        partners: Partners
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile

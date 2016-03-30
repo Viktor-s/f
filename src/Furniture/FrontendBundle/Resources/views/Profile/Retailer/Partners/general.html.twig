@@ -1,0 +1,43 @@
+{% extends 'FrontendBundle:Profile/Retailer/Partners:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.general'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
+    <span class="active">{{ 'frontend.title.general'|trans }}</span>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-info">
+        <div class="factory-cover">
+            <div class="factory-cover-image-wr">
+            {% if factory.images|length > 0 %}
+                {% set image = factory.images.first %}
+                <img src="{{ image.path|imagine_filter('s1170x500') }}" alt="{{ factory.name }}" />
+            {% else %}
+                <img src="/img/1200x350.png" alt="{{ factory.name }}" />
+            {% endif %}
+            </div>
+            <div class="logo">
+                {% if factory.logoImage %}
+                    <img src="/media/image/{{ factory.logoImage.path }}" width="250" height="160" alt="{{ factory.name }}" />
+                {% else %}
+                    <img src="http://dummyimage.com/160x250/cccccc/000000" width="250" height="160" alt="{{ factory.name }}" />
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="factory-title">
+            {% if factory.translate.address %}
+                <div class="address">
+                    <i class="fa fa-location-arrow"></i>
+                    {{ factory.translate.address }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="short-description">{{ factory.translate.shortDescription|raw }}</div>
+        <div class="description">{{ factory.translate.description|raw }}</div>
+    </div>
+{% endblock %}

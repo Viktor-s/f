@@ -59,7 +59,49 @@ retailer_profile_partners:
     methods: [GET]
     requirements: { _locale: %available_locales% }
     defaults:
-        _controller: frontend.controller.retailer.factory_relation:factories
+        _controller: frontend.controller.retailer.partners:partners
+
+retailer_profile_partners_general:
+    path: /partners/{factory}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:partnerGeneral
+
+retailer_profile_partners_news:
+    path: /partners/{factory}/news
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:news
+
+retailer_profile_partners_news_view:
+    path: /partners/{factory}/news/{slug}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:post
+
+retailer_profile_partners_circulars:
+    path: /partners/{factory}/circulars
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:circulars
+
+retailer_profile_partners_circular:
+    path: /partners/{factory}/circular/{slug}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:post
+
+retailer_profile_partners_contacts:
+    path: /partners/{factory}/contacts
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:contacts
 
 #retailer_profile_factory_relations:
 #    path: /factory-relations

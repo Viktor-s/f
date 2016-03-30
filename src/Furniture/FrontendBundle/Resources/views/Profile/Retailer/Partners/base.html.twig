@@ -1,0 +1,28 @@
+{% extends 'FrontendBundle:Profile/Retailer:base.html.twig' %}
+
+{% block title %}{{ factory.name }} :: {{ 'frontend.title.factories'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ knp_menu_render_factory_side(factory, {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+            {% if app.user.isRetailer()
+                and not factory_retailer_relation
+                and not factory.defaultRelation.accessProducts %}
+                <div class="pull-right">
+                    <a href="{{ path('retailer_profile_factory_relation_create', {factory: factory.id}) }}" class="btn btn-success">
+                        <i class="fa fa-plus"></i>
+                        {{ 'frontend.create_to_factory_relation'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+            {% block factory_side_content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

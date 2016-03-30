@@ -1,10 +1,10 @@
 {% extends 'FrontendBundle:Profile/Retailer:base.html.twig' %}
 
-{% block title %}{{ 'frontend.title.brands'|trans }} :: {{ parent() }}{% endblock %}
+{% block title %}{{ 'frontend.title.partners'|trans }} :: {{ parent() }}{% endblock %}
 
 {% block breadcrumb %}
-    <a href="{{ path('homepage') }}">{{ 'frontend.title.homepage'| trans }}</a>
-    <span class="active">{{ 'frontend.title.factories'|trans }}</span>
+    {{ parent() }}
+    <span class="active">{{ 'frontend.title.partners'|trans }}</span>
 {% endblock %}
 
 {% block page_content %}
@@ -35,7 +35,7 @@
             <div class="blog-landing-box type-4 columns-1">
                 {% for factory in factories %}
                     <div class="blog-entry factories-grid">
-                        <a class="image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}">
+                        <a class="image hover-class-1" href="{{ path('retailer_profile_partners_general', {factory: factory.id}) }}">
                         {% if factory.logoImage %}
                             <img src="{{ factory.logoImage.path|imagine_filter('s160x250') }}" alt="{{ factory.name }}" title="{{ factory.name }}" width="250" height="160" />
                         {% else %}
@@ -43,11 +43,6 @@
                         {% endif %}
                             <span class="hover-label">Show</span>
                         </a>
-                        {#<div class="content content--factories">#}
-                            {#<a class="subtitle" href="{{ path('factory_side_general', {factory: factory.id}) }}">{{ factory.name }}</a>#}
-                            {#<div class="description">{{ factory.shortDescription }}</div>#}
-                            {#<!-- <a class="readmore" href="{{ path('factory_side_general', {factory: factory.id}) }}">Show</a> -->#}
-                        {#</div>#}
                     </div>
                 {% endfor %}
             </div>

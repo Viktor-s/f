@@ -1,0 +1,46 @@
+{% extends 'FrontendBundle:Profile/Retailer/Partners:base.html.twig' %}
+
+{% block title %}{{ post.translate.title }} :: {{ 'frontend.title.news'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
+
+    {% if post.circular %}
+        <a href="{{ path('retailer_profile_partners_circulars', {factory: factory.id}) }}">{{ 'frontend.title.circulars'|trans }}</a>
+    {% else %}
+        <a href="{{ path('retailer_profile_partners_news', {factory: factory.id}) }}">{{ 'frontend.title.news'|trans }}</a>
+    {% endif %}
+
+    <span>{{ post.translate.title }}</span>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-post{% if post.images|length > 0 %} with-images{% endif %}">
+        <h1 class="block-title">{{ post.translate.title }}</h1>
+
+        {% if post.images|length > 0 %}
+            <div class="images">
+                <img src="{{ post.images.first.path|imagine_filter('s150x150') }}"/>
+            </div>
+        {% endif %}
+
+        <div class="content">{{ post.translate.content|raw }}</div>
+
+        {% if post.images|length > 0 %}
+            <div class="clearfix"></div>
+        {% endif %}
+
+        {% if post.circular and post.files|length > 0 %}
+            <div class="files">
+                {% for file in post.files %}
+                    <div class="file">
+                        <a href="/media/image/{{ file.path }}" download="{{ file.name }}">{{ 'frontend.downlod_file_with_number'|trans({':number': file.name}) }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="clearfix"></div>
+        {% endif %}
+    </div>
+{% endblock %}
