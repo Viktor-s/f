@@ -191,6 +191,7 @@ services:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\PartnersController
         arguments:
             - @twig
+            - @doctrine.orm.default_entity_manager
             - @frontend.repository.factory
             - @frontend.repository.factory_retailer_relation
             - @frontend.repository.post

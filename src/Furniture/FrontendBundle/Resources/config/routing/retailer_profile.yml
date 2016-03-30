@@ -103,6 +103,12 @@ retailer_profile_partners_contacts:
     defaults:
         _controller: frontend.controller.retailer.partners:contacts
 
+retailer_profile_partners_relation_request:
+    path: /partners/{factory}/relation-request
+    methods: [ POST ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:createRelation
 #retailer_profile_factory_relations:
 #    path: /factory-relations
 #    methods: [ GET ]

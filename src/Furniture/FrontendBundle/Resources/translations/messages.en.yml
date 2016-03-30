@@ -38,7 +38,9 @@ frontend:
     contact: Contact
     content_user_profile: User profile
     create: Create
-    create_to_factory_relation: Create request to factory
+    relation_waiting_accept: Waiting for cofirmation
+    relation_declined: Factory declined the request. For more information please contact support
+    create_to_factory_relation: Request a catalog
     create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
@@ -149,6 +151,8 @@ frontend:
             relation_products_view: Please check View products checkbox.
         success:
             reset_password_success: New email was sent.
+        confirm:
+            create_to_factory_relation: Are you sure you want to request a catalog?
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions

@@ -2,7 +2,9 @@
 
 namespace Furniture\FrontendBundle\Controller\Profile\Retailer;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 use Furniture\FrontendBundle\Repository\PostRepository;
@@ -12,6 +14,7 @@ use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +28,11 @@ class PartnersController
      * @var \Twig_Environment
      */
     private $twig;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
 
     /**
      * @var FactoryRepository
@@ -70,6 +78,7 @@ class PartnersController
      * Construct
      *
      * @param \Twig_Environment                 $twig
+     * @param EntityManagerInterface            $entityManager
      * @param FactoryRepository                 $factoryRepository
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
      * @param PostRepository                    $postRepository
@@ -81,6 +90,7 @@ class PartnersController
      */
     public function __construct(
         \Twig_Environment $twig,
+        EntityManagerInterface $entityManager,
         FactoryRepository $factoryRepository,
         FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         PostRepository $postRepository,
@@ -92,6 +102,7 @@ class PartnersController
     )
     {
         $this->twig = $twig;
+        $this->em = $entityManager;
         $this->factoryRepository = $factoryRepository;
         $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
         $this->postRepository = $postRepository;
@@ -364,14 +375,45 @@ class PartnersController
                 return;
             }
         }
+    }
 
-        // By task: #265
-        //if ($factory->isDisabled()) {
-        //    throw new NotFoundHttpException(sprintf(
-        //        'The factory "%s" is disabled.',
-        //        $factory->getName()
-        //    ));
-        //}
+    /**
+     * Create relation request to factory
+     * 
+     * @param         $factory
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createRelation($factory, Request $request)
+    {
+        $factory = $this->findFactory($factory);
+        /** @var Factory $factory */
+
+        if ($request->isXmlHttpRequest() && !$this->findFactoryRetailerRelation($factory)) {
+            /** @var \Furniture\UserBundle\Entity\User $user */
+            $user = $this->tokenStorage->getToken()
+                ->getUser();
+            $relation = new FactoryRetailerRelation();
+            $relation
+                ->setRetailer($user->getRetailerUserProfile()->getRetailerProfile())
+                ->setAccessProducts(true)
+                ->setAccessProductsPrices(true)
+                ->setDiscount(0)
+                ->setFactory($factory)
+                ->setRetailerAccept(true)
+                ->setFactoryAccept(false);
+
+            if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RELATION_CREATE', $relation)) {
+                throw new AccessDeniedException();
+            }
+
+            $this->em->persist($relation);
+            $this->em->flush();
+
+            return new JsonResponse(['status' => true]);
+        } else {
+            throw new AccessDeniedException();
+        }
     }
 
     /**

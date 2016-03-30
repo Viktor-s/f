@@ -476,7 +476,7 @@ input:focus::-webkit-input-placeholder {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: #fff;
+    background-color: #fff;
     z-index: 10;
 }
 
@@ -1790,7 +1790,7 @@ table.specifications-export-table > thead > tr > th:last-child {
     border-radius: 0;
 }
 
-.relation-tables .request-action {
+.request-action {
     margin: 10px 0;
 }
 
@@ -2896,8 +2896,8 @@ dd {
 }
 
 .overlay-popup .form-title {
-    font-size: 13;
-    z-index: 48px;
+    font-size: 13px;
+    z-index: 48;
     color: #313131;
     font-weight: 600;
 }
@@ -3244,7 +3244,7 @@ form #reset_password {
 .factory-navigation {
     font-size: 0;
     text-align: center;
-    margin-bottom: 36px;
+    margin-bottom: 20px;
     padding-top: 32px;
     position: relative;
     z-index: 2;
@@ -3264,7 +3264,7 @@ form #reset_password {
     font-weight: 500;
     color: #666666;
     padding: 0 20px;
-    margin: 0 4px 8px 4px;
+    margin: 0 4px;
 }
 
 .factory-navigation ul.nav li a:hover, .factory-navigation ul.nav li a.active {
