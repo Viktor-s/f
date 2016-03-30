@@ -21,11 +21,11 @@
             </div>
             {% elseif factory_retailer_relation %}
                 {% if factory_retailer_relation.active
-                    and not factory_retailer_relation.retailerAccept
-                    or not factory_retailer_relation.factoryAccept %}
+                    and (not factory_retailer_relation.retailerAccept
+                    or not factory_retailer_relation.factoryAccept) %}
                 <div class="alert alert-info" role="alert">{{ 'frontend.relation_waiting_accept'|trans }}</div>
                 {% elseif not factory_retailer_relation.active %}
-                <div class="alert alert-warning" role="alert">{{ 'frontend.relation_declined'|trans }}</div>
+                <div class="alert alert-danger" role="alert">{{ 'frontend.relation_declined'|trans }}</div>
                 {% endif %}
             {% endif %}
         {% endif %}
