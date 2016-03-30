@@ -29,7 +29,6 @@ class EntityHiddenType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
         $objectManager = $this->objectManager;
         $class = $options['class'];
 
