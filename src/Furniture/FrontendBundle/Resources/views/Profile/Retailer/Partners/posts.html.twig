@@ -4,6 +4,7 @@
 
 {% block breadcrumb %}
     {{ parent() }}
+    <a href="{{ path('retailer_profile_partners') }}">{{ 'frontend.title.partners'|trans }}</a>
     <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
     {% if circulars %}
         <span class="active">{{ 'frontend.title.circulars'|trans }}</span>
