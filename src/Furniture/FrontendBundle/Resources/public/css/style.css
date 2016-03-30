@@ -480,6 +480,14 @@ input:focus::-webkit-input-placeholder {
     z-index: 10;
 }
 
+#loader-wrapper.opacity5 .title {
+    display: none;
+}
+
+.opacity5 {
+    opacity: .5;
+}
+
 .bubbles {
     text-align: center;
     position: absolute;
