@@ -207,6 +207,13 @@ sylius_resource:
                 model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
                 controller: Furniture\WebBundle\Controller\FactoryRetailerRelationController
 
+        furniture.factories_retialers_relations:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
+                repository: Furniture\FactoryBundle\Entity\Repository\FactoryRetailerRelationRepository
+                controller: Furniture\WebBundle\Controller\FactoriesRetailersRelationsController
+
         furniture.retailer_profile:
             driver: doctrine/orm
             classes:
@@ -378,6 +385,8 @@ sylius_resource:
                 translation:
                     model: Furniture\PostBundle\Entity\PostTranslation
                     mapping: ~
+    settings:
+        default_page_size: 20
 
 liip_imagine:
     filter_sets:

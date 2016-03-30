@@ -185,6 +185,11 @@ sylius_rbac:
         furniture.factory_user_relation.update: update current relation
         furniture.factory_user_relation.delete: delete relation
 
+        furniture.manage.factories_retialers_relations: manage factories retailers relations
+        furniture.factories_retialers_relations.index: relations list
+        furniture.factories_retialers_relations.update: update current relation
+        furniture.factories_retialers_relations.delete: delete relation
+
         furniture.manage.composite_collections: manage composite collection
         furniture.composite_collection.index: list composite collections
         furniture.composite_collection.create: create a composite collection
@@ -236,6 +241,11 @@ sylius_rbac:
             - furniture.factory_user_relation.create
             - furniture.factory_user_relation.update
             - furniture.factory_user_relation.delete
+
+        furniture.manage.factories_retialers_relations:
+            - furniture.factories_retialers_relations.index
+            - furniture.factories_retialers_relations.update
+            - furniture.factories_retialers_relations.delete
         
         furniture.manage.sku_options: 
             - furniture.sku_option.index
@@ -394,6 +404,7 @@ sylius_rbac:
                 - furniture.manage.product_readiness
                 - furniture.manage.factories
                 - furniture.manage.factories.user_relations
+                - furniture.manage.factories_retialers_relations
                 - furniture.manage.specifications
                 - furniture.manage.posts
                 - furniture.manage.retailer_profile

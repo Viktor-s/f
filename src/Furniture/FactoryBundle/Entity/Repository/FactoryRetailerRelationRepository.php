@@ -2,93 +2,58 @@
 
 namespace Furniture\FactoryBundle\Entity\Repository;
 
-use Doctrine\DBAL\Query\QueryBuilder;
-use Furniture\FactoryBundle\Entity\Factory;
-use Sylius\Bundle\TranslationBundle\Doctrine\ORM\TranslatableResourceRepository;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class FactoryRepository extends TranslatableResourceRepository
+class FactoryRetailerRelationRepository extends EntityRepository
 {
     /**
-     * Has products by factory
+     * Create filter paginator.
      *
-     * @param Factory $factory
+     * @param array $criteria
+     * @param array $sorting
      *
-     * @return bool
+     * @return \Pagerfanta\PagerfantaInterface
      */
-    public function hasProducts(Factory $factory)
+    public function createPaginator(array $criteria = [], array $sorting = [])
     {
-        $qb = new QueryBuilder($this->_em->getConnection());
+        $status = null;
 
-        $qb
-            ->select('1')
-            ->from('product', 'p')
-            ->andWhere('p.factory_id = :factory_id')
-            ->setParameter('factory_id', $factory->getId())
-            ->setMaxResults(1);
-
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
-
-        if (count($result)) {
-            return true;
+        if (isset($criteria['status'])) {
+            $status = $criteria['status'];
+            unset($criteria['status']);
         }
 
-        return false;
-    }
+        $queryBuilder = $this->getCollectionQueryBuilder();
 
-    /**
-     * Has customers by factory
-     *
-     * @param Factory $factory
-     *
-     * @return bool
-     */
-    public function hasCustomers(Factory $factory)
-    {
-        $qb = new QueryBuilder($this->_em->getConnection());
-
-        $qb
-            ->select('1')
-            ->from('users', 'u')
-            ->andWhere('u.factory_id = :factory_id')
-            ->setParameter('factory_id', $factory->getId())
-            ->setMaxResults(1);
-
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
-
-        if (count($result)) {
-            return true;
+        if ($status) {
+            switch ($status) {
+                case 'wait':
+                    $criteria['active'] = true;
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq($this->getPropertyName('factoryAccept'), 'false'),
+                            $queryBuilder->expr()->eq($this->getPropertyName('retailerAccept'), 'false')
+                        )
+                    );
+                    break;
+                case 'approve':
+                    $criteria['active'] = true;
+                    $criteria['factoryAccept'] = true;
+                    $criteria['retailerAccept'] = true;
+                    break;
+                case 'decline':
+                    $criteria['active'] = false;
+                    break;
+            }
         }
 
-        return false;
-    }
+        $sorting['id'] = 'ASC';
 
-    /**
-     * Has product part materials by factory?
-     *
-     * @param Factory $factory
-     *
-     * @return bool
-     */
-    public function hasProductPartMaterials(Factory $factory)
-    {
-        $qb = new QueryBuilder($this->_em->getConnection());
+        $this->applyCriteria($queryBuilder, $criteria);
+        $this->applySorting($queryBuilder, $sorting);
 
-        $qb
-            ->select('1')
-            ->from('product_part_material', 'ppm')
-            ->andWhere('ppm.factory_id = :factory_id')
-            ->setParameter('factory_id', $factory->getId())
-            ->setMaxResults(1);
-
-        $stmt = $qb->execute();
-        $result = $stmt->fetchAll();
-
-        if (count($result)) {
-            return true;
-        }
-
-        return false;
+        return $this->getPaginator($queryBuilder);
     }
 }
