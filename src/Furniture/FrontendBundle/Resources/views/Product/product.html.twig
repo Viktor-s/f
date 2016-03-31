@@ -325,18 +325,17 @@
                 if (variants.length > 1) {
                     var max = 0;
                     var min = 0;
+                    var minOrig, maxOrig;
                     variants.forEach(function (variant) {
-                        if (
-                                min == 0 ||
-                                parseFloat(variant.price) < parseFloat(min)
-                                ) {
-                            min = variant.price;
+                        var originalPrice = variant.price;
+                        var price = originalPrice.replace(/\s/g, '');
+                        if (min == 0 || parseFloat(price) < parseFloat(min)) {
+                            min = price;
+                            minOrig = originalPrice;
                         }
-                        if (
-                                max == 0 ||
-                                parseFloat(variant.price) > parseFloat(max)
-                                ) {
-                            max = variant.price;
+                        if (max == 0 || parseFloat(price) > parseFloat(max)) {
+                            max = price;
+                            maxOrig = originalPrice;
                         }
                     });
                 }
@@ -346,7 +345,12 @@
                 } else if (variants.length == 1) {
                     text = variants[0].price;
                 } else {
-                    text = min + ' - ' + max;
+                    if (min != max) {
+                        text = minOrig + ' - ' + maxOrig;
+                    }
+                    else {
+                        text = minOrig;
+                    }
                 }
 
                 if (text != $('#prices').text())
