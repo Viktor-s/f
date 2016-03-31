@@ -167,6 +167,14 @@ class SpecificationController
             $specificationQuery->withUser($user);
         }
 
+
+        $specification = new Specification();
+        $specification->setCreator($user->getRetailerUserProfile());
+
+        $form = $this->formFactory->create(new SpecificationType(), $specification, [
+            'owner' => $user,
+        ]);
+
         if ($request->query->has('filter')) {
             switch ($request->query->get('filter')) {
                 case 'finished':
@@ -204,6 +212,7 @@ class SpecificationController
         $content = $this->twig->render('FrontendBundle:Specification:specifications.html.twig', [
             'specifications' => $specifications,
             'filters'        => $filters,
+            'form'           => $form->createView(),
         ]);
 
         return new Response($content);

@@ -3512,3 +3512,47 @@ body:not(.mobile) .hover-class-1:hover:after {
     display: inline-block;
     width: 65%;
 }
+
+/**
+ * Bootstrap modal
+ */
+@media only screen and (min-width: 768px) {
+    .modal-dialog {
+        max-width: 600px;
+        width: 33%;
+    }
+}
+
+.modal-content {
+    border-radius: 0;
+    padding: 20px 15px;
+}
+
+.modal-content .close {
+    color: #dc0008;
+    margin: 0!important;
+    opacity: 1;
+    position: absolute;
+    right: 4px;
+    top: 1px;
+}
+
+.modal-header {
+    padding: 15px 15px 20px;
+}
+
+.modal-body {
+    position: initial;
+}
+
+.modal-body textarea {
+    min-height: 60px;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.modal-body, .modal-footer {
+    padding: 0 15px;
+}

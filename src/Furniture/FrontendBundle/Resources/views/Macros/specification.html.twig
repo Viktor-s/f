@@ -1,4 +1,4 @@
-{% macro list_toolbar(filters, paginator, buttons = true) %}
+{% macro list_toolbar(filters, form, paginator, buttons = true) %}
     {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
     <div class="row mv-actions">
         <div class="col-sm-2 col-xs-4 col-lg-2">
@@ -8,7 +8,10 @@
         </div>
         <div class="col-sm-2 col-xs-4 col-lg-1">
             {% if buttons %}
-                <a href="{{ path('specification_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}</a>
+                {# Button trigger modal #}
+                <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createSpecification">
+                    {{ 'frontend.create'|trans }}
+                </button>
             {% endif %}
         </div>
         <div class="col-sm-6 col-xs-4 col-lg-4 col-sm-push-2 col-lg-push-5">
