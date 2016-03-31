@@ -2,13 +2,14 @@
 
 namespace Furniture\ProductBundle\Controller;
 
-use Furniture\ProductBundle\Entity\Readiness;
+use Furniture\ProductBundle\Entity\Style;
+use Furniture\ProductBundle\Entity\Repository\StyleRepository;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ReadinessController extends ResourceController
+class StyleController extends ResourceController
 {
     /**
      * Sort positions
@@ -19,26 +20,28 @@ class ReadinessController extends ResourceController
      */
     public function sortPositionsAction(Request $request)
     {
-        $positions = $request->get('readiness');
+        $positions = $request->get('style');
 
         if (null === $positions) {
-            throw new NotFoundHttpException('Not found "readiness" in request.');
+            throw new NotFoundHttpException('Not found "styles" in request.');
         }
 
         $em = $this->get('doctrine.orm.default_entity_manager');
 
-        $repository = $em->getRepository(Readiness::class);
-        $readiness = $repository->findBy([
-            'id' => array_keys($positions)
+        /** @var StyleRepository $repository */
+        $repository = $em->getRepository(Style::class);
+        $styles = $repository->findBy([
+            'id' => array_keys($positions),
         ]);
 
-        foreach ($readiness as $readines) {
-            $readines->setPosition($positions[$readines->getId()]);
+        /** @var Style $style */
+        foreach ($styles as $style) {
+            $style->setPosition($positions[$style->getId()]);
         }
 
         $em->flush();
 
-        $url = $this->get('router')->generate('furniture_backend_product_readiness_index');
+        $url = $this->get('router')->generate('furniture_backend_product_style');
 
         $this->flashHelper->setFlash('success', 'save_position_success');
 

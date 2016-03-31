@@ -13,39 +13,79 @@
 {% block content %}
     <div class="page-header">
         <div class="actions-menu">
-            {{  buttons.create(path('furniture_backend_product_category_create')) }}
+            {{ buttons.create(path('furniture_backend_product_category_create')) }}
         </div>
 
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_category.breadcrumb.index'|trans|raw }}</h1>
     </div>
-
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th style="width: 50px;"></th>
-            <th>Parent</th>
-            <th>Slug</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for category in product_categories %}
+    <form action="{{ path('furniture_backend_product_category_sort_positions') }}" method="POST" id="categories-list-form">
+        <table id="categories-list" class="table table-bordered">
+            <thead>
             <tr>
-                <td></td>
-                <td>{{ category.parent ? category.parent }}</td>
-                <td>{{ category.slug }}</td>
-                <td>{{ category }}</td>
-                <td class="text-center">
-                    {{ buttons.edit(path('furniture_backend_product_category_update', {id: category.id})) }}
-
-                    {% if is_product_category_can_remove(category) %}
-                        {{ buttons.delete(path('furniture_backend_product_category_delete', {id: category.id})) }}
-                    {% endif %}
-                </td>
+                <th style="width: 50px;"></th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Parent</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+            {% for category in product_categories %}
+                <tr>
+                    <td>
+                        <div data-target="move" class="text-center">
+                            <i class="glyphicon glyphicon-move"></i>
+                            <input type="hidden" name="category[{{ category.id }}]" value="{{ category.position }}"/>
+                        </div>
+                    </td>
+                    <td>{{ category }}</td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.parent ? category.parent }}</td>
+                    <td>
+                        {{ buttons.edit(path('furniture_backend_product_category_update', {id: category.id})) }}
+
+                        {% if is_product_category_can_remove(category) %}
+                            {{ buttons.delete(path('furniture_backend_product_category_delete', {id: category.id})) }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <button class="btn btn-success">
+                            <i class="glyphicon glyphicon-save"></i>
+                            Save positions
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            var categoriesList = $('#categories-list tbody');
+
+            categoriesList.sortable({
+                update: function () {
+                    var index = 1;
+                    categoriesList.find('tr').each(function () {
+                        $(this).find('[data-target="move"] input').val(index++);
+                    });
+                }
+            });
+
+            $('#categories-list-form').submit(function () {
+                // Remove method field
+                $(this).find('input[name="_method"]').remove();
+            })
+        })(jQuery);
+    </script>
 {% endblock %}

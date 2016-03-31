@@ -19,13 +19,14 @@
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_style.breadcrumb.index'|trans|raw }}</h1>
     </div>
 
-    <table class="table table-bordered">
+<form action="{{ path('furniture_backend_product_style_sort_positions') }}" method="POST" id="styles-list-form">
+    <table id="styles-list" class="table table-bordered">
         <thead>
         <tr>
             <th style="width: 50px;"></th>
-            <th>Parent</th>
-            <th>Slug</th>
             <th>Name</th>
+            <th>Slug</th>
+            <th>Parent</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -33,11 +34,16 @@
         <tbody>
         {% for style in product_styles %}
             <tr>
-                <td></td>
-                <td>{{ style.parent ? style.parent }}</td>
-                <td>{{ style.slug }}</td>
+                <td>
+                    <div data-target="move" class="text-center">
+                        <i class="glyphicon glyphicon-move"></i>
+                        <input type="hidden" name="style[{{ style.id }}]" value="{{ style.position }}"/>
+                    </div>
+                </td>
                 <td>{{ style }}</td>
-                <td class="text-center">
+                <td>{{ style.slug }}</td>
+                <td>{{ style.parent ? style.parent }}</td>
+                <td>
                     {{ buttons.edit(path('furniture_backend_product_style_update', {id: style.id})) }}
 
                     {% if is_product_style_can_remove(style) %}
@@ -47,5 +53,40 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <button class="btn btn-success">
+                        <i class="glyphicon glyphicon-save"></i>
+                        Save positions
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
     </table>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            var stylesList = $('#styles-list tbody');
+
+            stylesList.sortable({
+                update: function () {
+                    var index = 1;
+                    stylesList.find('tr').each(function () {
+                        $(this).find('[data-target="move"] input').val(index++);
+                    });
+                }
+            });
+
+            $('#styles-list-form').submit(function () {
+                // Remove method field
+                $(this).find('input[name="_method"]').remove();
+            })
+        })(jQuery);
+    </script>
 {% endblock %}
