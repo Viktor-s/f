@@ -1293,6 +1293,7 @@ input[type="checkbox"]:checked:disabled + label::before {
 .user-dashboard .position ul li,
 .user-dashboard .emails ul li {
     padding-top: 0;
+    padding-left: 0;
 }
 
 .retailer-dashboard .address ul li:before,
