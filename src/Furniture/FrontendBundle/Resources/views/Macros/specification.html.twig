@@ -126,18 +126,17 @@
                 </div>
                 <table class="table table-stripped table-condensed">
                     <tr>
-                        <td>{{ 'frontend.specficatior.manager_label'|trans }}</td>
                         <td>
                             <span class="mg-name">{{ specification.creator.user.fullName }}</span><br/>
                             <span class="mg-mail">{{ specification.creator.user.customer.email }}</span>
                         </td>
                     </tr>
+                    {% if specification.creator.retailerProfile.address|trim is not empty %}
                     <tr>
-                        <td>{{ 'frontend.specficatior.company_address_label'|trans }}</td>
                         <td>{{ specification.creator.retailerProfile.address }}</td>
                     </tr>
+                    {% endif %}
                     <tr>
-                        <td>{{ 'frontend.specficatior.client_contact_label'|trans }}</td>
                         <td>
                             Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
                             Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
