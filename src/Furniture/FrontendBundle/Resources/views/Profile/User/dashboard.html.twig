@@ -23,14 +23,12 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
                         <div class="address">
-                            <b>{{ 'frontend.address'|trans }}</b>
                             {{ app.user.retailerUserProfile.retailerProfile.address }}
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
                         <div class="phones">
-                            <b>{{ 'frontend.phones'|trans }}</b>
                             <ul>
                             {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
                                 <li>{{ phone }}{% if not loop.last %}, {% endif %}</li>
@@ -41,7 +39,6 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
-                            <b>{{ 'frontend.emails'|trans }}</b>
                             <ul>
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                                 <li class="item">{{ email }}{% if not loop.last %}, {% endif %}</li>
@@ -52,7 +49,6 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.website %}
                         <div class="website">
-                            <b>{{ 'frontend.website'|trans }}</b>
                             <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
                                 {{ app.user.retailerUserProfile.retailerProfile.website }}
                             </a>
@@ -80,7 +76,6 @@
                 <h5>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }} </h5>
 
                 <div class="emails">
-                    <b>{{ 'frontend.email'|trans }}</b>
                     <ul>
                         <li>{{ app.user.customer.email }}</li>
                     </ul>
@@ -88,7 +83,6 @@
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.phones|length > 0 %}
                     <div class="phones">
-                        <b>{{ 'frontend.phones_contact'|trans }}</b>
                         <ul>
                         {% for phone in app.user.retailerUserProfile.phones %}
                             <li class="item">{{ phone }}{% if not loop.last %}, {% endif %}</li>
@@ -99,7 +93,6 @@
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.emails|length > 0 %}
                     <div class="emails">
-                        <b>{{ 'frontend.emails'|trans }}</b>
                         <ul>
                         {% for email in app.user.retailerUserProfile.emails %}
                             <li class="item">{{ email }}{% if not loop.last %}, {% endif %}</li>
@@ -110,8 +103,9 @@
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.position %}
                     <div class="position">
-                        <b>{{ 'frontend.position'|trans }}</b>
-                        {{ app.user.retailerUserProfile.position }}
+                        <ul>
+                            <li>{{ app.user.retailerUserProfile.position }}</li>
+                        </ul>
                     </div>
                 {% endif %}
             </div>

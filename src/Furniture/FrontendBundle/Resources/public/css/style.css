@@ -1275,34 +1275,42 @@ input[type="checkbox"]:checked:disabled + label::before {
     margin-top: 0;
 }
 
+.retailer-dashboard .address,
 .retailer-dashboard .phones,
 .retailer-dashboard .emails,
+.retailer-dashboard .website,
 .user-dashboard .phones,
-.user-dashboard .emails {
+.user-dashboard .emails,
+.user-dashboard .position {
     display: table;
 }
 
+.retailer-dashboard .address ul li,
 .retailer-dashboard .phones ul li,
 .retailer-dashboard .emails ul li,
+.retailer-dashboard .website ul li,
 .user-dashboard .phones ul li,
+.user-dashboard .position ul li,
 .user-dashboard .emails ul li {
     padding-top: 0;
 }
 
+.retailer-dashboard .address ul li:before,
 .retailer-dashboard .phones ul li:before,
 .retailer-dashboard .emails ul li:before,
+.retailer-dashboard .website ul li:before,
 .user-dashboard .phones ul li:before,
+.user-dashboard .position ul li:before,
 .user-dashboard .emails ul li:before {
     content: none;
 }
 
-.retailer-dashboard .phones b,
+.retailer-dashboard .address ul,
 .retailer-dashboard .phones ul,
-.retailer-dashboard .emails b,
 .retailer-dashboard .emails ul,
-.user-dashboard .phones b,
+.retailer-dashboard .website ul,
 .user-dashboard .phones ul,
-.user-dashboard .emails b,
+.user-dashboard .position ul,
 .user-dashboard .emails ul {
     display: table-cell;
     vertical-align: top;
