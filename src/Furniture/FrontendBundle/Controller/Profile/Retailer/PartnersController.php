@@ -14,6 +14,7 @@ use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\Query\CompositeCollectionQuery;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
+use Furniture\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -215,9 +216,11 @@ class PartnersController
     {
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $preview = false;
-        if ($request->query->has('preview')) {
+        if ($request->query->has('preview') && $user->isContentUser()) {
             $preview = true;
         }
 
