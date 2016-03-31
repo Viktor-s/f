@@ -1,5 +1,9 @@
-{% macro show(url, message) %}
-<a href="{{ url }}" class="btn btn-default">
+{% macro show(url, message, attr = {}) %}
+{% if attr.class is not defined %}
+{% set attr = attr|merge({'class': 'btn btn-default'}) %}
+{% endif %}
+
+<a href="{{ url }}" {% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
    <i class="glyphicon glyphicon-book"></i><span>{{ message is empty ? 'sylius.show'|trans : message }}</span>
 </a>
 {% endmacro %}

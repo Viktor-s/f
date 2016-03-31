@@ -122,6 +122,14 @@ class PartnersController
      */
     public function partners(Request $request)
     {
+
+        // Check if view is granted.
+        if (!$this->authorizationChecker->isGranted('RETAILER_PARTNERS_LIST')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factories list.',
+                $this->tokenStorage->getToken()->getUsername()
+            ));
+        }
         $styles = $this->productStyleRepository->findAllOnlyRoot();
         $categories = $this->productCategoryRepository->findAllOnlyRoot();
 
@@ -203,10 +211,24 @@ class PartnersController
      *
      * @return Response
      */
-    public function partnerGeneral($factory)
+    public function partnerGeneral($factory, Request $request)
     {
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
+
+        $preview = false;
+        if ($request->query->has('preview')) {
+            $preview = true;
+        }
+
+        // Check if view is granted.
+        if (!$preview && !$this->authorizationChecker->isGranted('RETAILER_PARTNERS_VIEW')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+            ));
+        }
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/Partners:general.html.twig', [
             'factory'                   => $factory,
@@ -227,6 +249,15 @@ class PartnersController
     {
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
+
+        // Check if view is granted.
+        if (!$this->authorizationChecker->isGranted('RETAILER_PARTNERS_VIEW')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+            ));
+        }
 
         $posts = $this->postRepository->findPostsForFactory($factory);
 
@@ -252,7 +283,7 @@ class PartnersController
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
 
-        // Check active state for factory retailer relation.
+        // Check if view is granted.
         if (!$this->authorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
             throw new AccessDeniedException(sprintf(
                 'The user "%s" not have rights for view factory %s.',
@@ -285,6 +316,17 @@ class PartnersController
     {
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
+
+        // Check if view is granted.
+        if (!$this->authorizationChecker->isGranted('RETAILER_PARTNERS_VIEW')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+            ));
+        }
+
+
         $post = $this->postRepository->findBySlugForFactory($factory, $slug);
 
         if (!$post) {
@@ -316,6 +358,16 @@ class PartnersController
     {
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
+
+        // Check if view is granted.
+        if (!$this->authorizationChecker->isGranted('RETAILER_PARTNERS_VIEW')) {
+            throw new AccessDeniedException(sprintf(
+                'The user "%s" not have rights for view factory %s.',
+                $this->tokenStorage->getToken()->getUsername(),
+                $factory->getName()
+            ));
+        }
+
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/Partners:contacts.html.twig', [
             'factory'                   => $factory,

@@ -267,17 +267,20 @@ class FrontendMenuBuilder
 
         $menu->addChild('factory_partners', [
             'uri' => $this->urlGenerator->generate('retailer_profile_partners'),
-            'label' => $this->translator->trans('frontend.factory_partners')
+            'label' => $this->translator->trans('frontend.factory_partners'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_PARTNERS_LIST'),
         ]);
 
         $menu->addChild('factory_rates', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_factory_rates'),
-            'label' => $this->translator->trans('frontend.factory_rates')
+            'uri'     => $this->urlGenerator->generate('retailer_profile_factory_rates'),
+            'label'   => $this->translator->trans('frontend.factory_rates'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_FACTORY_RATE_LIST'),
         ]);
 
         $menu->addChild('employees', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_employees'),
-            'label' => $this->translator->trans('frontend.managers')
+            'uri'     => $this->urlGenerator->generate('retailer_profile_employees'),
+            'label'   => $this->translator->trans('frontend.managers'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_EMPLOYEE_LIST'),
         ]);
 
         return $menu;
