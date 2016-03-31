@@ -6,11 +6,7 @@
     {{ parent() }}
     <a href="{{ path('retailer_profile_partners') }}">{{ 'frontend.title.partners'|trans }}</a>
     <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
-    {% if post.circular %}
-        <a href="{{ path('retailer_profile_partners_circulars', {factory: factory.id}) }}">{{ 'frontend.title.circulars'|trans }}</a>
-    {% else %}
-        <a href="{{ path('retailer_profile_partners_news', {factory: factory.id}) }}">{{ 'frontend.title.news'|trans }}</a>
-    {% endif %}
+    <a href="{{ path('retailer_profile_partners_news', {factory: factory.id}) }}">{{ 'frontend.title.news'|trans }}</a>
 
     <span>{{ post.translate.title }}</span>
 {% endblock %}
