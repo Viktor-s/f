@@ -1541,7 +1541,7 @@ h4.pgp-product-title a:hover {
     padding-right: 0;
 }
 
-.filter-wrapper .select2-container .select2-selection--single .select2-selection__rendered i {
+.filter-wrapper .select2-container .select2-selection--single .select2-selection__rendered span span {
     padding-left: 6px;
 }
 

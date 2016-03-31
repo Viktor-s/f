@@ -100,7 +100,7 @@
             //Formatting selected item.
             function formatSelection(item) {
                 if ($(item.element).parent('optgroup').length > 0) {
-                    return $('<span>' + item.text + '<i>(' + $(item.element).parent('optgroup').attr('label') + ')</i></span>');
+                    return $('<span>' + item.text + '<span>(' + $(item.element).parent('optgroup').attr('label') + ')</span></span>');
                 }
                 return $('<span>' + item.text + '</span>');
             }
