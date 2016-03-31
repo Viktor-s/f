@@ -228,7 +228,7 @@ class PartnersController
         $factory = $this->findFactory($factory);
         $this->checkFactoryForRetailer($factory);
 
-        $posts = $this->postRepository->findNewsForFactory($factory);
+        $posts = $this->postRepository->findPostsForFactory($factory);
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/Partners:posts.html.twig', [
             'posts'                     => $posts,

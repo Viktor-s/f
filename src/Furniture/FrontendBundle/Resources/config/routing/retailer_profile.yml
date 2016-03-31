@@ -82,12 +82,12 @@ retailer_profile_partners_news_view:
     defaults:
         _controller: frontend.controller.retailer.partners:post
 
-retailer_profile_partners_circulars:
-    path: /partners/{factory}/circulars
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.retailer.partners:circulars
+#retailer_profile_partners_circulars:
+#    path: /partners/{factory}/circulars
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.retailer.partners:circulars
 
 retailer_profile_partners_circular:
     path: /partners/{factory}/circular/{slug}

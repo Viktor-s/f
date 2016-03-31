@@ -348,12 +348,12 @@ class FrontendMenuBuilder
             'label' => $this->translator->trans('frontend.factory_side.menu.contacts')
         ]);
         // Check active state for factory retailer relation.
-        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
-            $menu->addChild('circulars', [
-                'uri' => $this->urlGenerator->generate('retailer_profile_partners_circulars', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
-            ]);
-        }
+//        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+//            $menu->addChild('circulars', [
+//                'uri' => $this->urlGenerator->generate('retailer_profile_partners_circulars', ['factory' => $factory->getId()]),
+//                'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
+//            ]);
+//        }
 
         $setActiveForMenuItem = function ($item) use ($menu)
         {
