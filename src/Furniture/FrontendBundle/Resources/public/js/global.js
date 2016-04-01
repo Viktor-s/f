@@ -587,12 +587,12 @@ $(function() {
 });
 
 /** Ajax */
-$(document).ajaxStart(function () {
-	$("#loader-wrapper").addClass('opacity5').fadeIn();
-});
-
-$(document).ajaxStop(function () {
-	$("#loader-wrapper").fadeOut(function () {
-		$(this).removeClass('opacity5');
-	});
-});
+//$(document).ajaxStart(function () {
+//	$("#loader-wrapper").addClass('opacity5').fadeIn();
+//});
+//
+//$(document).ajaxStop(function () {
+//	$("#loader-wrapper").fadeOut(function () {
+//		$(this).removeClass('opacity5');
+//	});
+//});
