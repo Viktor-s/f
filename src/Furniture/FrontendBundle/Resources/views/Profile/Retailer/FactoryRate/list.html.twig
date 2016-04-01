@@ -41,7 +41,7 @@
                         <td>{{ rate.factory.name }}</td>
                         <td class="text-center">{{ rate.coefficient }}</td>
                         <td class="text-center">{{ rate.dumping }}</td>
-                        <td>
+                        <td class="text-right">
                             <a class="btn btn-edit btn-xs"
                                href="{{ path('retailer_profile_factory_rate_edit', { rate: rate.id }) }}">{{ 'frontend.edit'|trans }}</a>
                             <a href="{{ path('retailer_profile_factory_rate_remove', { rate: rate.id}) }}"

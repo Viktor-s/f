@@ -605,7 +605,8 @@ input:focus::-webkit-input-placeholder {
 }
 
 .btn,
-.btn:hover {
+.btn:hover,
+.btn:focus {
     color: #fff;
 }
 
@@ -616,6 +617,7 @@ input:focus::-webkit-input-placeholder {
     padding: 0 10px;
     border-radius: 0;
     border: none;
+    min-width: 60px;
 }
 
 .btn-primary {
@@ -1812,28 +1814,28 @@ table.specifications-export-table > thead > tr > th:last-child {
 }
 
 .table-specification .tb-sp-actions {
-    width: 195px;
+    width: 220px;
 }
 
 .clients-table .tb-sp-actions {
-    width: 180px;
+    width: 200px;
 }
 
 .relation-tables.retailer table .tb-sp-actions {
-    width: 120px;
+    width: 145px;
 }
 
 .retailer-employees .tb-sp-actions,
 .factory-rates .tb-sp-actions {
-    width: 75px;
+    width: 100px;
 }
 
 .relation-tables table .tb-sp-actions {
-    width: 160px;
+    width: 185px;
 }
 
 .retailer-employees .tb-sp-access, .retailer-employees .tb-sp-enable {
-    width: 75px;
+    width: 100px;
 }
 
 .fa {
@@ -3518,8 +3520,8 @@ body:not(.mobile) .hover-class-1:hover:after {
  */
 @media only screen and (min-width: 768px) {
     .modal-dialog {
-        max-width: 600px;
-        width: 33%;
+        /*max-width: 600px;*/
+        /*width: 33%;*/
     }
 }
 

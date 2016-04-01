@@ -2,6 +2,7 @@
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
 {% from 'FrontendBundle:Macros:specification.html.twig' import list_toolbar %}
 {% use 'FrontendBundle:Specification:specifications_table.html.twig' %}
+{% use 'FrontendBundle:Specification:edit_modal.html.twig' %}
 
 {% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -15,30 +16,7 @@
     {{ list_toolbar(filters, form, paginator) }}
     {{ block('specifications_table') }}
     {{ list_toolbar(filters, form, paginator, false) }}
-    <!-- Modal -->
-    <div class="modal fade" id="createSpecification" tabindex="-1" role="dialog" aria-labelledby="createSpecificationLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action="{{ path('specification_create') }}" method="POST" class="form-horizontal">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="createSpecificationLabel">{{ 'frontend.create'|trans }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {{ form_widget(form) }}
-                    </div>
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-9 text-right">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">{{ 'frontend.save'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    {{ block('edit_modal') }}
 {% endblock %}
 
 {% block footer_javascripts %}
