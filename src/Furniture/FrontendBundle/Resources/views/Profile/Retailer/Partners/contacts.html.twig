@@ -58,6 +58,9 @@
                 </div>
             </div>
         </div>
+        {% if loop.index > 1 and loop.index % 3 == 0 %}
+        <div class="clearfix"></div>
+        {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
