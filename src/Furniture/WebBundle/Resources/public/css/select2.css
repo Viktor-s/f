@@ -115,7 +115,7 @@ html[dir="rtl"] .select2-container .select2-choice > .select2-chosen {
 }
 
 .select2-container .select2-choice abbr:hover {
-    background-position: right -15px;
+    background-position: right -14px;
     cursor: pointer;
 }
 
