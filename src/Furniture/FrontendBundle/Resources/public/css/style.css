@@ -3262,7 +3262,6 @@ form #reset_password {
     font-size: 0;
     text-align: center;
     margin-bottom: 20px;
-    padding-top: 32px;
     position: relative;
     z-index: 2;
 }
