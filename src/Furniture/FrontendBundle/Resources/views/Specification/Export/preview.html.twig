@@ -214,44 +214,50 @@
             </tbody>
 
             <tfoot>
-            <tr>
-                <td class="text-right" colspan="4">
-                    <strong>{{ 'frontend.volume'|trans }}</strong>
-                </td>
-
-                <td class="text-left">{{ specification.volume }}</td>
-
-                <td class="text-right" colspan="4">
-                    <strong>{{ 'frontend.weight'|trans }}</strong>
-                </td>
-
-                <td class="text-left">{{ specification.weight }}</td>
-
-                <td class="text-right" colspan="2">
-                    {{ 'frontend.total_price'|trans }}
-                </td>
-                <td><span class="total-price">{{ specification|specification_total_price(false)|money }}</span></td>
-            </tr>
-
-            {% if specification.sales|length > 0 %}
-                {% set price = specification|specification_total_price(false) %}
-
                 <tr>
-                    <td class="text-left" colspan="8">
+                    <td colspan="2"></td>
+                    <td class="text-right">
+                        <strong>{{ 'frontend.volume'|trans }}</strong>
+                    </td>
+
+                    <td class="text-left">{{ specification.volume }}</td>
+                    <td colspan="6"></td>
+                    <td class="text-right" colspan="2">
+                        {{ 'frontend.total_price'|trans }}
+                    </td>
+                    <td><span class="total-price">{{ specification|specification_total_price(false)|money }}</span></td>
+                </tr>
+                <tr class="extra-row">
+                    <td colspan="2"></td>
+                    <td class="text-right" nowrap>
+                        <strong>{{ 'frontend.weight'|trans }}</strong>
+                    </td>
+                    <td class="text-left">{{ specification.weight }}</td>
+                    <td colspan="4"></td>
+                {% if specification.sales|length > 0 %}
+                    {% set price = specification|specification_total_price(false) %}
+                    <td colspan="3"></td>
+                    <td class="text-left" colspan="2">
                         {% for sale in specification.sales %}
                         {% set nowSale = (price / 100) * sale.sale %}
                         {% set price = price - nowSale %}
-                        <div>
-                            {{ 'frontend.discount_value'|trans({':discount': sale.sale}) }} -{{ nowSale|money }}
+                        <div class="discount">
+                           {{ 'frontend.discount'|trans }}<span class="discount-percent">{{ sale.sale }}</span>%&nbsp;<span class="discount-summ">-{{ nowSale|money }}</span>
                         </div>
                         {% endfor %}
                     </td>
-                    <td colspan="4" class="text-right">
+                </tr>
+                <tr>
+                    <td colspan="11"></td>
+                    <td class="text-right" nowrap>
                         {{ 'frontend.final_price'|trans }}
                     </td>
                     <td><span class="final-price">{{ specification|specification_total_price|money }}</span></td>
                 </tr>
-            {% endif %}
+                {% else %}
+                    <td colspan="5"></td>
+                </tr>
+                {% endif %}
             </tfoot>
         </table>
         {{ export_toolbar(specification, filters, 'bottom') }}
