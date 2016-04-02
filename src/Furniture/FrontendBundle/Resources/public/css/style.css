@@ -1674,12 +1674,21 @@ h4.pgp-product-title a:hover {
     border: 1px solid #ededed;
 }
 
+.specifications-export-table tr th.sb-price {
+    width: 65px!important;
+}
+
+.specifications-export-table tr th.sb-total-price {
+    width: 90px!important;
+}
+
 .specifications-export-table tr.extra-row td {
     border: none;
 }
 
 .specifications-export-table .discount {
     position: relative;
+    left: 8px;
 }
 
 .specifications-export-table .discount .discount-percent {
@@ -1837,10 +1846,6 @@ table.dataTable.table-condensed .sorting:after, table.dataTable.table-condensed 
 #specification-table > thead > tr > th,
 table.specifications-export-table > thead > tr > th {
     vertical-align: top;
-}
-
-table.specifications-export-table > thead > tr > th:last-child {
-    min-width: 90px;
 }
 
 .table-responsive {
