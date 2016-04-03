@@ -279,7 +279,7 @@ frontend:
         managers: Managers
     to_factory_requests: Requests to factory
     to_retailer_requests: Requests to retailers
-    total_price: Total price:
+    total_price: Total price
     total_quantities: Total quantities
     type: Type
     unavailable: Unavailable

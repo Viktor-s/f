@@ -921,6 +921,31 @@ span.total-price {
     list-style: none;
 }
 
+#specification-table td#extra-sale-td .discount-summ-wrap {
+    display: inline-block;
+    min-width: 65px;
+    text-align: right;
+}
+
+#specification-table td#extra-sale-td #specification-sale {
+    display: inline-block;
+    min-width: 21px;
+    text-align: right;
+}
+
+#specification-table td#extra-sale-td .sale {
+    position: relative;
+    right: 20px;
+}
+
+#specification-table td#extra-sale-td {
+    text-align: center;
+}
+
+#specification-table tr.extra-row td {
+    border: none;
+}
+
 .sidebar-block ul li > ul {
     padding-left: 0;
 }
@@ -1649,6 +1674,35 @@ h4.pgp-product-title a:hover {
     border: 1px solid #ededed;
 }
 
+.specifications-export-table tr th.sb-price {
+    width: 65px!important;
+}
+
+.specifications-export-table tr th.sb-total-price {
+    width: 90px!important;
+}
+
+.specifications-export-table tr.extra-row td {
+    border: none;
+}
+
+.specifications-export-table .discount {
+    position: relative;
+    left: 8px;
+}
+
+.specifications-export-table .discount .discount-percent {
+    display: inline-block;
+    min-width: 21px;
+    text-align: right;
+}
+
+.specifications-export-table .discount .discount-summ {
+    display: inline-block;
+    min-width: 65px;
+    text-align: right;
+}
+
 .specifications-export-table td,
 #specification-table td {
     color: #8a8a8a;
@@ -1792,10 +1846,6 @@ table.dataTable.table-condensed .sorting:after, table.dataTable.table-condensed 
 #specification-table > thead > tr > th,
 table.specifications-export-table > thead > tr > th {
     vertical-align: top;
-}
-
-table.specifications-export-table > thead > tr > th:last-child {
-    min-width: 90px;
 }
 
 .table-responsive {
