@@ -34,7 +34,9 @@ class RetailerPartnersVoter implements VoterInterface
         }
 
         if (in_array('RETAILER_PARTNERS_LIST', $attributes) || in_array('RETAILER_PARTNERS_VIEW', $attributes)) {
-            if ($user->isRetailer() && $user->getRetailerUserProfile()->isRetailerAdmin() || $user->isFactoryAdmin()) {
+            if ($user->isRetailer() && ($user->getRetailerUserProfile()->isRetailerAdmin()
+                || $user->getRetailerUserProfile()->isRetailerEmployee()) || $user->isFactoryAdmin()
+            ) {
                 return self::ACCESS_GRANTED;
             }
 

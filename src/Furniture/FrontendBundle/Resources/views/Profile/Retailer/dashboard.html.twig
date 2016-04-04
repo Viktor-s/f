@@ -10,6 +10,7 @@
 
 {% block page_content %}
     {% if app.user.isRetailer() %}
+        {% if is_granted('RETAILER_EDIT', retailer) %}
         <div class="row">
             <div class="col-sm-1 col-sm-push-11">
                 <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit">
@@ -17,7 +18,7 @@
                 </a>
             </div>
         </div>
-
+        {% endif %}
         <div class="row retailer-profile">
             <div class="col-sm-6 text-center">
                 {% if is_granted('RETAILER_EDIT', retailer) %}

@@ -34,12 +34,24 @@ class RetailerFactoryRelationVoter implements VoterInterface
             return self::ACCESS_ABSTAIN;
         }
 
-        if (in_array('RETAILER_FACTORY_RELATION_LIST', $attributes) || in_array('RETAILER_FACTORY_RELATION_CREATE', $attributes)) {
+        if (in_array('RETAILER_FACTORY_RELATION_LIST', $attributes)) {
             if ($user->isRetailer()) {
                 if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
                     return self::ACCESS_GRANTED;
                 } else {
                     return self::ACCESS_DENIED;
+                }
+            }
+
+            return self::ACCESS_DENIED;
+        }
+
+        if (in_array('RETAILER_FACTORY_RELATION_CREATE', $attributes)) {
+            if ($user->isRetailer()) {
+                if ($user->getRetailerUserProfile()->isRetailerAdmin()
+                    || $user->getRetailerUserProfile()->isRetailerEmployee()
+                ) {
+                    return self::ACCESS_GRANTED;
                 }
             }
 

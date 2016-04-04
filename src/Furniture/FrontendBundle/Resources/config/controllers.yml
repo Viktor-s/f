@@ -138,6 +138,7 @@ services:
         arguments:
             - @twig
             - @security.token_storage
+            - @security.authorization_checker
 
     frontend.controller.retailer.factory_rates:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRatesController
