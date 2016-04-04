@@ -163,13 +163,15 @@ class FactoryRepository
 
                     $orExpr = $qb->expr()->orX();
                     $orExpr
-                        ->add('frr.accessProducts = :retailer_access_products AND frr.active = :relation_is_active')
-                        ->add('fdr.accessProducts = :default_access_products');
+                        ->add('frr.accessProducts = :retailer_access_products AND frr.accessProductsPrices = :retailer_access_products_prices AND frr.active = :relation_is_active')
+                        ->add('fdr.accessProducts = :default_access_products AND fdr.accessProductsPrices = :default_access_products_prices');
 
                     $qb
                         ->andWhere($orExpr)
                         ->setParameter('retailer_access_products', true)
+                        ->setParameter('retailer_access_products_prices', true)
                         ->setParameter('default_access_products', true)
+                        ->setParameter('default_access_products_prices', true)
                         ->setParameter('relation_is_active', true);
                 }
 
