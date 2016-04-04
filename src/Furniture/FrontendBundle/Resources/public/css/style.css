@@ -292,10 +292,6 @@ code {
     padding-right: 10px;
 }
 
-.header-right a:last-child {
-    padding-right: 0;
-}
-
 .header-right a:hover {
     text-decoration: none;
 }
@@ -315,6 +311,14 @@ code {
 .header-right .line-entry a i {
     color: #fff;
     font-size: 14px;
+}
+
+.profile-nav li {
+    display: inline-block;
+}
+
+.profile-nav li:last-child a {
+    padding-right: 0;
 }
 
 .navbar-toggle {

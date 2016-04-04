@@ -100,7 +100,8 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-
+    {% if app.user.isRetailer() %}
+        {% if is_granted('RETAILER_EDIT', retailer) %}
     <script type="text/javascript">
         (function ($) {
             var q = new ImageAjax($('.image-ajax-container'), {
@@ -123,4 +124,6 @@
             });
         })(jQuery);
     </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}

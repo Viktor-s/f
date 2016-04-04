@@ -396,4 +396,45 @@ class FrontendMenuBuilder
 
         return $menu;
     }
+
+    /**
+     * Create menu for user profile
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createProfileHeaderMenu()
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('user_profile', [
+            'route' => 'user_profile',
+            'label' => '<i class="fa fa-user"></i><span>'.$this->translator->trans('frontend.button.user_profile').'</span>',
+        ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+
+        /** @var \Furniture\UserBundle\Entity\User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user->isRetailer() && ($user->getRetailerUserProfile()->isRetailerAdmin()
+            || $user->getRetailerUserProfile()->isRetailerEmployee())
+        ) {
+            $menu->addChild('retailer_profile', [
+                'route' => 'retailer_profile',
+                'label' => '<i class="fa fa-cog"></i><span>'.$this->translator->trans('frontend.button.settings').'</span>',
+            ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+        } else if ($this->sfAuthorizationChecker->isGranted('ROLE_FACTORY_ADMIN')
+            || $this->sfAuthorizationChecker->isGranted('ROLE_FACTORY_USER')
+        ) {
+            $menu->addChild('factory_profile', [
+                'route' => 'factory_profile',
+                'label' => '<i class="fa fa-cog"></i><span>'.$this->translator->trans('frontend.button.settings').'</span>',
+            ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+        }
+
+        $menu->addChild('logout', [
+            'route' => 'security_logout',
+            'label' => '<i class="fa fa-sign-in"></i><span>'.$this->translator->trans('frontend.button.logout').'</span>',
+        ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+
+        return $menu;
+    }
 }
