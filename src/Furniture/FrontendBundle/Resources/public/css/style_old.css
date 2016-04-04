@@ -1064,7 +1064,7 @@ header .line-entry{white-space: nowrap;}
 .product-detail-box .rating-box .star{color: #313131;}
 .product-detail-box .rating-box .rating-number{font-size: 14px; color: #ca1515; line-height: 14px; font-weight: 500; display: inline-block; margin-left: 10px;}
 .product-description{font-size: 14px; line-height: 24px; color: #808080; font-weight: 300;}
-.detail-info-entry{margin-bottom: 25px;}
+.detail-info-entry, .scheme-info-entry{margin-bottom: 25px;}
 .detail-info-entry-title{font-size: 14px; color: #313131; line-height: 18px; font-weight: 600; margin-bottom: 7px;}
 .product-detail-box .price{line-height: 36px; font-family: 'Lato', sans-serif; letter-spacing: -2px;}
 .product-detail-box .price .prev{font-size: 25px; color: #9c9c9c; font-weight: 400; display: inline-block; vertical-align: middle; margin-right: 7px;}
