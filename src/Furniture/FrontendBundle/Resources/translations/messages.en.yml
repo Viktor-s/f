@@ -40,6 +40,7 @@ frontend:
     create: Create
     relation_waiting_accept: Waiting for cofirmation
     relation_declined: Factory declined the request. For more information please contact support
+    create_to_factory_relation_request_prices: Request prices
     create_to_factory_relation: Request a catalog
     create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
@@ -151,8 +152,13 @@ frontend:
             relation_products_view: Please check View products checkbox.
         success:
             reset_password_success: New email was sent.
+            create_to_factory_relation_title: Thanks for your request.
+            create_to_factory_relation: Shortly you will receive a catalog and sales tools.
+            create_to_factory_relation_request_prices: Shortly you will receive prices and sales tools.
         confirm:
-            create_to_factory_relation: Are you sure you want to request a catalog?
+            create_to_factory_relation_title: Confirmation required.
+            create_to_factory_relation: Are you sure you want to send a request for catalog?
+            create_to_factory_relation_request_prices: Are you sure you want to send a request for prices?
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions

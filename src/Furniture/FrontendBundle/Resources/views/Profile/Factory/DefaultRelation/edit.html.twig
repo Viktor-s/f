@@ -23,13 +23,6 @@
                 var $accessPrice = $('#factory_default_relation_accessProductsPrices');
                 var requiredMessage = '{{ 'frontend.messages.errors.relation_products_view'|trans }}';
 
-                if (!$accessProducts.is(':checked')) {
-                    if (typeof $.appendMessage === "function") {
-                        $.appendMessage(requiredMessage, 'error');
-                    }
-                    $accessPrice.attr('checked', false).parent('label').hide();
-                }
-
                 $accessProducts.on('change', function() {
                     if ($(this).is(':checked')) {
                         $accessPrice.parents('.form-group').slideDown();
