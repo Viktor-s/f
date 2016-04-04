@@ -1086,6 +1086,18 @@ input[type="checkbox"]:checked:disabled + label::before {
     margin-top: 0;
 }
 
+.product-pdp .product-detail-box #add-to-spec-widget,
+.product-pdp .product-detail-box .request-action {
+    width: 300px;
+}
+
+.product-pdp .product-detail-box #add-to-spec-widget .dropdown-btn,
+.product-pdp .product-detail-box .request-action a {
+    border-radius: 0;
+    max-width: 280px;
+    width: 280px;
+}
+
 .swiper-tabs {
     position: relative;
 }
@@ -1889,7 +1901,7 @@ table.specifications-export-table > thead > tr > th {
 }
 
 .fa {
-    font: normal normal normal 14px/1 FontAwesome !important;
+    font: normal normal normal 14px/1 FontAwesome;
 }
 
 .product-title--factory {
