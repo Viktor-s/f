@@ -34,7 +34,7 @@
         <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
             <select data-input-container="default-select">
             {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                <option data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
             {% endfor %}
             </select>
         </div>
