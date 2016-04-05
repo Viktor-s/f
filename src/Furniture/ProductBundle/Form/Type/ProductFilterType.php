@@ -3,7 +3,6 @@
 namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\ProductBundle\Entity\Readiness;
 use Sylius\Bundle\CoreBundle\Form\Type\Filter\ProductFilterType as BaseProductFilterType;
 use Symfony\Component\Form\FormBuilderInterface;
 

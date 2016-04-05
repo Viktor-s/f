@@ -132,20 +132,6 @@ Furniture\ProductBundle\Entity\Product:
                         referencedColumnName: id
                         onDelete: RESTRICT
 
-        readinesses:
-            targetEntity: Furniture\ProductBundle\Entity\Readiness
-            joinTable:
-                name: product_readiness_relation
-                joinColumns:
-                    product_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-
-                inverseJoinColumns:
-                    readiness_id:
-                        referencedColumnName: id
-                        onDelete: RESTRICT
-
     oneToOne:
         pdpConfig:
             targetEntity: Furniture\ProductBundle\Entity\ProductPdpConfig

@@ -9,7 +9,6 @@
             <tr>
                 <th class="id">{{ sylius_resource_sort('id', '#id') }}</th>
                 <th class="info">{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
-                <th class="info text-center">{{ 'status'|trans }}</th>
                 <th class="retail-price">{{ 'sylius.product.price'|trans }}</th>
                 <th class="updated-at">{{ sylius_resource_sort('updatedAt', 'Updated At') }}</th>
                 <th></th>
@@ -60,14 +59,6 @@
                             </div>
                         </div>
                     </div>
-                </td>
-
-                <td>
-                    <ul>
-                        {% for status in product.readinesses %}
-                            <li>{{ status.name }}</li>
-                        {% endfor %}
-                    </ul>
                 </td>
 
                 {# Retail Price #}

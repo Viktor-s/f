@@ -127,12 +127,6 @@ sylius_rbac:
         furniture.product_space.update: update product space
         furniture.product_space.delete: delete product space
 
-        furniture.manage.product_readiness: manage product readiness
-        furniture.product_readiness.index: list product readiness
-        furniture.product_readiness.create: create product readiness
-        furniture.product_readiness.update: update product readiness
-        furniture.product_readiness.delete: delete product readiness
-
         furniture.manage.product_part_materials: manage product part materials
         furniture.product_part_material.index: list product part materials
         furniture.product_part_material.create: create product part material
@@ -296,12 +290,6 @@ sylius_rbac:
             - furniture.product_space.update
             - furniture.product_space.delete
 
-        furniture.manage.product_readiness:
-            - furniture.product_readiness.index
-            - furniture.product_readiness.create
-            - furniture.product_readiness.update
-            - furniture.product_readiness.delete
-
         furniture.manage.product_part_materials:
             - furniture.product_part_material.index
             - furniture.product_part_material.create
@@ -401,7 +389,6 @@ sylius_rbac:
                 - furniture.manage.product_types
                 - furniture.manage.product_styles
                 - furniture.manage.product_spaces
-                - furniture.manage.product_readiness
                 - furniture.manage.factories
                 - furniture.manage.factories.user_relations
                 - furniture.manage.factories_retialers_relations

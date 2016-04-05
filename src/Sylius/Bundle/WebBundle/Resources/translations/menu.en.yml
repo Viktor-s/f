@@ -38,7 +38,6 @@ sylius:
                 product_categories: Product: Categories
                 product_part_material: Product part materials
                 product_part_type: Product part types
-                product_readiness: Product: Readiness
                 product_spaces: Product: Spaces
                 product_types: Product: Types
                 products: Products
@@ -97,7 +96,6 @@ sylius:
                 product_categories: Product: Categories
                 product_part_material: Product part materials
                 product_part_type: Product part types
-                product_readiness: Product: Readiness
                 product_spaces: Product: Spaces
                 product_types: Product: Types
                 products: Products

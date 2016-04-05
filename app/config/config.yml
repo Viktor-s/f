@@ -302,12 +302,6 @@ sylius_resource:
                     model: Furniture\ProductBundle\Entity\SpaceTranslation
                     mapping: ~
 
-        furniture.product_readiness:
-            driver: doctrine/orm
-            classes:
-                model: Furniture\ProductBundle\Entity\Readiness
-                controller: Furniture\ProductBundle\Controller\ReadinessController
-
         furniture.product_part:
             driver: doctrine/orm
             classes:

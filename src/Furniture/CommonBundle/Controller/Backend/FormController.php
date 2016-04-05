@@ -4,7 +4,6 @@ namespace Furniture\CommonBundle\Controller\Backend;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationFilterType;
-use Furniture\ProductBundle\Entity\Readiness;
 use Furniture\ProductBundle\Form\Type\Filter\ProductPartMaterialFilterType;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileFilterType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationFilterType;
@@ -48,14 +47,6 @@ class FormController extends BaseFormController
 
         if (!empty($data['factory'])) {
             $data['factory'] = $em->find(Factory::class, $data['factory']);
-        }
-
-        if (!empty($data['statuses'])) {
-            $data['statuses'] = array_map(function ($statusId) use ($em) {
-                return $em->find(Readiness::class, $statusId);
-            }, $data['statuses']);
-
-            $data['statuses'] = array_filter($data['statuses']);
         }
 
         if (empty($data['priceFrom'])) {

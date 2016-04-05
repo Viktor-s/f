@@ -7,7 +7,6 @@ use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\ProductBundle\Entity\Readiness;
 use Furniture\ProductBundle\Entity\Space;
 use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
