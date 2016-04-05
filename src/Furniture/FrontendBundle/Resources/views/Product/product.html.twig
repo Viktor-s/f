@@ -354,9 +354,20 @@
 
                     $.each(visibleParts, function() {
                         if ($(this).get(0) !== $('.scheme-info-entry[data-input-id]').get(0) && $(this).is(':visible')) {
-                            var popupMaterials = $(this).find('.material-entry[data-input-variant]');
-                            if (popupMaterials.length == 1 && popupMaterials.data('available') === true) {
-                                $(popupMaterials).trigger('click');
+                            if ($(this).data('input-container') == 'popup-select') {
+                                var popupMaterials = $(this).find('.material-entry[data-input-variant]');
+                                if (popupMaterials.length == 1) {
+                                    $(popupMaterials).trigger('click');
+                                }
+                            } else if ($(this).data('input-container') == 'inline-select') {
+                                var materials = $(this).find('.entry');
+                                if (materials.length == 1) {
+                                    $(materials).trigger('click');
+                                }
+                            }else if ($(this).data('input-container') == undefined) {
+                                if ($(this).find('option').length == 1) {
+                                    $(this).find('option').eq(0).prop('selected', 'selected').change();
+                                }
                             }
                         }
                     });

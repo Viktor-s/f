@@ -36,6 +36,11 @@ $.widget('furniture.pdp_default_select', {
                 data_container.setFilters(filters);
             });
 
+            // Click on material if it is only one in inline.
+            if (element.is(':visible') && element.find('option').length == 1) {
+                element.find('option').eq(0).prop('selected', 'selected').change()
+            }
+
             $(document).on('filter:update', function (event) {
                 var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
                 if( !data_container.getFilters()[selectInput] ){
@@ -71,6 +76,14 @@ $.widget('furniture.pdp_inline_select', {
             filters[selectedInput] = selectedVariant;
             data_container.setFilters(filters);
         });
+
+        // Click on material if it is only one in inline.
+        if (element.is(':visible')) {
+            var materials = element.find('.entry');
+            if (materials.length == 1) {
+                $(materials).trigger('click');
+            }
+        }
          
         $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
@@ -184,18 +197,9 @@ $.widget('furniture.pdp_popup_select', {
                 var selectVariant = $(this).data('input-variant');
                 var resLen = data_container.getFilteredWithFilterValue(selectInput, selectVariant).length;
                 if(resLen == 0){
-                    console.log($(this));
-                    $(this)
-                        .removeClass('available')
-                        .addClass('unavailable')
-                        .data('available', false)
-                        .css('background','#E0E0E0');
+                    $(this).css('background','#E0E0E0');
                 }else{
-                    $(this)
-                        .removeClass('unavailable')
-                        .addClass('available')
-                        .data('available', true)
-                        .css('background','white');
+                    $(this).css('background','white');
                 }
             });
             element.find("[data-input-variant].material-entry.active").each(function(){
