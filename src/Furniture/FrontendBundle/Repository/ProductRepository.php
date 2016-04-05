@@ -109,6 +109,7 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
+            ->distinct()
             ->innerJoin('p.factory', 'f');
 
         if ($query->isFactoryEnabled()) {
