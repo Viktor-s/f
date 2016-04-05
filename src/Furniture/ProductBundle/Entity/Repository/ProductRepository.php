@@ -129,22 +129,6 @@ class ProductRepository extends BaseProductRepositiry
             $queryBuilder->andWhere($exprPriceTo);
         }
 
-        if (!empty($criteria['statuses'])) {
-            $queryBuilder
-                ->innerJoin('product.readinesses', 'readiness');
-
-            $andX = $queryBuilder->expr()->andX();
-
-            $index = 0;
-            array_map(function ($status) use ($queryBuilder, $andX, &$index) {
-                $andX->add('readiness.id = :readiness_' . $index);
-                $queryBuilder->setParameter('readiness_' . $index, $status);
-                $index++;
-            }, $criteria['statuses']);
-
-            $queryBuilder->andWhere($andX);
-        }
-
         if (empty($sorting)) {
             if (!is_array($sorting)) {
                 $sorting = [];

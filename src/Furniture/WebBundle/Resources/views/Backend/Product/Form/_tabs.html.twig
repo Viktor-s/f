@@ -1,10 +1,6 @@
 <ul class="nav nav-tabs">
     <li class="active"><a href="#main" data-toggle="tab">{{ 'sylius.product.tabs.product'|trans }}</a></li>
 
-    {% if form.readinesses is defined %}
-        <li><a href="#status" data-toggle="tab">{{ 'sylius.product.tabs.status'|trans }}</a></li>
-    {% endif %}
-
     {% if not product.hasVariants and not product.hasProductVariantsPatterns %}
         {% if form.skuOptionVariants is defined or form.options is defined %}
             <li><a href="#options" data-toggle="tab">{{ 'sylius.product.tabs.options'|trans }}</a></li>

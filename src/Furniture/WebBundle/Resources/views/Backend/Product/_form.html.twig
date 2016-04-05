@@ -8,10 +8,6 @@
 <div class="tab-content">
     {% include 'SyliusWebBundle:Backend/Product/Form:_main.html.twig' %}
 
-    {% if form.readinesses is defined %}
-        {% include 'SyliusWebBundle:Backend/Product/Form:_status.html.twig' %}
-    {% endif %}
-
     {% include 'SyliusWebBundle:Backend/Product/Form:_options.html.twig' %}
     {% include 'SyliusWebBundle:Backend/Product/Form:_parts.html.twig' %}
     {% include 'SyliusWebBundle:Backend/Product/Form:_attributes.html.twig' %}

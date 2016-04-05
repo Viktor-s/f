@@ -54,16 +54,6 @@ class ProductFilterType extends BaseProductFilterType
                     'min'         => 0,
                     'style'       => 'width: 100px',
                 ],
-            ])
-            ->add('statuses', 'entity', [
-                'required' => false,
-                'class'    => Readiness::class,
-                'multiple' => true,
-                'expanded' => false,
-                'label'    => 'sylius.form.product_filter.statuses',
-                'attr'     => [
-                    'placeholder' => 'sylius.form.product_filter.statuses',
-                ],
             ]);
     }
 }

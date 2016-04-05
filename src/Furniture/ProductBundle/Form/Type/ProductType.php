@@ -119,15 +119,6 @@ class ProductType extends BaseProductType
                 $product = $event->getData();
                 $factory = $product->getFactory();
 
-                if ($product->getId()) {
-                    $event->getForm()
-                        ->add('readinesses', 'entity', [
-                            'class'    => Readiness::class,
-                            'multiple' => true,
-                            'expanded' => true,
-                        ]);
-                }
-
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type'         => new ProductPartFormType($factory),
