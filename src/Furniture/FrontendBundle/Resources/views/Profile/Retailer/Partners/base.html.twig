@@ -13,7 +13,7 @@
             {{ knp_menu_render_factory_side(factory, {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
 
     {% if app.user.isRetailer() %}
-        {% if not factory_retailer_relation
+        {% if is_granted('RETAILER_FACTORY_RELATION_CREATE') and not factory_retailer_relation
         and (not factory.defaultRelation.accessProducts
         or (factory.defaultRelation.accessProducts and not factory.defaultRelation.accessProductsPrices)) %}
             {% set accessProducts = factory.defaultRelation.accessProducts %}

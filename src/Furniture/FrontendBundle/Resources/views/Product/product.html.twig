@@ -186,7 +186,7 @@
                         </div>
                         <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
                     </div>
-                {% elseif not factory_retailer_relation and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
+                {% elseif is_granted('RETAILER_FACTORY_RELATION_CREATE') and not factory_retailer_relation and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
             <div class="request-action  detail-info-entry">
                 <a href="#" class="button style-10 btn" data-message="{{ 'frontend.messages.confirm.create_to_factory_relation_request_prices'|trans }}">
                     {{ 'frontend.create_to_factory_relation_request_prices'|trans }}
@@ -231,8 +231,9 @@
             });
 
             // Request to factory
-            {% if not is_granted('VIEW_PRICE', product) and not factory_retailer_relation
-            and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
+            {% if not is_granted('VIEW_PRICE', product) and is_granted('RETAILER_FACTORY_RELATION_CREATE')
+            and not factory_retailer_relation and product.factory.defaultRelation.accessProducts
+            and not product.factory.defaultRelation.accessProductsPrices %}
                 $('.request-action a').on('click', function(e) {
                     var that = this;
                     var message = $(this).data('message');
