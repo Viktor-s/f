@@ -73,15 +73,17 @@ class RetailerEmployeeCustomerType extends AbstractType
             }
 
             /** @var \Sylius\Bundle\UserBundle\Doctrine\ORM\CustomerRepository $cusomerRepositroy */
-            $cusomerRepositroy = $em->getRepository(Customer::class);
+//            $cusomerRepositroy = $em->getRepository(Customer::class);
+            // Annotation added to Customer with unique constraint.
+            // Just delete filters to proper check.
             $em->getFilters()->disable('softdeleteable');
 
-            $form = $event->getForm();
-            $email = $customer->getEmail();
+//            $form = $event->getForm();
+//            $email = $customer->getEmail();
 
-            if ($cusomerRepositroy->findOneByEmail($email)) {
-                $form->get('email')->addError(new FormError('Already in use!'));
-            }
+//            if ($cusomerRepositroy->findOneByEmail($email)) {
+//                $form->get('email')->addError(new FormError('This value is already used.'));
+//            }
         }, 900);
 
     }
