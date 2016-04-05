@@ -336,18 +336,32 @@
                     var schemeSelected = el.val();
                     var oldFilters = pdpDataContainer.getFilters();
                     var newFilters = {};
+                    var visibleParts = [];
                     newFilters[selectSchemeFilter] = parseInt(schemeSelected);
-                    for(filter in schemeMapping[schemeSelected]){
+                    for (filter in schemeMapping[schemeSelected]) {
                         if( filter == selectSchemeFilter )
                             continue;
                         var inputId = schemeMapping[schemeSelected][filter];
                         if(oldFilters[filter]){
                             newFilters[filter] = oldFilters[filter];
                         }
-                        $(".detail-info-entry[data-input-id="+inputId+"]").show();
+                        var part = $(".detail-info-entry[data-input-id="+inputId+"]");
+                        visibleParts.push(part);
+                        part.show();
                     }
+
                     pdpDataContainer.setFilters(newFilters);
+
+                    $.each(visibleParts, function() {
+                        if ($(this).get(0) !== $('.scheme-info-entry[data-input-id]').get(0) && $(this).is(':visible')) {
+                            var popupMaterials = $(this).find('.material-entry[data-input-variant]');
+                            if (popupMaterials.length == 1 && popupMaterials.data('available') === true) {
+                                $(popupMaterials).trigger('click');
+                            }
+                        }
+                    });
                 };
+
                 selectSchemeElement.change(selectSchemeCall);
                 $(document).on('filter:update', function (event) {
                     if( !pdpDataContainer.getFilters()[selectSchemeFilter] ){

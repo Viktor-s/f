@@ -184,9 +184,18 @@ $.widget('furniture.pdp_popup_select', {
                 var selectVariant = $(this).data('input-variant');
                 var resLen = data_container.getFilteredWithFilterValue(selectInput, selectVariant).length;
                 if(resLen == 0){
-                    $(this).css('background','#E0E0E0');
+                    console.log($(this));
+                    $(this)
+                        .removeClass('available')
+                        .addClass('unavailable')
+                        .data('available', false)
+                        .css('background','#E0E0E0');
                 }else{
-                    $(this).css('background','white');
+                    $(this)
+                        .removeClass('unavailable')
+                        .addClass('available')
+                        .data('available', true)
+                        .css('background','white');
                 }
             });
             element.find("[data-input-variant].material-entry.active").each(function(){
