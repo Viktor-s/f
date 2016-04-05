@@ -31,55 +31,53 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            <div class="col-sm-8 information-entry">
-                <h3 class="block-title">Attendance your products</h3>
-                <div style="min-height: 280px; min-width: 300px; position: relative;" id="month-click" class="jqplot-target"></div>
-                <div class="article-container style-3">
-                    This graph shows the frequency of your company's products visiting during the last month.
-                </div>
-            </div>
-            <div class="col-sm-4 information-entry">
-                <h3 class="block-title">Top 5</h3>
-                <div id="top-five" class="jqplot-target"></div>
-                <div class="article-container style-3">
-                    This graph shows the number of visits to the five most popular products in comparison with the rest.
-                </div>
+    <div class="row information-blocks">
+        <div class="col-sm-8 information-entry">
+            <h3 class="block-title">Attendance your products</h3>
+            <div style="min-height: 280px; min-width: 300px; position: relative;" id="month-click" class="jqplot-target"></div>
+            <div class="article-container style-3">
+                This graph shows the frequency of your company's products visiting during the last month.
             </div>
         </div>
+        <div class="col-sm-4 information-entry">
+            <h3 class="block-title">Top 5</h3>
+            <div id="top-five" class="jqplot-target"></div>
+            <div class="article-container style-3">
+                This graph shows the number of visits to the five most popular products in comparison with the rest.
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <h3 class="block-title">Retailers and specifications</h3>
-        <div class="row">
-            <div class="col-sm-4 information-entry">
-                <div id="added-to-spec-6-month" class="jqplot-target"></div>
-                <div class="article-container style-3">
-                    This graph shows how many of your products have been added to new specifications during last four months
-                </div>
-            </div>
-            <div class="col-sm-4 information-entry">
-                <div id="added-to-close-spec-6-month" class="jqplot-target"></div>
-                <div class="article-container style-3">
-                    This graph shows how many of your products have been added to specifications that were closed during last four months
-                </div>
-            </div>
-            <div class="col-sm-4 information-entry">
-                <div id="added-and-close-spec-6-month" class="jqplot-target"></div>
-                <div class="article-container style-3">
-                    This graph shows the ratio of the product that have been added to new and closed specifications during last 4 month
-                </div>
+        <div class="col-sm-4 information-entry">
+            <div id="added-to-spec-6-month" class="jqplot-target"></div>
+            <div class="article-container style-3">
+                This graph shows how many of your products have been added to new specifications during last four months
             </div>
         </div>
+        <div class="col-sm-4 information-entry">
+            <div id="added-to-close-spec-6-month" class="jqplot-target"></div>
+            <div class="article-container style-3">
+                This graph shows how many of your products have been added to specifications that were closed during last four months
+            </div>
+        </div>
+        <div class="col-sm-4 information-entry">
+            <div id="added-and-close-spec-6-month" class="jqplot-target"></div>
+            <div class="article-container style-3">
+                This graph shows the ratio of the product that have been added to new and closed specifications during last 4 month
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <h3 class="block-title">Taxonomy rates</h3>
-        <div class="row">
-            <div class="col-sm-4 information-entry">
-                <div id="popular-style" class="jqplot-target"></div>
-            </div>
-            <div class="col-sm-4 information-entry">
-                <div id="popular-type" class="jqplot-target"></div>
-            </div>
-            <div class="col-sm-4 information-entry">
-                <div id="popular-space" class="jqplot-target"></div>
-            </div>
+        <div class="col-sm-4 information-entry">
+            <div id="popular-style" class="jqplot-target"></div>
+        </div>
+        <div class="col-sm-4 information-entry">
+            <div id="popular-type" class="jqplot-target"></div>
+        </div>
+        <div class="col-sm-4 information-entry">
+            <div id="popular-space" class="jqplot-target"></div>
         </div>
     </div>
 {% endblock %}

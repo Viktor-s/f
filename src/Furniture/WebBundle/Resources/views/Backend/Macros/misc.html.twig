@@ -55,6 +55,17 @@
         {% set label = 'sylius.order.state.order_confimed' %}
         {% set class = 'label-success' %}
     {% endif %}
+{% elseif type == 'relation' %}
+    {% if state == 'approve' %}
+        {% set label = 'sylius.statuses.approved' %}
+        {% set class = 'label-success' %}
+    {% elseif state == 'decline' %}
+        {% set label = 'sylius.statuses.declined' %}
+        {% set class = 'label-danger' %}
+    {% elseif state == 'wait' %}
+        {% set label = 'sylius.statuses.waiting' %}
+        {% set class = 'label-warning' %}
+    {% endif %}
 {% else %}
     {% if state %}
         {% set label = 'sylius.yes' %}

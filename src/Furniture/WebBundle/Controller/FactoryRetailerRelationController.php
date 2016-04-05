@@ -3,6 +3,8 @@
 namespace Furniture\WebBundle\Controller;
 
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +18,10 @@ class FactoryRetailerRelationController extends ResourceController {
     protected function getFactoryRelationForm($data){
         
         $roles = $this->container->getParameter('factory.content_access_control.roles');
-        
-        return $this->createForm(new FactoryRetailerRelationType(),
-                                    $data,
-                                    [
-                                        'content_access_user_roles' => $roles
-                                        ]);
+
+        return $this->createForm(new FactoryRetailerRelationType(), $data,[
+            'content_access_user_roles' => $roles,
+        ]);
     }
     
     /**
@@ -116,6 +116,5 @@ class FactoryRetailerRelationController extends ResourceController {
 
         return $handler->handle($view);
     }
-    
 }
 

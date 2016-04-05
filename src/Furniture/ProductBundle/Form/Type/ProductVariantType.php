@@ -14,11 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\ProductBundle\Entity\ProductVariant;
-use Furniture\ProductBundle\Entity\ProductPart;
-use Furniture\ProductBundle\Entity\ProductPartMaterialVariant;
 use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Entity\ProductScheme;
-use Symfony\Component\Validator\ConstraintViolation;
+
 
 class ProductVariantType extends BaseProductVariantType
 {

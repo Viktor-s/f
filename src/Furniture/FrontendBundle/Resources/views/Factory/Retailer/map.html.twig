@@ -32,35 +32,33 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            <div class="col-sm-4 information-entry">
-                {% for retailer in allRetailers %}
-                    <div data-retailer="{{ retailer.id }}" class="inline-product-entry">
-                        {% if retailer.logoImage %}
-                            <a href="blog-list.html#" class="image"><img alt="" src="{{ retailer.logoImage.path|imagine_filter('s201x203') }}"></a>
-                        {% else %}
-                            <a href="blog-list.html#" class="image"><img alt="" src="{{ '/img/201x203.png' }}"></a>
-                        {% endif %}
-                        <div class="content">
-                            <div class="cell-view">
-                                <a href="blog-list.html#" class="title">{{ retailer.name }}</a>
-                                {% if retailer.createdAt %}
-                                    <div class="description">
-                                        {{ 'frontend.factory_side.retailer.added'|trans }} {{  retailer.createdAt.format('d M Y') }}
-                                    </div>
-                                {% endif %}
-                            </div>
+    <div class="row information-blocks">
+        <div class="col-sm-4 information-entry">
+            {% for retailer in allRetailers %}
+                <div data-retailer="{{ retailer.id }}" class="inline-product-entry">
+                    {% if retailer.logoImage %}
+                        <a href="blog-list.html#" class="image"><img alt="" src="{{ retailer.logoImage.path|imagine_filter('s201x203') }}"></a>
+                    {% else %}
+                        <a href="blog-list.html#" class="image"><img alt="" src="{{ '/img/201x203.png' }}"></a>
+                    {% endif %}
+                    <div class="content">
+                        <div class="cell-view">
+                            <a href="blog-list.html#" class="title">{{ retailer.name }}</a>
+                            {% if retailer.createdAt %}
+                                <div class="description">
+                                    {{ 'frontend.factory_side.retailer.added'|trans }} {{  retailer.createdAt.format('d M Y') }}
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="clear"></div>
                     </div>
-                {% endfor %}
-                <div class="clear"></div>
-            </div>
-            <div class="col-sm-8 information-entry">
-                <div>
-                    <div style="min-height: 450px;" id="map"></div>
+                    <div class="clear"></div>
                 </div>
+            {% endfor %}
+            <div class="clear"></div>
+        </div>
+        <div class="col-sm-8 information-entry">
+            <div>
+                <div style="min-height: 450px;" id="map"></div>
             </div>
         </div>
     </div>

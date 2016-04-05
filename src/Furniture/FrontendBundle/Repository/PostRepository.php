@@ -82,25 +82,6 @@ class PostRepository
     }
 
     /**
-     * Find news for factory
-     *
-     * @param Factory $factory
-     * @param int     $page
-     * @param int     $limit
-     *
-     * @return Post
-     */
-    public function findNewsForFactory(Factory $factory, $page = 1, $limit = 30)
-    {
-        $query = new PostQuery();
-        $query
-            ->withFactory($factory)
-            ->withNews();
-
-        return $this->findBy($query, $page, $limit);
-    }
-
-    /**
      * Find news for factories
      *
      * @param int   $limit
@@ -125,6 +106,45 @@ class PostRepository
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Find all posts for factory
+     *
+     * @param Factory $factory
+     * @param int     $page
+     * @param int     $limit
+     *
+     * @return Post
+     */
+    public function findPostsForFactory(Factory $factory, $page = 1, $limit = 30)
+    {
+        $query = new PostQuery();
+        $query
+            ->withFactory($factory)
+            ->withNews()
+            ->withCircular();
+
+        return $this->findBy($query, $page, $limit);
+    }
+
+    /**
+     * Find news for factory
+     *
+     * @param Factory $factory
+     * @param int     $page
+     * @param int     $limit
+     *
+     * @return Post
+     */
+    public function findNewsForFactory(Factory $factory, $page = 1, $limit = 30)
+    {
+        $query = new PostQuery();
+        $query
+            ->withFactory($factory)
+            ->withNews();
+
+        return $this->findBy($query, $page, $limit);
     }
 
     /**

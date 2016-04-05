@@ -1,0 +1,66 @@
+{% extends 'FrontendBundle:Profile/Retailer/Partners:base.html.twig' %}
+
+{% block title %}{{ 'frontend.title.contacts'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('retailer_profile_partners') }}">{{ 'frontend.title.partners'|trans }}</a>
+    <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
+    <span>{{ 'frontend.title.contacts'|trans }}</span>
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-contacts">
+        {% for contact in contacts %}
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="name">{{ contact.translate.name }}</div>
+                    <div class="department">{{ contact.departmentName }}</div>
+                </div>
+                <div class="panel-body">
+                {% if contact.address|trim is not empty %}
+                    <div class="address">
+                        <i class="fa fa-location-arrow"></i>
+                        {{ contact.address }}
+                    </div>
+                {% endif %}
+                {% if contact.phones|length %}
+                    <div class="phones">
+                        {% for phone in contact.phones %}
+                            <div class="phone">
+                                <i class="fa fa-phone"></i>
+                                <a href="tel:{{ phone }}">{{ phone }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if contact.emails|length %}
+                    <div class="emails">
+                        {% for email in contact.emails %}
+                            <div class="email">
+                                <i class="fa fa-envelope-o"></i>
+                                <a href="mailto:{{ email }}">{{ email }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if contact.sites|length %}
+                    <div class="sites">
+                        {% for site in contact.sites %}
+                            <div class="site">
+                                <i class="fa fa-steam"></i>
+                                <a href="{{ site|format_url(['scheme', 'host', 'path']) }}" target="_blank">{{ site|format_url(['host']) }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if loop.index > 1 and loop.index % 3 == 0 %}
+        <div class="clearfix"></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

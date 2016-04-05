@@ -10,14 +10,15 @@
 
 {% block page_content %}
     {% if app.user.isRetailer() %}
+        {% if is_granted('RETAILER_EDIT', retailer) %}
         <div class="row">
-            <div class="pull-right">
+            <div class="col-sm-1 col-sm-push-11">
                 <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit">
                     {{ 'frontend.edit'|trans }}
                 </a>
             </div>
         </div>
-
+        {% endif %}
         <div class="row retailer-profile">
             <div class="col-sm-6 text-center">
                 {% if is_granted('RETAILER_EDIT', retailer) %}
@@ -50,18 +51,18 @@
             </div>
             <div class="col-sm-6">
                 <div class="retailer-dashboard article-container style-1">
-                    <h3>Retailer: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
+                    <h3>{{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
                         <div class="address">
-                            <b>Address:</b>
-                            {{ app.user.retailerUserProfile.retailerProfile.address }}
+                            <ul>
+                                <li>{{ app.user.retailerUserProfile.retailerProfile.address }}</li>
+                            </ul>
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
                         <div class="phones">
-                            <b>Phones:</b>
                             <ul>
                                 {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
                                     <li>{{ phone }}{% if not loop.last %}, {% endif %}</li>
@@ -72,7 +73,6 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
-                            <b>Emails:</b>
                             <ul>
                                 {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
                                     <li>{{ email }}{% if not loop.last %},{% endif %}</li>
@@ -83,10 +83,13 @@
 
                     {% if app.user.retailerUserProfile.retailerProfile.website %}
                         <div class="website">
-                            <b>Website:</b>
-                            <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
-                                {{ app.user.retailerUserProfile.retailerProfile.website }}
-                            </a>
+                            <ul>
+                                <li>
+                                    <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
+                                        {{ app.user.retailerUserProfile.retailerProfile.website }}
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     {% endif %}
                 </div>
@@ -97,7 +100,8 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-
+    {% if app.user.isRetailer() %}
+        {% if is_granted('RETAILER_EDIT', retailer) %}
     <script type="text/javascript">
         (function ($) {
             var q = new ImageAjax($('.image-ajax-container'), {
@@ -120,4 +124,6 @@
             });
         })(jQuery);
     </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}

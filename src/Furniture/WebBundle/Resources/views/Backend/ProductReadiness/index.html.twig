@@ -69,14 +69,6 @@
 
     <script type="text/javascript">
         (function ($) {
-            $('.btn-delete').click(function(){
-                var a = $(this);
-                var form = $('<form novalidate="" action="' + a.attr("href") + '" method="post">' +
-                    '<input type="hidden" value="DELETE" name="_method">' +
-                '</form>');
-                $('body').append(form);
-                form.submit();
-            });
             
             var readinessList = $('#readiness-list tbody');
 

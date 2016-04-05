@@ -145,8 +145,8 @@
             {% else %}
                 {% if is_granted('VIEW_PRICE', product) %}
                     <div class="add-to-specification detail-info-entry">
-                        <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
-                            <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
+                        <div id="add-to-spec-widget" class="btn-group">
+                            <button type="button" class="button style-10 btn btn-default dropdown-btn">
                                 {{ 'frontend.add_to_specification'|trans }}
                                 <span class="caret"></span>
                             </button>
@@ -186,6 +186,12 @@
                         </div>
                         <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
                     </div>
+                {% elseif not factory_retailer_relation and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
+            <div class="request-action  detail-info-entry">
+                <a href="#" class="button style-10 btn" data-message="{{ 'frontend.messages.confirm.create_to_factory_relation_request_prices'|trans }}">
+                    {{ 'frontend.create_to_factory_relation_request_prices'|trans }}
+                </a>
+            </div>
                 {% endif %}
             {% endif %}
         </div>
@@ -223,6 +229,54 @@
             $(window).resize(function() {
                 $.fancybox.update();
             });
+
+            // Request to factory
+            {% if not is_granted('VIEW_PRICE', product) and not factory_retailer_relation
+            and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
+                $('.request-action a').on('click', function(e) {
+                    var that = this;
+                    var message = $(this).data('message');
+                    var thanksMessage = "{{ 'frontend.messages.success.create_to_factory_relation_request_prices'|trans }}";
+                    bootbox.confirm({
+                        title: "{{ 'frontend.messages.confirm.create_to_factory_relation_title'|trans }}",
+                        message: message,
+                        callback: function(result) {
+                            if(result){
+                                $.ajax({
+                                    url: '{{ path('retailer_profile_partners_relation_request', {factory: product.factory.id}) }}',
+                                    method: 'POST',
+                                    success: function () {
+                                        $(that).parent('.request-action').remove();
+                                        bootbox.alert({
+                                            title: "{{ 'frontend.messages.success.create_to_factory_relation_title'|trans }}",
+                                            message: thanksMessage,
+                                            buttons: {
+                                                ok: {
+                                                    label: 'Ok',
+                                                    className: 'btn-success'
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        buttons: {
+                            'cancel': {
+                                label: 'Cancel',
+                                className: 'btn-primary'
+                            },
+                            'confirm': {
+                                label: 'Ok',
+                                className: 'btn-success'
+                            }
+                        },
+                        backdrop: true
+                    });
+
+                    return false;
+                });
+            {% endif %}
         });
     </script>
     <script type="text/javascript">
@@ -325,18 +379,17 @@
                 if (variants.length > 1) {
                     var max = 0;
                     var min = 0;
+                    var minOrig, maxOrig;
                     variants.forEach(function (variant) {
-                        if (
-                                min == 0 ||
-                                parseFloat(variant.price) < parseFloat(min)
-                                ) {
-                            min = variant.price;
+                        var originalPrice = variant.price;
+                        var price = originalPrice.replace(/\s/g, '');
+                        if (min == 0 || parseFloat(price) < parseFloat(min)) {
+                            min = price;
+                            minOrig = originalPrice;
                         }
-                        if (
-                                max == 0 ||
-                                parseFloat(variant.price) > parseFloat(max)
-                                ) {
-                            max = variant.price;
+                        if (max == 0 || parseFloat(price) > parseFloat(max)) {
+                            max = price;
+                            maxOrig = originalPrice;
                         }
                     });
                 }
@@ -346,7 +399,12 @@
                 } else if (variants.length == 1) {
                     text = variants[0].price;
                 } else {
-                    text = min + ' - ' + max;
+                    if (min != max) {
+                        text = minOrig + ' - ' + maxOrig;
+                    }
+                    else {
+                        text = minOrig;
+                    }
                 }
 
                 if (text != $('#prices').text())

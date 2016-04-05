@@ -31,6 +31,11 @@ services:
         tags:
             - { name: security.voter }
 
+    security.voter.retailer_partners:
+        class: Furniture\RetailerBundle\Security\Voter\RetailerPartnersVoter
+        tags:
+            - { name: security.voter }
+
     security.voter.retailer_factory_relation:
         class: Furniture\RetailerBundle\Security\Voter\RetailerFactoryRelationVoter
         tags:

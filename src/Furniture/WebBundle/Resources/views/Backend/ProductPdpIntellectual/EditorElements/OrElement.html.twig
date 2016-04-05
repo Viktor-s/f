@@ -1,0 +1,122 @@
+<div id="addOrElementForm" title='Add new "OR" element'>
+    <form>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon" id="sizing-addon3">Question</span>
+                <textarea class="form-control question-row" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div id="pdpInputOrElement" type="text/template" style="display:none;">
+    <div class="html-element row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-default btn-xs delete">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs edit">
+                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <span styel="text-aligin:center;">"OR"</span>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-default btn-xs">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="question-value"></span><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        
+        joint.shapes.pdpInput.Or = joint.shapes.pdpInput.Element.extend(_.extend(
+                {},
+                {
+                    defaults: joint.util.deepSupplement({
+                        type: 'pdpInput.Or',
+                        position: {x: 80, y: 80}, 
+                        size: {width: 'auto', height: 'auto'},
+                        inPorts: ['in'],
+                        outPorts: ['out'],
+                        attrs: {
+                            '.': { magnet: false },
+                            rect: { stroke: 'blue', 'fill-opacity': 0, width: 300, height: 250, },
+                            circle: {
+                                r: 6, //port circle radius
+                                magnet: true,
+                                stroke: 'black'
+                            },
+                            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                            '.outPorts circle': { fill: 'red', type: 'output'}
+                        }
+                    })
+                }
+                ));
+        
+        joint.shapes.pdpInput.OrView = joint.shapes.pdpInput.OrView.extend({
+            
+            template: $('#pdpInputOrElement').html(),
+            
+            updateBox: function() {
+                // Set the position and dimension of the box so that it covers the JointJS element.
+                var bbox = this.model.getBBox();
+                this.$box.css({ width: bbox.width, height: bbox.height, left: (bbox.x+20), top: bbox.y+2, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+                this.model.attributes.attrs.rect.width = this.$box.first().width() + 15;
+                this.model.attributes.attrs.rect.height = this.$box.first().height() + 10;
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+                
+            }
+        });
+        
+        var createOrElement = function(question){
+            
+            var orEl = new joint.shapes.pdpInput.Or({
+                question: question
+            });
+            console.log('New OR ID', orEl.id);
+            graph.addCells([orEl])
+        };
+        
+        var newOrElementForm = $( "#addOrElementForm" ).dialog({
+            autoOpen: false,
+            height: 350,
+            width: 350,
+            modal: true,
+            buttons: {
+                "add": function(){
+                    createOrElement(form.find('.question-row').val());
+                    newOrElementForm.dialog( "close" );
+                },
+                Cancel: function() {
+                    newOrElementForm.dialog( "close" );
+                }
+            },
+            close: function() {
+                form[ 0 ].reset();
+                //allFields.removeClass( "ui-state-error" );
+            }
+        });
+        
+        form = newOrElementForm.find( "form" );
+        
+        $('#addOrBtn').click(function(){
+            newOrElementForm.dialog('open');
+        });
+    });
+</script>

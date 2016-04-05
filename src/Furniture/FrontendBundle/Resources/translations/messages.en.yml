@@ -38,7 +38,10 @@ frontend:
     contact: Contact
     content_user_profile: User profile
     create: Create
-    create_to_factory_relation: Create request to factory
+    relation_waiting_accept: Waiting for cofirmation
+    relation_declined: Factory declined the request. For more information please contact support
+    create_to_factory_relation_request_prices: Request prices
+    create_to_factory_relation: Request a catalog
     create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
@@ -71,6 +74,7 @@ frontend:
     factory_code: Factory code
     factory_profile: Factory profile
     factory_rates: Factory conditions
+    factory_partners: Partners
     factory_relations: Factory relations
     factory_requests: Factory requests
     factory_side:
@@ -148,6 +152,13 @@ frontend:
             relation_products_view: Please check View products checkbox.
         success:
             reset_password_success: New email was sent.
+            create_to_factory_relation_title: Thanks for your request.
+            create_to_factory_relation: Shortly you will receive a catalog and sales tools.
+            create_to_factory_relation_request_prices: Shortly you will receive prices and sales tools.
+        confirm:
+            create_to_factory_relation_title: Confirmation required.
+            create_to_factory_relation: Are you sure you want to send a request for catalog?
+            create_to_factory_relation_request_prices: Are you sure you want to send a request for prices?
     mode: Mode
     name: Name
     need_reset_password: We sent you a verification email, please check email and follow instructions
@@ -238,6 +249,7 @@ frontend:
         index: Agenta
         homepage: Homepage
         factories: Brands
+        general: General
         news: News
         circulars: Circulars
         navigation: Navigation
@@ -250,6 +262,7 @@ frontend:
         create: Create
         edit: Edit
         preview: Preview
+        partners: Partners
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile
@@ -272,7 +285,7 @@ frontend:
         managers: Managers
     to_factory_requests: Requests to factory
     to_retailer_requests: Requests to retailers
-    total_price: Total price:
+    total_price: Total price
     total_quantities: Total quantities
     type: Type
     unavailable: Unavailable

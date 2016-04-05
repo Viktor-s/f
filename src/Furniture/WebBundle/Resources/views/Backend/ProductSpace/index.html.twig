@@ -19,13 +19,14 @@
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'product_space.breadcrumb.index'|trans|raw }}</h1>
     </div>
 
-    <table class="table table-bordered">
+<form action="{{ path('furniture_backend_product_space_sort_positions') }}" method="POST" id="spaces-list-form">
+    <table id="spaces-list" class="table table-bordered">
         <thead>
         <tr>
             <th style="width: 50px;"></th>
-            <th>Parent</th>
-            <th>Slug</th>
             <th>Name</th>
+            <th>Slug</th>
+            <th>Parent</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -33,11 +34,16 @@
         <tbody>
         {% for space in product_spaces %}
             <tr>
-                <td></td>
-                <td>{{ space.parent ? space.parent }}</td>
-                <td>{{ space.slug }}</td>
+                <td>
+                    <div data-target="move" class="text-center">
+                        <i class="glyphicon glyphicon-move"></i>
+                        <input type="hidden" name="space[{{ space.id }}]" value="{{ space.position }}"/>
+                    </div>
+                </td>
                 <td>{{ space }}</td>
-                <td class="text-center">
+                <td>{{ space.slug }}</td>
+                <td>{{ space.parent ? space.parent }}</td>
+                <td>
                     {{ buttons.edit(path('furniture_backend_product_space_update', {id: space.id})) }}
 
                     {% if is_product_space_can_remove(space) %}
@@ -47,5 +53,40 @@
             </tr>
         {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <button class="btn btn-success">
+                        <i class="glyphicon glyphicon-save"></i>
+                        Save positions
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
     </table>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        (function ($) {
+            var spacesList = $('#spaces-list tbody');
+
+            spacesList.sortable({
+                update: function () {
+                    var index = 1;
+                    spacesList.find('tr').each(function () {
+                        $(this).find('[data-target="move"] input').val(index++);
+                    });
+                }
+            });
+
+            $('#spaces-list-form').submit(function () {
+                // Remove method field
+                $(this).find('input[name="_method"]').remove();
+            })
+        })(jQuery);
+    </script>
 {% endblock %}

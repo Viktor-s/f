@@ -22,7 +22,7 @@
                 <td>
                     <div class="pull-right">
                     {{ buttons.show(path('sylius_backend_customer_index', {criteria: {factoryId: factory.id}}), 'Users') }}
-                    {{ buttons.show(path('furniture_backend_factory_show', {id: factory.id}), 'Preview') }}
+                    {{ buttons.show(path('retailer_profile_partners_general', {'_locale':'en', 'factory': factory.id, 'preview': 'true'}), 'Preview', {'target': '_blank'}) }}
                     {{ buttons.edit(path('furniture_backend_factory_update', {'id': factory.id})) }}
 
                     {% if is_factory_can_hard_remove(factory) %}

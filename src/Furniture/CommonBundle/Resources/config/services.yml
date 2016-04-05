@@ -29,3 +29,9 @@ services:
         class: Memcached
         calls:
             - [ addServer, [ %memcached.host%, %memcached.port% ]]
+
+    common.type.entity_hidden:
+       class: Furniture\CommonBundle\Form\Type\EntityHiddenType
+       arguments: ["@doctrine.orm.entity_manager"]
+       tags:
+       - { name: form.type, alias: entity_hidden }

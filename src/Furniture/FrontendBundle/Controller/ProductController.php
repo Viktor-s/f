@@ -12,6 +12,8 @@ use Furniture\ProductBundle\Model\ProductPartMaterialVariantSelectionCollection;
 use Furniture\ProductBundle\Pattern\Finder\ProductVariantFinder;
 use Furniture\ProductBundle\Pattern\ProductVariantCreator;
 use Furniture\ProductBundle\Pattern\ProductVariantParameters;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -149,6 +151,16 @@ class ProductController
 
         // Check product for retailer
         $this->checkProductForRetailer($product);
+
+        $factoryRetailerRelation = null;
+        /** @var RetailerUserProfile $retailerUserProfile */
+        $retailerUserProfile = $user->getRetailerUserProfile();
+
+        if ($retailerUserProfile) {
+            /** @var RetailerProfile $retailerProfile */
+            $retailerProfile = $retailerUserProfile->getRetailerProfile();
+            $factoryRetailerRelation = $product->getFactory()->getRetailerRelationByRetailer($retailerProfile);
+        }
 
         $quantity = 1;
 
@@ -301,6 +313,7 @@ class ProductController
             'specification_item'         => $specificationItem,
             'update_specification_item'  => $updateSpecificationItem,
             'quantity'                   => $quantity,
+            'factory_retailer_relation'  => $factoryRetailerRelation,
         ]);
 
         return new Response($content);

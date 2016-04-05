@@ -1,0 +1,22 @@
+{% extends 'FrontendBundle:Profile/Retailer/Partners:base.html.twig' %}
+
+{% block title %}{{ ('frontend.title.' ~ (circulars ? 'circulars' : 'news'))|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <a href="{{ path('retailer_profile_partners') }}">{{ 'frontend.title.partners'|trans }}</a>
+    <a href="{{ path('retailer_profile_partners_general', {'factory': factory.id}) }}">{{ factory.name }}</a>
+    {% if circulars %}
+        <span class="active">{{ 'frontend.title.circulars'|trans }}</span>
+    {% else %}
+        <span class="active">{{ 'frontend.title.news'|trans }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block factory_side_content %}
+    <div class="factory-posts">
+        {% for post in posts %}
+            {% include 'FrontendBundle:Profile/Retailer/Partners:post_item.html.twig' with {post: post} %}
+        {% endfor %}
+    </div>
+{% endblock %}

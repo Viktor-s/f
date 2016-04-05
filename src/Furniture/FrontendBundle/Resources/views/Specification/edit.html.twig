@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block content_with_create %}
-    <div id="specification" class="col-sm-6 information-blocks">
+    <div id="specification" class="col-sm-6">
         <div class="page-header">
             <h1>Create</h1>
         </div>
@@ -68,27 +68,32 @@
                     </tbody>
                     <tfoot>
                         <tr class="total-price">
-                            <td colspan="2"></td>
-                            <td class="text-right">{{ 'frontend.volume'|trans }}</td>
+                            <td></td>
+                            <td class="text-right">
+                                <strong>{{ 'frontend.volume'|trans }}</strong>
+                            </td>
                             <td class="text-left editable" rel="volume" id="volume" data-toggle="tooltip" title="Click to edit">{{ specification.volume }}</td>
-                            <td class="text-right">{{ 'frontend.weight'|trans }}</td>
-                            <td class="text-left editable" rel="weight" id="weight" data-toggle="tooltip" title="Click to edit">{{ specification.weight }}</td>
-                            <td colspan="2"></td>
+                            <td colspan="5"></td>
                             <td class="text-right editable" id="add-extra-sale" data-toggle="tooltip" title="Click to add discount">{{ 'frontend.total_price'|trans }}</td>
                             <td><span rel="total-price" class="total-price"></span></td>
                         </tr>
-
-                        <tr class="specification-sale" data-sale-prototype="{{ block('specification_sale')|e }}">
-                            <td colspan="2" id="extra-sale-td" nowrap style="text-align: left;">
-                                {% set sales_count = specification.sales|length %}
-                                {% if sales_count > 0 %}
+                        <tr class="specification-sale extra-row">
+                            <td></td>
+                            <td class="text-right">
+                                <strong>{{ 'frontend.weight'|trans }}</strong>
+                            </td>
+                            <td class="text-left editable" rel="weight" id="weight" data-toggle="tooltip" title="Click to edit">{{ specification.weight }}</td>
+                            <td colspan="5"></td>
+                            <td colspan="2" id="extra-sale-td" nowrap>
+                                {% if specification.sales|length > 0 %}
                                     {% for sale in specification.sales %}
                                         {{ block('specification_sale')|replace({__index__: loop.index, __sale__: sale.sale})|raw }}
                                     {% endfor %}
                                 {% endif %}
                             </td>
-                            <td colspan="4"></td>
-                            <td colspan="2"></td>
+                        </tr>
+                        <tr data-sale-prototype="{{ block('specification_sale')|e }}">
+                            <td colspan="8"></td>
                             <td class="text-right">
                                 {{ 'frontend.final_price'|trans }}
                             </td>
@@ -110,7 +115,7 @@
         </a>
         <span>discount </span>
         <span id="specification-sale" class="edit" data-index="__index__">__sale__</span>
-        <span>%: -</span><span class="discount_summ"></span>
+        <span>%:&nbsp;</span><span class="discount-summ-wrap"><span class="sale-sign">-</span><span class="discount-summ"></span></span>
     </div>
 {% endblock %}
 
@@ -219,7 +224,7 @@
                                     $('[rel="total-price"]').html(res.totalPrice);
                                     $('#extra-sale-td .sale').each(function(i){
                                         var saleWrap = $(this);
-                                        saleWrap.find('.discount_summ').html(res.salesAmounts[i]);       
+                                        saleWrap.find('.discount-summ').html(res.salesAmounts[i]);
                                     });
                                 }
                             });

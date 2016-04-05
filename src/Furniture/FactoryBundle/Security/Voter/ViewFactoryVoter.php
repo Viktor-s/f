@@ -30,18 +30,14 @@ class ViewFactoryVoter extends AbstractVoter
     protected function isGranted($attribute, $factory, $user = null)
     {
         /** @var \Furniture\FactoryBundle\Entity\Factory $factory */
-        if (!$user || !$user instanceof User) {
+        if (!$user || !$user instanceof User || !$user->isRetailer()
+            || $user->getRetailerUserProfile()->getRetailerProfile()->isDemo()
+        ) {
             return false;
         }
 
         switch ($attribute) {
             case 'ACTIVE_RELATION':
-                if (!$user->isRetailer()
-                    || $user->getRetailerUserProfile()->getRetailerProfile()->isDemo()
-                ) {
-                    return false;
-                }
-
                 $factoryRetailerRelation = $factory->getRetailerRelationByRetailer(
                     $user
                         ->getRetailerUserProfile()

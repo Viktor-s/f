@@ -207,6 +207,13 @@ sylius_resource:
                 model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
                 controller: Furniture\WebBundle\Controller\FactoryRetailerRelationController
 
+        furniture.factories_retialers_relations:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
+                repository: Furniture\FactoryBundle\Entity\Repository\FactoryRetailerRelationRepository
+                controller: Furniture\WebBundle\Controller\FactoriesRetailersRelationsController
+
         furniture.retailer_profile:
             driver: doctrine/orm
             classes:
@@ -263,6 +270,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Category
+                controller: Furniture\ProductBundle\Controller\CategoryController
                 translation:
                     model: Furniture\ProductBundle\Entity\CategoryTranslation
                     mapping: ~
@@ -271,6 +279,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Type
+                controller: Furniture\ProductBundle\Controller\TypeController
                 translation:
                     model: Furniture\ProductBundle\Entity\TypeTranslation
                     mapping: ~
@@ -279,6 +288,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Style
+                controller: Furniture\ProductBundle\Controller\StyleController
                 translation:
                     model: Furniture\ProductBundle\Entity\StyleTranslation
                     mapping: ~
@@ -287,6 +297,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Space
+                controller: Furniture\ProductBundle\Controller\SpaceController
                 translation:
                     model: Furniture\ProductBundle\Entity\SpaceTranslation
                     mapping: ~
@@ -378,6 +389,8 @@ sylius_resource:
                 translation:
                     model: Furniture\PostBundle\Entity\PostTranslation
                     mapping: ~
+    settings:
+        default_page_size: 20
 
 liip_imagine:
     filter_sets:

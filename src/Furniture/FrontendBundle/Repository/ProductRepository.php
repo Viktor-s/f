@@ -231,6 +231,10 @@ class ProductRepository
                 ->setParameter('now', new \DateTime());
         }
 
+        if ($query->isOrdered()) {
+            $qb->addOrderBy('p.'.$query->getOrderBy(), $query->getOrderDirection());
+        }
+
         return $qb;
     }
 }

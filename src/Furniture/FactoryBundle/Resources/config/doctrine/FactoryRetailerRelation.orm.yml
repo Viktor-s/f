@@ -1,6 +1,7 @@
 Furniture\FactoryBundle\Entity\FactoryRetailerRelation:
     type: entity
     table: factory_user_relation
+    repositoryClass: Furniture\FactoryBundle\Entity\Repository\FactoryRetailerRelationRepository
     id:
         id:
             type: integer

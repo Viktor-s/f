@@ -36,20 +36,17 @@
                                         <div class="row">
                                             <div class="col-sm-4 sticky-filter" data-sticky_column>
                                                 {% for groupedOptionValues in groupedVariant.productPartMaterial.groupedOptionValues %}
-                                                    <div class="information-blocks">
-                                                        <div class="block-title size-2">{{ groupedOptionValues.name }}</div>
-                                                        <div class="row">
-                                                            {% for gOptionValue in groupedOptionValues.values %}
-                                                                <div class="col-xs-12">  
-                                                                    <label class="checkbox-entry">
-                                                                        <input type="checkbox" data-option-id="{{ gOptionValue.option.id }}" value="{{ gOptionValue.id }}">
-                                                                        <span class="check"></span>
-                                                                        {{ gOptionValue.value }}
-                                                                    </label>
-                                                                </div>
-                                                            {% endfor %}
-                                                            <div class="clearfix"></div>
+                                                    <div class="row information-blocks">
+                                                        <div class="col-sm-12">
+                                                            <h4 class="block-title size-2">{{ groupedOptionValues.name }}</h4>
                                                         </div>
+                                                        {% for gOptionValue in groupedOptionValues.values %}
+                                                            <div class="col-sm-12">
+                                                                <input type="checkbox" id="popup-{{ input.id }}-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" data-option-id="{{ gOptionValue.option.id }}" value="{{ gOptionValue.id }}">
+                                                                <label for="popup-{{ input.id }}-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" class="checkbox-entry">{{ gOptionValue.value }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                        <div class="clearfix"></div>
                                                     </div>
                                                 {% endfor %}
                                             </div>
@@ -93,63 +90,64 @@
             'variants': []
         };
         var allOptions = [];
-    {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
-        {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
+{%for groupedVariant in input.productPartMaterialsVariantGrouped %}
+    {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
         var groupedOptionValues = {
-            {% for optionValue in productPartMaterialVariant.values %}
-            {{ optionValue.option.id }}: {{ optionValue.id }},
-            {% endfor %}
-        };
-        allOptions = $.unique($.merge(allOptions, $.map(groupedOptionValues, function(val, i) { return val;})));
-        groupedMaterialVariants['variants'].push({
-            materialVariantId: {{ productPartMaterialVariant.id }},
-            optionValues: groupedOptionValues
-        });
+        {% for optionValue in productPartMaterialVariant.values %}
+        {{ optionValue.option.id }}: {{ optionValue.id }},
         {% endfor %}
+    };
+    allOptions = $.unique($.merge(allOptions, $.map(groupedOptionValues, function(val, i) { return val;})));
+    groupedMaterialVariants['variants'].push({
+        materialVariantId: {{ productPartMaterialVariant.id }},
+        optionValues: groupedOptionValues
+    });
     {% endfor %}
-        $(document).ready(function () {
-            var popup = $('#input-popup-{{ input.id }}');
-            var filterCheckboxes = popup.find('input:checkbox');
+{% endfor %}
+    $(document).ready(function () {
+        var popup = $('#input-popup-{{ input.id }}');
+        var filterCheckboxes = popup.find('input:checkbox');
 
-            // Hide empty categories from filter.
-            filterCheckboxes.each(function() {
-                if (0 > $.inArray(parseInt($(this).val(), 10), allOptions)) {
-                    $(this).parent().hide();
-                }
-            });
-            popup.find('.sticky-filter .information-blocks').each(function() {
-                if (0 === $(this).find('input:checkbox').parent().filter(':visible').length) {
-                    $(this).hide();
-                }
+        // Hide empty categories from filter.
+        filterCheckboxes.each(function() {
+            if (0 > $.inArray(parseInt($(this).val(), 10), allOptions)) {
+                $(this).parent().hide();
+            }
+        });
+        popup.find('.sticky-filter .information-blocks').each(function() {
+            if (0 === $(this).find('input:checkbox').parent().filter(':visible').length) {
+                $(this).hide();
+            }
+        });
+
+        // Filter on change.
+        filterCheckboxes.change(function(){
+            var checked = {};
+            filterCheckboxes.filter('input:checked').each(function(){
+                var el = $(this);
+                if(!checked[el.data('option-id')]) checked[el.data('option-id')] = [];
+                checked[el.data('option-id')].push(parseInt(el.prop('value')));
             });
 
-            // Filter on change.
-            filterCheckboxes.change(function(){
-                var checked = {};
-                filterCheckboxes.filter('input:checked').each(function(){
-                    var el = $(this);
-                    if(!checked[el.data('option-id')]) checked[el.data('option-id')] = [];
-                    checked[el.data('option-id')].push(parseInt(el.prop('value')));
-                });
-                groupedMaterialVariants.variants.forEach(function(el, i){
-                    for(optionId in checked){
-                        var optionValues = checked[optionId];
-                        //console.log('checked id', optionId);
-                        //console.log('checked values', optionValues);
-                        //console.log('item options', el.optionValues)
-                        //console.log('item & options', el.optionValues[optionId])
-                        //console.log('search result', el.optionValues[optionId], optionValues, $.inArray(el.optionValues[optionId], optionValues));
-                        if( el.optionValues[optionId] && ($.inArray(el.optionValues[optionId], optionValues) >= 0) ){
-                            continue;
-                        }else{
-                            $('[data-input-variant="'+el. materialVariantId+'"]').hide();
-                            return ;
-                        }
+            groupedMaterialVariants.variants.forEach(function(el, i){
+                for(optionId in checked){
+                    var optionValues = checked[optionId];
+                    //console.log('checked id', optionId);
+                    //console.log('checked values', optionValues);
+                    //console.log('item options', el.optionValues)
+                    //console.log('item & options', el.optionValues[optionId])
+                    //console.log('search result', el.optionValues[optionId], optionValues, $.inArray(el.optionValues[optionId], optionValues));
+                    if( el.optionValues[optionId] && ($.inArray(el.optionValues[optionId], optionValues) >= 0) ){
+                        continue;
+                    }else{
+                        $('[data-input-variant="'+el. materialVariantId+'"]').hide();
+                        return ;
                     }
-                    $('[data-input-variant="'+el. materialVariantId+'"]').show();
-                });
+                }
+                $('[data-input-variant="'+el. materialVariantId+'"]').show();
             });
         });
-        
-        })(jQuery);
+    });
+
+    })(jQuery);
 </script>

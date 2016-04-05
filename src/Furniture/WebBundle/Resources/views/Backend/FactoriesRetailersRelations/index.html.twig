@@ -1,0 +1,26 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% from 'SyliusWebBundle:Backend/FactoryRetailerRelation:macros.html.twig' import admin_list %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factories_retailers_relations_index') }}" >Factories retailers relations</a></li>
+    <li>All relations</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="glyphicon glyphicon-list-alt"></i> Manage relations</h1>
+</div>
+
+{% render(controller('sylius.controller.backend.form:factoriesRetailersRelationsFilterAction')) %}
+
+{{ pagination(factories_retialers_relations) }}
+{{ admin_list(factories_retialers_relations) }}
+{{ pagination(factories_retialers_relations) }}
+
+{% endblock %}

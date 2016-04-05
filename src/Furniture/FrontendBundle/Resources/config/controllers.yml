@@ -138,6 +138,7 @@ services:
         arguments:
             - @twig
             - @security.token_storage
+            - @security.authorization_checker
 
     frontend.controller.retailer.factory_rates:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRatesController
@@ -187,6 +188,21 @@ services:
             - @router
             - @user.email_verifier
 
+    frontend.controller.retailer.partners:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\PartnersController
+        arguments:
+            - @twig
+            - @doctrine.orm.default_entity_manager
+            - @frontend.repository.factory
+            - @frontend.repository.factory_retailer_relation
+            - @frontend.repository.post
+            - @frontend.repository.product_style
+            - @frontend.repository.product_category
+            - @frontend.repository.composite_collection
+            - @security.token_storage
+            - @security.authorization_checker
+
+
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController
         arguments:
@@ -199,6 +215,7 @@ services:
             - @frontend.repository.composite_collection
             - @security.token_storage
             - @security.authorization_checker
+
     # User profile controllers
     frontend.controller.user.profile:
         class: Furniture\FrontendBundle\Controller\Profile\User\UserProfileController

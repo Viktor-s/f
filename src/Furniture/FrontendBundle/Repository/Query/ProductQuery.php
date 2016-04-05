@@ -59,6 +59,16 @@ class ProductQuery
     private $factoryEnabled = true;
 
     /**
+     * @var string
+     */
+    private $orderedBy;
+
+    /**
+     * @var string
+     */
+    private $orderDirection = 'DESC';
+
+    /**
      * With taxon
      *
      * @param Space $space
@@ -391,7 +401,7 @@ class ProductQuery
      */
     public function hasRetailer()
     {
-        return (bool) $this->retailer;
+        return (bool)$this->retailer;
     }
 
     /**
@@ -470,5 +480,51 @@ class ProductQuery
     public function isFactoryEnabled()
     {
         return $this->factoryEnabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return $this->orderedBy;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return ProductQuery
+     */
+    public function setOrderBy($orderBy)
+    {
+        $this->orderedBy = $orderBy;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrdered()
+    {
+        return !empty($this->orderedBy);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection()
+    {
+        return $this->orderDirection;
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return ProductQuery
+     */
+    public function setOrderDirection($orderDirection)
+    {
+        $this->orderDirection = $orderDirection;
+
+        return $this;
     }
 }

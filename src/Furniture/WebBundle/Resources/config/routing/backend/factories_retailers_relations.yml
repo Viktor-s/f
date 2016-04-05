@@ -1,0 +1,31 @@
+#Factory admin routes
+furniture_backend_factories_retailers_relations_index:
+    path: /
+    methods: [ GET ]
+    defaults:
+        _controller: Furniture.controller.factories_retialers_relations:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoriesRetailersRelations:index.html.twig
+            paginate: $limit
+            filterable: true
+
+furniture_backend_factories_retailers_relations_update:
+    path: /{id}/edit
+    methods: [GET, PUT]
+    defaults:
+        _controller: Furniture.controller.factories_retialers_relations:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoriesRetailersRelations:update.html.twig
+            form: Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationType
+            redirect:
+                route: furniture_backend_factories_retailers_relations_index
+
+furniture_backend_factories_retailers_relations_delete:
+    path: /{id}/delete
+    methods: [DELETE]
+    defaults:
+        _controller: Furniture.controller.factories_retialers_relations:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect:
+                route: furniture_backend_factories_retailers_relations_index

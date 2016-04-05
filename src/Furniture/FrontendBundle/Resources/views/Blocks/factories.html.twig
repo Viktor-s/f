@@ -4,7 +4,7 @@
             <div class="swiper-slide">
                 <div class="paddings-container">
                     <div class="factory-slide-entry">
-                        <a class="factory-image hover-class-1" href="{{ path('factory_side_general', {factory: factory.id}) }}">
+                        <a class="factory-image hover-class-1" href="{{ path('retailer_profile_partners_general', {factory: factory.id}) }}">
                             <div style="">
                             {% if factory.logoImage %}
                                 <img src="{{ factory.logoImage.path|imagine_filter('s201x203') }}" alt="{{ factory.name }}" title="{{ factory.name }}" />

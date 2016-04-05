@@ -634,12 +634,6 @@ input[type="file"] {
     font-size: 24px;
 }
 
-#factory-preview {
-    width: 100%;
-    min-height: 900px;
-    pointer-events: none;
-}
-
 .page-header .actions-menu {
     text-align: right;
     margin-top: 10px;

@@ -1,0 +1,23 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factories_retailers_relations_index') }}" >Factories retailers relations</a></li>
+    <li>Update</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="glyphicon glyphicon-pencil"></i>{{ 'sylius.factories_retailers_relations.title.update'|trans({':retailer': factories_retialers_relations.retailer.name|title, ':factory': factories_retialers_relations.factory.name|title }) }}    </h1>
+</div>
+
+{{ form_errors(form) }}
+
+<form action="{{ path('furniture_backend_factories_retailers_relations_update', {'id': factories_retialers_relations.id}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+    <input type="hidden" name="_method" value="PUT">
+    {% include 'SyliusWebBundle:Backend/FactoriesRetailersRelations:_form.html.twig' %}
+    {{ update() }}
+</form>
+{% endblock %}

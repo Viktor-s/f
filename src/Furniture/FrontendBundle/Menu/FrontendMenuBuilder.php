@@ -113,10 +113,10 @@ class FrontendMenuBuilder
             'display' => !$isDemo,
         ]);
 
-        $menu->addChild('factories', [
-            'uri' => $this->urlGenerator->generate('factory_side_list'),
-            'label' => $this->translator->trans('frontend.menu_items.header.factories'),
-        ]);
+//        $menu->addChild('factories', [
+//            'uri' => $this->urlGenerator->generate('factory_side_list'),
+//            'label' => $this->translator->trans('frontend.menu_items.header.factories'),
+//        ]);
 
         $menu->addChild('products', [
             'uri' => $this->urlGenerator->generate('products', []),
@@ -265,19 +265,22 @@ class FrontendMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('factory_rates', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_factory_rates'),
-            'label' => $this->translator->trans('frontend.factory_rates')
+        $menu->addChild('factory_partners', [
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners'),
+            'label' => $this->translator->trans('frontend.factory_partners'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_PARTNERS_LIST'),
         ]);
 
-        $menu->addChild('factory_relations', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_factory_relations'),
-            'label' => $this->translator->trans('frontend.factory_relations')
+        $menu->addChild('factory_rates', [
+            'uri'     => $this->urlGenerator->generate('retailer_profile_factory_rates'),
+            'label'   => $this->translator->trans('frontend.factory_rates'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_FACTORY_RATE_LIST'),
         ]);
 
         $menu->addChild('employees', [
-            'uri' => $this->urlGenerator->generate('retailer_profile_employees'),
-            'label' => $this->translator->trans('frontend.managers')
+            'uri'     => $this->urlGenerator->generate('retailer_profile_employees'),
+            'label'   => $this->translator->trans('frontend.managers'),
+            'display' => $this->sfAuthorizationChecker->isGranted('RETAILER_EMPLOYEE_LIST'),
         ]);
 
         return $menu;
@@ -319,12 +322,12 @@ class FrontendMenuBuilder
         $menu = $this->factory->createItem('root');
         
         $menu->addChild('general', [
-            'uri' => $this->urlGenerator->generate('factory_side_general', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_general', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.general')
         ]);
 
         $menu->addChild('news', [
-            'uri' => $this->urlGenerator->generate('factory_side_news', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_news', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.news')
         ]);
 
@@ -336,24 +339,24 @@ class FrontendMenuBuilder
 //        }
 
         // Check active state for factory retailer relation.
-        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
-            $menu->addChild('work_info', [
-                'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.sales_conditions')
-            ]);
-        }
+//        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+//            $menu->addChild('work_info', [
+//                'uri' => $this->urlGenerator->generate('factory_side_work_info', ['factory' => $factory->getId()]),
+//                'label' => $this->translator->trans('frontend.factory_side.menu.sales_conditions')
+//            ]);
+//        }
         
         $menu->addChild('contacts', [
-            'uri' => $this->urlGenerator->generate('factory_side_contacts', ['factory' => $factory->getId()]),
+            'uri' => $this->urlGenerator->generate('retailer_profile_partners_contacts', ['factory' => $factory->getId()]),
             'label' => $this->translator->trans('frontend.factory_side.menu.contacts')
         ]);
         // Check active state for factory retailer relation.
-        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
-            $menu->addChild('circulars', [
-                'uri' => $this->urlGenerator->generate('factory_side_circulars', ['factory' => $factory->getId()]),
-                'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
-            ]);
-        }
+//        if ($this->sfAuthorizationChecker->isGranted('ACTIVE_RELATION', $factory)) {
+//            $menu->addChild('circulars', [
+//                'uri' => $this->urlGenerator->generate('retailer_profile_partners_circulars', ['factory' => $factory->getId()]),
+//                'label' => $this->translator->trans('frontend.factory_side.menu.circulars')
+//            ]);
+//        }
 
         $setActiveForMenuItem = function ($item) use ($menu)
         {
@@ -363,31 +366,74 @@ class FrontendMenuBuilder
         };
         
         switch($this->requestStack->getMasterRequest()->get('_route')){
-            case 'factory_side_general':
+            case 'retailer_profile_partners_general':
                 $setActiveForMenuItem('general');
                 break;
 
-            case 'factory_side_news':
+            case 'retailer_profile_partners_news':
+            case 'retailer_profile_partners_news_view':
                 $setActiveForMenuItem('news');
                 break;
 
-            case 'factory_side_collections':
+            case 'retailer_profile_partners_collections':
                 $setActiveForMenuItem('collections');
                 break;
 
-            case 'factory_side_work_info':
+            case 'retailer_profile_partners_work_info':
                 $setActiveForMenuItem('work_info');
                 break;
 
-            case 'factory_side_contacts':
+            case 'retailer_profile_partners_contacts':
                 $setActiveForMenuItem('contacts');
                 break;
 
-            case 'factory_side_circulars':
+            case 'retailer_profile_partners_circulars':
+            case 'retailer_profile_partners_circular':
                 $setActiveForMenuItem('circulars');
                 break;
                 
         }
+
+        return $menu;
+    }
+
+    /**
+     * Create menu for user profile
+     *
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function createProfileHeaderMenu()
+    {
+        $menu = $this->factory->createItem('root');
+
+        $menu->addChild('user_profile', [
+            'route' => 'user_profile',
+            'label' => '<i class="fa fa-user"></i><span>'.$this->translator->trans('frontend.button.user_profile').'</span>',
+        ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+
+        /** @var \Furniture\UserBundle\Entity\User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user->isRetailer() && ($user->getRetailerUserProfile()->isRetailerAdmin()
+            || $user->getRetailerUserProfile()->isRetailerEmployee())
+        ) {
+            $menu->addChild('retailer_profile', [
+                'route' => 'retailer_profile',
+                'label' => '<i class="fa fa-cog"></i><span>'.$this->translator->trans('frontend.button.settings').'</span>',
+            ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+        } else if ($this->sfAuthorizationChecker->isGranted('ROLE_FACTORY_ADMIN')
+            || $this->sfAuthorizationChecker->isGranted('ROLE_FACTORY_USER')
+        ) {
+            $menu->addChild('factory_profile', [
+                'route' => 'factory_profile',
+                'label' => '<i class="fa fa-cog"></i><span>'.$this->translator->trans('frontend.button.settings').'</span>',
+            ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
+        }
+
+        $menu->addChild('logout', [
+            'route' => 'security_logout',
+            'label' => '<i class="fa fa-sign-in"></i><span>'.$this->translator->trans('frontend.button.logout').'</span>',
+        ])->setAttribute('class', 'header-functionality-entry')->setExtra('safe_label', true);
 
         return $menu;
     }

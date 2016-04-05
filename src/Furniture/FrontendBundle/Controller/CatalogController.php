@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
@@ -277,6 +278,27 @@ class CatalogController
             }
         }
 
+        $filters = new SimpleChoiceList();
+        $filters->addChoice('all', 'All');
+        $filters->addChoice('new', 'New');
+        $filters->addChoice('actual', 'Only actual');
+
+        if ($request->query->has('sorting')) {
+            switch ($request->query->get('sorting')) {
+                case 'new':
+                    $productQuery->setOrderBy('createdAt')->setOrderDirection('DESC');
+                    $filters->setSelectedItem('new');
+                    break;
+                case 'actual':
+//                    $productQuery->withOnlyAvailable();
+                    $filters->setSelectedItem('actual');
+                    break;
+                default:
+//                    $productQuery->withoutOnlyAvailable();
+                    $filters->setSelectedItem('all');
+            }
+        }
+
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -307,20 +329,20 @@ class CatalogController
         }
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
-            'products' => $products,
-            'brands' => $this->factoryRepository->findBy($brandsQuery),
-            'spaces' => $this->productSpaceRepository->findAllOnlyRoot(),
-            'categories' => $this->productCategoryRepository->findAllOnlyRoot(),
-            'types' => $this->productTypeRepository->findAllOnlyRoot(),
-            'styles' => $this->productStyleRepository->findAllOnlyRoot(),
-            'composite_collections' => $compositeСollections,
-
-            'factory_ids' => $factoryIds,
-            'category_ids' => $categoryIds,
-            'space_ids' => $spacesIds,
-            'type_ids' => $typeIds,
-            'style_ids' => $styleIds,
-            'composite_collection_ids' => $compositeCollectionIds
+            'products'                 => $products,
+            'brands'                   => $this->factoryRepository->findBy($brandsQuery),
+            'spaces'                   => $this->productSpaceRepository->findAllOnlyRoot(),
+            'categories'               => $this->productCategoryRepository->findAllOnlyRoot(),
+            'types'                    => $this->productTypeRepository->findAllOnlyRoot(),
+            'styles'                   => $this->productStyleRepository->findAllOnlyRoot(),
+            'composite_collections'    => $compositeСollections,
+            'filters'                  => $filters,
+            'factory_ids'              => $factoryIds,
+            'category_ids'             => $categoryIds,
+            'space_ids'                => $spacesIds,
+            'type_ids'                 => $typeIds,
+            'style_ids'                => $styleIds,
+            'composite_collection_ids' => $compositeCollectionIds,
         ]);
 
         return new Response($content);

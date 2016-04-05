@@ -364,6 +364,10 @@ sylius:
     delete: delete
     deleted: Deleted
     edit: edit
+    factory: Factory
+    factories_retailers_relations:
+        title:
+            update: Update relation from :retailer to :factory factory
     move_up: move up
     move_down: move down
     permission:
@@ -859,6 +863,7 @@ sylius:
         index_header: Reports
         no_data: There is no data to display.
         no_report: There is no report to display.
+    retailer: Retailer
     save_changes: Save changes
     search: Search
     security:
@@ -905,6 +910,10 @@ sylius:
     show: details
     show_all: Show all
     show_deleted: Show deleted
+    statuses:
+        approved: Approved
+        declined: Declined
+        waiting: Waiting
     stockable:
         index_header: Inventory <small>Here you can see current stock levels</small>
         name: name

@@ -27,21 +27,7 @@
                     </div>
                     <div class="header-right pull-right">
                         <div class="line-entry">
-                            <a class="header-functionality-entry" href="{{ path('user_profile') }}">
-                                <i class="fa fa-user"></i><span>{{ 'frontend.button.user_profile'|trans }}</span>
-                            </a>
-                            {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
-                                <a class="header-functionality-entry" href="{{ path('retailer_profile') }}">
-                                    <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-                                </a>
-                            {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
-                                <a class="header-functionality-entry" href="{{ path('factory_profile') }}">
-                                    <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-                                </a>
-                            {% endif %}
-                            <a class="header-functionality-entry" href="{{ path('security_logout') }}">
-                                <i class="fa fa-sign-in"></i><span>{{ 'frontend.button.logout'|trans }}</span>
-                            </a>
+                            {{ knp_menu_render('frontend.header.profile', {template: 'FrontendBundle:Common/Header:profile_menu.html.twig', allow_safe_labels: true}) }}
                         </div>
                         {% if app.user.isRetailer() %}
                             <div class="header-simple-search">

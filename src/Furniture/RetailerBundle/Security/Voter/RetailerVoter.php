@@ -21,7 +21,7 @@ class RetailerVoter extends AbstractVoter
      */
     protected function getSupportedAttributes()
     {
-        return ['RETAILER_EDIT'];
+        return ['RETAILER_EDIT', 'RETAILER_VIEW'];
     }
 
     /**
@@ -33,23 +33,31 @@ class RetailerVoter extends AbstractVoter
             return false;
         }
 
-        if(!$user->isRetailer()){
-            // Only for retailers granted
-            return false;
-        }
-        
-        if (!$user->getRetailerUserProfile()->isRetailerAdmin()) {
-            // Only for admin granted
-            return false;
-        }
-
         if (!$object || !$object instanceof RetailerProfile) {
             return false;
         }
 
+        if(!$user->isRetailer()){
+            // Only for retailers granted
+            return false;
+        }
+
+        // Is owner of profile
         if ($object->getId() == $user->getRetailerUserProfile()->getRetailerProfile()->getId()) {
-            // Is owner of profile
-            return true;
+            switch ($attribute) {
+                case 'RETAILER_EDIT':
+                    if ($user->getRetailerUserProfile()->isRetailerAdmin()) {
+                        return true;
+                    }
+                    break;
+                case 'RETAILER_VIEW':
+                    if ($user->getRetailerUserProfile()->isRetailerAdmin()
+                        || $user->getRetailerUserProfile()->isRetailerEmployee()
+                    ) {
+                        return true;
+                    }
+                    break;
+            }
         }
 
         return false;

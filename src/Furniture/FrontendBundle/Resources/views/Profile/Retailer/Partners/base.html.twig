@@ -1,0 +1,108 @@
+{% extends 'FrontendBundle:Profile/Retailer:base.html.twig' %}
+
+{% block title %}{{ factory.name }} :: {{ 'frontend.title.factories'|trans }} :: {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ knp_menu_render_factory_side(factory, {template: 'FrontendBundle:FactorySide/Common:menu.html.twig'}) }}
+
+    {% if app.user.isRetailer() %}
+        {% if not factory_retailer_relation
+        and (not factory.defaultRelation.accessProducts
+        or (factory.defaultRelation.accessProducts and not factory.defaultRelation.accessProductsPrices)) %}
+            {% set accessProducts = factory.defaultRelation.accessProducts %}
+            {% set accessPrices = factory.defaultRelation.accessProductsPrices %}
+            <div class="request-action clearfix">
+            {% if not accessProducts and not accessPrices %}
+                <a href="#" id="create-factory-request"
+                   data-message="{{ 'frontend.messages.confirm.create_to_factory_relation'|trans }}"
+                   class="btn btn-success pull-right">
+                    <i class="fa fa-plus"></i>
+                    {{ 'frontend.create_to_factory_relation'|trans }}
+                </a>
+            {% elseif accessProducts and not accessPrices %}
+                <a href="#" id="create-factory-request"
+                   data-message="{{ 'frontend.messages.confirm.create_to_factory_relation_request_prices'|trans }}"
+                   class="btn btn-success pull-right">
+                    <i class="fa fa-plus"></i>
+                    {{ 'frontend.create_to_factory_relation_request_prices'|trans }}
+                </a>
+            {% endif %}
+            </div>
+        {% elseif factory_retailer_relation and not factory_retailer_relation.active %}
+            <div class="alert alert-danger" role="alert">{{ 'frontend.relation_declined'|trans }}</div>
+        {% endif %}
+    {% endif %}
+            {% block factory_side_content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    {% if app.user.isRetailer() %}
+        {% if not factory_retailer_relation
+        and (not factory.defaultRelation.accessProducts
+        or (factory.defaultRelation.accessProducts and not factory.defaultRelation.accessProductsPrices)) %}
+            {% set accessProducts = factory.defaultRelation.accessProducts %}
+            {% set accessPrices = factory.defaultRelation.accessProductsPrices %}
+    <script type="text/javascript">
+        (function ($) {
+            $('a#create-factory-request').on('click', function(e) {
+                var that = this;
+                var message = $(this).data('message');
+                var thanksMessage = "{{ 'frontend.messages.success.create_to_factory_relation'|trans }}";
+            {% if accessProducts and not accessPrices %}
+                thanksMessage = "{{ 'frontend.messages.success.create_to_factory_relation_request_prices'|trans }}";
+            {% endif %}
+                bootbox.confirm({
+                    title: "{{ 'frontend.messages.confirm.create_to_factory_relation_title'|trans }}",
+                    message: message,
+                    callback: function(result) {
+                        if(result){
+                            $.ajax({
+                                url: '{{ path('retailer_profile_partners_relation_request', {factory: factory.id}) }}',
+                                method: 'POST',
+                                success: function () {
+                                    $(that).parent('.request-action').remove();
+                                    bootbox.alert({
+                                        title: "{{ 'frontend.messages.success.create_to_factory_relation_title'|trans }}",
+                                        message: thanksMessage,
+                                        buttons: {
+                                            ok: {
+                                                label: 'Ok',
+                                                className: 'btn-success'
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    buttons: {
+                        'cancel': {
+                            label: 'Cancel',
+                            className: 'btn-primary'
+                        },
+                        'confirm': {
+                            label: 'Ok',
+                            className: 'btn-success'
+                        }
+                    },
+                    backdrop: true
+                });
+
+                return false;
+            });
+        })(jQuery);
+    </script>
+        {% endif %}
+    {% endif %}
+{% endblock %}

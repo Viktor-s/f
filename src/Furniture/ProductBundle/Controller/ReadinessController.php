@@ -40,7 +40,7 @@ class ReadinessController extends ResourceController
 
         $url = $this->get('router')->generate('furniture_backend_product_readiness_index');
 
-        $this->flashHelper->setFlash('success', 'Successfully save positions.');
+        $this->flashHelper->setFlash('success', 'save_position_success');
 
         return new RedirectResponse($url);
     }

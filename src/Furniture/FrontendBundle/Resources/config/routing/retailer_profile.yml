@@ -54,40 +54,95 @@ retailer_profile_factory_rate_remove:
     defaults:
         _controller: frontend.controller.retailer.factory_rates:remove
 
-retailer_profile_factory_relations:
-    path: /factory-relations
+retailer_profile_partners:
+    path: /partners
+    methods: [GET]
+    requirements: { _locale: %available_locales% }
+    defaults:
+        _controller: frontend.controller.retailer.partners:partners
+
+retailer_profile_partners_general:
+    path: /partners/{factory}
     methods: [ GET ]
-    requirements: { _locale: %available_locales% }
+    requirements: { _locale: %available_locales%, factory: \d+ }
     defaults:
-        _controller: frontend.controller.retailer.factory_relation:factoryRelations
+        _controller: frontend.controller.retailer.partners:partnerGeneral
 
-retailer_profile_factory_relation_create:
-    path: /factory-relation/new
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.retailer.factory_relation:edit
-
-retailer_profile_factory_relation_edit:
-    path: /factory-relation/{relation}/edit
-    methods: [ GET, POST ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.retailer.factory_relation:edit
-
-retailer_profile_factory_relation_remove:
-    path: /factory-relation/{relation}/remove
+retailer_profile_partners_news:
+    path: /partners/{factory}/news
     methods: [ GET ]
-    requirements: { _locale: %available_locales% }
+    requirements: { _locale: %available_locales%, factory: \d+ }
     defaults:
-        _controller: frontend.controller.retailer.factory_relation:remove
+        _controller: frontend.controller.retailer.partners:news
 
-retailer_profile_factory_relation_approve:
-    path: /factory-relation/{relation}/approve
+retailer_profile_partners_news_view:
+    path: /partners/{factory}/news/{slug}
     methods: [ GET ]
-    requirements: { _locale: %available_locales%, relation: \d+ }
+    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
     defaults:
-        _controller: frontend.controller.retailer.factory_relation:approve
+        _controller: frontend.controller.retailer.partners:post
+
+#retailer_profile_partners_circulars:
+#    path: /partners/{factory}/circulars
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.retailer.partners:circulars
+
+retailer_profile_partners_circular:
+    path: /partners/{factory}/circular/{slug}
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:post
+
+retailer_profile_partners_contacts:
+    path: /partners/{factory}/contacts
+    methods: [ GET ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:contacts
+
+retailer_profile_partners_relation_request:
+    path: /partners/{factory}/relation-request
+    methods: [ POST ]
+    requirements: { _locale: %available_locales%, factory: \d+ }
+    defaults:
+        _controller: frontend.controller.retailer.partners:createRelation
+#retailer_profile_factory_relations:
+#    path: /factory-relations
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.retailer.factory_relation:factoryRelations
+#
+#retailer_profile_factory_relation_create:
+#    path: /factory-relation/new
+#    methods: [ GET, POST ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.retailer.factory_relation:edit
+#
+#retailer_profile_factory_relation_edit:
+#    path: /factory-relation/{relation}/edit
+#    methods: [ GET, POST ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.retailer.factory_relation:edit
+#
+#retailer_profile_factory_relation_remove:
+#    path: /factory-relation/{relation}/remove
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.retailer.factory_relation:remove
+#
+#retailer_profile_factory_relation_approve:
+#    path: /factory-relation/{relation}/approve
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, relation: \d+ }
+#    defaults:
+#        _controller: frontend.controller.retailer.factory_relation:approve
 
 retailer_profile_employees:
     path: /managers

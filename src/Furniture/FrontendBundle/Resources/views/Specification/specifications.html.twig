@@ -2,6 +2,7 @@
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
 {% from 'FrontendBundle:Macros:specification.html.twig' import list_toolbar %}
 {% use 'FrontendBundle:Specification:specifications_table.html.twig' %}
+{% use 'FrontendBundle:Specification:edit_modal.html.twig' %}
 
 {% block title %}{{ 'frontend.title.list'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -12,9 +13,10 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(filters, paginator) }}
+    {{ list_toolbar(filters, form, paginator) }}
     {{ block('specifications_table') }}
-    {{ list_toolbar(filters, paginator, false) }}
+    {{ list_toolbar(filters, form, paginator, false) }}
+    {{ block('edit_modal') }}
 {% endblock %}
 
 {% block footer_javascripts %}
@@ -76,7 +78,7 @@
             //Formatting selected item.
             function formatSelection(item) {
                 if ($(item.element).parent('optgroup').length > 0) {
-                    return $('<span>' + item.text + '<i>(' + $(item.element).parent('optgroup').attr('label') + ')</i></span>');
+                    return $('<span>' + item.text + '<span>(' + $(item.element).parent('optgroup').attr('label') + ')</span></span>');
                 }
                 return $('<span>' + item.text + '</span>');
             }

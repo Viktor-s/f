@@ -53,8 +53,10 @@ class ViewPriceVoter extends AbstractVoter
             return true;
         }
 
-        if ($retailerRelation) {
-            return $retailerRelation->isActive() && $retailerRelation->isAccessProductsPrices();
+        if ($retailerRelation && $retailerRelation->isActive() && $retailerRelation->isAccessProductsPrices()
+            && $retailerRelation->isFactoryAccept() && $retailerRelation->isRetailerAccept()
+        ) {
+            return true;
         }
 
         return $accessInDefaults;

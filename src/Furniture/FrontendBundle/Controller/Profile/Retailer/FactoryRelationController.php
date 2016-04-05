@@ -65,6 +65,7 @@ class FactoryRelationController
      *
      * @param \Twig_Environment                 $twig
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
+     * @param FactoryRepository                 $factoryRepository
      * @param EntityManagerInterface            $entityManager
      * @param TokenStorageInterface             $tokenStorage
      * @param AuthorizationCheckerInterface     $authorizationChecker

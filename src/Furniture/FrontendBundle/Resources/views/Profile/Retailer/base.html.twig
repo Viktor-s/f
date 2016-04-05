@@ -8,18 +8,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="row information-blocks">
         {% block left_content_container %}
             <div class="col-sm-3">
                 {% block left_content %}
-                    <div class="information-blocks">
-                        <div class="categories-list">
-                            <div class="block-title size-3">{{ 'frontend.retailer_profile'|trans }}</div>
-
-                            {% if app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
-                                {{ knp_menu_render('frontend.retailer_admin_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
-                            {% endif %}
-                        </div>
+                    <div class="categories-list">
+                        <div class="block-title size-3">{{ 'frontend.retailer_profile'|trans }}</div>
+                        {{ knp_menu_render('frontend.retailer_admin_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
                     </div>
                 {% endblock %}
             </div>
