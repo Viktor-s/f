@@ -278,4 +278,4 @@ sylius:
             factory: Factory
             price_from: Price from
             price_to: Price to
-            statuses: Statuses
+            status: Status

@@ -129,6 +129,13 @@ class ProductRepository extends BaseProductRepositiry
             $queryBuilder->andWhere($exprPriceTo);
         }
 
+        if (!empty($criteria['status'])) {
+            $status = $criteria['status'] === 'unavailable' ? false : true;
+            $queryBuilder
+                ->andWhere('product.availableForSale = :availableForSale')
+                ->setParameter('availableForSale', $status);
+        }
+
         if (empty($sorting)) {
             if (!is_array($sorting)) {
                 $sorting = [];

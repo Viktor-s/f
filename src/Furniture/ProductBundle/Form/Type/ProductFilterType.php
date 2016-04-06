@@ -53,6 +53,17 @@ class ProductFilterType extends BaseProductFilterType
                     'min'         => 0,
                     'style'       => 'width: 100px',
                 ],
+            ])
+            ->add('status', 'choice', [
+                'required' => false,
+                'label'    => 'sylius.form.product_filter.status',
+                'choices'  => [
+                    'available'   => 'Available',
+                    'unavailable' => 'Unavailable',
+                ],
+                'attr'     => [
+                    'placeholder' => 'sylius.form.product_filter.status',
+                ],
             ]);
     }
 }
