@@ -1,4 +1,4 @@
-<div class="{{ input.forSchemes ? 'scheme-info-entry': 'detail-info-entry' }}" data-input-id="{{ input.id }}">
+<div class="{% if input.option %}{{ 'option-info-entry' }}{% elseif input.skuOption %}{{ 'sku-option-info-entry' }}{% elseif input.productPart %}{{ 'detail-info-entry' }}{% elseif input.forSchemes %}{{ 'scheme-info-entry' }}{% endif %}" data-input-id="{{ input.id }}">
     <div class="detail-info-entry-title">{{ input.humanName }}</div>
 
     {% if input.skuOption and input.skuOptionVariants()|length == 1 %}

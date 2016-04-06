@@ -59,7 +59,7 @@ var variant_pattern_data_container = function (patterns) {
             if(options.filtered.length == 1){
                 
                 var filtered = options.filtered[0];
-                console.log(options.filters);
+
                 if( Object.keys(filtered.options).length == Object.keys(options.filters).length ){
                     return true;
                 }

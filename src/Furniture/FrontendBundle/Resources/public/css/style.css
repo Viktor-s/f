@@ -1095,7 +1095,13 @@ input[type="checkbox"]:checked:disabled + label::before {
     width: 300px;
 }
 
+.product-pdp .product-detail-box #specification-added .text {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
 .product-pdp .product-detail-box #add-to-spec-widget .dropdown-btn,
+.product-pdp .product-detail-box #specification-added .dropdown-btn,
 .product-pdp .product-detail-box .request-action a {
     border-radius: 0;
     max-width: 280px;
