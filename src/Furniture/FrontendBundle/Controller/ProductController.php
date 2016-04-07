@@ -238,9 +238,30 @@ class ProductController
                     }
                     $item['options'][$inputId][] = $option->getId();
                 }
-
                 $skuMatrix[] = $item;
             }
+
+            if ($activeVariant) {
+                $activeOptions = [];
+                foreach ($activeVariant->getSkuOptions() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    $activeOptions[$inputId] = $option->getId();
+                }
+
+                foreach ($activeVariant->getProductPartVariantSelections() as $variantSelection) {
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
+                    $activeOptions[$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
+                }
+
+                if ($product->isSchematicProductType()) {
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $activeOptions[$inputId] = $activeVariant->getProductScheme()->getId();
+                }
+
+                $activeVariantMatrix = $activeOptions;
+
+            }
+
         } else {
             foreach ($product->getVariants() as $variant) {
                 /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */

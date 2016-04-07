@@ -38,14 +38,21 @@ $.widget('furniture.pdp_default_select', {
 
             // Click on material if it is only one in inline.
             if (element.is(':visible') && element.find('option').length == 1) {
-                element.find('option').eq(0).prop('selected', 'selected').change()
+                element.prop('selectedIndex', 0).change();
             }
 
             $(document).on('filter:update', function (event) {
-                var selectInput = element.parents('.simple-drop-down.simple-field').first().data('input-id');
+                var selectInput = element.parent('.simple-drop-down.simple-field').data('input-id');
+
                 if( !data_container.getFilters()[selectInput] ){
                     element.prop('selectedIndex', -1);
                 }
+                else {
+                    element
+                        .find('option[data-input-variant="'+data_container.getFilters()[selectInput]+'"]')
+                        .prop('selected', 'selected');
+                }
+
                 element.find("option").each(function(){
                     var selectVariant = $(this).data('input-variant');
                     if(data_container.getFilteredWithFilterValue(selectInput, selectVariant).length == 0){
@@ -89,6 +96,9 @@ $.widget('furniture.pdp_inline_select', {
             var selectInput = element.data('input-id');
             if( !data_container.getFilters()[selectInput] ){
                 element.find('.entry.active').removeClass('active');
+            }
+            else {
+                element.find('.entry[data-input-variant="'+ data_container.getFilters()[selectInput] +'"]').addClass('active');
             }
             
             element.find(".entry").each(function(){

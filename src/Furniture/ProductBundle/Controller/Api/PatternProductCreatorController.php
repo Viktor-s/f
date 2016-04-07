@@ -130,53 +130,67 @@ class PatternProductCreatorController
         $productPartVariantSelections = [];
 
         //Product part choices
-        if(isset($choices['pp']))
-        foreach ($choices['pp'] as $index => $choiceData) {
-            if (!is_array($choiceData)) {
-                throw new HttpException(400, sprintf(
-                    'Invalid choice with index "%s". Should be a array.',
-                    $index
-                ));
+        if(isset($choices['pp'])) {
+            foreach ($choices['pp'] as $index => $choiceData) {
+                if (!is_array($choiceData)) {
+                    throw new HttpException(
+                        400, sprintf(
+                            'Invalid choice with index "%s". Should be a array.',
+                            $index
+                        )
+                    );
+                }
+
+                if (!isset($choiceData['pp']) || !isset($choiceData['ppv'])) {
+                    throw new HttpException(
+                        400, sprintf(
+                            'Missing requires data "pp" or "ppv" in choice data with index "%s".',
+                            $index
+                        )
+                    );
+                }
+
+                $productPartId = (int)$choiceData['pp'];
+                $productPartVariantId = (int)$choiceData['ppv'];
+
+                if (!$productPartId || !$productPartVariantId) {
+                    throw new HttpException(
+                        400, sprintf(
+                            'Invalid "pp" or "ppv" in choice data with index "%s".',
+                            $index
+                        )
+                    );
+                }
+
+                $productPart = $this->em->find(ProductPart::class, $productPartId);
+
+                if (!$productPart) {
+                    throw new NotFoundHttpException(
+                        sprintf(
+                            'Not found product part with identifier "%s" in choice data with index "%s".',
+                            $productPartId,
+                            $index
+                        )
+                    );
+                }
+
+                $productPartVariant = $this->em->find(ProductPartMaterialVariant::class, $productPartVariantId);
+
+                if (!$productPartVariant) {
+                    throw new NotFoundHttpException(
+                        sprintf(
+                            'Not found product part variant with identifier "%s" in choice data with index "%s".',
+                            $productPartVariantId,
+                            $index
+                        )
+                    );
+                }
+
+                $productPartVariantSelections[] = new ProductPartMaterialVariantSelection(
+                    $productPart,
+                    $productPartVariant
+                );
             }
-
-            if (!isset($choiceData['pp']) || !isset($choiceData['ppv'])) {
-                throw new HttpException(400, sprintf(
-                    'Missing requires data "pp" or "ppv" in choice data with index "%s".',
-                    $index
-                ));
-            }
-
-            $productPartId = (int) $choiceData['pp'];
-            $productPartVariantId = (int) $choiceData['ppv'];
-
-            if (!$productPartId || !$productPartVariantId) {
-                throw new HttpException(400, sprintf(
-                    'Invalid "pp" or "ppv" in choice data with index "%s".',
-                    $index
-                ));
-            }
-
-            $productPart = $this->em->find(ProductPart::class, $productPartId);
-
-            if (!$productPart) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found product part with identifier "%s" in choice data with index "%s".',
-                    $productPartId,
-                    $index
-                ));
-            }
-
-            $productPartVariant = $this->em->find(ProductPartMaterialVariant::class, $productPartVariantId);
-
-            if (!$productPartVariant) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found product part variant with identifier "%s" in choice data with index "%s".',
-                    $productPartVariantId,
-                    $index
-                ));
-            }
-
-            $productPartVariantSelections[] = new ProductPartMaterialVariantSelection($productPart, $productPartVariant);
         }
 
         //Sku option choices
@@ -211,10 +225,9 @@ class PatternProductCreatorController
                 }
 
                 $skuOptionVariantSelection[] = $skuOptionVariant;
-            
             }
         }
-        
+
         // Convert selections from array to collection object
         $productPartVariantSelections = new ProductPartMaterialVariantSelectionCollection($productPartVariantSelections);
 
