@@ -2,7 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-
+    <title>{% block title %}{{ 'frontend.title.index'|trans }}{% endblock %}</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    {% include 'FrontendBundle:Common:favicons.html.twig' %}
     {% block head_meta_common %}
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -36,14 +39,6 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
-
-    <link rel="shortcut icon" href="{{ asset('bundles/frontend/img/favicon-6.ico') }}" />
-
-    <title>{% block title %}{{ 'frontend.title.index'|trans }}{% endblock %}</title>
-
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-
 </head>
 <body>
 {% include 'FrontendBundle:Common:page_loader.html.twig' %}
