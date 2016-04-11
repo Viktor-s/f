@@ -93,8 +93,8 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
     public function validate(ExecutionContextInterface $context)
     {
         // Validate Product parts
-        $schemePartsCount = $this->getScheme()->getProductParts()->count();
-        if (!empty($schemePartsCount)) {
+        $scheme = $this->getScheme();
+        if ($scheme && $scheme->getProductParts()->count()) {
             $selectionArray = [];
             /** @var PersistentCollection $variantSelections */
             $variantSelections = $this->getPartPatternVariantSelections();
@@ -107,7 +107,7 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
                 }
             }
 
-            if ($schemePartsCount > count($selectionArray)) {
+            if ($scheme->getProductParts()->count() > count($selectionArray)) {
                 $context->buildViolation('You should select at least one variant for each parts')
                     ->addViolation();
             }
