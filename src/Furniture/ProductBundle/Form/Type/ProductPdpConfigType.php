@@ -39,7 +39,7 @@ class ProductPdpConfigType extends AbstractType
             $product = $data->getProduct();
 
             /** Delete input for scheme if product is simple. */
-            if ($product->isSimpleProductType() && $input = $data->getInputForSchemes()) {
+            if ($product->isSimpleProductType()) {
                 $data->removeInput($data->getInputForSchemes());
             }
         });

@@ -191,7 +191,7 @@ class ProductPdpConfig
      * @param ProductPdpInput $input
      * @return ProductPdpInput
      */
-    public function removeInput(ProductPdpInput $input) {
+    public function removeInput(ProductPdpInput $input = null) {
         if ($this->inputs->contains($input)) {
             $this->inputs->removeElement($input);
         }
