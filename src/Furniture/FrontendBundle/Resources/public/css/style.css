@@ -1404,6 +1404,10 @@ input[type="checkbox"]:checked:disabled + label::before {
     max-height: 225px;
     overflow: hidden;
     position: relative;
+    border: 1px solid #e8e8e8;
+}
+.product-slide-entry h4.pgp-product-title {
+    position: relative;
 }
 
 .list-view .product-slide-entry .product-image {
@@ -1497,15 +1501,25 @@ input[type="checkbox"]:checked:disabled + label::before {
 }
 
 .product-slide-entry .product-image .price {
-    color: #fff;
+    color: #000;
+    font-weight: 800;
     line-height: 25px;
     font-size: 15px;
     padding: 0 6px;
     position: absolute;
     right: 0;
     top: 0;
-    background: #dc0008;
     z-index: 1;
+}
+h4.pgp-product-title .price .current {
+    margin-bottom: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 18px;
+    padding: 0 6px;
 }
 
 h4.pgp-product-title a {

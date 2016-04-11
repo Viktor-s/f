@@ -4,14 +4,7 @@
         <div class="product-image">
             <a {% if is_granted('VIEW_PRICE', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
                 <div class="top-line text-center">
-                    <div class="price">
-                        <div class="current">
-                            {% if is_granted('VIEW_PRICE', product) %}
-                                {{ product|product_price|money(0) }}
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% if product.getImage() %}
+                   {% if product.getImage() %}
                         <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
                     {% else %}
                         <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
@@ -31,6 +24,13 @@
             {% endif %}
             {{ product.name }}
             </a>
+             <div class="price">
+                <div class="current">
+                    {% if is_granted('VIEW_PRICE', product) %}
+                        {{ product|product_price|money(0) }}
+                    {% endif %}
+                </div>
+            </div>
         </h4>
         <h6 class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</h6>
     </div>
