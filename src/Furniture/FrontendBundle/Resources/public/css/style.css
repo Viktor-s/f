@@ -3648,10 +3648,7 @@ body:not(.mobile) .hover-class-1:hover:after {
 .swiper-container .product-slide-entry .product-image {
     max-height: 194px;
 }
-.product-slide-entry .product-image a.thumbnail {
-    line-height: 194px;
-    min-height: 194px;
-}
+
 .products-swiper .product-slide-entry .product-image a.thumbnail img {
     width: 100%;
     height: auto;
