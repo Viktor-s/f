@@ -103,6 +103,7 @@ class ProductVariantType extends BaseProductVariantType
                             list($productPartId, $productPartMaterialVariantId) = explode('_', $value);
 
                             $value = null;
+
                             foreach ($variant->getProductPartVariantSelections() as $vs) {
                                 if ($vs->getProductPart()->getId() == $productPartId
                                     && $vs->getProductPartMaterialVariant()->getId() == $productPartMaterialVariantId
@@ -118,6 +119,12 @@ class ProductVariantType extends BaseProductVariantType
                                     $dataCollector['materialVariant'][$productPartMaterialVariantId]
                                 );
                             }
+
+                            // Filter collection from already used Product parts values.
+                            $arrCollection = $arrCollection->filter(function($element) use ($productPartId) {
+                                /** @var ProductPartVariantSelection $element */
+                                return $element->getProductPart()->getId() !== (int) $productPartId;
+                            });
 
                             $arrCollection->add($value);
                         }
