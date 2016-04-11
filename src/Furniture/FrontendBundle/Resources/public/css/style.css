@@ -1407,6 +1407,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     outline: 1px solid #e8e8e8;
     background: #fff;
 }
+
 .product-slide-entry h4.pgp-product-title {
     position: relative;
 }
@@ -1455,6 +1456,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     margin: auto;
     overflow: auto;
     position: absolute;
+    height: 100%;
 }
 
 .thumbnail {
@@ -3645,11 +3647,8 @@ body:not(.mobile) .hover-class-1:hover:after {
 .modal-body, .modal-footer {
     padding: 0 15px;
 }
-.swiper-container .product-slide-entry .product-image {
-    max-height: 194px;
-}
 
-.products-swiper .product-slide-entry .product-image a.thumbnail img {
-    width: 100%;
-    height: auto;
+.swiper-container .product-slide-entry .product-image a.thumbnail {
+    line-height: 194px;
+    max-height: 194px;
 }
