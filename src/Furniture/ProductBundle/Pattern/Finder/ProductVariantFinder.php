@@ -116,7 +116,8 @@ class ProductVariantFinder
             $variantIds[] = $item['id'];
         }
 
-        if (!empty($variantSelectionsIds)) {
+
+        if (!empty($variantIds) && !empty($variantSelectionsIds)) {
             $productVariantRepo = $this->em->getRepository(ProductVariant::class);
             $variants = new ArrayCollection($productVariantRepo->findBy(['id' => $variantIds]));
 
