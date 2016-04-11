@@ -1511,8 +1511,8 @@ input[type="checkbox"]:checked:disabled + label::before {
     top: 0;
     z-index: 1;
 }
-h4.pgp-product-title .price .current {
-    margin-bottom: 20px;
+h4.pgp-product-title .price {
+    margin-bottom: 0px; 
     position: absolute;
     top: 0;
     right: 0;
