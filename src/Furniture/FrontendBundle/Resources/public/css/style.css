@@ -3651,4 +3651,5 @@ body:not(.mobile) .hover-class-1:hover:after {
 .swiper-container .product-slide-entry .product-image a.thumbnail {
     line-height: 194px;
     max-height: 194px;
+    min-height: 194px;
 }
