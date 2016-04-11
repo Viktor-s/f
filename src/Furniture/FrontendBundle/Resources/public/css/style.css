@@ -1404,7 +1404,8 @@ input[type="checkbox"]:checked:disabled + label::before {
     max-height: 225px;
     overflow: hidden;
     position: relative;
-    border: 1px solid #e8e8e8;
+    outline: 1px solid #e8e8e8;
+    background: #fff;
 }
 .product-slide-entry h4.pgp-product-title {
     position: relative;
