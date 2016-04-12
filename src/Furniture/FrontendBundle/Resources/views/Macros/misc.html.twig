@@ -37,7 +37,7 @@
                     {{ paginator.nextPage }}
                 </a>
             </li>
-            {% if(paginator.nbPages >= paginator.nextPage+1) %}
+            {% if(paginator.nbPages - paginator.nextPage >= 1) %}
                 {% if paginator.currentPage == 1 %}
             <li>
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.nextPage+1) }))) }}">
@@ -45,9 +45,11 @@
                 </a>
             </li>
                 {% endif %}
+            {% if paginator.nbPages > 3 and paginator.nbPages - paginator.currentPage > 2 %}
             <li><span class="dots">...</span></li>
             {% endif %}
-            {% if paginator.nbPages - paginator.currentPage > 1 %}
+            {% endif %}
+            {% if paginator.currentPage != 1 and paginator.nbPages - paginator.currentPage > 1 %}
             <li>
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nbPages }))) }}" aria-label="Next">
                     {{ paginator.nbPages }}
