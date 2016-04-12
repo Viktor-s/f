@@ -271,8 +271,7 @@
                             label: 'Ok',
                             className: 'btn-success'
                         }
-                    },
-                    backdrop: true
+                    }
                 });
 
                 return false;
@@ -567,7 +566,15 @@
 
                         {% endif %}
                     }else{
-                        bootbox.alert('{{ 'frontend.product.pdp.specify_product'|trans }}');
+                        bootbox.alert({
+                            message: '{{ 'frontend.product.pdp.specify_product'|trans }}',
+                            buttons: {
+                                ok: {
+                                    label: 'Ok',
+                                    className: 'btn-success'
+                                }
+                            }
+                        });
                     }
                     return false;
                 });

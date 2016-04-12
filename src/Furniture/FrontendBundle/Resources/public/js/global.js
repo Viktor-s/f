@@ -586,6 +586,10 @@ $(function() {
     });*/
 });
 
+bootbox.setDefaults({
+	backdrop: true,
+});
+
 /** Ajax */
 //$(document).ajaxStart(function () {
 //	$("#loader-wrapper").addClass('opacity5').fadeIn();

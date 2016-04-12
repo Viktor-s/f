@@ -318,7 +318,7 @@
   exports.confirm = function() {
     var options;
 
-    options = mergeDialogOptions("confirm", ["cancel", "confirm"], ["message", "callback"], arguments);
+    options = mergeDialogOptions("confirm", ["confirm", "cancel"], ["message", "callback"], arguments);
 
     /**
      * overrides; undo anything the user tried to set they shouldn't have

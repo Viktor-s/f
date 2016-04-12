@@ -98,8 +98,22 @@
                 $('.employee-remove').click(function(e){
                     e.preventDefault();
                     var link = $(this); 
-                    bootbox.confirm('Are you sure you want to disable a user?', function(result) {
-                        result && document.location.assign(link.attr('href'));
+                    bootbox.confirm({
+                        title: "Confirmation required.",
+                        message: 'Are you sure you want to disable a user?',
+                        callback: function(result) {
+                            result && document.location.assign(link.attr('href'));
+                        },
+                        buttons: {
+                            'cancel': {
+                                label: 'Cancel',
+                                className: 'btn-primary'
+                            },
+                            'confirm': {
+                                label: 'Ok',
+                                className: 'btn-success'
+                            }
+                        }
                     });
                     return false;
                 });

@@ -22,8 +22,7 @@
                         label: 'Ok',
                         className: 'btn-success'
                     }
-                },
-                backdrop: true
+                }
             });
 
             return false;
