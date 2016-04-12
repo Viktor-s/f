@@ -16,18 +16,20 @@ class ProductSchemesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'         => new ProductSchemeType(),
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'parts'        => [],
-            'schemes'        => [],
+            'type'          => new ProductSchemeType(),
+            'allow_add'     => true,
+            'allow_delete'  => true,
+            'parts'         => [],
+            'schemes'       => [],
+            'disallow_edit' => false,
         ]);
 
         $resolver->setRequired('parts');
 
         $resolver->setNormalizer('options', function (OptionsResolver $resolver) {
             return [
-                'parts' => $resolver['parts']
+                'parts'         => $resolver['parts'],
+                'disallow_edit' => $resolver['disallow_edit'],
             ];
         });
 

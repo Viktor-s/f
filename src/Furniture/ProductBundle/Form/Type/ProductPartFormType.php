@@ -36,7 +36,8 @@ class ProductPartFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProductPart::class
+            'data_class'    => ProductPart::class,
+            'disallow_edit' => false,
         ]);
     }
     
@@ -66,11 +67,13 @@ class ProductPartFormType extends AbstractType
                     }
                 },
                 'multiple' => true,
-                'expanded' => false
+                'expanded' => false,
+                'disabled' => $options['disallow_edit'],
             ])
             ->add('productPartType', 'entity', [
                 'class' => ProductPartType::class,
-                'multiple' => false
+                'multiple' => false,
+                'disabled' => $options['disallow_edit'],
             ]);
     }
     

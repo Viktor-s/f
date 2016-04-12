@@ -71,7 +71,11 @@ class ProductType extends BaseProductType
                 'form_type' => new ProductTranslationType,
                 'label'     => 'sylius.form.product.translations',
             ));
-        
+
+        /** @var Product $product */
+        $product  = $builder->getData();
+        $disallowEdit = $product->hasVariants() || $product->hasProductVariantsPatterns();
+
         if ($options['mode'] == 'full') {
             $builder
                 ->add('categories', 'entity', [
@@ -97,10 +101,13 @@ class ProductType extends BaseProductType
                 ->add('skuOptionVariants', 'collection', [
                     'type'         => new SkuOptionVariantFormType(),
                     'required'     => false,
-                    'allow_add'    => true,
-                    'allow_delete' => true,
+                    'allow_add'    => !$disallowEdit,
+                    'allow_delete' => !$disallowEdit,
                     'by_reference' => false,
-                    'label'        => 'product_options.sku_option_variants_label'
+                    'label'        => 'product_options.sku_option_variants_label',
+                    'options'      => [
+                        'disallow_edit' => $disallowEdit,
+                    ],
                 ])
                 ->add('subProducts', new AutocompleteEntityType(), [
                     'class'       => Product::class,
@@ -113,7 +120,11 @@ class ProductType extends BaseProductType
                     'required' => false
                 ]);
 
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            if ($disallowEdit) {
+                $builder->get('options')->setDisabled(true);
+            }
+
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($disallowEdit) {
                 /** @var Product $product */
                 $product = $event->getData();
                 $factory = $product->getFactory();
@@ -121,10 +132,13 @@ class ProductType extends BaseProductType
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type'         => new ProductPartFormType($factory),
-                        'allow_add'    => true,
-                        'allow_delete' => true,
+                        'allow_add'    => !$disallowEdit,
+                        'allow_delete' => !$disallowEdit,
                         'attr'         => [
                             'data-remove-confirm' => 'Are you sure you want to remove product part item?',
+                        ],
+                        'options'      => [
+                            'disallow_edit' => $disallowEdit,
                         ],
                     ])
                     ->add('compositeCollections', 'entity', [
@@ -146,11 +160,14 @@ class ProductType extends BaseProductType
                 if (!$product->getId() || $product->isSchematicProductType() || count($product->getVariants())) {
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
-                            'parts' => $product->getProductParts(),
-                            'schemes' => $product->getProductSchemes(),
-                            'attr'  => [
+                            'parts'         => $product->getProductParts(),
+                            'schemes'       => $product->getProductSchemes(),
+                            'attr'          => [
                                 'data-remove-confirm' => 'Are you sure you want to remove scheme item?',
                             ],
+                            'allow_add'     => !$disallowEdit,
+                            'allow_delete'  => !$disallowEdit,
+                            'disallow_edit' => $disallowEdit,
                         ]);
                 }
             });

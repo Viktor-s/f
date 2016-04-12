@@ -20,7 +20,8 @@ class ProductSchemeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ProductScheme::class,
+            'data_class'    => ProductScheme::class,
+            'disallow_edit' => false,
         ]);
 
         $resolver->setRequired('parts');
@@ -47,6 +48,7 @@ class ProductSchemeType extends AbstractType
             /** @var ProductScheme $scheme */
             $scheme = $event->getData();
             $form = $event->getForm();
+            $options = $builder->getOptions();
 
             $childFormBuilder = $builder->getFormFactory()->createNamedBuilder('productParts', 'form', null, [
                 'auto_initialize' => false
@@ -80,7 +82,8 @@ class ProductSchemeType extends AbstractType
                 $childBuilder = $builder->getFormFactory()->createNamedBuilder($index++, 'checkbox', $data, [
                     'auto_initialize' => false,
                     'required'        => false,
-                    'value'           => $part->getId()
+                    'value'           => $part->getId(),
+                    'disabled'        => $options['disallow_edit'],
                 ]);
 
                 $childBuilder->addModelTransformer(new CheckboxForValueTransformer($part));
