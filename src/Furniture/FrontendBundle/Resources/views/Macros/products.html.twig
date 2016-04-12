@@ -85,7 +85,7 @@
     {% endspaceless %}
 {% endmacro %}
 
-{% macro product_grid_view(product, grid = 4) %}
+{% macro product_grid_view(product, grid = 4, image_size = '300x225') %}
     <!-- one product -->
     <div class="col-md-{{ grid }} col-sm-{{ grid }} shop-grid-item " data-factory="{{ product.factory.name }}">
         <div class="product-slide-entry">
@@ -93,9 +93,9 @@
                 <a {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
                     <div class="top-line text-center">
                         {% if product.getImage() %}
-                            <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
+                            <img src="{{ product.image.path|imagine_filter('s'~image_size) }}" alt="{{ product.factory.name }}" />
                         {% else %}
-                            <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
+                            <img src="/img/{{ image_size }}.png" alt="{{ product.factory.name }}" />
                         {% endif %}
                     </div>
                 </a>
