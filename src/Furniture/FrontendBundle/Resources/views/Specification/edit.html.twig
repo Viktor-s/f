@@ -307,24 +307,39 @@
                                     onRemove: function () {
                                         tr.addClass('danger');
 
-                                        bootbox.confirm('{{ 'frontend.are_you_sure_remove_image'|trans }}', function(result) {
-                                            if (result) {
-                                                $.ajax({
-                                                    url: '{{ path('specification_api_specification_custom_item_remove_image', {item: 123}) }}'.replace(/123/, tr.data('custom-id')),
-                                                    method: 'GET',
-                                                    complete: function () {
-                                                        tr.removeClass('danger');
-                                                    },
-                                                    success: function () {
-                                                        q.setImagePath('');
-                                                        q.viewImageUpload();
-                                                    },
-                                                    error: function () {
-                                                    }
-                                                });
-                                            } else {
-                                                tr.removeClass('danger');
-                                            }
+                                        bootbox.confirm({
+                                            title: "Confirmation required.",
+                                            message: "{{ 'frontend.are_you_sure_remove_image'|trans }}",
+                                            callback: function(result) {
+                                                if (result) {
+                                                    $.ajax({
+                                                        url: '{{ path('specification_api_specification_custom_item_remove_image', {item: 123}) }}'.replace(/123/, tr.data('custom-id')),
+                                                        method: 'GET',
+                                                        complete: function () {
+                                                            tr.removeClass('danger');
+                                                        },
+                                                        success: function () {
+                                                            q.setImagePath('');
+                                                            q.viewImageUpload();
+                                                        },
+                                                        error: function () {
+                                                        }
+                                                    });
+                                                } else {
+                                                    tr.removeClass('danger');
+                                                }
+                                            },
+                                            buttons: {
+                                                'cancel': {
+                                                    label: 'Cancel',
+                                                    className: 'btn-primary'
+                                                },
+                                                'confirm': {
+                                                    label: 'Ok',
+                                                    className: 'btn-success'
+                                                }
+                                            },
+                                            backdrop: true
                                         });
 
                                         return false;
@@ -574,36 +589,52 @@
                             var itemId = tr.data('id');
                             tr.addClass('danger');
 
-                            bootbox.confirm('{{ 'frontend.are_you_sure_remove_specification_item'|trans }}', function(result) {
-                                if(result){
-                                    td.html(progressBasr);
-                                    $.ajax({
-                                        url: '{{ path('specification_api_specification_item_remove', {item: 123}) }}'.replace(/123/, itemId.toString()),
-                                        complete: function () {
-                                            tr.removeClass('danger');
-                                            a.prop('disabled', false);
+                            bootbox.confirm({
+                                title: "Confirmation required.",
+                                message: "{{ 'frontend.are_you_sure_remove_specification_item'|trans }}",
+                                callback: function(result) {
+                                    if(result){
+                                        td.html(progressBasr);
+                                        $.ajax({
+                                            url: '{{ path('specification_api_specification_item_remove', {item: 123}) }}'.replace(/123/, itemId.toString()),
+                                            complete: function () {
+                                                tr.removeClass('danger');
+                                                a.prop('disabled', false);
 //                                            console.log('complete remove');
-                                            trTotalPriceSpecificationUpdater();
-                                        },
-                                        error: function () {
-                                            alert('Error with remove specification item. Please try again.');
-                                        },
-                                        success: function () {
+                                                trTotalPriceSpecificationUpdater();
+                                            },
+                                            error: function () {
+                                                alert('Error with remove specification item. Please try again.');
+                                            },
+                                            success: function () {
 //                                            console.log('success remove');
-                                            tr.animate({
-                                                height: '0px'
-                                            }, 50, 'swing', function () {
-                                                tableEdit
-                                                        .row(tr)
-                                                        .remove()
-                                                        .draw();
-                                            });
-                                        }
-                                    });
-                                }else{
-                                    tr.removeClass('danger');
-                                }
-                            }); 
+                                                tr.animate({
+                                                    height: '0px'
+                                                }, 50, 'swing', function () {
+                                                    tableEdit
+                                                            .row(tr)
+                                                            .remove()
+                                                            .draw();
+                                                });
+                                            }
+                                        });
+                                    }else{
+                                        tr.removeClass('danger');
+                                    }
+                                },
+                                buttons: {
+                                    'cancel': {
+                                        label: 'Cancel',
+                                        className: 'btn-primary'
+                                    },
+                                    'confirm': {
+                                        label: 'Ok',
+                                        className: 'btn-success'
+                                    }
+                                },
+                                backdrop: true
+                            });
+
                             return false;
                     });                    
                     

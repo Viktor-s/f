@@ -106,17 +106,32 @@
         (function ($) {
             var q = new ImageAjax($('.image-ajax-container'), {
                 onRemove: function () {
-                    bootbox.confirm('{{ 'frontend.are_you_sure_remove_logo'|trans }}', function(result) {
-                        if (result) {
-                            $.ajax({
-                                url: '{{ path('retailer_profile_logo_remove') }}',
-                                method: 'POST',
-                                success: function () {
-                                    q.setImagePath('');
-                                    q.viewImageUpload();
-                                }
-                            });
-                        }
+                    bootbox.confirm({
+                        title: "Confirmation required.",
+                        message: "{{ 'frontend.are_you_sure_remove_logo'|trans }}",
+                        callback: function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: '{{ path('retailer_profile_logo_remove') }}',
+                                    method: 'POST',
+                                    success: function () {
+                                        q.setImagePath('');
+                                        q.viewImageUpload();
+                                    }
+                                });
+                            }
+                        },
+                        buttons: {
+                            'cancel': {
+                                label: 'Cancel',
+                                className: 'btn-primary'
+                            },
+                            'confirm': {
+                                label: 'Ok',
+                                className: 'btn-success'
+                            }
+                        },
+                        backdrop: true
                     });
 
                     return false;
