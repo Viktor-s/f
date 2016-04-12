@@ -73,7 +73,7 @@
 
     <td class="text-right">
         <div class="btn-block">
-            {% if is_granted('VIEW_PRODUCTS', product_variant.product.factory) %}
+            {% if is_granted('VIEW_PRODUCTS', product_variant.product.factory) and product_variant.product.available %}
                 <a class="btn btn-edit btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
                     {{ 'frontend.edit'|trans }}
                 </a>
