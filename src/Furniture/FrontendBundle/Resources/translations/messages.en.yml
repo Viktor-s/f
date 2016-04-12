@@ -173,6 +173,7 @@ frontend:
     options: Options
     password: Password
     pdf: PDF
+    per_page: Show on page
     phones: Phones:
     phones_contact: Contact phones:
     photo: Photo

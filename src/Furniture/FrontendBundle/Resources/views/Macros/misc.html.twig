@@ -45,9 +45,9 @@
                 </a>
             </li>
                 {% endif %}
-            {% if paginator.nbPages > 3 and paginator.nbPages - paginator.currentPage > 2 %}
+                {% if paginator.nbPages > 3 and paginator.nbPages - paginator.currentPage > 2 %}
             <li><span class="dots">...</span></li>
-            {% endif %}
+                {% endif %}
             {% endif %}
             {% if paginator.currentPage != 1 and paginator.nbPages - paginator.currentPage > 1 %}
             <li>

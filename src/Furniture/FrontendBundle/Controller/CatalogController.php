@@ -299,6 +299,18 @@ class CatalogController
             }
         }
 
+        $perPageFilter = new SimpleChoiceList();
+        $perPageFilter->addChoices([
+            12 => 12,
+            24 => 24,
+            36 => 36,
+        ]);
+        $perPage = 12;
+        if ($request->query->has('per_page')) {
+            $perPageFilter->setSelectedItem($request->query->get('per_page'));
+            $perPage = $request->query->get('per_page');
+        }
+
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -314,7 +326,7 @@ class CatalogController
         
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);
-        $products = $this->productRepository->findBy($productQuery);
+        $products = $this->productRepository->findBy($productQuery, 1, $perPage);
         
         if( $products->getNbPages() < $currentPage){
             $products->setCurrentPage(1);
@@ -337,6 +349,7 @@ class CatalogController
             'styles'                   => $this->productStyleRepository->findAllOnlyRoot(),
             'composite_collections'    => $compositeСollections,
             'filters'                  => $filters,
+            'per_page'                 => $perPageFilter,
             'factory_ids'              => $factoryIds,
             'category_ids'             => $categoryIds,
             'space_ids'                => $spacesIds,
