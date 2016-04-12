@@ -889,6 +889,16 @@ span.total-price {
     color: #fff;
 }
 
+.pagination-sm > li > span.dots {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.pagination-sm > li > span.dots:hover {
+    background: none !important;
+    color: inherit;
+}
+
 .sidebar-block .panel {
     border: none;
     box-shadow: none;
@@ -3651,4 +3661,8 @@ body:not(.mobile) .hover-class-1:hover:after {
     line-height: 194px;
     max-height: 194px;
     min-height: 194px;
+}
+
+.pagination>li {
+    display: inline-block;
 }
