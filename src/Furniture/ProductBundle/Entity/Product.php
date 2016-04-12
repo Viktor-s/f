@@ -611,8 +611,14 @@ class Product extends BaseProduct
     public function getPaginatedVariants($page = 1, $limit = 50)
     {
         $variants = $this->getVariants();
-        $paginator = new Pagerfanta(new ArrayAdapter($variants->toArray()));
-
+        $variantsArray = $variants->toArray();
+        // Sort by ID DESC
+        usort($variantsArray, function ($a, $b) {
+            /** @var ProductVariant $a */
+            /** @var ProductVariant $b */
+            return ($a->getId() > $b->getId()) ? -1 : 1;
+        });
+        $paginator = new Pagerfanta(new ArrayAdapter($variantsArray));
         $paginator->setCurrentPage($page);
         $paginator->setMaxPerPage($limit);
 
