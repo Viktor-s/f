@@ -120,9 +120,11 @@ class ProductType extends BaseProductType
                     'required' => false
                 ]);
 
-            if ($disallowEdit) {
-                $builder->get('options')->setDisabled(true);
-            }
+            $builder->remove('options');
+
+//            if ($disallowEdit) {
+//                $builder->get('options')->setDisabled(true);
+//            }
 
             $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($disallowEdit) {
                 /** @var Product $product */
