@@ -4,6 +4,8 @@ namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\ProductPdpConfig;
+use Furniture\ProductBundle\Entity\ProductPdpInput;
+use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -42,6 +44,24 @@ class ProductPdpConfigType extends AbstractType
             if ($product->isSimpleProductType()) {
                 $data->removeInput($data->getInputForSchemes());
             }
+
+            // Delete inputs for SkuOptions that not used anymore.
+            $poorData = $data->getInputs()
+                ->filter(
+                    function($element) use ($product) {
+                        /** @var ProductPdpInput $element */
+                        if ($element->getSkuOption()) {
+                            return !$product->getSkuOptionTypes()->contains($element->getSkuOption());
+                        }
+
+                        return false;
+                    }
+                )
+                ->forAll(
+                    function($key, $element) use ($data) {
+                        $data->removeInput($element);
+                    }
+                );
         });
     }
 
