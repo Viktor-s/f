@@ -131,9 +131,21 @@ class ProductRepository extends BaseProductRepositiry
 
         if (!empty($criteria['status'])) {
             $status = $criteria['status'] === 'unavailable' ? false : true;
-            $queryBuilder
-                ->andWhere('product.availableForSale = :availableForSale')
-                ->setParameter('availableForSale', $status);
+            if ($status) {
+                $queryBuilder
+                    ->andWhere('product.availableForSale = :availableForSale')
+                    ->setParameter('availableForSale', $status);
+            }
+            else {
+                $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq('product.availableForSale', ':availableForSale'),
+                            $queryBuilder->expr()->isNull('product.availableForSale')
+                        )
+                    )
+                    ->setParameter('availableForSale', $status);
+            }
         }
 
         if (empty($sorting)) {
