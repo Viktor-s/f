@@ -38,8 +38,9 @@ class RetailerEmployeeUserProfileType extends AbstractType
                 'label'    => 'frontend.mode',
                 'required' => true,
                 'choices'  => [
-                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager',
+                    ''                                     => '',
                     RetailerUserProfile::RETAILER_ADMIN    => 'Admin',
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager',
                 ]
             ]);
 
