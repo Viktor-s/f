@@ -146,7 +146,7 @@
                 {% if is_granted('VIEW_PRICE', product) %}
                     <div class="add-to-specification detail-info-entry">
                         <div id="add-to-spec-widget" class="btn-group">
-                            <button type="button" class="button style-10 btn btn-default dropdown-btn">
+                            <button type="button" class="button style-10 btn btn-default dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ 'frontend.add_to_specification'|trans }}
                                 <span class="caret"></span>
                             </button>
@@ -525,7 +525,6 @@
                                             $('#specification-added')
                                                     .html('<div class="text">Product was successfully added.</div><a href="'+ specification_edit_path +'" class="button style-10 btn btn-default dropdown-btn">Go to the Specification</a>')
                                                     .show();
-                                            $('.add-to-specification button').dropdown('toggle');
                                             addSpecificationProcessed = false;
                                         },
                                         error: function () {
@@ -555,7 +554,6 @@
                                 $('#specification-added')
                                         .html('<div class="text">Product was successfully added.</div><a href="'+ specification_edit_path +'" class="button style-10 btn btn-default dropdown-btn">Go to the Specification</a>')
                                         .show();
-                                $('.add-to-specification button').dropdown('toggle');
                                 addSpecificationProcessed = false;
                             },
                             error: function () {
