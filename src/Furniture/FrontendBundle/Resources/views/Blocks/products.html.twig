@@ -2,7 +2,7 @@
 <div class="swiper-container" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="2" data-int-slides="2" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
     <div class="swiper-wrapper">
         {% for product in products %}
-            {{ product_grid_view(product, '260x195', {'class' : 'swiper-slide col-md-4 col-sm-4 shop-grid-item'}) }}
+            {{ product_grid_view(product, '260x195', {'class' : 'swiper-slide shop-grid-item'}) }}
         {% endfor %}
     </div>
     <div class="pagination"></div>

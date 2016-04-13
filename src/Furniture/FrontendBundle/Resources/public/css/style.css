@@ -3756,3 +3756,7 @@ body:not(.mobile) .hover-class-1:hover:after {
 .pagination>li {
     display: inline-block;
 }
+
+.swiper-slide {
+    padding: 0 15px;
+}
