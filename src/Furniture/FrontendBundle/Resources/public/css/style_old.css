@@ -1405,8 +1405,6 @@ textarea.simple-field.size-1{height: 138px;}
 
 /* Tablets (>=768px)*/
 @media (max-width: 991px) {
-    .shop-grid-item:nth-child(4n+1){clear: none;}
-    .shop-grid-item:nth-child(3n+1){clear: both;}
     .list-buttons .button{display: block;}
     .mozaic-banners-wrapper.type-2 .row{
         margin: 0;
@@ -1419,67 +1417,7 @@ textarea.simple-field.size-1{height: 138px;}
         padding: 0;
     }
 }
-/*Phones (<768px)*/
-@media (max-width: 767px) {
-    .shop-grid-item{width: 50%; float: left;}
-    .shop-grid-item:nth-child(3n+1){clear: none;}
-    .shop-grid-item:nth-child(2n+1){clear: both;}
-    .list-buttons .button{display: block;}
-    .shop-grid-controls{margin-right: 0;}
-    #content-block .shop-grid-controls .entry{
-        margin-right: 10px;
-        padding-right: 10px;
-        border-right: none;
-    }
-}
-/*Phones (<480px)*/
-@media (max-width: 480px) {
-    .shop-grid-item{ float: left;}
-    .list-view .product-slide-entry{margin-left: 0; text-align: center!important;}
-    .list-view .product-slide-entry .product-image{max-width: 210px; margin-left: 0; float: none; margin-bottom: 15px; display: inline-block;}
-    .list-view .product-slide-entry:after{margin-left: 0;}
-    .products-swiper .paddings-container{padding: 0 8px;}
-    body.style-7 .product-slide-entry{
-        max-width: 200px;
-    }
-    .food-category{
-        width: 100%;
-    }
-    .products-swiper{
-        margin: 0;
-    }
-    .products-swiper:before, .products-swiper:after{
-        display: none;
-    }
-    .shop-grid-controls{
-        text-align: center;
-        margin-bottom: 0;
-    }
-    #content-block .shop-grid-controls .entry{
-        margin-right: 10px;
-        padding-right: 10px;
-        border-right: none;
-        float: none;
-        display: inline-block;
-    }
-}
 
-@media only screen and (min-width: 481px) and (max-width: 580px){
-    .shop-grid-controls{
-        text-align: center;
-        margin-bottom: 0;
-    }
-    #content-block .shop-grid-controls .entry{
-        margin-right: 10px;
-        padding-right: 10px;
-        border-right: none;
-        float: none;
-        display: inline-block;
-    }
-    .shop-grid-controls .simple-drop-down{
-        width: 115px;
-    }
-}
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 /* 25 - COMPARE */
 /*-------------------------------------------------------------------------------------------------------------------------------*/

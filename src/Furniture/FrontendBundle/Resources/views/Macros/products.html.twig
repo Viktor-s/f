@@ -4,7 +4,7 @@
             {% set show = ((checked_list|length) > show ? checked_list|length : show) %}
             {% set unchecked_show = ((checked_list|length) < show ? show - (checked_list|length) : 0) %}
             {% set already_shown = [] %}
-            <div class="panel">
+            <div class="panel col-xs-6 col-sm-12">
                 <a href="#{{ name }}-filter" class="filter-category" data-toggle="collapse" aria-expanded="true" aria-controls="{{ name }}-filter">{{ title }}</a>
                 <ul class="collapse in" id="{{ name }}-filter">
                 {# Checked first #}
@@ -49,7 +49,7 @@
     {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
     {% spaceless %}
         <div class="row {{ position }}-content-filter">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="filters col-xs-12 col-sm-6 col-sm-offset-3">
                 <div class="row text-center">
                     <ul class="shop-grid-controls">
                         <li class="sorting-label"><label for="sorting">{{ 'frontend.sort_by'|trans }}</label></li>
@@ -86,16 +86,19 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="pagination col-xs-12 col-sm-3 text-right">
                 {{ pagination }}
             </div>
         </div>
     {% endspaceless %}
 {% endmacro %}
 
-{% macro product_grid_view(product, grid = 4, image_size = '300x225') %}
+{% macro product_grid_view(product, image_size = '300x225', attr = {}) %}
+{% if attr is empty %}
+{% set attr = attr|merge({'class': 'col-xs-6 col-md-4 col-sm-4 shop-grid-item', 'data-factory': product.factory.name }) %}
+{% endif %}
     <!-- one product -->
-    <div class="col-md-{{ grid }} col-sm-{{ grid }} shop-grid-item " data-factory="{{ product.factory.name }}">
+    <div {% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
         <div class="product-slide-entry">
             <div class="product-image">
                 <a {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
@@ -128,7 +131,7 @@
                     </div>
                 </div>
             </h4>
-            <h6 class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</h6>
+            <div class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</div>
         </div>
         <div class="clear"></div>
     </div>
