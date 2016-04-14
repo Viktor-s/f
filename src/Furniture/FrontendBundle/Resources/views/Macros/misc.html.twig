@@ -1,65 +1,35 @@
 {% macro pagination(paginator, options) %}
-{% spaceless %}
-    {% if paginator.haveToPaginate()|default(false) %}
-        <ul class="pagination pagination-sm pull-right">
-        {% if(paginator.hasPreviousPage()) %}
-            {% if (paginator.currentPage > 2) %}
-            <li>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1 }))) }}" aria-label="Previous">
-                    1
-                </a>
-            </li>
-            {% endif %}
-            {% if (paginator.currentPage > 3) %}
-                <li><span class="dots">...</span></li>
-            {% endif %}
-            {% if paginator.nbPages > 3 and paginator.currentPage == paginator.nbPages %}
-                <li>
-                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.previousPage-1) }))) }}">
-                        {{ (paginator.previousPage-1) }}
-                    </a>
-                </li>
-            {% endif %}
-            <li>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.previousPage }))) }}">
-                    {{ paginator.previousPage }}
-                </a>
-            </li>
-        {% endif %}
-            <li class="active">
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.currentPage }))) }}">
-                    {{ paginator.currentPage }}
-                </a>
-            </li>
-        {% if(paginator.hasNextPage()) %}
-            <li>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nextPage }))) }}">
-                    {{ paginator.nextPage }}
-                </a>
-            </li>
-            {% if(paginator.nbPages - paginator.nextPage >= 1) %}
-                {% if paginator.currentPage == 1 %}
-            <li>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.nextPage+1) }))) }}">
-                    {{ (paginator.nextPage+1) }}
-                </a>
-            </li>
+    {% spaceless %}
+        {% if paginator.haveToPaginate()|default(false) %}
+            <ul class="pagination pagination-sm pull-right">
+                {% if(paginator.hasPreviousPage()) %}
+                    {% if (paginator.currentPage > 2) %}
+                        <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': 1 }))) }}" aria-label="Previous">1</a></li>
+                    {% endif %}
+                    {% if paginator.nbPages > 4 and paginator.currentPage - 1 > 2 %}
+                        <li><span class="dots">...</span></li>
+                    {% endif %}
+                    {% if paginator.nbPages > 3 and paginator.currentPage == paginator.nbPages %}
+                        <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.previousPage-1) }))) }}">{{ (paginator.previousPage-1) }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.previousPage }))) }}">{{ paginator.previousPage }}</a></li>
                 {% endif %}
-                {% if paginator.nbPages > 3 and paginator.nbPages - paginator.currentPage > 2 %}
-            <li><span class="dots">...</span></li>
+                <li class="active"><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.currentPage }))) }}">{{ paginator.currentPage }}</a></li>
+                {% if(paginator.hasNextPage()) %}
+                    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nextPage }))) }}">{{ paginator.nextPage }}</a></li>
+                    {% if paginator.nbPages > 3 and paginator.currentPage == 1 %}
+                        <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': (paginator.nextPage+1) }))) }}">{{ (paginator.nextPage+1) }}</a></li>
+                    {% endif %}
+                    {% if paginator.nbPages > 4 and paginator.nbPages - paginator.currentPage > 2 %}
+                        <li><span class="dots">...</span></li>
+                    {% endif %}
+                    {% if paginator.currentPage != paginator.nbPages and paginator.nextPage != paginator.nbPages %}
+                        <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nbPages }))) }}" aria-label="Next">{{ paginator.nbPages }}</a></li>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-            {% if paginator.currentPage != 1 and paginator.nbPages - paginator.currentPage > 1 %}
-            <li>
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'page': paginator.nbPages }))) }}" aria-label="Next">
-                    {{ paginator.nbPages }}
-                </a>
-            </li>
-            {% endif %}
+            </ul>
         {% endif %}
-        </ul>
-    {% endif %}
-{% endspaceless %}
+    {% endspaceless %}
 {% endmacro %}
 
 {% macro sorting_select(choices, attr = {}) %}
@@ -87,6 +57,6 @@
 {% macro sorting_widget(options) %}
     {{ _self.sorting_label(options['label'], options['label_attr']) }}
     {% if options['type'] == 'select' %}
-    {{ _self.sorting_select(options['choices'], options['attr']) }}
+        {{ _self.sorting_select(options['choices'], options['attr']) }}
     {% endif %}
 {% endmacro %}
