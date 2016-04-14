@@ -85,9 +85,7 @@
                         <div class="website">
                             <ul>
                                 <li>
-                                    <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
-                                        {{ app.user.retailerUserProfile.retailerProfile.website }}
-                                    </a>
+                                    <a href="{{ app.user.retailerUserProfile.retailerProfile.website|format_url(['scheme', 'host', 'path']) }}" target="_blank">{{ app.user.retailerUserProfile.retailerProfile.website|format_url(['host']) }}</a>
                                 </li>
                             </ul>
                         </div>
