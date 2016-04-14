@@ -1475,7 +1475,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     line-height: 225px;
     text-align: center;
     max-height: 225px;
-    min-height: 214px;
+    min-height: 222px;
     max-width: 300px;
     position: relative;
 }
@@ -3746,7 +3746,7 @@ body:not(.mobile) .hover-class-1:hover:after {
 .swiper-container .product-slide-entry .product-image a.thumbnail {
     line-height: 194px;
     max-height: 194px;
-    min-height: 155px;
+    min-height: 190px;
 }
 
 .swiper-container .swiper-slide {
@@ -3757,6 +3757,6 @@ body:not(.mobile) .hover-class-1:hover:after {
     display: inline-block;
 }
 
-.swiper-slide {
+.products-swiper .swiper-slide {
     padding: 0 15px;
 }
