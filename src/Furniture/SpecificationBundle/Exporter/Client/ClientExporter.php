@@ -48,24 +48,11 @@ class ClientExporter extends AbstractExporter
             }
         }
 
-        $totalColumns = count($positions);
+        $this->createFooter($sheet, $specification, $row, $fieldMap);
 
-        if ($fieldMap->hasFieldName() && $totalColumns > 3) {
-            $this->createVolumeCell($sheet, $specification, $positions['name'], $row);
-        }
+        $this->writeEmptyValuesForCells($sheet, $fieldMap->getFieldsCount(), $row);
 
-        if ($fieldMap->hasFieldNotes() && $totalColumns > 3) {
-            $this->createWeightCell($sheet, $specification, $positions['notes'], $row);
-        }
-
-        // Generate total
-        if ($fieldMap->hasFieldTotalPrice()) {
-            $this->createTotalRows($sheet, $specification, $positions['total_price'], $row);
-        }
-
-        $this->writeEmptyValuesForCells($sheet, $totalColumns, $row);
-
-        $this->formatTable($sheet, $totalColumns, $row);
+        $this->formatTable($sheet, $fieldMap->getFieldsCount(), $row);
 
         return $excel;
     }
@@ -312,17 +299,15 @@ class ClientExporter extends AbstractExporter
      */
     private function createWeightCell(\PHPExcel_Worksheet $sheet, Specification $specification, $position, $row)
     {
-        if ($position > 1) {
-            $key = $this->generateCellKey($position - 1, $row);
-            $cell = $sheet->getCell($key);
-            $cell->setValue($this->translator->trans('specification.excel.weight'));
-            $this->formatTotalTitlesCell($cell);
-        }
-
         $key = $this->generateCellKey($position, $row);
         $cell = $sheet->getCell($key);
+        $cell->setValue($this->translator->trans('specification.excel.weight'));
+        $this->formatTotalTitlesCell($cell);
+
+        $key = $this->generateCellKey($position+1, $row);
+        $cell = $sheet->getCell($key);
         $cell->setValue($specification->getWeight());
-        $this->setAlignmentForCell($cell, 'left', 'top');
+        $this->setAlignmentForCell($cell, 'center', 'center');
     }
 
     /**
@@ -335,17 +320,16 @@ class ClientExporter extends AbstractExporter
      */
     private function createVolumeCell(\PHPExcel_Worksheet $sheet, Specification $specification, $position, $row)
     {
-        if ($position > 1) {
-            $key = $this->generateCellKey($position - 1, $row);
-            $cell = $sheet->getCell($key);
-            $cell->setValue($this->translator->trans('specification.excel.volume'));
-            $this->formatTotalTitlesCell($cell);
-        }
 
         $key = $this->generateCellKey($position, $row);
         $cell = $sheet->getCell($key);
+        $cell->setValue($this->translator->trans('specification.excel.volume'));
+        $this->formatTotalTitlesCell($cell);
+
+        $key = $this->generateCellKey($position + 1, $row);
+        $cell = $sheet->getCell($key);
         $cell->setValue($specification->getVolume());
-        $this->setAlignmentForCell($cell, 'left', 'top');
+        $this->setAlignmentForCell($cell, 'center', 'center');
     }
 
     /**
@@ -363,17 +347,12 @@ class ClientExporter extends AbstractExporter
         &$row
     )
     {
-        $useTitleCells = $totalPricePosition > 1;
-        $startRow = $row;
-        $startColumn = $useTitleCells ? $totalPricePosition - 1 : $totalPricePosition;
+        $startColumn = $totalPricePosition - 2;
 
-        if ($useTitleCells) {
-            // Append the titles
-            $key = $this->generateCellKey($totalPricePosition - 1, $row);
-            $cell = $sheet->getCell($key);
-            $cell->setValue($this->translator->trans('specification.excel.total'));
-            $this->formatTotalTitlesCell($cell);
-        }
+        // Append the titles
+        $cell = $this->mergeDiapason($sheet, $startColumn - 1, $row, $startColumn, $row);
+        $cell->setValue($this->translator->trans('specification.excel.total'));
+        $this->formatTotalTitlesCell($cell);
 
         $totalPriceWithoutSale = round(
             $this->priceCalculator->calculateForSpecification($specification, false) / 100,
@@ -381,8 +360,7 @@ class ClientExporter extends AbstractExporter
         );
         $totalPriceWithSale = round($this->priceCalculator->calculateForSpecification($specification) / 100, 2);
 
-        $key = $this->generateCellKey($totalPricePosition, $row);
-        $cell = $sheet->getCell($key);
+        $cell = $this->mergeDiapason($sheet, $totalPricePosition - 1, $row, $totalPricePosition, $row);
         $cell->setValue($totalPriceWithoutSale);
         $this->formatTotalPriceCell($cell);
 
@@ -391,59 +369,35 @@ class ClientExporter extends AbstractExporter
 
             foreach ($specification->getSales() as $sale) {
                 $row++;
-                if ($useTitleCells) {
-                    $key = $this->generateCellKey($totalPricePosition - 1, $row);
-                    $cell = $sheet->getCell($key);
-                    $cell->setValue(
-                        $this->translator->trans(
-                            'specification.excel.discount',
-                            [
-                                ':sale' => $sale->getSale(),
-                            ]
-                        )
-                    );
-                    $this->formatTotalTitlesCell($cell);
-                }
+                $cell = $this->mergeDiapason($sheet, $startColumn - 1, $row, $startColumn, $row);
+                $cell->setValue(
+                    $this->translator->trans(
+                        'specification.excel.discount',
+                        [
+                            ':sale' => $sale->getSale(),
+                        ]
+                    )
+                );
+                $this->formatTotalTitlesCell($cell);
 
-                $key = $this->generateCellKey($totalPricePosition, $row);
                 $salePrice = ($priceWithSales / 100) * $sale->getSale();
                 $priceWithSales = $priceWithSales - $salePrice;
-                $cell = $sheet->getCell($key);
+                $cell = $this->mergeDiapason($sheet, $totalPricePosition - 1, $row, $totalPricePosition, $row);
                 $cell->setValue($salePrice);
                 $this->formatTotalPriceCell($cell);
             }
 
             $row++;
 
-            if ($useTitleCells) {
-                $key = $this->generateCellKey($totalPricePosition - 1, $row);
-                $cell = $sheet->getCell($key);
-                $cell->setValue($this->translator->trans('specification.excel.final'));
-                $this->formatTotalTitlesCell($cell);
-            }
+            $cell = $this->mergeDiapason($sheet, $startColumn - 1, $row, $startColumn, $row);
+            $cell->setValue($this->translator->trans('specification.excel.final'));
+            $this->formatTotalTitlesCell($cell);
 
-            $key = $this->generateCellKey($totalPricePosition, $row);
-            $cell = $sheet->getCell($key);
+            $cell = $this->mergeDiapason($sheet, $totalPricePosition - 1, $row, $totalPricePosition, $row);
             $cell->setValue($totalPriceWithSale);
             $this->formatTotalPriceCell($cell);
             $cell->getStyle()->getFont()->setBold(true);
         }
-
-        $key = $this->generateDiapasonKey($startColumn, $startRow, $totalPricePosition, $row);
-        $style = $sheet->getStyle($key);
-        $style
-            ->applyFromArray(
-                [
-                    'borders' => [
-                        'allborders' => [
-                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
-                            'color' => [
-                                'rgb' => '000000',
-                            ],
-                        ],
-                    ],
-                ]
-            );
 
         $row++;
     }
@@ -719,6 +673,65 @@ class ClientExporter extends AbstractExporter
     }
 
     /**
+     * Generate specification footer.
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param Specification       $specification
+     * @param                     $row
+     */
+    private function createFooter(\PHPExcel_Worksheet $sheet, Specification $specification, &$row, FieldMapForClient $fieldMap)
+    {
+        $minLength = 6;
+        $fieldMap->hasFieldTotalPrice();
+        $totalColumns = $fieldMap->getFieldsCount();
+        $volumeWeightPosition = 1;
+        $pricePosition = 6;
+
+        if ($totalColumns > $minLength) {
+            $volumeWeightPosition = 2;
+            $pricePosition = $totalColumns;
+        }
+
+        $startRow = $row;
+        $this->createVolumeCell($sheet, $specification, $volumeWeightPosition, $row);
+        $this->createWeightCell($sheet, $specification, $volumeWeightPosition, $row + 1);
+
+        // Generate total
+        if ($fieldMap->hasFieldTotalPrice()) {
+            $this->createTotalRows($sheet, $specification, $pricePosition, $row);
+        } else {
+            $row++;
+        }
+
+        for ($i = $startRow; $i < $row; $i++) {
+            $key = $this->generateDiapasonKey(1, $i, $totalColumns, $i);
+            $style = $sheet->getStyle($key);
+            $style
+                ->applyFromArray(
+                    [
+                        'borders' => [
+                            'top' => [
+                                'style' => \PHPExcel_Style_Border::BORDER_NONE,
+                            ],
+                            'left' => [
+                                'style' => \PHPExcel_Style_Border::BORDER_NONE,
+                            ],
+                            'right' => [
+                                'style' => \PHPExcel_Style_Border::BORDER_NONE,
+                            ],
+                            'bottom' => [
+                                'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => [
+                                    'rgb' => '000000',
+                                ],
+                            ],
+                        ],
+                    ]
+                );
+        }
+    }
+
+    /**
      * Format row data for item
      *
      * @param \PHPExcel_Worksheet $sheet
@@ -859,7 +872,7 @@ class ClientExporter extends AbstractExporter
     private function formatTotalPriceCell(\PHPExcel_Cell $cell)
     {
         $this->setAutoWidthForColumnByCell($cell);
-        $this->setAlignmentForCell($cell, 'center', 'top');
+        $this->setAlignmentForCell($cell, 'center', 'center');
         $cell->setDataType(\PHPExcel_Cell_DataType::TYPE_NUMERIC);
         $cell->getStyle()->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE);
     }
@@ -871,7 +884,9 @@ class ClientExporter extends AbstractExporter
      */
     private function formatTotalTitlesCell(\PHPExcel_Cell $cell)
     {
-        $this->setAlignmentForCell($cell, 'right', 'top');
+        $this->setAutoWidthForColumnByCell($cell);
+        $this->setAlignmentForCell($cell, 'right', 'center');
+        $cell->getStyle()->getAlignment()->setWrapText(false);
         $cell->getStyle()->getFont()->setBold(true);
     }
 
@@ -882,7 +897,7 @@ class ClientExporter extends AbstractExporter
      */
     private function formatHeaderLabelCell(\PHPExcel_Cell $cell)
     {
-        $this->setAlignmentForCell($cell, 'left', 'top');
+        $this->setAlignmentForCell($cell, 'left', 'center');
         $cell->getStyle()->getFont()->setBold(true);
     }
 

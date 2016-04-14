@@ -36,8 +36,8 @@ specification:
         address: Address
         contact_info: Contact information
         sku: Sku
-        total: Total
+        total: Total price
         weight: Weight
         volume: Volume
-        final: Final
+        final: Final price
         discount: "Discount :sale%"

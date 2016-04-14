@@ -140,4 +140,13 @@ class FieldMapForClient
     {
         return in_array('total_price', $this->fields);
     }
+
+    /**
+     * Return count of fields.
+     * @return int
+     */
+    public function getFieldsCount()
+    {
+        return count($this->fields);
+    }
 }
