@@ -141,8 +141,8 @@
                     {% endif %}
                     <tr>
                         <td>
-                            Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                            Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
+                            {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                            {{ specification.creator.retailerProfile.phones|join(', ') }}
                         </td>
                     </tr>
                     <tr>
