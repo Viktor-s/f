@@ -380,6 +380,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\PostBundle\Entity\Post
+                repository: Furniture\PostBundle\Entity\Repository\PostRepository
                 translation:
                     model: Furniture\PostBundle\Entity\PostTranslation
                     mapping: ~

@@ -5,6 +5,9 @@ furniture_backend_posts:
         _controller: furniture.controller.post:indexAction
         _sylius:
             template: SyliusWebBundle:Backend/Post:index.html.twig
+            paginate: 9999
+            sortable: true
+            filterable: true
 
 furniture_backend_post:
     path: /{id}

@@ -4,6 +4,7 @@ namespace Furniture\CommonBundle\Controller\Backend;
 
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationFilterType;
+use Furniture\PostBundle\Form\Type\PostFilterType;
 use Furniture\ProductBundle\Form\Type\Filter\ProductPartMaterialFilterType;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileFilterType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationFilterType;
@@ -138,6 +139,24 @@ class FormController extends BaseFormController
         $form = $this->get('form.factory')->createNamed('criteria', new FactoryRetailerRelationFilterType($em), $data);
 
         return $this->render('WebBundle:Backend/FactoriesRetailersRelations:filterForm.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Create a factories retailers relations filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postsFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->get('form.factory')->createNamed('criteria', new PostFilterType($em), $data);
+
+        return $this->render('WebBundle:Backend/Post:filterForm.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -1,7 +1,7 @@
 Furniture\PostBundle\Entity\Post:
     type: entity
     table: posts
-
+    repositoryClass: Furniture\PostBundle\Entity\Repository\PostRepository
     id:
         id:
             type: integer
