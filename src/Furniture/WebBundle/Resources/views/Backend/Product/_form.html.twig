@@ -49,6 +49,15 @@
 
             images.disableSelection();
 
+            $('#sylius_product_productType').on('change', function(e) {
+                if ($(this).val() == 1 && $('li.schemes').is(':visible')) {
+                    $('li.schemes').hide();
+                }
+                else {
+                    $('li.schemes').show();
+                }
+            });
+
             $(document).bind('DOMNodeInserted', function (event) {
                 var target = event.target,
                     classes = target.classList;

@@ -1,37 +1,37 @@
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#main" data-toggle="tab">{{ 'sylius.product.tabs.product'|trans }}</a></li>
+    <li class="main active"><a href="#main" data-toggle="tab">{{ 'sylius.product.tabs.product'|trans }}</a></li>
 
 {% if form.skuOptionVariants is defined or form.options is defined %}
-    <li><a href="#options" data-toggle="tab">{{ 'sylius.product.tabs.options'|trans }}</a></li>
+    <li class="options"><a href="#options" data-toggle="tab">{{ 'sylius.product.tabs.options'|trans }}</a></li>
 {% endif %}
 
 {% if form.productParts is defined %}
-    <li><a href="#parts" data-toggle="tab">Parts</a></li>
+    <li class="parts"><a href="#parts" data-toggle="tab">Parts</a></li>
 {% endif %}
 
 {% if form.productSchemes is defined %}
-    <li><a href="#schemes" data-toggle="tab">Schemes</a></li>
+    <li class="schemes"><a href="#schemes" data-toggle="tab">Schemes</a></li>
 {% endif %}
 
 {% if form.attributes is defined %}
-    <li><a href="#attributes" data-toggle="tab">{{ 'sylius.product.tabs.attributes'|trans }}</a></li>
+    <li class="attributes"><a href="#attributes" data-toggle="tab">{{ 'sylius.product.tabs.attributes'|trans }}</a></li>
 {% endif %}
 
 {% if form.spaces is defined or form.types is defined or form.categories is defined or form.styles is defined %}
-    <li><a href="#categorization" data-toggle="tab">{{ 'sylius.product.tabs.categorization'|trans }}</a></li>
+    <li class="categorization"><a href="#categorization" data-toggle="tab">{{ 'sylius.product.tabs.categorization'|trans }}</a></li>
 {% endif %}
 
 {% if form.subProducts is defined and (product.isBundle() or product.isSimple) %}
-    <li><a href="#bundle_products" data-toggle="tab">Bundle products</a></li>
+    <li class="bundle_products"><a href="#bundle_products" data-toggle="tab">Bundle products</a></li>
 {% endif %}
 
-    <li><a href="#images" data-toggle="tab">{{ 'sylius.product.tabs.images'|trans }}</a></li>
+    <li class="images"><a href="#images" data-toggle="tab">{{ 'sylius.product.tabs.images'|trans }}</a></li>
 
 {% if form.channels|length > 0 %}
-    <li><a href="#channels" data-toggle="tab">{{ 'sylius.product.tabs.channels'|trans }}</a></li>
+    <li class="channels"><a href="#channels" data-toggle="tab">{{ 'sylius.product.tabs.channels'|trans }}</a></li>
 {% endif %}
 
 {% if form.compositeCollections is defined %}
-    <li><a href="#composite-collections" data-toggle="tab">{{ 'sylius.product.tabs.composite_collections'|trans }}</a></li>
+    <li class="composite-collections"><a href="#composite-collections" data-toggle="tab">{{ 'sylius.product.tabs.composite_collections'|trans }}</a></li>
 {% endif %}
 </ul>
