@@ -1500,19 +1500,19 @@ input[type="checkbox"]:checked:disabled + label::before {
 
 @media (min-width: 768px) {
     .product-slide-entry .product-image a.thumbnail {
-        min-height: 111px;
+        min-height: 118px;
     }
 }
 
 @media (min-width: 992px ) {
     .product-slide-entry .product-image a.thumbnail {
-        min-height: 171px;
+        min-height: 180px;
     }
 }
 
 @media (min-width: 1200px) {
     .product-slide-entry .product-image a.thumbnail {
-        min-height: 214px;
+        min-height: 222px;
     }
 }
 
