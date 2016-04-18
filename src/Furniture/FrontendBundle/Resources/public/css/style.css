@@ -3760,3 +3760,9 @@ body:not(.mobile) .hover-class-1:hover:after {
 .products-swiper .swiper-slide {
     padding: 0 15px;
 }
+.col-sm-6.information-entry .login-box{
+    min-height: 450px;
+}
+.article-container.style-1.new-user {
+    margin-bottom: 63px;
+}
