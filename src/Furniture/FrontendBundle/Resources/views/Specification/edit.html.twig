@@ -124,6 +124,19 @@
 
     {% if specification.id %}
         <script type="text/javascript">
+        // Google analitics
+        {% if app.request.server.get('HTTP_REFERER') matches '@\/product\/\\d+\/?$@' %}
+            {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+            or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'specification',
+                eventAction: 'view',
+                eventLabel: 'View after PDP',
+                eventValue: 5
+            });
+            {% endif %}
+        {% endif %}
             (function ($) {
                 function moneyHelper(money)
                 {

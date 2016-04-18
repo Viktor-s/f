@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form, {'attr': {'class': 'col-sm-9', 'data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
+    {{ form_start(form, {'attr': {'id': 'retailer-manager-create', 'class': 'col-sm-9', 'data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
     {% if form.vars.errors|length %}
         {{ form_errors(form) }}
     {% endif %}
@@ -39,4 +39,22 @@
         </div>
     </div>
     {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    {% if not employee.id %}
+        // Google analytics
+        {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+        or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+        <script type="text/javascript">
+            var form = document.getElementById('retailer-manager-create');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                ga('send', 'event', 'managers', 'create', 'Create manager', 25);
+            });
+        </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}

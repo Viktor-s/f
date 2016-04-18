@@ -72,6 +72,17 @@
                                 method: 'POST',
                                 success: function () {
                                     $(that).parent('.request-action').remove();
+                                    // Google analitics
+                                    {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+                                    or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+                                    ga('send', {
+                                        hitType: 'event',
+                                        eventCategory: 'relation',
+                                        eventAction: 'create',
+                                        eventLabel: 'Partners',
+                                        eventValue: 30
+                                    });
+                                    {% endif %}
                                     bootbox.alert({
                                         title: "{{ 'frontend.messages.success.create_to_factory_relation_title'|trans }}",
                                         message: thanksMessage,
