@@ -148,7 +148,7 @@ a, .product-image .bottom-line, .product-image img {
     min-height: 70px;
     background-color: #333333;
     padding: 10px 0 20px;
-    margin-top: -75px;
+    margin-top: -50px;
 }
 
 @media (max-width: 768px) {
