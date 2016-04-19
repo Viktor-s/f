@@ -19,13 +19,13 @@
             <div>
                 <div class="tabs-entry">
                     <div class="factories-swiper">
-                        {{ sonata_block_render({type: 'frontend.block.factories'}, {user: app.user, newest: true}) }}
+                        {{ sonata_block_render({type: 'frontend.block.factories'}, {user: app.user, newest: true, limit: 4}) }}
                     </div>
                 </div>
 
                 <div class="tabs-entry">
                     <div class="products-swiper">
-                        {{ sonata_block_render({type: 'frontend.block.products'}, {user: app.user, limit: 5}) }}
+                        {{ sonata_block_render({type: 'frontend.block.products'}, {user: app.user, limit: 4}) }}
                     </div>
                 </div>
             </div>

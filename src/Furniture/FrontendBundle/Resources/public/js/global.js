@@ -86,6 +86,7 @@ $(function() {
 			}
 		});
 	}
+
 	if(!_ismobile){
 		$(window).resize(function(){
 			resizeCall();
@@ -128,7 +129,7 @@ $(function() {
 	var initIterator = 0;
 	function initSwiper(){
 		
-		$('.swiper-container:not(.initialized)').each(function(){								  
+		$('.swiper-container:not(.initialized)').each(function(){
 			var $t = $(this);								  
 
 			var index = 'swiper-unique-id-'+initIterator;
