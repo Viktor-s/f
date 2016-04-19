@@ -274,9 +274,9 @@ label {
 .button.style-19{background: #ca1515; border-color: #ca1515; color: #fff;}
 .button.style-19:hover{background: transparent;}
 
- .col-sm-6.information-entry .login-box{
+.login-box {
     min-height: 450px;
 }
-.article-container.style-1.new-user {
+.login-box .style-1.new-user {
      margin-bottom: 63px;
 }
