@@ -82,6 +82,7 @@ twig:
     globals:
         #Browser key
         google_api_maps_key: AIzaSyAtfFR1y2sFVhzLwxvoeX6g_FUofzQakxA
+        google_analytics_site_key: '%google.analytics.site%'
     strict_variables: %kernel.debug%
     paths:
         %kernel.root_dir%/../vendor/payum/payum/src/Payum/Core/Resources/views: PayumCore
