@@ -73,3 +73,4 @@ parameters:
 
     mailer.default_from.name: Agenta
     mailer.default_from.email: no-reply@dev.agenta.solution
+    google.analytics.site: UA-76464425-1
