@@ -14,7 +14,7 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(filters, paginator) }}
+    {{ list_toolbar(filters, paginator, {button: 'true', buyer: buyer}) }}
     <h1 class="block-title">{{ buyer.fullName }}</h1>
     {% set not_found = 'frontend.specfications_opened_not_found_for_buyer'|trans({':buyer': buyer.fullName}) %}
     {% if is_granted('SPECIFICATION_CREATE') %}
