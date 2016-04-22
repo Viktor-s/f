@@ -12,9 +12,39 @@
     <div class="page-header">
         <h1>{{ 'frontend.title.retailer_relations_create'|trans }}</h1>
     </div>
-    {{ form_start(form, {'attr': {'id': 'retailer-factory-relation', 'class': 'col-sm-9'}}) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    {% for type in ['success', 'error'] %}
+        {% for flash in app.session.flashbag.get(type) %}
+            <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                {{ flash }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <div class="row">
+        {{ form_start(form, {'attr': {'id': 'retailer-factory-relation', 'class': 'col-md-7'}}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <div class="col-md-4">
+            <div class="product-slide-entry">
+                <div class="product-image">
+                  <a href="/en/product/356" class="thumbnail">
+                    <div class="top-line text-center">
+                      <img src="https://devfortest-01.agenta.solutions/media/cache/s300x225/ec/7b/aee44e13d8e1f89b04d3b7a5b6a1.jpeg" alt="Selva Timeless">
+                    </div>
+                  </a>
+                </div>
+                  <h4 class="pgp-product-title">
+              <div class="price">
+                <div class="current">1 960 €</div>
+              </div>
+            </h4>
+          </div>
+        </div>
+    
+
+
+
+
     <script type="text/javascript">
         (function ($) {
             $(document).ready(function () {
