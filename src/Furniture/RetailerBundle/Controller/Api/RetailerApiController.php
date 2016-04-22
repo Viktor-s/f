@@ -61,6 +61,7 @@ class RetailerApiController
      */
     public function nameCheck(Request $request) {
         if ($request->request->has('name')) {
+            $this->em->getFilters()->disable('softdeleteable');
             $retailerRepo = $this->em->getRepository(RetailerProfile::class);
             $retailerProfile = $retailerRepo->findOneBy(['name' => $request->request->get('name')]);
 

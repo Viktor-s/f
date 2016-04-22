@@ -40,6 +40,7 @@ class RetailerProfileType extends AbstractType
         $resolver->setDefaults([
             'data_class'   => RetailerProfile::class,
             'registration' => false,
+            'validation_groups'  => ['RetailerProfileCreate'],
         ]);
     }
 

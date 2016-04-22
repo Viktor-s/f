@@ -19,7 +19,9 @@ class RetailerUserProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RetailerUserProfile::class
+            'data_class'         => RetailerUserProfile::class,
+            'cascade_validation' => true,
+            'validation_groups'  => ['RetailerProfileCreate'],
         ]);
     }
     

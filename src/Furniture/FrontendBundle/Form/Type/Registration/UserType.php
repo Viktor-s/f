@@ -31,6 +31,10 @@ class UserType extends BaseUserType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
+
+        $resolver->setDefaults([
+            'cascade_validation' => true,
+        ]);
     }
 
     /**

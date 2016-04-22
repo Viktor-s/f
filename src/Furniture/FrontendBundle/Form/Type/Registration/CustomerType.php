@@ -29,7 +29,7 @@ class CustomerType extends BaseCustomerType
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults([
-            'validation_groups' => ['RetailerProfileCreate'],
+            'validation_groups'  => ['RetailerProfileCreate'],
             'cascade_validation' => true,
         ]);
     }

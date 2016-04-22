@@ -59,6 +59,7 @@ class UserApiController
      */
     public function emailCheck(Request $request) {
         if ($request->request->has('email')) {
+            $this->em->getFilters()->disable('softdeleteable');
             $customerRepo = $this->em->getRepository(Customer::class);
             $customer = $customerRepo->findOneBy(['email' => $request->request->get('email')]);
 
