@@ -1,0 +1,44 @@
+{% extends 'FrontendBundle:Security:layout.html.twig' %}
+
+{% block content %}
+    <div class="wizard clearfix">
+        <div class="steps clearfix">
+            <ul role="tablist">
+                <li role="tab" class="first done">
+                    <a href="#"><span class="number">1.</span> User type</a>
+                </li>
+                <li role="tab" class="done">
+                    <a href="#"><span class="number">2.</span> Main information</a>
+                </li>
+                <li role="tab" class="done">
+                    <a href="#"><span class="number">3.</span> Personal information</a>
+                </li>
+                <li class="current">
+                    <a href="#"><span class="number">4.</span>Registration complete.</a>
+                </li>
+            </ul>
+        </div>
+        <div class="content clearfix">
+            <h2 class="title">User type</h2>
+            <section class="body" aria-hidden="true">
+                <div class="center-block">
+                    {% for type in ['success', 'error'] %}
+                        {% for flash in app.session.flashbag.get(type) %}
+                            <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                                <a class="close" data-dismiss="alert" href="#">×</a>
+                                {{ flash }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    <p>Congratulations! You have successfully registered. Please check your email to verify your account.</p>
+                </div>
+            </section>
+        </div>
+        <div class="actions clearfix">
+            <ul>
+                <li><a href="{{ path('security_register_complete_reset') }}">Resend verification email</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

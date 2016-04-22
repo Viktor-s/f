@@ -83,6 +83,20 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block radio_widget -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default() ~ ' col-sm-6 checkbox-entry')|trim}) -%}
+    {% if not compound -%}
+        {% set label_attr = label_attr|merge({'for': id}) %}
+    {%- endif -%}
+    {% if required -%}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default() ~ ' required')|trim}) %}
+    {%- endif -%}
+    <div class="radio">
+        <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ (form.vars.label|trans({}, form.vars.translation_domain))|raw }}</label>
+    </div>
+{%- endblock radio_widget %}
+
 {% block checkbox_widget %}
     {% spaceless %}
         {%- set label_attr = label_attr|merge({class: (label_attr.class|default() ~ ' col-sm-6 checkbox-entry')|trim}) -%}

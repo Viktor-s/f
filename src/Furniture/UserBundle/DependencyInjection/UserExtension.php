@@ -16,5 +16,6 @@ class UserExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('controllers.yml');
     }
 }

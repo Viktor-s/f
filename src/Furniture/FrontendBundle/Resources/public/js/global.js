@@ -587,9 +587,11 @@ $(function() {
     });*/
 });
 
-bootbox.setDefaults({
-	backdrop: true,
-});
+if (typeof bootbox !== 'undefined') {
+	bootbox.setDefaults({
+		backdrop: true,
+	});
+}
 
 /** Ajax */
 //$(document).ajaxStart(function () {

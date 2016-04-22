@@ -1,0 +1,8 @@
+services:
+    user.controller.api.user_controller:
+        class: Furniture\UserBundle\Controller\Api\UserApiController
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@router'

@@ -67,8 +67,8 @@ class EmployeeController
     private $emailVerifier;
 
     /**
-     * Construct
-     *
+     * EmployeeController constructor.
+     * 
      * @param \Twig_Environment             $twig
      * @param RetailerEmployeeRepository    $retailerEmployeeRepository
      * @param EntityManagerInterface        $em
@@ -77,6 +77,7 @@ class EmployeeController
      * @param FormFactoryInterface          $formFactory
      * @param PasswordUpdater               $passwordUpdater
      * @param UrlGeneratorInterface         $urlGenerator
+     * @param EmailVerifier                 $emailVerifier
      */
     public function __construct(
         \Twig_Environment $twig,

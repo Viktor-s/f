@@ -56,9 +56,10 @@ frontend:
     dumping: Extra discount:
     edit: Edit
     email: Email:
+    email_already_used: 'This email is already registered, please choose another one.'
     email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
-    email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
+    email_virify_success_login: 'Your email was successfully verified. Please reset your password with form bellow or <a href="/login">login</a> with your credential.'
     emails: Emails:
     emails_contact: Contact emails:
     employee: Employee
@@ -161,6 +162,7 @@ frontend:
             create_to_factory_relation_request_prices: Are you sure you want to send a request for prices?
     mode: Mode
     name: Name
+    name_already_used: 'This name is already registered, please choose another one.'
     need_reset_password: We sent you a verification email, please check email and follow instructions
     new_arrivals: New arrivals
     new_factories: New Brands

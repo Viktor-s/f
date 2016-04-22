@@ -8,7 +8,15 @@ use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     errorPath="name"
+ * )
+ */
 class RetailerProfile extends AbstractTranslatable implements AddressMarkerInterface
 {
     /**

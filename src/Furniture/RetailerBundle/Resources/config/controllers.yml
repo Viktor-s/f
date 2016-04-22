@@ -1,0 +1,8 @@
+services:
+    retailer.controller.api.retailer_controller:
+        class: Furniture\RetailerBundle\Controller\Api\RetailerApiController
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@router'

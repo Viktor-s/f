@@ -1,0 +1,5 @@
+users_api_check_email:
+    path: /email-check
+    methods: [ POST ]
+    defaults:
+        _controller: user.controller.api.user_controller:emailCheck

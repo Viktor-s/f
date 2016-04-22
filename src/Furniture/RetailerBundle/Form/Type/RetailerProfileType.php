@@ -38,7 +38,8 @@ class RetailerProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RetailerProfile::class,
+            'data_class'   => RetailerProfile::class,
+            'registration' => false,
         ]);
     }
 
@@ -54,6 +55,7 @@ class RetailerProfileType extends AbstractType
                 'attr'   => [
                     'class' => 'address-autocomplete',
                 ],
+                'required' => !$options['registration'],
             ])
             ->add('addressLatitude', 'hidden', [
                 'mapped' => false,
@@ -67,26 +69,6 @@ class RetailerProfileType extends AbstractType
                     'data-address-longitude' => true,
                 ],
             ])
-            ->add('addressReplace', 'checkbox', [
-                'label' => 'Replace address',
-                'mapped' => false,
-                'data' => false,
-            ])
-            ->add('translations', 'a2lix_translationsForms', [
-                'form_type' => new RetailerProfileTranslationType(),
-            ])
-            ->add('name', 'text', [
-                'required' => true,
-            ])
-            ->add('website', 'text', [
-                'required' => false,
-            ])
-            ->add('subtitle', 'text', [
-                'required' => false,
-            ])
-            ->add('description', 'textarea', [
-                'required' => false,
-            ])
             ->add('logoImage', new BackendImageType(RetailerProfileLogoImage::class), [
                 'required' => false,
             ])
@@ -98,18 +80,50 @@ class RetailerProfileType extends AbstractType
                 'label'    => 'furniture_retailer_profile.form.emails',
                 'required' => false,
             ])
-            ->add('demoFactories', 'entity', [
-                'label'    => 'furniture_retailer_profile.form.demo_factories',
-                'class'    => Factory::class,
-                'multiple' => true,
-                'expanded' => false,
+            ->add('name', 'text', [
+                'required' => true,
+            ])
+            ->add('website', 'text', [
+                'required' => false,
             ]);
+
+        if (!$options['registration']) {
+            $builder
+                ->add('addressReplace', 'checkbox', [
+                    'label' => 'Replace address',
+                    'mapped' => false,
+                    'data' => false,
+                ])
+                ->add('translations', 'a2lix_translationsForms', [
+                    'form_type' => new RetailerProfileTranslationType(),
+                ])
+                ->add('subtitle', 'text', [
+                    'required' => false,
+                ])
+                ->add('description', 'textarea', [
+                    'required' => false,
+                ])
+                ->add('demoFactories', 'entity', [
+                    'label'    => 'furniture_retailer_profile.form.demo_factories',
+                    'class'    => Factory::class,
+                    'multiple' => true,
+                    'expanded' => false,
+                ]);
+        } else {
+            $builder
+                ->add('addressReplace', 'hidden', ['data' => true, 'mapped' => false])
+                ->add('translations', 'a2lix_translationsForms', [
+                    'form_type' => new RetailerProfileTranslationType(),
+                    'required'  => false,
+                    'label'     => false,
+                ]);
+        }
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
         $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));
 
         // We should process on presubmit, because "a2lix_translationsForms" set required false and control is empty
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
             $data = $event->getData();
 
             if (isset($data['addressReplace']) && $data['addressReplace']) {

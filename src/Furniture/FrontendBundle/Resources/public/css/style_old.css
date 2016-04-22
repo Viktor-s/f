@@ -622,7 +622,6 @@ body:not(.mobile) #content-block .sidebar-navigation .entry:hover .fa{color: #ff
 .from-the-blog-entry{}
 .from-the-blog-entry .image{float: left; width: 180px; margin-right: 20px; position: relative; overflow: hidden;}
 .hover-class-1:after{background: #8bab0a; position: absolute; left: 0; top: 0; width: 100%; height: 100%; content: ""; opacity: 0;}
-body:not(.mobile) .hover-class-1:hover:after{opacity: 0.7;}
 .from-the-blog-entry .image img{display: block; width: 100%; height: auto; position: relative;}
 .hover-class-1 .hover-label{position: absolute; width: 100%; text-align: center; top: 50%; margin-top: -10px; font-size: 14px; line-height: 20px; color: #fff; font-weight: 600; z-index: 1; left: -100%;}
 body:not(.mobile) .hover-class-1:hover .hover-label{left: 0;}

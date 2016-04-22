@@ -27,5 +27,11 @@ specification:
 product:
     resource: "@ProductBundle/Resources/config/routing.yml"
 
+users:
+    resource: '@UserBundle/Resources/config/routing.yml'
+
+retailer:
+    resource: '@RetailerBundle/Resources/config/routing.yml'
+
 frontend:
     resource: "@FrontendBundle/Resources/config/routing.yml"

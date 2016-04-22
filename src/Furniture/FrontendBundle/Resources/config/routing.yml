@@ -70,5 +70,5 @@ user_profile:
 
 # Security
 _security:
-    resource: @FrontendBundle/Resources/config/routing/security.yml
+    resource: '@FrontendBundle/Resources/config/routing/security.yml'
     prefix: /

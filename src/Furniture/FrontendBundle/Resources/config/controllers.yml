@@ -49,6 +49,7 @@ services:
             - @user.password_resetter
             - @router
             - @sylius.user.password_updater
+            - @user.email_verifier
 
     frontend.controller.specification:
         class: Furniture\FrontendBundle\Controller\SpecificationController
