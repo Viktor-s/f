@@ -10,6 +10,7 @@ use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\FrontendBundle\Util\RedirectHelper;
 use Furniture\RetailerBundle\Entity\RetailerUserProfile;
+use Furniture\SpecificationBundle\Entity\Buyer;
 use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Exporter\ExporterInterface;
 use Furniture\SpecificationBundle\Exporter\Client\FieldMapForClient;
@@ -257,6 +258,14 @@ class SpecificationController
         } else {
             $specification = new Specification();
             $specification->setCreator($user->getRetailerUserProfile());
+        }
+
+        if ($request->query->has('buyer')) {
+            $buyerRepo = $this->em->getRepository(Buyer::class);
+            $buyer = $buyerRepo->find($request->query->get('buyer'));
+            if ($buyer) {
+                $specification->setBuyer($buyer);
+            }
         }
 
         $form = $this->formFactory->create(new SpecificationType(), $specification, [
