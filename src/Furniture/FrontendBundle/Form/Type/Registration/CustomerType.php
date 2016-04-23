@@ -56,11 +56,14 @@ class CustomerType extends BaseCustomerType
             'mapped'      => false,
         ]);
 
-        // Replace email field for change label
+        // Replace email field for add attributes.
         $builder
             ->remove('email')
             ->add('email', 'email', [
-                'label' => 'Email (use for login)'
+                'attr' => [
+                    'data-toggle' => 'tooltip',
+                    'title' => "We'll send confirmation email on specified email address",
+                ],
             ]);
         $builder->get('lastName')->setRequired(false);
         // Remove non use fields

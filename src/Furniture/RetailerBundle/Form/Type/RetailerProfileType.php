@@ -118,6 +118,10 @@ class RetailerProfileType extends AbstractType
                     'required'  => false,
                     'label'     => false,
                 ]);
+            $builder->remove('name');
+            $builder->add('name', 'text', [
+               'label' => 'frontend.company_name',
+            ]);
         }
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));

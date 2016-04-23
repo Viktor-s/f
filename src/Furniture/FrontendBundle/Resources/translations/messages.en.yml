@@ -35,6 +35,7 @@ frontend:
     characteristics: Characteristics
     click_to_edit: Click to edit
     coefficient: Coefficient:
+    company_name: Company name
     contact: Contact
     content_user_profile: User profile
     create: Create

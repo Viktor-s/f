@@ -245,6 +245,7 @@ furniture_retailer_profile:
     form:
         phones: Contact phones
         emails: Contact emails
+        demo_factories: Demo factories
 
 backend_confirmation:
     default:
