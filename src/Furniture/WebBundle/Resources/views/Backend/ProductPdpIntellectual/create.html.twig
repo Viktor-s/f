@@ -39,6 +39,15 @@
             /* Enable interacting with inputs only. */
             pointer-events: auto;   
         }
+        /* port styling */
+        .available-magnet {
+            fill: yellow;
+        }
+
+        /* element styling */
+        .available-cell rect {
+            stroke-dasharray: 5, 2;
+        }
     </style>
 {% endblock %}
 {% block headjavascript %}
@@ -115,15 +124,28 @@
         
     $(document).ready(function () {
         var paper = new joint.dia.Paper({
-        el: $('#paper'),
-                width: 750,
-                height: 800,
-                model: graph,
-                gridSize: 1
+            el: $('#paper'),
+            width: 750,
+            height: 800,
+            model: graph,
+            gridSize: 1,
+            markAvailable: true,
+            validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+                //console.log('find', graph.findModelsUnderElement(cellViewT) );
+                //console.log('Target:', graph.isSink(magnetT));
+                // Prevent linking from input ports.
+                console.log( graph.getConnectedLinks( cellViewT, true ) );
+                console.log( graph.getConnectedLinks( cellViewS, true ) );
+                if (magnetS && magnetS.getAttribute('type') === 'input') return false;
+                // Prevent linking from output ports to input ports within one element.
+                if (cellViewS === cellViewT) return false;
+                // Prevent linking to input ports.
+                return magnetT && magnetT.getAttribute('type') === 'input';
+            },
         });
         
         graph.on('all', function (eventName, cell) {
-            console.log(arguments);
+            //console.log(arguments);
         });
         
         //Creating root element

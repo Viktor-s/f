@@ -2,7 +2,7 @@
     $(document).ready(function () {
         
         joint.shapes.pdpInput.Element = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
-            markup: '<g class="rotatable"><g class="scalable"><rect/></g><g class="inPorts"/><g class="outPorts"/></g>',
+            markup: '<g><g><rect/></g><g class="inPorts"/><g class="outPorts"/></g>',
             portMarkup: '<g class="port<%= id %>"><circle/></g>',
             defaults: joint.util.deepSupplement({
                 type: 'pdpInput.Element',
