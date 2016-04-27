@@ -73,6 +73,7 @@ class ProductPartFormType extends AbstractType
             ->add('productPartType', 'entity', [
                 'class' => ProductPartType::class,
                 'multiple' => false,
+                'required' => false,
                 'disabled' => $options['disallow_edit'],
             ]);
     }
