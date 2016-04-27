@@ -1,17 +1,17 @@
-<div id="orElementForm" title='"OR" element form.'>
+<div id="orAnswerElementForm" title='"OR Answer" element form'>
     <form>
     <div class="row">
         <div class="col-sm-12">
             <div class="input-group input-group-sm">
-                <span class="input-group-addon">Question</span>
-                <textarea class="form-control" id="question" rows="3"></textarea>
+                <span class="input-group-addon">Answer</span>
+                <textarea id="answer" class="form-control" rows="3"></textarea>
             </div>
         </div>
     </div>
     </form>
 </div>
 
-<div id="pdpInputOrElement" type="text/template" style="display:none;">
+<div id="pdpInputOrAnswerElement" type="text/template" style="display:none;">
     <div class="html-element row">
         <div class="col-sm-12">
             <div class="row">
@@ -25,9 +25,13 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-8 pull-right">
-                    <div class="center-text" style="color: #fff;">OR</div>
-                    <div class="question-value center-text"></div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="center-text" style="color: #fff;">Answer</div>
+                            <div class="answer-value center-text"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,21 +39,23 @@
 </div>
 <script>
     $(document).ready(function () {
-        var orElementForm = $( "#orElementForm" );
 
-        joint.shapes.pdpInput.Or = joint.shapes.pdpInput.Element.extend(_.extend(
+        var orAnswerElementForm = $( "#orAnswerElementForm" );
+
+        joint.shapes.pdpInput.OrAnswer = joint.shapes.pdpInput.Element.extend(
+            _.extend(
                 {},
                 {
-                    elementType: 'Or',
+                    elementType: 'Or answer',
                     defaults: joint.util.deepSupplement({
-                        type: 'pdpInput.Or',
+                        type: 'pdpInput.OrAnswer',
                         position: {x: 80, y: 80}, 
                         size: {width: 'auto', height: 'auto'},
                         inPorts: ['in'],
                         outPorts: ['out'],
                         attrs: {
                             '.': { magnet: false },
-                            rect: { fill: 'tomato', stroke: 'tomato', width: 300, height: 250 },
+                            rect: { fill:'orange', stroke: 'orange', width: 300, height: 250 },
                             circle: {
                                 r: 10, //port circle radius
                                 magnet: true,
@@ -60,14 +66,12 @@
                         }
                     })
                 }
-                ));
+            )
+        );
         
-        joint.shapes.pdpInput.OrView = joint.shapes.pdpInput.OrView.extend({
-            
-            template: $('#pdpInputOrElement').html(),
-            
+        joint.shapes.pdpInput.OrAnswerView = joint.shapes.pdpInput.OrAnswerView.extend({
+            template: $('#pdpInputOrAnswerElement').html(),
             updateBox: function() {
-                var that = this;
                 // Set the position and dimension of the box so that it covers the JointJS element.
                 var bbox = this.model.getBBox();
                 this.$box.css({ width: bbox.width, height: bbox.height, left: (bbox.x+20), top: bbox.y+4, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
@@ -75,17 +79,17 @@
                 this.model.attributes.attrs.rect.height = this.$box.first().height() + 10;
                 joint.dia.ElementView.prototype.render.apply(this, arguments);
 
-                this.$box.find('.question-value').text(this.model.get('question'));
+                this.$box.find('.answer-value').text(this.model.get('answer'));
             },
             updateElement: function() {
                 var dialog = this.updateDialogInit();
                 var form = dialog.find('form');
-                form.find('#question').val(this.model.get('question'));
+                form.find('#answer').val(this.model.get('answer'));
                 dialog.dialog('open');
             },
             updateDialogInit: function() {
                 var that = this;
-                var updateDialog = orElementForm;
+                var updateDialog = orAnswerElementForm;
                 var form = updateDialog.find('form');
                 updateDialog.dialog({
                     autoOpen: false,
@@ -97,7 +101,7 @@
                             var cell = graph.getCell(that.model.id);
                             if (cell) {
                                 cell.prop({
-                                    question: form.find('#question').val()
+                                    answer: form.find('#answer').val(),
                                 });
                                 that.updateBox();
                             }
@@ -116,16 +120,14 @@
             }
         });
         
-        var createOrElement = function(question){
-            var orEl = new joint.shapes.pdpInput.Or({
-                question: question
-            });
+        var createOrAnswerElement = function(parameters){
+            var orEl = new joint.shapes.pdpInput.OrAnswer(parameters);
             console.log('New OR ID', orEl.id);
             graph.addCells([orEl])
         };
 
-        var createOrElementDialog = function(ele){
-            var form = ele.find( "form" );
+        var createOrAnswerElementDialog = function(ele) {
+            var form = orAnswerElementForm.find( "form" );
             ele.dialog({
                 autoOpen: false,
                 height: 350,
@@ -133,7 +135,7 @@
                 modal: true,
                 buttons: {
                     Add: function(){
-                        createOrElement(form.find('#question').val());
+                        createOrAnswerElement({answer: form.find('#answer').val()});
                         ele.dialog( "close" );
                     },
                     Cancel: function() {
@@ -145,10 +147,10 @@
                 }
             });
         };
-        
-        $('#addOrBtn').click(function(){
-            createOrElementDialog(orElementForm);
-            orElementForm.dialog('open');
+
+        $('#addOrAnswerBtn').click(function(){
+            createOrAnswerElementDialog(orAnswerElementForm);
+            orAnswerElementForm.dialog('open');
         });
     });
 </script>

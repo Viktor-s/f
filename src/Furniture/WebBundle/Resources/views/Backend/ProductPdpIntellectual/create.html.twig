@@ -20,15 +20,28 @@
         #paper svg .link {
             z-index: 2;
         }
+
+        #orElementForm,
+        #orAnswerElementForm,
+        #inputElementForm {
+            display: none;
+        }
+
+        .ui-dialog #orElementForm,
+        .ui-dialog #orAnswerElementForm,
+        .ui-dialog #inputElementForm {
+            display: block;
+        }
+
         .html-element {
             position: absolute;
-            background: #3498DB;
+            /*background: #3498DB;*/
             /* Make sure events are propagated to the JointJS element so, e.g. dragging works.*/
             pointer-events: none;
             -webkit-user-select: none;
             border-radius: 2px;
-            border: 1px solid #2980B9;
-            box-shadow: inset 0 0 5px black, 2px 2px 1px gray;
+            /*border: 1px solid #2980B9;*/
+            /*box-shadow: inset 0 0 5px black, 2px 2px 1px gray;*/
             padding: 1px;
             box-sizing: border-box;
             z-index: 2;
@@ -47,6 +60,9 @@
         /* element styling */
         .available-cell rect {
             stroke-dasharray: 5, 2;
+        }
+        .port-label {
+            display: none;
         }
     </style>
 {% endblock %}
@@ -78,19 +94,79 @@
                 <div class="col-sm-12" >
                     <div class="btn-toolbar" role="toolbar" aria-label="...">
                         <div class="btn-group" role="group" aria-label="...">
+                            <button id="addAndBtn" type="button" class="btn btn-sm">
+                                AND <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            </button>
                             <button id="addOrBtn" type="button" class="btn btn-sm">
                                 OR <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                             </button>
-                            <button id="addAndBtn" type="button" class="btn btn-sm">
-                                AND <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            <button id="addOrAnswerBtn" type="button" class="btn btn-sm">
+                                OR answer <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12" >
+                <div class="col-lg-10 col-sm-8">
                     <div id="paper">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="btn-group-vertical" role="group" aria-label="pdp-inputs">
+                {% if product %}
+                    {% for input in product.pdpConfig.inputs %}
+                        {% if input.productPart %}
+                            {% set btnId = 'ProductPart' ~ loop.index %}
+                        {% elseif input.skuOption %}
+                            {% set btnId = 'SkuOption' ~ loop.index %}
+                        {% elseif input.option %}
+                            {% set btnId = 'Option' ~ loop.index %}
+                        {% elseif input.forSchemes %}
+                            {% set btnId = 'Scheme' %}
+                        {% endif %}
+                        <button id="add{{ btnId }}" type="button" class="btn btn-sm" data-input-type="{{ btnId }}" data-input-name="{{ input.humanName }}">
+                            {{ input.humanName }} <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                        </button>
+                    {% endfor %}
+                {% endif %}
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Attributes</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="ox" data-tooltip="Position of zero x-coordinate of the paper in pixels">Origin x</label>
+                                    <input id="ox" name="ox" type="range" value="0" min="-200" max="200" autocomplete="off">
+                                    <output for="ox"></output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="oy" data-tooltip="Position of zero y-coordinate of the paper in pixels">Origin y</label>
+                                    <input id="oy" type="range" value="0" min="-200" max="200" autocomplete="off">
+                                    <output for="oy"></output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sx" data-tooltip="Scale factor for x axis">Scale x</label>
+                                    <input id="sx" type="range" value="1.00" step="0.1" min="0.1" max="3" autocomplete="off">
+                                    <output for="sx"></output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sy" data-tooltip="Scale factor for y axis">Scale y</label>
+                                    <input id="sy" type="range" value="1.00" step="0.1" min="0.1" max="3" autocomplete="off">
+                                    <output for="sy"></output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="width" data-tooltip="Width of the paper in pixels">Width</label>
+                                    <input id="width" class="form-control" type="range" value="650" min="100" max="1200" autocomplete="off">
+                                    <output for="width"></output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="height" data-tooltip="Height of the paper in pixels">Height</label>
+                                    <input id="height" class="form-control" type="range" value="400" min="100" max="1200" autocomplete="off">
+                                    <output for="height"></output>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -121,46 +197,184 @@
     console.log(inputs);
         
     var graph = new joint.dia.Graph;
-        
     $(document).ready(function () {
-        var paper = new joint.dia.Paper({
+
+        var $ox = $('#ox');
+        var $oy = $('#oy');
+        var $sx = $('#sx');
+        var $sy = $('#sy');
+        var $w = $('#width');
+        var $h = $('#height');
+
+        paper = new joint.dia.Paper({
             el: $('#paper'),
-            width: 750,
+            width: $('#paper').parent('div').outerWidth(),
             height: 800,
             model: graph,
             gridSize: 1,
             markAvailable: true,
             validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-                //console.log('find', graph.findModelsUnderElement(cellViewT) );
-                //console.log('Target:', graph.isSink(magnetT));
+                var elementS = graph.getCell(cellViewS.model.id);
+                var elementT = graph.getCell(cellViewT.model.id);
+                // Check all input ports.
+                var magnetTCheck = magnetT && magnetT.getAttribute('type') === 'input';
+                // Check that elements are connected.
+                var checkSTConnection = _.contains(graph.getNeighbors(elementT), elementS);
+                linkView.sendToken(V('circle', { r: 7, fill: 'green' }).node);
+                // Elements already connected
+                if (checkSTConnection) return false;
+
+                // Root element connected only with AND and OR elements.
+                if (elementS.get('isRoot')) {
+                    return  _.contains(['pdpInput.And', 'pdpInput.Or'], elementT.get('type')) && magnetTCheck;
+                }
+
+                // AND element may connect only with OR or PDPInput element.
+                if (elementS.get('type') === 'pdpInput.And') {
+                    return _.contains(['pdpInput.Input', 'pdpInput.Or'], elementT.get('type')) && magnetTCheck;
+                }
+
+                // OR elements can connect only OR answers.
+                if (elementS.get('type') === 'pdpInput.Or') {
+                    return _.contains(['pdpInput.OrAnswer'], elementT.get('type')) && magnetTCheck;
+                }
+
+                // OR Answer elements can connect with AND, OR or PDP inputs.
+                if (elementS.get('type') === 'pdpInput.OrAnswer') {
+                    return _.contains(['pdpInput.Input', 'pdpInput.And', 'pdpInput.Or'], elementT.get('type')) && magnetTCheck;
+                }
+
                 // Prevent linking from input ports.
-                console.log( graph.getConnectedLinks( cellViewT, true ) );
-                console.log( graph.getConnectedLinks( cellViewS, true ) );
                 if (magnetS && magnetS.getAttribute('type') === 'input') return false;
                 // Prevent linking from output ports to input ports within one element.
                 if (cellViewS === cellViewT) return false;
                 // Prevent linking to input ports.
-                return magnetT && magnetT.getAttribute('type') === 'input';
+                return magnetTCheck;
             },
+            validateMagnet: function(cellView, magnet) {
+                var element = graph.getCell(cellView.model.id);
+
+                // Restrict magnet routs for Root element.
+                if (element.get('isRoot')) {
+                    return !graph.getConnectedLinks(element, {outbound: true}).length >= 1;
+                }
+                // Note that this is the default behaviour. Just showing it here for reference.
+                // Disable linking interaction for magnets marked as passive (see below `.inPorts circle`).
+                return magnet.getAttribute('magnet') !== 'passive';
+            }
+        });
+
+        $ox.on('input change', function() {
+            paper.setOrigin(parseInt(this.value, 10), parseInt($oy.val(), 10));
+        });
+        $oy.on('input change', function() {
+            paper.setOrigin(parseInt($ox.val(), 10), parseInt(this.value, 10));
+        });
+        $sx.on('input change', function() {
+            paper.scale(parseFloat(this.value), parseFloat($sy.val()));
+        });
+        $sy.on('input change', function() {
+            paper.scale(parseFloat($sx.val()), parseFloat(this.value));
+        });
+        $w.on('input change', function() {
+            paper.setDimensions(parseInt(this.value, 10), parseInt($h.val(),10));
+        });
+        $h.on('input change', function() {
+            paper.setDimensions(parseInt($w.val(), 10), parseInt(this.value, 10));
+        });
+
+
+        // cache important svg elements
+        var svg = V(paper.svg);
+        var svgVertical = V('path').attr('d', 'M -10000 -1 L 10000 -1');
+        var svgHorizontal = V('path').attr('d', 'M -1 -10000 L -1 10000');
+        var svgRect = V('rect');
+        var svgAxisX = svgVertical.clone().addClass('axis');
+        var svgAxisY = svgHorizontal.clone().addClass('axis');
+        var svgBBox = svgRect.clone().addClass('bbox');
+
+        svgBBox.hide = _.debounce(function() {
+            svgBBox.removeClass('active');
+        }, 500);
+
+// svg Container - contains all non-jointjs svg elements
+        var svgContainer = [];
+
+        svgContainer.showAll = function() {
+            _.each(this, function(v) { v.addClass('active'); });
+        };
+
+        svgContainer.hideAll = function() {
+            _.each(this, function(v) { v.removeClass('active'); });
+        };
+
+        svgContainer.removeAll = function() {
+            while (this.length > 0) {
+                this.pop().remove();
+            }
+        };
+
+// Axis has to be appended to the svg, so it won't affect the viewport.
+        svg.append([svgAxisX, svgAxisY, svgBBox]);
+
+
+        paper.on({
+            scale: function(sx, sy) {
+                $sx.val(sx).next().text(sx.toFixed(2));
+                $sy.val(sy).next().text(sy.toFixed(2));
+
+                var grid = $grid.val();
+//                paper.$el.css('background-image', 'url("' + getGridBackgroundImage(grid * sx, grid * sy) + '")');
+
+                svgContainer.hideAll();
+            },
+            translate: function(ox, oy) {
+                $ox.val(ox).next().text(Math.round(ox));
+                $oy.val(oy).next().text(Math.round(oy));
+
+                // translate axis
+                svgAxisX.translate(0, oy, { absolute: true });
+                svgAxisY.translate(ox, 0, { absolute: true });
+
+                var grid = $grid.val();
+                paper.$el.css('background-image', 'url("' + getGridBackgroundImage(grid * $sx.val(), grid * $sy.val()) + '")');
+
+                svgContainer.hideAll();
+            },
+            resize: function(width, height) {
+                $w.val(width).next().text(Math.round(width));
+                $h.val(height).next().text(Math.round(height));
+
+                svgContainer.hideAll();
+            }
         });
         
         graph.on('all', function (eventName, cell) {
-            //console.log(arguments);
+//            console.log(arguments);
         });
-        
+
         //Creating root element
-        var rootCell = new joint.shapes.basic.Rect({
-            position: { x: 250, y: 10 },
+        var rootCell = new joint.shapes.devs.Atomic({
+            position: { x: 250, y: 50 },
             size: { width: 100, height: 30 },
-            attrs: { rect: { fill: 'blue' }, text: { text: 'Root', fill: 'white' } }
+            outPorts: ['out'],
+            isRoot: true,
+            attrs: {
+                rect: {fill: 'blue'},
+                text: {text: 'Root', fill: 'white'},
+                '.outPorts circle': { fill: '#E74C3C'},
+            }
         });
-        
+
         graph.addCells([rootCell]);
-        
+
         joint.shapes.pdpInput = {};        
 
     });
 </script>
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:Element.html.twig' %}
+{% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:InputElement.html.twig' %}
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrElement.html.twig' %}
+{% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrAnswerElement.html.twig' %}
+{% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:AndElement.html.twig' %}
 {% endblock %}

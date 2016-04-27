@@ -1,0 +1,71 @@
+<div id="pdpInputAndElement" type="text/template" style="display:none;">
+    <div class="html-element row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-default btn-xs delete">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="center-text" style="color: #fff;">AND</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        
+        joint.shapes.pdpInput.And = joint.shapes.pdpInput.Element.extend(_.extend(
+                {},
+                {
+                    elementType: 'And',
+                    defaults: joint.util.deepSupplement({
+                        type: 'pdpInput.And',
+                        position: {x: 80, y: 80}, 
+                        size: {width: 'auto', height: 'auto'},
+                        inPorts: ['in'],
+                        outPorts: ['out'],
+                        attrs: {
+                            '.': { magnet: false },
+                            rect: { fill: 'SkyBlue', stroke: 'SkyBlue', width: 300, height: 250 },
+                            circle: {
+                                r: 10, //port circle radius
+                                magnet: true,
+                                stroke: 'black'
+                            },
+                            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                            '.outPorts circle': { fill: 'red', type: 'output'}
+                        }
+                    })
+                }
+                ));
+        
+        joint.shapes.pdpInput.AndView = joint.shapes.pdpInput.AndView.extend({
+            
+            template: $('#pdpInputAndElement').html(),
+            
+            updateBox: function() {
+                // Set the position and dimension of the box so that it covers the JointJS element.
+                var bbox = this.model.getBBox();
+                this.$box.css({ width: bbox.width, height: bbox.height, left: (bbox.x+20), top: bbox.y+4, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+                this.model.attributes.attrs.rect.width = this.$box.first().width() + 15;
+                this.model.attributes.attrs.rect.height = this.$box.first().height() + 10;
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+            }
+        });
+        
+        var createAndElement = function(){
+            var orEl = new joint.shapes.pdpInput.And();
+            console.log('New OR ID', orEl.id);
+            graph.addCells([orEl])
+        };
+
+        $('#addAndBtn').click(function(){
+            createAndElement();
+        });
+    });
+</script>
