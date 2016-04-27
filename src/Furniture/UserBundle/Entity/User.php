@@ -261,6 +261,9 @@ class User extends BaseUser
         $this->confirmationToken = md5(uniqid(mt_rand(), true)) . md5(uniqid(mt_rand(), true));
         $this->passwordRequestedAt = new \DateTime();
 
+        // We should clear verify email hash token, because user requested password change.
+        $this->verifyEmailHash = null;
+
         return $this->confirmationToken;
     }
 
