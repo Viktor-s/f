@@ -16,6 +16,7 @@ class ProductPart extends AbstractTranslatable
     
     /**
      * @var ProductPartType
+     * @Assert\NotNull()
      */
     protected $productPartType;
     
@@ -26,6 +27,8 @@ class ProductPart extends AbstractTranslatable
 
     /**
      * @var Collection|ProductPartMaterial[]
+     * @Assert\Valid()
+     * @Assert\Count(min = 1, minMessage="Please choose at least on material.", groups={"Default"})
      */
     protected $productPartMaterials;
 

@@ -43,6 +43,10 @@ product_extension_option_value:
         option: Option
         value: Value
 
+product_part:
+    form:
+        presentation: Presentation name
+
 product_part_material:
     breadcrumb:
         index: Product part materials
@@ -274,6 +278,8 @@ sylius:
             status: Status
 
     form:
+        product:
+            translations: Product translations
         product_filter:
             factory_code: Factory code
             factory: Factory

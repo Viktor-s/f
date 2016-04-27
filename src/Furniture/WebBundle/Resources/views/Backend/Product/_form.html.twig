@@ -74,6 +74,11 @@
                     element.disableSelection();
                 }
             });
+
+            // Add bg for tabs with error.
+            $('form > .tab-content').find('.has-error').parents('.tab-pane').each(function(idx) {
+                $('a[href="#' + $(this).attr('id') + '"]').addClass('bg-danger');
+            });
         });
     })(jQuery);
 </script>
