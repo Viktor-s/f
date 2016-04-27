@@ -302,7 +302,7 @@ class ClientExporter extends AbstractExporter
         $key = $this->generateCellKey($position, $row);
         $cell = $sheet->getCell($key);
         $cell->setValue($this->translator->trans('specification.excel.weight'));
-        $this->formatTotalTitlesCell($cell);
+        $this->formatTotalTitlesCell($cell, false);
 
         $key = $this->generateCellKey($position+1, $row);
         $cell = $sheet->getCell($key);
@@ -320,11 +320,10 @@ class ClientExporter extends AbstractExporter
      */
     private function createVolumeCell(\PHPExcel_Worksheet $sheet, Specification $specification, $position, $row)
     {
-
         $key = $this->generateCellKey($position, $row);
         $cell = $sheet->getCell($key);
         $cell->setValue($this->translator->trans('specification.excel.volume'));
-        $this->formatTotalTitlesCell($cell);
+        $this->formatTotalTitlesCell($cell, false);
 
         $key = $this->generateCellKey($position + 1, $row);
         $cell = $sheet->getCell($key);
@@ -423,14 +422,12 @@ class ClientExporter extends AbstractExporter
         $cell = $this->mergeDiapason($sheet, 1, $row, 2, $row);
         $cell->setValue($specification->getDocumentNumber());
         $this->formatHeaderValueCell($cell);
-        $this->setAlignmentForCell($cell, 'left', 'top');
 
         // Create at
-        $key = $this->generateCellKey(3, $row);
+        $key = $this->generateCellKey(1, $row);
         $cell = $sheet->getCell($key);
         $cell->setValue($specification->getCreatedAt()->format('Y/m/d H:i'));
         $this->formatHeaderValueCell($cell);
-        $this->setAlignmentForCell($cell, 'center', 'top');
 
         $row++;
         $row++;
@@ -553,8 +550,8 @@ class ClientExporter extends AbstractExporter
             $row,
             $this->translator->trans('specification.excel.contact_info'),
             [
-                'Email: '.implode(', ', $retailer->getEmails()),
-                'Toll-free: '.implode(', ', $retailer->getPhones()),
+                implode(', ', $retailer->getEmails()),
+                implode(', ', $retailer->getPhones()),
             ]
         );
     }
@@ -882,9 +879,11 @@ class ClientExporter extends AbstractExporter
      *
      * @param \PHPExcel_Cell $cell
      */
-    private function formatTotalTitlesCell(\PHPExcel_Cell $cell)
+    private function formatTotalTitlesCell(\PHPExcel_Cell $cell, $autoWidth = true)
     {
-        $this->setAutoWidthForColumnByCell($cell);
+        if ($autoWidth) {
+            $this->setAutoWidthForColumnByCell($cell);
+        }
         $this->setAlignmentForCell($cell, 'right', 'center');
         $cell->getStyle()->getAlignment()->setWrapText(false);
         $cell->getStyle()->getFont()->setBold(true);
