@@ -9,7 +9,9 @@ use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\SpecificationBundle\Entity\Buyer;
+use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Form\Type\BuyerType;
+use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -323,10 +325,19 @@ class SpecificationBuyerController
             $specifications->setCurrentPage($currentPage);
         }
 
+        $specification = new Specification();
+        $specification->setCreator($creator->getRetailerUserProfile());
+        $specification->setBuyer($buyer);
+
+        $form = $this->formFactory->create(new SpecificationType(), $specification, [
+            'owner' => $creator,
+        ]);
+
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
-            'buyer'                   => $buyer,
-            'specifications'          => $specifications,
-            'filters'                 => $filters,
+            'buyer'          => $buyer,
+            'specifications' => $specifications,
+            'filters'        => $filters,
+            'form'           => $form->createView(),
         ]);
 
         return new Response($content);

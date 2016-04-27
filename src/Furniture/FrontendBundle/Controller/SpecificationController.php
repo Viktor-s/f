@@ -260,6 +260,8 @@ class SpecificationController
             $specification->setCreator($user->getRetailerUserProfile());
         }
 
+        $buyer = null;
+
         if ($request->query->has('buyer')) {
             $buyerRepo = $this->em->getRepository(Buyer::class);
             $buyer = $buyerRepo->find($request->query->get('buyer'));
@@ -278,7 +280,15 @@ class SpecificationController
             $this->em->persist($specification);
             $this->em->flush();
 
-            $url = $this->urlGenerator->generate('specifications');
+            $params = [];
+            if ($buyer) {
+                $route = 'specification_buyer_specifications';
+                $params['buyer'] = $buyer->getId();
+            } else {
+                $route = 'specifications';
+            }
+
+            $url = $this->urlGenerator->generate($route, $params);
 
             return new RedirectResponse($url);
         }

@@ -3,7 +3,12 @@
     <div class="modal fade" id="createSpecification" tabindex="-1" role="dialog" aria-labelledby="createSpecificationLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{ path('specification_create') }}" method="POST" class="form-horizontal">
+                {% if buyer is defined %}
+                    {% set action = path('specification_create', {buyer: buyer.id}) %}
+                {% else %}
+                    {% set action = path('specification_create') %}
+                {% endif %}
+                <form action="{{ action }}" method="POST" class="form-horizontal">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="createSpecificationLabel">{{ 'frontend.create'|trans }}</h4>

@@ -36,36 +36,36 @@ product:
 # Specifications
 specificaitons:
     prefix: /{_locale}/specifications
-    resource: @FrontendBundle/Resources/config/routing/specifications.yml
+    resource: '@FrontendBundle/Resources/config/routing/specifications.yml'
 
 # Specification buyers
 specificaiton_buyers:
     prefix: /{_locale}/clients
-    resource: @FrontendBundle/Resources/config/routing/clients.yml
+    resource: '@FrontendBundle/Resources/config/routing/clients.yml'
 
 # Factory routes
 factory:
-    resource: @FrontendBundle/Resources/config/routing/factory.yml
+    resource: '@FrontendBundle/Resources/config/routing/factory.yml'
     prefix: /{_locale}/factory/room
 
 # Factory profile
 factory_profile:
-    resource: @FrontendBundle/Resources/config/routing/factory_profile.yml
+    resource: '@FrontendBundle/Resources/config/routing/factory_profile.yml'
     prefix: /{_locale}/profile/factory
 
 # Factory site side
 factory_side:
-    resource: @FrontendBundle/Resources/config/routing/factory_side.yml
+    resource: '@FrontendBundle/Resources/config/routing/factory_side.yml'
     prefix: /{_locale}/factory
 
 # Content user profile
 retailer_profile:
-    resource: @FrontendBundle/Resources/config/routing/retailer_profile.yml
+    resource: '@FrontendBundle/Resources/config/routing/retailer_profile.yml'
     prefix: /{_locale}/profile/retailer
     
 # Content user profile
 user_profile:
-    resource: @FrontendBundle/Resources/config/routing/user_profile.yml
+    resource: '@FrontendBundle/Resources/config/routing/user_profile.yml'
     prefix: /{_locale}/profile/user
 
 # Security

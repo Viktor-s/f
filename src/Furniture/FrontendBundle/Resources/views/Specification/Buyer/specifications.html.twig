@@ -2,6 +2,7 @@
 {% from 'FrontendBundle:Macros:misc.html.twig' import pagination %}
 {% from 'FrontendBundle:Macros:specification.html.twig' import list_toolbar %}
 {% use 'FrontendBundle:Specification:specifications_table.html.twig' %}
+{% use 'FrontendBundle:Specification:edit_modal.html.twig' %}
 
 {% block title %}{{ 'frontend.specifications'|trans }} :: {{ buyer.fullName }}{% endblock %}
 
@@ -14,7 +15,7 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(filters, paginator, {button: 'true', buyer: buyer}) }}
+    {{ list_toolbar(filters, paginator) }}
     <h1 class="block-title">{{ buyer.fullName }}</h1>
     {% set not_found = 'frontend.specfications_opened_not_found_for_buyer'|trans({':buyer': buyer.fullName}) %}
     {% if is_granted('SPECIFICATION_CREATE') %}
@@ -26,6 +27,7 @@
             {{ paginator }}
         </div>
     </div>
+    {{ block('edit_modal') }}
 {% endblock %}
 
 {% block footer_javascripts %}

@@ -13,9 +13,9 @@
 
 {% block content %}
     {% set paginator = pagination(specifications) %}
-    {{ list_toolbar(filters, form, paginator) }}
+    {{ list_toolbar(filters, paginator) }}
     {{ block('specifications_table') }}
-    {{ list_toolbar(filters, form, paginator, false) }}
+    {{ list_toolbar(filters, paginator, false) }}
     {{ block('edit_modal') }}
 {% endblock %}
 
