@@ -6,8 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Furniture\FrontendBundle\Form\Type\Registration\CustomerType;
 use Furniture\FrontendBundle\Repository\UserRepository;
 use Furniture\UserBundle\Entity\Customer;
+use Furniture\UserBundle\Entity\User;
 use Furniture\UserBundle\Form\Type\UserResetPasswordRequestType;
-use Furniture\UserBundle\Form\Type\UserResetPasswordType;
 use Furniture\UserBundle\PasswordResetter\PasswordResetter;
 use Furniture\UserBundle\Security\EmailVerifier\EmailVerifier;
 use Sylius\Component\User\Security\PasswordUpdater;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
+
 
 class SecurityController
 {
@@ -170,10 +170,16 @@ class SecurityController
      * Register action
      *
      * @param Request $request
-     *
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+        if ($user instanceof User) {
+            return new RedirectResponse($this->urlGenerator->generate('homepage_index'));
+        }
+
         $customer = new Customer();
         $form = $this->formFactory->create(new CustomerType(), $customer);
 

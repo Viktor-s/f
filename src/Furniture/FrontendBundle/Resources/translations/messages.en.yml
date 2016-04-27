@@ -58,6 +58,7 @@ frontend:
     edit: Edit
     email: Email:
     email_already_used: 'This email is already registered, please choose another one.'
+    email_already_used_not_verified: 'This email is already registered but hasn`t been verified yet.'
     email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
     email_virify_success_login: 'Your email was successfully verified. Please reset your password with form bellow or <a href="/login">login</a> with your credential.'

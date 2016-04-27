@@ -6,3 +6,4 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@router'
+            - '@translator'
