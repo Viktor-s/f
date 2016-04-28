@@ -1,5 +1,12 @@
 {% use "bootstrap_3_horizontal_layout.html.twig" %}
 
+{# Widgets #}
+{%- block number_widget -%}
+    {# type="number" doesn't work with floats #}
+    {%- set type = type|default('number') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock number_widget -%}
+
 {# Labels #}
 
 {% block form_label -%}

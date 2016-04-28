@@ -33,7 +33,6 @@
         </div>
     </div>
 
-    {% if not rate.id %}
         <script type="text/javascript">
             (function ($) {
                 $(document).ready(function () {
@@ -70,13 +69,13 @@
                         extraDiscount = $(this).val();
                         calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
                     });
-
+                {% if not rate.id %}
                     $('#retailer_factory_rate_factory').select2({
                         placeholder: "Select brand",
                         allowClear: false
                     }).select2("val", "");
+                {% endif %}
                 });
             })(jQuery);
         </script>
-    {% endif %}
 {% endblock %}
