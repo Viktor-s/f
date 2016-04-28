@@ -7,6 +7,8 @@
     <a href="{{ path('retailer_profile') }}">{{ 'frontend.title.retailer_profile'|trans }}</a>
 {% endblock %}
 
+{% block messages '' %}
+
 {% block content %}
     <div class="row information-blocks">
         {% block left_content_container %}
@@ -21,6 +23,14 @@
         {% endblock %}
         {% block right_content_container %}
             <div class="col-sm-9">
+                {% for type in ['success', 'info', 'warning', 'error'] %}
+                    {% for flash in app.session.flashbag.get(type) %}
+                        <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                            <a class="close" data-dismiss="alert" href="#">×</a>
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
                 {% block page_content %}{% endblock %}
             </div>
         {% endblock %}

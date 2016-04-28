@@ -3804,12 +3804,12 @@ body:not(.mobile) .hover-class-1:hover:after {
     height: 50px;
 }
 
-.alert-success {
+.alert-info {
     color: #6c6c6c;
     background: none;
     border-color: #dedede;
-    background: url(../images/alert-success.png) no-repeat 15px center;
+    background: url('../bundles/frontend/img/alert-info.png') no-repeat 15px center;
 }
-.alert-success.solution {
+.alert-info.solution {
   padding-top: 16px;
 }

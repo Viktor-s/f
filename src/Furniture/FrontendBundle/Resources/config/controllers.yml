@@ -151,6 +151,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@form.factory'
             - '@router'
+            - '@translator'
 
     frontend.controller.retailer.factory_relation:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRelationController

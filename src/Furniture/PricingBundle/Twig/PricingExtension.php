@@ -137,7 +137,7 @@ class PricingExtension extends \Twig_Extension
     public function money($amount, $precision = false)
     {
         $currency = $this->currencyContext->getCurrency();
-        $amount = str_replace(' ', '', $this->moneyHelper->formatAmount($amount, $currency));
+        $amount = preg_replace('/\s+/', '', $this->moneyHelper->formatAmount($amount, $currency));
         $suffix = preg_replace('/[0-9\.]+/', '', $amount);
 
         if (false !== $precision) {

@@ -213,6 +213,10 @@ frontend:
             email_exists_error: Already in use!
             create_confirmation: "We'll send confirmation email on specified email address."
             email_change_confirmation: "Are you sure you want change your email? If you proceed you'll be logged out and mail with email confirmation instructions will be send to new email."
+        rates:
+            info_coefficient: 'Coefficient uses for changing price view? you canconfigure pricing in showcase what you want.'
+            info_sale_price: 'You can setup your sale price, and after showing showcase to your client, as your e-catalog in show room.'
+            info_calculations: 'Public price (100) x Coefficient (1,2) - Extra discount (10%) = Viewing price (108)'
     retailer_relations: User relations
     retailer_requests: Retailer requests
     sale: Personal discount
