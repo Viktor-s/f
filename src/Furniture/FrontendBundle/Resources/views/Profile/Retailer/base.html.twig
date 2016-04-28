@@ -23,14 +23,20 @@
         {% endblock %}
         {% block right_content_container %}
             <div class="col-sm-9">
-                {% for type in ['success', 'info', 'warning', 'error'] %}
-                    {% for flash in app.session.flashbag.get(type) %}
-                        <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
-                            <a class="close" data-dismiss="alert" href="#">×</a>
-                            {{ flash }}
-                        </div>
+            {% if app.session.flashbag is not empty %}
+                <div class="messages-replaced">
+                    {% for type in ['success', 'info', 'warning', 'error'] %}
+                        {% if app.session.flashbag.has(type) is not empty  %}
+                            <div class="alert-row">
+                                <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                                    <a class="close" data-dismiss="alert" href="#">×</a>
+                                    {{ app.session.flashbag.get(type)|join("\n")|nl2br }}
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
-                {% endfor %}
+                </div>
+            {% endif %}
                 {% block page_content %}{% endblock %}
             </div>
         {% endblock %}

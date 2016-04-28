@@ -3797,19 +3797,33 @@ body:not(.mobile) .hover-class-1:hover:after {
 .products-swiper .swiper-slide {
     padding: 0 15px;
 }
-.alert {
-    border-radius: 0px;
-    padding: 6px 6px 6px 60px;
+
+#messages, .messages-replaced {
+    display: table;
     margin-bottom: 20px;
+    width: 100%;
+}
+
+#messages .alert-row,
+.messages-replaced .alert-row {
+    display: table-row;
+}
+
+#messages .alert,
+.messages-replaced .alert {
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 21px;
+}
+
+.alert {
+    border-radius: 0;
+    padding-left:60px;
     height: 50px;
 }
 
 .alert-info {
     color: #6c6c6c;
-    background: none;
     border-color: #dedede;
-    background: url('../bundles/frontend/img/alert-info.png') no-repeat 15px center;
-}
-.alert-info.solution {
-  padding-top: 16px;
+    background: transparent url('../bundles/frontend/img/alert-info.png') no-repeat 15px center;
 }

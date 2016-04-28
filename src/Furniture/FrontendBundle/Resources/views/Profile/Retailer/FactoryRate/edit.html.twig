@@ -59,6 +59,8 @@
                         return price;
                     };
 
+                    calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
+
                     $('#retailer_factory_rate_coefficient').on('change', function(e) {
                         coefficient = $(this).val();
                         calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
