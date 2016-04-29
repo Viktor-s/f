@@ -12,8 +12,8 @@
     {% if app.user.isRetailer() %}
         {% if is_granted('RETAILER_EDIT', retailer) %}
         <div class="row">
-            <div class="col-sm-1 col-sm-push-11">
-                <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit">
+            <div class="col-sm-2 col-sm-push-10">
+                <a href="{{ path('retailer_profile_edit') }}" class="btn btn-edit pull-right">
                     {{ 'frontend.edit'|trans }}
                 </a>
             </div>

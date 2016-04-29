@@ -126,7 +126,7 @@ class RetailerProfileController
         }
 
         $profile = $user->getRetailerUserProfile()->getRetailerProfile();
-        $form = $this->formFactory->create(new RetailerProfileType(), $profile);
+        $form = $this->formFactory->create('furniture_retailer_profile_frontend', $profile);
 
         $form->handleRequest($request);
 

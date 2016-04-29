@@ -22,16 +22,31 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-                function initAutocomplete() {
-                    $('.google-address-autocomplete').each(function(){
-                        autocomplete = new google.maps.places.Autocomplete(
-                            (this),
-                            {types: ['geocode']}
-                        );
-                    });
-                }
+    {% javascripts '@WebBundle/Resources/public/js/google-maps.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     </script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_api_maps_key }}&signed_in=true&libraries=places&callback=initAutocomplete" >
+    <script type="text/javascript">
+        window.googleMapsApiKey = "{{ google_api_maps_key }}";
+        (function ($) {
+            $(document).ready(function () {
+                var addressAutoComplete = $('.address-autocomplete');
+
+                initializeGoogleMaps()
+                    .then(function () {
+                        var autocomplete = new google.maps.places.Autocomplete(addressAutoComplete.get(0), {
+                            types: ['geocode']
+                        });
+
+                        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                            var location = autocomplete.getPlace().geometry.location;
+
+                            $('input[data-address-latitude]').val(location.lat());
+                            $('input[data-address-longitude]').val(location.lng());
+                        });
+                    });
+            });
+        })(jQuery);
     </script>
 {% endblock %}
+
