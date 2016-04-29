@@ -46,6 +46,9 @@ class RetailerProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var RetailerProfile $retailerProfile */
+        $retailerProfile = $builder->getData();
+
         $builder
             ->add('name', 'text', [
                 'required' => true,
@@ -61,33 +64,34 @@ class RetailerProfileType extends AbstractType
             ])
             ->add('description', 'textarea', [
                 'required' => false,
-                'label' => 'frontend.description'
+                'label'    => 'frontend.description',
             ])
             ->add('address', 'text', [
-                'label'  => 'Address',
-                'mapped' => false,
-                'attr'   => [
+                'label'    => 'Address',
+                'mapped'   => false,
+                'attr'     => [
                     'class' => 'address-autocomplete',
                 ],
+                'data'     => $retailerProfile->getAddress(),
                 'required' => false,
             ])
             ->add('phones', 'text', [
-                'label' => 'frontend.phones_contact',
-                'required' => false
+                'label'    => 'frontend.phones_contact',
+                'required' => false,
             ])
             ->add('emails', 'text', [
-                'label' => 'frontend.emails_contact',
-                'required' => false
+                'label'    => 'frontend.emails_contact',
+                'required' => false,
             ])
             ->add('addressLatitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-latitude' => true,
                 ],
             ])
             ->add('addressLongitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-longitude' => true,
                 ],
             ]);
