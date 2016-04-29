@@ -1444,6 +1444,9 @@ input[type="checkbox"]:checked:disabled + label::before {
     background: #fff;
     margin-top: 1px;
 }
+.product-slide-entry .product-image.prod-img-factory {
+    max-width: 100%;
+}
 
 .product-slide-entry h4.pgp-product-title {
     position: relative;
@@ -1479,6 +1482,7 @@ input[type="checkbox"]:checked:disabled + label::before {
     min-height: 222px;
     max-width: 300px;
     position: relative;
+    margin: 0 auto;
 }
 
 .swiper-container .product-slide-entry .product-image a.thumbnail {
@@ -3800,8 +3804,10 @@ body:not(.mobile) .hover-class-1:hover:after {
 
 #messages, .messages-replaced {
     display: table;
-    margin-bottom: 20px;
     width: 100%;
+}
+.messages-replaced {
+    margin-bottom: 20px;
 }
 
 #messages .alert-row,
