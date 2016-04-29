@@ -232,6 +232,11 @@ class ProductRepository
                 ->setParameter('now', new \DateTime());
         }
 
+        if ($query->isLimited()) {
+            $qb->setMaxResults($query->getLimit());
+            $qb->setFirstResult($query->getOffset());
+        }
+
         if ($query->isOrdered()) {
             $qb->addOrderBy('p.'.$query->getOrderBy(), $query->getOrderDirection());
         }

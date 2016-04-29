@@ -69,6 +69,16 @@ class ProductQuery
     private $orderDirection = 'DESC';
 
     /**
+     * @var integer
+     */
+    private $limit;
+
+    /**
+     * @var integer
+     */
+    private $offset = 0;
+
+    /**
      * With taxon
      *
      * @param Space $space
@@ -524,6 +534,51 @@ class ProductQuery
     public function setOrderDirection($orderDirection)
     {
         $this->orderDirection = $orderDirection;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param mixed $limit
+     * @return ProductQuery
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLimited() {
+        return (bool) $this->limit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     * @return ProductQuery
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
 
         return $this;
     }

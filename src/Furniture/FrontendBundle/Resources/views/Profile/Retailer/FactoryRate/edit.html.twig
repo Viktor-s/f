@@ -14,20 +14,20 @@
         {{ form_widget(form) }}
         {{ form_end(form) }}
 
-        <div id="product-preview">
+        <div id="product-preview" style="display: none;">
             <div class="col-md-5 col-sm-5">
                 <div class="product-slide-entry">
                     <div class="product-image prod-img-factory">
-                        <a href="/en/product/356" class="thumbnail">
+                        <span class="thumbnail">
                             <div class="top-line text-center">
-                                <img src="https://devfortest-01.agenta.solutions/media/cache/s300x225/ec/7b/aee44e13d8e1f89b04d3b7a5b6a1.jpeg" alt="Selva Timeless">
+                                <img src="/img/300x225.png">
                             </div>
-                        </a>
+                        </span>
                     </div>
                     <h4 class="pgp-product-title">
                         <div class="price">
                             <div id="original-price" class="current">1 000 €</div>
-                            <div id="calculated-price" class="current"></div>
+                            <div id="calculated-price" class="current" style="display: none;"></div>
                         </div>
                     </h4>
                 </div>
@@ -37,7 +37,8 @@
         <script type="text/javascript">
             (function ($) {
                 $(document).ready(function () {
-                    var originalPrice = $('#original-price').text();
+                    var previewBox = $('#product-preview');
+                    var originalPrice = $('#original-price');
                     var calculated = $('#calculated-price');
                     var coefficient = $('#retailer_factory_rate_coefficient').val();
                     var extraDiscount = $('#retailer_factory_rate_dumping').val();
@@ -59,22 +60,47 @@
                         return price;
                     };
 
-                    calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
+                    var showCalculated = function() {
+                        if (previewBox.is(':visible') && calculated.is(':hidden'))
+                            calculated.show();
+                    };
+
+                    calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
 
                     $('#retailer_factory_rate_coefficient').on('change', function(e) {
                         coefficient = $(this).val();
-                        calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
+                        calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                        showCalculated();
                     });
 
                     $('#retailer_factory_rate_dumping').on('change', function(e) {
                         extraDiscount = $(this).val();
-                        calculated.text(priceCalculation(originalPrice, coefficient, extraDiscount));
+                        calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                        showCalculated();
                     });
                 {% if not rate.id %}
-                    $('#retailer_factory_rate_factory').select2({
+                    var factory = $('#retailer_factory_rate_factory');
+                    factory.select2({
                         placeholder: "Select brand",
                         allowClear: false
                     }).select2("val", "");
+                    factory.on('change', function(e) {
+                        if ($(this).val() !== '') {
+                            $.ajax({
+                                url: '{{ path('product_api_get_product_data_by_factory', {factory: 123}) }}'.replace(/123/, $(this).val()),
+                                error: function () {
+                                    previewBox.hide();
+                                },
+                                success: function (data) {
+                                    previewBox.find('.thumbnail img').attr('src', data.image);
+                                    originalPrice.text(number_format(data.price, 0, '.', ' ') + ' ' + data.currency)
+                                    previewBox.show();
+                                }
+                            });
+                        } else {
+                            previewBox.hide();
+                        }
+                    });
                 {% endif %}
                 });
             })(jQuery);
