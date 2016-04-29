@@ -66,6 +66,7 @@
                     };
 
                     calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                    showCalculated();
 
                     $('#retailer_factory_rate_coefficient').on('change', function(e) {
                         coefficient = $(this).val();
@@ -93,8 +94,10 @@
                                 },
                                 success: function (data) {
                                     previewBox.find('.thumbnail img').attr('src', data.image);
-                                    originalPrice.text(number_format(data.price, 0, '.', ' ') + ' ' + data.currency)
+                                    originalPrice.text(number_format(data.price, 0, '.', ' ') + ' ' + data.currency);
+                                    calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
                                     previewBox.show();
+                                    showCalculated();
                                 }
                             });
                         } else {
