@@ -34,7 +34,7 @@ class RetailerUserProfileType extends AbstractType
             ->add('retailerMode', 'hidden', [
                 'data' => RetailerUserProfile::RETAILER_ADMIN,
             ])
-            ->add('retailerProfile', 'furniture_retailer_profile', ['label' => false, 'registration' => true]);
+            ->add('retailerProfile', 'furniture_retailer_profile_frontend', ['label' => false, 'registration' => true]);
 
         $builder
             ->add('phones', 'text', [

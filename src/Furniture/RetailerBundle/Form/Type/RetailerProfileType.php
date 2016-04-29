@@ -38,9 +38,8 @@ class RetailerProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'   => RetailerProfile::class,
-            'registration' => false,
-            'validation_groups'  => ['RetailerProfileCreate'],
+            'data_class'        => RetailerProfile::class,
+            'validation_groups' => ['RetailerProfileCreate'],
         ]);
     }
 
@@ -51,22 +50,21 @@ class RetailerProfileType extends AbstractType
     {
         $builder
             ->add('address', 'text', [
-                'label'  => 'Address',
-                'mapped' => false,
-                'attr'   => [
+                'label'    => 'Address',
+                'mapped'   => false,
+                'attr'     => [
                     'class' => 'address-autocomplete',
                 ],
-                'required' => !$options['registration'],
             ])
             ->add('addressLatitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-latitude' => true,
                 ],
             ])
             ->add('addressLongitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-longitude' => true,
                 ],
             ])
@@ -86,43 +84,27 @@ class RetailerProfileType extends AbstractType
             ])
             ->add('website', 'text', [
                 'required' => false,
+            ])
+            ->add('addressReplace', 'checkbox', [
+                'label'  => 'Replace address',
+                'mapped' => false,
+                'data'   => false,
+            ])
+            ->add('translations', 'a2lix_translationsForms', [
+                'form_type' => new RetailerProfileTranslationType(),
+            ])
+            ->add('subtitle', 'text', [
+                'required' => false,
+            ])
+            ->add('description', 'textarea', [
+                'required' => false,
+            ])
+            ->add('demoFactories', 'entity', [
+                'label'    => 'furniture_retailer_profile.form.demo_factories',
+                'class'    => Factory::class,
+                'multiple' => true,
+                'expanded' => false,
             ]);
-
-        if (!$options['registration']) {
-            $builder
-                ->add('addressReplace', 'checkbox', [
-                    'label' => 'Replace address',
-                    'mapped' => false,
-                    'data' => false,
-                ])
-                ->add('translations', 'a2lix_translationsForms', [
-                    'form_type' => new RetailerProfileTranslationType(),
-                ])
-                ->add('subtitle', 'text', [
-                    'required' => false,
-                ])
-                ->add('description', 'textarea', [
-                    'required' => false,
-                ])
-                ->add('demoFactories', 'entity', [
-                    'label'    => 'furniture_retailer_profile.form.demo_factories',
-                    'class'    => Factory::class,
-                    'multiple' => true,
-                    'expanded' => false,
-                ]);
-        } else {
-            $builder
-                ->add('addressReplace', 'hidden', ['data' => true, 'mapped' => false])
-                ->add('translations', 'a2lix_translationsForms', [
-                    'form_type' => new RetailerProfileTranslationType(),
-                    'required'  => false,
-                    'label'     => false,
-                ]);
-            $builder->remove('name');
-            $builder->add('name', 'text', [
-               'label' => 'frontend.company_name',
-            ]);
-        }
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
         $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));

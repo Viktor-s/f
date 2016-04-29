@@ -3,8 +3,10 @@
 namespace Furniture\FrontendBundle\Form\Type;
 
 use Furniture\CommonBundle\Form\DataTransformer\ArrayToStringTransformer;
+use Furniture\CommonBundle\Form\Type\BackendImageType;
 use Furniture\GoogleServicesBundle\Api\Maps\Geocoding;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerProfileLogoImage;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileTranslationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,8 +38,9 @@ class RetailerProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RetailerProfile::class,
-            'validation_groups'  => ['RetailerProfileCreate'],
+            'data_class'        => RetailerProfile::class,
+            'validation_groups' => ['RetailerProfileCreate'],
+            'registration'      => false,
         ]);
     }
 
@@ -46,18 +49,20 @@ class RetailerProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var RetailerProfile $retailerProfile */
+        /** @var RetailerProfile|null $retailerProfile */
         $retailerProfile = $builder->getData();
 
         $builder
             ->add('name', 'text', [
                 'required' => true,
-                'label'    => 'frontend.name',
+                'label'    => $options['registration'] ? 'frontend.company_name' : 'frontend.name',
             ])
             ->add('website', 'text', [
                 'required' => false,
                 'label'    => 'frontend.website',
-            ])
+            ]);
+    if (!$options['registration']) {
+        $builder
             ->add('subtitle', 'text', [
                 'required' => false,
                 'label'    => 'frontend.subtitle',
@@ -65,14 +70,16 @@ class RetailerProfileType extends AbstractType
             ->add('description', 'textarea', [
                 'required' => false,
                 'label'    => 'frontend.description',
-            ])
+            ]);
+    }
+        $builder
             ->add('address', 'text', [
                 'label'    => 'Address',
                 'mapped'   => false,
                 'attr'     => [
                     'class' => 'address-autocomplete',
                 ],
-                'data'     => $retailerProfile->getAddress(),
+                'data'     => $retailerProfile ? $retailerProfile->getAddress() : '',
                 'required' => false,
             ])
             ->add('phones', 'text', [
@@ -95,6 +102,11 @@ class RetailerProfileType extends AbstractType
                     'data-address-longitude' => true,
                 ],
             ]);
+        if ($options['registration']) {
+            $builder->add('logoImage', new BackendImageType(RetailerProfileLogoImage::class), [
+                'required' => false,
+            ]);
+        }
 
         $builder->get('phones')->addModelTransformer(new ArrayToStringTransformer(','));
         $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));
@@ -134,7 +146,7 @@ class RetailerProfileType extends AbstractType
             $event->setData($data);
         });
     }
-    
+
     /**
      * {@inheritDoc}
      */
