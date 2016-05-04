@@ -3833,3 +3833,18 @@ body:not(.mobile) .hover-class-1:hover:after {
     border-color: #dedede;
     background: transparent url('../bundles/frontend/img/alert-info.png') no-repeat 15px center;
 }
+div#original-price,
+div#calculated-price {
+    display: inline-block;
+}
+div#original-price{
+    font-weight: normal;
+
+}
+div#calculated-price:before {
+    content: '';
+    display: inline-block;
+    height: 12px;
+    width: 22px;
+    background: url(../images/price-arrow.png) no-repeat center;
+}
