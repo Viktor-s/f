@@ -3849,5 +3849,5 @@ div#calculated-price:before {
     background: url(../bundles/frontend/img/price-arrow.png) no-repeat center;
 }
 #product-preview .col-md-5.col-sm-5 {
-    width: 290px;
+    width: 320px; 
 }
