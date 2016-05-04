@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping as ORM;
 
 class ProductPdpConfig
 {
@@ -22,6 +23,7 @@ class ProductPdpConfig
 
     /**
      * @var Collection|ProductPdpInput[]
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $inputs;
 
