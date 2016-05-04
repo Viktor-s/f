@@ -520,7 +520,9 @@ class SecurityController
                     // Do  not send email if user already has confirmation token.
                     if (!$token) {
                         $this->passwordResetter->resetPassword($user);
+                        $token = $user->getConfirmationToken();
                     }
+
                     $session->set('reset-password-token', $token);
                     // We should create a redirect response, because user can reload page and send repeatedly
                     // send data.
@@ -554,6 +556,7 @@ class SecurityController
         $message = null;
         $session = $request->getSession();
         $notSent = $this->translator->trans('frontend.reset_password_error');
+
         if ($session->has('reset-password-token')) {
             $token = $session->get('reset-password-token');
             // Try load user via token
