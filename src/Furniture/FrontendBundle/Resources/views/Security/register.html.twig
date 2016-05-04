@@ -54,6 +54,10 @@
                 return this.optional(element) || options.check;
             }, "This value is already used");
 
+            jQuery.validator.addMethod("email", function (value, element, options) {
+                return this.optional(element) || /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(value);
+            }, "Please enter a valid email address.");
+
             // Set start step with error.
             form.find('section').each(function(idx, ele) {
                 if ($(ele).find('.has-error').length > 0) {
@@ -70,7 +74,12 @@
                         required: true
                     },
                     'sylius_customer[email]': {
-                        required: true,
+                        required: {
+                            depends: function(){
+                                $(this).val($.trim($(this).val()));
+                                return true;
+                            }
+                        },
                         email: true,
                         remoteCheck: {
                             check: userEmailCheck
