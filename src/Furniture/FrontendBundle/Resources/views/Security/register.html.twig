@@ -41,9 +41,8 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-    <script>
-        $(function ()
-        {
+    <script type="text/javascript">
+        $(document).ready(function () {
             var form = $('#registration-form');
             var retailerNameCheck = true;
             var userEmailCheck = true;
@@ -210,6 +209,10 @@
                     'sylius_customer[email]': '{{ 'frontend.email_already_used'|trans }}'
                 });
             }
+
+            $('[data-toggle="tooltip"]').tooltip({
+                container : 'body'
+            });
         });
     </script>
     {% javascripts '@WebBundle/Resources/public/js/google-maps.js' %}

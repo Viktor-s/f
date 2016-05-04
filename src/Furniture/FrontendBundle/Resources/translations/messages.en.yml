@@ -199,8 +199,12 @@ frontend:
     products_view: View products
     quantity: Quantity
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
-    remove: Remove
     goto_home: Return to home
+    register:
+        contact_phones: Contact phones
+        contact_emails: Contact emails
+        website: Website
+    remove: Remove
     repeat_password: Repeat password:
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password

@@ -70,6 +70,7 @@ security:
         - { path: ^/verify-email.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connect.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/r1e2g3i4s5t6e7r, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users/api/email-check, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/retailer/api/name-check, role: IS_AUTHENTICATED_ANONYMOUSLY }

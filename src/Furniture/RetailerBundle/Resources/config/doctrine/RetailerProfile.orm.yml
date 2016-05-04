@@ -1,6 +1,7 @@
 Furniture\RetailerBundle\Entity\RetailerProfile:
     type: entity
     table: furniture_retailer_profile
+    repositoryClass: Furniture\RetailerBundle\Entity\Repository\RetailerProfileRepository
     id:
         id:
             type: integer

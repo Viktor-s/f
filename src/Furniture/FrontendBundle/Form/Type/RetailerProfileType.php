@@ -59,7 +59,7 @@ class RetailerProfileType extends AbstractType
             ])
             ->add('website', 'text', [
                 'required' => false,
-                'label'    => 'frontend.website',
+                'label'    => $options['registration'] ? 'frontend.register.website' : 'frontend.website',
             ]);
     if (!$options['registration']) {
         $builder
@@ -83,11 +83,11 @@ class RetailerProfileType extends AbstractType
                 'required' => false,
             ])
             ->add('phones', 'text', [
-                'label'    => 'frontend.phones_contact',
+                'label'    => $options['registration'] ? 'frontend.register.contact_phones' : 'frontend.phones_contact',
                 'required' => false,
             ])
             ->add('emails', 'text', [
-                'label'    => 'frontend.emails_contact',
+                'label'    => $options['registration'] ? 'frontend.register.contact_emails' : 'frontend.emails_contact',
                 'required' => false,
             ])
             ->add('addressLatitude', 'hidden', [

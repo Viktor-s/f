@@ -3,6 +3,7 @@
 namespace Furniture\RetailerBundle\Controller\Api;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
 use Furniture\UserBundle\Entity\Customer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,13 +60,20 @@ class RetailerApiController
      * @param Request $request
      * @return JsonResponse|RedirectResponse
      */
-    public function nameCheck(Request $request) {
+    public function nameCheck(Request $request)
+    {
         if ($request->request->has('name')) {
             $this->em->getFilters()->disable('softdeleteable');
-            $retailerRepo = $this->em->getRepository(RetailerProfile::class);
-            $retailerProfile = $retailerRepo->findOneBy(['name' => $request->request->get('name')]);
 
-            return new JsonResponse((bool) !$retailerProfile);
+            $retailerRepo = $this->em->getRepository(RetailerProfile::class);
+
+            try {
+                $retailerProfile = $retailerRepo->findOneByName($request->request->get('name'));
+            } catch (NonUniqueResultException $e) {
+                $retailerProfile = true;
+            }
+
+            return new JsonResponse((bool)!$retailerProfile);
         }
 
         $url = '/';

@@ -9,6 +9,23 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 class RetailerProfileRepository extends EntityRepository
 {
     /**
+     * @param $name
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByName($name)
+    {
+        $qb = $this->createQueryBuilder('rp');
+        $qb
+            ->where($qb->expr()->eq($qb->expr()->lower('rp.name'), ':name'))
+            ->setParameter('name', strtolower($name));
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Create filter paginator
      *
      * @param array $criteria

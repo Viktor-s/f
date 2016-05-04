@@ -45,8 +45,6 @@ class CustomerType extends BaseCustomerType
             'choices'     => [
                 0 => 'Retailer',
                 1 => 'Interior designer',
-                2 => 'Simple client',
-                3 => 'Producer',
             ],
             'label'       => false,
             'expanded'    => true,
@@ -62,7 +60,7 @@ class CustomerType extends BaseCustomerType
             ->add('email', 'email', [
                 'attr' => [
                     'data-toggle' => 'tooltip',
-                    'title' => "We'll send confirmation email on specified email address",
+                    'title'       => "We'll send confirmation email on specified email address",
                 ],
             ]);
         $builder->get('lastName')->setRequired(false);
