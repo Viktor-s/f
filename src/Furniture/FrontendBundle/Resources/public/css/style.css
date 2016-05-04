@@ -3846,5 +3846,5 @@ div#calculated-price:before {
     display: inline-block;
     height: 12px;
     width: 22px;
-    background: url(../images/price-arrow.png) no-repeat center;
+    background: url(../img/price-arrow.png) no-repeat center;
 }
