@@ -93,28 +93,35 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
     public function validate(ExecutionContextInterface $context)
     {
         // Validate Product parts
-        $scheme = $this->getScheme();
-        if ($scheme && $scheme->getProductParts()->count()) {
+        $error = false;
+        $product = $this->getProduct();
+
+        $productParts = new ArrayCollection();
+
+        if ($product->isSimpleProductType()) {
+            $productParts = $product->getProductParts();
+        } elseif ($product->isSchematicProductType()) {
+            $productParts = $this->getScheme()->getProductParts();
+        }
+
+        if ($productParts->count()) {
             $selectionArray = [];
             /** @var PersistentCollection $variantSelections */
             $variantSelections = $this->getPartPatternVariantSelections();
-            /** @var PersistentCollection $schemeParts */
-            $schemeParts = $this->getScheme()->getProductParts();
             /** @var ProductPartPatternVariantSelection $selection */
             foreach ($variantSelections as $selection) {
-                if ($schemeParts->contains($selection->getProductPart())) {
+                if ($productParts->contains($selection->getProductPart())) {
                     $selectionArray[$selection->getProductPart()->getId()] = true;
                 }
             }
 
-            if ($scheme->getProductParts()->count() > count($selectionArray)) {
-                $context->buildViolation('You should select at least one variant for each parts')
-                    ->addViolation();
+            if ($productParts->count() > count($selectionArray)) {
+                $error = true;
             }
         }
 
         // Validate SKU options.
-        $productSkuOptions = $this->getProduct()->getSkuOptionVariantsGrouped();
+        $productSkuOptions = $product->getSkuOptionVariantsGrouped();
         if (!empty($productSkuOptions)) {
             $selectionArray = [];
             /** @var ArrayCollection $optionSelections */
@@ -127,9 +134,13 @@ class ProductVariantsPattern extends AbstractProductVariantsPattern
             }
 
             if (count($productSkuOptions) > count($selectionArray)) {
-                $context->buildViolation('You should select at least one SKU option for each groups')
-                    ->addViolation();
+                $error = true;
             }
+        }
+
+        if ($error) {
+            $context->buildViolation('You need to select at least one value for each option')
+                ->addViolation();
         }
     }
 }
