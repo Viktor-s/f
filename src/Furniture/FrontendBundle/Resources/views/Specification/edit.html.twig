@@ -235,9 +235,13 @@
                                 success: function (res) {
                                     $('[rel="final-price"]').html(res.totalPriceWithExtraDisc);
                                     $('[rel="total-price"]').html(res.totalPrice);
+                                    var j = 0;
                                     $('#extra-sale-td .sale').each(function(i){
                                         var saleWrap = $(this);
-                                        saleWrap.find('.discount-summ').html(res.salesAmounts[i]);
+                                        if (parseInt(saleWrap.find('#specification-sale').text()) !== 0) {
+                                            saleWrap.find('.discount-summ').html(res.salesAmounts[j]);
+                                            j++;
+                                        }
                                     });
                                 }
                             });
