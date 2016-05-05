@@ -177,8 +177,6 @@ class FactoryRatesController
         $form = $this->formFactory->create('retailer_factory_rate', $rate);
         $form->handleRequest($request);
 
-        $session->getFlashBag()->add('info', $this->translator->trans('frontend.retailer_profile_side.rates.info_calculations'));
-
         if ($form->isValid()) {
             $this->em->persist($rate);
             $this->em->flush();
@@ -191,6 +189,8 @@ class FactoryRatesController
 
             return new RedirectResponse($url);
         }
+
+        $session->getFlashBag()->add('info', $this->translator->trans('frontend.retailer_profile_side.rates.info_calculations'));
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRate:edit.html.twig', [
             'rate' => $rate,

@@ -10,7 +10,7 @@
 {% block page_content %}
     {% if not rates|length %}
         <div class="pull-right">
-            <a href="{{ path('retailer_profile_factory_rate_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}.</a>
+            <a href="{{ path('retailer_profile_factory_rate_create') }}" class="btn btn-success">{{ 'frontend.create'|trans }}</a>
         </div>
     {% else %}
         <div class="pull-right">

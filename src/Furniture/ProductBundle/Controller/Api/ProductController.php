@@ -106,7 +106,7 @@ class ProductController
         return new JsonResponse([
             'id'       => $product->getId(),
             'image'    => !empty($product->getImage()) ? $this->imagineCacheManager->getBrowserPath($product->getImage()->getPath(), 's300x225') : '/img/300x225.png',
-            'price'    => $product->getPrice(),
+            'price'    => $product->getPrice() / 100,
             'currency' => '€',
         ]);
     }

@@ -29,7 +29,6 @@
                         {% if app.session.flashbag.has(type) is not empty  %}
                             <div class="alert-row">
                                 <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
-                                    <a class="close" data-dismiss="alert" href="#">×</a>
                                     {{ app.session.flashbag.get(type)|join("\n")|nl2br }}
                                 </div>
                             </div>
