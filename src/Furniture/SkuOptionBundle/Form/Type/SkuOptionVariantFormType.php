@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 
 class SkuOptionVariantFormType extends AbstractType {
     
@@ -25,7 +26,7 @@ class SkuOptionVariantFormType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => 'Furniture\SkuOptionBundle\Entity\SkuOptionVariant',
+            'data_class'    => SkuOptionVariant::class,
             'disallow_edit' => false,
         ));
     }
