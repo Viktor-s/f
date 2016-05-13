@@ -59,6 +59,26 @@ class ProductQuery
     private $factoryEnabled = true;
 
     /**
+     * @var string
+     */
+    private $orderedBy;
+
+    /**
+     * @var string
+     */
+    private $orderDirection = 'DESC';
+
+    /**
+     * @var integer
+     */
+    private $limit;
+
+    /**
+     * @var integer
+     */
+    private $offset = 0;
+
+    /**
      * With taxon
      *
      * @param Space $space
@@ -391,7 +411,7 @@ class ProductQuery
      */
     public function hasRetailer()
     {
-        return (bool) $this->retailer;
+        return (bool)$this->retailer;
     }
 
     /**
@@ -470,5 +490,96 @@ class ProductQuery
     public function isFactoryEnabled()
     {
         return $this->factoryEnabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return $this->orderedBy;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return ProductQuery
+     */
+    public function setOrderBy($orderBy)
+    {
+        $this->orderedBy = $orderBy;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOrdered()
+    {
+        return !empty($this->orderedBy);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderDirection()
+    {
+        return $this->orderDirection;
+    }
+
+    /**
+     * @param string $orderDirection
+     * @return ProductQuery
+     */
+    public function setOrderDirection($orderDirection)
+    {
+        $this->orderDirection = $orderDirection;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param mixed $limit
+     * @return ProductQuery
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLimited() {
+        return (bool) $this->limit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     * @return ProductQuery
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
+
+        return $this;
     }
 }

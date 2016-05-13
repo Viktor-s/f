@@ -5,26 +5,29 @@ namespace Furniture\SkuOptionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Furniture\SkuOptionBundle\Entity\SkuOptionType;
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 
 class SkuOptionVariantFormType extends AbstractType {
     
     public function buildForm(FormBuilderInterface $builder, array $options){
-        
+
         $builder
             ->add('skuOptionType', 'entity', [
-                    'class' =>  'Furniture\SkuOptionBundle\Entity\SkuOptionType',
-                    'property' => 'name',
-                    'multiple' => false,
-                    'label' => 'Select Type'
-                ])
-            ->add('value', 'text')
-            ;
+                'class' =>  SkuOptionType::class,
+                'property' => 'name',
+                'multiple' => false,
+                'label' => 'Select Type',
+                'disabled' => $options['disallow_edit'],
+            ])
+            ->add('value', 'text');
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Furniture\SkuOptionBundle\Entity\SkuOptionVariant',
+            'data_class'    => SkuOptionVariant::class,
+            'disallow_edit' => false,
         ));
     }
     

@@ -12,6 +12,8 @@ use Furniture\ProductBundle\Model\ProductPartMaterialVariantSelectionCollection;
 use Furniture\ProductBundle\Pattern\Finder\ProductVariantFinder;
 use Furniture\ProductBundle\Pattern\ProductVariantCreator;
 use Furniture\ProductBundle\Pattern\ProductVariantParameters;
+use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Furniture\RetailerBundle\Entity\RetailerUserProfile;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,6 +152,16 @@ class ProductController
         // Check product for retailer
         $this->checkProductForRetailer($product);
 
+        $factoryRetailerRelation = null;
+        /** @var RetailerUserProfile $retailerUserProfile */
+        $retailerUserProfile = $user->getRetailerUserProfile();
+
+        if ($retailerUserProfile) {
+            /** @var RetailerProfile $retailerProfile */
+            $retailerProfile = $retailerUserProfile->getRetailerProfile();
+            $factoryRetailerRelation = $product->getFactory()->getRetailerRelationByRetailer($retailerProfile);
+        }
+
         $quantity = 1;
 
         // Get active variant
@@ -226,9 +238,30 @@ class ProductController
                     }
                     $item['options'][$inputId][] = $option->getId();
                 }
-
                 $skuMatrix[] = $item;
             }
+
+            if ($activeVariant) {
+                $activeOptions = [];
+                foreach ($activeVariant->getSkuOptions() as $option) {
+                    $inputId = $product->getPdpConfig()->findInputForSkuOption($option->getSkuOptionType())->getId();
+                    $activeOptions[$inputId] = $option->getId();
+                }
+
+                foreach ($activeVariant->getProductPartVariantSelections() as $variantSelection) {
+                    $inputId = $product->getPdpConfig()->findInputForProductPart($variantSelection->getProductPart())->getId();
+                    $activeOptions[$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
+                }
+
+                if ($product->isSchematicProductType()) {
+                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                    $activeOptions[$inputId] = $activeVariant->getProductScheme()->getId();
+                }
+
+                $activeVariantMatrix = $activeOptions;
+
+            }
+
         } else {
             foreach ($product->getVariants() as $variant) {
                 /** @var \Furniture\ProductBundle\Entity\ProductVariant $variant */
@@ -301,6 +334,7 @@ class ProductController
             'specification_item'         => $specificationItem,
             'update_specification_item'  => $updateSpecificationItem,
             'quantity'                   => $quantity,
+            'factory_retailer_relation'  => $factoryRetailerRelation,
         ]);
 
         return new Response($content);
@@ -331,6 +365,21 @@ class ProductController
                         $product->getName(),
                         $factory->getName()
                     ));
+                }
+            } else if ($retailerProfile) {
+                $factory = $product->getFactory();
+
+                if ($factory) {
+                    if (!$this->authorizationChecker->isGranted('VIEW_PRODUCTS', $factory)) {
+                        throw new NotFoundHttpException(sprintf(
+                            'The active retailer "%s" not have rights for view product "%s [%d]" from factory "%s [%d]".',
+                            $retailerProfile->getName(),
+                            $product->getName(),
+                            $product->getId(),
+                            $factory->getName(),
+                            $factory->getId()
+                        ));
+                    }
                 }
             }
         }

@@ -9,27 +9,44 @@
 {% endblock %}
 
 {% block page_content %}
-    <form class="form" method="POST" action="">
-        {{ form_widget(form) }}
+    {{ form_start(form, {'attr': {'class': 'col-sm-9'}}) }}
+    {{ form_widget(form) }}
 
-        <div class="text-center">
-            <input type="submit" class="btn btn-success" value="Save" />
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9 text-right">
+                <button type="submit" class="btn btn-success">{{ 'frontend.save'|trans }}</button>
+            </div>
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}
 
 {% block footer_javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-                function initAutocomplete() {
-                    $('.google-address-autocomplete').each(function(){
-                        autocomplete = new google.maps.places.Autocomplete(
-                            (this),
-                            {types: ['geocode']}
-                        );
-                    });
-                }
+    {% javascripts '@WebBundle/Resources/public/js/google-maps.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     </script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_api_maps_key }}&signed_in=true&libraries=places&callback=initAutocomplete" >
+    <script type="text/javascript">
+        window.googleMapsApiKey = "{{ google_api_maps_key }}";
+        (function ($) {
+            $(document).ready(function () {
+                var addressAutoComplete = $('.address-autocomplete');
+
+                initializeGoogleMaps()
+                    .then(function () {
+                        var autocomplete = new google.maps.places.Autocomplete(addressAutoComplete.get(0), {
+                            types: ['geocode']
+                        });
+
+                        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                            var location = autocomplete.getPlace().geometry.location;
+
+                            $('input[data-address-latitude]').val(location.lat());
+                            $('input[data-address-longitude]').val(location.lng());
+                        });
+                    });
+            });
+        })(jQuery);
     </script>
 {% endblock %}
+

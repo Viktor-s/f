@@ -1,0 +1,21 @@
+{% form_theme form 'SyliusWebBundle:Backend:filterForms.html.twig' %}
+
+<form method="get" class="form-inline form-filter" novalidate>
+    {{ form_row(form.factory) }}
+    {{ form_row(form.useOnSlider) }}
+    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> {{ 'sylius.search'|trans }}</button>
+</form>
+
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('#criteria_factory').select2({
+                allowClear: true
+            });
+
+            $('#criteria_useOnSlider').select2({
+                minimumResultsForSearch: Infinity,
+            });
+        });
+    })(jQuery);
+</script>

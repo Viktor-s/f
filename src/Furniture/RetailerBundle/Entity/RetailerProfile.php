@@ -7,7 +7,19 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\GoogleServicesBundle\Entity\Interfaces\AddressMarkerInterface;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     groups={"RetailerProfileCreate"},
+ *     errorPath="name"
+ * )
+ *
+ */
 class RetailerProfile extends AbstractTranslatable implements AddressMarkerInterface
 {
     /**
@@ -29,6 +41,8 @@ class RetailerProfile extends AbstractTranslatable implements AddressMarkerInter
 
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 

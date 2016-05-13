@@ -1,78 +1,50 @@
 {% spaceless %}
-    <div class="header-wrapper style-16">
-        <header class="type-4 clearfix">
-            <div class="logo-wrapper">
-                <a id="logo" href="/">
-                    <img src="{{ asset('/bundles/frontend/img/agenta-logo.png') }}" alt="" />
-                </a>
-            </div>
-
-            <div class="header-content">
-                <div class="header-top-entry hidden-xs">
-                    <div class="title" style="border-left: none;">
-                        {{ 'frontend.question_and_call'|trans({':phone': '+380630776632'})|raw }}
-                    </div>
-                </div>
-
-                {% if app.user.isFactory() %}
-                    {{ knp_menu_render('frontend.header.factory', {template: 'FrontendBundle:Common/Header:menu.html.twig'}) }}
-                {% elseif app.user.isRetailer() %}
-                    {{ knp_menu_render('frontend.header.retailer', {template: 'FrontendBundle:Common/Header:menu.html.twig'}) }}
-                {% else %}
-                    Undefined user type!
-                {% endif %}
-            </div>
-
-            <div class="header-sidebar">
-                <div class="line-entry">
-                    <a class="header-functionality-entry" href="{{ path('user_profile') }}">
-                        <i class="fa fa-user"></i><span>{{ 'frontend.button.user_profile'|trans }}</span>
-                    </a>
-
-                    {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin() %}
-                        <a class="header-functionality-entry" href="{{ path('retailer_profile') }}">
-                            <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-                        </a>
-                    {% elseif is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER') %}
-                        <a class="header-functionality-entry" href="{{ path('factory_profile') }}">
-                            <i class="fa fa-cog"></i><span>{{ 'frontend.button.settings'|trans }}</span>
-                        </a>
-                    {% endif %}
-
-                    <a class="header-functionality-entry" href="{{ path('security_logout') }}">
-                        <i class="fa fa-sign-in"></i><span>{{ 'frontend.button.logout'|trans }}</span>
+    <header class="header">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-head">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a id="logo" href="/">
+                        <img src="{{ asset('/bundles/frontend/img/agenta-logo.png') }}" alt="">
                     </a>
                 </div>
-
-                <div class="navigation disable-animation">
-                    <div class="navigation-header responsive-menu-toggle-class">
-                        <div class="title">Navigation</div>
-                        <div class="close-menu"></div>
+                <div id="bs-navbar" class="collapse navbar-collapse">
+                    <div class="pull-left main-menu">
+                        <div class="site-name"></div>
+                        {% if app.user.isFactory() %}
+                            {{ knp_menu_render('frontend.header.factory', {template: 'FrontendBundle:Common/Header:menu.html.twig'}) }}
+                        {% elseif app.user.isRetailer() %}
+                            {{ knp_menu_render('frontend.header.retailer', {template: 'FrontendBundle:Common/Header:menu.html.twig'}) }}
+                        {% else %}
+                            Undefined user type!
+                        {% endif %}
                     </div>
-                </div>
-
-                {% if app.user.isRetailer() %}
-                    <div class="header-simple-search">
-                        <div class="simple-search-form">
-                            <form>
-                                <input type="text" name="s" />
-                                <div class="simple-submit">
-                                    <i class="fa fa-search"></i>
-                                    <input type="submit" />
-                                </div>
-                            </form>
+                    <div class="header-right pull-right">
+                        <div class="line-entry">
+                            {{ knp_menu_render('frontend.header.profile', {template: 'FrontendBundle:Common/Header:profile_menu.html.twig', allow_safe_labels: true}) }}
                         </div>
-                    </div>
-                {% endif %}
-
-                <div class="nav-overflow">
-                    <div class="navigation-footer responsive-menu-toggle-class">
-                        <div class="navigation-copyright">Created by <a href="#">AgentA Solutions</a>. All rights reserved</div>
+                        {% if app.user.isRetailer() %}
+                            <div class="header-simple-search">
+                                <div class="simple-search-form">
+                                    <form>
+                                        <input type="text" name="s" />
+                                        <div class="simple-submit">
+                                            <i class="fa fa-search"></i>
+                                            <input type="submit" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </header>
-
-        <div class="clear"></div>
-    </div>
+        </div>
+    </header>
 {% endspaceless %}

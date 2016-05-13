@@ -75,6 +75,9 @@ class User extends BaseUser
         // We should clear confirmation token, because email/username changed
         $this->confirmationToken = null;
 
+        // We should clear verify email hash token, because email/username changed
+        $this->verifyEmailHash = null;
+
         return $this;
     }
 
@@ -258,6 +261,9 @@ class User extends BaseUser
         $this->confirmationToken = md5(uniqid(mt_rand(), true)) . md5(uniqid(mt_rand(), true));
         $this->passwordRequestedAt = new \DateTime();
 
+        // We should clear verify email hash token, because user requested password change.
+        $this->verifyEmailHash = null;
+
         return $this->confirmationToken;
     }
 
@@ -297,9 +303,9 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function resetVerifyEmailHash()
+    public function setVerifyEmailHash($verifyEmailHash)
     {
-        $this->verifyEmailHash = null;
+        $this->verifyEmailHash = $verifyEmailHash;
 
         return $this;
     }

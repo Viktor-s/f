@@ -3,11 +3,15 @@
 namespace Furniture\FrontendBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\CommonBundle\Util\ViolationListUtils;
+use Furniture\FrontendBundle\Repository\Query\SpecificationQuery;
 use Furniture\FrontendBundle\Repository\SpecificationBuyerRepository;
 use Furniture\FrontendBundle\Repository\SpecificationRepository;
 use Furniture\SpecificationBundle\Entity\Buyer;
+use Furniture\SpecificationBundle\Entity\Specification;
 use Furniture\SpecificationBundle\Form\Type\BuyerType;
+use Furniture\SpecificationBundle\Form\Type\SpecificationType;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -243,7 +247,7 @@ class SpecificationBuyerController
      *
      * @return Response
      */
-    public function specifications($buyer)
+    public function specifications(Request $request, $buyer)
     {
         $buyer = $this->buyerRepository->find($buyerId = $buyer);
 
@@ -266,20 +270,74 @@ class SpecificationBuyerController
         /** @var \Furniture\UserBundle\Entity\User $creator */
         $creator = $this->tokenStorage->getToken()->getUser();
         $retailer = $creator->getRetailerUserProfile();
+        $specificationQuery = new SpecificationQuery();
+        $choices = [
+            'all' => 'All',
+            'opened' => 'Opened',
+            'finished' => 'Finished',
+        ];
+        $filters = new SimpleChoiceList($choices);
 
         if ($retailer && $retailer->isRetailerAdmin()) {
             $profile = $retailer->getRetailerProfile();
             $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndRetailer($profile, $buyer);
             $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndRetailer($profile, $buyer);
+            $specificationQuery
+                ->withRetailer($profile)
+                ->withBuyer($buyer);
         } else {
             $openedSpecifications = $this->specificationRepository->findOpenedForBuyerAndUser($creator, $buyer);
             $finishedSpecifications = $this->specificationRepository->findFinishedForBuyerAndUser($creator, $buyer);
+            $specificationQuery
+                ->withUser($creator)
+                ->withBuyer($buyer);
         }
 
+        if ($request->query->has('filter')) {
+            switch ($request->query->get('filter')) {
+                case 'opened':
+                    $specificationQuery->opened();
+                    $filters->setSelectedItem('opened');
+                    break;
+
+                case 'finished':
+                    $specificationQuery->finished();
+                    $filters->setSelectedItem('finished');
+                    break;
+
+                default:
+                    $filters->setSelectedItem('all');
+            }
+        }
+        else {
+            // By default show only opened specifications
+            $specificationQuery->opened();
+            $filters->setSelectedItem('opened');
+        }
+
+        /* Create product paginator */
+        $currentPage = (int)$request->get('page', 1);
+        $specifications = $this->specificationRepository->findBy($specificationQuery);
+
+        if ($specifications->getNbPages() < $currentPage) {
+            $specifications->setCurrentPage(1);
+        } else {
+            $specifications->setCurrentPage($currentPage);
+        }
+
+        $specification = new Specification();
+        $specification->setCreator($creator->getRetailerUserProfile());
+        $specification->setBuyer($buyer);
+
+        $form = $this->formFactory->create(new SpecificationType(), $specification, [
+            'owner' => $creator,
+        ]);
+
         $content=  $this->twig->render('FrontendBundle:Specification/Buyer:specifications.html.twig', [
-            'buyer' => $buyer,
-            'opened_specifications' => $openedSpecifications,
-            'finished_specifications' => $finishedSpecifications
+            'buyer'          => $buyer,
+            'specifications' => $specifications,
+            'filters'        => $filters,
+            'form'           => $form->createView(),
         ]);
 
         return new Response($content);

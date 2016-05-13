@@ -9,7 +9,7 @@
 {% block page_content %}
     <div class="row">
         {% if app.user.isRetailer() %}
-            <div class="col-md-3">
+            <div class="col-sm-6 text-center">
                 {% if app.user.retailerUserProfile.retailerProfile.logoImage and app.user.retailerUserProfile.retailerProfile.logoImage.path %}
                     <img src="{{ app.user.retailerUserProfile.retailerProfile.logoImage.path|imagine_filter('s200x200') }}" />
                 {% else %}
@@ -17,41 +17,39 @@
                 {% endif %}
             </div>
 
-            <div class="col-md-9">
-                <div class="article-container style-1">
-                    <h3>{{ 'frontend.retailer'|trans }}: {{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
+            <div class="col-sm-6">
+                <div class="user-dashboard article-container style-1">
+                    <h3>{{ app.user.retailerUserProfile.retailerProfile.name }}</h3>
 
                     {% if app.user.retailerUserProfile.retailerProfile.address %}
                         <div class="address">
-                            <b>{{ 'frontend.address'|trans }}:</b>
                             {{ app.user.retailerUserProfile.retailerProfile.address }}
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.phones|length > 0 %}
                         <div class="phones">
-                            <b>{{ 'frontend.phones'|trans }}:</b>
+                            <ul>
                             {% for phone in app.user.retailerUserProfile.retailerProfile.phones %}
-                                <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                                <li>{{ phone }}{% if not loop.last %}, {% endif %}</li>
                             {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.emails|length > 0 %}
                         <div class="emails">
-                            <b>{{ 'frontend.emails'|trans }}:</b>
+                            <ul>
                             {% for email in app.user.retailerUserProfile.retailerProfile.emails %}
-                                <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
+                                <li class="item">{{ email }}{% if not loop.last %}, {% endif %}</li>
                             {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
 
                     {% if app.user.retailerUserProfile.retailerProfile.website %}
                         <div class="website">
-                            <b>{{ 'frontend.website'|trans }}:</b>
-                            <a href="{{ app.user.retailerUserProfile.retailerProfile.website }}" target="_blank">
-                                {{ app.user.retailerUserProfile.retailerProfile.website }}
-                            </a>
+                            <a href="{{ app.user.retailerUserProfile.retailerProfile.website|format_url(['scheme', 'host', 'path']) }}" target="_blank">{{ app.user.retailerUserProfile.retailerProfile.website|format_url(['host']) }}</a>
                         </div>
                     {% endif %}
                 </div>
@@ -72,36 +70,40 @@
         <div class="col-md-12">
             <br/>
             <hr/>
-            <div class="article-container style-1">
+            <div class="user-dashboard article-container style-1">
                 <h5>{{ app.user.customer.firstName }} {{ app.user.customer.lastName }} </h5>
 
                 <div class="emails">
-                    <b>{{ 'frontend.email'|trans }}:</b>
-                    <span class="item">{{ app.user.customer.email }}</span>
+                    <ul>
+                        <li>{{ app.user.customer.email }}</li>
+                    </ul>
                 </div>
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.phones|length > 0 %}
                     <div class="phones">
-                        <b>{{ 'frontend.phones_contact'|trans }}:</b>
+                        <ul>
                         {% for phone in app.user.retailerUserProfile.phones %}
-                            <span class="item">{{ phone }}{% if not loop.last %}, {% endif %}</span>
+                            <li class="item">{{ phone }}{% if not loop.last %}, {% endif %}</li>
                         {% endfor %}
+                        </ul>
                     </div>
                 {% endif %}
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.emails|length > 0 %}
                     <div class="emails">
-                        <b>{{ 'frontend.emails'|trans }}:</b>
+                        <ul>
                         {% for email in app.user.retailerUserProfile.emails %}
-                            <span class="item">{{ email }}{% if not loop.last %}, {% endif %}</span>
+                            <li class="item">{{ email }}{% if not loop.last %}, {% endif %}</li>
                         {% endfor %}
+                        </ul>
                     </div>
                 {% endif %}
 
                 {% if app.user.retailerUserProfile and app.user.retailerUserProfile.position %}
                     <div class="position">
-                        <b>{{ 'frontend.position'|trans }}:</b>
-                        {{ app.user.retailerUserProfile.position }}
+                        <ul>
+                            <li>{{ app.user.retailerUserProfile.position }}</li>
+                        </ul>
                     </div>
                 {% endif %}
             </div>

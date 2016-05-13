@@ -2,8 +2,16 @@ services:
     product.controller.api.pattern_product_creator:
         class: Furniture\ProductBundle\Controller\Api\PatternProductCreatorController
         arguments:
-            - @product_pattern.product_variant_creator
-            - @product_pattern.product_variant_parameters_validator
-            - @form.factory
-            - @doctrine.orm.default_entity_manager
-            - @pricing.calculator
+            - '@product_pattern.product_variant_creator'
+            - '@product_pattern.product_variant_parameters_validator'
+            - '@form.factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@pricing.calculator'
+
+    product.controller.api.product_controller:
+        class: Furniture\ProductBundle\Controller\Api\ProductController
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@liip_imagine.cache.manager'

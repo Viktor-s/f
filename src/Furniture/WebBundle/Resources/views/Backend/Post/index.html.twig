@@ -18,16 +18,16 @@
 
         <h1><i class="glyphicon glyphicon-list-alt"></i> {{ 'post.header.index'|trans|raw }}</h1>
     </div>
-
+    {% render(controller('sylius.controller.backend.form:postsFilterAction')) %}
     {{ pagination(posts) }}
 
     <table class="table">
         <thead>
         <tr>
-            <th class="text-center">{{ 'post.table.id'|trans }}</th>
+            <th class="text-center">{{ sylius_resource_sort('id', 'post.table.id'|trans) }}</th>
             <th class="text-center">{{ 'post.table.creator'|trans }}</th>
             <th class="text-center">{{ 'post.table.factory'|trans }}</th>
-            <th class="text-center">{{ 'post.table.created_at'|trans }}</th>
+            <th class="text-center">{{ sylius_resource_sort('createdAt', 'post.table.created_at'|trans) }}</th>
             <th class="text-center">{{ 'post.table.name'|trans }}</th>
             <th class="text-center">{{ 'post.table.slug'|trans }}</th>
             <th class="text-center">{{ 'post.table.actions'|trans }}</th>

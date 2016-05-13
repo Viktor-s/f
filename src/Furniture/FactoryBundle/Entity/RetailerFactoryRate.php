@@ -38,8 +38,9 @@ class RetailerFactoryRate
      * @var float
      *
      * @Assert\Range(min = 1)
+     * @Assert\NotBlank()
      */
-    private $coefficient;
+    private $coefficient = 1;
 
     /**
      * In percentage (1 - 100)

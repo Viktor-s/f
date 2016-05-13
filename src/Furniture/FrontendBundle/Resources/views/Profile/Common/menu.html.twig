@@ -1,7 +1,7 @@
 {% block root %}
 {% spaceless %}
     <ul>
-        {% for child in item.children %}
+        {% for child in item.children if child.displayed %}
             <li>
                 <a href="{{ child.uri }}">{{ child.label }}</a>
             </li>

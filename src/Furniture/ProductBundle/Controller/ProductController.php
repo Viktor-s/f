@@ -2,6 +2,7 @@
 
 namespace Furniture\ProductBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\ProductBundle\Form\Type\ProductPdpConfigType;
 use Sylius\Bundle\CoreBundle\Controller\ProductController as BaseProductController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -152,12 +153,26 @@ class ProductController extends BaseProductController
         $product = $this->findOr404($request);
         $config = $product->getPdpConfig();
 
+        $originalInputs = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($config->getInputs() as $input) {
+            $originalInputs->add($input);
+        }
+
         $form = $this->createForm(new ProductPdpConfigType(), $config);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.default_entity_manager');
+            foreach ($originalInputs as $input) {
+                if (false === $config->getInputs()->contains($input)) {
+                    $em->persist($input);
+                    $em->remove($input);
+                }
+            }
+
             $em->persist($config);
             $em->flush();
 

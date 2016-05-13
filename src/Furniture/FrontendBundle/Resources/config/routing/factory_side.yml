@@ -1,58 +1,58 @@
-factory_side_list:
-    path: /
-    methods: [ GET ]
-    requirements: { _locale: %available_locales% }
-    defaults:
-        _controller: frontend.controller.factory_side:factories
+#factory_side_list:
+#    path: /
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales% }
+#    defaults:
+#        _controller: frontend.controller.factory_side:factories
     
-factory_side_general:
-    path: /{factory}
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.factory_side:general
+#factory_side_general:
+#    path: /{factory}
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:general
+#
+#factory_side_news:
+#    path: /{factory}/news
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:news
+#
+#factory_side_news_view:
+#    path: /{factory}/news/{slug}
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:post
+#
+#factory_side_circulars:
+#    path: /{factory}/circulars
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:circulars
+#
+#factory_side_circular:
+#    path: /{factory}/circular/{slug}
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:post
+#
+#factory_side_contacts:
+#    path: /{factory}/contacts
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:contacts
 
-factory_side_news:
-    path: /{factory}/news
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.factory_side:news
-
-factory_side_news_view:
-    path: /{factory}/news/{slug}
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
-    defaults:
-        _controller: frontend.controller.factory_side:post
-
-factory_side_circulars:
-    path: /{factory}/circulars
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.factory_side:circulars
-
-factory_side_circular:
-    path: /{factory}/circular/{slug}
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+, slug: .+ }
-    defaults:
-        _controller: frontend.controller.factory_side:post
-
-factory_side_contacts:
-    path: /{factory}/contacts
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.factory_side:contacts
-
-factory_side_work_info:
-    path: /{factory}/work-info
-    methods: [ GET ]
-    requirements: { _locale: %available_locales%, factory: \d+ }
-    defaults:
-        _controller: frontend.controller.factory_side:workInfo
+#factory_side_work_info:
+#    path: /{factory}/work-info
+#    methods: [ GET ]
+#    requirements: { _locale: %available_locales%, factory: \d+ }
+#    defaults:
+#        _controller: frontend.controller.factory_side:workInfo
 
 #factory_side_collections:
 #    path: /{factory}/collections

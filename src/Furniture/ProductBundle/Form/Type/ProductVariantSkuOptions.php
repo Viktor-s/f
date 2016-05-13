@@ -5,6 +5,8 @@ namespace Furniture\ProductBundle\Form\Type;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
+use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 
 class ProductVariantSkuOptions extends AbstractType
 {
@@ -34,23 +36,20 @@ class ProductVariantSkuOptions extends AbstractType
             $id = $skuOption->getSkuOptionType()->getId();
             $data[$id] = $skuOption;
         }
-        
-        $i = 0;
 
         foreach($this->variant->getProduct()->getSkuOptionVariantsGrouped() as $grouped){
-            /** @var \Furniture\SkuOptionBundle\Entity\SkuOptionType $skuOptionType */
+            /** @var SkuOptionType $skuOptionType */
             $skuOptionType = $grouped[0]->getSkuOptionType();
             $id = $skuOptionType->getId();
 
-            $builder->add( $i, 'entity', [
-                'class' => 'Furniture\SkuOptionBundle\Entity\SkuOptionVariant',
+            $builder->add( $id, 'entity', [
+                'class'        => SkuOptionVariant::class,
                 'choice_label' => 'value',
-                'label' => $skuOptionType->getName(),
-                'choices' => $grouped,
-                'data' => isset($data[$id]) ? $data[$id] : null,
+                'label'        => $skuOptionType->getName(),
+                'choices'      => $grouped,
+                'data'         => isset($data[$id]) ? $data[$id] : null,
+                'required'     => false,
             ]);
-
-            $i ++;
         }
         
     }

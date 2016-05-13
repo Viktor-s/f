@@ -130,13 +130,6 @@ class BackendMenuBuilder extends MenuBuilder
             ])->setLabel('Product: Styles');
         }
 
-        if ($this->authorizationChecker->isGranted('furniture.product_readiness.index')) {
-            $child->addChild('product_readiness', [
-                'route' => 'furniture_backend_product_readiness_index',
-                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th-list']
-            ])->setLabel($this->translate((sprintf('sylius.backend.menu.%s.product_readiness', $section))));
-        }
-
         if ($this->authorizationChecker->isGranted('sylius.product_option.index')) {
             $child->addChild('options',[
                  'route'           => 'sylius_backend_product_option_index',
@@ -145,7 +138,6 @@ class BackendMenuBuilder extends MenuBuilder
         }
 
         if ($this->authorizationChecker->isGranted('sylius.product_attribute.index')) {
-            dump($section);
             $child->addChild('sku_attributes', [
                 'route' => 'furniture_backend_sku_option_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt'],
@@ -167,6 +159,13 @@ class BackendMenuBuilder extends MenuBuilder
                 'route' => 'furniture_backend_factory_index',
                 'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
             ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory', $section)));
+        }
+
+        if ($this->authorizationChecker->isGranted('furniture.factories_retialers_relations.index')) {
+            $child->addChild('factory_retail_relations', [
+                'route'           => 'furniture_backend_factories_retailers_relations_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-list-alt']
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.factory_retailer_relations', $section)));
         }
         
         if ($this->authorizationChecker->isGranted('furniture.product_part_type.index')) {

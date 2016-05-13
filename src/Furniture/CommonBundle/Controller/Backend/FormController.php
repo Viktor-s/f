@@ -3,7 +3,9 @@
 namespace Furniture\CommonBundle\Controller\Backend;
 
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\ProductBundle\Entity\Readiness;
+use Furniture\FactoryBundle\Form\Type\FactoryRetailerRelationFilterType;
+use Furniture\PostBundle\Form\Type\PostFilterType;
+use Furniture\ProductBundle\Form\Type\Filter\ProductPartMaterialFilterType;
 use Furniture\RetailerBundle\Form\Type\RetailerProfileFilterType;
 use Furniture\SpecificationBundle\Form\Type\SpecificationFilterType;
 use Sylius\Bundle\WebBundle\Controller\Backend\FormController as BaseFormController;
@@ -48,14 +50,6 @@ class FormController extends BaseFormController
             $data['factory'] = $em->find(Factory::class, $data['factory']);
         }
 
-        if (!empty($data['statuses'])) {
-            $data['statuses'] = array_map(function ($statusId) use ($em) {
-                return $em->find(Readiness::class, $statusId);
-            }, $data['statuses']);
-
-            $data['statuses'] = array_filter($data['statuses']);
-        }
-
         if (empty($data['priceFrom'])) {
             unset ($data['priceFrom']);
         }
@@ -67,6 +61,30 @@ class FormController extends BaseFormController
         $form = $this->get('form.factory')->createNamed('criteria', 'sylius_product_filter', $data);
 
         return $this->render('SyliusWebBundle:Backend/Product:filterForm.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Create a product filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function productPartMaterialFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+
+        $em = $this->getDoctrine()->getManager();
+
+        if (!empty($data['factory'])) {
+            $data['factory'] = $em->find(Factory::class, $data['factory']);
+        }
+
+        $form = $this->get('form.factory')->createNamed('criteria', new ProductPartMaterialFilterType(), $data);
+
+        return $this->render('SyliusWebBundle:Backend/ProductPartMaterial:filterForm.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -103,6 +121,42 @@ class FormController extends BaseFormController
         $form = $this->get('form.factory')->createNamed('criteria', new SpecificationFilterType(), $data);
 
         return $this->render('WebBundle:Backend/Specification:filterForm.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Create a factories retailers relations filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function factoriesRetailersRelationsFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->get('form.factory')->createNamed('criteria', new FactoryRetailerRelationFilterType($em), $data);
+
+        return $this->render('WebBundle:Backend/FactoriesRetailersRelations:filterForm.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Create a factories retailers relations filter form
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postsFilterAction()
+    {
+        $requestStack = $this->get('request_stack');
+        $request = $requestStack->getMasterRequest();
+        $data = $request->get('criteria');
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->get('form.factory')->createNamed('criteria', new PostFilterType($em), $data);
+
+        return $this->render('WebBundle:Backend/Post:filterForm.html.twig', [
             'form' => $form->createView()
         ]);
     }

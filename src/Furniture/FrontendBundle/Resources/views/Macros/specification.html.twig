@@ -1,0 +1,157 @@
+{% macro list_toolbar(filters, paginator, buttons = true) %}
+    {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
+    <div class="row mv-actions">
+        <div class="col-sm-2 col-xs-4 col-lg-2">
+            <div class="filter-wrapper">
+                {{ sorting_select(filters, {'name': 'filter', 'class': 'form-control'}) }}
+            </div>
+        </div>
+        <div class="col-sm-2 col-xs-4 col-lg-1">
+            {% if buttons %}
+                <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createSpecification">
+                    {{ 'frontend.create'|trans }}
+                </button>
+            {% endif %}
+        </div>
+        <div class="col-sm-6 col-xs-4 col-lg-4 col-sm-push-2 col-lg-push-5">
+            {{ paginator }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro edit_toolbar(specification, position)  %}
+    <div class="row toolbar toolbar-{{ position }}">
+        <div class="col-md-3 col-sm-4">
+            <div class="simple-search-form">
+                <input type="text" id="search-{{ position }}" placeholder="Search in this specification">
+                <div class="submit-icon">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-5 col-sm-offset-3 col-md-offset-5">
+            <div class="text-right">
+                <a href="#" id="add-custom-item-btn-{{ position }}" class="btn btn-primary">AddCustom</a>
+                {% if not specification.finished and specification.items|length > 0 and is_granted('FINISH', specification) %}
+                    <a class="btn btn-finish btn-xs" data-remove data-message="Are you sure you want to finish (close) specification?" href="{{ path('specification_finish', {specification: specification.id}) }}">{{ 'frontend.finish'|trans }}</a>
+                {% endif %}
+                {% if is_granted('EXPORT', specification) and specification.items|length > 0 %}
+                    <a class="btn btn-export btn-xs" href="{{ path('specification_export_preview', {specification: specification.id}) }}">{{ 'frontend.export'|trans }}</a>
+                {% endif %}
+                <a class="glyphicon glyphicon-remove mv-remove" data-toggle="tooltip" title="Remove" aria-hidden="true" href="{{ path('specification_remove', {specification: specification.id}) }}" data-remove="" data-message="Are you sure you want to remove this specification?"></a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro export_toolbar(specification, filters, position) %}
+    {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
+    <div class="toolbar toolbar-{{ position }}">
+        <div class="row">
+            <div class="col-sm-3 col-xs-4 col-lg-2">
+                <div class="filter-wrapper">
+                    {{ sorting_select(filters, {'id': 'filter-'~position, 'name': 'filter', 'class': 'form-control', 'data-position': position}) }}
+                </div>
+            </div>
+            <div class="col-sm-4 col-sm-offset-5 col-xs-4 col-lg-3 col-lg-offset-7 text-right">
+                <button type="submit" class="btn btn-export" value="excel" name="format">
+                    <i class="fa fa-download"></i>
+                    {{ 'frontend.export_to_excel'|trans }}
+                </button>
+                <button type="submit" value="pdf" name="format" class="btn btn-export">
+                    <i class="fa fa-download"></i>
+                    {{ 'frontend.export_to_pdf'|trans }}
+                </button>
+                <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-edit btn-primary">
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro specification_header(specification, title, edit = true)  %}
+    {% spaceless %}
+        <div class="row specification-edit-head">
+            <div class="col-md-4 col-sm-4">
+                <div class="block-spec-head">
+                    <h3>{{ title }}</h3>
+                </div>
+                <table class="table table-stripped table-condensed specification-info">
+                    <tr>
+                        <td>{{ 'frontend.specficatior.document_label'|trans }}</td>
+                        <td class="document-number{% if edit is same as(true) %} editable{% endif %}" id="specification-document" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
+                            {{ specification.documentNumber }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'frontend.specficatior.created_label'|trans }}</td>
+                        <td>{{ specification.createdAt.format('Y/m/d H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'frontend.specficatior.client_label'|trans }}</td>
+                        <td  class="buyer{% if edit is same as(true) %} editable{% endif %}" id="specification-buyer" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
+                            {{ specification.buyer|default('None') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'frontend.specficatior.email_label'|trans }}</td>
+                        <td>{{ specification.buyer ? specification.buyer.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'frontend.specficatior.phone_label'|trans }}</td>
+                        <td>{{ specification.buyer ? specification.buyer.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'frontend.specficatior.name_label'|trans }}</td>
+                        <td class="name{% if edit is same as(true) %} editable{% endif %}" id="specification-name" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>
+                            {{ specification.name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ 'frontend.specficatior.notes'|trans }} <br/><span class="text-muted">{{ 'frontend.specficatior.will_not_appear_in_specification'|trans }}
+                        </td>
+                        <td class="description{% if edit is same as(true) %} editable{% endif %}" id="specification-description" {% if edit is same as(true) %}data-toggle="tooltip" title="Click to edit"{% endif %}>{{ specification.description|default('None') }}</td>
+                    </tr>
+                    {% if specification.buyer and specification.buyer.hasSale() %}
+                        <tr>
+                            <td>{{ 'frontend.sale'|trans }}</td>
+                            <td>{{ specification.buyer.sale }}%</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <div class="block-spec-head">
+                    <h3>{{ specification.creator.retailerProfile.name }}</h3>
+                </div>
+                <table class="table table-stripped table-condensed">
+                    <tr>
+                        <td>
+                            <span class="mg-name">{{ specification.creator.user.fullName }}</span><br/>
+                            <span class="mg-mail">{{ specification.creator.user.customer.email }}</span>
+                        </td>
+                    </tr>
+                    {% if specification.creator.retailerProfile.address|trim is not empty %}
+                    <tr>
+                        <td>{{ specification.creator.retailerProfile.address }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
+                            {{ specification.creator.retailerProfile.phones|join(', ') }}
+                        </td>
+                    </tr>
+                    <tr>
+                </table>
+            </div>
+            <div class="col-md-3 col-sm-3 col-md-offset-1 col-sm-offset-1">
+                <div class="thumbnail company-logo">
+                    <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endmacro %}

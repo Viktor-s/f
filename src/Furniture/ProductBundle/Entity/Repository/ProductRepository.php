@@ -3,7 +3,6 @@
 namespace Furniture\ProductBundle\Entity\Repository;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\ProductBundle\Entity\Product;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductRepositiry;
 
@@ -70,7 +69,7 @@ class ProductRepository extends BaseProductRepositiry
             ->from('specification_item', 'si')
             ->innerJoin('si', 'sku_specification_item', 'ssi', 'ssi.speicifcation_item_id = si.id')
             ->innerJoin('ssi', 'product_variant', 'pv', 'pv.id = ssi.product_id')
-            ->innerJoin('pv', 'product', 'p', 'pv.product_id = pv.id')
+            ->innerJoin('pv', 'product', 'p', 'pv.product_id = p.id')
             ->andWhere('p.id = :product_id')
             ->setParameter('product_id', $product->getId())
             ->setMaxResults(1);
@@ -97,6 +96,7 @@ class ProductRepository extends BaseProductRepositiry
     public function createFilterPaginator($criteria = [], $sorting = [], $deleted = false)
     {
         $queryBuilder = parent::getCollectionQueryBuilder();
+        $queryBuilder->leftJoin('product.variants', 'variant');
 
         if (!empty($criteria['name'])) {
             $queryBuilder
@@ -116,44 +116,36 @@ class ProductRepository extends BaseProductRepositiry
                 ->setParameter('factory', $criteria['factory']);
         }
 
-        if (!empty($criteria['priceFrom']) || !empty($criteria['priceTo'])) {
-            $queryBuilder->addSelect('variant');
-
-            $exprPriceFrom = null;
-            $exprPriceTo = null;
-
-            if (!empty($criteria['priceFrom'])) {
-                $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
-                $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
-            }
-
-            if (!empty($criteria['priceTo'])) {
-                $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
-                $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
-            }
-
-            $queryBuilder->leftJoin('product.variants', 'variant', \Doctrine\ORM\Query\Expr\Join::WITH,
-                $queryBuilder->expr()->andX(
-                    $exprPriceFrom,
-                    $exprPriceTo
-                )
-            );
+        // Price filter.
+        if (!empty($criteria['priceFrom'])) {
+            $exprPriceFrom = $queryBuilder->expr()->gte('variant.price', ':price_from');
+            $queryBuilder->setParameter('price_from', $criteria['priceFrom'] * 100);
+            $queryBuilder->andWhere($exprPriceFrom);
         }
 
-        if (!empty($criteria['statuses'])) {
-            $queryBuilder
-                ->innerJoin('product.readinesses', 'readiness');
+        if (!empty($criteria['priceTo'])) {
+            $exprPriceTo = $queryBuilder->expr()->lte('variant.price', ':price_to');
+            $queryBuilder->setParameter('price_to', $criteria['priceTo'] * 100);
+            $queryBuilder->andWhere($exprPriceTo);
+        }
 
-            $andX = $queryBuilder->expr()->andX();
-
-            $index = 0;
-            array_map(function ($status) use ($queryBuilder, $andX, &$index) {
-                $andX->add('readiness.id = :readiness_' . $index);
-                $queryBuilder->setParameter('readiness_' . $index, $status);
-                $index++;
-            }, $criteria['statuses']);
-
-            $queryBuilder->andWhere($andX);
+        if (!empty($criteria['status'])) {
+            $status = $criteria['status'] === 'unavailable' ? false : true;
+            if ($status) {
+                $queryBuilder
+                    ->andWhere('product.availableForSale = :availableForSale')
+                    ->setParameter('availableForSale', $status);
+            }
+            else {
+                $queryBuilder
+                    ->andWhere(
+                        $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq('product.availableForSale', ':availableForSale'),
+                            $queryBuilder->expr()->isNull('product.availableForSale')
+                        )
+                    )
+                    ->setParameter('availableForSale', $status);
+            }
         }
 
         if (empty($sorting)) {

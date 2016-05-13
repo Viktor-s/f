@@ -108,13 +108,13 @@
                                 <li>
                                     <div class="tree-opener">+</div>
                                     <label class="tree-toggle nav-header checkbox-entry">
-                                        <input type="checkbox"> <span class="check"></span>{{ material.name }}
+                                        <input type="checkbox" class="system-check-group"> <span class="check"></span>{{ material.name }}
                                     </label>
                                     <ul class="nav nav-list tree">
                                         {% for grouped in  material.getGroupedOptionValues() %}                                            
                                             <li>
                                                 <label class="checkbox-entry tree-toggle ">
-                                                    <input type="checkbox"> <span class="check"></span> {{ grouped.option.name }}
+                                                    <input type="checkbox" class="system-check-group"> <span class="check"></span> {{ grouped.option.name }}
                                                 </label>
                                                 <ul class="nav nav-list tree">
                                                 {% for value in grouped.values %}
@@ -152,13 +152,20 @@
                             {{ skuOptionGroup[0].name }}
                         </div>
                         <ul class="list-group">
-                            {% for skuValue in skuOptionGroup %}
-                                <li class="list-group-item">
-                                    <label class="checkbox-entry">
-                                        <input class="system-sku-option-value" data-sku-option-value-map="{{ skuValue.skuOptionType.name }}_{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
-                                    </label>
-                                </li>
-                            {% endfor %}
+                            <li class="list-group-item">
+                                <label class="checkbox-entry tree-toggle ">
+                                    <input type="checkbox" class="system-check-group"> <span class="check"></span> {{ skuOptionGroup[0].name }}
+                                </label>
+                                <ul class="nav nav-list tree">
+                                    {% for skuValue in skuOptionGroup %}
+                                        <li>
+                                            <label class="checkbox-entry">
+                                                <input class="system-sku-option-value" data-sku-option-value-map="{{ skuValue.skuOptionType.name }}_{{ skuValue.id }}" type="checkbox"> <span class="check"></span>{{ skuValue.value }}
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -180,7 +187,14 @@
                var productPartMaterialVariantSelectionPrefix = 'product_pattern_partPatternVariantSelections_';
                var productPartMaterialVariantSelectionPostfix = '_productPartMaterialVariant';
                var skuOptionPrefix = 'product_pattern_skuOptionValues_';
-               
+
+                $('.system-check-group').on('change', function(e){
+                    $(this)
+                            .parent('.tree-toggle')
+                            .siblings('ul.tree')
+                            .find('>li>label.checkbox-entry input[type="checkbox"]')
+                            .prop('checked', $(this).prop('checked')).trigger('change');
+                });
                /* Sync sku options */
                $('.system-sku-option-value').change(function(){
                    var el = $(this);

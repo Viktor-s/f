@@ -1,0 +1,138 @@
+{% macro filter_panel(list, checked_list, name, title, show = 4) %}
+    {% spaceless %}
+        {% if list is not empty %}
+            {% set show = ((checked_list|length) > show ? checked_list|length : show) %}
+            {% set unchecked_show = ((checked_list|length) < show ? show - (checked_list|length) : 0) %}
+            {% set already_shown = [] %}
+            <div class="panel col-xs-6 col-sm-12">
+                <a href="#{{ name }}-filter" class="filter-category" data-toggle="collapse" aria-expanded="true" aria-controls="{{ name }}-filter">{{ title }}</a>
+                <ul class="collapse in" id="{{ name }}-filter">
+                {# Checked first #}
+                {% for item in list if checked_list is iterable and item.id in checked_list %}
+                    {% if loop.index <= show %}
+                        {% set already_shown = already_shown|merge([item.id]) %}
+                        <li>
+                            <input id="checkbox-{{ name }}-{{ item.id }}" checked type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                            <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% for item in list if item.id not in already_shown %}
+                    {% if loop.index <= unchecked_show  %}
+                    {% set already_shown = already_shown|merge([item.id]) %}
+                    <li>
+                        <input id="checkbox-{{ name }}-{{ item.id }}" {% if checked_list is iterable and item.id in checked_list %} checked{% endif %} type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                        <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                {% if (list|length) > show %}
+                    <li class="collapsed-items">
+                        <ul class="collapse" id="{{ name }}-more-filter">
+                        {% for item in list if item.id not in already_shown %}
+                            <li>
+                                <input id="checkbox-{{ name }}-{{ item.id }}" {% if checked_list is iterable and item.id in checked_list %} checked{% endif %} type="checkbox" value="{{ item.id }}" live-form name="{{ name }}[]" />
+                                <label for="checkbox-{{ name }}-{{ item.id }}" class="checkbox-name">{{ item.translate.name is not empty ? item.translate.name : item.name}}</label>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        <a href="#{{ name }}-more-filter" class="filter-category-more collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="{{ name }}-more-filter"></a>
+                    </li>
+                {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro sorting_panel(filters, per_page, position, pagination) %}
+    {% from 'FrontendBundle:Macros:misc.html.twig' import sorting_select %}
+    {% spaceless %}
+        <div class="row {{ position }}-content-filter">
+            <div class="filters col-xs-12 col-sm-6 col-sm-offset-3">
+                <div class="row text-center">
+                    <ul class="shop-grid-controls">
+                        <li class="sorting-label"><label for="sorting">{{ 'frontend.sort_by'|trans }}</label></li>
+                        <li>
+                            <div class="form-group">
+                                <div class="filter-wrapper">
+                                    {{ sorting_select(filters, {'name': 'sorting', 'id': 'sorting',  'class': 'form-control', 'live-form':'true'}) }}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="sorting-label"><label for="sorting">{{ 'frontend.per_page'|trans }}</label></li>
+                        <li>
+                            <div class="form-group">
+                                <div class="filter-wrapper">
+                                    {{ sorting_select(per_page, {'name': 'per_page', 'id': 'per-page',  'class': 'form-control', 'live-form':'true'}) }}
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="sort-block">
+                                <div class="sort-button">
+                                    <i class="fa fa-arrow-down"></i>
+                                    <i class="fa fa-arrow-up"></i>
+                                </div>
+                            </div>
+                        </li>
+                        {# LIST GRID SWITCHER#}
+                        {#<li>#}
+                            {#<div class="entry">#}
+                                {#<div class="view-button active grid"><i class="fa fa-th"></i></div>#}
+                                {#<div class="view-button list"><i class="fa fa-list"></i></div>#}
+                            {#</div>#}
+                        {#</li>#}
+                    </ul>
+                </div>
+            </div>
+            <div class="pagination col-xs-12 col-sm-3 text-right">
+                {{ pagination }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro product_grid_view(product, image_size = '300x225', attr = {}) %}
+{% if attr is empty %}
+{% set attr = attr|merge({'class': 'col-xs-6 col-md-4 col-sm-4 shop-grid-item', 'data-factory': product.factory.name }) %}
+{% endif %}
+    <!-- one product -->
+    <div {% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        <div class="product-slide-entry">
+            <div class="product-image">
+                <a {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
+                    <div class="top-line text-center">
+                        {% if product.getImage() %}
+                            <img src="{{ product.image.path|imagine_filter('s'~image_size) }}" alt="{{ product.factory.name }}" />
+                        {% else %}
+                            <img src="/img/{{ image_size }}.png" alt="{{ product.factory.name }}" />
+                        {% endif %}
+                    </div>
+                </a>
+                <div class="bottom-line text-right">
+                    {% if is_granted('VIEW_PRODUCTS', product.factory) %}
+                        <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
+                    {% endif %}
+                </div>
+            </div>
+            <h4 class="pgp-product-title">
+                <a class="title" {% if is_granted('VIEW_PRODUCTS', product.factory) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %}>
+                    {% if product.factoryCode != '' %}
+                        <small>{{ product.factoryCode }}</small>
+                    {% endif %}
+                    {{ product.name }}
+                </a>
+                <div class="price">
+                    <div class="current">
+                        {% if is_granted('VIEW_PRICE', product) %}
+                            {{ product|product_price|money(0) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </h4>
+            <div class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</div>
+        </div>
+        <div class="clear"></div>
+    </div>
+{% endmacro %}

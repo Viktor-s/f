@@ -10,6 +10,24 @@ security_login_check:
 security_logout:
     path: /logout
 
+security_register:
+    path: /r1e2g3i4s5t6e7r
+    methods: [ GET, POST ]
+    defaults:
+        _controller: frontend.controller.security:register
+
+security_register_complete:
+    path: /register/complete
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:registerComplete
+
+security_register_complete_reset:
+    path: /register/complete/reset
+    methods: [ GET ]
+    defaults:
+        _controller: frontend.controller.security:resetRegisterComplete
+
 security_reset_password_request:
     path: /reset-password-request
     methods: [ GET, POST ]

@@ -22,6 +22,7 @@ sylius:
                 dashboard: Dashboard
                 emails: Emails
                 factory: Factory
+                factory_retailer_relations: Factory Retailers relations
                 general_settings: General settings
                 groups: Groups
                 homepage: Your store
@@ -37,7 +38,6 @@ sylius:
                 product_categories: Product: Categories
                 product_part_material: Product part materials
                 product_part_type: Product part types
-                product_readiness: Product: Readiness
                 product_spaces: Product: Spaces
                 product_types: Product: Types
                 products: Products
@@ -78,6 +78,7 @@ sylius:
                 dashboard: Dashboard
                 emails: Emails
                 factory: Factory
+                factory_retailer_relations: Factory Retailers relations
                 general_settings: General settings
                 groups: Groups
                 homepage: Back to frontend
@@ -95,7 +96,6 @@ sylius:
                 product_categories: Product: Categories
                 product_part_material: Product part materials
                 product_part_type: Product part types
-                product_readiness: Product: Readiness
                 product_spaces: Product: Spaces
                 product_types: Product: Types
                 products: Products

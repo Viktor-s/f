@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,17 +16,20 @@ class ProductSchemesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'         => new ProductSchemeType(),
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'parts'        => []
+            'type'          => new ProductSchemeType(),
+            'allow_add'     => true,
+            'allow_delete'  => true,
+            'parts'         => [],
+            'schemes'       => [],
+            'disallow_edit' => false,
         ]);
 
         $resolver->setRequired('parts');
 
         $resolver->setNormalizer('options', function (OptionsResolver $resolver) {
             return [
-                'parts' => $resolver['parts']
+                'parts'         => $resolver['parts'],
+                'disallow_edit' => $resolver['disallow_edit'],
             ];
         });
 
@@ -39,6 +43,12 @@ class ProductSchemesType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        /** @var \Furniture\ProductBundle\Entity\ProductScheme[] $schemes */
+        $schemes = $options['schemes'];
+        if (count($schemes) < 2) {
+            $view->vars['schemes_error'] = 'You need to create at least two product schemes.';
+        }
+
         /** @var \Furniture\ProductBundle\Entity\ProductPart[] $parts */
         $parts = $options['parts'];
         $labels = [];

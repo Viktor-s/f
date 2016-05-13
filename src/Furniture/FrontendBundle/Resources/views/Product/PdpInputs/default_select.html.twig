@@ -1,5 +1,4 @@
-<div class="detail-info-entry">
-
+<div class="{% if input.option %}{{ 'option-info-entry' }}{% elseif input.skuOption %}{{ 'sku-option-info-entry' }}{% elseif input.productPart %}{{ 'detail-info-entry' }}{% elseif input.forSchemes %}{{ 'scheme-info-entry' }}{% endif %}" data-input-id="{{ input.id }}">
     <div class="detail-info-entry-title">{{ input.humanName }}</div>
 
     {% if input.skuOption and input.skuOptionVariants()|length == 1 %}
@@ -16,7 +15,7 @@
     {% else %}
         {% if input.option %}
         <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
-            <select data-input-id="{{ input.id }}" data-input-container="default-select">
+            <select data-input-container="default-select">
             {% for optionValue in input.optionValues() %}
                 <option data-input-variant="{{ optionValue.id }}" >{{ optionValue.value }}</option>
             {% endfor %}
@@ -34,7 +33,7 @@
         <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
             <select data-input-container="default-select">
             {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                <option data-input-variant="{{ productPartVariantSelection.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                <option data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
             {% endfor %}
             </select>
         </div>

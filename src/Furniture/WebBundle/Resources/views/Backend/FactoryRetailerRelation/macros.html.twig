@@ -9,7 +9,6 @@
         <thead>
             <tr>
                 <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
-                <th>Email</th>
                 <th>Permissions</th>
                 <th></th>
             </tr>
@@ -17,8 +16,8 @@
         <tbody>
         {% for factory_user_relation in factory_user_relations %}
             <tr id="{{ factory_user_relation.id }}">
-                <td>{{ factory_user_relation.user.customer.getFullName() }}</td>
-                <td>{{ factory_user_relation.user.customer.getEmail() }}</td>
+                <td>{{ factory_user_relation.retailer.name }}</td>
+
                 <td>
                    Active: {{ misc.state_label(factory_user_relation.isActive) }}<br/>
                    Catalog: {{ misc.state_label(factory_user_relation.accessProducts) }}<br/>
@@ -26,8 +25,8 @@
                 </td>
                 <td>
                     <div class="pull-right">
-                    {{ buttons.edit(path('furniture_backend_factory_user_relation_update', {'id': factory.id, 'rid': factory_user_relation.id})) }}
-                    {{ buttons.delete(path('furniture_backend_factory_user_relation_delete', {'fid': factory.id, 'id': factory_user_relation.id})) }}
+                        {{ buttons.edit(path('furniture_backend_factory_user_relation_update', {'id': factory_user_relation.factory.id, 'rid': factory_user_relation.id})) }}
+                        {{ buttons.delete(path('furniture_backend_factory_user_relation_delete', {'fid': factory_user_relation.factory.id, 'id': factory_user_relation.id})) }}
                    </div>
                 </td>
             </tr>
@@ -38,4 +37,61 @@
 {{ alerts.info('sylius.product_attribute.no_results'|trans) }}
 {% endif %}
 
+{% endmacro %}
+
+{% macro admin_list(factory_user_relations) %}
+
+    {% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+    {% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+    {% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
+    {% from _self import relation_status %}
+
+    {% if factory_user_relations|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('retailer', 'sylius.retailer'|trans) }}</th>
+                <th>{{ sylius_resource_sort('factory', 'sylius.factory'|trans) }}</th>
+                <th>Discaunt</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for factory_user_relation in factory_user_relations %}
+                <tr id="{{ factory_user_relation.id }}">
+                    <td>{{ factory_user_relation.retailer.name }}</td>
+                    <td>{{ factory_user_relation.factory.name }}</td>
+                    <td>{{ factory_user_relation.discount }} %</td>
+
+                    <td>
+                        {{ relation_status(factory_user_relation) }}
+                    </td>
+                    <td>
+                        <div class="pull-right">
+                            {{ buttons.edit(path('furniture_backend_factories_retailers_relations_update', {'id': factory_user_relation.id})) }}
+                            {{ buttons.delete(path('furniture_backend_factories_retailers_relations_delete', {'id': factory_user_relation.id})) }}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ alerts.info('sylius.product_attribute.no_results'|trans) }}
+    {% endif %}
+
+{% endmacro %}
+
+{% macro relation_status(relation) %}
+    {% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import state_label %}
+    {% if relation.active %}
+        {% if  relation.factoryAccept and relation.retailerAccept %}
+            {{ state_label('approve', 'relation') }}
+        {% else %}
+            {{ state_label('wait', 'relation') }}
+        {% endif %}
+    {% else %}
+        {{ state_label('decline', 'relation') }}
+    {% endif %}
 {% endmacro %}

@@ -1,13 +1,27 @@
 ;(function ($, bootbox) {
     $(document).ready(function () {
-        $('[data-remove]').click(function () {
+        $('a[data-remove], a[data-confirm]').click(function () {
             var
                 message = $(this).data('message'),
                 href = $(this).attr('href');
 
-            bootbox.confirm(message, function(result) {
-                if(result){
-                    window.location = href;
+            bootbox.confirm({
+                title: "Confirmation required.",
+                message: message,
+                callback: function(result) {
+                    if(result){
+                        window.location = href;
+                    }
+                },
+                buttons: {
+                    'cancel': {
+                        label: 'Cancel',
+                        className: 'btn-primary'
+                    },
+                    'confirm': {
+                        label: 'Ok',
+                        className: 'btn-success'
+                    }
                 }
             });
 

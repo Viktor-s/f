@@ -1,0 +1,26 @@
+{% spaceless %}
+    {% set image = post.images|length > 0 ? post.images.first : null %}
+    {% set link = post.type == 2
+        ? path('retailer_profile_partners_circular', { factory: factory.id, slug: post.slug})
+        : path('retailer_profile_partners_news_view', { factory: factory.id, slug: post.slug}) %}
+
+    <div class="post-item{{ image ? ' with-image' : '' }}">
+        {% if image %}
+            <div class="image">
+                <img src="{{ post.images.first.path|imagine_filter('s150x150') }}"/>
+            </div>
+        {% endif %}
+
+        <div class="post-info">
+            <div class="title">
+                <a href="{{ link }}">{{ post.translate.title }}</a>
+            </div>
+
+            <div class="short-description">{{ post.translate.shortDescription }}</div>
+        </div>
+
+        {% if image %}
+            <div class="clearfix"></div>
+        {% endif %}
+    </div>
+{% endspaceless %}

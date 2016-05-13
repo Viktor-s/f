@@ -233,7 +233,7 @@ class PriceCalculator
             // First step: Add coefficient
             $amount = $amount * $retailerFactoryRate->getCoefficient();
 
-            // Second stem: Subtract dumping
+            // Second step: Subtract dumping
             if ($retailerFactoryRate->getDumping()) {
                 $amount = $amount - ($amount * ($retailerFactoryRate->getDumping() / 100));
             }

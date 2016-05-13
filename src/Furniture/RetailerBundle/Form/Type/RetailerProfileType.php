@@ -38,7 +38,8 @@ class RetailerProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => RetailerProfile::class,
+            'data_class'        => RetailerProfile::class,
+            'validation_groups' => ['RetailerProfileCreate'],
         ]);
     }
 
@@ -49,43 +50,23 @@ class RetailerProfileType extends AbstractType
     {
         $builder
             ->add('address', 'text', [
-                'label'  => 'Address',
-                'mapped' => false,
-                'attr'   => [
+                'label'    => 'Address',
+                'mapped'   => false,
+                'attr'     => [
                     'class' => 'address-autocomplete',
                 ],
             ])
             ->add('addressLatitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-latitude' => true,
                 ],
             ])
             ->add('addressLongitude', 'hidden', [
                 'mapped' => false,
-                'attr' => [
+                'attr'   => [
                     'data-address-longitude' => true,
                 ],
-            ])
-            ->add('addressReplace', 'checkbox', [
-                'label' => 'Replace address',
-                'mapped' => false,
-                'data' => false,
-            ])
-            ->add('translations', 'a2lix_translationsForms', [
-                'form_type' => new RetailerProfileTranslationType(),
-            ])
-            ->add('name', 'text', [
-                'required' => true,
-            ])
-            ->add('website', 'text', [
-                'required' => false,
-            ])
-            ->add('subtitle', 'text', [
-                'required' => false,
-            ])
-            ->add('description', 'textarea', [
-                'required' => false,
             ])
             ->add('logoImage', new BackendImageType(RetailerProfileLogoImage::class), [
                 'required' => false,
@@ -96,6 +77,26 @@ class RetailerProfileType extends AbstractType
             ])
             ->add('emails', 'text', [
                 'label'    => 'furniture_retailer_profile.form.emails',
+                'required' => false,
+            ])
+            ->add('name', 'text', [
+                'required' => true,
+            ])
+            ->add('website', 'text', [
+                'required' => false,
+            ])
+            ->add('addressReplace', 'checkbox', [
+                'label'  => 'Replace address',
+                'mapped' => false,
+                'data'   => false,
+            ])
+            ->add('translations', 'a2lix_translationsForms', [
+                'form_type' => new RetailerProfileTranslationType(),
+            ])
+            ->add('subtitle', 'text', [
+                'required' => false,
+            ])
+            ->add('description', 'textarea', [
                 'required' => false,
             ])
             ->add('demoFactories', 'entity', [
@@ -109,7 +110,7 @@ class RetailerProfileType extends AbstractType
         $builder->get('emails')->addModelTransformer(new ArrayToStringTransformer(','));
 
         // We should process on presubmit, because "a2lix_translationsForms" set required false and control is empty
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($options) {
             $data = $event->getData();
 
             if (isset($data['addressReplace']) && $data['addressReplace']) {

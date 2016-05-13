@@ -109,6 +109,7 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->select('p')
+            ->distinct()
             ->innerJoin('p.factory', 'f');
 
         if ($query->isFactoryEnabled()) {
@@ -229,6 +230,15 @@ class ProductRepository
                 ->andWhere('p.availableOn <= :now')
                 ->andWhere('p.availableForSale = true')
                 ->setParameter('now', new \DateTime());
+        }
+
+        if ($query->isLimited()) {
+            $qb->setMaxResults($query->getLimit());
+            $qb->setFirstResult($query->getOffset());
+        }
+
+        if ($query->isOrdered()) {
+            $qb->addOrderBy('p.'.$query->getOrderBy(), $query->getOrderDirection());
         }
 
         return $qb;

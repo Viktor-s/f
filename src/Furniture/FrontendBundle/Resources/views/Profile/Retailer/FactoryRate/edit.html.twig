@@ -9,19 +9,103 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-    {% if not rate.id %}
+    <div class="row">
+        {{ form_start(form, {'attr': {'class': 'col-md-6 col-sm-6'}}) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+        <div id="product-preview" style="display: none;">
+            <div class="col-md-5 col-sm-5">
+                <div class="product-slide-entry">
+                    <div class="product-image prod-img-factory">
+                        <span class="thumbnail">
+                            <div class="top-line text-center">
+                                <img src="/img/300x225.png">
+                            </div>
+                        </span>
+                    </div>
+                    <h4 class="pgp-product-title">
+                        <div class="price">
+                            <div id="original-price" class="current">1 000 €</div>
+                            <div id="calculated-price" class="current" style="display: none;"></div>
+                        </div>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
         <script type="text/javascript">
             (function ($) {
                 $(document).ready(function () {
-                    $('#retailer_factory_rate_factory').select2({
+                    var previewBox = $('#product-preview');
+                    var originalPrice = $('#original-price');
+                    var calculated = $('#calculated-price');
+                    var coefficient = $('#retailer_factory_rate_coefficient').val();
+                    var extraDiscount = $('#retailer_factory_rate_dumping').val();
+
+                    var priceCalculation = function (origin, coefficient, discount) {
+                        var suffix = origin.replace(/[0-9\.\s]+/g, '');
+                        var price = parseFloat(origin.substr(0, origin.length - suffix.length).replace(/\s+/g, ''));
+                        price *= coefficient;
+                        if (discount > 0) {
+                            price -= parseFloat(price * (discount / 100));
+                        }
+
+                        price = number_format(Math.ceil(price), 0, '.', ' ');
+
+                        if (suffix.length > 0) {
+                            price += ' ' + suffix;
+                        }
+
+                        return price;
+                    };
+
+                    var showCalculated = function() {
+                        if (previewBox.is(':visible') && calculated.is(':hidden'))
+                            calculated.show();
+                    };
+
+                    calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                    showCalculated();
+
+                    $('#retailer_factory_rate_coefficient').on('change', function(e) {
+                        coefficient = $(this).val();
+                        calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                        showCalculated();
+                    });
+
+                    $('#retailer_factory_rate_dumping').on('change', function(e) {
+                        extraDiscount = $(this).val();
+                        calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                        showCalculated();
+                    });
+                {% if not rate.id %}
+                    var factory = $('#retailer_factory_rate_factory');
+                    factory.select2({
                         placeholder: "Select brand",
                         allowClear: false
                     }).select2("val", "");
+                    factory.on('change', function(e) {
+                        if ($(this).val() !== '') {
+                            $.ajax({
+                                url: '{{ path('product_api_get_product_data_by_factory', {factory: 123}) }}'.replace(/123/, $(this).val()),
+                                error: function () {
+                                    previewBox.hide();
+                                },
+                                success: function (data) {
+                                    previewBox.find('.thumbnail img').attr('src', data.image);
+                                    originalPrice.text(number_format(data.price, 0, '.', ' ') + ' ' + data.currency);
+                                    calculated.text(priceCalculation(originalPrice.text(), coefficient, extraDiscount));
+                                    previewBox.show();
+                                    showCalculated();
+                                }
+                            });
+                        } else {
+                            previewBox.hide();
+                        }
+                    });
+                {% endif %}
                 });
             })(jQuery);
         </script>
-    {% endif %}
 {% endblock %}

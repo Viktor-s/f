@@ -6,7 +6,6 @@ use Furniture\RetailerBundle\Entity\RetailerProfile;
 
 class RetailerProfileRepository
 {
-    
     /**
      * @var EntityManagerInterface
      */
@@ -21,7 +20,7 @@ class RetailerProfileRepository
     {
         $this->em = $em;
     }
-    
+
     /**
      * Find by id
      *

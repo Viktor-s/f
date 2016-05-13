@@ -5,15 +5,15 @@
 {% block breadcrumb %}
     {{ parent() }}
 
-    <a href="#">{{ product.name }}</a>
+    <span class="active">{{ product.name }}</span>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    
+
     {% stylesheets output='/css/*.min.css'
     %}
-        <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
+    <link type="text/css" href="{{ asset_url }}" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -26,177 +26,194 @@
     #}
     {{ parent() }}
     {% javascripts output='/js/*.min.js'
-                        '@FrontendBundle/Resources/public/js/list.min.js'
-                        '@FrontendBundle/Resources/public/js/product/widget/variant_data_container.js'
-                        '@FrontendBundle/Resources/public/js/product/widget/variant_pattern_data_container.js'
-                        '@FrontendBundle/Resources/public/js/product/widget/variant_buy_btn.js'
-                        '@FrontendBundle/Resources/public/js/product/widget/pdp.js'
+    '@FrontendBundle/Resources/public/js/list.min.js'
+    '@FrontendBundle/Resources/public/js/product/widget/variant_data_container.js'
+    '@FrontendBundle/Resources/public/js/product/widget/variant_pattern_data_container.js'
+    '@FrontendBundle/Resources/public/js/product/widget/variant_buy_btn.js'
+    '@FrontendBundle/Resources/public/js/product/widget/pdp.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            <div class="col-sm-6 information-entry">
-                <div class="tabs-container">
-                    <div class="swiper-tabs tabs-switch">
-                        <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
-                        <div class="list">
-                            <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
-                            <a class="block-title">{{ 'frontend.product.media_tab.model'|trans }}</a>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="tabs-entry">
-                            {% if product.images|length > 0 %}
-                            <div class="product-gallery-wrapper">
-                                <div class="product-gallery">
-                                    <div class="zoom-wapper">
-                                        <img id="gallery-zoom"
-                                             src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
-                                             alt="{{ product.name }}"
-                                             data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
-                                    </div>
-                                    <div id="product-gallery">
-                                        <div class="swiper-hidden-edges">
-                                            <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
-                                                <div class="swiper-wrapper">
-                                            {% if product.images|length > 0 %}
-                                                {% for image in product.images %}
-                                                    <div class="swiper-slide">
-                                                        <div class="paddings-container">
-                                                            <a href="#" class="gallery-image"
-                                                               data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
-                                                               data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
-                                                                <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
-                                                                     alt="{{ product.name }}" />
-                                                            </a>
+    <div class="product-pdp row">
+        <div class="tabs-container col-sm-6">
+            <div class="swiper-tabs tabs-switch">
+                <div class="title">{{ 'frontend.product.media_tab.title'|trans }}</div>
+                <div class="list">
+                    <a class="block-title tab-switcher active">{{ 'frontend.product.media_tab.images'|trans }}</a>
+                    <a class="block-title">{{ 'frontend.product.media_tab.model'|trans }}</a>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div>
+                <div class="tabs-entry">
+                    {% if product.images|length > 0 %}
+                        <div class="product-gallery-wrapper">
+                            <div class="product-gallery">
+                                <div class="zoom-wapper">
+                                    <img id="gallery-zoom"
+                                         src="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}"
+                                         alt="{{ product.name }}"
+                                         data-zoom-image="{{ product.images|first ? '/media/image/' ~ product.images|first.path : 'img/200x200.png' }}" />
+                                </div>
+                                <div id="product-gallery">
+                                    <div class="swiper-hidden-edges">
+                                        <div class="swiper-container product-thumbnails-swiper" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="3" data-int-slides="3" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                                            <div class="swiper-wrapper">
+                                                {% if product.images|length > 0 %}
+                                                    {% for image in product.images %}
+                                                        <div class="swiper-slide">
+                                                            <div class="paddings-container">
+                                                                <a href="#" class="gallery-image"
+                                                                   data-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                                   data-zoom-image="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}">
+                                                                    <img src="{{ image ? '/media/image/' ~ image.path : 'img/200x200.png' }}"
+                                                                         alt="{{ product.name }}" />
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                {% endfor %}
-                                            {% endif %}
-                                                </div>
-                                                <div class="pagination"></div>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </div>
+                                            <div class="pagination"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {% endif %}
                         </div>
-                        <div class="tabs-entry">
-                            <div style="width:540px;height:360px" id="model_viewer">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 information-entry">
-                <div class="product-detail-box">
-                    <h1 class="product-title" style="margin-bottom: 7px;">
-                        {% if product.factoryCode != '' %}
-                            <small id="factory-code-view" ></small> 
-                        {% endif %}
-                        {{ product.name }}
-                    </h1>
-                    <h3 class="product-title--factory" style="padding-bottom: 10px;">
-                        <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a> 
-                        {% if not product.types.isEmpty() %}
-                            <span style="margin:0 5px;">></span> 
-                            <a href="{{ path('products', {type: [product.types.first.id]}) }}">
-                            {{ product.types.first }}
-                            </a>
-                        {% endif %}
-                    </h3>
-
-
-                    <div class="product-description detail-info-entry">{{ product.description|raw }}</div>
-                {% if is_granted('VIEW_PRICE', product) %}
-                    <div class="price detail-info-entry">
-                        <div class="current" id="prices"></div>
-                    </div>
-                {% endif %}
-                    <div class="options-selector detail-info-entry">
-                        {% for input in product.PdpConfig.inputs %}
-                            {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
-                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:inline_select.html.twig' with {'input':input} %}
-                            {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') %}
-                                {% include 'FrontendBundle:Product/PdpInputs:popup_select.html.twig' with {'input':input} %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-
-                    <div class="quantity-selector detail-info-entry">
-                        <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
-                        <div class="entry number-minus">&nbsp;</div>
-                        <div class="entry number">{{ quantity }}</div>
-                        <div class="entry number-plus">&nbsp;</div>
-                    </div>
-
-                    {% if update_specification_item %}
-                        <div class="update-specification-item detail-info-entry">
-                            <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
-                        </div>
-                    {% else %}
-                        {% if is_granted('VIEW_PRICE', product) %}
-                        <div class="add-to-specification detail-info-entry">
-                            <div id="add-to-spec-widget" class="btn-group" style="width:300px;">
-                                <button type="button" class="button style-10 btn btn-default dropdown-btn" style="border-radius:0;max-width:280px;width:280px;">
-                                    {{ 'frontend.add_to_specification'|trans }}
-                                    <span class="caret"></span>
-                                </button>
-
-                                <div class="dropdown-menu">
-                                    <div class="specification-search-form">
-                                        <form>
-                                            <input type="text" placeholder="Search for specification" class="dropdown-search search">
-                                            <div class="simple-submit">
-                                                <i class="fa fa-search"></i>
-                                            </div>
-                                        </form>
-                                    </div>  
-                                    <ul class="list specification-list">
-                                        {% if specificationsWithBuyer or specificationsWithoutBuyer %}
-                                            {% for specification in specificationsWithoutBuyer %}
-                                                <li>
-                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                </li>
-                                            {% endfor %}
-                                            {% for gspecification in specificationsWithBuyer %}
-                                                <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
-                                                {% for specification in gspecification.specifications %}
-                                                <li>
-                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
-                                                </li>
-                                                {% endfor %}
-                                            {% endfor %}
-                                        {% else %}
-                                            <li class="dropdown-header notice">No active specifications found</li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="btn-group" style="width:300px;">
-                                
-                            </div>
-                            <div id="specification-added" class="specification-added alert alert-success" role="alert">Product successfully added</div>
-                        </div>
-                        {% endif %}
                     {% endif %}
                 </div>
+                <div class="tabs-entry">
+                    <div style="width:540px;height:360px" id="model_viewer">
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="product-detail-box col-sm-6">
+            <h1 class="product-title" style="margin-bottom: 7px;">
+                {% if product.factoryCode != '' %}
+                    <small id="factory-code-view" ></small>
+                {% endif %}
+                {{ product.name }}
+            </h1>
+            <h5 class="product-title--factory" style="padding-bottom: 10px;">
+                <a href="{{ path('products', {brand: [product.factory.id]}) }}">{{ product.factory.name }}</a>
+                {% if not product.types.isEmpty() %}
+                    <span style="margin:0 5px;">></span>
+                    <a href="{{ path('products', {type: [product.types.first.id]}) }}">
+                        {{ product.types.first }}
+                    </a>
+                {% endif %}
+            </h5>
+
+            <div class="product-description detail-info-entry">{{ product.description|raw }}</div>
+            {% if is_granted('VIEW_PRICE', product) %}
+                <div class="price detail-info-entry">
+                    <div class="current" id="prices"></div>
+                </div>
+            {% endif %}
+            <div class="options-selector detail-info-entry">
+                {% for input in product.PdpConfig.inputs %}
+                    {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:default_select.html.twig' with {'input':input} %}
+                    {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:inline_select.html.twig' with {'input':input} %}
+                    {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') %}
+                        {% include 'FrontendBundle:Product/PdpInputs:popup_select.html.twig' with {'input':input} %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if is_granted('VIEW_PRODUCTS', product.factory) %}
+                <div class="quantity-selector detail-info-entry">
+                    <div class="detail-info-entry-title">{{ 'frontend.quantity'|trans }}</div>
+                    <div class="entry number-minus">&nbsp;</div>
+                    <div class="entry number">{{ quantity }}</div>
+                    <div class="entry number-plus">&nbsp;</div>
+                </div>
+            {% endif %}
+
+            {% if update_specification_item %}
+                {% if is_granted('VIEW_PRICE', product) %}
+                    <div class="update-specification-item detail-info-entry">
+                        <button data-specification-item-id="{{ specification_item.id }}" type="button" class="button style-10 btn btn-default" style="border-radius:0; width:auto; max-width:300px;">{{ 'frontend.update_specification'|trans }}</button>
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if is_granted('VIEW_PRICE', product) %}
+                    <div class="add-to-specification detail-info-entry">
+                        <div id="add-to-spec-widget" class="btn-group">
+                            <button type="button" class="button style-10 btn btn-default dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ 'frontend.add_to_specification'|trans }}
+                                <span class="caret"></span>
+                            </button>
+
+                            <div class="dropdown-menu">
+                                <div class="specification-search-form">
+                                    <form>
+                                        <input type="text" placeholder="Search for specification" class="dropdown-search search">
+                                        <div class="simple-submit">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </form>
+                                </div>
+                                <ul class="list specification-list">
+                                    {% if specificationsWithBuyer or specificationsWithoutBuyer %}
+                                        {% for specification in specificationsWithoutBuyer %}
+                                            <li>
+                                                <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        {% for gspecification in specificationsWithBuyer %}
+                                            <li class="dropdown-header notice">{{ gspecification.buyer }}</li>
+                                            {% for specification in gspecification.specifications %}
+                                                <li>
+                                                    <a href="#" class="spec-item button style-9" data-specification-id="{{ specification.id }}">{{ specification.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="dropdown-header notice">No active specifications found</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="btn-group" style="width:300px;">
+
+                        </div>
+                        <div id="specification-added" class="specification-added">Product successfully added</div>
+                    </div>
+                {% elseif is_granted('RETAILER_FACTORY_RELATION_CREATE') and not factory_retailer_relation and product.factory.defaultRelation.accessProducts and not product.factory.defaultRelation.accessProductsPrices %}
+                    <div class="request-action  detail-info-entry">
+                        <a href="#" class="button style-10 btn" data-message="{{ 'frontend.messages.confirm.create_to_factory_relation_request_prices'|trans }}">
+                            {{ 'frontend.create_to_factory_relation_request_prices'|trans }}
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
 
 {% block footer_javascripts %}
     {{ parent() }}
+    // Google analitics
+    {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+    or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+    <script type="application/javascript">
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'product',
+            eventAction: 'view',
+            eventLabel: 'Product {{ product.name }} ID: {{ product.id }}',
+            eventValue: 5
+        });
+    </script>
+    {% endif %}
+
     <script>
         $(document).ready(function () {
             var zoomEnabled = false;
@@ -226,54 +243,114 @@
             $(window).resize(function() {
                 $.fancybox.update();
             });
+
+            // Request to factory
+            {% if not is_granted('VIEW_PRICE', product) and is_granted('RETAILER_FACTORY_RELATION_CREATE')
+            and not factory_retailer_relation and product.factory.defaultRelation.accessProducts
+            and not product.factory.defaultRelation.accessProductsPrices %}
+            $('.request-action a').on('click', function(e) {
+                var that = this;
+                var message = $(this).data('message');
+                var thanksMessage = "{{ 'frontend.messages.success.create_to_factory_relation_request_prices'|trans }}";
+                bootbox.confirm({
+                    title: "{{ 'frontend.messages.confirm.create_to_factory_relation_title'|trans }}",
+                    message: message,
+                    callback: function(result) {
+                        if(result){
+                            $.ajax({
+                                url: '{{ path('retailer_profile_partners_relation_request', {factory: product.factory.id}) }}',
+                                method: 'POST',
+                                success: function () {
+                                    $(that).parent('.request-action').remove();
+                                    // Google analitics
+                                    {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+                                    or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+                                        ga('send', {
+                                            hitType: 'event',
+                                            eventCategory: 'relation',
+                                            eventAction: 'create',
+                                            eventLabel: 'Product',
+                                            eventValue: 30
+                                        });
+                                    {% endif %}
+
+                                    bootbox.alert({
+                                        title: "{{ 'frontend.messages.success.create_to_factory_relation_title'|trans }}",
+                                        message: thanksMessage,
+                                        buttons: {
+                                            ok: {
+                                                label: 'Ok',
+                                                className: 'btn-success'
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    buttons: {
+                        'cancel': {
+                            label: 'Cancel',
+                            className: 'btn-primary'
+                        },
+                        'confirm': {
+                            label: 'Ok',
+                            className: 'btn-success'
+                        }
+                    }
+                });
+
+                return false;
+            });
+            {% endif %}
         });
     </script>
     <script type="text/javascript">
         (function ($) {
-        $( document ).ready(function(){
-            {% if product.hasProductVariantsPatterns() %}
+            $( document ).ready(function(){
+                {% if product.hasProductVariantsPatterns() %}
                 var pdpInputMapping = {};
-                
+
                 {% for input in product.pdpConfig.inputs %}
-                    {% if input.option %}
-                    {% elseif input.skuOption %}
-                        pdpInputMapping[{{ input.id }}] = {
-                            't' : 'so',
-                            'i' : {{ input.skuOption.id }}
-                        };
-                    {% elseif input.productPart %}
-                        pdpInputMapping[{{ input.id }}] = {
-                            't' : 'pp',
-                            'i' : {{ input.productPart.id }}
-                        };
-                    {% elseif input.forSchemes %}
-                        pdpInputMapping[{{ input.id }}] = {
-                            't' : 'ps',
-                        };
-                    {% endif %}
+                {% if input.option %}
+                {% elseif input.skuOption %}
+                pdpInputMapping[{{ input.id }}] = {
+                    't' : 'so',
+                    'i' : {{ input.skuOption.id }}
+                };
+                {% elseif input.productPart %}
+                pdpInputMapping[{{ input.id }}] = {
+                    't' : 'pp',
+                    'i' : {{ input.productPart.id }}
+                };
+                {% elseif input.forSchemes %}
+                pdpInputMapping[{{ input.id }}] = {
+                    't' : 'ps',
+                };
+                {% endif %}
                 {% endfor %}
-                
+
                 var sku_matrix = [{% for p in sku_matrix %}
-                {
-                'id':{{p.pattern.id}},
+                    {
+                        'id':{{p.pattern.id}},
                         'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                         'price':{{ p.pattern|pattern_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
                         'factoryCode': {{ p.pattern.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
-                },{% endfor %} ];
+                    },{% endfor %} ];
                 var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
-            {% else %}
+                {% else %}
                 var sku_matrix = [{% for v in sku_matrix %}
-                {
-                'id':{{v.variant.id}},
+                    {
+                        'id':{{v.variant.id}},
                         'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                         'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
                         'factoryCode': {{ v.variant.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
-                },{% endfor %} ];
+                    },{% endfor %} ];
 
                 var pdpDataContainer = new variant_data_container(sku_matrix);
-            {% endif %}
+                {% endif %}
 
-            {% if product.schematicProductType %}
+                {% if product.schematicProductType %}
                 /*this code need to be migrate to pdp widget js */
                 var schemeMapping = {{ schemeMapping|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
                 var selectSchemeElement = $('#scheme-selector');
@@ -284,18 +361,44 @@
                     var schemeSelected = el.val();
                     var oldFilters = pdpDataContainer.getFilters();
                     var newFilters = {};
+                    var visibleParts = [];
                     newFilters[selectSchemeFilter] = parseInt(schemeSelected);
-                    for(filter in schemeMapping[schemeSelected]){
+                    for (filter in schemeMapping[schemeSelected]) {
                         if( filter == selectSchemeFilter )
                             continue;
                         var inputId = schemeMapping[schemeSelected][filter];
                         if(oldFilters[filter]){
                             newFilters[filter] = oldFilters[filter];
                         }
-                        $(".detail-info-entry[data-input-id="+inputId+"]").show();
+                        var part = $(".detail-info-entry[data-input-id="+inputId+"]");
+                        visibleParts.push(part);
+                        part.show();
                     }
+
                     pdpDataContainer.setFilters(newFilters);
+
+                    $.each(visibleParts, function() {
+                        if ($(this).get(0) !== $('.scheme-info-entry[data-input-id]').get(0) && $(this).is(':visible')) {
+                            if ($(this).data('input-container') == 'popup-select') {
+                                var popupMaterials = $(this).find('.material-entry[data-input-variant]');
+                                if (popupMaterials.length == 1) {
+                                    $(popupMaterials).trigger('click');
+                                }
+                            } else if ($(this).data('input-container') == 'inline-select') {
+                                var materials = $(this).find('.entry');
+                                if (materials.length == 1) {
+                                    $(materials).trigger('click');
+                                }
+                            }else if ($(this).data('input-container') == undefined) {
+                                var selectWidjet = $(this).find('[data-input-container="default-select"]');
+                                if ( selectWidjet.find('option').length == 1) {
+                                    selectWidjet.prop('selectedIndex', 0).change();
+                                }
+                            }
+                        }
+                    });
                 };
+
                 selectSchemeElement.change(selectSchemeCall);
                 $(document).on('filter:update', function (event) {
                     if( !pdpDataContainer.getFilters()[selectSchemeFilter] ){
@@ -303,70 +406,74 @@
                     }
                 });
                 $.proxy(selectSchemeCall ,selectSchemeElement)();
-            {% endif %}
+                {% endif %}
 
 
-            $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': pdpDataContainer });
-            $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
-            $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
+                $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': pdpDataContainer });
+                $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
+                $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
 
-            var product_code_show = function() {
-                var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
-                var showEl = $('#factory-code-view');
-                var variants = pdpDataContainer.getFiltered();
-                if ( pdpDataContainer.isFilteredItemFound() ) {
-                    console.log('choiced');
-                    showEl.text(variants[0].factoryCode);
-                }else{
-                    console.log('unchoiced');
-                    showEl.text(defaultpCode);
-                }
-            }
+                var product_code_show = function() {
+                    var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
+                    var showEl = $('#factory-code-view');
+                    var variants = pdpDataContainer.getFiltered();
+                    if ( pdpDataContainer.isFilteredItemFound() ) {
+                        console.log('choiced');
+                        showEl.text(variants[0].factoryCode);
+                    }else{
+                        console.log('unchoiced');
+                        showEl.text(defaultpCode);
+                    }
+                };
 
-            var low_max_price = function () {
-                var variants = pdpDataContainer.getFiltered()
-                if (variants.length > 1) {
-                    var max = 0;
-                    var min = 0;
-                    variants.forEach(function (variant) {
-                        if (
-                                min == 0 ||
-                                parseFloat(variant.price) < parseFloat(min)
-                                ) {
-                            min = variant.price;
+                var low_max_price = function () {
+                    var variants = pdpDataContainer.getFiltered()
+                    if (variants.length > 1) {
+                        var max = 0;
+                        var min = 0;
+                        var minOrig, maxOrig;
+                        variants.forEach(function (variant) {
+                            var originalPrice = variant.price;
+                            var price = originalPrice.replace(/\s/g, '');
+                            if (min == 0 || parseFloat(price) < parseFloat(min)) {
+                                min = price;
+                                minOrig = originalPrice;
+                            }
+                            if (max == 0 || parseFloat(price) > parseFloat(max)) {
+                                max = price;
+                                maxOrig = originalPrice;
+                            }
+                        });
+                    }
+                    var text;
+                    if (variants.length == 0) {
+                        text = 'Unavailable combination'
+                    } else if (variants.length == 1) {
+                        text = variants[0].price;
+                    } else {
+                        if (min != max) {
+                            text = minOrig + ' - ' + maxOrig;
                         }
-                        if (
-                                max == 0 ||
-                                parseFloat(variant.price) > parseFloat(max)
-                                ) {
-                            max = variant.price;
+                        else {
+                            text = minOrig;
                         }
-                    });
-                }
-                var text;
-                if (variants.length == 0) {
-                    text = 'Unavailable combination'
-                } else if (variants.length == 1) {
-                    text = variants[0].price;
-                } else {
-                    text = min + ' - ' + max;
-                }
+                    }
 
-                if (text != $('#prices').text())
-                    $('#prices').fadeOut(50, function () {
-                        $('#prices').text(text)
-                        $('#prices').fadeIn('medium');
-                    });
-            };
-            product_code_show();
-            low_max_price();
-
-            $(document).on('filter:update', function (event) {
+                    if (text != $('#prices').text())
+                        $('#prices').fadeOut(50, function () {
+                            $('#prices').text(text);
+                            $('#prices').fadeIn('medium');
+                        });
+                };
                 product_code_show();
                 low_max_price();
-            });
 
-        {% if active_variant_matrix %}
+                $(document).on('filter:update', function (event) {
+                    product_code_show();
+                    low_max_price();
+                });
+
+                {% if active_variant_matrix %}
                 pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
                 /* temporary solution !!!!!!!!!! */
                 {% if product.schematicProductType %}
@@ -377,140 +484,221 @@
                 pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
                 {% endif %}
                 /********/
-        {% endif %}
+                {% endif %}
 
-        {% if not update_specification_item %}
-            var options = {
-                valueNames: [ 'spec-item' ]
-            };
+                {% if not update_specification_item %}
+                var options = {
+                    valueNames: [ 'spec-item' ]
+                };
 
-            var hackerList = new List('add-to-spec-widget', options);
-            
+                var hackerList = new List('add-to-spec-widget', options);
+
                 $('.add-to-specification a').click(function () {
                     var el = $(this);
-                    
+
                     if ( pdpDataContainer.isFilteredItemFound() ) {
                         var quantity = parseInt($('.quantity-selector .entry.number').text());
                         var specificationId = parseInt($(this).attr('data-specification-id'));
-                        console.log('submit');
                         {% if product.hasProductVariantsPatterns() %}
-                            console.log('has patterns');
-                            var data = {
-                                id: pdpDataContainer.getFiltered()[0].id,
-                                choices: {
-                                    'so' : [],
-                                    'pp' : [],
-                                    'ps' : null
-                                },
-                            };
-                            var filters = pdpDataContainer.getFilters();
-                            for( f in pdpDataContainer.getFiltered()[0].options ){
-                                if( filters[f] ){
-                                    var v = filters[f];
-                                }else{
-                                    var v = pdpDataContainer.getFiltered()[0].options[f][0];
-                                }
-                                var d = {};
-                                if( pdpInputMapping[f]['t'] == 'ps' ){
-                                    data['choices']['ps'] = v;
-                                }else if( pdpInputMapping[f]['t'] == 'so' ){
-                                    d['so'] = pdpInputMapping[f]['i'];
-                                    d['sov'] = v;
-                                    data['choices'][ pdpInputMapping[f]['t'] ].push( d );
-                                }else{
-                                    d['pp'] = pdpInputMapping[f]['i'];
-                                    d['ppv'] = v;
-                                    data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                        var data = {
+                            id: pdpDataContainer.getFiltered()[0].id,
+                            choices: {
+                                'so' : [],
+                                'pp' : [],
+                                'ps' : null
+                            },
+                        };
+                        var filters = pdpDataContainer.getFilters();
+
+                        for( f in pdpDataContainer.getFiltered()[0].options ){
+                            if( filters[f] ){
+                                var v = filters[f];
+                            }else{
+                                var v = pdpDataContainer.getFiltered()[0].options[f][0];
+                            }
+                            var d = {};
+                            if( pdpInputMapping[f]['t'] == 'ps' ){
+                                data['ps'] = v;
+                            }else if( pdpInputMapping[f]['t'] == 'so' ){
+                                d['so'] = pdpInputMapping[f]['i'];
+                                d['sov'] = v;
+                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                            }else{
+                                d['pp'] = pdpInputMapping[f]['i'];
+                                d['ppv'] = v;
+                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                            }
+                        }
+                        $.ajax({
+                            url: '{{ path('product_api_create_by_pattern_and_parameters') }}',
+                            data: data,
+                            method: 'POST',
+                            dataType : 'json',
+                            success: function(data) {
+                                if(data['id']){
+                                    var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
+                                    var url = '{{ path('specification_api_specification_sku_item_add') }}';
+                                    $.ajax({
+                                        url: url,
+                                        data: {
+                                            id: data['id'],
+                                            quantity: quantity,
+                                            specification: specificationId
+                                        },
+                                        method: 'POST',
+                                        success: function () {
+                                            // Google analytics
+                                            {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+                                            or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+                                            ga('send', {
+                                                hitType: 'event',
+                                                eventCategory: 'product',
+                                                eventAction: 'addSpecification',
+                                                eventLabel: 'Product {{ product.name }} ID: {{ product.id }}',
+                                                eventValue: 15
+                                            });
+                                            {% endif %}
+                                            //alert('Successfully add product to specification.');
+                                            $('#specification-added')
+                                                    .html('<div class="text">Product was successfully added.</div><a href="'+ specification_edit_path +'" class="button style-10 btn btn-default dropdown-btn">Go to the Specification</a>')
+                                                    .show();
+                                            addSpecificationProcessed = false;
+                                        },
+                                        error: function () {
+                                            alert('Error with add product to specification.');
+                                            addSpecificationProcessed = false;
+                                        }
+                                    });
                                 }
                             }
-                            console.log(data);
-                            $.ajax({
-                                url: '{{ path('product_api_create_by_pattern_and_parameters') }}',
-                                data: data,
-                                method: 'POST',
-                                dataType : 'json',
-                                success: function(data) {
-                                    if(data['id']){
-                                        var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
-                                        var url = '{{ path('specification_api_specification_sku_item_add') }}';
-                                        $.ajax({
-                                            url: url,
-                                            data: {
-                                                id: data['id'],
-                                                quantity: quantity,
-                                                specification: specificationId
-                                            },
-                                            method: 'POST',
-                                            success: function () {
-                                                //alert('Successfully add product to specification.');
-                                                $('#specification-added')
-                                                    .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
-                                                    .show();
-                                                $('.add-to-specification button').dropdown('toggle');
-                                                addSpecificationProcessed = false;
-                                            },
-                                            error: function () {
-                                                alert('Error with add product to specification.');
-                                                addSpecificationProcessed = false;
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                            
+                        });
+
                         {% else %}
                         var url = '{{ path('specification_api_specification_sku_item_add') }}',
-                            data = {
-                                id: pdpDataContainer.getFiltered()[0].id,
-                                quantity: quantity,
-                                specification: specificationId
-                            };
-                            
-                            var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
-
-                            $.ajax({
-                                url: url,
-                                data: data,
-                                method: 'POST',
-                                success: function () {
-                                    //alert('Successfully add product to specification.');
-                                    $('#specification-added')
-                                        .html('Product was successfully added. Go to the <a href="'+ specification_edit_path +'">Specification</a>')
-                                        .show();
-                                    $('.add-to-specification button').dropdown('toggle');
-                                    addSpecificationProcessed = false;
-                                },
-                                error: function () {
-                                    alert('Error with add product to specification.');
-                                    addSpecificationProcessed = false;
-                                }
-                            });
-                            
-                        {% endif %}
-                    }else{
-                        bootbox.alert('{{ 'frontend.product.pdp.specify_product'|trans }}');
-                    }
-                    return false;
-                });
-        {% else %}
-                $('.update-specification-item button').click(function () {
-                    var el = $(this);
-                    if (pdpDataContainer.isFilteredItemFound()) {
-
-
-                        quantity = parseInt($('.quantity-selector .entry.number').text());
-
-                        var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}',
                                 data = {
                                     id: pdpDataContainer.getFiltered()[0].id,
-                                    quantity: quantity
+                                    quantity: quantity,
+                                    specification: specificationId
                                 };
+
+                        var specification_edit_path = "{{ path('specification_edit', {specification: 123}) }}".replace(/123/ , specificationId);
 
                         $.ajax({
                             url: url,
                             data: data,
                             method: 'POST',
                             success: function () {
+                                // Google analytics
+                                {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+                                or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+                                ga('send', {
+                                    hitType: 'event',
+                                    eventCategory: 'product',
+                                    eventAction: 'addSpecification',
+                                    eventLabel: 'Product {{ product.name }} ID: {{ product.id }}',
+                                    eventValue: 15
+                                });
+                                {% endif %}
+                                $('#specification-added')
+                                        .html('<div class="text">Product was successfully added.</div><a href="'+ specification_edit_path +'" class="button style-10 btn btn-default dropdown-btn">Go to the Specification</a>')
+                                        .show();
+                                addSpecificationProcessed = false;
+                            },
+                            error: function () {
+                                alert('Error with add product to specification.');
+                                addSpecificationProcessed = false;
+                            }
+                        });
+
+                        {% endif %}
+                    }else{
+                        bootbox.alert({
+                            message: '{{ 'frontend.product.pdp.specify_product'|trans }}',
+                            buttons: {
+                                ok: {
+                                    label: 'Ok',
+                                    className: 'btn-success'
+                                }
+                            }
+                        });
+                    }
+                    return false;
+                });
+                {% else %}
+                $('.update-specification-item button').click(function () {
+                    var el = $(this);
+                    {% if product.hasProductVariantsPatterns() %}
+                        var data = {
+                            id: pdpDataContainer.getFiltered()[0].id,
+                            choices: {
+                                'so' : [],
+                                'pp' : [],
+                                'ps' : null
+                            },
+                        };
+                        var filters = pdpDataContainer.getFilters();
+                        for( f in pdpDataContainer.getFiltered()[0].options ){
+                            if( filters[f] ){
+                                var v = filters[f];
+                            }else{
+                                var v = pdpDataContainer.getFiltered()[0].options[f][0];
+                            }
+                            var d = {};
+                            if( pdpInputMapping[f]['t'] == 'ps' ){
+                                data['ps'] = v;
+                            }else if( pdpInputMapping[f]['t'] == 'so' ){
+                                d['so'] = pdpInputMapping[f]['i'];
+                                d['sov'] = v;
+                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                            }else{
+                                d['pp'] = pdpInputMapping[f]['i'];
+                                d['ppv'] = v;
+                                data['choices'][ pdpInputMapping[f]['t'] ].push( d );
+                            }
+                        }
+
+                        $.ajax({
+                            url: '{{ path('product_api_create_by_pattern_and_parameters') }}',
+                            data: data,
+                            method: 'POST',
+                            dataType : 'json',
+                            success: function(response) {
+                                if(response['id']){
+                                    quantity = parseInt($('.quantity-selector .entry.number').text());
+                                    var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}';
+                                    var data = {
+                                        id: response['id'],
+                                        quantity: quantity
+                                    };
+
+                                    $.ajax({
+                                        url: url,
+                                        data: data,
+                                        method: 'POST',
+                                        success: function (data) {
+                                            window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
+                                        },
+                                        error: function () {
+                                            alert('Error with update specification item. Please try again.');
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    {% else %}
+                    if (pdpDataContainer.isFilteredItemFound()) {
+                        quantity = parseInt($('.quantity-selector .entry.number').text());
+                        var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}';
+                        var data = {
+                            id: pdpDataContainer.getFiltered()[0].id,
+                            quantity: quantity
+                        };
+
+                        $.ajax({
+                            url: url,
+                            data: data,
+                            method: 'POST',
+                            success: function (data) {
                                 window.location = '{{ path('specification_edit', {specification: specification_item.specification.id, item: specification_item.id}) }}'
                             },
                             error: function () {
@@ -518,9 +706,10 @@
                             }
                         });
                     }
+                    {% endif %}
                 });
-        {% endif %}
+                {% endif %}
             });
-            })(jQuery);
+        })(jQuery);
     </script>
 {% endblock %}

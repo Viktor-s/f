@@ -7,7 +7,6 @@ use Furniture\CompositionBundle\Entity\CompositeCollection;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\ProductBundle\Entity\Readiness;
 use Furniture\ProductBundle\Entity\Space;
 use Furniture\ProductBundle\Entity\Style;
 use Furniture\ProductBundle\Entity\Type;
@@ -34,12 +33,22 @@ class ProductType extends BaseProductType
             'validation_groups' => function (Form $form) {
                 /** @var \Furniture\ProductBundle\Entity\Product $product */
                 $product = $form->getData();
+                $validationGroups = ['Default'];
 
                 if ($product->getId()) {
-                    return ['Update', 'Default'];
+                    $validationGroups = array_merge($validationGroups, ['Update']);
+                    // Check that product schemes was added and validate it.
+                    if ($product->isSchematicProductType()
+                        && count($product->getProductParts()) > 1
+                        && count($product->getProductSchemes()) > 0
+                    ) {
+                        $validationGroups = array_merge($validationGroups, ['SchemesCreate']);
+                    }
                 } else {
-                    return ['Create', 'Default'];
+                    $validationGroups = array_merge($validationGroups, ['Create']);
                 }
+
+                return $validationGroups;
             },
             'mode' => 'full'
         ));
@@ -62,7 +71,11 @@ class ProductType extends BaseProductType
                 'form_type' => new ProductTranslationType,
                 'label'     => 'sylius.form.product.translations',
             ));
-        
+
+        /** @var Product $product */
+        $product  = $builder->getData();
+        $disallowEdit = $product->hasVariants() || $product->hasProductVariantsPatterns();
+
         if ($options['mode'] == 'full') {
             $builder
                 ->add('categories', 'entity', [
@@ -88,10 +101,13 @@ class ProductType extends BaseProductType
                 ->add('skuOptionVariants', 'collection', [
                     'type'         => new SkuOptionVariantFormType(),
                     'required'     => false,
-                    'allow_add'    => true,
-                    'allow_delete' => true,
+                    'allow_add'    => !$disallowEdit,
+                    'allow_delete' => !$disallowEdit,
                     'by_reference' => false,
-                    'label'        => 'product_options.sku_option_variants_label'
+                    'label'        => 'product_options.sku_option_variants_label',
+                    'options'      => [
+                        'disallow_edit' => $disallowEdit,
+                    ],
                 ])
                 ->add('subProducts', new AutocompleteEntityType(), [
                     'class'       => Product::class,
@@ -104,27 +120,27 @@ class ProductType extends BaseProductType
                     'required' => false
                 ]);
 
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $builder->remove('options');
+
+//            if ($disallowEdit) {
+//                $builder->get('options')->setDisabled(true);
+//            }
+
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($disallowEdit) {
                 /** @var Product $product */
                 $product = $event->getData();
                 $factory = $product->getFactory();
 
-                if ($product->getId()) {
-                    $event->getForm()
-                        ->add('readinesses', 'entity', [
-                            'class'    => Readiness::class,
-                            'multiple' => true,
-                            'expanded' => true,
-                        ]);
-                }
-
                 $event->getForm()
                     ->add('productParts', 'collection', [
                         'type'         => new ProductPartFormType($factory),
-                        'allow_add'    => true,
-                        'allow_delete' => true,
+                        'allow_add'    => !$disallowEdit,
+                        'allow_delete' => !$disallowEdit,
                         'attr'         => [
                             'data-remove-confirm' => 'Are you sure you want to remove product part item?',
+                        ],
+                        'options'      => [
+                            'disallow_edit' => $disallowEdit,
                         ],
                     ])
                     ->add('compositeCollections', 'entity', [
@@ -146,10 +162,14 @@ class ProductType extends BaseProductType
                 if (!$product->getId() || $product->isSchematicProductType() || count($product->getVariants())) {
                     $event->getForm()
                         ->add('productSchemes', new ProductSchemesType(), [
-                            'parts' => $product->getProductParts(),
-                            'attr'  => [
+                            'parts'         => $product->getProductParts(),
+                            'schemes'       => $product->getProductSchemes(),
+                            'attr'          => [
                                 'data-remove-confirm' => 'Are you sure you want to remove scheme item?',
                             ],
+                            'allow_add'     => !$disallowEdit,
+                            'allow_delete'  => !$disallowEdit,
+                            'disallow_edit' => $disallowEdit,
                         ]);
                 }
             });

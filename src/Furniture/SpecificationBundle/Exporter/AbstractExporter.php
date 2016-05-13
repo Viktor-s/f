@@ -371,10 +371,10 @@ abstract class AbstractExporter
      */
     public function formatTable(\PHPExcel_Worksheet $sheet, $lastColumn, $maxRow)
     {
-        $headeStartRow = self::SHEET_HEADER_START_ROW;
-        $headeLength = self::SHEET_HEADER_LENGTH;
-        if ($lastColumn < $headeLength) {
-            $key = $this->generateDiapasonKey($lastColumn + 1, $headeStartRow, $headeLength, $maxRow);
+        $headerStartRow = self::SHEET_HEADER_START_ROW;
+        $headerLength = self::SHEET_HEADER_LENGTH;
+        if ($lastColumn <= $headerLength) {
+            $key = $this->generateDiapasonKey($lastColumn+1, $headerStartRow, 11, $maxRow);
             $rowStyle = $sheet->getStyle($key);
             $rowStyle->applyFromArray(
                 [

@@ -2,211 +2,231 @@ services:
     frontend.controller.homepage:
         class: Furniture\FrontendBundle\Controller\HomepageController
         arguments: 
-            - @twig
-            - @router
-            - %available_locales%
-            - @security.token_storage
+            - '@twig'
+            - '@router'
+            - '%available_locales%'
+            - '@security.token_storage'
+            - '@frontend.repository.post'
 
     frontend.controller.catalog:
         class: Furniture\FrontendBundle\Controller\CatalogController
         arguments:
-            - @twig
-            - @frontend.repository.product
-            - @frontend.repository.product_category
-            - @frontend.repository.product_space
-            - @frontend.repository.product_style
-            - @frontend.repository.product_type
-            - @frontend.repository.factory
-            - @frontend.repository.specification
-            - @frontend.repository.specification_item
-            - @frontend.repository.composite_collection
-            - @security.token_storage
-            - @router
+            - '@twig'
+            - '@frontend.repository.product'
+            - '@frontend.repository.product_category'
+            - '@frontend.repository.product_space'
+            - '@frontend.repository.product_style'
+            - '@frontend.repository.product_type'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.specification'
+            - '@frontend.repository.specification_item'
+            - '@frontend.repository.composite_collection'
+            - '@security.token_storage'
+            - '@router'
 
     frontend.controller.product:
         class: Furniture\FrontendBundle\Controller\ProductController
         arguments:
-            - @twig
-            - @frontend.repository.product
-            - @sylius.repository.taxon
-            - @frontend.repository.specification
-            - @frontend.repository.specification_item
-            - @security.token_storage
-            - @security.authorization_checker
-            - @product_pattern.product_variant_creator
+            - '@twig'
+            - '@frontend.repository.product'
+            - '@sylius.repository.taxon'
+            - '@frontend.repository.specification'
+            - '@frontend.repository.specification_item'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@product_pattern.product_variant_creator'
 
     frontend.controller.security:
         class: Furniture\FrontendBundle\Controller\SecurityController
         arguments:
-            - @twig
-            - @security.token_storage
-            - @doctrine.orm.default_entity_manager
-            - @security.csrf.token_manager
-            - @form.factory
-            - @frontend.repository.user
-            - @translator
-            - @user.password_resetter
-            - @router
-            - @sylius.user.password_updater
+            - '@twig'
+            - '@security.token_storage'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.csrf.token_manager'
+            - '@form.factory'
+            - '@frontend.repository.user'
+            - '@translator'
+            - '@user.password_resetter'
+            - '@router'
+            - '@sylius.user.password_updater'
+            - '@user.email_verifier'
 
     frontend.controller.specification:
         class: Furniture\FrontendBundle\Controller\SpecificationController
         arguments:
-            - @twig
-            - @frontend.repository.specification
-            - @security.token_storage
-            - @form.factory
-            - @doctrine.orm.default_entity_manager
-            - @security.authorization_checker
-            - @router
-            - @specification.exporter
+            - '@twig'
+            - '@frontend.repository.specification'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.authorization_checker'
+            - '@router'
+            - '@specification.exporter'
 
     frontend.controller.specification_buyer:
         class: Furniture\FrontendBundle\Controller\SpecificationBuyerController
         arguments:
-            - @twig
-            - @frontend.repository.specification_buyer
-            - @frontend.repository.specification
-            - @security.token_storage
-            - @form.factory
-            - @doctrine.orm.default_entity_manager
-            - @router
-            - @security.authorization_checker
-            - @liip_imagine.cache.manager
-            - @validator
+            - '@twig'
+            - '@frontend.repository.specification_buyer'
+            - '@frontend.repository.specification'
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@router'
+            - '@security.authorization_checker'
+            - '@liip_imagine.cache.manager'
+            - '@validator'
 
     # Factory profile controllers
     frontend.controller.factory.dashboard:
         class: Furniture\FrontendBundle\Controller\Profile\Factory\DashboardController
         arguments:
-            - @twig
-            - @sylius.authorization_checker
+            - '@twig'
+            - '@sylius.authorization_checker'
 
     frontend.controller.factory.retailer_relation:
         class: Furniture\FrontendBundle\Controller\Profile\Factory\RetailerRelationController
         arguments:
-            - @twig
-            - @frontend.repository.factory_retailer_relation
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @security.authorization_checker
-            - @router
-            - @form.factory
+            - '@twig'
+            - '@frontend.repository.factory_retailer_relation'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@router'
+            - '@form.factory'
 
     frontend.controller.factory.default_relation:
         class: Furniture\FrontendBundle\Controller\Profile\Factory\DefaultRelationController
         arguments:
-            - @twig
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @router
-            - @form.factory
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@router'
+            - '@form.factory'
 
     frontend.controller.factory.user_map:
         class: Furniture\FrontendBundle\Controller\Profile\Factory\UserMapController
         arguments:
-            - @twig
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
 
     frontend.controller.factory.main_statistic:
         class: Furniture\FrontendBundle\Controller\Factory\MainStatisticController
         arguments:
-            - @twig
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @router
-            - @frontend.repository.factory
-            - @frontend.repository.product_style
-            - @frontend.repository.product_type
-            - @frontend.repository.product_space
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@router'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.product_style'
+            - '@frontend.repository.product_type'
+            - '@frontend.repository.product_space'
             
     frontend.controller.factory.retailer:
         class: Furniture\FrontendBundle\Controller\Factory\RetailerController
         arguments:
-            - @twig
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @router
-            - @frontend.repository.factory
-            - @frontend.repository.retailer_profile
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@router'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.retailer_profile'
 
     # Retailer profile controllers
     frontend.controller.retailer.dashboard:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\DashboardController
         arguments:
-            - @twig
-            - @security.token_storage
+            - '@twig'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
 
     frontend.controller.retailer.factory_rates:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRatesController
         arguments:
-            - @twig
-            - @security.token_storage
-            - @security.authorization_checker
-            - @frontend.repository.retailer_factory_rate
-            - @doctrine.orm.default_entity_manager
-            - @form.factory
-            - @router
+            - '@twig'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@frontend.repository.retailer_factory_rate'
+            - '@doctrine.orm.default_entity_manager'
+            - '@form.factory'
+            - '@router'
+            - '@translator'
 
     frontend.controller.retailer.factory_relation:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\FactoryRelationController
         arguments:
-            - @twig
-            - @frontend.repository.factory_retailer_relation
-            - @frontend.repository.factory
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @security.authorization_checker
-            - @router
-            - @form.factory
+            - '@twig'
+            - '@frontend.repository.factory_retailer_relation'
+            - '@frontend.repository.factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@router'
+            - '@form.factory'
 
     frontend.controller.retailer.profile:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\RetailerProfileController
         arguments:
-            - @twig
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @security.authorization_checker
-            - @form.factory
-            - @router
-            - @liip_imagine.cache.manager
-            - @validator
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@form.factory'
+            - '@router'
+            - '@liip_imagine.cache.manager'
+            - '@validator'
 
     frontend.controller.retailer.employee:
         class: Furniture\FrontendBundle\Controller\Profile\Retailer\EmployeeController
         arguments:
-            - @twig
-            - @frontend.repository.retailer_employee
-            - @doctrine.orm.default_entity_manager
-            - @security.token_storage
-            - @security.authorization_checker
-            - @form.factory
-            - @sylius.user.password_updater
-            - @router
-            - @user.email_verifier
+            - '@twig'
+            - '@frontend.repository.retailer_employee'
+            - '@doctrine.orm.default_entity_manager'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@form.factory'
+            - '@sylius.user.password_updater'
+            - '@router'
+            - '@user.email_verifier'
+
+    frontend.controller.retailer.partners:
+        class: Furniture\FrontendBundle\Controller\Profile\Retailer\PartnersController
+        arguments:
+            - '@twig'
+            - '@doctrine.orm.default_entity_manager'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.factory_retailer_relation'
+            - '@frontend.repository.post'
+            - '@frontend.repository.product_style'
+            - '@frontend.repository.product_category'
+            - '@frontend.repository.composite_collection'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
 
     frontend.controller.factory_side:
         class: Furniture\FrontendBundle\Controller\FactorySideController
         arguments:
-            - @twig
-            - @frontend.repository.factory
-            - @frontend.repository.factory_retailer_relation
-            - @frontend.repository.post
-            - @frontend.repository.product_style
-            - @frontend.repository.product_category
-            - @frontend.repository.composite_collection
-            - @security.token_storage
-            - @security.authorization_checker
+            - '@twig'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.factory_retailer_relation'
+            - '@frontend.repository.post'
+            - '@frontend.repository.product_style'
+            - '@frontend.repository.product_category'
+            - '@frontend.repository.composite_collection'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
     # User profile controllers
     frontend.controller.user.profile:
         class: Furniture\FrontendBundle\Controller\Profile\User\UserProfileController
         arguments:
-            - @twig
-            - @security.token_storage
-            - @security.authorization_checker
-            - @form.factory
-            - @router
-            - @doctrine.orm.default_entity_manager
-            - @sylius.user.password_updater
+            - '@twig'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@form.factory'
+            - '@router'
+            - '@doctrine.orm.default_entity_manager'
+            - '@sylius.user.password_updater'
         

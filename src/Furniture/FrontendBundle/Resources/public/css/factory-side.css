@@ -79,15 +79,8 @@
     line-height: 1.8em;
 }
 
-.factory-contacts
-{
-}
-
-.factory-contacts .contact
-{
-    float: left;
-    width: 30%;
-    margin: 10px 15px;
+.factory-contacts .contact,
+.factory-contacts .panel {
     padding: 15px;
     border: 1px solid #e1e1e1;
     -webkit-border-radius: 10px;
@@ -95,44 +88,52 @@
     border-radius: 10px;
 }
 
-.factory-contacts .contact .header
+.factory-contacts .contact .contact-header,
+.factory-contacts .panel .panel-heading
 {
-    padding-bottom: 10px;
+    background-color: transparent;
     border-bottom: 1px solid #e1e1e1;
     line-height: 1.4em;
+    padding: 0 0 10px 0;
 }
 
-.factory-contacts .contact .header .name
+.factory-contacts .contact .contact-header .name,
+.factory-contacts .panel .panel-heading .name
 {
     color: #222;
     font-weight: normal;
     padding-bottom: 4px;
 }
 
-.factory-contacts .contact .header .department
+.factory-contacts .contact .contact-header .department,
+.factory-contacts .panel .panel-heading .department
 {
     font-size: 0.8em;
     color: #999;
 }
 
-.factory-contacts .contact .body
+.factory-contacts .contact .body,
+.factory-contacts .panel .panel-body
 {
     padding: 10px 0 0 10px;
     line-height: 2em;
 }
 
-.factory-contacts .contact .body a
+.factory-contacts .contact .body a,
+.factory-contacts .panel .panel-body a
 {
     color: #333;
     text-decoration: none;
 }
 
-.factory-contacts .contact .body a:hover
+.factory-contacts .contact .body a:hover,
+.factory-contacts .panel .panel-body a:hover
 {
     text-decoration: underline;
 }
 
-.factory-contacts .contact .body .fa::after
+.factory-contacts .contact .body .fa::after,
+.factory-contacts .panel .panel-body .fa::after
 {
     content: "\00a0\00a0";
 }
@@ -148,22 +149,23 @@
     height: 500px;
 }
 
-
 .factory-info .factory-cover .logo
 {
-    width: 160px;
+    width: 250px;
     height: 160px;
-    position: absolute;;
-    top: 100%;
-    left: 50%;
-    margin-top: -80px;
-    margin-left: -80px;
+    text-align: center;
+    background-color: #fff;
+    position: absolute;
+    bottom: -80px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 9;
 }
 
-.factory-info .factory-cover .logo img
-{
-    width: 160px;
-    height: 160px;
+.factory-info .factory-cover .logo img {
+    width: auto;
+    max-height: 100%;
 }
 
 .factory-info .factory-title
@@ -192,7 +194,7 @@
 }
 
 .image img, .images img {
-    max-width: 100%
+    max-width: 100%;
     height: auto;
 }
 
@@ -207,9 +209,11 @@
 
 .factory-info .factory-cover .factory-cover-image-wr img {
     position: absolute;
-    top: -30%;
     width: 100%;
     height: auto;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 

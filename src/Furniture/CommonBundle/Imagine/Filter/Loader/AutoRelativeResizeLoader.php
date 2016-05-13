@@ -17,12 +17,42 @@ class AutoRelativeResizeLoader implements LoaderInterface
         if( !count($options) )
             throw new InvalidArgumentException('Expected method/parameter pair, none given');
         
-        //If need heighten resize
-        if( $image->getSize()->getHeight() > $image->getSize()->getWidth() && isset($options['heighten']) ){
-            return (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
-        //If need widen resize
+        if($image->getSize()->getHeight() == $image->getSize()->getWidth()){
+            
+            if(isset($options['widen']) && $options['heighten']){
+                if((int)$options['widen'] > (int)$options['heighten']){
+                    return (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
+                }else{
+                    return (new RelativeResize( 'widen', $options['widen']))->apply($image);
+                }
+            }elseif(isset($options['widen'])){
+                return (new RelativeResize( 'widen', $options['widen']))->apply($image);
+            }else{
+                return (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
+            }
+            
+            
+        }elseif( $image->getSize()->getHeight() > $image->getSize()->getWidth() && isset($options['heighten']) ){
+            
+            $image = (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
+        
+            if( isset($options['widen']) && $image->getSize()->getWidth() > $options['widen'] ){
+                $image = (new RelativeResize( 'widen', $options['widen']))->apply($image);
+            }
+            
+            return $image;
         }elseif( isset($options['widen']) ){
-            return (new RelativeResize( 'widen', $options['widen']))->apply($image);
+            
+            $image = (new RelativeResize( 'widen', $options['widen']))->apply($image);
+            
+            if( isset($options['heighten']) && $image->getSize()->getHeight() > $options['heighten'] ){
+                $image = (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
+            }
+            
+            return $image;
+            
+        }elseif( isset($options['heighten']) ){
+            return (new RelativeResize( 'heighten', $options['heighten']))->apply($image);
         }
         
         throw new InvalidArgumentException('Unsupported options');

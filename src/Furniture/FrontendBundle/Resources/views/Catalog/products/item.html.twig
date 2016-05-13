@@ -1,35 +1,38 @@
+<!-- one product -->
 <div class="col-md-4 col-sm-4 shop-grid-item " data-factory="{{ product.factory.name }}">
     <div class="product-slide-entry">
         <div class="product-image">
-            <a href="{{ path('product', {'product':product.id}) }}" >
-            {% if product.getImage() %}
-                <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
-            {% else %}
-                <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
-            {% endif %}
+            <a {% if is_granted('VIEW_PRICE', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %} class="thumbnail">
+                <div class="top-line text-center">
+                <div class="price">
+                    <div class="current">
+                        {% if is_granted('VIEW_PRICE', product) %}
+                            {{ product|product_price|money(0) }}
+                        {% endif %}
+                    </div>
+                </div>
+                   {% if product.getImage() %}
+                        <img src="{{ product.image.path|imagine_filter('s300x225') }}" alt="{{ product.factory.name }}" />
+                    {% else %}
+                        <img src="/img/300x225.png" alt="{{ product.factory.name }}" />
+                    {% endif %}
+                </div>
             </a>
-            <div class="bottom-line">
-                <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
-            </div>
-        </div>        
-        <h4 class="pgp-product-title"><a class="title" href="{{ path('product', {'product':product.id}) }}">
-            {% if product.factoryCode != '' %}
-                <small>{{ product.factoryCode }}</small> 
-            {% endif %}
-            {{ product.name }}</a>
-        </h4>
-        <h6 class="pgp-product-factory">{{ product.factory.name }} :: {{ product.types.first }}</h6>
-
-        <div class="price">
-            <div class="current">
+            <div class="bottom-line text-right">
                 {% if is_granted('VIEW_PRICE', product) %}
-                    {{ product|product_price|money(0) }}
+                    <a class="bottom-line-a" href="{{ path('product', {'product':product.id}) }}" >{{ 'frontend.detailed' | trans }}</a>
                 {% endif %}
             </div>
         </div>
-        <div class="list-buttons">
-            <a class="button style-10" href="{{ path('product', {'product':product.id}) }}">{{ 'frontend.detailed' | trans }}</a>
-        </div>
+        <h4 class="pgp-product-title">
+            <a class="title" {% if is_granted('VIEW_PRICE', product) %}href="{{ path('product', {'product':product.id}) }}"{% else %}href="#" style="cursor: default;" onclick="return false;"{% endif %}>
+            {% if product.factoryCode != '' %}
+                <small>{{ product.factoryCode }}</small>
+            {% endif %}
+            {{ product.name }}
+            </a>
+         </h4>
+        <h6 class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</h6>
     </div>
     <div class="clear"></div>
 </div>

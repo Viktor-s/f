@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Furniture\SkuOptionBundle\Entity\SkuOptionType;
 use Sylius\Component\Product\Model\Option;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping as ORM;
 
 class ProductPdpConfig
 {
@@ -22,6 +23,7 @@ class ProductPdpConfig
 
     /**
      * @var Collection|ProductPdpInput[]
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $inputs;
 
@@ -167,17 +169,35 @@ class ProductPdpConfig
         return null;
     }
 
+    /**
+     * Find input for scheme.
+     *
+     * @param ProductPart $productPart
+     *
+     * @return ProductPdpInput|null
+     */
     public function getInputForSchemes()
     {
-        if ($this->getProduct()->isSchematicProductType()) {
-            foreach ($this->inputs as $input) {
-                if ($input->getSchemes()) {
-                    return $input;
-                }
+        foreach ($this->inputs as $input) {
+            if ($input->getSchemes()) {
+                return $input;
             }
         }
 
         return null;
     }
 
+    /**
+     * Remove input from collection.
+     *
+     * @param ProductPdpInput $input
+     * @return ProductPdpInput
+     */
+    public function removeInput(ProductPdpInput $input = null) {
+        if ($this->inputs->contains($input)) {
+            $this->inputs->removeElement($input);
+        }
+
+        return $this;
+    }
 }

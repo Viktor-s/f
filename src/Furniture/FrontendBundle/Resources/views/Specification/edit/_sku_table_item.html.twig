@@ -3,7 +3,7 @@
 <tr data-price="{{ product_variant|sku_price }}" data-id="{{ specification_item.id }}" data-variant-id="{{product_variant.id}}">
     <td class="text-center" data-index="position" data-server-type="specification-item" data-type="text">{{ specification_item.position }}</td>
 
-    <td>
+    <td class="text-center">
         {% if product.image %}
             <div class="product-image">
                 <img src="{{ product.image.path|imagine_filter('s150x150') }}" />
@@ -20,17 +20,17 @@
     </td>
 
     <td class="product-info">
-        <div>
-            <a href="{{ path('product', {product: product.id, sku_id: product_variant.id}) }}">
-                {{ product.translate.name }}
-            </a>
-        </div>
-
         {% if product.factoryCode %}
             <div>
                 {{ product.factoryCode }}
             </div>
         {% endif %}
+
+        <div>
+            <span class="product-title">
+                {{ product.translate.name }}
+            </span>
+        </div>
 
         {% if product.types|length %}
             <div>
@@ -66,22 +66,24 @@
 
     <td data-index="note" data-type="textarea" data-server-type="specification-item">{{ specification_item.note|default('None') }}</td>
 
-    <td data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
+    <td class="text-center" data-index="quantity" data-type="integer" data-server-type="specification-item">{{ specification_item.quantity }}</td>
 
-    <td class="price text-center">{{ product_variant|sku_price|money }}</td>
+    <td class="total price text-center">{{ product_variant|sku_price|money }}</td>
     <td class="total-price text-center">{{ specification_item|specification_item_total_price|money }}</td>
 
-    <td>
+    <td class="text-right">
         <div class="btn-block">
-            <a class="btn btn-default btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
-                <i class="fa fa-pencil"></i>
-                {{ 'frontend.edit'|trans }}
-            </a>
+            {% if is_granted('VIEW_PRODUCTS', product_variant.product.factory) and product_variant.product.available %}
+                <a class="btn btn-edit btn-xs" href="{{ path('product', {product: product_variant.product.id, sku_id: product_variant.id, si: specification_item.id}) }}">
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            {% else %}
+                <a class="btn btn-edit btn-xs" href="#" onclick="return false;" data-toggle="tooltip" title="This product currently unavalable">
+                    {{ 'frontend.edit'|trans }}
+                </a>
+            {% endif %}
 
-            <a class="btn btn-danger btn-xs remove" href="#">
-                <i class="fa fa-trash-o"></i>
-                {{ 'frontend.remove'|trans }}
-            </a>
+            <a class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true" href="#"></a>
         </div>
     </td>
 </tr>

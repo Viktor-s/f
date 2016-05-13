@@ -6,10 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Furniture\ProductBundle\Form\DataTransformer\ProductPartVariantMaterialVariantSelectionTransformer;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+
 
 class ProductVariantPartMaterialsType extends AbstractType
 {
@@ -54,8 +52,6 @@ class ProductVariantPartMaterialsType extends AbstractType
             $defaultValues[] = $ppvs->getProductPart()->getId() . '_' . $ppvs->getProductPartMaterialVariant()->getId();
         }
 
-        $i = 0;
-
         /** @var \Furniture\ProductBundle\Entity\Product $product */
         $product = $productVariant->getProduct();
 
@@ -76,17 +72,15 @@ class ProductVariantPartMaterialsType extends AbstractType
                 $choiceList = new ChoiceList($choiceValues, $choiceLabels);
                 $values = array_intersect($choiceList->getChoices(), $defaultValues);
 
-                $builder->add($i, 'choice', [
+                $builder->add($productPart->getId(), 'choice', [
                     'label'       => $productPart->getLabel(),
                     'choice_list' => $choiceList,
-                    'required'    => false,
+                    'required'    => (bool)$productVariant->getId(),
                     'attr'        => [
                         'data-part-id' => $productPart->getId(),
                     ],
-                    'data' => array_shift($values),
+                    'data'        => array_shift($values),
                 ]);
-
-                $i++;
             }
         }
     }

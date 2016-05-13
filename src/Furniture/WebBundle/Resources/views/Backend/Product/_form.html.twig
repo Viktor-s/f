@@ -8,10 +8,6 @@
 <div class="tab-content">
     {% include 'SyliusWebBundle:Backend/Product/Form:_main.html.twig' %}
 
-    {% if form.readinesses is defined %}
-        {% include 'SyliusWebBundle:Backend/Product/Form:_status.html.twig' %}
-    {% endif %}
-
     {% include 'SyliusWebBundle:Backend/Product/Form:_options.html.twig' %}
     {% include 'SyliusWebBundle:Backend/Product/Form:_parts.html.twig' %}
     {% include 'SyliusWebBundle:Backend/Product/Form:_attributes.html.twig' %}
@@ -53,6 +49,15 @@
 
             images.disableSelection();
 
+            $('#sylius_product_productType').on('change', function(e) {
+                if ($(this).val() == 1 && $('li.schemes').is(':visible')) {
+                    $('li.schemes').hide();
+                }
+                else {
+                    $('li.schemes').show();
+                }
+            });
+
             $(document).bind('DOMNodeInserted', function (event) {
                 var target = event.target,
                     classes = target.classList;
@@ -68,6 +73,11 @@
                     images.sortable('refresh');
                     element.disableSelection();
                 }
+            });
+
+            // Add bg for tabs with error.
+            $('form > .tab-content').find('.has-error').parents('.tab-pane').each(function(idx) {
+                $('a[href="#' + $(this).attr('id') + '"]').addClass('bg-danger');
             });
         });
     })(jQuery);

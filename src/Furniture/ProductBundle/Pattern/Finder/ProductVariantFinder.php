@@ -2,8 +2,10 @@
 
 namespace Furniture\ProductBundle\Pattern\Finder;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
+use Furniture\ProductBundle\Entity\ProductPartVariantSelection;
 use Furniture\ProductBundle\Entity\ProductVariant;
 use Furniture\ProductBundle\Pattern\Exception\ManyProductVariantsByParametersException;
 use Furniture\ProductBundle\Pattern\ProductVariantParameters;
@@ -47,6 +49,7 @@ class ProductVariantFinder
 
         $materialVariantsSelections = $variantParameters->getMaterialVariantSelections();
 
+        $variantSelectionsIds = [];
         if (count($materialVariantsSelections)) {
             // Create inner SQL for control material variants
             $materialVariantsQb = new QueryBuilder($this->em->getConnection());
@@ -64,6 +67,7 @@ class ProductVariantFinder
                 $key = sprintf('ppmv_id_' . ($index++));
                 $materialVariantsOrX->add('ppmv.id = :' . $key);
                 $qb->setParameter($key, $materialVariant->getId());
+                $variantSelectionsIds[] = $materialVariant->getId();
             }
 
             $materialVariantsQb->andWhere($materialVariantsOrX);
@@ -101,28 +105,67 @@ class ProductVariantFinder
         }
         
         // We set a two results for next control many sku by this parameters
-        $qb->setMaxResults(2);
-
+//        $qb->setMaxResults(2);
         $stmt = $qb->execute();
 
         $result = $stmt->fetchAll();
+
         $variantIds = [];
 
         foreach ($result as $item) {
             $variantIds[] = $item['id'];
         }
 
-        if (count($variantIds) > 1) {
-            throw new ManyProductVariantsByParametersException();
+
+        if (!empty($variantIds) && !empty($variantSelectionsIds)) {
+            $productVariantRepo = $this->em->getRepository(ProductVariant::class);
+            $variants = new ArrayCollection($productVariantRepo->findBy(['id' => $variantIds]));
+
+
+            $variants = $variants->filter(
+                function ($element) use ($variantSelectionsIds) {
+                    /** @var ProductVariant $element */
+                    $selections = $element->getProductPartVariantSelections();
+                    if ($selections->count() === count($variantSelectionsIds)) {
+                        /** @var ProductPartVariantSelection $selection */
+                        foreach ($selections as $selection) {
+                            $selectionVariantId = $selection->getProductPartMaterialVariant()->getId();
+                            if (in_array($selectionVariantId, $variantSelectionsIds)) {
+                                unset($variantSelectionsIds[array_search($selectionVariantId, $variantSelectionsIds)]);
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        return empty($variantSelectionsIds);
+                    } else {
+                        return false;
+                    }
+                }
+            );
+
+            if ($variants->count() > 1) {
+                throw new ManyProductVariantsByParametersException();
+            }
+
+            if (!$variants->count()) {
+                return null;
+            }
+
+            $variant = $variants->current();
+        } else {
+            if (count($variantIds) > 1) {
+                throw new ManyProductVariantsByParametersException();
+            }
+
+            if (!count($variantIds)) {
+                return null;
+            }
+
+            $id = $variantIds[0];
+
+            $variant = $this->em->find(ProductVariant::class, $id);
         }
-
-        if (!count($variantIds)) {
-            return null;
-        }
-
-        $id = $variantIds[0];
-
-        $variant = $this->em->find(ProductVariant::class, $id);
 
         return $variant;
     }

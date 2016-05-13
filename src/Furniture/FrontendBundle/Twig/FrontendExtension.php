@@ -5,6 +5,7 @@ namespace Furniture\FrontendBundle\Twig;
 use Furniture\FactoryBundle\Entity\Factory;
 use Furniture\FrontendBundle\Menu\FrontendMenuBuilder;
 use Knp\Menu\Twig\Helper as KnpMenuHelper;
+use Furniture\CommonBundle\Util\UrlFormatter;
 
 class FrontendExtension extends \Twig_Extension
 {
@@ -36,7 +37,21 @@ class FrontendExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'knp_menu_render_factory_side' => new \Twig_Function_Method($this, 'factorySideMenuRender', ['is_safe' => ['html']])
+            'knp_menu_render_factory_side' => new \Twig_Function_Method(
+                $this,
+                'factorySideMenuRender',
+                ['is_safe' => ['html']]
+            ),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('format_url', [$this, 'urlFormatter']),
         ];
     }
 
@@ -53,6 +68,21 @@ class FrontendExtension extends \Twig_Extension
         $menu = $this->menuBuilder->createFactorySideMenu($factory);
 
         return $this->knpMenuHelper->render($menu, $options);
+    }
+
+    /**
+     * Format URL string
+     *
+     * @param       $url
+     * @param array $parts
+     *
+     * @return string
+     */
+    public function urlFormatter($url, $parts = [])
+    {
+        $formatter = new UrlFormatter($url);
+
+        return $formatter->format($parts);
     }
 
     /**

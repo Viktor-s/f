@@ -1,9 +1,8 @@
 frontend:
     access: Access
-    account_disabled: Account is disabled.
     actions: Actions
     add_to_specification: Add to specification
-    address: Address
+    address: Address:
     admin: Admin
     agenta_solution: AgentA Solution
     all: All
@@ -12,7 +11,7 @@ frontend:
     are_you_sure_remove_factory_relation: Are you sure remove factory relation?
     are_you_sure_remove_image: Are you sure remove image?
     are_you_sure_remove_logo: Are you sure you want to remove logo?
-    are_you_sure_remove_retailer_relation: Are you sure remove retailer relation?
+    are_you_sure_remove_retailer_relation: Are you sure you want to remove a request?
     are_you_sure_remove_specification: Are you sure you want to remove this specification?
     are_you_sure_remove_specification_item: Are you sure you want to remove this product?
     authorized_factories: Authorized brands
@@ -35,28 +34,36 @@ frontend:
         composite_collection_selector: Collections
     characteristics: Characteristics
     click_to_edit: Click to edit
-    coefficient: Coefficient
+    coefficient: Coefficient:
+    company_name: Company name
     contact: Contact
     content_user_profile: User profile
     create: Create
-    create_to_factory_relation: Create request to factory
+    relation_waiting_accept: Waiting for cofirmation
+    relation_declined: Factory declined the request. For more information please contact support
+    create_to_factory_relation_request_prices: Request prices
+    create_to_factory_relation: Request a catalog
     create_to_retailer_relation: Create request to retailer
     no_factories_for_create_relation: There are no factories to create relations for
     created: Created
     created_at: Created at
     creator: Creator
     default_relation: Default relation
-    description: Description
+    description: Description:
     detailed: Detailed
     discount: Discount
     discount_value: 'Discount :discount%'
     downlod_file_with_number: "Download :number"
-    dumping: Extra discount
+    dumping: Extra discount:
     edit: Edit
-    email: Email
+    email: Email:
+    email_already_used: 'This email is already registered, please choose another one.'
+    email_already_used_not_verified: 'This email is already registered but hasn`t been verified yet.'
+    email_virify_error: "Email verify error"
     email_virify_success: "Your email successfully verified"
-    email_virify_success_login: "Your email was successfully verified. Please reset your password with form bellow or <a href=\"/login\">login</a> with your credential."
-    emails: Emails
+    email_virify_success_login: 'Your email was successfully verified. Please reset your password with form bellow or <a href="/login">login</a> with your credential.'
+    emails: Emails:
+    emails_contact: Contact emails:
     employee: Employee
     employees: Employees
     enabled: Enabled
@@ -66,10 +73,11 @@ frontend:
     export_to_pdf: PDF
     export_specification_preview: Export specification - preview
     factories: Brands
-    factory: Brand
+    factory: Brand:
     factory_code: Factory code
     factory_profile: Factory profile
     factory_rates: Factory conditions
+    factory_partners: Partners
     factory_relations: Factory relations
     factory_requests: Factory requests
     factory_side:
@@ -81,7 +89,7 @@ frontend:
         menu:
             general: General
             collections: Collections
-            work_info: Work info
+            sales_conditions: Sales conditions
             contacts: Contacts
             circulars: Circulars
             news: News
@@ -94,11 +102,12 @@ frontend:
             delivery_packaging: Delivery and Packaging
             address_warehouse: Address warehouse
             vacations: Vacations
-    final_price: Final price
+
+    final_price: Final price:
     finish: Finish
     finished: Finished
     finishes: Finishes
-    first_name: First name
+    first_name: First name:
     forgot_password: Forgot password?
     full: Full
     image: Image
@@ -107,7 +116,7 @@ frontend:
         ru: Russian
         it: Italian
     last_modified: Last modified
-    last_name: Last name
+    last_name: Last name:
     login:
         login: Login
         username: Username
@@ -137,12 +146,29 @@ frontend:
             factory:
                 statistics: Common statistics
                 map: Available retailers
+    messages:
+        errors:
+            account_disabled: Account is disabled.
+            account_disabled_contact_support: Your account has been disabled. Please contact support!
+            session_is_disabled: Session data not provided.
+            user_not_found: User not found.
+            relation_products_view: Please check View products checkbox.
+        success:
+            reset_password_success: New email was sent.
+            create_to_factory_relation_title: Thanks for your request.
+            create_to_factory_relation: Shortly you will receive a catalog and sales tools.
+            create_to_factory_relation_request_prices: Shortly you will receive prices and sales tools.
+        confirm:
+            create_to_factory_relation_title: Confirmation required.
+            create_to_factory_relation: Are you sure you want to send a request for catalog?
+            create_to_factory_relation_request_prices: Are you sure you want to send a request for prices?
     mode: Mode
     name: Name
+    name_already_used: 'This name is already registered, please choose another one.'
     need_reset_password: We sent you a verification email, please check email and follow instructions
     new_arrivals: New arrivals
     new_factories: New Brands
-    new_password: New password
+    new_password: New password:
     new_specification: New specification
     note: Note
     notes: Notes
@@ -151,12 +177,13 @@ frontend:
     options: Options
     password: Password
     pdf: PDF
-    phones: Phones
-    phones_contact: Contact phones
+    per_page: View
+    phones: Phones:
+    phones_contact: Contact phones:
     photo: Photo
     please_enter_new_password: "Please enter a new password for your account."
     please_enter_your_email: "Please enter your account email."
-    position: Position
+    position: Position:
     price: Price
     product:
         media_tab:
@@ -172,21 +199,28 @@ frontend:
     products_view: View products
     quantity: Quantity
     question_and_call: Any questions? Call Us <a href="tel::phone">:phone</a>
-    remove: Remove
     goto_home: Return to home
-    repeat_password: Repeat password
+    register:
+        contact_phones: Contact phones
+        contact_emails: Contact emails
+        website: Website
+    remove: Remove
+    repeat_password: Repeat password:
     request_reset_password_successfully: "Succesfully request to reset password. Please check your mail."
     reset_password: Reset password
     reset_password_successfully: "Your password successfully resetted. You can login with new password."
     reset_password_error: Email not send.
-    reset_password_success: New email was sent.
     retailer: Retailer
     retailer_profile: Retailer profile
     retailer_profile_side:
         managers:
             email_exists_error: Already in use!
-            create_confirmation: "We'll send confirmation mail on specified email address"
+            create_confirmation: "We'll send confirmation email on specified email address."
             email_change_confirmation: "Are you sure you want change your email? If you proceed you'll be logged out and mail with email confirmation instructions will be send to new email."
+        rates:
+            info_coefficient: 'Coefficient uses for changing price view, you configure pricing in showcase what you want.'
+            info_sale_price: 'You can setup your sale price, and after showing showcase to your client, as your e-catalog in show room.'
+            info_calculations: 'Public price (100) x Coefficient (1,2) - Extra discount (10%) = Viewing price (108)'
     retailer_relations: User relations
     retailer_requests: Retailer requests
     sale: Personal discount
@@ -194,9 +228,9 @@ frontend:
     select_category: Category
     select_style: Style
     send_reset_password: Reset password again
-    session_is_disabled: Session data not provided.
     show: Show
     sku: SKU
+    sort_by: Sort by
     spaces: Spaces
     specfications_finished_not_found_for_buyer: "Not found finished specifications for client :buyer."
     specfications_not_found: Specifications not found.
@@ -205,12 +239,20 @@ frontend:
     specifications: Specifications
     specficatior:
         specification_label: Specification
-        description_lable: Description
+        description_label: Description
+        document_label: Document:
+        email_label: E-mail:
+        name_label: Name:
+        manager_label: Manager:
+        phone_label: Tel.:
         page_reload_alert: Processing, wait ...
-        client_lable: Client
-        client_contact_lable: Contact information
-        notes: Notes
+        company_address_label: Company adress:
+        client_label: Client:
+        client_contact_label: Contact information:
+        created_label: Created:
+        notes: Notes:
         will_not_appear_in_specification: will no appear in specification
+    subtitle: Subtitle:
     taxonomy: Categories
     title:
         spaces: Spaces
@@ -220,6 +262,7 @@ frontend:
         index: Agenta
         homepage: Homepage
         factories: Brands
+        general: General
         news: News
         circulars: Circulars
         navigation: Navigation
@@ -232,6 +275,7 @@ frontend:
         create: Create
         edit: Edit
         preview: Preview
+        partners: Partners
         export: Export
         factory_profile: Factory profile
         content_user_profile: User profile
@@ -240,9 +284,11 @@ frontend:
         factory_rates: Factory conditions
         user_relations: User relations
         retailer_relations: Retailer relations
+        retailer_relations_create: Create retailer relations
         user_profile: My profile
         factory_relations: Factory relations
         default_relation: Default relation
+        default_relation_edit: Edit default relation
         view: View
         taxonomy: Categories
         factory_side: Factory
@@ -255,11 +301,11 @@ frontend:
     total_price: Total price
     total_quantities: Total quantities
     type: Type
+    unavailable: Unavailable
     update: Update
     update_specification: Update specification
     user: User
     user_is_disabled_with_email: "User with email :email is disabled."
-    user_not_found: User not found.
     user_not_found_with_email: "Not found user with email :email."
     user_profile_side:
         update: Update profile
@@ -267,5 +313,5 @@ frontend:
     username: Username
     volume: Volume
     weight: Weight
-    website: Website
+    website: Website:
     you_not_have_factory_rates: You not have factory conditions.

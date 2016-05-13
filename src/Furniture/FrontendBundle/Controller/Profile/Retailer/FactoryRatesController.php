@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class FactoryRatesController
 {
@@ -54,6 +55,11 @@ class FactoryRatesController
     private $urlGenerator;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Construct
      *
      * @param \Twig_Environment             $twig
@@ -63,6 +69,7 @@ class FactoryRatesController
      * @param EntityManagerInterface        $em
      * @param FormFactoryInterface          $formFactory
      * @param UrlGeneratorInterface         $urlGenerator
+     * @param TranslatorInterface           $translator
      */
     public function __construct(
         \Twig_Environment $twig,
@@ -71,7 +78,8 @@ class FactoryRatesController
         RetailerFactoryRateRepository $userFactoryRateRepository,
         EntityManagerInterface $em,
         FormFactoryInterface $formFactory,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TranslatorInterface $translator
     ) {
         $this->twig = $twig;
         $this->tokenStorage = $tokenStorage;
@@ -80,6 +88,7 @@ class FactoryRatesController
         $this->em = $em;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
+        $this->translator = $translator;
     }
 
     /**
@@ -87,11 +96,13 @@ class FactoryRatesController
      *
      * @return Response
      */
-    public function rates()
+    public function rates(Request $request)
     {
         if (!$this->authorizationChecker->isGranted('RETAILER_FACTORY_RATE_LIST')) {
             throw new AccessDeniedException();
         }
+
+        $session = $request->getSession();
 
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
@@ -101,6 +112,11 @@ class FactoryRatesController
         $retailerProfile = $retailerUserProfile->getRetailerProfile();
 
         $rates = $this->userFactoryRateRepository->findByRetailerUserProfile($retailerUserProfile);
+        
+        if (empty($rates)) {
+            $session->getFlashBag()->add('info', $this->translator->trans('frontend.retailer_profile_side.rates.info_coefficient'));
+            $session->getFlashBag()->add('info', $this->translator->trans('frontend.retailer_profile_side.rates.info_sale_price'));
+        }
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRate:list.html.twig', [
             'rates' => $rates,
@@ -125,6 +141,8 @@ class FactoryRatesController
         /** @var \Furniture\UserBundle\Entity\User $user */
         $user = $this->tokenStorage->getToken()
             ->getUser();
+
+        $session = $request->getSession();
 
         if ($rate) {
             $rate = $this->userFactoryRateRepository->find($rateId = $rate);
@@ -171,6 +189,8 @@ class FactoryRatesController
 
             return new RedirectResponse($url);
         }
+
+        $session->getFlashBag()->add('info', $this->translator->trans('frontend.retailer_profile_side.rates.info_calculations'));
 
         $content = $this->twig->render('FrontendBundle:Profile/Retailer/FactoryRate:edit.html.twig', [
             'rate' => $rate,

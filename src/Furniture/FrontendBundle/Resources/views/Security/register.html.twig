@@ -1,0 +1,252 @@
+{% extends 'FrontendBundle:Security:layout.html.twig' %}
+
+{% block content %}
+    {% form_theme form 'FrontendBundle:Form:base_horizontal.html.twig' %}
+    <div class="col-sm-12">
+        {{ form_start(form, {'attr': {'id': 'registration-form', 'class': 'registration-form'}}) }}
+        <div>
+            <h2>User type</h2>
+            <section>
+                {{ form_row(form.userType) }}
+            </section>
+
+            <h2>Main information</h2>
+            <section>
+            {% if form.user.retailerUserProfile.retailerProfile  is defined %}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.name ) }}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.address ) }}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.phones ) }}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.emails ) }}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.website ) }}
+                {{ form_row(form.user.retailerUserProfile.retailerProfile.logoImage ) }}
+            {% endif %}
+            </section>
+
+            <h2>Personal information</h2>
+            <section>
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+            {% if form.user.retailerUserProfile is defined %}
+                {{ form_row(form.user.retailerUserProfile.position) }}
+                {{ form_row(form.user.retailerUserProfile.phones) }}
+                {{ form_row(form.user.retailerUserProfile.retailerMode) }}
+            {% endif %}
+                {{ form_rest(form) }}
+            </section>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var form = $('#registration-form');
+            var retailerNameCheck = true;
+            var userEmailCheck = true;
+            var retailerNameSave = {};
+            var userEmailSave = {};
+            var stepsStart = 0;
+
+            jQuery.validator.addMethod("remoteCheck", function(value, element, options) {
+                return this.optional(element) || options.check;
+            }, "This value is already used");
+
+            jQuery.validator.addMethod("email", function (value, element, options) {
+                return this.optional(element) || /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(value);
+            }, "Please enter a valid email address.");
+
+            // Set start step with error.
+            form.find('section').each(function(idx, ele) {
+                if ($(ele).find('.has-error').length > 0) {
+                    stepsStart = idx;
+                    return;
+                }
+            });
+
+            form.validate({
+                errorPlacement: function errorPlacement(error, element) { element.parents('.form-group').before(error); },
+                rules: {
+                    'sylius_customer[userType]': 'required',
+                    'sylius_customer[user][retailerUserProfile][retailerProfile][name]': {
+                        required: true
+                    },
+                    'sylius_customer[email]': {
+                        required: {
+                            depends: function(){
+                                $(this).val($.trim($(this).val()));
+                                return true;
+                            }
+                        },
+                        email: true,
+                        remoteCheck: {
+                            check: userEmailCheck
+                        }
+                    },
+                    'sylius_customer[firstName]': 'required',
+                    'sylius_customer[user][retailerUserProfile][retailerProfile][website]': 'url'
+                }
+            });
+
+            var steps = form.children('div').steps({
+                headerTag: "h2",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                onStepChanging: function (event, currentIndex, newIndex)
+                {
+                    console.log(event, currentIndex, newIndex)
+                    // Allways allow previous action even if the current form is not valid!
+                    if (currentIndex > newIndex)
+                    {
+                        return true;
+                    }
+
+                    if (currentIndex == 1) {
+                        var remoteCheck = true;
+                        var retailerName = $("#sylius_customer_user_retailerUserProfile_retailerProfile_name");
+                        if ('' !== $.trim(retailerName.val()) && retailerNameSave
+                                && retailerNameSave.value !== $.trim(retailerName.val())) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{{ path('retailer_api_check_name') }}',
+                                data: {
+                                    name: retailerName.val()
+                                },
+                                async: false,
+                                dataType: 'json',
+                                cache: false,
+                                success: function(data) {
+                                    retailerNameSave = {
+                                        value: retailerName.val(),
+                                        state: data
+                                    };
+                                    remoteCheck = data;
+                                }
+                            });
+                        }
+                        else if ('' !== $.trim(retailerName.val()) && retailerNameSave
+                                && retailerNameSave.value === $.trim(retailerName.val()) && retailerNameSave.state === false) {
+                            remoteCheck = false;
+                        }
+
+                        retailerName.rules('add', {
+                            remoteCheck: {
+                                check: remoteCheck
+                            },
+                            messages: {
+                                remoteCheck: '{{ 'frontend.name_already_used'|trans }}'
+                            }
+                        });
+                    }
+
+                    // Needed in some cases if the user went back (clean up)
+                    if (currentIndex < newIndex)
+                    {
+                        // To remove error styles
+                        form.find(".body:eq(" + newIndex + ") label.error").remove();
+                        form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+                    }
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                    return form.valid();
+                },
+                onFinishing: function (event, currentIndex)
+                {
+                    var remoteCheck = true;
+                    var remoteCheckMessage;
+                    var userEmail = $("#sylius_customer_email");
+                    if ('' !== $.trim(userEmail.val()) && userEmailSave
+                            && userEmailSave.value !== $.trim(userEmail.val())) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('users_api_check_email') }}',
+                            data: {
+                                email: userEmail.val()
+                            },
+                            async: false,
+                            dataType: 'json',
+                            cache: false,
+                            success: function(data) {
+                                userEmailSave = {
+                                    value: userEmail.val(),
+                                    state: data.status
+                                };
+                                remoteCheck = data.status;
+                                if (!data.status) {
+                                    remoteCheckMessage = data.message;
+                                }
+                            }
+                        });
+                    } else if ('' !== $.trim(userEmail.val()) && userEmailSave
+                            && userEmailSave.value === $.trim(userEmail.val()) && userEmailSave.state === false) {
+                        remoteCheck = false;
+                    }
+
+                    userEmail.rules('add', {
+                        remoteCheck: {
+                            check: remoteCheck
+                        },
+                        messages: {
+                            remoteCheck: remoteCheckMessage
+                        }
+                    });
+
+                    form.validate().settings.ignore = ":disabled";
+                    return form.valid();
+                },
+                onFinished: function (event, currentIndex)
+                {
+                    form.submit()
+                },
+                labels: {
+                    finish: "Register",
+                    previous: "Back"
+                },
+                startIndex: stepsStart
+            });
+
+            var link = $('<a/>').html('<span class="number">4.</span>Registration complete.');
+            var li = $('<li/>').addClass('disabled').append(link);
+            steps.find('.steps ul').append(li);
+            // Show step errors after server validation.
+            if (stepsStart > 0) {
+                $(steps.find('.steps ul li').get(stepsStart)).addClass('error');
+                $('span.form-error').remove();
+                form.validate().showErrors({
+                    'sylius_customer[user][retailerUserProfile][retailerProfile][name]': '{{ 'frontend.name_already_used'|trans }}',
+                    'sylius_customer[email]': '{{ 'frontend.email_already_used'|trans }}'
+                });
+            }
+
+            $('[data-toggle="tooltip"]').tooltip({
+                container : 'body'
+            });
+        });
+    </script>
+    {% javascripts '@WebBundle/Resources/public/js/google-maps.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        window.googleMapsApiKey = "{{ google_api_maps_key }}";
+        (function ($) {
+            $(document).ready(function () {
+                var addressAutoComplete = $('.address-autocomplete');
+
+                initializeGoogleMaps()
+                    .then(function () {
+                        var autocomplete = new google.maps.places.Autocomplete(addressAutoComplete.get(0), {
+                            types: ['geocode']
+                        });
+
+                        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                            var location = autocomplete.getPlace().geometry.location;
+
+                            $('input[data-address-latitude]').val(location.lat());
+                            $('input[data-address-longitude]').val(location.lng());
+                        });
+                    });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

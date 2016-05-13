@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity;
 
 use Furniture\FactoryBundle\Entity\Factory;
+use Furniture\ProductBundle\Validator\Constraint\ProductSchemesUnique;
 use Furniture\SkuOptionBundle\Entity\SkuOptionVariant;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
@@ -81,11 +82,6 @@ class Product extends BaseProduct
     protected $styles;
 
     /**
-     * @var Collection|Readiness[]
-     */
-    private $readinesses;
-
-    /**
      * @var bool
      */
     private $availableForSale;
@@ -94,6 +90,8 @@ class Product extends BaseProduct
      * @var Collection|ProductScheme[]
      *
      * @Assert\Valid()
+     * @Assert\Count(min = 2, minMessage="Please create at least two product schemes.", groups={"SchemesCreate"})
+     * @ProductSchemesUnique(groups={"SchemesCreate"})
      */
     private $productSchemes;
 
@@ -113,7 +111,7 @@ class Product extends BaseProduct
      * @var Collection|ProductVariantsPattern[]
      */
     private $productVariantsPatterns;
-    
+
     /**
      * Constructor.
      */
@@ -136,7 +134,6 @@ class Product extends BaseProduct
         $this->types = new ArrayCollection();
         $this->spaces = new ArrayCollection();
         $this->styles = new ArrayCollection();
-        $this->readinesses = new ArrayCollection();
     }
 
     /**
@@ -614,8 +611,14 @@ class Product extends BaseProduct
     public function getPaginatedVariants($page = 1, $limit = 50)
     {
         $variants = $this->getVariants();
-        $paginator = new Pagerfanta(new ArrayAdapter($variants->toArray()));
-
+        $variantsArray = $variants->toArray();
+        // Sort by ID DESC
+        usort($variantsArray, function ($a, $b) {
+            /** @var ProductVariant $a */
+            /** @var ProductVariant $b */
+            return ($a->getId() > $b->getId()) ? -1 : 1;
+        });
+        $paginator = new Pagerfanta(new ArrayAdapter($variantsArray));
         $paginator->setCurrentPage($page);
         $paginator->setMaxPerPage($limit);
 
@@ -637,62 +640,6 @@ class Product extends BaseProduct
         $this->fixPdpConfig();
 
         return $this->pdpConfig;
-    }
-
-    /**
-     * Has readiness?
-     *
-     * @param Readiness $readiness
-     *
-     * @return bool
-     */
-    public function hasReadiness(Readiness $readiness)
-    {
-        return $this->readinesses->exists(function ($key, Readiness $item) use ($readiness) {
-            return $readiness->getId() == $item->getId();
-        });
-    }
-
-    /**
-     * Add readiness
-     *
-     * @param Readiness $readiness
-     *
-     * @return Product
-     */
-    public function addReadiness(Readiness $readiness)
-    {
-        if (!$this->hasReadiness($readiness)) {
-            $this->readinesses->add($readiness);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove readiness
-     *
-     * @param Readiness $readiness
-     *
-     * @return Product
-     */
-    public function removeReadiness(Readiness $readiness)
-    {
-        if ($this->hasReadiness($readiness)) {
-            $this->readinesses->removeElement($readiness);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get readinesses
-     *
-     * @return Readiness
-     */
-    public function getReadinesses()
-    {
-        return $this->readinesses;
     }
 
     /**
@@ -1144,7 +1091,7 @@ class Product extends BaseProduct
     {
         return $this->productVariantsPatterns->contains($productVariantsPattern);
     }
-    
+
     /**
      * Add product variant pattern
      *
@@ -1177,7 +1124,7 @@ class Product extends BaseProduct
 
         return $this;
     }
-    
+
     /**
      * Implement __toString
      *
@@ -1196,7 +1143,7 @@ class Product extends BaseProduct
         //Add scheme input for schematic product
         if($this->isSchematicProductType()){
             $input = $this->pdpConfig->getInputForSchemes();
-            
+
             if (!$input) {
                 $input = new ProductPdpInput();
                 $input->setForSchemes(true);
@@ -1204,7 +1151,7 @@ class Product extends BaseProduct
                 $this->pdpConfig->addInput($input);
             }
         }
-        
+
         // Add product parts
         foreach ($this->getProductParts() as $productPart) {
             $input = $this->pdpConfig->findInputForProductPart($productPart);

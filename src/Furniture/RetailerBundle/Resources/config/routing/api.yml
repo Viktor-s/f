@@ -1,0 +1,5 @@
+retailer_api_check_name:
+    path: /name-check
+    methods: [ POST ]
+    defaults:
+        _controller: retailer.controller.api.retailer_controller:nameCheck

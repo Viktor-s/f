@@ -3,3 +3,10 @@ product_api_create_by_pattern_and_parameters:
     methods: [ POST ]
     defaults:
         _controller: product.controller.api.pattern_product_creator:createProductVariant
+
+product_api_get_product_data_by_factory:
+    pattern: /get-product-data-by-factory/{factory}
+    methods: [ GET, POST ]
+    requirements: { factory: \d+ }
+    defaults:
+        _controller: product.controller.api.product_controller:getProductDataForBrand

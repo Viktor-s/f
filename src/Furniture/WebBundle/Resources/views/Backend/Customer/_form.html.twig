@@ -13,7 +13,7 @@
                 {{ form_row(form.lastName) }}
 
                 {{ form_row(form.gender) }}
-                {{ form_row(form.user.enabled) }}
+                {{ form.user.enabled is defined ? form_row(form.user.enabled) }}
 
                 {% if form.user.needResetPassword is defined %}
                     {{ form_row(form.user.needResetPassword) }}

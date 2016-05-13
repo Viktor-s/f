@@ -37,8 +37,6 @@ abstract class AbstractProductVariantsPattern
 
     /**
      * @var \Doctrine\Common\Collections\Collection|AbstractProductPartPatternVariantSelection[]
-     *
-     * @Assert\Count(min = 1)
      */
     protected $partPatternVariantSelections;
 

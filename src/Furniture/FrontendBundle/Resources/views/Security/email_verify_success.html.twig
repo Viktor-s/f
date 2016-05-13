@@ -1,17 +1,29 @@
 {% extends 'FrontendBundle:Security:layout.html.twig' %}
 
-{% form_theme form 'FrontendBundle:Security:form.html.twig' %}
-
 {% block content %}
     <div class="col-md-6 information-entry col-md-offset-3">
         <div class="login-box">
+        {% if form is not null %}
             <div class="article-container style-1 text-center">
                 <h3>{{ 'frontend.email_virify_success'|trans }}</h3>
             </div>
+            {% form_theme form 'FrontendBundle:Security:form.html.twig' %}
+
             <p>{{ 'frontend.email_virify_success_login'|trans|raw }}</p>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
+        {% else %}
+            <div class="article-container style-1 text-center">
+                <h3>{{ 'frontend.email_virify_error'|trans }}</h3>
+                <ul class="list-group">
+                {% for message in error_messgaes %}
+                    <li class="list-group-item list-group-item-danger">{{ message }}</li>
+                {% endfor %}
+                    <li class="list-group-item list-group-item-info"><a href="{{ path('security_login') }}">Return to login</a></li>
+                </ul>
+            </div>
+        {% endif %}
         </div>
     </div>
 {% endblock %}

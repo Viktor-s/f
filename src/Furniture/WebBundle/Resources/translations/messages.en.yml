@@ -43,6 +43,10 @@ product_extension_option_value:
         option: Option
         value: Value
 
+product_part:
+    form:
+        presentation: Presentation name
+
 product_part_material:
     breadcrumb:
         index: Product part materials
@@ -70,6 +74,9 @@ product_part_material:
     option_values: values
     presentation: Presentation
     update: Update product part material
+    form:
+        name: Name
+        factory: Factory
 
 composite_collection:
     button:
@@ -200,10 +207,6 @@ product_space:
     breadcrumb:
         index: Space
 
-product_readiness:
-    breadcrumb:
-        index: Readiness
-
 post:
     header:
         index: Posts
@@ -246,6 +249,7 @@ furniture_retailer_profile:
     form:
         phones: Contact phones
         emails: Contact emails
+        demo_factories: Demo factories
 
 backend_confirmation:
     default:
@@ -274,9 +278,11 @@ sylius:
             status: Status
 
     form:
+        product:
+            translations: Product translations
         product_filter:
             factory_code: Factory code
             factory: Factory
             price_from: Price from
             price_to: Price to
-            statuses: Statuses
+            status: Status

@@ -3833,16 +3833,14 @@ body:not(.mobile) .hover-class-1:hover:after {
     border-color: #dedede;
     background: transparent url('../bundles/frontend/img/alert-info.png') no-repeat 15px center;
 }
-
 div#original-price,
 div#calculated-price {
     display: inline-block;
 }
-
 div#original-price{
     font-weight: normal;
-}
 
+}
 div#calculated-price:before {
     content: '';
     display: inline-block;
@@ -3850,7 +3848,6 @@ div#calculated-price:before {
     width: 22px;
     background: url(../bundles/frontend/img/price-arrow.png) no-repeat center;
 }
-
 #product-preview .col-md-5.col-sm-5 {
     width: 320px; 
 }

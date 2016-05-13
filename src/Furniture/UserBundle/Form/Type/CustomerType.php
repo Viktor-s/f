@@ -58,9 +58,10 @@ class CustomerType extends BaseCustomerType
 
         // Remove non use fields
         $builder->remove('birthday');
-
+        /** @var Customer $customer */
+        $customer = $builder->getData();
         // Replace user form
-        $builder->add('user', $this->getUserFormType());
+        $builder->add('user', $this->getUserFormType(), ['create_action' => (bool)!$customer->getId()]);
     }
 
     /**

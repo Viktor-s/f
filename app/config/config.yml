@@ -82,6 +82,7 @@ twig:
     globals:
         #Browser key
         google_api_maps_key: AIzaSyAtfFR1y2sFVhzLwxvoeX6g_FUofzQakxA
+        google_analytics_site_key: '%google.analytics.site%'
     strict_variables: %kernel.debug%
     paths:
         %kernel.root_dir%/../vendor/payum/payum/src/Payum/Core/Resources/views: PayumCore
@@ -207,6 +208,13 @@ sylius_resource:
                 model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
                 controller: Furniture\WebBundle\Controller\FactoryRetailerRelationController
 
+        furniture.factories_retialers_relations:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryRetailerRelation
+                repository: Furniture\FactoryBundle\Entity\Repository\FactoryRetailerRelationRepository
+                controller: Furniture\WebBundle\Controller\FactoriesRetailersRelationsController
+
         furniture.retailer_profile:
             driver: doctrine/orm
             classes:
@@ -263,6 +271,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Category
+                controller: Furniture\ProductBundle\Controller\CategoryController
                 translation:
                     model: Furniture\ProductBundle\Entity\CategoryTranslation
                     mapping: ~
@@ -271,6 +280,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Type
+                controller: Furniture\ProductBundle\Controller\TypeController
                 translation:
                     model: Furniture\ProductBundle\Entity\TypeTranslation
                     mapping: ~
@@ -279,6 +289,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Style
+                controller: Furniture\ProductBundle\Controller\StyleController
                 translation:
                     model: Furniture\ProductBundle\Entity\StyleTranslation
                     mapping: ~
@@ -287,15 +298,10 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\Space
+                controller: Furniture\ProductBundle\Controller\SpaceController
                 translation:
                     model: Furniture\ProductBundle\Entity\SpaceTranslation
                     mapping: ~
-
-        furniture.product_readiness:
-            driver: doctrine/orm
-            classes:
-                model: Furniture\ProductBundle\Entity\Readiness
-                controller: Furniture\ProductBundle\Controller\ReadinessController
 
         furniture.product_part:
             driver: doctrine/orm
@@ -322,6 +328,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\ProductBundle\Entity\ProductPartMaterial
+                repository: Furniture\ProductBundle\Entity\Repository\ProductPartMaterialRepository
                 translation:
                     model: Furniture\ProductBundle\Entity\ProductPartMaterialTranslation
                     mapping: ~
@@ -374,9 +381,12 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: Furniture\PostBundle\Entity\Post
+                repository: Furniture\PostBundle\Entity\Repository\PostRepository
                 translation:
                     model: Furniture\PostBundle\Entity\PostTranslation
                     mapping: ~
+    settings:
+        default_page_size: 20
 
 liip_imagine:
     filter_sets:
@@ -426,6 +436,9 @@ liip_imagine:
             filters:
                 auto_relative_resize: { widen: 300, heighten: 225 }
                 #thumbnail: { size: [300, 225], mode: outbound }
+        s260x195:
+            filters:
+                auto_relative_resize: { widen: 260, heighten: 195 }
         s360x360:
             filters:
                 auto_relative_resize: { widen: 360, heighten: 360 }

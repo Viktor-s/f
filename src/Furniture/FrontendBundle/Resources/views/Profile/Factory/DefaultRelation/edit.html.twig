@@ -9,7 +9,32 @@
 {% endblock %}
 
 {% block page_content %}
-    {{ form_start(form) }}
+    <div class="page-header">
+        <h1>{{ 'frontend.title.default_relation_edit'|trans }}</h1>
+    </div>
+    {{ form_start(form, {'attr': {'id': 'factory-default-relation', 'class': 'col-sm-9'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var $accessProducts = $('#factory_default_relation_accessProducts');
+                var $accessPrice = $('#factory_default_relation_accessProductsPrices');
+                var requiredMessage = '{{ 'frontend.messages.errors.relation_products_view'|trans }}';
+
+                $accessProducts.on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $accessPrice.parents('.form-group').slideDown();
+                        if (typeof $.clearMessages === "function") {
+                            $.clearMessages();
+                        }
+                    }
+                    else {
+                        $accessPrice.attr('checked', false).parents('.form-group').slideUp();
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

@@ -9,9 +9,11 @@ use Sylius\Component\Variation\Model\VariantInterface as BaseVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Furniture\ProductBundle\Validator\Constraint\ProductVariant as ProductVariantConstraint;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ProductVariantConstraint
+ * @Assert\Callback(callback="validate", groups={"CreateProductVariant"})
  */
 class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 {
@@ -52,7 +54,7 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
      * @var string
      */
     protected $factoryCode;
-    
+
     /**
      * Get product
      *
@@ -264,10 +266,10 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
 
         return $this;
     }
-    
+
     /**
      * Get avtive active product code for this product variant
-     * 
+     *
      * @return type
      */
     public function getActiveFactoryCode(){
@@ -293,5 +295,87 @@ class ProductVariant extends BaseProductVariant implements BaseVariantInterface
         }
 
         return '';
+    }
+
+    /**
+     * Validate ProductVariant
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        /** @var Product $product */
+        $product = $this->getProduct();
+        /** @var Collection $selections */
+        $selections = $this->getProductPartVariantSelections();
+        $skuOptionSelections = $this->getSkuOptions();
+
+        $productParts = null;
+        $skuOptions = null;
+
+        // Validate ProductVariantSelection
+        if ($product->isSchematicProductType() && !empty($this->getProductScheme())) {
+            if ($this->getProductScheme()->getProductParts()->count() > $this->getProductPartVariantSelections()->count(
+                )
+            ) {
+                $productParts = $this->getProductScheme()->getProductParts();
+            }
+        } else if ($product->isSimpleProductType()) {
+            if ($product->getProductParts()->count() > $this->getProductPartVariantSelections()->count()) {
+                $productParts = $product->getProductParts();
+            }
+        }
+
+        if (count($product->getSkuOptionVariantsGrouped()) > $this->getSkuOptions()->count()) {
+            $skuOptions = $product->getSkuOptionVariantsGrouped();
+        }
+
+        if ($productParts) {
+            $productParts->forAll(
+                function ($key, $element) use ($selections, $context) {
+                    /** @var ProductPart $element */
+                    /** @var ProductPartVariantSelection $selection */
+                    $hasProductPart = false;
+                    foreach ($selections as $selection) {
+                        if ($selection->getProductPart() === $element) {
+                            $hasProductPart = true;
+                        }
+                    }
+
+                    if (!$hasProductPart || $selections->isEmpty()) {
+                        $context->buildViolation('Product variant options should not be empty.')
+                            ->atPath(sprintf('productPartVariantSelections[%d]', $element->getId()))
+                            ->addViolation();
+                    }
+
+                    return true;
+                }
+            );
+        }
+
+        if ($skuOptions) {
+            $skuOptions = new ArrayCollection($skuOptions);
+            $skuOptions->forAll(
+                function ($key, $elements) use ($skuOptionSelections, $context) {
+                    /** @var SkuOptionVariant[] $elements */
+                    /** @var Collection<SkuOptionVariant> $skuOptionSelections */
+
+                    $hasSkuOption = false;
+                    foreach ($skuOptionSelections as $skuOption) {
+                        if (in_array($skuOption, $elements, true)) {
+                            $hasSkuOption = true;
+                        }
+                    }
+
+                    if (!$hasSkuOption || $skuOptionSelections->isEmpty()) {
+                        $context->buildViolation('Product sku options should not be empty.')
+                            ->atPath(sprintf('skuOptions[%d]', $key))
+                            ->addViolation();
+                    }
+
+                    return true;
+                }
+            );
+        }
     }
 }

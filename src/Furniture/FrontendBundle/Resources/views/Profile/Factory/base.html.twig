@@ -8,27 +8,22 @@
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <div class="row">
-            {% block right_content_container %}
-                <div class="col-md-9 col-md-push-3 information-entry">
-                    {% block page_content %}{% endblock %}
-                </div>
-            {% endblock %}
+    <div class="row information-blocks">
+        {% block left_content_container %}
+            <div class="col-sm-3">
+                {% block left_content %}
+                    <div class="categories-list">
+                        <div class="block-title size-3">{{ 'frontend.factory_profile'|trans }}</div>
 
-            {% block left_content_container %}
-                <div class="col-md-3 col-md-pull-9 information-entry blog-sidebar">
-                    {% block left_content %}
-                        <div class="information-blocks">
-                            <div class="categories-list">
-                                <div class="block-title size-3">{{ 'frontend.factory_profile'|trans }}</div>
-
-                                {{ knp_menu_render('frontend.factory_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
-                            </div>
-                        </div>
-                    {% endblock %}
-                </div>
-            {% endblock %}
-        </div>
+                        {{ knp_menu_render('frontend.factory_profile', {template: 'FrontendBundle:Profile/Common:menu.html.twig'}) }}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+        {% block right_content_container %}
+            <div class="col-sm-9">
+                {% block page_content %}{% endblock %}
+            </div>
+        {% endblock %}
     </div>
 {% endblock %}

@@ -8,8 +8,7 @@
         <thead>
             <tr>
                 <th class="id">{{ sylius_resource_sort('id', '#id') }}</th>
-                <th class="info">{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
-                <th class="info text-center">{{ 'status'|trans }}</th>
+                <th class="information">{{ sylius_resource_sort('name', 'sylius.product.name'|trans) }}</th>
                 <th class="retail-price">{{ 'sylius.product.price'|trans }}</th>
                 <th class="updated-at">{{ sylius_resource_sort('updatedAt', 'Updated At') }}</th>
                 <th></th>
@@ -21,13 +20,15 @@
             <tr id="{{ product.id }}">
                 <td class="id">{{ product.id }}</td>
 
-                <td class="info">
+                <td class="information">
                     <div class="media">
-                        <a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}" class="pull-left"
-                           title="{{ 'sylius.product.view_details'|trans({'%product%': product.name})|escape('html_attr') }}">
-                            <img src="{{ product.image ? product.image.path|imagine_filter('sylius_small') : '/img/50x40.png' }}" alt="" class="imgmedia-object" />
-                        </a>
-                        <div class="media-body">
+                        <div class="pull-left">
+                            <a href="{{ path('sylius_backend_product_show', {'id': product.id}) }}" class="pull-left"
+                               title="{{ 'sylius.product.view_details'|trans({'%product%': product.name})|escape('html_attr') }}">
+                                <img src="{{ product.image ? product.image.path|imagine_filter('sylius_small') : '/img/50x40.png' }}" alt="" class="imgmedia-object" />
+                            </a>
+                        </div>
+                        <div class="pull-left">
                             <h5 class="media-heading">
                                 <a class="name"
                                    href="{{ path('sylius_backend_product_show', {'id': product.id}) }}"
@@ -38,21 +39,18 @@
                                     <span class="label label-default">{{ 'sylius.product.unavailable'|trans }}</span>
                                 {% endif %}
                             </h5>
-
-                            <div class="media-body">
+                            <div>
                                 {% if product.sku %}
                                     <strong>{{ 'sylius.product.sku'|trans }}: </strong> <code class="sku">{{ product.sku }}</code>
                                 {% endif %}
                             </div>
-
-                            <div class="media-body">
+                            <div>
                                 {% if product.factory.name is defined %}
                                     <strong>Factory: </strong>
                                     <code class="sku">{{ product.factory.name }}</code>
                                 {% endif %}
                             </div>
-
-                            <div class="media-body">
+                            <div>
                                 {% if product.factoryCode %}
                                     <strong>Factory code:</strong>
                                     <code class="factory">{{ product.factoryCode }}</code>
@@ -60,14 +58,6 @@
                             </div>
                         </div>
                     </div>
-                </td>
-
-                <td>
-                    <ul>
-                        {% for status in product.readinesses %}
-                            <li>{{ status.name }}</li>
-                        {% endfor %}
-                    </ul>
                 </td>
 
                 {# Retail Price #}

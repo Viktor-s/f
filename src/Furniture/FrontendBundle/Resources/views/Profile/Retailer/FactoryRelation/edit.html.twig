@@ -9,21 +9,45 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="information-blocks">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
-    {% if not relation.id %}
-        <script type="text/javascript">
-            (function ($) {
-                $(document).ready(function () {
-                    $('#retailer_factory_relation_factory').select2({
-                        placeholder: "Select brand",
-                        allowClear: false
-                    }).select2("val", "");
+    {{ form_start(form, {'attr': {'id': 'retailer-factory-relation', 'class': 'col-sm-9'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    <script type="text/javascript">
+        (function ($) {
+            $(document).ready(function () {
+                var $accessProducts = $('#retailer_factory_relation_accessProducts');
+                var $accessPrice = $('#retailer_factory_relation_accessProductsPrices');
+                var requiredMessage = '{{ 'frontend.messages.errors.relation_products_view'|trans }}';
+
+                if (!$accessProducts.is(':checked')) {
+                    if (typeof $.appendMessage === "function") {
+                        $.appendMessage(requiredMessage, 'error');
+                    }
+                    $accessPrice.attr('checked', false).parents('.form-group').hide();
+                }
+
+                $accessProducts.on('change', function() {
+                    if ($(this).is(':checked')) {
+                        $accessPrice.parents('.form-group').slideDown();
+                        if (typeof $.clearMessages === "function") {
+                            $.clearMessages();
+                        }
+                    }
+                    else {
+                        $accessPrice.attr('checked', false).parents('.form-group').slideUp(function(){
+                            if (typeof $.appendMessage === "function") {
+                                $.appendMessage(requiredMessage, 'error');
+                            }
+                        });
+                    }
                 });
-            })(jQuery);
-        </script>
-    {% endif %}
+                {% if not relation.id %}
+                $('#retailer_factory_relation_factory').select2({
+                    placeholder: "Select brand",
+                    allowClear: false
+                }).select2("val", "");
+                {% endif %}
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

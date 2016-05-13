@@ -13,26 +13,48 @@
 {% endblock %}
 
 {% block page_content %}
-    <form class="form" method="POST" action="" data-confirm="{{ employee.id ? "false" : "true" }}" {% if not employee.id %}data-message="{{ 'frontend.retailer_profile_side.managers.create_confirmation'|trans }}"{% endif %}>
-        {% if form.vars.errors|length %}
-            {{ form_errors(form) }}
-        {% endif %}
+    {{ form_start(form, {'attr': {'id': 'retailer-manager-create', 'class': 'col-sm-9', 'data-confirm': employee.id ? "false" : "true", 'data-message': employee.id ?'':'frontend.retailer_profile_side.managers.create_confirmation'|trans}}) }}
+    {% if form.vars.errors|length %}
+        {{ form_errors(form) }}
+    {% endif %}
 
-        {{ form_row(form.customer.email) }}
-        {{ form_row(form.customer.firstName) }}
-        {{ form_row(form.customer.lastName) }}
-        {{ form_row(form.retailerUserProfile.position)}}
-        {{ form_row(form.retailerUserProfile.phones) }}
-        {{ form_row(form.retailerUserProfile.retailerMode) }}
+    {{ form_row(form.customer.email) }}
+    {{ form_row(form.customer.firstName) }}
+    {{ form_row(form.customer.lastName) }}
+    {{ form_row(form.retailerUserProfile.position)}}
+    {{ form_row(form.retailerUserProfile.phones) }}
+    {{ form_row(form.retailerUserProfile.retailerMode) }}
 
-        {{ employee.id ? form_row(form.enabled) }}
+    {% if employee.id %}
+        {{ form_row(form.enabled) }}
+    {% endif %}
 
-        {{ form_rest(form) }}
+    {{ form_rest(form) }}
 
-        <div class="form-group text-center">
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9 text-right">
             <button type="submit"
-                    class="btn btn-success">
-                    {{ employee.id ? 'Save' : 'Create' }}</button>
+                class="btn btn-success">
+                {{ employee.id ? 'Save' : 'Create' }}</button>
         </div>
-    </form>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block footer_javascripts %}
+    {{ parent() }}
+
+    {% if not employee.id %}
+        // Google analytics
+        {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
+        or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
+        <script type="text/javascript">
+            var form = document.getElementById('retailer-manager-create');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                ga('send', 'event', 'managers', 'create', 'Create manager', 25);
+            });
+        </script>
+        {% endif %}
+    {% endif %}
 {% endblock %}

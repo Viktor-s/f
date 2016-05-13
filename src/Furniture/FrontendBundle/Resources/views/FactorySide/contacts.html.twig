@@ -12,7 +12,7 @@
     <div class="factory-contacts">
         {% for contact in contacts %}
             <div class="contact">
-                <div class="header">
+                <div class="contact-header">
                     <div class="name">{{ contact.translate.name }}</div>
                     <div class="department">{{ contact.departmentName }}</div>
                 </div>
@@ -50,7 +50,7 @@
                             {% for site in contact.sites %}
                                 <div class="site">
                                     <i class="fa fa-steam"></i>
-                                    <a href="{{ site }}">{{ site }}</a>
+                                    <a href="{{ site|format_url(['scheme', 'host', 'path']) }}" target="_blank">{{ site|format_url(['host']) }}</a>
                                 </div>
                             {% endfor %}
                         </div>

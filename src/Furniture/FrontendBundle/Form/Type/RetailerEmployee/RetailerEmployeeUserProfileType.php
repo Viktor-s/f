@@ -27,19 +27,20 @@ class RetailerEmployeeUserProfileType extends AbstractType
     {
         $builder
             ->add('position', 'text', [
-                'label' => 'frontend.position',
-                'required' => false
+                'label'    => 'frontend.position',
+                'required' => false,
             ])
             ->add('phones', 'text', [
-                'label' => 'frontend.phones_contact',
-                'required' => false
+                'label'    => 'frontend.phones_contact',
+                'required' => false,
             ])
             ->add('retailerMode', 'choice', [
-                'label' => 'frontend.mode',
-                'required' => false,
-                'choices' => [
-                    RetailerUserProfile::RETAILER_ADMIN => 'Admin',
-                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager'
+                'label'    => 'frontend.mode',
+                'required' => true,
+                'choices'  => [
+                    ''                                     => '',
+                    RetailerUserProfile::RETAILER_ADMIN    => 'Admin',
+                    RetailerUserProfile::RETAILER_EMPLOYEE => 'Manager',
                 ]
             ]);
 

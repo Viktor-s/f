@@ -1,4 +1,5 @@
 {% extends 'FrontendBundle:Specification/Export:base.html.twig' %}
+{% from 'FrontendBundle:Macros:specification.html.twig' import specification_header, export_toolbar %}
 
 {% block title %}{{ 'frontend.title.preview'|trans }} :: {{ parent() }}{% endblock %}
 
@@ -7,522 +8,360 @@
 
     <a href="{{ path('specification_edit', {specification: specification.id}) }}">{{ specification.name }}</a>
 
-    <a href="#">{{ 'frontend.title.preview'|trans }}</a>
+    <span class="active">{{ 'frontend.title.preview'|trans }}</span>
 {% endblock %}
 
 {% block content %}
-    <div class="information-blocks">
-        <h1 class="block-title">
-            {{ 'frontend.export_specification_preview'|trans }}
-        </h1>
+<div class="table-responsive">
+    <form id="specifications-export-form" action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
+        {{ export_toolbar(specification, filters, 'top') }}
+        {{ specification_header(specification, 'frontend.export_specification_preview'|trans, false) }}
 
-        <div class="clearfix"></div>
+        <input type="hidden" name="mode" value="full" />
+        <input type="hidden" name="factory_id" value="" />
+        <input type="hidden" name="factory_name" value="" />
 
-        <div class="pull-right">
-            <a href="{{ path('specification_edit', {specification: specification.id}) }}" class="btn btn-success">
-                <i class="fa fa-edit"></i>
-                {{ 'frontend.edit'|trans }}
-            </a>
-        </div>
+        <table id="specifications-export-table" class="table table-striped table-bordered table-condensed specifications-export-table">
+            <thead>
+                <tr role="row">
+                    <th>
+                        <input type="checkbox" id="checkbox-for-id" name="fields[]" value="position" checked />
+                        <label for="checkbox-for-id" class="checkbox-name">#</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-index" name="fields[]" value="number" checked />
+                        <label for="checkbox-for-index" class="checkbox-name">#</label>
+                    </th>
 
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#full" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.all'|trans }}</a>
-            </li>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-image" name="fields[]" value="photo" checked />
+                        <label for="checkbox-for-image" class="checkbox-name">{{ 'frontend.image'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-brand" name="fields[]" value="brand" checked />
+                        <label for="checkbox-for-brand" class="checkbox-name">{{ 'frontend.brand'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-name" name="fields[]" value="name" checked />
+                        <label for="checkbox-for-name" class="checkbox-name">{{ 'frontend.name'|trans }}</label>
+                    </th>
 
-            <li role="presentation" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    {{ 'frontend.by_company'|trans }}<span class="caret"></span>
-                </a>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-type" name="fields[]" value="type" checked />
+                        <label for="checkbox-for-type" class="checkbox-name">{{ 'frontend.type'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-factory-code" name="fields[]" value="factory_code" checked />
+                        <label for="checkbox-for-factory-code" class="checkbox-name">{{ 'frontend.factory_code'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-name2" name="fields[]" value="name" checked />
+                        <label for="checkbox-for-name2" class="checkbox-name">{{ 'frontend.name'|trans }}</label>
+                    </th>
 
-                <ul class="dropdown-menu">
-                    {% for grouped_item in grouped_items_by_factory %}
-                        <li>
-                            <a role="tab" data-toggle="tab" href="#factory-{{ grouped_item.factory.id }}">{{ grouped_item.factory.name }}</a>
-                        </li>
-                    {% endfor %}
+                    <th>
+                        <input type="checkbox" id="checkbox-for-options" name="fields[]" value="options" checked />
+                        <label for="checkbox-for-options" class="checkbox-name">{{ 'frontend.options'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-notes" name="fields[]" value="notes" checked />
+                        <label for="checkbox-for-notes" class="checkbox-name">{{ 'frontend.notes'|trans }}</label>
+                    </th>
+                    <th>
+                        <input type="checkbox" id="checkbox-for-quantity" name="fields[]" value="quantity" checked />
+                        <label for="checkbox-for-quantity" class="checkbox-name">{{ 'frontend.quantity'|trans }}</label>
+                    </th>
+                    <th class="sb-price">
+                        <input type="checkbox" id="checkbox-for-price" name="fields[]" value="price" checked />
+                        <label for="checkbox-for-price" class="checkbox-name">{{ 'frontend.price'|trans }}</label>
+                    </th>
+                    <th class="sb-total-price">
+                        <input type="checkbox" id="checkbox-for-total-price" name="fields[]" value="total_price" checked />
+                        <label for="checkbox-for-total-price" class="checkbox-name">{{ 'frontend.total_price'|trans }}</label>
+                    </th>
 
-                    {% for grouped_item in grouped_custom_items_by_factory %}
-                        <li>
-                            <a role="tab" data-toggle="tab" href="#custom-{{ grouped_item.factoryName|md5 }}">{{ grouped_item.factoryName }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
+                    <th>Search Column</th>
+                </tr>
+            </thead>
 
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="full">
-                <form action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
-                    <input type="hidden" name="mode" value="full" />
+            <tbody>
+            {% for item in specification.items %}
+                {% if item.getSkuItem %}
+                    {% set productVariant = item.getSkuItem.productVariant %}
+                    {% set product = productVariant.product %}
 
-                    {{ block('specification_export_header') }}
-
-                    <table class="table specifications-export-table">
-                        <thead>
-
-                        <tr class="table-title">
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="position" checked /><span class="check"></span></label>
-                                <hr/>#
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="photo" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.photo'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="brand" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.brand'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.name'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.options'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.notes'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.quantity'|trans }}
-                            </th>
-
-                            <th class="text-center">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.price'|trans }}
-                            </th>
-
-                            <th class="text-center" style="min-width:90px;">
-                                <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="total_price" checked /><span class="check"></span></label>
-                                <hr/>{{ 'frontend.total_price'|trans }}
-                            </th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for item in specification.items %}
-                            {% if item.getSkuItem %}
-                                {% set productVariant = item.getSkuItem.productVariant %}
-                                {% set product = productVariant.product %}
-
-                                <tr>
-                                    <td>{{ item.position }}</td>
-
-                                    <td>
-                                        {% if product.images|length > 0 %}
-                                            <img src="{{ product.images.first.path|imagine_filter('s100x100') }}" />
-                                        {% endif %}
-                                    </td>
-
-                                    <td>{{ product.factory.name }}</td>
-
-                                    <td>
-                                        <div>{{ product.translate.name }}</div>
-
-                                        {% if productVariant.activeFactoryCode %}
-                                            <div>
-                                                {{ productVariant.activeFactoryCode }}
-                                            </div>
-                                        {% endif %}
-
-                                        {% if product.types|length %}
-                                            <div>
-                                                {{ (product.types|first).translate.name }}
-                                            </div>
-                                        {% endif %}
-                                    </td>
-
-                                    <td>
-                                        <ul>
-                                            {% for option in productVariant.options %}
-                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                            {% endfor %}
-
-                                            {% for option in productVariant.skuOptions %}
-                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                            {% endfor %}
-
-                                            {% for part_variant_selection in productVariant.productPartVariantSelections %}
-                                                <li>
-                                                    <strong>{{ part_variant_selection.productPart.label }}:</strong>
-                                                    {{ part_variant_selection.productPartMaterialVariant.name }}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </td>
-
-                                    <td>{{ item.note }}</td>
-
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ productVariant|sku_price|money }}</td>
-                                    <td>{{ item|specification_item_total_price|money }}</td>
-                                </tr>
-                            {% elseif item.customItem %}
-                                {% set custom_item = item.customItem %}
-
-                                <tr>
-                                    <td>{{ item.position }}</td>
-
-                                    <td>
-                                        {% if custom_item.image and custom_item.image.path %}
-                                            <img src="{{ custom_item.image.path|imagine_filter('s100x100') }}" height="100" width="100" />
-                                        {% endif %}
-                                    </td>
-
-                                    <td>{{ custom_item.factoryName }}</td>
-
-                                    <td>{{ custom_item.name }}</td>
-                                    <td>{{ custom_item.options }}</td>
-                                    <td>{{ item.note }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ custom_item.price|money }}</td>
-                                    <td>{{ item|specification_item_total_price|money }}</td>
-                                </tr>
+                    <tr>
+                        <td class="text-center">{{ item.position }}</td>
+                        <td class="loop-index text-center">{{ loop.index }}</td>
+                        <td class="text-center">
+                            {% if product.images|length > 0 %}
+                                <img src="{{ product.images.first.path|imagine_filter('s150x150') }}" />
                             {% endif %}
-                        {% endfor %}
-                        </tbody>
+                        </td>
 
-                        <tfoot>
-                        <tr>
-                            <td class="text-right" colspan="3">
-                                <strong>{{ 'frontend.volume'|trans }}</strong>
-                            </td>
+                        <td>{{ product.factory.name }}</td>
 
-                            <td class="text-left">{{ specification.volume }}</td>
+                        <td>
+                            {% if productVariant.activeFactoryCode %}
+                                <div>
+                                    {{ productVariant.activeFactoryCode }}
+                                </div>
+                            {% endif %}
 
-                            <td class="text-right">
-                                <strong>{{ 'frontend.weight'|trans }}</strong>
-                            </td>
+                            <div>
+                                <span class="product-title">
+                                    {{ product.translate.name }}
+                                </span>
+                            </div>
 
-                            <td class="text-left">{{ specification.weight }}</td>
+                            {% if product.types|length %}
+                                <div>
+                                    {{ (product.types|first).translate.name }}
+                                </div>
+                            {% endif %}
+                        </td>
 
-                            <td class="text-right" colspan="2">
-                                <strong>{{ 'frontend.total_price'|trans }}</strong>
-                            </td>
+                        <td>
+                            {% if product.types|length %}
+                                <div>
+                                    {{ (product.types|first).translate.name }}
+                                </div>
+                            {% endif %}
+                        </td>
 
-                            <td>{{ specification|specification_total_price(false)|money }}</td>
-                        </tr>
+                        <td>
+                            {% if productVariant.activeFactoryCode %}
+                                <div>
+                                    {{ productVariant.activeFactoryCode }}
+                                </div>
+                            {% endif %}
+                        </td>
 
-                        {% if specification.sales|length > 0 %}
-                            {% set price = specification|specification_total_price(false) %}
+                        <td>
+                            <div>
+                                <span class="product-title">
+                                    {{ product.translate.name }}
+                                </span>
+                            </div>
+                        </td>
 
-                            {% for sale in specification.sales %}
-                                <tr>
-                                    <td class="text-right" colspan="8">
-                                        {{ 'frontend.discount_value'|trans({':discount': sale.sale}) }}
-                                    </td>
-
-                                    {% set nowSale = (price / 100) * sale.sale %}
-                                    {% set price = price - nowSale %}
-
-                                    <td>-{{ nowSale|money }}</td>
-                                </tr>
-                            {% endfor %}
-
-                            <tr>
-                                <td colspan="8" class="text-right">
-                                    <strong>{{ 'frontend.final_price'|trans }}</strong>
-                                </td>
-                                <td>{{ specification|specification_total_price|money }}</td>
-                            </tr>
-                        {% endif %}
-
-                        <tr>
-                            <td colspan="9">
-                                <button type="submit" class="btn btn-primary" value="excel" name="format">
-                                    <i class="fa fa-download"></i>
-                                    {{ 'frontend.export_to_excel'|trans }}
-                                </button>
-
-                                <button type="submit" value="pdf" name="format" class="btn btn-primary">
-                                    <i class="fa fa-download"></i>
-                                    {{ 'frontend.export_to_pdf'|trans }}
-                                </button>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </form>
-            </div>
-
-            {% for grouped_item in grouped_items_by_factory %}
-                <div role="tabpanel" class="tab-pane" id="factory-{{ grouped_item.factory.id }}">
-                    <h3>{{ grouped_item.factory.name }}</h3>
-
-                    <form action="{{ path('specification_export', {specification: specification.id}) }}" method="get">
-                        <input type="hidden" name="mode" value="factory" />
-                        <input type="hidden" name="factory_id" value="{{ grouped_item.factory.id }}" />
-
-                        <table class="table">
-                            <thead>
-
-                            <tr class="table-title">
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label>
-                                    <hr/>#
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="type" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.type'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="factory_code" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.factory_code'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.name'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.options'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.notes'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.quantity'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.price'|trans }}
-                                </th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            {% for item in grouped_item.items %}
-                                {% set productVariant = item.skuItem.productVariant %}
-                                {% set product = productVariant.product %}
-
-                                <tr>
-                                    <td class="text-center">{{ loop.index }}</td>
-
-                                    <td class="text-center">
-                                        {% if product.types|length > 0 %}
-                                            {{ (product.types|first).translate.name }}
-                                        {% endif %}
-                                    </td>
-
-                                    <td class="text-center">
-                                        {{ productVariant.activeFactoryCode }}
-                                    </td>
-
-                                    <td>{{ productVariant.product.name }}</td>
-
-                                    <td>
-                                        <ul>
-                                            {% for option in productVariant.options %}
-                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                            {% endfor %}
-
-                                            {% for option in productVariant.skuOptions %}
-                                                <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
-                                            {% endfor %}
-
-                                            {% for part_variant_selection in productVariant.productPartVariantSelections %}
-                                                <li>
-                                                    <strong>{{ part_variant_selection.productPart.label }}:</strong>
-                                                    {{ part_variant_selection.productPartMaterialVariant.name }}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </td>
-
-                                    <td>{{ item.note }}</td>
-                                    <td class="text-center">{{ item.quantity }}</td>
-                                    <td class="text-center">{{ productVariant.price|money }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-                            <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <button type="submit" class="btn btn-primary" name="format" value="excel">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'frontend.excel'|trans }}
-                                    </button>
-
-                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'frontend.pdf'|trans }}
-                                    </button>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </form>
-                </div>
-            {% endfor %}
-
-            {% for grouped_item in grouped_custom_items_by_factory %}
-                <div role="tabpanel" class="tab-pane" id="custom-{{ grouped_item.factoryName|md5 }}">
-                    <h3>{{ grouped_item.factoryName }}</h3>
-
-                    <form method="get" action="{{ path('specification_export', {specification: specification.id}) }}">
-                        <input type="hidden" name="mode" value="custom" />
-                        <input type="hidden" name="factory_name" value="{{ grouped_item.factoryName }}" />
-
-                        <table class="table">
-                            <thead>
-
-                            <tr class="table-title">
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="number" checked /><span class="check"></span></label>
-                                    <hr/>#
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="name" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.name'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="options" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.options'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="notes" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.notes'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="quantity" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.quantity'|trans }}
-                                </th>
-
-                                <th class="text-center">
-                                    <label class="checkbox-entry"><input type="checkbox" name="fields[]" value="price" checked /><span class="check"></span></label>
-                                    <hr/>{{ 'frontend.price'|trans }}
-                                </th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for item in grouped_item.items %}
-                                    {% set custom_item = item.customItem %}
-
-                                    <tr>
-                                        <td class="text-center">{{ loop.index }}</td>
-                                        <td class="text-center">{{ custom_item.name }}</td>
-                                        <td>{{ custom_item.options|nl2br }}</td>
-                                        <td>{{ item.note }}</td>
-                                        <td class="text-center">{{ item.quantity }}</td>
-                                        <td class="text-center">{{ item.price|money }}</td>
-                                    </tr>
+                        <td>
+                            <ul>
+                                {% for option in productVariant.options %}
+                                    <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
                                 {% endfor %}
-                            </tbody>
 
-                            <tfoot>
-                            <tr>
-                                <td colspan="6">
-                                    <button type="submit" class="btn btn-primary" name="format" value="excel">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'frontend.excel'|trans }}
-                                    </button>
+                                {% for option in productVariant.skuOptions %}
+                                    <li><strong>{{ option.name }}:</strong> {{ option.value }}</li>
+                                {% endfor %}
 
-                                    <button type="submit" class="btn btn-primary" name="format" value="pdf">
-                                        <i class="fa fa-download"></i>
-                                        {{ 'frontend.pdf'|trans }}
-                                    </button>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </form>
-                </div>
+                                {% for part_variant_selection in productVariant.productPartVariantSelections %}
+                                    <li>
+                                        <strong>{{ part_variant_selection.productPart.label }}:</strong>
+                                        {{ part_variant_selection.productPartMaterialVariant.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+
+                        <td>{{ item.note }}</td>
+
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-center">{{ productVariant|sku_price|money }}</td>
+                        <td class="text-center">{{ item|specification_item_total_price|money }}</td>
+                        <td>{{ item.skuitem.productVariant.product.factory.id }}</td>
+                    </tr>
+                {% elseif item.customItem %}
+                    {% set custom_item = item.customItem %}
+
+                    <tr>
+                        <td class="text-center">{{ item.position }}</td>
+                        <td class="text-center">{{ loop.index}}</td>
+
+                        <td class="text-center">
+                            <div class="image-container">
+                                <div class="product-image">
+                                    {% if custom_item.image and custom_item.image.path %}
+                                        <img src="{{ custom_item.image.path|imagine_filter('s150x150') }}" />
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>{{ custom_item.factoryName }}</td>
+
+                        <td>
+                            <div>
+                                <span class="product-title">
+                                    {{ custom_item.name }}
+                                </span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ custom_item.options }}</td>
+                        <td>{{ item.note }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-center">{{ custom_item.price|money }}</td>
+                        <td class="text-center">{{ item|specification_item_total_price|money }}</td>
+                        <td>{{ custom_item.factoryName|default('Without name')|md5 }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-        </div>
-    </div>
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <strong>{{ 'frontend.volume'|trans }}</strong>
+                    </td>
+                    <td class="text-left">{{ specification.volume }}</td>
+                    <td></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td class="text-right" nowrap>
+                        {{ 'frontend.total_price'|trans }}
+                    </td>
+                    <td><span class="total-price">{{ specification|specification_total_price(false)|money }}</span></td>
+                    <td></td>
+                </tr>
+                <tr class="extra-row">
+                    <td></td>
+                    <td></td>
+                    <td class="text-right" nowrap>
+                        <strong>{{ 'frontend.weight'|trans }}</strong>
+                    </td>
+                    <td class="text-left">{{ specification.weight }}</td>
+                    <td></td>
+                    <td colspan="3"></td>
+                {% if specification.sales|length > 0 %}
+                    {% set price = specification|specification_total_price(false) %}
+                    <td colspan="3"></td>
+                    <td class="text-left" colspan="2">
+                        {% for sale in specification.sales %}
+                        {% set nowSale = (price / 100) * sale.sale %}
+                        {% set price = price - nowSale %}
+                        <div class="discount">
+                           {{ 'frontend.discount'|trans }}<span class="discount-percent">{{ sale.sale }}</span>%&nbsp;<span class="discount-summ">-{{ nowSale|money }}</span>
+                        </div>
+                        {% endfor %}
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td colspan="3"></td>
+                    <td class="text-right" nowrap>
+                        {{ 'frontend.final_price'|trans }}
+                    </td>
+                    <td><span class="final-price">{{ specification|specification_total_price|money }}</span></td>
+                    <td></td>
+                </tr>
+                {% else %}
+                    <td colspan="5"></td>
+                    <td></td>
+                </tr>
+                {% endif %}
+            </tfoot>
+        </table>
+        {{ export_toolbar(specification, filters, 'bottom') }}
+    </form>
+</div>
 {% endblock %}
 
+{% block footer_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        (function ($) {
+            var searchColumn = 13;
+            var hidenColumns = {
+                full: [1, 5, 6, 7],
+                factory: [0, 2, 3, 4, 12],
+                custom: [0, 2, 3, 5, 6, 7, 12]
+            };
 
-{% block specification_export_header %}
-<div class="row specification-edit-head" style="margin-top: 40px;">
-    <div class="col-sm-3 information-entry">
-        <div class="information-blocks form-horizontal specification-info">
-            <div class="article-container style-1">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5>Document:</h5>
-                        <div class="document-number editable" id="specification-document">{{ specification.documentNumber }}</div>
-                    </div>
+            table = $('#specifications-export-table').dataTable({
+                paging: false,
+                dom: '<"top"><"bottom"lp><"clear">',
+                bSort: false,
+                columnDefs: [
+                    {
+                        targets: [searchColumn],
+                        visible: false,
+                        searchable: true
+                    },
+                    {
+                        targets: hidenColumns.full,
+                        visible: false,
+                        searchable: false
+                    }
+                ]
+            });
 
-                    <div class="col-md-6">
-                        <h5>Created:</h5>
-                        <div>{{ specification.createdAt.format('Y/m/d H:i') }}</div>
-                    </div>
-                </div>
+            var tableEdit = table.DataTable();
+            tableEdit.draw();
 
-                <h5>{{ 'frontend.specficatior.client_lable'|trans }}</h5>
+            $('#filter-top, #filter-bottom').on('change', function (e) {
+                var selected = $(this.options[this.selectedIndex]);
+                var mode = selected.closest('optgroup').data('mode');
+                var factoryId = '', factoryName = '';
+                var reg = selected.val() !== 'all';
+                var smart = !reg;
+                var search = selected.val() !== 'all' ? '^' + selected.val() + '$' : '';
+                var position = $(this).data('position');
 
-                <div class="editable buyer" id="specification-buyer" style="padding-top:0;margin-bottom:15px;">
-                    {{ specification.buyer|default('None') }}
-                </div>
+                // Search in table
+                tableEdit.column(searchColumn).search(search, reg, smart, true).draw();
 
-                <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
-                <p>
-                    {{ specification.buyer ? specification.buyer.email }}<br/>
-                    {{ specification.buyer ? specification.buyer.phone }}
-                </p>
+                if (typeof mode === "undefined") {
+                    mode = 'full';
+                    table.find('tfoot').show();
+                }
+                else {
+                    table.find('tfoot').hide();
+                    (mode === 'factory')
+                            ? factoryId = selected.val()
+                            : factoryName = selected.text();
+                }
 
-                <h5>Name</h5>
-                <div class="name editable" style="padding-top:0;margin-bottom:15px;" id="specification-name">{{ specification.name }}</div>
 
-                {% if specification.buyer and specification.buyer.hasSale() %}
-                    <h5>{{ 'frontend.sale'|trans }}</h5>
-                    <p>{{ specification.buyer.sale }}%</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+                // Hide columns
+                tableEdit.columns().iterator('column', function (context, index) {
+                    if (index !== searchColumn) {
+                        var column = tableEdit.column(index);
+                        var visible = !($.inArray(index, hidenColumns[mode]) > -1);
+                        column.visible(visible);
+                    }
+                });
 
-    <div class="col-sm-4 information-entry">
-        <div class="information-blocks form-horizontal specification-info pull-right">
-            <img src="{{ specification.creator.retailerProfile.logoImage ? specification.creator.retailerProfile.logoImage.path|imagine_filter('s201x203') : '/img/201x203.png' }}" alt="" class="imgmedia-object" />
-        </div>
-    </div>
+                // Get visible filtered columns.
+                var currentRows = tableEdit.rows({search: 'applied'}).nodes();
 
-    <div class="col-sm-5 information-entry">
-        <h3 class="block-title main-heading">{{ specification.creator.retailerProfile.name }}</h3>
+                // Set number column to loop iteration index.
+                $.each(currentRows, function (index, val) {
+                    $(val).find('td.loop-index').html(index + 1);
+                });
 
-        <div class="article-container style-1">
-            <h5>Manager</h5>
-            <p>
-                {{ specification.creator.user.fullName }}<br />
-                {{ specification.creator.user.customer.email }}
-            </p>
+                // Set hidden values of the form.
+                $('#specifications-export-form')
+                        .find('input[type="hidden"][name="mode"]')
+                        .val(mode)
+                        .end()
+                        .find('input[type="hidden"][name="factory_id"]')
+                        .val(factoryId)
+                        .end()
+                        .find('input[type="hidden"][name="factory_name"]')
+                        .val(factoryName);
 
-            <h5>Company address</h5>
-            <p>{{ specification.creator.retailerProfile.address }}</p>
-
-            <h5>{{ 'frontend.specficatior.client_contact_lable'|trans }}</h5>
-            <p>
-                Email: {{ specification.creator.retailerProfile.emails|join(', ') }}<br>
-                Toll-free: {{ specification.creator.retailerProfile.phones|join(', ') }}
-            </p>
-        </div>
-    </div>
-</div>
+                // Duplicate top and bottom filter value.
+                $('#filter-top, #filter-bottom').val(selected.val());
+            });
+        })(jQuery);
+    </script>
 {% endblock %}

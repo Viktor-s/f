@@ -2,6 +2,7 @@
 
 namespace Furniture\FrontendBundle\Controller;
 
+use Furniture\CommonBundle\Util\SimpleChoiceList;
 use Furniture\FrontendBundle\Repository\CompositeCollectionRepository;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\ProductCategoryRepository;
@@ -264,14 +265,50 @@ class CatalogController
             if ($factoryIds) {
                 $factoryQuery = new FactoryQuery();
                 $factoryQuery->withIds($factoryIds);
+                $factoryQuery->withoutAccessControl();
                 $factories = $this->factoryRepository->findBy($factoryQuery);
+
                 if(count($factories) == 1){
                     $ccQuery = new CompositeCollectionQuery();
                     $ccQuery->withFactories($factories);
                     $compositeСollections = $this->compositeCollectionRepository->findBy($ccQuery);
                 }
+
                 $productQuery->withFactories($factories);
             }
+        }
+
+        $filters = new SimpleChoiceList();
+        $filters->addChoice('all', 'All');
+        $filters->addChoice('new', 'New');
+        $filters->addChoice('actual', 'Only actual');
+
+        if ($request->query->has('sorting')) {
+            switch ($request->query->get('sorting')) {
+                case 'new':
+                    $productQuery->setOrderBy('createdAt')->setOrderDirection('DESC');
+                    $filters->setSelectedItem('new');
+                    break;
+                case 'actual':
+//                    $productQuery->withOnlyAvailable();
+                    $filters->setSelectedItem('actual');
+                    break;
+                default:
+//                    $productQuery->withoutOnlyAvailable();
+                    $filters->setSelectedItem('all');
+            }
+        }
+
+        $perPageFilter = new SimpleChoiceList();
+        $perPageFilter->addChoices([
+            12 => 12,
+            24 => 24,
+            36 => 36,
+        ]);
+        $perPage = 12;
+        if ($request->query->has('per_page')) {
+            $perPageFilter->setSelectedItem($request->query->get('per_page'));
+            $perPage = $request->query->get('per_page');
         }
 
         /** @var \Furniture\UserBundle\Entity\User $user */
@@ -289,13 +326,14 @@ class CatalogController
         
         /* Create product paginator */
         $currentPage = (int)$request->get('page', 1);
-        $products = $this->productRepository->findBy($productQuery);
+        $products = $this->productRepository->findBy($productQuery, 1, $perPage);
         
         if( $products->getNbPages() < $currentPage){
             $products->setCurrentPage(1);
         }else{
             $products->setCurrentPage($currentPage);
         }
+
         // Create a brands query
         $brandsQuery= new FactoryQuery();
         if ($user->isRetailer()) {
@@ -303,20 +341,21 @@ class CatalogController
         }
         
         $content = $this->twig->render('FrontendBundle:Catalog:products.html.twig', [
-            'products' => $products,
-            'brands' => $this->factoryRepository->findBy($brandsQuery),
-            'spaces' => $this->productSpaceRepository->findAllOnlyRoot(),
-            'categories' => $this->productCategoryRepository->findAllOnlyRoot(),
-            'types' => $this->productTypeRepository->findAllOnlyRoot(),
-            'styles' => $this->productStyleRepository->findAllOnlyRoot(),
-            'composite_collections' => $compositeСollections,
-
-            'factory_ids' => $factoryIds,
-            'category_ids' => $categoryIds,
-            'space_ids' => $spacesIds,
-            'type_ids' => $typeIds,
-            'style_ids' => $styleIds,
-            'composite_collection_ids' => $compositeCollectionIds
+            'products'                 => $products,
+            'brands'                   => $this->factoryRepository->findBy($brandsQuery),
+            'spaces'                   => $this->productSpaceRepository->findAllOnlyRoot(),
+            'categories'               => $this->productCategoryRepository->findAllOnlyRoot(),
+            'types'                    => $this->productTypeRepository->findAllOnlyRoot(),
+            'styles'                   => $this->productStyleRepository->findAllOnlyRoot(),
+            'composite_collections'    => $compositeСollections,
+            'filters'                  => $filters,
+            'per_page'                 => $perPageFilter,
+            'factory_ids'              => $factoryIds,
+            'category_ids'             => $categoryIds,
+            'space_ids'                => $spacesIds,
+            'type_ids'                 => $typeIds,
+            'style_ids'                => $styleIds,
+            'composite_collection_ids' => $compositeCollectionIds,
         ]);
 
         return new Response($content);

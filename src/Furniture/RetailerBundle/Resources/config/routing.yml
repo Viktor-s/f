@@ -1,0 +1,3 @@
+_retailer_api:
+    resource: '@RetailerBundle/Resources/config/routing/api.yml'
+    prefix: /retailer/api

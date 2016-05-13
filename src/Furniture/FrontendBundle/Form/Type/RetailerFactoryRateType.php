@@ -7,6 +7,7 @@ use Furniture\FactoryBundle\Entity\RetailerFactoryRate;
 use Furniture\FrontendBundle\Repository\FactoryRepository;
 use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
@@ -94,15 +95,24 @@ class RetailerFactoryRateType extends AbstractType
         $builder
             ->add('coefficient', 'number', [
                 'label' => 'frontend.coefficient',
+                'attr'  => [
+                    'step' => 0.01,
+                    'min'  => 0.1,
+                ],
             ])
             ->add('dumping', 'number', [
                 'label'    => 'frontend.dumping',
                 'required' => false,
+                'attr'  => [
+                    'step' => 0.01,
+                    'min'  => 0,
+                    'max'  => 100,
+                ],
             ])
             ->add('_submit', 'submit', [
                 'label' => 'frontend.save',
                 'attr'  => [
-                    'class' => 'btn btn-primary',
+                    'class' => 'btn btn-success',
                 ],
             ]);
     }

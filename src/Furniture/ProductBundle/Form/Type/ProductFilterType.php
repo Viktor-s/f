@@ -3,7 +3,6 @@
 namespace Furniture\ProductBundle\Form\Type;
 
 use Furniture\FactoryBundle\Entity\Factory;
-use Furniture\ProductBundle\Entity\Readiness;
 use Sylius\Bundle\CoreBundle\Form\Type\Filter\ProductFilterType as BaseProductFilterType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -55,14 +54,15 @@ class ProductFilterType extends BaseProductFilterType
                     'style'       => 'width: 100px',
                 ],
             ])
-            ->add('statuses', 'entity', [
+            ->add('status', 'choice', [
                 'required' => false,
-                'class'    => Readiness::class,
-                'multiple' => true,
-                'expanded' => false,
-                'label'    => 'sylius.form.product_filter.statuses',
+                'label'    => 'sylius.form.product_filter.status',
+                'choices'  => [
+                    'available'   => 'Available',
+                    'unavailable' => 'Unavailable',
+                ],
                 'attr'     => [
-                    'placeholder' => 'sylius.form.product_filter.statuses',
+                    'placeholder' => 'sylius.form.product_filter.status',
                 ],
             ]);
     }

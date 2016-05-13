@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="information-blocks">
+    <div class="relation-tables retailer">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#user-requests" aria-controls="full" role="tab" data-toggle="tab">{{ 'frontend.factory_requests'|trans }}</a>
@@ -26,43 +26,45 @@
 
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="user-requests">
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
-                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                        <th>{{ 'frontend.brand'|trans }}</th>
+                        <th>{{ 'frontend.products_view'|trans }}</th>
+                        <th>{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th>{{ 'frontend.discount'|trans }}</th>
+                        <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {% for relation in factory_requests %}
-                        <tr class="text-center">
+                        <tr>
                             <td>{{ relation.factory.name }}</td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 {{ relation.discount|default('0') }} %
                             </td>
 
-                            <td>
-                                <a href="{{ path('retailer_profile_factory_relation_approve', {relation: relation.id}) }}" class="btn btn-success btn-xs">{{ 'frontend.approve'|trans }}</a>
-
-                                <br />
-
-                                <a href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}" 
-                                   data-remove data-message="Are you sure you want to remove a relation?" class="btn btn-danger btn-xs">
-                                    {{ 'frontend.remove'|trans }}
+                            <td class="text-right">
+                                <a
+                                    href="{{ path('retailer_profile_factory_relation_approve', {relation: relation.id}) }}"
+                                    class="btn btn-success btn-xs"
+                                    data-confirm data-message="Are you sure you want to approve a request?">
+                                    {{ 'frontend.approve'|trans }}
                                 </a>
+                                <a
+                                    href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                    class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true"
+                                    data-remove data-message="Are you sure you want to remove a request?"></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -71,7 +73,7 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="to-user-requests">
-                <div class="pull-right">
+                <div class="request-action pull-right">
                     {% if has_factories_for_relate %}
                         <a href="{{ path('retailer_profile_factory_relation_create') }}" class="btn btn-success btn-xs">{{ 'frontend.create_to_factory_relation'|trans }}</a>
                     {% else %}
@@ -79,44 +81,42 @@
                     {% endif %}
                 </div>
 
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
-                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                        <th>{{ 'frontend.brand'|trans }}</th>
+                        <th>{{ 'frontend.products_view'|trans }}</th>
+                        <th>{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th>{{ 'frontend.discount'|trans }}</th>
+                        <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {% for relation in requests_to_factories %}
-                        <tr class="text-center">
+                        <tr>
                             <td>{{ relation.factory.name }}</td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 {{ relation.discount|default('0') }} %
                             </td>
 
-                            <td>
-                                <a href="{{ path('retailer_profile_factory_relation_edit', {relation: relation.id}) }}" class="btn btn-default btn-xs">{{ 'frontend.edit'|trans }}</a>
-
-                                <br />
-
+                            <td class="text-right">
                                 <a
-                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
-                                        class="btn btn-danger btn-xs"
-                                        data-remove data-message="Are you sure you want to remove a relation?"
-                                        >{{ 'frontend.remove'|trans }}</a>
+                                    href="{{ path('retailer_profile_factory_relation_edit', {relation: relation.id}) }}"
+                                    class="btn btn-edit btn-xs">{{ 'frontend.edit'|trans }}</a>
+                                <a
+                                    href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                    class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true"
+                                    data-confirm data-message="Are you sure you want to remove a relation?"></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -125,41 +125,40 @@
             </div>
 
             <div role="tabpanel" class="tab-pane" id="authorized-users">
-                <table class="table">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
-                        <th class="text-center">{{ 'frontend.brand'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.products_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.product_prices_view'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.discount'|trans }}</th>
-                        <th class="text-center">{{ 'frontend.actions'|trans }}</th>
+                        <th>{{ 'frontend.brand'|trans }}</th>
+                        <th>{{ 'frontend.products_view'|trans }}</th>
+                        <th>{{ 'frontend.product_prices_view'|trans }}</th>
+                        <th>{{ 'frontend.discount'|trans }}</th>
+                        <th class="tb-sp-actions">{{ 'frontend.actions'|trans }}</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {% for relation in authorized_relations %}
-                        <tr class="text-center{% if not relation.active %} danger{% endif %}">
+                        <tr class="{% if not relation.active %} danger{% endif %}">
                             <td>{{ relation.factory.name }}</td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProducts ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 <i class="fa fa-{{ relation.accessProductsPrices ? 'check' : 'remove' }}"></i>
                             </td>
 
-                            <td>
+                            <td class="text-center">
                                 {{ relation.discount|default('0') }} %
                             </td>
 
-                            <td>
+                            <td class="text-right">
                                 {% if relation.active %}
                                     <a
-                                            href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
-                                            class="btn btn-danger btn-xs"
-                                            data-remove data-message="Are you sure you want to remove a relation?"
-                                            >{{ 'frontend.remove'|trans }}</a>
+                                        href="{{ path('retailer_profile_factory_relation_remove', {relation: relation.id}) }}"
+                                        class="glyphicon glyphicon-remove mv-remove remove" aria-hidden="true"
+                                        data-remove data-message="Are you sure you want to remove a relation?"></a>
                                 {% endif %}
                             </td>
                         </tr>

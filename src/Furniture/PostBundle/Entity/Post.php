@@ -8,7 +8,13 @@ use Furniture\UserBundle\Entity\User;
 use Furniture\FactoryBundle\Entity\Factory;
 use Sylius\Component\Translation\Model\AbstractTranslatable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * @ORM\Entity
+ * @UniqueEntity("slug")
+ */
 class Post extends AbstractTranslatable
 {
     const TYPE_NEWS     = 1;
@@ -37,6 +43,7 @@ class Post extends AbstractTranslatable
 
     /**
      * @var string
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
     private $slug;
 
@@ -79,6 +86,11 @@ class Post extends AbstractTranslatable
      * @var Collection|PostFile[]
      */
     private $files;
+
+    /**
+     * @var boolean
+     */
+    private $useOnSlider = false;
 
     /**
      * Construct
@@ -405,6 +417,27 @@ class Post extends AbstractTranslatable
 
         return $this;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isUseOnSlider()
+    {
+        return $this->useOnSlider;
+    }
+
+    /**
+     * @param boolean $useOnSlider
+     * @return Post
+     */
+    public function setUseOnSlider($useOnSlider)
+    {
+        $this->useOnSlider = $useOnSlider;
+
+        return $this;
+    }
+
+
 
     /**
      * Is news?

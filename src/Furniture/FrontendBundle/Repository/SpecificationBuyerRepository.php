@@ -66,16 +66,13 @@ class SpecificationBuyerRepository
         if ($withCountSpecifications) {
             $qb
                 ->select('b as buyer')
-                //->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id')
                 ->addSelect('COUNT(s.id) as count_specifications')
                 ->groupBy('b.id');
-
-
 
             if ($creator) {
                 $qb
                     ->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id AND s.creator = :creator')
-                    ->setParameter('creator', $creator);
+                    ->setParameter('creator', $creator->getRetailerUserProfile());
             } else {
                 $qb
                     ->leftJoin(Specification::class, 's', 'WITH', 's.buyer = b.id');

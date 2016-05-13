@@ -65,6 +65,7 @@ class FactoryRelationController
      *
      * @param \Twig_Environment                 $twig
      * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
+     * @param FactoryRepository                 $factoryRepository
      * @param EntityManagerInterface            $entityManager
      * @param TokenStorageInterface             $tokenStorage
      * @param AuthorizationCheckerInterface     $authorizationChecker
@@ -271,7 +272,7 @@ class FactoryRelationController
             throw new AccessDeniedException();
         }
 
-        if ($relation->isNotActive()) {
+        if ($relation->isFactoryAccept() && $relation->isNotActive()) {
             throw new NotFoundHttpException(sprintf(
                 'The relation with id "%s" is not active.',
                 $relation->getId()

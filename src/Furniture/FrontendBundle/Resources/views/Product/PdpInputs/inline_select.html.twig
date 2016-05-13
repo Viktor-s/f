@@ -10,7 +10,7 @@
         {% endfor %}
     {% elseif input.productPart %}
         {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-            <div data-input-variant="{{ productPartVariantSelection.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
+            <div data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}" class="entry">{{ productPartVariantSelection.productPartMaterialVariant.name|slice(0,4) }}</div>
         {% endfor %}
     {% endif %}
     <div class="spacer"></div>

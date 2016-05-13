@@ -64,9 +64,9 @@ class SpecificationItemVoter extends AbstractVoter
         $owner = $object->getSpecification()->getCreator();
 
         $retailerAdmin = $user->getRetailerUserProfile()->isRetailerAdmin();
-        $owner = $retailerProfile->getId() == $owner->getRetailerProfile()->getId();
+        $isOwner = $retailerProfile->getId() == $owner->getRetailerProfile()->getId();
 
-        if ($retailerAdmin && $owner) {
+        if ($retailerAdmin && $isOwner) {
             return true;
         }
 

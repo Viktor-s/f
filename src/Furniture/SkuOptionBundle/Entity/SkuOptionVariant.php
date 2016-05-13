@@ -2,6 +2,8 @@
 
 namespace Furniture\SkuOptionBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class SkuOptionVariant {
     
     /**
@@ -23,14 +25,12 @@ class SkuOptionVariant {
     protected $skuOptionType;
     
     /**
-     *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $value;
     
-    function __construct() {
-        ;
-    }
+    function __construct() {}
     
     /**
      * @return string
