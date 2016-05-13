@@ -1,0 +1,157 @@
+<script>
+    $(document).ready(function () {
+        
+        joint.shapes.pdpInput.Element = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+            markup: '<g><g><rect/></g><g class="inPorts"/><g class="outPorts"/></g>',
+            portMarkup: '<g class="port<%= id %>"><circle/></g>',
+            defaults: joint.util.deepSupplement({
+                type: 'pdpInput.Element',
+                position: {x: 80, y: 80}, 
+                size: {width: 'auto', height: 'auto'},
+                inPorts: ['in'],
+                outPorts: ['out'],
+                attrs: {
+                    '.': { magnet: false },
+                    rect: { stroke: 'blue', 'fill-opacity': 0, width: 300, height: 250, },
+                    circle: {
+                        r: 6, //port circle radius
+                        magnet: true,
+                        stroke: 'black'
+                    },
+                    '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                    '.outPorts circle': { fill: 'red', type: 'output'}
+                }
+            }, joint.shapes.basic.Rect.prototype.defaults),
+            getPortAttrs: function (portName, index, total, selector, type) {
+                var attrs = {};
+                var portClass = 'port' + index;
+                var portSelector = selector + '>.' + portClass;
+                var portCircleSelector = portSelector + '>circle';
+                attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type), type: type } };
+                attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+                if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+                return attrs;
+            }
+        }));
+
+        joint.shapes.pdpInput.AbstractView = joint.dia.ElementView.extend({
+            template: 'Element View',
+            render: function() {
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+                this.paper.$el.prepend(this.$box);
+                this.updateBox();
+                return this;
+            },
+            renderPorts: function () {
+                var $inPorts = this.$('.inPorts').empty();
+                var $outPorts = this.$('.outPorts').empty();
+
+                var portTemplate = _.template(this.model.portMarkup);
+
+                _.each(_.filter(this.model.ports, function (p) { return p.type === 'in' }), function (port, index) {
+
+                    $inPorts.append(V(portTemplate({ id: index, port: port })).node);
+                });
+                _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
+
+                    $outPorts.append(V(portTemplate({ id: index, port: port })).node);
+                });
+            },
+            update: function () {
+                this.renderPorts();
+                joint.dia.ElementView.prototype.update.apply(this, arguments);
+            },
+            updateRectSize: function(){
+                this.model.attributes.attrs.rect.width = this.$box.first().width() + 15;
+                this.model.attributes.attrs.rect.height = this.$box.first().height() + 10;
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+            },
+            updateBox: function() {
+                // Set the position and dimension of the box so that it covers the JointJS element.
+                var bbox = this.model.getBBox();
+                this.$box.css({ width: bbox.width, height: bbox.height, left: (bbox.x+20), top: bbox.y+2, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+                this.updateRectSize();
+            },
+            removeBox: function(evt) {
+                this.$box.remove();
+            },
+            updateElement: function() {}
+        });
+        
+        joint.shapes.pdpInput.OrView = joint.shapes.pdpInput.AbstractView.extend({
+            initialize: function() {
+                var that = this;
+                _.bindAll(this, 'updateBox');
+                joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+                
+                this.$box = $(_.template(this.template)());
+                
+                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+
+                this.$box.find('.edit').on('click', function(e) {
+                    that.updateElement();
+                });
+
+                // Update the box position whenever the underlying model changes.
+                this.model.on('change', this.updateBox, this);
+                // Remove the box when the model gets removed from the graph.
+                this.model.on('remove', this.removeBox, this);
+
+                this.updateBox();
+                this.listenTo(this.model, 'process:ports', this.update);
+            }
+        });
+
+        // OR Answer element
+        joint.shapes.pdpInput.OrAnswerView = joint.shapes.pdpInput.AbstractView.extend({
+            initialize: function() {
+                var that = this;
+                _.bindAll(this, 'updateBox');
+                joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+                this.$box = $(_.template(this.template)());
+
+                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+
+                this.$box.find('.edit').on('click', function(e) {
+                    that.updateElement();
+                });
+                // Update the box position whenever the underlying model changes.
+                this.model.on('change', this.updateBox, this);
+                // Remove the box when the model gets removed from the graph.
+                this.model.on('remove', this.removeBox, this);
+
+                this.updateBox();
+                this.listenTo(this.model, 'process:ports', this.update);
+            }
+        });
+
+        // Input element view
+        joint.shapes.pdpInput.InputView = joint.shapes.pdpInput.AbstractView.extend({
+            initialize: function() {
+                var that = this;
+                _.bindAll(this, 'updateBox');
+                joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+
+                this.$box = $(_.template(this.template)());
+
+                this.$box.find('.delete').on('click', function(e) {
+                    $('#add' + that.model.get('inputType')).show();
+                    that.model.remove();
+                });
+
+                this.$box.find('.edit').on('click', function(e) {
+                    that.updateElement();
+                });
+
+                // Update the box position whenever the underlying model changes.
+                this.model.on('change', this.updateBox, this);
+                // Remove the box when the model gets removed from the graph.
+                this.model.on('remove', this.removeBox, this);
+
+                this.updateBox();
+                this.listenTo(this.model, 'process:ports', this.update);
+            }
+        });
+    });
+</script>

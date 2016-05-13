@@ -1,0 +1,210 @@
+<div id="inputElementForm" title='Add new "PDP input" element'>
+    <form>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">Type</span>
+                    <select id="widget-type">
+                        <option value="{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') }}">Default</option>
+                        <option value="{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') }}">Inline</option>
+                        <option value="{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') }}">Popup</option>
+                    </select>
+                    <input type="hidden" id="input-type" />
+                    <input type="hidden" id="input-name" />
+                    <input type="hidden" id="input-id" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="pdpInputElement" type="text/template" style="display:none;">
+    <div class="html-element row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="btn-group-vertical">
+                        <button type="button" class="btn btn-default btn-xs delete">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-xs edit">
+                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="center-text" style="color: #fff;">Input</div>
+                            <div class="input-type-value center-text text-nowrap"></div>
+                            <div class="widget-type-value center-text text-nowrap"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var inputElementForm = $("#inputElementForm");
+        
+        joint.shapes.pdpInput.Input = joint.shapes.pdpInput.Element.extend(
+            _.extend(
+                {},
+                {
+                    elementType: 'Input',
+                    defaults: joint.util.deepSupplement({
+                        type: 'pdpInput.Input',
+                        position: {x: 80, y: 80},
+                        size: {width: 'auto', height: 'auto'},
+                        inPorts: ['in'],
+                        attrs: {
+                            '.': { magnet: false },
+                            rect: { fill: 'SpringGreen', stroke: 'SpringGreen', width: 300, height: 250 },
+                            circle: {
+                                r: 10, //port circle radius
+                                magnet: true,
+                                stroke: 'black'
+                            },
+                            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                        }
+                    })
+                }
+            )
+        );
+        
+        joint.shapes.pdpInput.InputView = joint.shapes.pdpInput.InputView.extend({
+            template: $('#pdpInputElement').html(),
+            updateBox: function() {
+                var that = this;
+                // Set the position and dimension of the box so that it covers the JointJS element.
+                var bbox = this.model.getBBox();
+                this.$box.css({ width: bbox.width, height: bbox.height, left: (bbox.x+20), top: bbox.y+4, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+                this.model.attributes.attrs.rect.width = this.$box.first().width() + 15;
+                this.model.attributes.attrs.rect.height = this.$box.first().height() + 10;
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+
+                this.$box.find('.input-type-value').html(
+                        '<span class="widget-type">Name: </span>' +
+                        this.model.get('inputName')
+                );
+
+                var widgetTransform = {
+                    '{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') }}' : 'Default',
+                    '{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') }}' : 'Inline',
+                    '{{ constant('Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_POPUP_TYPE') }}' : 'Popup'
+                };
+
+                this.$box.find('.widget-type-value').html(
+                        '<span class="widget-type">Widget: </span>' +
+                        widgetTransform[this.model.get('widgetType')]
+                );
+            },
+            updateElement: function() {
+                var dialog = this.updateDialogInit();
+                var form = dialog.find('form');
+                form.find('#input-id').val(this.model.get('inputId'));
+                form.find('#input-type').val(this.model.get('inputType'));
+                form.find('#input-name').val(this.model.get('inputName'));
+                form.find('#widget-type').val(this.model.get('widgetType'));
+                dialog.dialog('open');
+            },
+            updateDialogInit: function() {
+                var that = this;
+                var updateDialog = inputElementForm;
+                var form = updateDialog.find('form');
+                updateDialog.dialog({
+                    autoOpen: false,
+                    height: 350,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        Update: function () {
+                            var cell = graph.getCell(that.model.id);
+                            if (cell) {
+                                cell.prop({
+                                    widgetType: form.find('#widget-type').val(),
+                                    inputType: form.find('#input-type').val(),
+                                    inputName: form.find('#input-name').val(),
+                                    inputId: form.find('#input-id').val()
+                                });
+                                that.updateBox();
+                            }
+                            updateDialog.dialog("close");
+                        },
+                        Cancel: function () {
+                            updateDialog.dialog("close");
+                        }
+                    },
+                    close: function () {
+                        form.get(0).reset();
+                        form.find('[type="hidden"]').val('');
+                    }
+                });
+
+                return updateDialog;
+            }
+        });
+
+        var createInputElement = function(parameters){
+            var inputEl = new joint.shapes.pdpInput.Input(parameters);
+            console.log('New OR ID', inputEl.id);
+            graph.addCells([inputEl])
+        };
+
+        var createInputElementDialog = function(ele) {
+            var form = ele.find( "form" );
+            ele.dialog({
+                autoOpen: false,
+                height: 350,
+                width: 350,
+                modal: true,
+                buttons: {
+                    Add: function () {
+                        var inputType = form.find('#input-type').val();
+                        createInputElement({
+                            widgetType: form.find('#widget-type').val(),
+                            inputType: inputType,
+                            inputName: form.find('#input-name').val(),
+                            inputId: form.find('#input-id').val()
+                        });
+                        $('#add' + inputType).hide();
+                        ele.dialog("close");
+                    },
+                    Cancel: function () {
+                        ele.dialog("close");
+                    }
+                },
+                close: function () {
+                    form.get(0).reset();
+                    $(form).find('[type="hidden"]').val('');
+                }
+            });
+        };
+
+    {% if product %}
+        {% for input in product.pdpConfig.inputs if not input.forSchemes%}
+            {% if input.productPart %}
+            {% set btnId = 'productPart' %}
+            {% elseif input.skuOption %}
+            {% set btnId = 'skuOption' %}
+            {% elseif input.option %}
+            {% set btnId = 'option' %}
+            {% elseif input.forSchemes %}
+            {% set btnId = 'Scheme' %}
+            {% endif %}
+
+        $('#add{{ btnId ~ loop.index }}').click(function(){
+            createInputElementDialog(inputElementForm);
+            var form = inputElementForm.find( "form" );
+            form.find('#input-type').val($(this).data('input-type'));
+            form.find('#input-name').val($(this).data('input-name'));
+            form.find('#input-id').val($(this).data('input-id'));
+            inputElementForm.dialog('open');
+        });
+        {% endfor %}
+    {% endif %}
+    });
+</script>

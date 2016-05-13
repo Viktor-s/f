@@ -13,6 +13,9 @@ Furniture\ProductBundle\Entity\PdpIntellectualRoot:
         name:
             type: string
             column: name
+        graphJson:
+            type: json_array
+            column: graph_json
 
     oneToOne:
         expression:

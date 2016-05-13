@@ -5,6 +5,7 @@ namespace Furniture\ProductBundle\Controller;
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
+use Furniture\ProductBundle\Generator\PdpIntelligentSchemesGenerator;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,6 +64,11 @@ class ProductPdpIntellectualController extends ResourceController
             'mapped' => false,
         ]);
 
+        $form->add('graphJson', 'textarea', [
+            'mapped'    => false,
+            'read_only' => true,
+        ]);
+
         if ($request->getMethod() === Request::METHOD_POST) {
             $form->submit($request);
 
@@ -70,9 +76,7 @@ class ProductPdpIntellectualController extends ResourceController
             $treeData = json_decode($treeData, true);
 
             $this->get('product.pdp_intellectual.creator')->createFromArray($pdpIntellectualRoot, $treeData);
-
             $em = $this->get('doctrine.orm.default_entity_manager');
-
             $em->persist($pdpIntellectualRoot);
             $em->flush();
 

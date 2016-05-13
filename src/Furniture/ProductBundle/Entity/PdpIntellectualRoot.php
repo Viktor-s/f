@@ -20,6 +20,11 @@ class PdpIntellectualRoot
     private $name;
 
     /**
+     * @var array
+     */
+    private $graphJson;
+
+    /**
      * @var PdpIntellectualCompositeExpression
      */
     private $expression;
@@ -105,4 +110,24 @@ class PdpIntellectualRoot
     {
         return $this->expression;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGraphJson()
+    {
+        return $this->graphJson;
+    }
+
+    /**
+     * @param mixed $graphJson
+     * @return PdpIntellectualRoot
+     */
+    public function setGraphJson($graphJson)
+    {
+        $this->graphJson = $graphJson;
+
+        return $this;
+    }
+
 }

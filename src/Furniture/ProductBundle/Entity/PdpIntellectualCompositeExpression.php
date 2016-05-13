@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\Collection;
 
 class PdpIntellectualCompositeExpression
 {
-    const TYPE_OR = 1;
-    const TYPE_AND = 2;
+    const TYPE_AND = 1;
+    const TYPE_OR = 2;
 
     /**
      * @var int
