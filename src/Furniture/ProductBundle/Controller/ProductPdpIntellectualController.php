@@ -64,11 +64,6 @@ class ProductPdpIntellectualController extends ResourceController
             'mapped' => false,
         ]);
 
-        $form->add('graphJson', 'textarea', [
-            'mapped'    => false,
-            'read_only' => true,
-        ]);
-
         if ($request->getMethod() === Request::METHOD_POST) {
             $form->submit($request);
 
@@ -113,6 +108,7 @@ class ProductPdpIntellectualController extends ResourceController
         $newPdpIntellectual = new PdpIntellectualRoot();
         $newPdpIntellectual->setProduct($product);
         $newPdpIntellectual->setName($pdpIntellectualRoot->getName());
+        $newPdpIntellectual->setGraphJson($pdpIntellectualRoot->getGraphJson());
 
         $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual);
 

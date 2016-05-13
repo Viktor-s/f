@@ -32,6 +32,9 @@ class PdpIntellectualRootType extends AbstractType
             ])
             ->add('name', 'text', [
                 'label' => 'Name'
+            ])
+            ->add('graphJson', 'textarea', [
+                'read_only' => true,
             ]);
 
         $builder->get('product')->addModelTransformer(new ObjectToStringTransformer());

@@ -163,14 +163,15 @@
                 modal: true,
                 buttons: {
                     Add: function () {
+                        var inputId = form.find('#input-id').val();
                         var inputType = form.find('#input-type').val();
                         createInputElement({
                             widgetType: form.find('#widget-type').val(),
                             inputType: inputType,
                             inputName: form.find('#input-name').val(),
-                            inputId: form.find('#input-id').val()
+                            inputId: inputId
                         });
-                        $('#add' + inputType).hide();
+                        $('#add' + inputType + inputId).hide();
                         ele.dialog("close");
                     },
                     Cancel: function () {
@@ -185,7 +186,7 @@
         };
 
     {% if product %}
-        {% for input in product.pdpConfig.inputs if not input.forSchemes%}
+        {% for input in product.pdpConfig.inputs if not input.forSchemes %}
             {% if input.productPart %}
             {% set btnId = 'productPart' %}
             {% elseif input.skuOption %}
@@ -196,7 +197,7 @@
             {% set btnId = 'Scheme' %}
             {% endif %}
 
-        $('#add{{ btnId ~ loop.index }}').click(function(){
+        $('#add{{ btnId ~ input.id }}').click(function(){
             createInputElementDialog(inputElementForm);
             var form = inputElementForm.find( "form" );
             form.find('#input-type').val($(this).data('input-type'));

@@ -131,7 +131,7 @@
                             {% set btnId = 'option' %}
                             {% set name = 'Option' %}
                         {% endif %}
-                        <button id="add{{ btnId ~ loop.index }}" type="button" class="btn btn-sm" data-input-type="{{ btnId }}" data-input-name="{{ input.humanName }}" data-input-id="{{ input.id }}">
+                        <button id="add{{ btnId ~ input.id }}" type="button" class="btn btn-sm" data-input-type="{{ btnId }}" data-input-name="{{ input.humanName }}" data-input-id="{{ input.id }}">
                             {{ name }} {{ input.humanName }} <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                         </button>
                     {% endfor %}
