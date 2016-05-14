@@ -188,6 +188,11 @@
                 var elementT = graph.getCell(cellViewT.model.id);
                 var link = linkView.model;
 
+                // Prevent linking from input ports.
+                if (magnetS && magnetS.getAttribute('type') === 'input') return false;
+                // Prevent linking from output ports to input ports within one element.
+                if (cellViewS === cellViewT) return false;
+
                 // Check all input ports.
                 var magnetTCheck = magnetT && magnetT.getAttribute('type') === 'input';
 
@@ -221,10 +226,12 @@
                         return false;
                     }
 
-                    if (elementT.get('type') == 'pdpInput.Input' && alreadyTConnected) {
-                        // Do not connect with inputs that connected with root.
-                        if (graph.isNeighbor(rootCell, elementT, {outbound: true})) {
-                            return false;
+                    if (elementT.get('type') == 'pdpInput.Input') {
+                        if (alreadyTConnected) {
+                            // Do not connect with inputs that connected with root.
+                            if (graph.isNeighbor(rootCell, elementT, {outbound: true})) {
+                                return false;
+                            }
                         }
 
                         // do not connect with Inputs that haven't have common ancestor with source.
@@ -232,15 +239,15 @@
 //                        if (graph.isNeighbor(commonAncestor, elementS, {inbound: true})) {
 //
 //                        }
+                        // Do not connect with skuOptions.
+                        if (elementT.get('inputType') === 'skuOption') {
+                            return false;
+                        }
                     }
 
                     return _.contains(['pdpInput.Input', 'pdpInput.Or'], elementT.get('type')) && magnetTCheck;
                 }
 
-                // Prevent linking from input ports.
-                if (magnetS && magnetS.getAttribute('type') === 'input') return false;
-                // Prevent linking from output ports to input ports within one element.
-                if (cellViewS === cellViewT) return false;
                 // Prevent linking to input ports.
                 return magnetTCheck;
             },
