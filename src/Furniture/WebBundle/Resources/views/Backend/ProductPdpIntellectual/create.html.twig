@@ -612,9 +612,24 @@
                             that.validator().showError('Please create at least two schemes by adding more answers or questions.');
                             return false;
                         } else {
-//                            _.each(that.schemes, function(scheme) {
-//
-//                            });
+                            var hashes = [];
+                            _.each(that.schemes, function(scheme, idx) {
+                                var elements = [];
+                                _.each(scheme, function(step) {
+                                    _.each(step.elements, function (ele) {
+                                        elements.push(ele.get('id'));
+                                    });
+                                });
+                                elements.sort();
+                                var hash = elements.join('');
+
+                                if (_.contains(hashes, hash)) {
+                                    that.validator().showError('Please create different schemes variants.');
+                                    return false;
+                                }
+
+                                hashes.push(hash);
+                            });
                         }
 
                         return true;
