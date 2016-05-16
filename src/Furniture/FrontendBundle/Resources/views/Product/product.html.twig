@@ -200,7 +200,7 @@
 
 {% block footer_javascripts %}
     {{ parent() }}
-    // Google analitics
+    {# Google analitics #}
     {% if app.user and app.user.isRetailer() and app.user.retailerUserProfile.isRetailerAdmin()
     or (is_granted('ROLE_FACTORY_ADMIN') or is_granted('ROLE_FACTORY_USER')) %}
     <script type="application/javascript">
