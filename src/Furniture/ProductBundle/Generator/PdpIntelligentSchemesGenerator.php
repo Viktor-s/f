@@ -8,9 +8,10 @@ use Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression;
 use Furniture\ProductBundle\Entity\PdpIntellectualElement;
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
 use Furniture\ProductBundle\Entity\ProductScheme;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 
-class PdpIntelligentSchemesGenerator
+class PdpIntelligentSchemesGenerator extends ContainerAware
 {
     /**
      * @var Collection|ProductScheme[]
@@ -25,7 +26,7 @@ class PdpIntelligentSchemesGenerator
     /**
      * @var Collection
      */
-    private $schemesLevels;
+    private $schemesData;
 
     /**
      * @var PdpIntellectualRoot
@@ -34,14 +35,12 @@ class PdpIntelligentSchemesGenerator
 
     /**
      * PdpIntelligentSchemesGenerator constructor.
-     * @param PdpIntellectualRoot $root
      */
-    public function __construct(PdpIntellectualRoot $root)
+    public function __construct()
     {
-        $this->pdpRoot = $root;
         $this->levels = new ArrayCollection();
         $this->schemes = new ArrayCollection();
-        $this->schemesLevels = new ArrayCollection();
+        $this->schemesData = new ArrayCollection();
     }
 
     /**
@@ -49,21 +48,84 @@ class PdpIntelligentSchemesGenerator
      */
     public function generate()
     {
-        $this->getLevels();
+        $this->getSchemesData();
+        $localeProvider = $this->container->get('sylius.locale_provider');
+        $this->schemesData->forAll(function($key, $collection) use ($localeProvider) {
+            $scheme = new ProductScheme();
+            $scheme->setProduct($this->pdpRoot->getProduct());
+            $scheme->setCurrentLocale($localeProvider->getDefaultLocale());
+            $scheme->setFallbackLocale($localeProvider->getDefaultLocale());
+            /** @var Collection $collection */
+            $collection->forAll(function ($key, $expressions) use ($scheme) {
+                /** @var COllection $expressions */
+                $expressions->forAll(function ($key, $expression) use ($scheme) {
+                    /** @var PdpIntellectualCompositeExpression $expression */
+                    $expression->getElements()->forAll(function ($key, $element) use ($scheme) {
+                        /** @var PdpIntellectualElement $element */
+                        $input = $element->getInput();
 
-        for ($i = 0; $i < $this->levels->count(); $i++) {
-            if ($i === 0) {
-                continue;
-            }
-            $level = $i - 1;
-            /** @var Collection|PdpIntellectualCompositeExpression[] $expressions */
-            $expressions = $this->levels->get($i);
+                        if ($input->getProductPart()) {
+                            $scheme->setName($scheme->getName().$input->getHumanName().' | ');
+                            $scheme->addProductPart($input->getProductPart());
+                        }
+
+                        return true;
+                    });
+
+                    return true;
+                });
+
+                return true;
+            });
+            $scheme->setName(substr($scheme->getName(), 0, -3));
+            $this->schemes->add($scheme);
+
+            return true;
+        });
+    }
+
+
+    /**
+     * Get levels of root element.
+     */
+    private function getLevels()
+    {
+        if ($this->pdpRoot) {
+            static $level = 0;
 
             if ($level === 0) {
-                $this->schemesLevels->clear();
+                $this->levels->clear();
+                $this->levels->set($level, new ArrayCollection([$this->pdpRoot->getExpression()]));
+            }
+
+            $successors = [];
+
+            /** @var PdpIntellectualCompositeExpression $expression */
+            foreach ($this->levels->get($level) as $expression) {
+                $successors = array_merge($successors, $expression->getChild()->toArray());
+            }
+
+            if (!empty($successors)) {
+                $this->levels->set(++$level, new ArrayCollection($successors));
+                $this->getLevels();
+            }
+        }
+    }
+
+    private function getSchemesData()
+    {
+        $this->getLevels();
+        $this->schemesData->clear();
+        for ($level = 0; $level < $this->levels->count(); $level++) {
+            /** @var Collection|PdpIntellectualCompositeExpression[] $expressions */
+            $expressions = $this->levels->get($level);
+
+            if ($level === 0) {
                 $schemeData = new ArrayCollection();
                 $schemeData->add($expressions);
-                $this->schemesLevels->add($schemeData);
+                $this->schemesData->set($level, $schemeData);
+            } else if ($level === 1) {
+                $this->schemesData->get($level - 1)->add($expressions);
             } else {
                 $type = $expressions->first()->getType();
 
@@ -75,10 +137,10 @@ class PdpIntelligentSchemesGenerator
 
                         /** @var Collection|PdpIntellectualCompositeExpression[] $ancestorQuestions */
                         // Get all neighbors questions for answer.
-                        $ancestorQuestions = $first->getParent()->getParent()->getChild();
+                        $ancestorQuestions = clone $first->getParent()->getParent()->getChild();
 
                         // Get partitions of raw schemes that contains all answers on current step.
-                        $partitions = $this->schemesLevels->partition(function ($key, $collection) use ($ancestorQuestions, $level) {
+                        $partitions = $this->schemesData->partition(function ($key, $collection) use ($ancestorQuestions, $level) {
                             if ($ancestorQuestions->isEmpty()) {
                                 return false;
                             }
@@ -90,7 +152,7 @@ class PdpIntelligentSchemesGenerator
                         });
 
                         // Not matched raw schemes leave without changes.
-                        $this->schemesLevels = $partitions[1];
+                        $this->schemesData = $partitions[1];
 
                         // Set answers as processed to exclude from secondary usage.
                         foreach ($ancestorQuestions as $expression) {
@@ -114,7 +176,7 @@ class PdpIntelligentSchemesGenerator
                                 $data = ($combination instanceof Collection) ? $combination : new ArrayCollection($combination);
                                 $newSchemeData->set($level, $data);
 
-                                $this->schemesLevels->add($newSchemeData);
+                                $this->schemesData->add($newSchemeData);
                             }
                         }
                     }
@@ -133,7 +195,7 @@ class PdpIntelligentSchemesGenerator
                         $parentCollection->add($parent);
 
                         // Get partitions of raw schemes that contains all answers on current step.
-                        $partitions = $this->schemesLevels->partition(function ($key, $collection) use ($parentCollection, $level){
+                        $partitions = $this->schemesData->partition(function ($key, $collection) use ($parentCollection, $level){
                             /** @var Collection|PdpIntellectualCompositeExpression[] $collection */
                             return $parentCollection->forAll(function ($key, $expression) use ($collection, $level) {
                                 return $collection->containsKey($level - 1) && $collection->get($level - 1)->contains($expression);
@@ -141,7 +203,7 @@ class PdpIntelligentSchemesGenerator
                         });
 
                         // Not matched raw schemes leave without changes.
-                        $this->schemesLevels = $partitions[1];
+                        $this->schemesData = $partitions[1];
                         // Set answers as processed to exclude from secondary usage.
                         foreach ($neighborQuestions as $expression) {
                             /** @var Collection $children */
@@ -164,37 +226,11 @@ class PdpIntelligentSchemesGenerator
                             $temp2 = $collection->get($level)->toArray();
                             $collection->set($level, new ArrayCollection(array_merge($temp, $temp2)));
 
-                            $this->schemesLevels->add($collection);
+                            $this->schemesData->add($collection);
                         }
                     }
                 }
             }
-        }
-    }
-
-
-    /**
-     * Get levels of root element.
-     */
-    private function getLevels()
-    {
-        static $level = 0;
-
-        if ($level === 0) {
-            $this->levels->clear();
-            $this->levels->set($level, new ArrayCollection([$this->pdpRoot->getExpression()]));
-        }
-
-        $successors = [];
-
-        /** @var PdpIntellectualCompositeExpression $expression */
-        foreach ($this->levels->get($level) as $expression) {
-            $successors = array_merge($successors, $expression->getChild()->toArray());
-        }
-
-        if (!empty($successors)) {
-            $this->levels->set(++$level, new ArrayCollection($successors));
-            $this->getLevels();
         }
     }
 
@@ -310,4 +346,23 @@ class PdpIntelligentSchemesGenerator
         return $this;
     }
 
+    /**
+     * @return PdpIntellectualRoot
+     */
+    public function getPdpRoot()
+    {
+        return $this->pdpRoot;
+    }
+
+    /**
+     * @param PdpIntellectualRoot $pdpRoot
+     *
+     * @return PdpIntelligentSchemesGenerator
+     */
+    public function setPdpRoot($pdpRoot)
+    {
+        $this->pdpRoot = $pdpRoot;
+
+        return $this;
+    }
 }

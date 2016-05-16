@@ -7,6 +7,7 @@ use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
 use Furniture\ProductBundle\Generator\PdpIntelligentSchemesGenerator;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -61,7 +62,8 @@ class ProductPdpIntellectualController extends ResourceController
         $form = $this->createForm(new PdpIntellectualRootType(), $pdpIntellectualRoot);
 
         $form->add('tree', 'textarea', [
-            'mapped' => false,
+            'mapped'   => false,
+            'required' => true,
         ]);
 
         if ($request->getMethod() === Request::METHOD_POST) {
@@ -69,17 +71,36 @@ class ProductPdpIntellectualController extends ResourceController
 
             $treeData = $form->get('tree')->getData();
             $treeData = json_decode($treeData, true);
-
             $this->get('product.pdp_intellectual.creator')->createFromArray($pdpIntellectualRoot, $treeData);
             $em = $this->get('doctrine.orm.default_entity_manager');
-            $em->persist($pdpIntellectualRoot);
-            $em->flush();
+            $validator = $this->get('validator');
+            $generator = $this->get('furniture.generator.pdp_product_scheme');
+            $generator->setPdpRoot($pdpIntellectualRoot);
+            $generator->generate();
+            $schemes = $generator->getProductSchemes();
 
-            $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-                'productId' => $product->getId(),
-            ]);
+            if ($schemes) {
+                $product->setProductSchemes($schemes);
+                $violations = $validator->validate($product);
+                if ($violations->count()) {
+                    foreach ($violations as $violation) {
+                        $form->addError(new FormError($violation->getMessage()));
+                    }
+                }
+            } else {
+                $form->addError(new FormError('No schemes generated.'));
+            }
 
-            return new RedirectResponse($toUrl);
+            if ($form->isValid()) {
+                $em->persist($pdpIntellectualRoot);
+                $em->flush();
+
+                $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
+                    'productId' => $product->getId(),
+                ]);
+
+                return new RedirectResponse($toUrl);
+            }
         }
 
         $view = $this

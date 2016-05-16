@@ -12,6 +12,11 @@ services:
         calls:
         - [setContainer, ['@service_container']]
 
+    furniture.generator.pdp_product_scheme:
+        class: Furniture\ProductBundle\Generator\PdpIntelligentSchemesGenerator
+        calls:
+            - [setContainer, ['@service_container']]
+
     furniture.product.form.ProductVariantPartMaterialsType:
         class: Furniture\ProductBundle\Form\Type\ProductVariantPartMaterialsType
         tags:

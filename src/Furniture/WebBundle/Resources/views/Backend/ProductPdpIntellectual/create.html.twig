@@ -156,7 +156,7 @@
         id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
                 name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                 type:{% if input.option %}
-                'option'
+                    'option'
                 {% elseif input.skuOption %}
                     'skuOption'
                 {% elseif input.productPart %}
@@ -298,6 +298,31 @@
             this.messageElement = null;
         };
         pdpIntelligentProcessor.prototype = {
+            init: function() {
+                var graphJson = $('#pdp_intellectual_root_graphJson');
+                var json = this.parseJSON(graphJson.val());
+                console.log(json)
+                if (graphJson.length && json) {
+                    this.graph.fromJSON(json);
+                    this.root = this.graph.getFirstCell();
+                }
+            },
+            parseJSON: function (jsonString){
+                try {
+                    var o = JSON.parse(jsonString);
+
+                    // Handle non-exception-throwing cases:
+                    // Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
+                    // but... JSON.parse(null) returns 'null', and typeof null === "object",
+                    // so we must check for that, too.
+                    if (o && typeof o === "object" && o !== null) {
+                        return o;
+                    }
+                }
+                catch (e) { }
+
+                return false;
+            },
             // Validator
             validator: function() {
                 var that = this;
@@ -703,6 +728,7 @@
         };
 
         pdpProcessor = new pdpIntelligentProcessor(graph);
+
         pdpProcessor.validator().setMessagesElement('#flashes');
         var rootTreeElement = $('#pdp_intellectual_root_tree');
         var graphJsonElement = $('#pdp_intellectual_root_graphJson');
@@ -725,4 +751,9 @@
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:InputElement.html.twig' %}
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrElement.html.twig' %}
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrAnswerElement.html.twig' %}
+
+    <script>
+        $(document).ready(function () {
+            pdpProcessor.init();
+        });</script>
 {% endblock %}
