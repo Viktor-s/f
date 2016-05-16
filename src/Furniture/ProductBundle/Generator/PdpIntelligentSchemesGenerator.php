@@ -65,8 +65,10 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
                         $input = $element->getInput();
 
                         if ($input->getProductPart()) {
-                            $scheme->setName($scheme->getName().$input->getHumanName().' | ');
-                            $scheme->addProductPart($input->getProductPart());
+                            if (!$scheme->hasProductPart($input->getProductPart())) {
+                                $scheme->setName($scheme->getName().$input->getHumanName().' | ');
+                                $scheme->addProductPart($input->getProductPart());
+                            }
                         }
 
                         return true;
