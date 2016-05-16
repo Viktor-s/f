@@ -148,17 +148,37 @@ class ProductPdpIntellectualController extends ResourceController
 
             $this->get('product.pdp_intellectual.creator')->createFromArray($newPdpIntellectual, $treeData);
 
-            // We use transactional because we must remove and add new element.
-            $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
-                $em->remove($pdpIntellectualRoot);
-                $em->persist($newPdpIntellectual);
-            });
+            $validator = $this->get('validator');
+            $generator = $this->get('furniture.generator.pdp_product_scheme');
+            $generator->setPdpRoot($pdpIntellectualRoot);
+            $generator->generate();
+            $schemes = $generator->getProductSchemes();
 
-            $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-                'productId' => $product->getId(),
-            ]);
+            if ($schemes) {
+                $product->setProductSchemes($schemes);
+                $violations = $validator->validate($product);
+                if ($violations->count()) {
+                    foreach ($violations as $violation) {
+                        $form->addError(new FormError($violation->getMessage()));
+                    }
+                }
+            } else {
+                $form->addError(new FormError('No schemes generated.'));
+            }
 
-            return new RedirectResponse($toUrl);
+            if ($form->isValid()) {
+                // We use transactional because we must remove and add new element.
+                $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
+                    $em->remove($pdpIntellectualRoot);
+                    $em->persist($newPdpIntellectual);
+                });
+
+                $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
+                    'productId' => $product->getId(),
+                ]);
+
+                return new RedirectResponse($toUrl);
+            }
         }
 
         $view = $this

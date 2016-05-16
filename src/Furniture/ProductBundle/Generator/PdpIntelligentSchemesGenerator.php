@@ -173,7 +173,7 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
                             /** @var Collection $combination */
                             foreach ($combinations as $combination) {
                                 $newSchemeData = new ArrayCollection($collection->toArray());
-                                $data = ($combination instanceof Collection) ? $combination : new ArrayCollection($combination);
+                                $data = $combination;
                                 $newSchemeData->set($level, $data);
 
                                 $this->schemesData->add($newSchemeData);
@@ -246,22 +246,30 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
         $expressions->removeElement($first);
         $result = $first->getChild();
 
-        while (!$expressions->isEmpty()) {
-            $first = $expressions->first();
-            $expressions->removeElement($first);
-            $newCombination = new ArrayCollection();
-            foreach ($result as $expression) {
-                $children = $first->getChild();
-                foreach ($children as $child) {
-                    if ($expression instanceof Collection) {
-                        $expression->add($child);
-                        $newCombination->add($expression);
-                    } else {
-                        $newCombination->add(new ArrayCollection([$expression, $child]));
+        if ($expressions->isEmpty()) {
+            $tmp = $result;
+            $result = new ArrayCollection();
+            foreach ($tmp as $expression) {
+                $result->add(new ArrayCollection([$expression]));
+            }
+        } else {
+            while (!$expressions->isEmpty()) {
+                $first = $expressions->first();
+                $expressions->removeElement($first);
+                $newCombination = new ArrayCollection();
+                foreach ($result as $expression) {
+                    $children = $first->getChild();
+                    foreach ($children as $child) {
+                        if ($expression instanceof Collection) {
+                            $expression->add($child);
+                            $newCombination->add($expression);
+                        } else {
+                            $newCombination->add(new ArrayCollection([$expression, $child]));
+                        }
                     }
                 }
+                $result = $newCombination;
             }
-            $result = $newCombination;
         }
 
         return $result;
