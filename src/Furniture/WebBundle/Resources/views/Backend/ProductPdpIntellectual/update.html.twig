@@ -3,6 +3,76 @@
 {% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
 {% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/web/css/joint.min.css') }}" type="text/css" media="all" />
+    <style>
+        #paper {
+            position: relative;
+            border: 1px solid gray;
+            display: inline-block;
+            background: transparent;
+            overflow: hidden;
+        }
+        #paper svg {
+            background: transparent;
+        }
+        #paper svg .link {
+            z-index: 2;
+        }
+
+        #orElementForm,
+        #orAnswerElementForm,
+        #inputElementForm {
+            display: none;
+        }
+
+        .ui-dialog #orElementForm,
+        .ui-dialog #orAnswerElementForm,
+        .ui-dialog #inputElementForm {
+            display: block;
+        }
+
+        .html-element {
+            position: absolute;
+            /*background: #3498DB;*/
+            /* Make sure events are propagated to the JointJS element so, e.g. dragging works.*/
+            pointer-events: none;
+            -webkit-user-select: none;
+            border-radius: 2px;
+            /*border: 1px solid #2980B9;*/
+            /*box-shadow: inset 0 0 5px black, 2px 2px 1px gray;*/
+            padding: 1px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .html-element select,
+        .html-element input,
+        .html-element button {
+            /* Enable interacting with inputs only. */
+            pointer-events: auto;
+        }
+        /* port styling */
+        .available-magnet {
+            fill: yellow;
+        }
+
+        /* element styling */
+        .available-cell rect {
+            stroke-dasharray: 5, 2;
+        }
+        .port-label {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block headjavascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/web/js/lodash.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/web/js/backbone-min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/web/js/joint.min.js') }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block topbar %}
     <ol class="breadcrumb">
         <li><a href="{{ path('sylius_backend_product_index') }}">Products</a></li>
@@ -19,4 +89,99 @@
     </div>
 
     {% include 'WebBundle:Backend/ProductPdpIntellectual:form.html.twig' %}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group" role="group">
+                            <button id="addOrBtn" type="button" class="btn btn-sm">
+                                OR (Question)<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            </button>
+                            <button id="addOrAnswerBtn" type="button" class="btn btn-sm">
+                                OR answer <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group" role="group">
+                            <button id="getTree" class="btn btn-sm" type="button">Get tree</button>
+                            <button id="getSchemes" class="btn btn-sm" type="button">Get schemes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 col-sm-8">
+                    <div id="paper">
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4">
+                    <div class="btn-group-vertical" role="group" aria-label="pdp-inputs">
+                        {% if product %}
+                            {% for input in product.pdpConfig.inputs if not input.forSchemes %}
+                                {% if input.productPart %}
+                                    {% set btnId = 'productPart' %}
+                                    {% set name = 'Material' %}
+                                {% elseif input.skuOption %}
+                                    {% set btnId = 'skuOption' %}
+                                    {% set name = 'SKU' %}
+                                {% elseif input.option %}
+                                    {% set btnId = 'option' %}
+                                    {% set name = 'Option' %}
+                                {% endif %}
+                                <button id="add{{ btnId ~ input.id }}" type="button" class="btn btn-sm" data-input-type="{{ btnId }}" data-input-name="{{ input.humanName }}" data-input-id="{{ input.id }}">
+                                    {{ name }} {{ input.humanName }} <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                </button>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <h3>Schemes preview:</h3>
+                    <div id="schemes-preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var inputs = [];
+        {% if product %}
+        {% for input in product.pdpConfig.inputs %}
+        inputs.push({
+            id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
+            name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+            type:{% if input.option %}
+                    'option'
+            {% elseif input.skuOption %}
+            'skuOption'
+                    {% elseif input.productPart %}
+                    'productPart'
+            {% elseif input.forSchemes %}
+            'scheme'
+            {% endif %}
+        });
+        {% endfor %}
+        {% endif %}
+        //        console.log(inputs);
+
+        var graph = new joint.dia.Graph;
+    </script>
+
+    {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:base.html.twig' %}
+    {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:Element.html.twig' %}
+    {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:InputElement.html.twig' %}
+    {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrElement.html.twig' %}
+    {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:OrAnswerElement.html.twig' %}
+
+    <script>
+        $(document).ready(function () {
+            pdpProcessor.init();
+        });
+    </script>
 {% endblock %}
