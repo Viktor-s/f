@@ -113,7 +113,7 @@
                                         <li>
                                             <div class="tree-opener">+</div>
                                             <label class="tree-toggle nav-header checkbox-entry">
-                                                <input type="checkbox" class="system-check-group"> <span class="check"></span>{{ material.name }}
+                                                <input type="checkbox" class="system-check-group" data-product-part-id="{{ productPart.id }}" data-product-material-id="{{ material.id }}"> <span class="check"></span>{{ material.name }}
                                             </label>
                                             <ul class="nav nav-list tree">
                                             {% for grouped in  material.getGroupedOptionValues() %}
@@ -197,11 +197,18 @@
                     var skuOptionPrefix = 'product_pattern_skuOptionValues_';
 
                     $('.system-check-group').on('change', function(e){
-                        $(this)
+                        var materials = $(this)
                             .parent('.tree-toggle')
                             .siblings('ul.tree')
-                            .find('>li>label.checkbox-entry input[type="checkbox"]')
-                            .prop('checked', $(this).prop('checked')).trigger('change');
+                            .find('>li>label.checkbox-entry input[type="checkbox"]');
+                        if (materials.length) {
+                            materials.prop('checked', $(this).prop('checked')).trigger('change');
+                        } else {
+                            var elId = productPartMaterialVariantSelectionPrefix
+                                    + $(this).data('product-part-id')
+                                    + '_' + $(this).data('product-material-id')  + '_';
+                            $('input[id^="'+elId+'"]').prop('checked', $(this).prop('checked'));
+                        }
                     });
 
                     /* Sync sku options */
