@@ -136,7 +136,7 @@
                 this.$box = $(_.template(this.template)());
 
                 this.$box.find('.delete').on('click', function(e) {
-                    $('#add' + that.model.get('inputType')).show();
+                    $('#add' + that.model.get('inputType') + that.model.get('inputId')).show();
                     that.model.remove();
                 });
 

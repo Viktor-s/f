@@ -50,6 +50,7 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
     {
         $this->getSchemesData();
         $localeProvider = $this->container->get('sylius.locale_provider');
+
         $this->schemesData->forAll(function($key, $collection) use ($localeProvider) {
             $scheme = new ProductScheme();
             $scheme->setProduct($this->pdpRoot->getProduct());

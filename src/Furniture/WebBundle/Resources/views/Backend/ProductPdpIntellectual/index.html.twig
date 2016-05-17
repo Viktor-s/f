@@ -14,7 +14,9 @@
 {% block content %}
     <div class="page-header">
         <div class="actions-menu">
+        {% if items|length == 0 %}
             {{  buttons.create(path('furniture_backend_product_pdp_intellectual_create', {productId: product.id})) }}
+        {% endif %}
         </div>
 
         <h1><i class="glyphicon glyphicon-list-alt"></i> PDP Intellectuals</h1>

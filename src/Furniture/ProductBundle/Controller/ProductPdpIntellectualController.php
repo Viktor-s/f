@@ -2,6 +2,8 @@
 
 namespace Furniture\ProductBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
@@ -73,7 +75,9 @@ class ProductPdpIntellectualController extends ResourceController
             $treeData = json_decode($treeData, true);
             $this->get('product.pdp_intellectual.creator')->createFromArray($pdpIntellectualRoot, $treeData);
             $em = $this->get('doctrine.orm.default_entity_manager');
+
             $validator = $this->get('validator');
+
             $generator = $this->get('furniture.generator.pdp_product_scheme');
             $generator->setPdpRoot($pdpIntellectualRoot);
             $generator->generate();
@@ -81,7 +85,7 @@ class ProductPdpIntellectualController extends ResourceController
 
             if ($schemes) {
                 $product->setProductSchemes($schemes);
-                $violations = $validator->validate($product);
+                $violations = $validator->validate($product, null, ['SchemesCreate']);
                 if ($violations->count()) {
                     foreach ($violations as $violation) {
                         $form->addError(new FormError($violation->getMessage()));
@@ -134,8 +138,9 @@ class ProductPdpIntellectualController extends ResourceController
         $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual);
 
         $form->add('tree', 'textarea', [
-            'mapped' => false,
-            'data'   => json_encode($tree, JSON_UNESCAPED_UNICODE),
+            'mapped'   => false,
+            'data'     => json_encode($tree, JSON_UNESCAPED_UNICODE),
+            'required' => true,
         ]);
 
         $form->handleRequest($request);
@@ -150,13 +155,50 @@ class ProductPdpIntellectualController extends ResourceController
 
             $validator = $this->get('validator');
             $generator = $this->get('furniture.generator.pdp_product_scheme');
-            $generator->setPdpRoot($pdpIntellectualRoot);
+            $generator->setPdpRoot($newPdpIntellectual);
             $generator->generate();
             $schemes = $generator->getProductSchemes();
 
             if ($schemes) {
+                $productSchemes = $product->getProductSchemes();
+
+                foreach ($productSchemes as $pScheme) {
+                    $pSchemeParts = [];
+                    foreach ($pScheme->getProductParts() as $part) {
+                        $pSchemeParts[] = $part->getId();
+                    }
+
+                    sort($pSchemeParts);
+                    $pHash = implode($pSchemeParts);
+
+                    $has = false;
+                    foreach ($schemes as $scheme) {
+                        $schemeParts = [];
+                        foreach ($scheme->getProductParts() as $part) {
+                            $schemeParts[] = $part->getId();
+                        }
+
+                        sort($schemeParts);
+                        $hash = implode($schemeParts);
+
+                        if ($hash === $pHash) {
+                            $has = true;
+                            $schemes->removeElement($scheme);
+                            break;
+                        }
+                    }
+
+                    if (!$has) {
+                        $productSchemes->removeElement($pScheme);
+                        $em->remove($pScheme);
+                    }
+                }
+
+                $schemes = new ArrayCollection(array_merge($productSchemes->toArray(), $schemes->toArray()));
                 $product->setProductSchemes($schemes);
-                $violations = $validator->validate($product);
+
+                $violations = $validator->validate($product, null, ['SchemesCreate']);
+
                 if ($violations->count()) {
                     foreach ($violations as $violation) {
                         $form->addError(new FormError($violation->getMessage()));

@@ -319,6 +319,7 @@
                     draw: function(el) {
                         var _self = this;
                         this.create();
+                        el.html('');
                         if (this.schemesValidate()) {
                             var table = $('<table/>').addClass('table table-striped table-hover');
                             var tRow, tCell, numCols = 2;
@@ -466,12 +467,13 @@
                             }
                         });
                         that.schemes = schemes;
-                        console.log('that', that);
                     },
                     schemesValidate: function() {
+                        var valid = true;
+
                         if (that.schemes.length == 1) {
                             that.validator().showError('Please create at least two schemes by adding more answers or questions.');
-                            return false;
+                            valid = false;
                         } else {
                             var hashes = [];
                             _.each(that.schemes, function(scheme, idx) {
@@ -486,6 +488,7 @@
 
                                 if (_.contains(hashes, hash)) {
                                     that.validator().showError('Please create different schemes variants.');
+                                    valid = false;
                                     return false;
                                 }
 
@@ -493,7 +496,7 @@
                             });
                         }
 
-                        return true;
+                        return valid;
                     },
                     getLevels: function(distance) {
                         distance = typeof distance === 'undefined' ? 0 : distance;
@@ -569,6 +572,7 @@
         var rootTreeElement = $('#pdp_intellectual_root_tree');
         var graphJsonElement = $('#pdp_intellectual_root_graphJson');
         var schemesPreviewElement = $('#schemes-preview');
+
         $('#getTree').on('click', function() {
             if (pdpProcessor.validator().validate() && pdpProcessor.schemesCreator().schemesValidate()) {
                 rootTreeElement.val(JSON.stringify(pdpProcessor.converter().convertToObject()));
@@ -580,6 +584,10 @@
             if (pdpProcessor.validator().validate()) {
                 pdpProcessor.schemesCreator().draw(schemesPreviewElement);
             }
+        });
+
+        $('#pdp-create-form').on('submit', function(e) {
+            return pdpProcessor.validator().validate() && pdpProcessor.schemesCreator().schemesValidate()
         });
     });
 </script>
