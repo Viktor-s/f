@@ -1,4 +1,26 @@
 <script type="text/javascript">
+    var inputs = [];
+{% if product %}
+    {% for input in product.pdpConfig.inputs if not input.forSchemes  %}
+    inputs.push({
+        id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
+        name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+        type:{% if input.option %}
+        'option'
+        {% elseif input.skuOption %}
+        'skuOption'
+        {% elseif input.productPart %}
+        'productPart'
+        {#{% elseif input.forSchemes %}#}
+        {#'scheme'#}
+        {% endif %}
+    });
+    {% endfor %}
+{% endif %}
+    //        console.log(inputs);
+
+    var graph = new joint.dia.Graph;
+
     $(document).ready(function () {
 
         paper = new joint.dia.Paper({
@@ -176,6 +198,7 @@
                             valid = false;
                         } else {
                             var elementsCheck = false;
+                            var elements = [];
                             _.each(cells, function(cell) {
                                 if (cell.isLink() && valid) {
                                     if (typeof cell.get('source').id === 'undefined' || typeof cell.get('target').id === 'undefined') {
@@ -190,12 +213,16 @@
                                         valid = false;
                                     } else if (cell.get('type') === 'pdpInput.Input') {
                                         elementsCheck = true;
+                                        elements.push(cell);
                                     }
                                 }
                             });
 
                             if (!elementsCheck) {
                                 errors.push('PDP inputs not founded');
+                                valid = false;
+                            } else if (elements.length < inputs.length) {
+                                errors.push('All PDP inputs should be used.');
                                 valid = false;
                             }
 

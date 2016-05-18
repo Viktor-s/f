@@ -88,30 +88,6 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-
-        var inputs = [];
-        {% if product %}
-            {% for input in product.pdpConfig.inputs %}
-        inputs.push({
-            id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
-                    name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-                    type:{% if input.option %}
-                        'option'
-                    {% elseif input.skuOption %}
-                        'skuOption'
-                    {% elseif input.productPart %}
-                        'productPart'
-                    {% elseif input.forSchemes %}
-                        'scheme'
-                    {% endif %}
-            });
-            {% endfor %}
-        {% endif %}
-//        console.log(inputs);
-
-        var graph = new joint.dia.Graph;
-    </script>
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:base.html.twig' %}
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:Element.html.twig' %}
 {% include 'SyliusWebBundle:Backend/ProductPdpIntellectual/EditorElements:InputElement.html.twig' %}

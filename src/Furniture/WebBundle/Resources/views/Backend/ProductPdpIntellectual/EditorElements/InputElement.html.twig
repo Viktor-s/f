@@ -193,8 +193,8 @@
             {% set btnId = 'skuOption' %}
             {% elseif input.option %}
             {% set btnId = 'option' %}
-            {% elseif input.forSchemes %}
-            {% set btnId = 'Scheme' %}
+            {#{% elseif input.forSchemes %}#}
+            {#{% set btnId = 'Scheme' %}#}
             {% endif %}
 
         $('#add{{ btnId ~ input.id }}').click(function(){
