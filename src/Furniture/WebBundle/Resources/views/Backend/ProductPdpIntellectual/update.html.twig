@@ -34,6 +34,7 @@
 
     <div class="row">
         <div class="col-sm-12">
+            {% if (not product.hasVariants() and not product.hasProductVariantsPatterns()) %}
             <div class="row">
                 <div class="col-sm-6">
                     <div class="btn-toolbar" role="toolbar">
@@ -56,11 +57,13 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div class="row">
                 <div class="col-lg-10 col-sm-8">
                     <div id="paper">
                     </div>
                 </div>
+                {% if (not product.hasVariants() and not product.hasProductVariantsPatterns()) %}
                 <div class="col-lg-2 col-sm-4">
                     <div class="btn-group-vertical" role="group" aria-label="pdp-inputs">
                         {% if product %}
@@ -86,6 +89,7 @@
                     <h3>Schemes preview:</h3>
                     <div id="schemes-preview"></div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -85,12 +85,13 @@
                 joint.dia.ElementView.prototype.initialize.apply(this, arguments);
                 
                 this.$box = $(_.template(this.template)());
-                
-                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+                if (paper.options.interactive) {
+                    this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
-                this.$box.find('.edit').on('click', function(e) {
-                    that.updateElement();
-                });
+                    this.$box.find('.edit').on('click', function(e) {
+                        that.updateElement();
+                    });
+                }
 
                 // Update the box position whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);
@@ -111,11 +112,13 @@
 
                 this.$box = $(_.template(this.template)());
 
-                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+                if (paper.options.interactive) {
+                    this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
-                this.$box.find('.edit').on('click', function(e) {
-                    that.updateElement();
-                });
+                    this.$box.find('.edit').on('click', function (e) {
+                        that.updateElement();
+                    });
+                }
                 // Update the box position whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);
                 // Remove the box when the model gets removed from the graph.
@@ -135,14 +138,16 @@
 
                 this.$box = $(_.template(this.template)());
 
-                this.$box.find('.delete').on('click', function(e) {
-                    $('#add' + that.model.get('inputType') + that.model.get('inputId')).show();
-                    that.model.remove();
-                });
+                if (paper.options.interactive) {
+                    this.$box.find('.delete').on('click', function (e) {
+                        $('#add' + that.model.get('inputType') + that.model.get('inputId')).show();
+                        that.model.remove();
+                    });
 
-                this.$box.find('.edit').on('click', function(e) {
-                    that.updateElement();
-                });
+                    this.$box.find('.edit').on('click', function (e) {
+                        that.updateElement();
+                    });
+                }
 
                 // Update the box position whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);

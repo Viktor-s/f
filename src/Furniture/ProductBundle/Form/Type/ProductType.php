@@ -167,9 +167,9 @@ class ProductType extends BaseProductType
                             'attr'          => [
                                 'data-remove-confirm' => 'Are you sure you want to remove scheme item?',
                             ],
-                            'allow_add'     => !$disallowEdit,
-                            'allow_delete'  => !$disallowEdit,
-                            'disallow_edit' => $disallowEdit,
+                            'allow_add'     => false, //!$disallowEdit,
+                            'allow_delete'  => false, //!$disallowEdit,
+                            'disallow_edit' => true, //$disallowEdit,
                         ]);
                 }
             });

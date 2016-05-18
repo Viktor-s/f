@@ -63,11 +63,6 @@ class ProductPdpIntellectualController extends ResourceController
 
         $form = $this->createForm(new PdpIntellectualRootType(), $pdpIntellectualRoot);
 
-        $form->add('tree', 'textarea', [
-            'mapped'   => false,
-            'required' => true,
-        ]);
-
         if ($request->getMethod() === Request::METHOD_POST) {
             $form->submit($request);
 
@@ -95,7 +90,7 @@ class ProductPdpIntellectualController extends ResourceController
                 $form->addError(new FormError('No schemes generated.'));
             }
 
-            if ($form->isValid()) {
+            if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
                 $em->persist($pdpIntellectualRoot);
                 $em->flush();
 
@@ -104,6 +99,8 @@ class ProductPdpIntellectualController extends ResourceController
                 ]);
 
                 return new RedirectResponse($toUrl);
+            } else {
+                $form->addError(new FormError('Product already has variants or patterns.'));
             }
         }
 
@@ -135,17 +132,11 @@ class ProductPdpIntellectualController extends ResourceController
         $newPdpIntellectual->setName($pdpIntellectualRoot->getName());
         $newPdpIntellectual->setGraphJson($pdpIntellectualRoot->getGraphJson());
 
-        $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual);
-
-        $form->add('tree', 'textarea', [
-            'mapped'   => false,
-            'data'     => json_encode($tree, JSON_UNESCAPED_UNICODE),
-            'required' => true,
-        ]);
+        $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual, ['graph_tree' => $tree]);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($request->getMethod() === Request::METHOD_POST) {
             $em = $this->get('doctrine.orm.default_entity_manager');
 
             $treeData = $form->get('tree')->getData();
@@ -208,7 +199,7 @@ class ProductPdpIntellectualController extends ResourceController
                 $form->addError(new FormError('No schemes generated.'));
             }
 
-            if ($form->isValid()) {
+            if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
                 // We use transactional because we must remove and add new element.
                 $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
                     $em->remove($pdpIntellectualRoot);
@@ -220,6 +211,8 @@ class ProductPdpIntellectualController extends ResourceController
                 ]);
 
                 return new RedirectResponse($toUrl);
+            } else {
+                $form->addError(new FormError('Product already has variants or patterns.'));
             }
         }
 
