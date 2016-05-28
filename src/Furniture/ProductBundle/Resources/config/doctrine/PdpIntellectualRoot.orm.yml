@@ -20,12 +20,12 @@ Furniture\ProductBundle\Entity\PdpIntellectualRoot:
     oneToOne:
         expression:
             targetEntity: Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
-            cascade: [ persist ]
+            cascade: [ persist, remove ]
             joinColumn:
                 name: expression_id
                 referencedColumnName: id
                 nullable: false
-                onDelete: RESTRICT
+                onDelete: CASCADE
 
     manyToOne:
         product:

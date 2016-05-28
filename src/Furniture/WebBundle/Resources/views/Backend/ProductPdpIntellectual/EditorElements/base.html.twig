@@ -2,22 +2,26 @@
     var inputs = [];
 {% if product %}
     {% for input in product.pdpConfig.inputs if not input.forSchemes  %}
-    inputs.push({
-        id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
-        name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
-        type:{% if input.option %}
-        'option'
-        {% elseif input.skuOption %}
-        'skuOption'
-        {% elseif input.productPart %}
-        'productPart'
-        {#{% elseif input.forSchemes %}#}
-        {#'scheme'#}
-        {% endif %}
-    });
+        {% set btnId = false %}
+            {% if input.productPart %}
+            {% set btnId = 'productPart' %}
+            {% elseif input.skuOption %}
+            {% set btnId = 'skuOption' %}
+            {% elseif input.option %}
+            {% set btnId = 'option' %}
+            {#{% elseif input.forSchemes %}#}
+            {#{% set btnId = 'Scheme' %}#}
+            {% endif %}
+            {% if btnId %}
+            inputs.push({
+                id:{{ input.id|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
+                name:{{ input.humanName|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                type: '{{ btnId }}'
+            });
+            {% endif %}
     {% endfor %}
 {% endif %}
-    //        console.log(inputs);
+            //console.log(inputs);
 
     var graph = new joint.dia.Graph;
 

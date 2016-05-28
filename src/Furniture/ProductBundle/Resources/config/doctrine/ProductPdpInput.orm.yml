@@ -27,6 +27,17 @@ Furniture\ProductBundle\Entity\ProductPdpInput:
             options:
                 default: false
 
+    oneToOne:
+        inteligentPdpCompositeExpression:
+            targetEntity: Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
+            inversedBy: pdpInput
+            joinColumn:
+                name: inteligent_pdp_composite_expression
+                referencedColumnName: id
+                nullable: true
+                onDelete: CASCADE
+        
+
     manyToOne:
         config:
             targetEntity: Furniture\ProductBundle\Entity\ProductPdpConfig

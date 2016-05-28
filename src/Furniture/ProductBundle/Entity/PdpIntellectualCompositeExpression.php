@@ -5,6 +5,8 @@ namespace Furniture\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Furniture\ProductBundle\Entity\ProductPdpInput;
+
 class PdpIntellectualCompositeExpression
 {
     const TYPE_AND = 1;
@@ -14,6 +16,12 @@ class PdpIntellectualCompositeExpression
      * @var int
      */
     private $id;
+
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\ProductPdpInput
+     */
+    private $pdpInput;
 
     /**
      * @var PdpIntellectualCompositeExpression
@@ -79,6 +87,26 @@ class PdpIntellectualCompositeExpression
 
         return $this;
     }
+
+    /**
+     * 
+     * @return \Furniture\ProductBundle\Entity\ProductPdpInput
+     */
+    public function getPdpInput(){
+        return $this->pdpInput;
+    }
+    
+    /**
+     * 
+     * @param ProductPdpInput $pdpInput
+     * @return \Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
+     */
+    public function setPdpInput(ProductPdpInput $pdpInput){
+        $pdpInput;
+        $this->pdpInput = $pdpInput;
+        return $this;
+    }
+
 
     /**
      * Get parent

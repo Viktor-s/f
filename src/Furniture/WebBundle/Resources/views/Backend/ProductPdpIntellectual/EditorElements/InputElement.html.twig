@@ -187,6 +187,7 @@
 
     {% if product %}
         {% for input in product.pdpConfig.inputs if not input.forSchemes %}
+            {% set btnId = false %}
             {% if input.productPart %}
             {% set btnId = 'productPart' %}
             {% elseif input.skuOption %}
@@ -196,7 +197,7 @@
             {#{% elseif input.forSchemes %}#}
             {#{% set btnId = 'Scheme' %}#}
             {% endif %}
-
+            {% if btnId %}
         $('#add{{ btnId ~ input.id }}').click(function(){
             createInputElementDialog(inputElementForm);
             var form = inputElementForm.find( "form" );
@@ -205,6 +206,7 @@
             form.find('#input-id').val($(this).data('input-id'));
             inputElementForm.dialog('open');
         });
+            {% endif %}
         {% endfor %}
     {% endif %}
     });

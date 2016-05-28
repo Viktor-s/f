@@ -59,6 +59,12 @@ class PdpIntellectualCreator
         $expression = new PdpIntellectualCompositeExpression();
         $expression->setType($type);
 
+        if($expression->isOr()){
+            $pdpInputForExpression = new ProductPdpInput();
+            $product->getPdpConfig()->addInput($pdpInputForExpression);
+            $pdpInputForExpression->setInteligentPdpCompositeExpression($expression);
+        }
+        
         if (isset($expressionInfo['appendText'])) {
             $expression->setAppendText($expressionInfo['appendText']);
         }

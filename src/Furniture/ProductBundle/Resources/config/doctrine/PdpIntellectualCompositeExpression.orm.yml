@@ -24,6 +24,12 @@ Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression:
             column: append_text
             nullable: true
 
+    oneToOne:
+        pdpInput:
+            targetEntity: Furniture\ProductBundle\Entity\ProductPdpInput
+            mappedBy: inteligentPdpCompositeExpression
+            cascade: [ persist ]
+
     manyToOne:
         parent:
             targetEntity: Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression

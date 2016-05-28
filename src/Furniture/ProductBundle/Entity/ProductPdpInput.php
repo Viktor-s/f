@@ -7,6 +7,7 @@ use Sylius\Component\Product\Model\Option;
 use Doctrine\Common\Collections\Criteria;
 use Furniture\ProductBundle\Model\ProductPartMaterialVariantGrouped;
 use Doctrine\Common\Collections\ArrayCollection;
+use Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression;
 
 class ProductPdpInput
 {
@@ -54,6 +55,12 @@ class ProductPdpInput
      * @var int
      */
     private $forSchemes;
+
+    /**
+     *
+     * @var \Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression
+     */
+    private $inteligentPdpCompositeExpression;
 
     /**
      * @var int
@@ -307,6 +314,34 @@ class ProductPdpInput
     }
 
     /**
+     * 
+     * @param PdpIntellectualCompositeExpression $inteligentPdpCompositeExpression
+     * @return \Furniture\ProductBundle\Entity\ProductPdpInput
+     */
+    public function setInteligentPdpCompositeExpression(PdpIntellectualCompositeExpression $inteligentPdpCompositeExpression){
+        $this->clearMappingFields();
+        $this->inteligentPdpCompositeExpression = $inteligentPdpCompositeExpression;
+        $inteligentPdpCompositeExpression->setPdpInput($this);
+        return $this;
+    }
+
+    /**
+     * 
+     * @return PdpIntellectualCompositeExpression
+     */
+    public function getPdpIntellectualCompositeExpression(){
+        return $this->inteligentPdpCompositeExpression;
+    }
+    
+    /**
+     * 
+     * @return bool
+     */
+    public function isForPdpIntellectualCompositeExpression(){
+        return (bool)$this->inteligentPdpCompositeExpression;
+    }
+
+    /**
      * Set position
      *
      * @param int $position
@@ -371,6 +406,8 @@ class ProductPdpInput
             );
         } else if ($this->isForSchemes()) {
             return 'Variants';
+        } else if ($this->isForPdpIntellectualCompositeExpression()){
+            return $this->getPdpIntellectualCompositeExpression()->getAppendText();
         } else {
             return 'Undefined';
         }
@@ -401,6 +438,8 @@ class ProductPdpInput
                 '%s',
                 $this->option->getName()
             );
+        } else if ($this->isForPdpIntellectualCompositeExpression()){
+            return $this->getPdpIntellectualCompositeExpression()->getAppendText();
         } else if ($this->isForSchemes()) {
             return 'Variants';
         } else {
@@ -416,5 +455,6 @@ class ProductPdpInput
         $this->option = null;
         $this->skuOption = null;
         $this->productPart = null;
+        $this->inteligentPdpCompositeExpression = null;
     }
 }

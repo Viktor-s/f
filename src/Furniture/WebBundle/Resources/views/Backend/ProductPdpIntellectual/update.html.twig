@@ -68,6 +68,7 @@
                     <div class="btn-group-vertical" role="group" aria-label="pdp-inputs">
                         {% if product %}
                             {% for input in product.pdpConfig.inputs if not input.forSchemes %}
+                                {% set btnId = false %}
                                 {% if input.productPart %}
                                     {% set btnId = 'productPart' %}
                                     {% set name = 'Material' %}
@@ -78,9 +79,11 @@
                                     {% set btnId = 'option' %}
                                     {% set name = 'Option' %}
                                 {% endif %}
+                                {% if btnId %}
                                 <button id="add{{ btnId ~ input.id }}" type="button" class="btn btn-sm" data-input-type="{{ btnId }}" data-input-name="{{ input.humanName }}" data-input-id="{{ input.id }}">
                                     {{ name }} {{ input.humanName }} <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                                 </button>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     </div>
