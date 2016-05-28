@@ -7,8 +7,9 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Furniture\SpecificationBundle\Entity\Buyer;
+use Sylius\Bundle\FixturesBundle\DataFixtures\DataFixture;
 
-class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtureInterface
+class LoadSpecificationBuyerData extends DataFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -26,7 +27,8 @@ class LoadSpecificationBuyerData extends AbstractFixture implements OrderedFixtu
                 ->setCreator($administer->getRetailerUserProfile())
                 ->setFirstName($faker->firstName)
                 ->setSecondName($faker->lastName)
-                ->setSale(rand(0, 10));
+                ->setSale(rand(0, 10))
+                ->setAddress('Ukraine, Lviv, Tarasa Shevchenka str., apartment #331');
 
             $this->setReference('specification:buyer:' . ((string) ($i + 1)), $buyer);
 

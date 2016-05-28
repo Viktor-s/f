@@ -6,8 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Furniture\RetailerBundle\Entity\RetailerProfile;
+use Sylius\Bundle\FixturesBundle\DataFixtures\DataFixture;
 
-class LoadRetailerProfileData extends AbstractFixture implements OrderedFixtureInterface
+class LoadRetailerProfileData extends DataFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -20,7 +21,10 @@ class LoadRetailerProfileData extends AbstractFixture implements OrderedFixtureI
             $profile
                 ->setName($profileInfo['name'])
                 ->setPhones($profileInfo['phones'])
-                ->setEmails($profileInfo['emails']);
+                ->setEmails($profileInfo['emails'])
+                ->setCurrentLocale($this->defaultLocale)
+                ->setFallbackLocale($this->defaultLocale)
+                ->translate()->setAddress($profileInfo['address']);
 
             $manager->persist($profile);
             $this->setReference('retailer_profile:' . $key, $profile);
