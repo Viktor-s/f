@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Furniture\FrontendBundle\Repository\PdpIntellectualRootRepository;
 
 class ProductController
 {
@@ -63,6 +64,13 @@ class ProductController
      * @var ProductVariantCreator
      */
     private $productVariantCreator;
+    
+    /**
+     *
+     * @var \Furniture\FrontendBundle\Repository\PdpIntellectualRootRepository
+     */
+    private $pdpIntellectualRootRepository;
+
 
     /**
      * Construct
@@ -84,7 +92,8 @@ class ProductController
         SpecificationItemRepository $specificationItemRepository,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductVariantCreator $productVariantCreator
+        ProductVariantCreator $productVariantCreator,
+        PdpIntellectualRootRepository $pdpIntellectualRootRepository
     )
     {
         $this->twig = $twig;
@@ -95,6 +104,7 @@ class ProductController
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->productVariantCreator = $productVariantCreator;
+        $this->pdpIntellectualRootRepository = $pdpIntellectualRootRepository;
     }
 
     public function products(Request $request, $page)
@@ -323,7 +333,10 @@ class ProductController
             }
         }
 
-        $content = $this->twig->render('FrontendBundle:Product:product.html.twig', [
+        //For support OLD products
+        $view = 'FrontendBundle:Product:product.html.twig';
+        
+        $data = [
             'product'                    => $product,
             'sku_matrix'                 => $skuMatrix,
             'schemeMapping'              => $schemeMapping,
@@ -335,7 +348,15 @@ class ProductController
             'update_specification_item'  => $updateSpecificationItem,
             'quantity'                   => $quantity,
             'factory_retailer_relation'  => $factoryRetailerRelation,
-        ]);
+        ];
+        
+        if($product->getCompositeCollections()){
+            //Current new products
+            $view = 'FrontendBundle:ProductInteligentPDP:product.html.twig';
+            $data['pdpRoot'] = $this->pdpIntellectualRootRepository->findRootForProduct($product);
+        }
+        
+        $content = $this->twig->render( $view, $data);
 
         return new Response($content);
     }

@@ -35,11 +35,14 @@
             {% endfor %}
             </select>
         </div>
-        {% elseif input.forSchemes %}
+        {% elseif input.ForPdpIntellectualCompositeExpression %}
         <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
-            <select id="scheme-selector">
-                {% for scheme in input.schemes %}
-                    <option value="{{scheme.id}}">{{ scheme.name }}</option>
+            <select>
+                {% for child in input.pdpIntellectualCompositeExpression.child if child.isAnd() %}
+                    <option
+                        data-activate-expression="{% for activateChild in child.child %}{{ activateChild.pdpInput.id }}{% endfor %}"
+                        data-activate-input="{% for element in child.elements %}{{ element.id }}{% endfor %}"
+                        value="{{child.id}}">{{ child.appendText }}</option>
                 {% endfor %}
             </select>
         </div>

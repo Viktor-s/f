@@ -25,6 +25,11 @@ class PdpIntellectualRoot
     private $graphJson;
 
     /**
+     * @var array
+     */
+    private $treeJson;
+    
+    /**
      * @var PdpIntellectualCompositeExpression
      */
     private $expression;
@@ -126,6 +131,25 @@ class PdpIntellectualRoot
     public function setGraphJson($graphJson)
     {
         $this->graphJson = $graphJson;
+
+        return $this;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getTreeJson()
+    {
+        return $this->treeJson;
+    }
+
+    /**
+     * @param mixed $graphJson
+     * @return PdpIntellectualRoot
+     */
+    public function setTreeJson($treeJson)
+    {
+        $this->treeJson = $treeJson;
 
         return $this;
     }

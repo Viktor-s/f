@@ -359,6 +359,16 @@ class PdpIntellectualCompositeExpression
 
         return $this;
     }
+    
+    /**
+     * 
+     * check if element on root
+     * 
+     * @return bool
+     */
+    public function isOnRoot(){
+        return !(bool)$this->parent;
+    }
 
     /**
      * Get append text

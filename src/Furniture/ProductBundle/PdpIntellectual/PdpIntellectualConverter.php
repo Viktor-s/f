@@ -35,7 +35,9 @@ class PdpIntellectualConverter
             'type'        => $expression->getType(),
             'appendText'  => $expression->getAppendText(),
             'prependText' => $expression->getPrependText(),
+            'pdpInput'    => $expression->getPdpInput() ? $expression->getPdpInput()->getId() : null,
             'child'       => [],
+            'id'          => $expression->getId(),
             'elements'    => [],
         ];
 

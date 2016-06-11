@@ -1,0 +1,153 @@
+<div data-input-container="popup-select" data-input-id="{{ input.id }}" class="detail-info-entry">
+    {# <a class="button style-12 open-input" data-popup-id="input-popup-{{ input.id }}">{{ input.humanName }}</a> #}
+    <div class="detail-info-entry open-input" style="margin-top: 50px;">
+        <div class="detail-info-entry-title">{{ input.humanName }}</div>
+        <div class="popup-button" data-popup-id="input-popup-{{ input.id }}">
+            <a class="button-content button style-12" data-popup-id="input-popup-{{ input.id }}">Select</a>
+            <a class="pdp-button button open-input hidden" data-popup-id="input-popup-{{ input.id }}">
+                <div class="material-entry selected">{# add hidden class #}
+                    <div class="image">
+                        <img src="" alt="">
+                        <div class="variant-unavailable hidden">
+                            {{ 'frontend.unavailable'|trans }}
+                        </div>
+                    </div>
+                    <div class="caption" style="background: white none repeat scroll 0% 0%;">>Havana - ND Opaque walnut, indian ink coloured Havana - ND Opaque walnut, indian ink coloured </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div id="input-popup-{{ input.id }}" class="overlay-popup agenta-popup">
+        <div class="overflow">
+            <div class="table-view">
+                <div class="cell-view">
+                    <div class="close-layer"></div>
+                    <div class="popup-container">
+                        <h3 class="block-title sticky-popup-title">{{ input.humanName }}</h3>
+                        {%for groupedVariant in input.productPartMaterialsVariantGrouped %}
+                            <div class="accordeon">
+                                <div class="accordeon-title row">
+                                    <div class="col-sm-12">
+                                        <h4>{{ groupedVariant.productPartMaterial.presentation }}</h4>
+                                    </div>
+                                </div>
+                                <div class="accordeon-entry" style="display: block;">
+                                    <div class="article-container style-1 material-selector">
+                                        <div class="row">
+                                            <div class="col-sm-4 sticky-filter" data-sticky_column>
+                                                {% for groupedOptionValues in groupedVariant.productPartMaterial.groupedOptionValues %}
+                                                    <div class="row information-blocks">
+                                                        <div class="col-sm-12">
+                                                            <h4 class="block-title size-2">{{ groupedOptionValues.name }}</h4>
+                                                        </div>
+                                                        {% for gOptionValue in groupedOptionValues.values %}
+                                                            <div class="col-sm-12">
+                                                                <input type="checkbox" id="popup-{{ input.id }}-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" data-option-id="{{ gOptionValue.option.id }}" value="{{ gOptionValue.id }}">
+                                                                <label for="popup-{{ input.id }}-group-{{ gOptionValue.option.id }}-option-{{ gOptionValue.id }}" class="checkbox-entry">{{ gOptionValue.value }}</label>
+                                                            </div>
+                                                        {% endfor %}
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="col-sm-8 popup-material-grid" data-sticky_column>
+                                                {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
+                                                    <div class="material-entry {{ productPartMaterialVariant.available ? 'available' : 'unavailable' }}" data-input-variant="{{ productPartMaterialVariant.id }}" data-available="{{ productPartMaterialVariant.available ? 'true': 'false' }}">
+                                                        <div class="image">
+                                                            {% if productPartMaterialVariant.image %}
+                                                                <img data-src="{{ productPartMaterialVariant.image.path|imagine_filter('s100x100') }}" alt="">
+                                                            {% else %}
+                                                                <img src="/img/100x100.png" alt="">
+                                                            {% endif %}
+                                                            {% if not productPartMaterialVariant.available %}
+                                                                <div class="variant-unavailable">
+                                                                    {{ 'frontend.unavailable'|trans }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="caption">{{ productPartMaterialVariant.name }}</div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div><!-- col-sm-8 -->
+                                        </div><!-- row -->
+                                    </div><!-- article-container -->
+                                </div><!-- accordeon-entry -->
+                            </div><!-- accordeon -->
+
+                        {% endfor %}
+
+                        <div class="close-popup"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function ($) {
+        var groupedMaterialVariants = {
+            'popup': {{ input.id }},
+            'variants': []
+        };
+        var allOptions = [];
+{%for groupedVariant in input.productPartMaterialsVariantGrouped %}
+    {% for productPartMaterialVariant in groupedVariant.productPartMaterialVariants %}
+        var groupedOptionValues = {
+        {% for optionValue in productPartMaterialVariant.values %}
+        {{ optionValue.option.id }}: {{ optionValue.id }},
+        {% endfor %}
+    };
+    allOptions = $.unique($.merge(allOptions, $.map(groupedOptionValues, function(val, i) { return val;})));
+    groupedMaterialVariants['variants'].push({
+        materialVariantId: {{ productPartMaterialVariant.id }},
+        optionValues: groupedOptionValues
+    });
+    {% endfor %}
+{% endfor %}
+    $(document).ready(function () {
+        var popup = $('#input-popup-{{ input.id }}');
+        var filterCheckboxes = popup.find('input:checkbox');
+
+        // Hide empty categories from filter.
+        filterCheckboxes.each(function() {
+            if (0 > $.inArray(parseInt($(this).val(), 10), allOptions)) {
+                $(this).parent().hide();
+            }
+        });
+        popup.find('.sticky-filter .information-blocks').each(function() {
+            if (0 === $(this).find('input:checkbox').parent().filter(':visible').length) {
+                $(this).hide();
+            }
+        });
+
+        // Filter on change.
+        filterCheckboxes.change(function(){
+            var checked = {};
+            filterCheckboxes.filter('input:checked').each(function(){
+                var el = $(this);
+                if(!checked[el.data('option-id')]) checked[el.data('option-id')] = [];
+                checked[el.data('option-id')].push(parseInt(el.prop('value')));
+            });
+
+            groupedMaterialVariants.variants.forEach(function(el, i){
+                for(optionId in checked){
+                    var optionValues = checked[optionId];
+                    //console.log('checked id', optionId);
+                    //console.log('checked values', optionValues);
+                    //console.log('item options', el.optionValues)
+                    //console.log('item & options', el.optionValues[optionId])
+                    //console.log('search result', el.optionValues[optionId], optionValues, $.inArray(el.optionValues[optionId], optionValues));
+                    if( el.optionValues[optionId] && ($.inArray(el.optionValues[optionId], optionValues) >= 0) ){
+                        continue;
+                    }else{
+                        $('[data-input-variant="'+el. materialVariantId+'"]').hide();
+                        return ;
+                    }
+                }
+                $('[data-input-variant="'+el. materialVariantId+'"]').show();
+            });
+        });
+    });
+
+    })(jQuery);
+</script>

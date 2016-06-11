@@ -92,8 +92,10 @@ class ProductPdpIntellectualController extends ResourceController
 
             if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
                 $em->persist($pdpIntellectualRoot);
+                $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($pdpIntellectualRoot);                   
+                $pdpIntellectualRoot->setTreeJson($tree);
                 $em->flush();
-
+                
                 $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
                     'productId' => $product->getId(),
                 ]);
@@ -143,7 +145,7 @@ class ProductPdpIntellectualController extends ResourceController
             $treeData = json_decode($treeData, true);
 
             $this->get('product.pdp_intellectual.creator')->createFromArray($newPdpIntellectual, $treeData);
-
+            
             $validator = $this->get('validator');
             $generator = $this->get('furniture.generator.pdp_product_scheme');
             $generator->setPdpRoot($newPdpIntellectual);
@@ -204,8 +206,13 @@ class ProductPdpIntellectualController extends ResourceController
                 $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
                     $em->remove($pdpIntellectualRoot);
                     $em->persist($newPdpIntellectual);
+                    
+                    $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($newPdpIntellectual);
+                    $newPdpIntellectual->setTreeJson($tree);
                 });
 
+               
+                
                 $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
                     'productId' => $product->getId(),
                 ]);

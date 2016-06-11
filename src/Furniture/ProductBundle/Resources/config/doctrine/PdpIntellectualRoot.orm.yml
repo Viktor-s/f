@@ -16,6 +16,11 @@ Furniture\ProductBundle\Entity\PdpIntellectualRoot:
         graphJson:
             type: json_array
             column: graph_json
+            
+        treeJson:
+            type: json_array
+            column: graph_tree_json
+            nullable: true
 
     oneToOne:
         expression:

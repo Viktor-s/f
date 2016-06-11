@@ -66,3 +66,7 @@ services:
     frontend.repository.user:
         class: Furniture\FrontendBundle\Repository\UserRepository
         arguments: [ @doctrine.orm.default_entity_manager ]
+        
+    frontend.repository.pdp_intellectual_root_repository:
+        class: Furniture\FrontendBundle\Repository\PdpIntellectualRootRepository
+        arguments: [ @doctrine.orm.default_entity_manager ]
