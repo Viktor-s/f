@@ -220,6 +220,9 @@ class ProductController
         $skuMatrix = [];
         $activeVariantMatrix = false;
 
+        
+        $itelPdpRoot = $this->pdpIntellectualRootRepository->findRootForProduct($product);
+        
         if ($product->hasProductVariantsPatterns()) {
             /** @var \Furniture\ProductBundle\Entity\ProductVariantsPattern $pattern */
             foreach ($product->getProductVariantsPatterns() as $pattern) {
@@ -295,9 +298,12 @@ class ProductController
                     $item['options'][$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
                 }
 
-                if ($product->isSchematicProductType()) {
-                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
-                    $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                //If OLD PDP
+                if(!$itelPdpRoot){
+                    if ($product->isSchematicProductType()) {
+                        $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                        $item['options'][$inputId] = $variant->getProductScheme()->getId();
+                    }
                 }
 
                 if ($activeVariant && $variant == $activeVariant) {
@@ -350,10 +356,11 @@ class ProductController
             'factory_retailer_relation'  => $factoryRetailerRelation,
         ];
         
-        if($product->getCompositeCollections()){
-            //Current new products
+        //If new product 
+        if($itelPdpRoot){
+            //Current new PDP
             $view = 'FrontendBundle:ProductInteligentPDP:product.html.twig';
-            $data['pdpRoot'] = $this->pdpIntellectualRootRepository->findRootForProduct($product);
+            $data['pdpRoot'] = $itelPdpRoot;
         }
         
         $content = $this->twig->render( $view, $data);

@@ -116,7 +116,7 @@
                 </div>
             {% endif %}
             <div class="options-selector detail-info-entry">
-                {% for input in product.PdpConfig.inputs %}
+                {% for input in product.PdpConfig.inputs if not input.forSchemes %}
                     {% if input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_DEFAULT_TYPE') %}
                         {% include 'FrontendBundle:ProductInteligentPDP/PdpInputs:default_select.html.twig' with {'input':input} %}
                     {% elseif input.type is constant('\\Furniture\\ProductBundle\\Entity\\ProductPdpInput::SELECT_INLINE_TYPE') %}
@@ -313,11 +313,12 @@
                 ////INTELIGENT PDP
                 var pdpTree = {{ pdpRoot.treeJson|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
                 
-                function getPdpRenderer(pdpTreeRoot){
+                function getPdpRenderer(pdpTreeRoot, pdpDataContainer){
                     
                     var options = {
                         pdpTreeRoot     : pdpTreeRoot,
-                        alreadyMappedEl : {}
+                        alreadyMappedEl : {},
+                        pdpDataContainer: pdpDataContainer
                     };
                     
                     function getInputSelectorById(id){
@@ -342,46 +343,48 @@
                     }
                     
                     var pathWalker = {
-                        path: [],
                         existsIdexes: {},
                         add: function(expression, choice){
                             pdpInput.renderExpression(choice);
-                            
                             //Add to path
-                            this.path.push({
+                            this.existsIdexes[expression.pdpInput] = {
                                 select: expression,
                                 selected: choice
-                            });
-                            this.existsIdexes[expression.pdpInput] = true;
+                            };
+                            $(document).trigger("pdp:change");
                         },
-                        backTo: function(expression, choice){console.log('back to ');
+                        recursiveHideReset: function(expression){
                             var $this = this;
-                            var pathFromEnd = $this.path.reverse();
-                            var spliceIndexes = [];
-                            pathFromEnd.every(function(iterateExpression, i) {
-                                pdpInput.hideExpression(iterateExpression.selected);
-                                if(iterateExpression.select.pdpInput == expression.pdpInput){
-                                    pdpInput.renderExpression(choice);
-                                    pathFromEnd[i].selected = choice;
-                                    return false;
-                                }
-                                
-                                //Remove from path
-                                spliceIndexes.push(i);
-                                
-                                delete $this.existsIdexes[iterateExpression.select.pdpInput];
-                                
+                            
+                            pdpInput.hideExpression($this.existsIdexes[expression.pdpInput].selected);
+                            
+                            $this.existsIdexes[expression.pdpInput].selected.child.every(function(child){
+                                if( $this.exists(child) )
+                                    $this.recursiveHideReset(child);
                                 return true;
                             });
-                            spliceIndexes.forEach(function(index){ pathFromEnd.splice(index, 1) })
-                            this.path = pathFromEnd.reverse();
+                            
+                            delete $this.existsIdexes[expression.pdpInput];
+                            
+                        },
+                        backTo: function(select, selected){
+                            var $this = this;
+                            
+                            
+                            $this.recursiveHideReset(select);
+                            
+                            pdpInput.renderExpression(selected);
+                            $this.existsIdexes[select.pdpInput] = {
+                                select: select,
+                                selected: selected
+                            };
+                            $(document).trigger("pdp:change");
                         },
                         exists: function(expression){
-                            console.log(expression, this.existsIdexes);
                             return this.existsIdexes[expression.pdpInput];
                         }
                     };
-                    
+                    $(document).on("pdp:change", function(){ console.log('on pdp change'); });
                     function progressiveInputMappingExpression(treeEl, id){
                         if(options.alreadyMappedEl[id])
                             return;
@@ -411,6 +414,7 @@
                             $('div[data-input-id]').hide();
                             $('div[data-input-id]').find('select').val(-1);
                             this.renderExpression(options.pdpTreeRoot);
+                            $(document).trigger("pdp:change");
                         },
                         renderExpression: function(expression){
                             expression.elements.forEach(function(e){
@@ -425,6 +429,10 @@
                         hideExpression: function(expression){
                             expression.elements.forEach(function(e){
                                 hideInput(e.inputJqEl);
+                                console.log(options.pdpDataContainer);
+                                var filters = options.pdpDataContainer.getFilters();
+                                delete filters[e.input];
+                                options.pdpDataContainer.setFilters(filters);
                             })
                             expression.child.forEach(function(e){
                                 hideInput(e.inputJqEl);
@@ -434,10 +442,6 @@
                     
                     return pdpInput;
                 }
-                
-                console.log(pdpTree);
-                var pdpRenderer = getPdpRenderer(pdpTree);
-                pdpRenderer.init();
                 
                 {% if product.hasProductVariantsPatterns() %}
                 var pdpInputMapping = {};
@@ -454,16 +458,13 @@
                     't' : 'pp',
                     'i' : {{ input.productPart.id }}
                 };
-                {% elseif input.forSchemes %}
-                pdpInputMapping[{{ input.id }}] = {
-                    't' : 'ps',
-                };
                 {% endif %}
                 {% endfor %}
 
                 var sku_matrix = [{% for p in sku_matrix %}
                     {
                         'id':{{p.pattern.id}},
+                        'schemeId': {{ p.pattern.scheme.id }},
                         'options':{{ p.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
                         'price':{{ p.pattern|pattern_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
                         'factoryCode': {{ p.pattern.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
@@ -477,6 +478,7 @@
                     {
                         'id':{{v.variant.id}},
                         'options':{{ v.options|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }},
+                        'schemeId': {{ v.scheme.id }},
                         'price':{{ v.variant|sku_price|money|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw}},
                         'factoryCode': {{ v.variant.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
                     },{% endfor %} ];
@@ -484,20 +486,20 @@
                 var pdpDataContainer = new variant_data_container(sku_matrix);
                 {% endif %}
 
-
+                var pdpRenderer = getPdpRenderer(pdpTree, pdpDataContainer);
+                pdpRenderer.init();
                 $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': pdpDataContainer });
                 $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
                 $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
 
+                console.log(pdpDataContainer.getFilters());
                 var product_code_show = function() {
                     var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
                     var showEl = $('#factory-code-view');
                     var variants = pdpDataContainer.getFiltered();
                     if ( pdpDataContainer.isFilteredItemFound() ) {
-                        console.log('choiced');
                         showEl.text(variants[0].factoryCode);
                     }else{
-                        console.log('unchoiced');
                         showEl.text(defaultpCode);
                     }
                 };
@@ -559,8 +561,6 @@
                     valueNames: [ 'spec-item' ]
                 };
 
-                var hackerList = new List('add-to-spec-widget', options);
-
                 $('.add-to-specification a').click(function () {
                     var el = $(this);
 
@@ -577,17 +577,16 @@
                             },
                         };
                         var filters = pdpDataContainer.getFilters();
-
-                        for( f in pdpDataContainer.getFiltered()[0].options ){
+                        var filteredItem = pdpDataContainer.getFiltered()[0];
+                        data['choices']['ps'] = filteredItem['schemeId'] ? filteredItem['schemeId'] : null ;
+                        for( f in filtered.options ){
                             if( filters[f] ){
                                 var v = filters[f];
                             }else{
-                                var v = pdpDataContainer.getFiltered()[0].options[f][0];
+                                var v = filteredItem.options[f][0];
                             }
                             var d = {};
-                            if( pdpInputMapping[f]['t'] == 'ps' ){
-                                data['ps'] = v;
-                            }else if( pdpInputMapping[f]['t'] == 'so' ){
+                            if( pdpInputMapping[f]['t'] == 'so' ){
                                 d['so'] = pdpInputMapping[f]['i'];
                                 d['sov'] = v;
                                 data['choices'][ pdpInputMapping[f]['t'] ].push( d );
@@ -596,6 +595,9 @@
                                 d['ppv'] = v;
                                 data['choices'][ pdpInputMapping[f]['t'] ].push( d );
                             }
+                            
+                            
+                            
                         }
                         $.ajax({
                             url: '{{ path('product_api_create_by_pattern_and_parameters') }}',

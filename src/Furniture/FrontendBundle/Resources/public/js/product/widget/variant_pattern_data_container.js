@@ -22,6 +22,7 @@ var variant_pattern_data_container = function (patterns) {
         },
         
         setFilters: function (filters) {
+            console.log(filters);
             options.filtered = [];
             options.filters = filters;            
             options.patterns.forEach(function (el) {

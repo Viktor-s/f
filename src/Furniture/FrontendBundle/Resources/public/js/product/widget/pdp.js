@@ -185,14 +185,17 @@ $.widget('furniture.pdp_popup_select', {
                 }, 500);
             }
         });
-
-         // Click on material if it is only one in popup
-        if (element.is(':visible')) {
-            var popupMaterials = element.find('.material-entry[data-input-variant]');
-            if (popupMaterials.length == 1) {
-                $(popupMaterials).trigger('click');
+         
+        $(document).on('pdp:change', function(event){
+            if (element.is(':visible')) {
+                var popupMaterials = element.find('.material-entry[data-input-variant]');
+                if (popupMaterials.length == 1) {
+                    $(popupMaterials).trigger('click');
+                }
+            }else{
+                
             }
-        }
+        })
          
         $(document).on('filter:update', function (event) {
             var selectInput = element.data('input-id');
