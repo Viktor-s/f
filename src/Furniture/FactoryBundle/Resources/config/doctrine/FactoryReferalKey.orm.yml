@@ -1,0 +1,41 @@
+Furniture\FactoryBundle\Entity\FactoryReferalKey:
+    type: entity
+    table: factory_referal_key
+    repositoryClass: Furniture\FactoryBundle\Entity\Repository\FactoryReferalKeyRepository
+    
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+
+    fields:
+        name:
+            type: string
+            nullable: false
+        
+        key:
+            type: string
+            nullable: false
+            
+        createdAt:
+            type: datetime
+            nullable: true
+            name: created_at
+
+        enabled:
+            type: boolean
+            nullable: false
+            options:
+                default: false
+                
+    manyToOne:
+        factory:
+            targetEntity: Furniture\FactoryBundle\Entity\Factory
+            joinColumn:
+                name: factory_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

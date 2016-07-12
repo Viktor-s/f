@@ -87,3 +87,45 @@ furniture_backend_factory_user_relation_delete:
             redirect: 
                 route: furniture_backend_factory_user_relation_index
                 parameters: { id: $fid }
+                
+furniture_backend_factory_referal_key_index:
+    path: /{fid}/referal
+    methods: [ GET ]
+    defaults:
+        _controller: Furniture.controller.factory_referal_key:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryReferalKey:index.html.twig
+            criteria: { factory: $fid }
+ 
+furniture_backend_factory_referal_key_create:
+    path: /{fid}/referal/create
+    methods: [ GET, POST ]
+    defaults:
+        _controller: Furniture.controller.factory_referal_key:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryReferalKey:create.html.twig
+            criteria: { factory: $fid }
+                      
+            
+furniture_backend_factory_referal_key_update:
+    path: /{fid}/referal/{id}
+    methods: [ GET, PUT ]
+    defaults:
+        _controller: Furniture.controller.factory_referal_key:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/FactoryReferalKey:update.html.twig
+            form: Furniture\FactoryBundle\Form\Type\FactoryReferalKeyType
+            redirect: 
+                route: furniture_backend_factory_referal_key_index
+                parameters: {'fid': $fid}
+                
+furniture_backend_factory_referal_key_delete:
+    path: /{fid}/referal/{id}
+    methods: [ DELETE ]
+    defaults:
+        _controller: Furniture.controller.factory_referal_key:deleteAction
+        _sylius:
+            template: SyliusWebBundle:Backend/Misc:delete.html.twig
+            redirect: 
+                route: furniture_backend_factory_referal_key_index
+                parameters: {'fid': $fid}

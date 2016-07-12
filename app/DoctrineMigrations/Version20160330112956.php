@@ -94,9 +94,10 @@ class Version20160330112956 extends AbstractMigration implements ContainerAwareI
 
         $roleRepository = $em->getRepository(Role::class);
         $administrationRole = $roleRepository->findOneBy(['code' => 'administrator']);
-        $administrationRole->addPermission($managePermission);
-        $em->persist($administrationRole);
-
+        if($administrationRole){
+            $administrationRole->addPermission($managePermission);
+            $em->persist($administrationRole);
+        }
         $em->flush();
 
     }

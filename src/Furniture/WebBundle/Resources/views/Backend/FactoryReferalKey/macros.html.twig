@@ -1,0 +1,44 @@
+{% macro list(factoryReferallKeys) %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% if factoryReferallKeys|length > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ sylius_resource_sort('name', 'sylius.product_attribute.name'|trans) }}</th>
+                <th>Enabled</th>
+                <th>Url</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for factoryReferallKey in factoryReferallKeys %}
+            <tr id="{{ factoryReferallKey.id }}">
+                <td>{{ factoryReferallKey.name }}</td>
+                <td class="text-center">
+                    <i class="glyphicon glyphicon-{{ factoryReferallKey.enabled ? 'ok' : 'remove' }}"></i>
+                </td>
+                <td>
+                    <a href="{{ path('security_register') }}?r={{factoryReferallKey.key}}">{{ factoryReferallKey.key }}</a>
+                </td>
+                <td>
+                    {{ factoryReferallKey.createdAt | date() }}
+                </td>
+                <td>
+                    <div class="pull-right">
+                    {{ buttons.edit(path('furniture_backend_factory_referal_key_update', {'fid':app.request.get('fid'), 'id': factoryReferallKey.id})) }}
+                    {{ buttons.delete(path('furniture_backend_factory_referal_key_delete', {'fid':app.request.get('fid'), 'id': factoryReferallKey.id})) }}
+                   </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+{{ alerts.info('sylius.product_attribute.no_results'|trans) }}
+{% endif %}
+
+{% endmacro %}

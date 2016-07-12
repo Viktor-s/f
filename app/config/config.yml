@@ -232,7 +232,14 @@ sylius_resource:
                 translation:
                     model: Furniture\FactoryBundle\Entity\FactoryTranslation
                     mapping: ~
-
+                    
+        furniture.factory_referal_key:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\FactoryBundle\Entity\FactoryReferalKey
+                repository: Furniture\FactoryBundle\Entity\Repository\FactoryReferalKeyRepository
+                controller: Furniture\WebBundle\Controller\FactoryReferalKeyController
+                
         furniture.factory_contact:
             driver: doctrine/orm
             classes:

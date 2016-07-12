@@ -1,0 +1,31 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+{% import 'SyliusWebBundle:Backend/Macros:misc.html.twig' as misc %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>{{ 'sylius.breadcrumb.assortment'|trans }}</li>
+        <li><a href="{{ path('furniture_backend_factory_index') }}">Factory</a></li>
+        <li>{{ factory.name }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="pull-left">Factory {{ factory.name }}</h1>
+
+        <div class="actions-menu">
+            {{ buttons.edit(path('furniture_backend_factory_update', {id: factory.id})) }}
+
+            {% if is_factory_can_hard_remove(factory) %}
+                {{ buttons.delete(path('furniture_backend_factory_delete', {id: factory.id})) }}
+            {% endif %}
+
+            {{ buttons.manage(path('furniture_backend_factory_user_relation_index', {id: factory.id}), 'Manage user relations') }}
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+{% endblock %}

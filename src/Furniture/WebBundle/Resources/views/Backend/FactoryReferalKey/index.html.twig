@@ -1,0 +1,29 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% from 'SyliusWebBundle:Backend/Macros:misc.html.twig' import pagination %}
+{% from 'SyliusWebBundle:Backend/FactoryReferalKey:macros.html.twig' import list %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factory_index') }}" >factory list</a></li>
+    <li>Factory url list</li>
+</ol>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="actions-menu">
+        {{ buttons.create(path('furniture_backend_factory_referal_key_create', {'fid': app.request.get('fid') }), 'Create referal url') }}
+    </div>
+    <h1><i class="glyphicon glyphicon-list-alt"></i> Referal urls</h1>
+</div>
+
+{{ pagination(factory_referal_keys) }}
+{{ list(factory_referal_keys) }}
+{{ pagination(factory_referal_keys) }}
+
+{% endblock %}

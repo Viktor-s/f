@@ -9,6 +9,7 @@ use Furniture\FrontendBundle\Repository\Query\FactoryQuery;
 use Furniture\ProductBundle\Entity\Category;
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Entity\Style;
+use Furniture\FactoryBundle\Entity\FactoryReferalKey;
 
 class FactoryRepository
 {
@@ -194,4 +195,26 @@ class FactoryRepository
 
         return $qb;
     }
+    
+    /**
+     * 
+     * @param string $refKey
+     * @return Factory
+     */
+    public function getByActiveReferalKey($refKey){
+        
+        $refKey = $this->em->createQueryBuilder()
+            ->from(FactoryReferalKey::class, 'fk')
+            ->select('fk')
+            ->andWhere('fk.enabled = true')
+            ->andWhere('fk.key = :rkey')
+            ->setParameter('rkey', $refKey)
+            ->getQuery()
+            ->getOneOrNullResult();
+        if($refKey)
+            return $refKey->getFactory();
+        else
+            return null;
+    }
+    
 }

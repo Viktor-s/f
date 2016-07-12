@@ -169,6 +169,12 @@ sylius_rbac:
         furniture.factory.update: update factory data
         furniture.factory.delete: delete factory data
         
+        furniture.manage.factory_referal_keys: manage referal keys
+        furniture.factory_referal_key.index: show list of keys
+        furniture.factory_referal_key.update: update key
+        furniture.factory_referal_key.delete: delete key
+        furniture.factory_referal_key.create: create key
+        
         furniture.manage.retailer_profile: manage retailer profiles
         furniture.retailer_profile.index: show retailers profiles
         furniture.retailer_profile.create: create new retailer profile
@@ -225,6 +231,12 @@ sylius_rbac:
             - furniture.factory.create
             - furniture.factory.update
             - furniture.factory.delete
+            
+        furniture.manage.factory_referal_keys:
+            - furniture.factory_referal_key.index
+            - furniture.factory_referal_key.update
+            - furniture.factory_referal_key.delete
+            - furniture.factory_referal_key.create
             
         furniture.manage.retailer_profile:
             - furniture.retailer_profile.index
@@ -393,6 +405,7 @@ sylius_rbac:
                 - furniture.manage.product_styles
                 - furniture.manage.product_spaces
                 - furniture.manage.factories
+                - furniture.manage.factory_referal_keys
                 - furniture.manage.factories.user_relations
                 - furniture.manage.factories_retialers_relations
                 - furniture.manage.specifications

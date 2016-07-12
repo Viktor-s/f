@@ -1,0 +1,18 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+{% import "A2lixTranslationFormBundle::macros.html.twig" as a2lixTranslations %}
+{% set mainFields = ['description', 'shortDescription', 'address', 'collectionContent'] %}
+{% set workInfoFields = ['workInfoContent', 'description', 'bankDetails', 'productTime', 'deliveryAndPackaging', 'vacations'] %}
+<div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#main" data-toggle="tab">Main</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="main">
+            {{ form_row(form.name, {'attr': {'class': 'input-lg'}}) }}
+            {{ form_row(form.enabled, {'attr': {'class': 'input-lg'}}) }}
+        </div>
+    </div>
+</div>
+
+{{ form_rest(form) }}

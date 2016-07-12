@@ -46,6 +46,8 @@ services:
             - '@security.csrf.token_manager'
             - '@form.factory'
             - '@frontend.repository.user'
+            - '@frontend.repository.factory'
+            - '@frontend.repository.factory_retailer_relation'
             - '@translator'
             - '@user.password_resetter'
             - '@router'

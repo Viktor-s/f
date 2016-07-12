@@ -23,6 +23,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Furniture\FrontendBundle\Repository\FactoryRepository;
+use Furniture\FactoryBundle\Entity\FactoryRetailerRelation;
+use Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository;
 
 
 class SecurityController
@@ -58,6 +61,18 @@ class SecurityController
     private $userRepository;
 
     /**
+     *
+     * @var Furniture\FrontendBundle\Repository\FactoryRepository
+     */
+    private $factoryRepository;
+    
+    /**
+     *
+     * @var \Furniture\FrontendBundle\Repository\FactoryRetailerRelationRepository
+     */
+    private $factoryRetailerRelationRepository;
+    
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -91,6 +106,8 @@ class SecurityController
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param FormFactoryInterface $formFactory
      * @param UserRepository $userRepository
+     * @param FactoryRepository $factoryRepository
+     * @param FactoryRetailerRelationRepository $factoryRetailerRelationRepository
      * @param TranslatorInterface $translator
      * @param PasswordResetter $passwordResetter
      * @param UrlGeneratorInterface $urlGenerator
@@ -103,6 +120,8 @@ class SecurityController
         CsrfTokenManagerInterface $csrfTokenManager,
         FormFactoryInterface $formFactory,
         UserRepository $userRepository,
+        FactoryRepository $factoryRepository,
+        FactoryRetailerRelationRepository $factoryRetailerRelationRepository,
         TranslatorInterface $translator,
         PasswordResetter $passwordResetter,
         UrlGeneratorInterface $urlGenerator,
@@ -121,6 +140,8 @@ class SecurityController
         $this->urlGenerator = $urlGenerator;
         $this->passwordUpdater = $passwordUpdater;
         $this->emailVerifier = $emailVerifier;
+        $this->factoryRepository = $factoryRepository;
+        $this->factoryRetailerRelationRepository = $factoryRetailerRelationRepository;
     }
 
     /**
@@ -176,10 +197,40 @@ class SecurityController
     {
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
+        
+        $factoryForNewPartner = false;
+
+        if($refKey = $request->query->get('r')){
+            $factoryForNewPartner = $this->factoryRepository->getByActiveReferalKey($refKey);
+        }
+        
         if ($user instanceof User) {
+            
+            if($factoryForNewPartner){
+                if(!$this->factoryRetailerRelationRepository
+                    ->findRelationBetweenFactoryAndRetailer($factoryForNewPartner, $user->getRetailerUserProfile()->getRetailerProfile())){
+                    $relation = new FactoryRetailerRelation();
+                        $relation->setActive(true)
+                        ->setFactory($factoryForNewPartner)
+                        ->setRetailer($user->getRetailerUserProfile()->getRetailerProfile())
+                        ->setAccessProducts(true)
+                        ->setAccessProductsPrices(true)
+                        ->setDiscount(0)
+                        ->setFactoryAccept(true)
+                        ->setRetailerAccept(true)
+                                ;
+                    $this->em->persist($relation);
+                    $this->em->flush();
+                }
+                return new RedirectResponse($this->urlGenerator
+                        ->generate('retailer_profile_partners_general', [
+                            'factory' => $factoryForNewPartner->getId()
+                        ]));
+            }
+            
             return new RedirectResponse($this->urlGenerator->generate('homepage_index'));
         }
-
+        
         $customer = new Customer();
         $form = $this->formFactory->create(new CustomerType(), $customer);
 
@@ -192,8 +243,22 @@ class SecurityController
                 $user->setPlainPassword($pass);
 
                 $this->em->persist($customer);
-                $this->em->flush();
 
+                if($factoryForNewPartner){
+                    $relation = new FactoryRetailerRelation();
+                    $relation->setActive(true)
+                    ->setFactory($factoryForNewPartner)
+                    ->setRetailer($customer->getUser()->getRetailerUserProfile()->getRetailerProfile())
+                    ->setAccessProducts(true)
+                    ->setAccessProductsPrices(true)
+                    ->setDiscount(0)
+                    ->setFactoryAccept(true)
+                    ->setRetailerAccept(true)
+                            ;
+                    $this->em->persist($relation);
+                }
+                $this->em->flush();
+                
                 $session = $request->getSession();
                 $session->set('register-email-verify', $user->getUsernameCanonical());
 
@@ -205,6 +270,7 @@ class SecurityController
 
         $content = $this->twig->render('FrontendBundle:Security:register.html.twig', [
             'form' => $form->createView(),
+            'factory' => $factoryForNewPartner,
         ]);
 
         return new Response($content);

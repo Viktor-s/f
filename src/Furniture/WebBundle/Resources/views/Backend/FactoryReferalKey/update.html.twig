@@ -1,0 +1,25 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% from 'SyliusResourceBundle:Macros:actions.html.twig' import update %}
+
+{% block topbar %}
+<ol class="breadcrumb">
+    <li><a href="{{ path('furniture_backend_factory_index') }}">Factory</a></li>
+    <li>{{ factory_referal_key.factory.name }}</li>
+    <li>Ref key</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="glyphicon glyphicon-pencil"></i> Update</h1>
+</div>
+
+{{ form_errors(form) }}
+
+<form action="{{ path('furniture_backend_factory_referal_key_update', {'fid':app.request.get('fid'), 'id': factory_referal_key.id}) }}" method="post" class="form-horizontal" {{ form_enctype(form) }} novalidate>
+    <input type="hidden" name="_method" value="PUT">
+    {% include 'SyliusWebBundle:Backend/FactoryReferalKey:_form.html.twig' %}
+    {{ update() }}
+</form>
+{% endblock %}
