@@ -224,7 +224,8 @@ class SecurityController
                 }
                 return new RedirectResponse($this->urlGenerator
                         ->generate('retailer_profile_partners_general', [
-                            'factory' => $factoryForNewPartner->getId()
+                            'factory' => $factoryForNewPartner->getId(),
+                            '_locale' => 'en',
                         ]));
             }
             
