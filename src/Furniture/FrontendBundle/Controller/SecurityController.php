@@ -62,7 +62,7 @@ class SecurityController
 
     /**
      *
-     * @var Furniture\FrontendBundle\Repository\FactoryRepository
+     * @var FactoryRepository
      */
     private $factoryRepository;
     
