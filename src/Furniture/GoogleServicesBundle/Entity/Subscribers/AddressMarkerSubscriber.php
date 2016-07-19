@@ -72,7 +72,7 @@ class AddressMarkerSubscriber implements EventSubscriber
             $address = $entity->getAddress();
             $uow = $em->getUnitOfWork();
             
-            if(!empty($address) && $geoData = $this->geocoding->getGeocode($address)){
+            if($geoData = $this->geocoding->getGeocode($address)){
                 $location = $geoData[0]['geometry']['location'];
                 $entity->setLat($location['lat']);
                 $entity->setLng($location['lng']);
