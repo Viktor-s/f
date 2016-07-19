@@ -53,6 +53,10 @@ class Geocoding
      */
     public function getGeocode($address)
     {
+        
+        if(empty($address))
+            return null;
+        
         $data = file_get_contents($this->getUrlByAddress($address));
 
         if ($data = json_decode($data, true)) {
