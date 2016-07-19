@@ -466,14 +466,15 @@ label {
 .wizard > .steps a:active
 {
     display: block;
+    border: 2px #eee solid;
     width: auto;
     margin: 0 0.5em 0.5em;
     padding: 1em 1em;
     text-decoration: none;
 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
 }
 
 .wizard > .steps .disabled a,
@@ -489,8 +490,9 @@ label {
 .wizard > .steps .current a:hover,
 .wizard > .steps .current a:active
 {
-    background: #2184be;
-    color: #fff;
+    background: #fff;
+    border-color: #ca1515;
+    color: #262626;
     cursor: default;
 }
 
@@ -498,7 +500,8 @@ label {
 .wizard > .steps .done a:hover,
 .wizard > .steps .done a:active
 {
-    background: #9dc8e2;
+    background: #ca1515;
+    border-color: #ca1515;
     color: #fff;
 }
 
@@ -507,6 +510,7 @@ label {
 .wizard > .steps .error a:active
 {
     background: #ff3111;
+    border-color: #ff3111;
     color: #fff;
 }
 
@@ -555,7 +559,16 @@ label {
 
 .wizard > .content > .body input
 {
-    border: 1px solid #ccc;
+    width: 100%;
+    border: 1px #e6e6e6 solid;
+    font-size: 13px;
+    line-height: 43px;
+    color: #313131;
+    padding: 0 20px;
+    font-weight: 400;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
 }
 
 .wizard > .content > .body input.error
@@ -574,7 +587,9 @@ label {
 {
     color: #8a1f11;
     display: inline-block;
-    margin-left: 1.5em;
+    margin-left: 0;
+    margin-bottom: 0;
+    padding-top: 0;
 }
 
 .wizard > .actions
@@ -610,26 +625,40 @@ label {
 }
 
 .wizard > .actions a,
-.wizard > .actions a:hover,
 .wizard > .actions a:active
 {
-    background: #2184be;
-    color: #fff;
-    display: block;
-    padding: 0.5em 1em;
-    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 12px;
+    cursor: pointer;
+    min-width: 127px;
+    position: relative;
 
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 11px 40px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+    border: 2px #ca1515 solid;
+    letter-spacing: 2px;
+    background: #ca1515;
+}
+
+.wizard > .actions a:hover {
+    color: #262626;
+    border-color: #ca1515;
+    background: #fff;
 }
 
 .wizard > .actions .disabled a,
 .wizard > .actions .disabled a:hover,
 .wizard > .actions .disabled a:active
 {
+    color: #262626;
+    border-color: #eee;
     background: #eee;
-    color: #aaa;
+    pointer-events: none;
 }
 
 .wizard > .loading
@@ -739,4 +768,46 @@ label {
 .tabcontrol > .content > .body ul > li
 {
     display: list-item;
+}
+
+.radio label {
+    font-size: 13px;
+    line-height: 14px;
+    color: #313131;
+    font-weight: 600;
+}
+
+.checkbox-entry:before {
+    content: "";
+    cursor: pointer;
+    display: inline-block;
+    border: 1px #d9d9d9 solid;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    vertical-align: middle;
+    color: #333232;
+    margin-right: 7px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
+input:checked + .checkbox-entry:before {
+    background: #ca1515;
+}
+
+.register input[type=radio] {
+    display: none;
+}
+
+.register input[type=radio] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 4px 0 0;
+    line-height: normal;
 }

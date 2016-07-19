@@ -2,40 +2,42 @@
 
 {% block content %}
     {% form_theme form 'FrontendBundle:Form:base_horizontal.html.twig' %}
-    <div class="col-sm-12">
-        {{ form_start(form, {'attr': {'id': 'registration-form', 'class': 'registration-form'}}) }}
-        <div>
-            <h2>User type</h2>
-            <section>
-                {{ form_row(form.userType) }}
-            </section>
+    <div class="col-sm-12 information-entry register">
+        <div class="login-box">
+            {{ form_start(form, {'attr': {'id': 'registration-form', 'class': 'registration-form'}}) }}
+            <div>
+                <h2>User type</h2>
+                <section>
+                    {{ form_row(form.userType) }}
+                </section>
 
-            <h2>Main information</h2>
-            <section>
-            {% if form.user.retailerUserProfile.retailerProfile  is defined %}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.name ) }}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.address ) }}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.phones ) }}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.emails ) }}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.website ) }}
-                {{ form_row(form.user.retailerUserProfile.retailerProfile.logoImage ) }}
-            {% endif %}
-            </section>
+                <h2>Main information</h2>
+                <section>
+                {% if form.user.retailerUserProfile.retailerProfile  is defined %}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.name ) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.address ) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.phones ) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.emails ) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.website ) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerProfile.logoImage ) }}
+                {% endif %}
+                </section>
 
-            <h2>Personal information</h2>
-            <section>
-                {{ form_row(form.email) }}
-                {{ form_row(form.firstName) }}
-                {{ form_row(form.lastName) }}
-            {% if form.user.retailerUserProfile is defined %}
-                {{ form_row(form.user.retailerUserProfile.position) }}
-                {{ form_row(form.user.retailerUserProfile.phones) }}
-                {{ form_row(form.user.retailerUserProfile.retailerMode) }}
-            {% endif %}
-                {{ form_rest(form) }}
-            </section>
+                <h2>Personal information</h2>
+                <section>
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.firstName) }}
+                    {{ form_row(form.lastName) }}
+                {% if form.user.retailerUserProfile is defined %}
+                    {{ form_row(form.user.retailerUserProfile.position) }}
+                    {{ form_row(form.user.retailerUserProfile.phones) }}
+                    {{ form_row(form.user.retailerUserProfile.retailerMode) }}
+                {% endif %}
+                    {{ form_rest(form) }}
+                </section>
+            </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
     </div>
 {% endblock %}
 
@@ -67,7 +69,8 @@
             });
 
             form.validate({
-                errorPlacement: function errorPlacement(error, element) { element.parents('.form-group').before(error); },
+                errorPlacement: function errorPlacement(error, element) { element.parents('.form-group').find('.form-control, #sylius_customer_userType').after(error); },
+                ignore: ":disabled,:hidden:not('[name=\"sylius_customer[userType]\"]')",
                 rules: {
                     'sylius_customer[userType]': 'required',
                     'sylius_customer[user][retailerUserProfile][retailerProfile][name]': {
@@ -96,7 +99,7 @@
                 transitionEffect: "slideLeft",
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
-                    console.log(event, currentIndex, newIndex)
+//                    console.log(event, currentIndex, newIndex);
                     // Allways allow previous action even if the current form is not valid!
                     if (currentIndex > newIndex)
                     {
@@ -148,7 +151,7 @@
                         form.find(".body:eq(" + newIndex + ") label.error").remove();
                         form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
                     }
-                    form.validate().settings.ignore = ":disabled,:hidden";
+
                     return form.valid();
                 },
                 onFinishing: function (event, currentIndex)

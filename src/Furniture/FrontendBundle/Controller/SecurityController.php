@@ -62,7 +62,7 @@ class SecurityController
 
     /**
      *
-     * @var Furniture\FrontendBundle\Repository\FactoryRepository
+     * @var FactoryRepository
      */
     private $factoryRepository;
     
@@ -713,6 +713,8 @@ class SecurityController
 
         $session = $request->getSession();
         $session->set('email-verify', $user->getUsernameCanonical());
+        $session->save();
+
         $url = $this->urlGenerator->generate('security_verify_success');
 
         return new RedirectResponse($url);
@@ -730,7 +732,6 @@ class SecurityController
         $formView = null;
         $errorMessages = [];
         $session = $request->getSession();
-
         if ($session->has('email-verify')) {
             $userName = $session->get('email-verify');
             $user = $this->userRepository->findByUsername($userName);
@@ -754,9 +755,8 @@ class SecurityController
 
                             return $this->resetPasswordSuccessfully($request);
                         }
-
-                        $formView = $form->createView();
                     }
+                    $formView = $form->createView();
                 } else {
                     $errorMessages[] = $this->translator->trans('frontend.messages.errors.account_disabled_contact_support');
                 }
