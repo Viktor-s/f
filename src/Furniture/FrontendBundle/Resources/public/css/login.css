@@ -490,10 +490,17 @@ label {
 .wizard > .steps .current a:hover,
 .wizard > .steps .current a:active
 {
+    background: #ca1515;
+    border-color: #ca1515;
+    color: #fff;
+}
+
+.wizard > .steps .current a:hover,
+.wizard > .steps .current a:active
+{
     background: #fff;
     border-color: #ca1515;
     color: #262626;
-    cursor: default;
 }
 
 .wizard > .steps .done a,
@@ -503,6 +510,7 @@ label {
     background: #ca1515;
     border-color: #ca1515;
     color: #fff;
+    opacity: .5;
 }
 
 .wizard > .steps .error a,
