@@ -163,19 +163,19 @@ class Category extends AbstractTranslatable
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(){
+        return $this->translate() ? $this->translate()->getName() : ''; 
+    }
+    
+    /**
      * Implement __toString
      *
      * @return string
      */
     public function __toString()
     {
-        /** @var CategoryTranslation $translation */
-        $translation = $this->translate();
-
-        if ($translation) {
-            return $translation->getName() ?: '';
-        }
-
-        return '';
+        return (string)$this->getName();
     }
 }

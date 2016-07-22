@@ -153,19 +153,20 @@ class Space extends AbstractTranslatable
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(){
+        return $this->translate() ? $this->translate()->getName() : ''; 
+    }
+
+
+    /**
      * Implement __toString
      *
      * @return string
      */
     public function __toString()
     {
-        /** @var SpaceTranslation $translate */
-        $translate = $this->translate();
-
-        if ($translate) {
-            return $translate->getName() ?: '';
-        }
-
-        return '';
+        return (string)$this->getName();
     }
 }
