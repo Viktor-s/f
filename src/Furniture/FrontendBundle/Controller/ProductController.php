@@ -232,8 +232,13 @@ class ProductController
                 ];
 
                 if ($product->isSchematicProductType()) {
-                    $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
-                    $item['options'][$inputId] = [$pattern->getScheme()->getId()];
+                    //OLD PRODUCTS STYLE
+                    if(!$itelPdpRoot){
+                        $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
+                        $item['options'][$inputId] = [$pattern->getScheme()->getId()];
+                    }else{
+                        
+                    }
                 }
 
                 foreach ($pattern->getPartPatternVariantSelections() as $patternVariantSelection) {

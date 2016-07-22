@@ -96,6 +96,7 @@ class PatternProductCreatorController
         }
 
         // Load pattern
+        /* @var $pattern \Furniture\ProductBundle\Entity\ProductVariantsPattern */
         $pattern = $this->em->find(ProductVariantsPattern::class, $patternId);
 
         if (!$pattern) {
@@ -109,20 +110,24 @@ class PatternProductCreatorController
         $scheme = null;
 
         // We not check by "has", because we can send empty data
-        if ($data->get('ps')) {
-            $schemeId = $data->getInt('ps');
+        if($pattern->getProduct()->isSchematicProductType()){
+            if ($data->get('ps')) {
+                $schemeId = $data->getInt('ps');
 
-            if (!$schemeId) {
-                throw new HttpException(400, 'Invalid "ps" parameter.');
-            }
+                if (!$schemeId) {
+                    throw new HttpException(400, 'Invalid "ps" parameter.');
+                }
 
-            $scheme = $this->em->find(ProductScheme::class, $schemeId);
+                $scheme = $this->em->find(ProductScheme::class, $schemeId);
 
-            if (!$scheme) {
-                throw new NotFoundHttpException(sprintf(
-                    'Not found product scheme with identifier "%s".',
-                    $schemeId
-                ));
+                if (!$scheme) {
+                    throw new NotFoundHttpException(sprintf(
+                        'Not found product scheme with identifier "%s".',
+                        $schemeId
+                    ));
+                }
+            }else{
+                throw new NotFoundHttpException('No schema ID parameter found for schematic product!');
             }
         }
 

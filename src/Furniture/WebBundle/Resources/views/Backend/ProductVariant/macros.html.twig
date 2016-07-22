@@ -47,6 +47,10 @@
 
                 <td>
                     <ul>
+                        {% if variant.productScheme %}
+                            <li><strong>Scheme</strong>:{{ variant.productScheme.name }}</li>
+                        {% endif %}    
+                        
                         {% for option in variant.options %}
                             <li><strong>{{ option.name }}</strong>: {{ option.value }}</li>
                         {% endfor %}
