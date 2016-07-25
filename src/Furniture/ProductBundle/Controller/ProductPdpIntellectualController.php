@@ -4,7 +4,11 @@ namespace Furniture\ProductBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
+use Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression;
+use Furniture\ProductBundle\Entity\PdpIntellectualElement;
+
 use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
 use Furniture\ProductBundle\Generator\PdpIntelligentSchemesGenerator;
@@ -50,6 +54,42 @@ class ProductPdpIntellectualController extends ResourceController
         return $this->handleView($view);
     }
 
+    private function cacheElementsPdpPath($generator){
+       $paths = $generator->getPathToElements();
+       $cachedStructure = [];
+       foreach($paths as $path){
+           $pathStructure = [];
+           foreach($path as $item){
+               echo $item->getId().':'.get_class($item).'<br/>';
+               if( $item instanceof PdpIntellectualRoot){
+                   $pathStructure[] = [
+                       'type' => 'root',
+                       'id'   => $item->getId()
+                   ];
+               }elseif($item instanceof  PdpIntellectualCompositeExpression){
+                   $pathStructure[] = [
+                       'type'  => $item->getType(),
+                       'id'    => $item->getId(),
+                       'input_id' => $item->getPdpInput() ? $item->getPdpInput()->getId() : null,
+                       'text'  => $item->getAppendText()
+                   ];
+               }elseif($item instanceof  PdpIntellectualElement){
+                   $pathStructure[] = [
+                       'type'     => 'element',
+                       'id'       => $item->getId(),
+                       'input_id' => $item->getInput()->getId(),
+                       'text'     => $item->getInput()->getHumanName()
+                   ];
+                   $cachedStructure[$item->getInput()->getId()] = $pathStructure;
+               }
+           }
+       }
+       
+       $pdpInput = $generator->getPdpRoot();
+       $pdpInput->setTreePathForInputsJson($cachedStructure);
+       
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -96,6 +136,8 @@ class ProductPdpIntellectualController extends ResourceController
                 $pdpIntellectualRoot->setTreeJson($tree);
                 $em->flush();
                 
+                $this->cacheElementsPdpPath($generator);
+                $em->flush();
                 $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
                     'productId' => $product->getId(),
                 ]);
@@ -203,15 +245,14 @@ class ProductPdpIntellectualController extends ResourceController
 
             if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
                 // We use transactional because we must remove and add new element.
-                $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em) {
+                $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em, $generator) {
                     $em->remove($pdpIntellectualRoot);
                     $em->persist($newPdpIntellectual);
                     
                     $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($newPdpIntellectual);
                     $newPdpIntellectual->setTreeJson($tree);
+                    $this->cacheElementsPdpPath($generator);
                 });
-
-               
                 
                 $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
                     'productId' => $product->getId(),

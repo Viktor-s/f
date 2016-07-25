@@ -29,6 +29,11 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
     private $schemesData;
 
     /**
+     * @var Collection
+     */
+    private $pathToElements;
+    
+    /**
      * @var PdpIntellectualRoot
      */
     private $pdpRoot;
@@ -41,7 +46,35 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
         $this->levels = new ArrayCollection();
         $this->schemes = new ArrayCollection();
         $this->schemesData = new ArrayCollection();
+        $this->pathToElements = new ArrayCollection();
     }
+
+    /**
+     * 
+     * @param PdpIntellectualElement $element
+     */
+    private function addPathToElement(PdpIntellectualElement $element){
+        
+        $walk = function(PdpIntellectualCompositeExpression $e, &$path)use(&$walk){
+            $path[] = $e;
+            /* @var $e PdpIntellectualCompositeExpression */
+            if($e->getParent()){
+                $walk($e->getParent(), $path);
+            }else{
+                $path[] = $this->pdpRoot;
+            }
+        };
+        
+        $path = [$element];
+        
+        $walk($element->getExpression(), $path );
+        $this->pathToElements->add(array_reverse($path));
+    }
+    
+    public function getPathToElements(){
+        return $this->pathToElements;
+    }
+
 
     /**
      *
@@ -56,19 +89,21 @@ class PdpIntelligentSchemesGenerator extends ContainerAware
             $scheme->setProduct($this->pdpRoot->getProduct());
             $scheme->setCurrentLocale($localeProvider->getDefaultLocale());
             $scheme->setFallbackLocale($localeProvider->getDefaultLocale());
-            /** @var Collection $collection */
+            /* @var $collection \Doctrine\Common\Collections\Collection  */
             $collection->forAll(function ($key, $expressions) use ($scheme) {
-                /** @var COllection $expressions */
+                /* @var $expressions \Doctrine\Common\Collections\Collection */
                 $expressions->forAll(function ($key, $expression) use ($scheme) {
-                    /** @var PdpIntellectualCompositeExpression $expression */
-                    $expression->getElements()->forAll(function ($key, $element) use ($scheme) {
-                        /** @var PdpIntellectualElement $element */
+                    /* @var $expression PdpIntellectualCompositeExpression */
+                    $expression->getElements()->forAll(function ($key, $element) use ($scheme, $expression) {
+                        /* @var $element PdpIntellectualElement */
                         $input = $element->getInput();
-
                         if ($input->getProductPart()) {
                             if (!$scheme->hasProductPart($input->getProductPart())) {
                                 $scheme->setName($scheme->getName().$input->getHumanName().' | ');
                                 $scheme->addProductPart($input->getProductPart());
+                                
+                                $this->addPathToElement($element);
+                                
                             }
                         }
 

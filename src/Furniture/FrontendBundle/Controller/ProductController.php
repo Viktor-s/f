@@ -271,7 +271,7 @@ class ProductController
                     $activeOptions[$inputId] = $variantSelection->getProductPartMaterialVariant()->getId();
                 }
 
-                if ($product->isSchematicProductType()) {
+                if ($product->isSchematicProductType() && !$itelPdpRoot) {//$itelPdpRoot for OLD types
                     $inputId = $product->getPdpConfig()->getInputForSchemes()->getId();
                     $activeOptions[$inputId] = $activeVariant->getProductScheme()->getId();
                 }

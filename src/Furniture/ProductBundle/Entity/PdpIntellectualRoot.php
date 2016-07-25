@@ -30,6 +30,11 @@ class PdpIntellectualRoot
     private $treeJson;
     
     /**
+     * @var array
+     */
+    private $treePathForInputsJson;
+    
+    /**
      * @var PdpIntellectualCompositeExpression
      */
     private $expression;
@@ -154,4 +159,45 @@ class PdpIntellectualRoot
         return $this;
     }
 
+    /**
+     * 
+     * @param array $treePathForInputsJson
+     * @return \Furniture\ProductBundle\Entity\PdpIntellectualRoot
+     */
+    public function setTreePathForInputsJson($treePathForInputsJson){
+        $this->treePathForInputsJson = $treePathForInputsJson;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getTreePathForInputsJson(){
+        return $this->treePathForInputsJson;
+    }
+    
+    /**
+     * 
+     * @param integer $id
+     * @return array|null
+     */
+    public function getTreePathForInputJson($id){
+        if( array_key_exists($id, $this->treePathForInputsJson) )
+                return $this->treePathForInputsJson[$id];
+        
+        return null;
+    }
+    
+    /**
+     * 
+     * @param integer $id
+     * @param array $path
+     * @return \Furniture\ProductBundle\Entity\PdpIntellectualRoot
+     */
+    public function updateTreePathForInputJson($id, $path){
+        $this->treePathForInputsJson[$id] = $path;
+        return $this;
+    }
+    
 }

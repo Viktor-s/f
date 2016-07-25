@@ -384,7 +384,7 @@
                             return this.existsIdexes[expression.pdpInput];
                         }
                     };
-                    $(document).on("pdp:change", function(){ console.log('on pdp change'); });
+                    $(document).on("pdp:change", function(){  });
                     function progressiveInputMappingExpression(treeEl, id){
                         if(options.alreadyMappedEl[id])
                             return;
@@ -416,6 +416,33 @@
                             this.renderExpression(options.pdpTreeRoot);
                             $(document).trigger("pdp:change");
                         },
+                        preSet:function(selections, pdpElsPath){
+                            var $this = this;//return;
+                            console.log('Path:', pdpElsPath);
+                            console.log('PRESET:', selections);
+                            console.log(options);
+                            Object.keys(selections).forEach(function(inputId, selections) {
+                               var pathToInput = pdpElsPath[inputId];
+                               
+                               if(!pathToInput) return true;
+                               
+                               pathToInput.forEach(function(elementDescr){
+                                   //console.log( '=',elementDescr);
+                                   
+                                   if(elementDescr.type == 2){
+                                       //console.log('asking');
+                                   }else if(elementDescr.type == 1){
+                                       var selectionEl = $('[value='+elementDescr.id+']');
+                                       selectionEl.prop('selected', true);
+                                       selectionEl.parent().trigger('change');
+                                   }else if(elementDescr.type == 'root'){
+                                       //console.log('root element')
+                                   }
+                               });
+                            });
+                            
+                            options.pdpDataContainer.setFilters(selections);
+                        },
                         renderExpression: function(expression){
                             expression.elements.forEach(function(e){
                                 progressiveInputMappingElement(e, e.input);
@@ -429,7 +456,6 @@
                         hideExpression: function(expression){
                             expression.elements.forEach(function(e){
                                 hideInput(e.inputJqEl);
-                                console.log(options.pdpDataContainer);
                                 var filters = options.pdpDataContainer.getFilters();
                                 delete filters[e.input];
                                 options.pdpDataContainer.setFilters(filters);
@@ -471,7 +497,6 @@
                             'factoryCode': {{ p.pattern.getActiveFactoryCode()|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}
                         },{% endfor %} ];
 
-                    console.log(sku_matrix);
                     var pdpDataContainer = new variant_pattern_data_container(sku_matrix);
 
                     {% else %}
@@ -487,15 +512,11 @@
                     var pdpDataContainer = new variant_data_container(sku_matrix);
                 {% endif %}
 
-                console.log(sku_matrix);
-
                 var pdpRenderer = getPdpRenderer(pdpTree, pdpDataContainer);
                 pdpRenderer.init();
                 $('[data-input-container="default-select"]').pdp_default_select({ 'data_container': pdpDataContainer });
                 $('[data-input-container="inline-select"]').pdp_inline_select({ 'data_container': pdpDataContainer });
                 $('[data-input-container="popup-select"]').pdp_popup_select({ 'data_container': pdpDataContainer });
-
-                console.log(pdpDataContainer.getFilters());
                 
                 var product_code_show = function() {
                     var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
@@ -540,7 +561,7 @@
                             text = minOrig;
                         }
                     }
-console.log('Variants length', variants.length, variants);
+                    
                     if (text != $('#prices').text())
                         $('#prices').fadeOut(50, function () {
                             $('#prices').text(text);
@@ -556,7 +577,8 @@ console.log('Variants length', variants.length, variants);
                 });
 
                 {% if active_variant_matrix %}
-                pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                    pdpDataContainer.setFilters({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
+                    pdpRenderer.preSet({{ active_variant_matrix|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}, {{ pdpRoot.treePathForInputsJson|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }});
                 /********/
                 {% endif %}
 
@@ -704,11 +726,13 @@ console.log('Variants length', variants.length, variants);
                             id: pdpDataContainer.getFiltered()[0].id,
                             choices: {
                                 'so' : [],
-                                'pp' : [],
-                                'ps' : null
+                                'pp' : []
                             },
                         };
                         var filters = pdpDataContainer.getFilters();
+                        var filteredItem = pdpDataContainer.getFiltered()[0];
+                        data['ps'] = parseInt(filteredItem['schemeId']);
+                        
                         for( f in pdpDataContainer.getFiltered()[0].options ){
                             if( filters[f] ){
                                 var v = filters[f];

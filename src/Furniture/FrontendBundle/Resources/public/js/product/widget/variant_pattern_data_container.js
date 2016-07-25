@@ -22,7 +22,7 @@ var variant_pattern_data_container = function (patterns) {
         },
         
         setFilters: function (filters) {
-            console.log(filters);
+            //console.log(filters);
             options.filtered = [];
             options.filters = filters;            
             options.patterns.forEach(function (el) {
@@ -61,7 +61,7 @@ var variant_pattern_data_container = function (patterns) {
                 
                 var filtered = options.filtered[0];
 
-console.log('Item', filtered, 'filters', options.filters);
+//console.log('Item', filtered, 'filters', options.filters);
 
                 if( Object.keys(filtered.options).length == Object.keys(options.filters).length ){
                     return true;

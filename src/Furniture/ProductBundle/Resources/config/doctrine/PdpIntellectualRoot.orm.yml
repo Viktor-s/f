@@ -13,6 +13,7 @@ Furniture\ProductBundle\Entity\PdpIntellectualRoot:
         name:
             type: string
             column: name
+            
         graphJson:
             type: json_array
             column: graph_json
@@ -20,6 +21,11 @@ Furniture\ProductBundle\Entity\PdpIntellectualRoot:
         treeJson:
             type: json_array
             column: graph_tree_json
+            nullable: true
+        
+        treePathForInputsJson:
+            type: json_array
+            column: tree_path_for_input_json
             nullable: true
 
     oneToOne:
