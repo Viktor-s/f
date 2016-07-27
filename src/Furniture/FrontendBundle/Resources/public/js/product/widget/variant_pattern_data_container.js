@@ -3,6 +3,7 @@ var variant_pattern_data_container = function (patterns) {
     var options = {
         patterns: patterns,
         filtered: patterns,
+        found: null,
         filters: {},
     };
 
@@ -24,7 +25,8 @@ var variant_pattern_data_container = function (patterns) {
         setFilters: function (filters) {
             //console.log(filters);
             options.filtered = [];
-            options.filters = filters;            
+            options.filters = filters;  
+            options.found = null;
             options.patterns.forEach(function (el) {
                 var ok = true;
                 $.each(options.filters, function (index, value) {
@@ -56,20 +58,31 @@ var variant_pattern_data_container = function (patterns) {
             return options.filters;
         },
         
-        isFilteredItemFound: function(){
-            if(options.filtered.length == 1){
-                
-                var filtered = options.filtered[0];
-
-//console.log('Item', filtered, 'filters', options.filters);
-
-                if( Object.keys(filtered.options).length == Object.keys(options.filters).length ){
-                    return true;
-                }
-                
-            }
+        getIfOneItemWithFilterFound: function(){
+            /* if already cached */
+            if(options.found)
+                return options.found;
             
-            return false;
+            
+            var found = null;
+            options.filtered.forEach(function (el) {
+                if( Object.keys(el.options).length == Object.keys(options.filters).length ){
+                    if(!found){
+                        found = el;
+                    }else{
+                        found = null;
+                        return false;
+                    }
+                }
+            });
+            
+            options.found = found;
+            
+            return options.found;
+        },
+        
+        isFilteredItemFound: function(){
+            return this.getIfOneItemWithFilterFound() ? true : false;
         }
     };
 

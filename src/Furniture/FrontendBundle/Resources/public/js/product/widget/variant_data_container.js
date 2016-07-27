@@ -3,6 +3,7 @@ var variant_data_container = function (variants) {
     var options = {
         variants: variants,
         filtered: variants,
+        found: null,
         filters: {},
     };
 
@@ -24,7 +25,8 @@ var variant_data_container = function (variants) {
         setFilters: function (filters) {
             //console.log(filters);
             options.filtered = [];
-            options.filters = filters;            
+            options.filters = filters;   
+            options.found = null;
             options.variants.forEach(function (el) {
                 var ok = true;
                 $.each(options.filters, function (index, value) {
@@ -42,6 +44,29 @@ var variant_data_container = function (variants) {
             return this;
         },
         
+        getIfOneItemWithFilterFound: function(){
+            /* if already cached */
+            if(options.found)
+                return options.found;
+            
+            
+            var found = null;
+            options.filtered.forEach(function (el) {
+                if( Object.keys(el.options).length == Object.keys(options.filters).length ){
+                    if(!found){
+                        found = el;
+                    }else{
+                        found = null;
+                        return false;
+                    }
+                }
+            });
+            
+            options.found = found;
+            
+            return options.found;
+        },
+        
         getFilteredWithFilterValue: function(filter, value){
             var res = [];
             options.filtered.forEach(function (el) {
@@ -57,7 +82,7 @@ var variant_data_container = function (variants) {
         },
         
         isFilteredItemFound: function(){
-            return options.filtered.length == 1;
+            return this.getIfOneItemWithFilterFound() ? true : false;
         }
     };
 

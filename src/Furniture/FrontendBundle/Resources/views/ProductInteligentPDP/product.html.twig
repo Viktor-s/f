@@ -521,9 +521,8 @@
                 var product_code_show = function() {
                     var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
                     var showEl = $('#factory-code-view');
-                    var variants = pdpDataContainer.getFiltered();
                     if ( pdpDataContainer.isFilteredItemFound() ) {
-                        showEl.text(variants[0].factoryCode);
+                        showEl.text(pdpDataContainer.getIfOneItemWithFilterFound().factoryCode);
                     }else{
                         showEl.text(defaultpCode);
                     }
@@ -531,7 +530,9 @@
 
                 var low_max_price = function () {
                     var variants = pdpDataContainer.getFiltered()
-                    if (variants.length > 1) {
+                    if(pdpDataContainer.isFilteredItemFound()){
+                        variants = [pdpDataContainer.getIfOneItemWithFilterFound()];
+                    }else if ( variants.length > 1) {
                         var max = 0;
                         var min = 0;
                         var minOrig, maxOrig;
@@ -595,14 +596,14 @@
                         var specificationId = parseInt($(this).attr('data-specification-id'));
                         {% if product.hasProductVariantsPatterns() %}
                             var data = {
-                                id: pdpDataContainer.getFiltered()[0].id,
+                                id: pdpDataContainer.getIfOneItemWithFilterFound().id,
                                 choices: {
                                     'so' : [],
                                     'pp' : []
                                 },
                             };
                             var filters = pdpDataContainer.getFilters();
-                            var filteredItem = pdpDataContainer.getFiltered()[0];
+                            var filteredItem = pdpDataContainer.getIfOneItemWithFilterFound();
                             data['ps'] = parseInt(filteredItem['schemeId']);
                             for( f in filteredItem.options ){
                                 if( filters[f] ){
@@ -670,7 +671,7 @@
                         {% else %}
                             var url = '{{ path('specification_api_specification_sku_item_add') }}',
                                     data = {
-                                        id: pdpDataContainer.getFiltered()[0].id,
+                                        id: pdpDataContainer.getIfOneItemWithFilterFound().id,
                                         quantity: quantity,
                                         specification: specificationId
                                     };
@@ -723,21 +724,21 @@
                     var el = $(this);
                     {% if product.hasProductVariantsPatterns() %}
                         var data = {
-                            id: pdpDataContainer.getFiltered()[0].id,
+                            id: pdpDataContainer.getIfOneItemWithFilterFound().id,
                             choices: {
                                 'so' : [],
                                 'pp' : []
                             },
                         };
                         var filters = pdpDataContainer.getFilters();
-                        var filteredItem = pdpDataContainer.getFiltered()[0];
+                        var filteredItem = pdpDataContainer.getIfOneItemWithFilterFound();
                         data['ps'] = parseInt(filteredItem['schemeId']);
                         
-                        for( f in pdpDataContainer.getFiltered()[0].options ){
+                        for( f in pdpDataContainer.getIfOneItemWithFilterFound().options ){
                             if( filters[f] ){
                                 var v = filters[f];
                             }else{
-                                var v = pdpDataContainer.getFiltered()[0].options[f][0];
+                                var v = pdpDataContainer.getIfOneItemWithFilterFound().options[f][0];
                             }
                             var d = {};
                             if( pdpInputMapping[f]['t'] == 'ps' ){
@@ -786,7 +787,7 @@
                         quantity = parseInt($('.quantity-selector .entry.number').text());
                         var url = '{{ path('specification_api_specification_sku_item_edit', {item: specification_item.id}) }}';
                         var data = {
-                            id: pdpDataContainer.getFiltered()[0].id,
+                            id: pdpDataContainer.getIfOneItemWithFilterFound().id,
                             quantity: quantity
                         };
 
