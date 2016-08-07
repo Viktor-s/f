@@ -20,10 +20,19 @@ $.widget('furniture.pdp_default_select', {
             
             $(document).on('filter:update', function (event) {
                 var filters = data_container.getFilters();
-                if(!filters[selectedInput]){
-                    filters[selectedInput] = selectedVariant;
-                    data_container.setFilters(filters);
+                
+                if(element.parents('div').css('display') == 'none'){
+                    if(filters[selectedInput]){
+                        delete filters[selectedInput];
+                        data_container.setFilters(filters);
+                    }
+                }else{
+                    if(!filters[selectedInput]){
+                        filters[selectedInput] = selectedVariant;
+                        data_container.setFilters(filters);
+                    }
                 }
+                
             });
         }else{
             element.change(function(e){

@@ -284,8 +284,19 @@ class ProductPdpIntellectualController extends ResourceController
         $product = $this->loadProduct($request);
 
         $this->isGrantedOr403('delete');
+        
+        
+        $pdpIntelRoor = $this->findOr404($request);
+        /** @var Furniture\ProductBundle\Entity\PdpIntellectualRoot $pdpIntelRoor */
+        $schemas = $pdpIntelRoor->getProduct()->getProductSchemes();
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        
+        foreach ($schemas as $schema){
+            $em->remove($schema);
+        }
+        
         $this->domainManager->delete($this->findOr404($request));
-
+       
         $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
             'productId' => $product->getId(),
         ]);

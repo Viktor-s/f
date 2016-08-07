@@ -418,16 +418,13 @@
                         },
                         preSet:function(selections, pdpElsPath){
                             var $this = this;//return;
-                            console.log('Path:', pdpElsPath);
-                            console.log('PRESET:', selections);
-                            console.log(options);
+                            
                             Object.keys(selections).forEach(function(inputId, selections) {
                                var pathToInput = pdpElsPath[inputId];
                                
                                if(!pathToInput) return true;
                                
                                pathToInput.forEach(function(elementDescr){
-                                   //console.log( '=',elementDescr);
                                    
                                    if(elementDescr.type == 2){
                                        //console.log('asking');
@@ -447,6 +444,7 @@
                             expression.elements.forEach(function(e){
                                 progressiveInputMappingElement(e, e.input);
                                 showInput(e.inputJqEl);
+                                $(document).trigger("filter:update");
                             })
                             expression.child.forEach(function(e){
                                 progressiveInputMappingExpression(e, e.pdpInput);
@@ -522,6 +520,7 @@
                     var defaultpCode = {{ product.factoryCode|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }};
                     var showEl = $('#factory-code-view');
                     if ( pdpDataContainer.isFilteredItemFound() ) {
+                        //console.log(pdpDataContainer);
                         showEl.text(pdpDataContainer.getIfOneItemWithFilterFound().factoryCode);
                     }else{
                         showEl.text(defaultpCode);

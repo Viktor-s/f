@@ -28,13 +28,24 @@
             </select>
         </div>
         {% elseif input.productPart %}
-        <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
-            <select data-input-container="default-select">
-            {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
-                <option data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
-            {% endfor %}
-            </select>
-        </div>
+            {% if input.productPartMaterialsVariantSelections|length == 1 %}
+                {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                <ul class="list">
+                    <li>
+                        {{ productPartVariantSelection.productPartMaterialVariant.name }}
+                        <input type="hidden" data-input-container="default-select" data-input-id="{{ input.id }}" data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}">
+                    </li>
+                </ul>
+                {% endfor %}
+            {% else %}
+                <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
+                    <select data-input-container="default-select">
+                    {% for productPartVariantSelection in input.productPartMaterialsVariantSelections %}
+                        <option data-input-variant="{{ productPartVariantSelection.productPartMaterialVariant.id }}" >{{ productPartVariantSelection.productPartMaterialVariant.name }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
         {% elseif input.ForPdpIntellectualCompositeExpression %}
         <div class="simple-drop-down simple-field" data-input-id="{{ input.id }}" >
             <select>
