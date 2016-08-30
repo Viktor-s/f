@@ -120,6 +120,12 @@ class Product extends BaseProduct
     private $relatedProducts;
 
     /**
+     * @var Collection|Product[]
+     *
+     * @Assert\Valid()
+     */
+    private $relatedWithThisProducts;
+    /**
      * Constructor.
      */
     public function __construct()
@@ -142,6 +148,7 @@ class Product extends BaseProduct
         $this->spaces = new ArrayCollection();
         $this->styles = new ArrayCollection();
         $this->relatedProducts = new ArrayCollection();
+        $this->relatedWithThisProducts = new ArrayCollection();
     }
 
     /**

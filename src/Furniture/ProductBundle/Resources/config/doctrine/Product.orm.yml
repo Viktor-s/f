@@ -133,17 +133,23 @@ Furniture\ProductBundle\Entity\Product:
                         onDelete: RESTRICT
 
         relatedProducts:
-            targetEntity: Furniture\ProductBundle\Entity\Product
+            targetEntity: Product
+            inversedBy: relatedWithThisProducts
+            cascade: [ persist ]
             joinTable:
                 name: related_products
                 joinColumns:
                     product_id:
                         referencedColumnName: id
-                        onDelete: RESTRICT
-                inverseJoinColumn:
+
+                inverseJoinColumns:
                     related_product_id:
                         referencedColumnName: id
-                        onDelete: RESTRICT
+
+        relatedWithThisProducts:
+            fetch: EXTRA_LAZY
+            targetEntity: Product
+            mappedBy: relatedProducts
 
     oneToOne:
         pdpConfig:

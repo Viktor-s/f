@@ -3,7 +3,7 @@
         <div fullname="{{ full_name }}" {{ block('widget_container_attributes') }} source="{{ path(source) }}" class="add-entity-widget">
             <div class="form-inline">
                 <div class="form-group">
-                    <input type="text" placeholder="Enter name" class="form-control add-entity-widget-name">
+                    <input type="text" placeholder="Enter name" class="form-control add-entity-widget-name" data-widget-name="{{ name }}">
                     <table class="table table-hover">
                         <thead>
                             <tr>
