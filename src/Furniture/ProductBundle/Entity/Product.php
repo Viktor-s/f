@@ -113,6 +113,13 @@ class Product extends BaseProduct
     private $productVariantsPatterns;
 
     /**
+     * @var Collection|Product[]
+     *
+     * @Assert\Valid()
+     */
+    private $relatedProducts;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -134,6 +141,7 @@ class Product extends BaseProduct
         $this->types = new ArrayCollection();
         $this->spaces = new ArrayCollection();
         $this->styles = new ArrayCollection();
+        $this->relatedProducts = new ArrayCollection();
     }
 
     /**
@@ -1187,5 +1195,83 @@ class Product extends BaseProduct
                 $this->pdpConfig->addInput($input);
             }
         }
+    }
+
+    /**
+     * Has related products
+     *
+     * @return bool
+     */
+    public function hasRelatedProducts()
+    {
+        return !(bool)$this->relatedProducts->isEmpty();
+    }
+
+    /**
+     * Has related product
+     *
+     * @param Product $relatedProduct
+     *
+     * @return bool
+     */
+    public function hasRelatedProduct(Product $relatedProduct)
+    {
+        return $this->relatedProducts->contains($relatedProduct);
+    }
+
+    /**
+     * Grt related products
+     *
+     * @return Collection|Product[]
+     */
+    public function getRelatedProducts()
+    {
+        return $this->relatedProducts;
+    }
+
+    /**
+     * Add related product
+     *
+     * @param Product $relatedProduct
+     *
+     * @return Product
+     */
+    public function addRelatedProduct(Product $relatedProduct)
+    {
+        if (!$this->hasRelatedProduct($relatedProduct)) {
+            $this->relatedProducts->add($relatedProduct);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set related products
+     *
+     * @param Collection|Product[] $relatedProducts
+     *
+     * @return \Furniture\ProductBundle\Entity\Product
+     */
+    public function setRelatedProducts(Collection $relatedProducts)
+    {
+        $this->relatedProducts = $relatedProducts;
+
+        return $this;
+    }
+
+    /**
+     * Remove related product
+     *
+     * @param Product $relatedProduct
+     *
+     * @return Product
+     */
+    public function removeRelatedProduct(Product $relatedProduct)
+    {
+        if ($this->hasRelatedProduct($relatedProduct)) {
+            $this->relatedProducts->removeElement($relatedProduct);
+        }
+
+        return $this;
     }
 }

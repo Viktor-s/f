@@ -31,7 +31,6 @@ class Version20160528175413 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE product_pdp_input DROP CONSTRAINT FK_231160741FA21F68');
         $this->addSql('DROP INDEX UNIQ_231160741FA21F68');
         $this->addSql('ALTER TABLE product_pdp_input DROP inteligent_pdp_composite_expression');

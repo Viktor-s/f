@@ -116,6 +116,13 @@ class ProductType extends BaseProductType
                     'placeholder' => 'Start type product name',
                     'multiple'    => true,
                 ])
+                ->add('relatedProducts', new AutocompleteEntityType(), [
+                    'class'       => Product::class,
+                    'property'    => 'name',
+                    'source'      => 'furniture_autocomplete_for_none_bundle',
+                    'placeholder' => 'Start type product name or code',
+                    'multiple'    => true,
+                ])
                 ->add('availableForSale', 'checkbox', [
                     'required' => false
                 ]);

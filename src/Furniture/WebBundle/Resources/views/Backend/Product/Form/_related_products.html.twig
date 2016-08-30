@@ -1,0 +1,7 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{% if form.relatedProducts is defined %}
+    <div class="tab-pane" id="related_products">
+        {{ form_row(form.relatedProducts) }}
+    </div>
+{% endif %}

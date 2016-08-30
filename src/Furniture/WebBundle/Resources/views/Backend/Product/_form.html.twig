@@ -18,6 +18,8 @@
         {% include 'SyliusWebBundle:Backend/Product/Form:_bundle_products.html.twig' %}
     {% endif %}
 
+    {% include 'SyliusWebBundle:Backend/Product/Form:_related_products.html.twig' %}
+
     {% if form.channels|length > 0 %}
         {% include 'SyliusWebBundle:Backend/Product/Form:_channels.html.twig' %}
     {% endif %}

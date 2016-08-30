@@ -132,6 +132,19 @@ Furniture\ProductBundle\Entity\Product:
                         referencedColumnName: id
                         onDelete: RESTRICT
 
+        relatedProducts:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinTable:
+                name: related_products
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: RESTRICT
+                inverseJoinColumn:
+                    related_product_id:
+                        referencedColumnName: id
+                        onDelete: RESTRICT
+
     oneToOne:
         pdpConfig:
             targetEntity: Furniture\ProductBundle\Entity\ProductPdpConfig
