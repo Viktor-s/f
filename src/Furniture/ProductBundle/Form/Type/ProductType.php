@@ -154,7 +154,7 @@ class ProductType extends BaseProductType
                     [
                         'class'       => Product::class,
                         'property'    => 'name',
-                        'source'      => 'furniture_autocomplete_for_none_bundle',
+                        'source'      => 'furniture_autocomplete_related',
                         'placeholder' => 'Start type product name or code',
                         'multiple'    => true,
                     ]
@@ -171,8 +171,9 @@ class ProductType extends BaseProductType
                         'attr'     => [
                             'class'                => 'autocomplete-extra-params',
                             'data-extra-parm-name' => 'factory',
-                            'data-parent-widget'   => 'relatedProducts'
+                            'data-parent-widget'   => 'relatedProducts',
                         ],
+                        'data'     => $product->getId() ? $product->getFactory() : null,
                     ]
                 )
                 ->add(

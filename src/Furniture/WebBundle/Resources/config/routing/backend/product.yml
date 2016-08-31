@@ -33,6 +33,13 @@ furniture_autocomplete_for_none_bundle:
         _controller: sylius.controller.product:autoCompleteActionNoneBundle
         _format: json
 
+furniture_autocomplete_related:
+    path: /autocomplete/related
+    methods: [GET]
+    defaults:
+        _controller: sylius.controller.product:autoCompleteActionRelated
+        _format: json
+
 sylius_backend_product_create:
     path: /new
     methods: [GET, POST]

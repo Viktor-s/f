@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Furniture\ProductBundle\Form\Type\ProductPdpConfigType;
 use Sylius\Bundle\CoreBundle\Controller\ProductController as BaseProductController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,9 +36,12 @@ class ProductController extends BaseProductController
         if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
             $resource = $this->domainManager->create($form->getData());
 
-            $url = $this->generateUrl('sylius_backend_product_update', [
-                'id' => $resource->getId()
-            ]);
+            $url = $this->generateUrl(
+                'sylius_backend_product_update',
+                [
+                    'id' => $resource->getId(),
+                ]
+            );
 
             return $this->redirect($url);
         }
@@ -49,11 +53,12 @@ class ProductController extends BaseProductController
         $view = $this
             ->view()
             ->setTemplate($this->config->getTemplate('create.html'))
-            ->setData(array(
-                $this->config->getResourceName() => $resource,
-                'form'                           => $form->createView(),
-            ))
-        ;
+            ->setData(
+                [
+                    $this->config->getResourceName() => $resource,
+                    'form'                           => $form->createView(),
+                ]
+            );
 
         return $this->handleView($view);
     }
@@ -176,9 +181,12 @@ class ProductController extends BaseProductController
             $em->persist($config);
             $em->flush();
 
-            $url = $this->generateUrl('sylius_backend_product_show', [
-                'id' => $product->getId()
-            ]);
+            $url = $this->generateUrl(
+                'sylius_backend_product_show',
+                [
+                    'id' => $product->getId(),
+                ]
+            );
 
             return new RedirectResponse($url);
         }
@@ -186,11 +194,13 @@ class ProductController extends BaseProductController
         $view = $this
             ->view()
             ->setTemplate($this->config->getTemplate('update.html'))
-            ->setData(array(
-                $this->config->getResourceName() => $product,
-                'product'                        => $product,
-                'form'                           => $form->createView(),
-            ));
+            ->setData(
+                [
+                    $this->config->getResourceName() => $product,
+                    'product'                        => $product,
+                    'form'                           => $form->createView(),
+                ]
+            );
 
         return $this->handleView($view);
     }
@@ -206,8 +216,40 @@ class ProductController extends BaseProductController
     {
         $response = [];
 
-        if ($term = (string) $request->get('term')) {
+        if ($term = (string)$request->get('term')) {
             $products = $this->get('sylius.repository.product')->searchNoneBundleByName($term);
+
+            foreach ($products as $product) {
+                $response[] = [
+                    'label' => $product->getName(),
+                    'value' => $product->getId(),
+                ];
+            }
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * Autocomplete for bundle
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function autoCompleteActionRelated(Request $request)
+    {
+        $response = [];
+
+        if ($term = (string)$request->get('term')) {
+            $criteria = [
+                'name'    => $term,
+                'factory' => (int)$request->get('factory'),
+            ];
+
+            $products = $this->get('sylius.repository.product')->searchRelated($criteria);
+            $products = array_slice($products, 0, 15);
+
 
             foreach ($products as $product) {
                 $response[] = [
@@ -231,9 +273,9 @@ class ProductController extends BaseProductController
     {
         $response = [];
 
-        if ($term = (string) $request->get('term')) {
+        if ($term = (string)$request->get('term')) {
             foreach ($this->get('sylius.repository.product')
-                    ->searchByName($term) as $product) {
+                         ->searchByName($term) as $product) {
                 $response[] = [
                     'label' => $product->getName(),
                     'value' => $product->getId(),
@@ -247,7 +289,7 @@ class ProductController extends BaseProductController
     /**
      * {@inheritDoc}
      */
-    public function findOr404(Request $request, array $criteria = array())
+    public function findOr404(Request $request, array $criteria = [])
     {
         // So, the sylius is "govno" and disable softdeletable filter only on repository method,
         // but do not think, what we have a any relations, which are loaded later.

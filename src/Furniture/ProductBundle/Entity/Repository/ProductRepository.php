@@ -9,6 +9,42 @@ use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductRepository as BaseProductReposi
 class ProductRepository extends BaseProductRepositiry
 {
     /**
+     * Search related products
+     *
+     * @param array   $criteria
+     * @param integer $limit
+     * @param integer $offset
+     *
+     * @return \Furniture\ProductBundle\Entity\Product[]
+     */
+    public function searchRelated($criteria)
+    {
+        $qb = $this->getQueryBuilder();
+
+        $query = $qb
+            ->innerJoin($this->getAlias().'.factory', 'f');
+
+        if (!empty($criteria['name'])) {
+            $qb
+                ->andWhere('translation.name LIKE :name OR '.$this->getAlias().'.factoryCode LIKE :code')
+                ->setParameters([
+                    'name' => $criteria['name'].'%',
+                    'code' => $criteria['name'].'%',
+                ]);
+        }
+
+        if (!empty($criteria['factory'])) {
+            $qb
+                ->andWhere('f.id :factory')
+                ->setParameter('factory', $criteria['factory']);
+        }
+
+        return $query
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Search none bundle by name
      *
      * @param string  $name
@@ -23,7 +59,7 @@ class ProductRepository extends BaseProductRepositiry
 
         return $qb
             ->andWhere('translation.name LIKE :name')
-            ->setParameter('name', $name . '%')
+            ->setParameter('name', $name.'%')
             ->andWhere('SIZE(product.subProducts) = 0')
             ->getQuery()
             ->setMaxResults($limit)
@@ -46,7 +82,7 @@ class ProductRepository extends BaseProductRepositiry
 
         return $qb
             ->andWhere('translation.name LIKE :name')
-            ->setParameter('name', $name . '%')
+            ->setParameter('name', $name.'%')
             ->getQuery()
             ->setMaxResults($limit)
             ->setFirstResult($offset)
@@ -101,13 +137,13 @@ class ProductRepository extends BaseProductRepositiry
         if (!empty($criteria['name'])) {
             $queryBuilder
                 ->andWhere('LOWER(translation.name) LIKE :name')
-                ->setParameter('name', '%' . mb_strtolower($criteria['name']) . '%');
+                ->setParameter('name', '%'.mb_strtolower($criteria['name']).'%');
         }
 
         if (!empty($criteria['factoryCode'])) {
             $queryBuilder
                 ->andWhere('product.factoryCode LIKE :factory_code')
-                ->setParameter('factory_code', '%' . $criteria['factoryCode'] . '%');
+                ->setParameter('factory_code', '%'.$criteria['factoryCode'].'%');
         }
 
         if (!empty($criteria['factory'])) {
@@ -135,8 +171,7 @@ class ProductRepository extends BaseProductRepositiry
                 $queryBuilder
                     ->andWhere('product.availableForSale = :availableForSale')
                     ->setParameter('availableForSale', $status);
-            }
-            else {
+            } else {
                 $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->orX(
