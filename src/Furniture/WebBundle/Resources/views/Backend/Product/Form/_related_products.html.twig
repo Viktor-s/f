@@ -2,29 +2,11 @@
 
 <div class="tab-pane" id="related_products">
     {% if form.relatedProducts is defined %}
-    {{ form_row(form.relatedProductsFactory) }}
-    {{ form_row(form.relatedProducts) }}
-        <script type="application/javascript">
-            (function ($) {
-
-//                $('.autocomplete-extra-params').on('change', function(e) {
-//
-//                });
-//
-//                var params = {};
-//                $.each($('.autocomplete-extra-params'), function() {
-//                    if ($(this).val() && $(this).data('extra-parm-name') && $(this).data('parent-widget')) {
-//                        params[$(this).data('parent-widget')] = {};
-//                        params[$(this).data('parent-widget')][$(this).data('extra-parm-name')] = $(this).val();
-//                    }
-//                });
-//
-//                if (Object.keys(params).length && params.hasOwnProperty(input.data('widget-name'))) {
-//                    source += '?' + $.param(params[input.data('widget-name')]);
-//                } else {
-//                    source = el.attr('source');
-//                }
-            })(jQuery);
-        </script>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_row(form.relatedProductsFactory) }}
+            {{ form_row(form.relatedProducts) }}
+        </div>
+    </div>
     {% endif %}
 </div>

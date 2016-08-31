@@ -26,16 +26,16 @@ class ProductRepository extends BaseProductRepositiry
 
         if (!empty($criteria['name'])) {
             $qb
-                ->andWhere('translation.name LIKE :name OR '.$this->getAlias().'.factoryCode LIKE :code')
+                ->andWhere('LOWER(translation.name) LIKE :name OR LOWER('.$this->getAlias().'.factoryCode) LIKE :code')
                 ->setParameters([
-                    'name' => $criteria['name'].'%',
-                    'code' => $criteria['name'].'%',
+                    'name' => strtolower($criteria['name']).'%',
+                    'code' => strtolower($criteria['name']).'%',
                 ]);
         }
 
         if (!empty($criteria['factory'])) {
             $qb
-                ->andWhere('f.id :factory')
+                ->andWhere('f.id = :factory')
                 ->setParameter('factory', $criteria['factory']);
         }
 

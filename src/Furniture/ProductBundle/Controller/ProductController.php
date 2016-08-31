@@ -253,7 +253,7 @@ class ProductController extends BaseProductController
 
             foreach ($products as $product) {
                 $response[] = [
-                    'label' => $product->getName(),
+                    'label' => sprintf('%s [%s]',  $product->getName(), $product->getFactory()->getName()),
                     'value' => $product->getId(),
                 ];
             }
