@@ -356,6 +356,16 @@ sylius_resource:
                 model: Furniture\ProductBundle\Entity\ProductPartMaterialVariant
                 controller: Furniture\ProductBundle\Controller\ProductPartMaterialVariantController
 
+        furniture.product_best_sellers:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\BestSellers
+
+        furniture.product_best_sellers_set:
+            driver: doctrine/orm
+            classes:
+                model: Furniture\ProductBundle\Entity\BestSellersSet
+
         furniture.composite_collection:
             driver: doctrine/orm
             classes:

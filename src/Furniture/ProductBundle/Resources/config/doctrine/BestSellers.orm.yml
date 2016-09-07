@@ -1,0 +1,33 @@
+Furniture\ProductBundle\Entity\BestSellers:
+    type: entity
+    table: furniture_product_best_sellers
+
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        position:
+            type: integer
+
+    oneToOne:
+        product:
+            targetEntity: Furniture\ProductBundle\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
+
+    manyToOne:
+        bestSellerSet:
+            targetEntity: Furniture\ProductBundle\Entity\BestSellersSet
+            inversedBy: bestSellers
+            joinColumn:
+                name: best_seller_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE

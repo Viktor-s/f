@@ -1,0 +1,24 @@
+Furniture\ProductBundle\Entity\BestSellersSet:
+    type: entity
+    table: furniture_product_best_sellers_set
+
+    id:
+        id:
+            type: integer
+            column: id
+            generator:
+                strategy: AUTO
+
+    fields:
+        active:
+            type: boolean
+            nullable: false
+
+    oneToMany:
+        bestSellers:
+            targetEntity: Furniture\ProductBundle\Entity\BestSellers
+            cascade: [ persist ]
+            mappedBy: set
+            orphanRemoval: true
+            orderBy:
+                position: ASC
