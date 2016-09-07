@@ -161,6 +161,12 @@ sylius_rbac:
         furniture.product_pdp_intellectual.create: create pdp intellectual
         furniture.product_pdp_intellectual.update: update pdp intellectual
         furniture.product_pdp_intellectual.delete: delete pdp intellectual
+
+        furniture.manage.product_best_sellers: manage best sellers
+        furniture.product_best_sellers.index: list best sellers
+        furniture.product_best_sellers.create: create best sellers
+        furniture.product_best_sellers.update: update best sellers
+        furniture.product_best_sellers.delete: delete best sellers
         
         furniture.manage.factories: manage factories
         furniture.factory.show: show details page
@@ -280,6 +286,12 @@ sylius_rbac:
             - furniture.product_pdp_intellectual.create
             - furniture.product_pdp_intellectual.update
             - furniture.product_pdp_intellectual.delete
+
+        furniture.manage.product_best_sellers:
+            - furniture.product_best_sellers.index
+            - furniture.product_best_sellers.create
+            - furniture.product_best_sellers.update
+            - furniture.product_best_sellers.delete
 
         furniture.manage.product_categories:
             - furniture.product_category.index

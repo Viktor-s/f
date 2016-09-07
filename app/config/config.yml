@@ -364,6 +364,7 @@ sylius_resource:
         furniture.product_best_sellers_set:
             driver: doctrine/orm
             classes:
+                controller: Furniture\ProductBundle\Controller\ProductBestSellersController
                 model: Furniture\ProductBundle\Entity\BestSellersSet
 
         furniture.composite_collection:

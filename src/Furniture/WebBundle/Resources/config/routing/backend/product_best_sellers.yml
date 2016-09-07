@@ -1,0 +1,27 @@
+furniture_backend_product_best_sellers_set_index:
+    path: /
+    defaults:
+        _controller: furniture.controller.product_best_sellers_set:indexAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:index.html.twig
+
+furniture_backend_product_best_sellers_set_create:
+    path: /new
+    defaults:
+        _controller: furniture.controller.product_best_sellers_set:createAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:create.html.twig
+
+furniture_backend_product_best_sellers_set_update:
+    path: /{id}/update
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_best_sellers_set:updateAction
+        _sylius:
+            template: SyliusWebBundle:Backend/ProductPdpIntellectual:update.html.twig
+
+furniture_backend_product_best_sellers_set_delete:
+    path: /{id}/delete
+    requirements: { id: \d+ }
+    defaults:
+        _controller: furniture.controller.product_best_sellers_set:deleteAction
