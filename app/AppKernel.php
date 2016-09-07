@@ -13,6 +13,7 @@ use Sylius\Bundle\CoreBundle\Kernel\Kernel;
 use Sylius\Bundle\FixturesBundle\SyliusFixturesBundle;
 use HWI\Bundle\OAuthBundle\HWIOAuthBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use Symfony\Bundle\DebugBundle\DebugBundle;
 
 /**
  * Sylius application kernel.
@@ -57,6 +58,10 @@ class AppKernel extends Kernel
         }
 
         $bundles = array_merge(parent::registerBundles(), $bundles);
+
+        if ($this->isDebug()) {
+            $bundles[] = new DebugBundle();
+        }
 
         $bundles = array_filter($bundles, function ($bundle) {
             if ($bundle instanceof SyliusFixturesBundle) {

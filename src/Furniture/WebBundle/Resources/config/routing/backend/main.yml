@@ -41,7 +41,7 @@ sylius_backend_product_pdp_intellectual:
 
 sylius_backend_product_best_sellers:
     resource: @WebBundle/Resources/config/routing/backend/product_best_sellers.yml
-    prefix: /products/best-sellers/
+    prefix: /best-sellers/
 
 sylius_backend_inventory:
     resource: @SyliusWebBundle/Resources/config/routing/backend/inventory.yml

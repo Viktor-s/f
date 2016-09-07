@@ -78,6 +78,14 @@ product_part_material:
         name: Name
         factory: Factory
 
+product_best_sellers:
+    form:
+        name: Name
+        active: Is active?
+        product: Product
+        position: Position
+        best_sellers: Best sellers
+
 composite_collection:
     button:
         create: Create collection
@@ -206,7 +214,6 @@ product_style:
 product_space:
     breadcrumb:
         index: Space
-
 post:
     header:
         index: Posts

@@ -137,6 +137,13 @@ class BackendMenuBuilder extends MenuBuilder
             ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.options', $section)));
         }
 
+        if ($this->authorizationChecker->isGranted('furniture.product_best_sellers.index')) {
+            $child->addChild('best_sellers',[
+                'route'           => 'furniture_backend_product_best_sellers_index',
+                'labelAttributes' => ['icon' => 'glyphicon glyphicon-th'],
+            ])->setLabel($this->translate(sprintf('sylius.backend.menu.%s.product_best_sellers', $section)));
+        }
+
         if ($this->authorizationChecker->isGranted('sylius.product_attribute.index')) {
             $child->addChild('sku_attributes', [
                 'route' => 'furniture_backend_sku_option_index',

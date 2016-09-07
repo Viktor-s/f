@@ -1,0 +1,42 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li>Best sellers</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="actions-menu">
+            {{  buttons.create(path('furniture_backend_product_best_sellers_create')) }}
+        </div>
+
+        <h1><i class="glyphicon glyphicon-list-alt"></i> Best sellers sets</h1>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Active</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+
+                <td>
+                    {{ buttons.edit(path('furniture_backend_product_best_sellers_update', {id: item.id})) }}
+                    {{ buttons.delete(path('furniture_backend_product_best_sellers_delete', {id: item.id})) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -27,6 +27,12 @@ class BestSellersSet
     private $active;
 
     /**
+     * Name of the set.
+     *
+     * @var string
+     */
+    private $name;
+    /**
      * @return integer
      */
     public function getId()
@@ -71,11 +77,11 @@ class BestSellersSet
     }
 
     /**
-     * @param Collection $bestSellers
+     * @param Collection|array $bestSellers
      *
      * @return BestSellersSet
      */
-    public function setProductParts(Collection $bestSellers)
+    public function setBestSellers($bestSellers)
     {
         $this->bestSellers = $bestSellers;
 
@@ -102,7 +108,7 @@ class BestSellersSet
      *
      * @return BestSellersSet
      */
-    public function addProductPart(BestSellers $bestSeller)
+    public function addBestSeller(BestSellers $bestSeller)
     {
         if (!$this->hasBestSeller($bestSeller)) {
             $bestSeller->setBestSellerSet($this);
@@ -110,5 +116,21 @@ class BestSellersSet
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }

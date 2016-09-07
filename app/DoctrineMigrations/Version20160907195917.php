@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20160907091402 extends AbstractMigration
+class Version20160907195917 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -23,7 +23,7 @@ class Version20160907091402 extends AbstractMigration
         $this->addSql('CREATE TABLE furniture_product_best_sellers (id INT NOT NULL, product_id INT NOT NULL, best_seller_id INT NOT NULL, position INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_5C72ABF84584665A ON furniture_product_best_sellers (product_id)');
         $this->addSql('CREATE INDEX IDX_5C72ABF89105C0C9 ON furniture_product_best_sellers (best_seller_id)');
-        $this->addSql('CREATE TABLE furniture_product_best_sellers_set (id INT NOT NULL, active BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE furniture_product_best_sellers_set (id INT NOT NULL, name VARCHAR(255) NOT NULL, active BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE furniture_product_best_sellers ADD CONSTRAINT FK_5C72ABF84584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE furniture_product_best_sellers ADD CONSTRAINT FK_5C72ABF89105C0C9 FOREIGN KEY (best_seller_id) REFERENCES furniture_product_best_sellers_set (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }

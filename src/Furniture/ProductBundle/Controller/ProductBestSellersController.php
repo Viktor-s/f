@@ -4,11 +4,13 @@ namespace Furniture\ProductBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Furniture\ProductBundle\Entity\BestSellersSet;
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
 use Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression;
 use Furniture\ProductBundle\Entity\PdpIntellectualElement;
 
 use Furniture\ProductBundle\Entity\Product;
+use Furniture\ProductBundle\Form\Type\BestSellersSetType;
 use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\Form\FormError;
@@ -29,9 +31,6 @@ class ProductBestSellersController extends ResourceController
         $sorting = $this->config->getSorting();
 
         $repository = $this->getRepository();
-        $product = $this->loadProduct($request);
-
-        $criteria['product'] = $product;
 
         $resources = $this->resourceResolver->getResource(
             $repository,
@@ -45,7 +44,7 @@ class ProductBestSellersController extends ResourceController
             ->setTemplateVar($this->config->getPluralResourceName())
             ->setData($resources)
             ->setTemplateData([
-                'product' => $product,
+//                'product' => $product,
                 'items'   => $resources,
             ]);
 
@@ -94,55 +93,26 @@ class ProductBestSellersController extends ResourceController
     public function createAction(Request $request)
     {
         $this->isGrantedOr403('create');
-        $product = $this->loadProduct($request);
 
-        $pdpIntellectualRoot = new PdpIntellectualRoot();
-        $pdpIntellectualRoot->setProduct($product);
+        $bestSellersSet = new BestSellersSet();
 
-        $form = $this->createForm(new PdpIntellectualRootType(), $pdpIntellectualRoot);
+        $form = $this->createForm(new BestSellersSetType(), $bestSellersSet);
 
         if ($request->getMethod() === Request::METHOD_POST) {
-            $form->submit($request);
+            $form->handleRequest($request);
 
-            $treeData = $form->get('tree')->getData();
-            $treeData = json_decode($treeData, true);
-            $this->get('product.pdp_intellectual.creator')->createFromArray($pdpIntellectualRoot, $treeData);
-            $em = $this->get('doctrine.orm.default_entity_manager');
+            if ($form->isValid()) {
+                $em = $this->get('doctrine.orm.default_entity_manager');
+                $em->persist($bestSellersSet);
 
-            $validator = $this->get('validator');
-
-            $generator = $this->get('furniture.generator.pdp_product_scheme');
-            $generator->setPdpRoot($pdpIntellectualRoot);
-            $generator->generate();
-            $schemes = $generator->getProductSchemes();
-
-            if ($schemes) {
-                $product->setProductSchemes($schemes);
-                $violations = $validator->validate($product, null, ['SchemesCreate']);
-                if ($violations->count()) {
-                    foreach ($violations as $violation) {
-                        $form->addError(new FormError($violation->getMessage()));
-                    }
+                foreach ($bestSellersSet->getBestSellers() as $bestSeller) {
+                    $bestSeller->setBestSellerSet($bestSellersSet);
                 }
-            } else {
-                $form->addError(new FormError('No schemes generated.'));
-            }
 
-            if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
-                $em->persist($pdpIntellectualRoot);
-                $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($pdpIntellectualRoot);                   
-                $pdpIntellectualRoot->setTreeJson($tree);
                 $em->flush();
-                
-                $this->cacheElementsPdpPath($generator);
-                $em->flush();
-                $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-                    'productId' => $product->getId(),
-                ]);
+                $toUrl = $this->generateUrl('furniture_backend_product_best_sellers_index');
 
                 return new RedirectResponse($toUrl);
-            } else {
-                $form->addError(new FormError('Product already has variants or patterns.'));
             }
         }
 
@@ -150,7 +120,6 @@ class ProductBestSellersController extends ResourceController
             ->view()
             ->setTemplate($this->config->getTemplate('create.html'))
             ->setTemplateData([
-                'product' => $product,
                 'form'    => $form->createView(),
             ]);
 
@@ -164,101 +133,25 @@ class ProductBestSellersController extends ResourceController
     {
         $this->isGrantedOr403('update');
 
-        /** @var PdpIntellectualRoot $pdpIntellectualRoot */
-        $pdpIntellectualRoot = $this->findOr404($request);
-        $product = $this->loadProduct($request);
-        $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($pdpIntellectualRoot);
-
-        $newPdpIntellectual = new PdpIntellectualRoot();
-        $newPdpIntellectual->setProduct($product);
-        $newPdpIntellectual->setName($pdpIntellectualRoot->getName());
-        $newPdpIntellectual->setGraphJson($pdpIntellectualRoot->getGraphJson());
-
-        $form = $this->createForm(new PdpIntellectualRootType(), $newPdpIntellectual, ['graph_tree' => $tree]);
-
-        $form->handleRequest($request);
+        /** @var BestSellersSet $bestSellersSet */
+        $bestSellersSet = $this->findOr404($request);
+        $form = $this->createForm(new BestSellersSetType(), $bestSellersSet);
 
         if ($request->getMethod() === Request::METHOD_POST) {
-            $em = $this->get('doctrine.orm.default_entity_manager');
+            $form->handleRequest($request);
 
-            $treeData = $form->get('tree')->getData();
-            $treeData = json_decode($treeData, true);
+            if ($form->isValid()) {
+                $em = $this->get('doctrine.orm.default_entity_manager');
+                $em->persist($bestSellersSet);
 
-            $this->get('product.pdp_intellectual.creator')->createFromArray($newPdpIntellectual, $treeData);
-            
-            $validator = $this->get('validator');
-            $generator = $this->get('furniture.generator.pdp_product_scheme');
-            $generator->setPdpRoot($newPdpIntellectual);
-            $generator->generate();
-            $schemes = $generator->getProductSchemes();
-
-            if ($schemes) {
-                $productSchemes = $product->getProductSchemes();
-
-                foreach ($productSchemes as $pScheme) {
-                    $pSchemeParts = [];
-                    foreach ($pScheme->getProductParts() as $part) {
-                        $pSchemeParts[] = $part->getId();
-                    }
-
-                    sort($pSchemeParts);
-                    $pHash = implode($pSchemeParts);
-
-                    $has = false;
-                    foreach ($schemes as $scheme) {
-                        $schemeParts = [];
-                        foreach ($scheme->getProductParts() as $part) {
-                            $schemeParts[] = $part->getId();
-                        }
-
-                        sort($schemeParts);
-                        $hash = implode($schemeParts);
-
-                        if ($hash === $pHash) {
-                            $has = true;
-                            $schemes->removeElement($scheme);
-                            break;
-                        }
-                    }
-
-                    if (!$has) {
-                        $productSchemes->removeElement($pScheme);
-                        $em->remove($pScheme);
-                    }
+                foreach ($bestSellersSet->getBestSellers() as $bestSeller) {
+                    $bestSeller->setBestSellerSet($bestSellersSet);
                 }
 
-                $schemes = new ArrayCollection(array_merge($productSchemes->toArray(), $schemes->toArray()));
-                $product->setProductSchemes($schemes);
-
-                $violations = $validator->validate($product, null, ['SchemesCreate']);
-
-                if ($violations->count()) {
-                    foreach ($violations as $violation) {
-                        $form->addError(new FormError($violation->getMessage()));
-                    }
-                }
-            } else {
-                $form->addError(new FormError('No schemes generated.'));
-            }
-
-            if ($form->isValid() && !$product->hasVariants() && !$product->hasProductVariantsPatterns()) {
-                // We use transactional because we must remove and add new element.
-                $em->transactional(function () use ($pdpIntellectualRoot, $newPdpIntellectual, $em, $generator) {
-                    $em->remove($pdpIntellectualRoot);
-                    $em->persist($newPdpIntellectual);
-                    
-                    $tree = $this->get('product.pdp_intellectual.converter')->convertToArray($newPdpIntellectual);
-                    $newPdpIntellectual->setTreeJson($tree);
-                    $this->cacheElementsPdpPath($generator);
-                });
-                
-                $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-                    'productId' => $product->getId(),
-                ]);
+                $em->flush();
+                $toUrl = $this->generateUrl('furniture_backend_product_best_sellers_index');
 
                 return new RedirectResponse($toUrl);
-            } else {
-                $form->addError(new FormError('Product already has variants or patterns.'));
             }
         }
 
@@ -266,8 +159,7 @@ class ProductBestSellersController extends ResourceController
             ->view()
             ->setTemplate($this->config->getTemplate('update.html'))
             ->setTemplateData([
-                'product'          => $product,
-                'pdp_intellectual' => $pdpIntellectualRoot,
+                'bestSellersSet'          => $bestSellersSet,
                 'form'    => $form->createView(),
             ]);
 
@@ -300,33 +192,5 @@ class ProductBestSellersController extends ResourceController
         ]);
 
         return new RedirectResponse($toUrl);
-    }
-
-    /**
-     * Load product
-     *
-     * @param Request $request
-     *
-     * @return Product
-     */
-    private function loadProduct(Request $request)
-    {
-        $productId = $request->get('productId');
-
-        if (!$productId) {
-            throw new NotFoundHttpException('Missing "productId" parameter.');
-        }
-
-        $product = $this->get('doctrine.orm.default_entity_manager')
-            ->find(Product::class, $productId);
-
-        if (!$product) {
-            throw new NotFoundHttpException(sprintf(
-                'Not found product with identifier "%s".',
-                $productId
-            ));
-        }
-
-        return $product;
     }
 }

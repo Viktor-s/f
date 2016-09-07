@@ -1,27 +1,27 @@
-furniture_backend_product_best_sellers_set_index:
+furniture_backend_product_best_sellers_index:
     path: /
     defaults:
-        _controller: furniture.controller.product_best_sellers_set:indexAction
+        _controller: furniture.controller.product_best_sellers:indexAction
         _sylius:
-            template: SyliusWebBundle:Backend/ProductPdpIntellectual:index.html.twig
+            template: SyliusWebBundle:Backend/BestSellers:index.html.twig
 
-furniture_backend_product_best_sellers_set_create:
+furniture_backend_product_best_sellers_create:
     path: /new
     defaults:
-        _controller: furniture.controller.product_best_sellers_set:createAction
+        _controller: furniture.controller.product_best_sellers:createAction
         _sylius:
-            template: SyliusWebBundle:Backend/ProductPdpIntellectual:create.html.twig
+            template: SyliusWebBundle:Backend/BestSellers:create.html.twig
 
-furniture_backend_product_best_sellers_set_update:
+furniture_backend_product_best_sellers_update:
     path: /{id}/update
     requirements: { id: \d+ }
     defaults:
-        _controller: furniture.controller.product_best_sellers_set:updateAction
+        _controller: furniture.controller.product_best_sellers:updateAction
         _sylius:
-            template: SyliusWebBundle:Backend/ProductPdpIntellectual:update.html.twig
+            template: SyliusWebBundle:Backend/BestSellers:update.html.twig
 
-furniture_backend_product_best_sellers_set_delete:
+furniture_backend_product_best_sellers_delete:
     path: /{id}/delete
     requirements: { id: \d+ }
     defaults:
-        _controller: furniture.controller.product_best_sellers_set:deleteAction
+        _controller: furniture.controller.product_best_sellers:deleteAction

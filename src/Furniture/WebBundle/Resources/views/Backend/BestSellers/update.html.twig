@@ -1,0 +1,19 @@
+{% extends 'SyliusWebBundle:Backend:layout.html.twig' %}
+
+{% import 'SyliusResourceBundle:Macros:buttons.html.twig' as buttons %}
+{% import 'SyliusWebBundle:Backend/Macros:alerts.html.twig' as alerts %}
+
+{% block topbar %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('furniture_backend_product_best_sellers_index') }}">Best Sellers</a></li>
+        <li>Update</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1><i class="glyphicon glyphicon-plus"></i> Update best seller set {{ bestSellersSet.name }}</h1>
+    </div>
+
+    {% include 'WebBundle:Backend/BestSellers:form.html.twig' with {update: true} %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% form_theme form 'SyliusWebBundle:Backend:forms.html.twig' %}
+
+{{ form_errors(form) }}
+<form action="" method="POST" class="form-horizontal" id="pdp-create-form">
+    {{ form_row(form.name) }}
+    {{ form_row(form.active) }}
+
+    {{ form_rest(form) }}
+    <button type="submit" class="btn btn-success">{% if update %}Update{% else %}Create{% endif %}</button>
+</form>

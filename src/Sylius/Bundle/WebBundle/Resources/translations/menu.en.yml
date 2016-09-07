@@ -40,6 +40,7 @@ sylius:
                 product_part_type: Product part types
                 product_spaces: Product: Spaces
                 product_types: Product: Types
+                product_best_sellers: Product: Best sellers
                 products: Products
                 promotions: Promotions
                 report: Reports
@@ -98,6 +99,7 @@ sylius:
                 product_part_type: Product part types
                 product_spaces: Product: Spaces
                 product_types: Product: Types
+                product_best_sellers: Product: Best sellers
                 products: Products
                 promotions: Promotions
                 redirects: Redirects

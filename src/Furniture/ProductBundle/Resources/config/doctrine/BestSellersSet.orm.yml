@@ -10,6 +10,8 @@ Furniture\ProductBundle\Entity\BestSellersSet:
                 strategy: AUTO
 
     fields:
+        name:
+            type: string
         active:
             type: boolean
             nullable: false
@@ -18,7 +20,7 @@ Furniture\ProductBundle\Entity\BestSellersSet:
         bestSellers:
             targetEntity: Furniture\ProductBundle\Entity\BestSellers
             cascade: [ persist ]
-            mappedBy: set
+            mappedBy: bestSellerSet
             orphanRemoval: true
             orderBy:
                 position: ASC
