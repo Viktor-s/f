@@ -19,6 +19,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.provision "bootstrap", type:"shell", run: "always",  path: "bootstrap.sh"
 
+    # SSH Configure
+    config.ssh.insert_key = false
+
     config.vm.define "development", primary: true, autostart: true do |development|
         config.vm.network :private_network, ip: "10.100.150.2"
 

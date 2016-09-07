@@ -1,11 +1,11 @@
 parameters:
-    sylius.database.driver:           pdo_mysql
+    sylius.database.driver:           pdo_pgsql
     sylius.database.host:             127.0.0.1
     sylius.database.port:             ~
-    sylius.database.name:             sylius
+    sylius.database.name:             furniture
     sylius.database.path:             ~
-    sylius.database.user:             root
-    sylius.database.password:         ~
+    sylius.database.user:             furniture
+    sylius.database.password:         Q1w2e3r4
 
     sylius.mailer.transport:          smtp
     sylius.mailer.host:               127.0.0.1
