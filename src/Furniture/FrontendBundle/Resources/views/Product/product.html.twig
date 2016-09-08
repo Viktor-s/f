@@ -198,22 +198,18 @@
         </div>
         {% if product.relatedProducts is defined %}
         <div class="col-sm-12">
-            <div class="tabs-container">
-                <div class="swiper-tabs tabs-switch">
-                    <a class="block-title tab-switcher active">Suggested Products</a>
-                    <div class="clear"></div>
-                </div>
-                <div class="tabs-entry">
-                    <div class="products-swiper related-products">
-                        <div class="swiper-container" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="2" data-int-slides="2" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
-                            <div class="swiper-wrapper">
-                                {% for product in product.relatedProducts %}
-                                    {{ product_grid_view(product, '260x195', {'class' : 'swiper-slide shop-grid-item'}) }}
-                                {% endfor %}
-                            </div>
-                            <div class="pagination"></div>
-                        </div>
+            <div class="swiper-tabs tabs-switch">
+                <a class="block-title tab-switcher active">Suggested Products</a>
+                <div class="clear"></div>
+            </div>
+            <div class="products-swiper related-products">
+                <div class="swiper-container" data-autoplay="0" data-loop="0" data-speed="500" data-center="0" data-slides-per-view="responsive" data-xs-slides="2" data-int-slides="2" data-sm-slides="3" data-md-slides="4" data-lg-slides="4" data-add-slides="4">
+                    <div class="swiper-wrapper">
+                        {% for product in product.relatedProducts %}
+                            {{ product_grid_view(product, '260x195', {'class' : 'swiper-slide shop-grid-item'}) }}
+                        {% endfor %}
                     </div>
+                    <div class="pagination"></div>
                 </div>
             </div>
         </div>
