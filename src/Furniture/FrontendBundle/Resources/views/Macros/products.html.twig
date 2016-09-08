@@ -41,26 +41,34 @@
                 {% endif %}
                 </ul>
             </div>
-            <div class="panel col-xs-6 col-sm-12">
-                <div class="information-blocks">
-                    <div class="block-title size-2">Sort by price</div>
-                    <div class="range-wrapper">
-                        <div id="prices-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                            <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 100%;"></div>
-                            <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 0%;"></span>
-                            <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 100%;"></span>
-                        </div>
-                        <div class="range-price">
-                            Price:
-                            <div class="min-price"><b>$<span>0</span></b></div>
-                            <b>-</b>
-                            <div class="max-price"><b>$<span>200</span></b></div>
-                        </div>
-                        <a class="button style-14">filter</a>
-                    </div>
+
+        {% endif %}
+        <div class="panel col-xs-6 col-sm-12">
+            <div class="information-blocks">
+                <div class="block-title size-2">Sort by price</div>
+                <div class="range-wrapper">
+                    <div id="slider-range"></div>
+                    <p>
+                        <label for="amount">Укажите размах цен:</label>
+                        <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+                    </p>
+                    <a class="button style-14">filter</a>
+                    <script>
+                        $("#slider-range").slider({
+                            range: true,
+                            min: 0,
+                            max: 500,
+                            values: [ 0, 300 ],
+                            slide: function( event, ui ) {
+                                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+                            }
+                        });
+                        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+                                " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+                    </script>
                 </div>
             </div>
-        {% endif %}
+        </div>
     {% endspaceless %}
 {% endmacro %}
 
