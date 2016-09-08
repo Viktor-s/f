@@ -35,6 +35,22 @@ class BestSellersSetType extends AbstractType
                 'label' => 'product_best_sellers.form.active'
             ])
             ->add(
+                'productFactory',
+                'entity',
+                [
+                    'class'    => Factory::class,
+                    'multiple' => false,
+                    'property' => 'name',
+                    'mapped'   => false,
+                    'required' => false,
+                    'attr'     => [
+                        'class'                => 'autocomplete-extra-params',
+                        'data-extra-param-name' => 'factory',
+                        'data-parent-widget'   => 'product',
+                    ],
+                ]
+            )
+            ->add(
                 'bestSellers',
                 'collection',
                 [
@@ -45,23 +61,6 @@ class BestSellersSetType extends AbstractType
                     'label'        => 'product_best_sellers.form.best_sellers',
                 ]
             );
-//            ->add(
-//                'productFactory',
-//                'entity',
-//                [
-//                    'class'    => Factory::class,
-//                    'multiple' => false,
-//                    'property' => 'name',
-//                    'mapped'   => false,
-//                    'required' => false,
-//                    'attr'     => [
-//                        'class'                => 'autocomplete-extra-params',
-//                        'data-extra-parm-name' => 'factory',
-//                        'data-parent-widget'   => 'product',
-//                    ],
-////                    'data'     => $product->getId() ? $product->getFactory() : null,
-//                ]
-//            );
     }
     /**
      * {@inheritDoc}

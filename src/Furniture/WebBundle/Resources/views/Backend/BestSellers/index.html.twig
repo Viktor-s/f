@@ -23,6 +23,7 @@
         <tr>
             <th>Name</th>
             <th>Active</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -30,6 +31,7 @@
         {% for item in items %}
             <tr>
                 <td>{{ item.name }}</td>
+                <td>{{ item.active ? 'Yes':'No' }}</td>
 
                 <td>
                     {{ buttons.edit(path('furniture_backend_product_best_sellers_update', {id: item.id})) }}

@@ -10,3 +10,9 @@ services:
         arguments: [ @frontend.repository.product, @templating ]
         tags:
             - { name: sonata.block }
+
+    frontend.block.best_sellers:
+        class: Furniture\FrontendBundle\Blocks\ProductsBestSellersBlock
+        arguments: [ '@doctrine.orm.default_entity_manager', '@templating' ]
+        tags:
+            - { name: sonata.block }

@@ -3,6 +3,7 @@
 namespace Furniture\ProductBundle\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class BestSellersSet
@@ -132,5 +133,20 @@ class BestSellersSet
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Get products.
+     *
+     * @return ArrayCollection
+     */
+    public function getProducts()
+    {
+        $products = new ArrayCollection();
+        foreach ($this->getBestSellers() as $bestSeller) {
+            $products->add($bestSeller->getProduct());
+        }
+
+        return $products;
     }
 }

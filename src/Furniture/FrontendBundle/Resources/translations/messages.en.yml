@@ -168,6 +168,7 @@ frontend:
     need_reset_password: We sent you a verification email, please check email and follow instructions
     new_arrivals: New arrivals
     new_factories: New Brands
+    best_Sellers: Best sellers
     new_password: New password:
     new_specification: New specification
     note: Note

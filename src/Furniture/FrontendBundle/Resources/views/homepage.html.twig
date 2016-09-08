@@ -10,13 +10,20 @@
             <div class="swiper-tabs tabs-switch">
                 <div class="title">{{ 'frontend.factories'|trans }}</div>
                 <div class="list">
-                    <a class="block-title tab-switcher active">{{ 'frontend.new_factories'|trans }}</a>
+                    <a class="block-title tab-switcher active">{{ 'frontend.best_Sellers'|trans }}</a>
+                    <a class="block-title tab-switcher">{{ 'frontend.new_factories'|trans }}</a>
                     <a class="block-title tab-switcher">{{ 'frontend.new_arrivals'|trans }}</a>
                     <div class="clear"></div>
                 </div>
             </div>
 
             <div>
+                <div class="tabs-entry">
+                    <div class="best-sellers-swiper">
+                        {{ sonata_block_render({type: 'frontend.block.best_sellers'}, {user: app.user, limit: 15}) }}
+                    </div>
+                </div>
+
                 <div class="tabs-entry">
                     <div class="factories-swiper">
                         {{ sonata_block_render({type: 'frontend.block.factories'}, {user: app.user, newest: true}) }}

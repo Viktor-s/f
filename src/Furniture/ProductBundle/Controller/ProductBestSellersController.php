@@ -2,21 +2,14 @@
 
 namespace Furniture\ProductBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Furniture\ProductBundle\Entity\BestSellersSet;
 use Furniture\ProductBundle\Entity\PdpIntellectualRoot;
 use Furniture\ProductBundle\Entity\PdpIntellectualCompositeExpression;
 use Furniture\ProductBundle\Entity\PdpIntellectualElement;
-
-use Furniture\ProductBundle\Entity\Product;
 use Furniture\ProductBundle\Form\Type\BestSellersSetType;
-use Furniture\ProductBundle\Form\Type\PdpIntellectual\PdpIntellectualRootType;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductBestSellersController extends ResourceController
 {
@@ -142,11 +135,12 @@ class ProductBestSellersController extends ResourceController
 
             if ($form->isValid()) {
                 $em = $this->get('doctrine.orm.default_entity_manager');
-                $em->persist($bestSellersSet);
 
                 foreach ($bestSellersSet->getBestSellers() as $bestSeller) {
                     $bestSeller->setBestSellerSet($bestSellersSet);
                 }
+
+                $this->getRepository()->updateActiveSet($bestSellersSet->getId());
 
                 $em->flush();
                 $toUrl = $this->generateUrl('furniture_backend_product_best_sellers_index');
@@ -171,25 +165,13 @@ class ProductBestSellersController extends ResourceController
      */
     public function deleteAction(Request $request)
     {
-        $product = $this->loadProduct($request);
-
+        /** @var BestSellersSet $bestSellersSet */
+        $bestSellersSet = $this->findOr404($request);
         $this->isGrantedOr403('delete');
-        
-        
-        $pdpIntelRoor = $this->findOr404($request);
-        /** @var PdpIntellectualRoot $pdpIntelRoor */
-        $schemas = $pdpIntelRoor->getProduct()->getProductSchemes();
-        $em = $this->get('doctrine.orm.default_entity_manager');
-        
-        foreach ($schemas as $schema){
-            $em->remove($schema);
-        }
-        
-        $this->domainManager->delete($this->findOr404($request));
-       
-        $toUrl = $this->generateUrl('furniture_backend_product_pdp_intellectual_index', [
-            'productId' => $product->getId(),
-        ]);
+
+        $this->domainManager->delete($bestSellersSet);
+
+        $toUrl = $this->generateUrl('furniture_backend_product_best_sellers_index');
 
         return new RedirectResponse($toUrl);
     }

@@ -12,9 +12,9 @@
               extraElements = $('.autocomplete-extra-params');
 
             $.each(extraElements, function() {
-                if ($(this).val() && $(this).data('extra-parm-name') && $(this).data('parent-widget')) {
+                if ($(this).data('extra-param-name') && $(this).data('parent-widget')) {
                     params[$(this).data('parent-widget')] = {};
-                    params[$(this).data('parent-widget')][$(this).data('extra-parm-name')] = $(this).attr('id');
+                    params[$(this).data('parent-widget')][$(this).data('extra-param-name')] = $(this).attr('id');
                 }
             });
 
@@ -22,6 +22,7 @@
                 el = $(el);
                 var
                   input_name = el.attr('fullname'),
+                  multiple = !!el.attr('multiple'),
                   list_table_body = el.parent().find('tbody'),
                   source = el.attr('source'),
                   autocompleteEle = el.find('.add-entity-widget-name'),
@@ -42,6 +43,11 @@
                     source: source,
                     select: function( event, ui ) {
                         var item = ui.item;
+
+                        if (!multiple) {
+                            list_table_body.find('tr').remove()
+                        }
+
                         list_table_body.append('\
                                     <tr>\
                                         <td>'+item.value+'</td>\
@@ -65,7 +71,10 @@
                            queryParams[i] = {};
                            for (var j in params[i]) {
                                if (params[i].hasOwnProperty(j)) {
-                                   queryParams[i][j] = $('#' + params[i][j]).val();
+                                   var value = $('#' + params[i][j]).val();
+                                   if (value) {
+                                       queryParams[i][j] = value;
+                                   }
                                }
                            }
                        }

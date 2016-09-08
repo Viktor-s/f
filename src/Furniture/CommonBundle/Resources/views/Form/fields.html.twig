@@ -1,6 +1,6 @@
 {% block AutocompleteEntity_widget %}
     {% spaceless %}
-        <div fullname="{{ full_name }}" {{ block('widget_container_attributes') }} source="{{ path(source) }}" multiple="{{ multiple }}" class="add-entity-widget">
+        <div fullname="{{ full_name }}" {{ block('widget_container_attributes') }} source="{{ path(source) }}" {% if multiple %}multiple{% else %}single{% endif %} class="add-entity-widget">
             <div class="form-inline">
                 <div class="form-group">
                     <input type="text" placeholder="Enter name" class="form-control add-entity-widget-name" data-widget-name="{{ name }}">

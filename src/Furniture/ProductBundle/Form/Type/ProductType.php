@@ -170,7 +170,7 @@ class ProductType extends BaseProductType
                         'required' => false,
                         'attr'     => [
                             'class'                => 'autocomplete-extra-params',
-                            'data-extra-parm-name' => 'factory',
+                            'data-extra-param-name' => 'factory',
                             'data-parent-widget'   => 'relatedProducts',
                         ],
                         'data'     => $product->getId() ? $product->getFactory() : null,

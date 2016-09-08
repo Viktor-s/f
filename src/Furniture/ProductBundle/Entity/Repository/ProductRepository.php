@@ -28,8 +28,8 @@ class ProductRepository extends BaseProductRepositiry
             $qb
                 ->andWhere('LOWER(translation.name) LIKE :name OR LOWER('.$this->getAlias().'.factoryCode) LIKE :code')
                 ->setParameters([
-                    'name' => strtolower($criteria['name']).'%',
-                    'code' => strtolower($criteria['name']).'%',
+                    'name' => '%'.strtolower($criteria['name']).'%',
+                    'code' => '%'.strtolower($criteria['name']).'%',
                 ]);
         }
 

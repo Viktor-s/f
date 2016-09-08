@@ -247,6 +247,7 @@ class ProductController extends BaseProductController
                 'factory' => (int)$request->get('factory'),
             ];
 
+            /** @var Collection|Product[] $products */
             $products = $this->get('sylius.repository.product')->searchRelated($criteria);
             $products = array_slice($products, 0, 15);
 

@@ -26,6 +26,7 @@ sonata_block:
     blocks:
         frontend.block.factories: ~
         frontend.block.products: ~
+        frontend.block.best_sellers: ~
 
 sonata_formatter:
     formatters:
@@ -360,6 +361,7 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 controller: Furniture\ProductBundle\Controller\ProductBestSellersController
+                repository: Furniture\ProductBundle\Entity\Repository\BestSellersRepository
                 model: Furniture\ProductBundle\Entity\BestSellersSet
 
         furniture.composite_collection:
