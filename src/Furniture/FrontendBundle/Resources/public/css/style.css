@@ -1001,7 +1001,16 @@ span.total-price {
     background: url(../bundles/frontend/img/shape-bt.png) no-repeat right center;
     display: block;
 }
-
+.sidebar-block a.filter-category:before {
+    content: '';
+    display: block;
+    position: relative;
+    width: 5px;
+    height: 5px;
+    background: #dc0008;
+    top: 14px;
+    left: -15px;
+}
 .sidebar-block a.filter-category.collapsed {
     /*background: url(../bundles/frontend/img/sb-arrow-rgt.png) no-repeat left center;*/
 }
@@ -1013,7 +1022,16 @@ span.total-price {
 .sidebar-block a.filter-category-more.collapsed:before {
     content: 'SEE MORE +';
 }
-
+.sidebar-block a.filter-category-more.collapsed:before,
+.sidebar-block a.filter-category-more:before {
+    display: block;
+    margin-top: 5px;
+    color: #dc0008;
+}
+.ui-slider-range,
+.ui-slider-handle {
+    color: #dc0008;
+}
 input[type="checkbox"],
 input[type="radio"] {
     display: none;
@@ -1046,7 +1064,7 @@ input[type="checkbox"] + label::before {
 
 input[type="checkbox"]:checked + label::before {
     /*background-color: #797979;*/
-    background-image: url(../img/filtr-check.png);
+    background-image: url(../bundles/frontend/img/filtr-check.png);
     background-position: right top;
 }
 
