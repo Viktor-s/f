@@ -1066,6 +1066,7 @@ input[type="checkbox"]:checked + label::before {
     /*background-color: #797979;*/
     background-image: url(../bundles/frontend/img/filtr-check.png);
     background-position: right top;
+    background-repeat: no-repeat;
 }
 
 input[type="checkbox"]:disabled + label::before {
@@ -1144,7 +1145,8 @@ input[type="checkbox"]:checked:disabled + label::before {
     display: none;
 }
 .pgp-product-type {
-    border-left: 1px solid;
+    border-left: 1px solid #696969;
+    padding-left: 5px;
 }
 .product-pdp .product-detail-box h1.product-title {
     margin-top: 0;
