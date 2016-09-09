@@ -41,8 +41,36 @@
                 {% endif %}
                 </ul>
             </div>
+
         {% endif %}
+
     {% endspaceless %}
+    <div class="panel col-xs-6 col-sm-12">
+        <div class="information-blocks__price">
+            <div class="block-title size-2">Price</div>
+            <div class="range-wrapper">
+                <div id="slider-range"></div>
+                <p>
+                    <label for="amount">Price:</label>
+                    <input type="text" id="amount" style="border:0; font-weight:bold; display: inline-block" />
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [ 0, 300 ],
+            slide: function( event, ui ) {
+                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            }
+        });
+        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+                " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+    </script>
 {% endmacro %}
 
 {% macro sorting_panel(filters, per_page, position, pagination) %}
@@ -91,6 +119,7 @@
             </div>
         </div>
     {% endspaceless %}
+
 {% endmacro %}
 
 {% macro product_grid_view(product, image_size = '300x225', attr = {}) %}
@@ -131,7 +160,9 @@
                     </div>
                 </div>
             </h4>
-            <div class="pgp-product-factory">{{ product.factory.name }} | {{ product.types.first }}</div>
+            <div class="pgp-product-factory">
+                <span class="pgp-product-name">{{ product.factory.name }}</span>  <span class="pgp-product-type">{{ product.types.first }}</span>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
