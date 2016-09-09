@@ -40,7 +40,7 @@ class ProductRepository extends BaseProductRepositiry
         }
 
         $qb
-            ->andWhere($this->getAlias().'availableForSale = :availableForSale')
+            ->andWhere($this->getAlias().'.availableForSale = :availableForSale')
             ->setParameter('availableForSale', true);
 
         return $query
