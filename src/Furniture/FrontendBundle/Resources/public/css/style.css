@@ -1024,7 +1024,7 @@ span.total-price {
 }
 .sidebar-block a.filter-category-more.collapsed:before,
 .sidebar-block a.filter-category-more:before {
-    display: block;
+    display: inline-block;
     margin-top: 5px;
     color: #dc0008;
 }

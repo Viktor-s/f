@@ -52,11 +52,25 @@
                 <div id="slider-range"></div>
                 <p>
                     <label for="amount">Price:</label>
-                    <input type="text" id="amount" style="border:0; font-weight:bold;" />
+                    <input type="text" id="amount" style="border:0; font-weight:bold; display: inline-block" />
                 </p>
             </div>
         </div>
     </div>
+    <script>
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [ 0, 300 ],
+            slide: function( event, ui ) {
+                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+            }
+        });
+        $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+                " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+    </script>
 {% endmacro %}
 
 {% macro sorting_panel(filters, per_page, position, pagination) %}
