@@ -5,10 +5,6 @@
     <li class="options"><a href="#options" data-toggle="tab">{{ 'sylius.product.tabs.options'|trans }}</a></li>
 {% endif %}
 
-{% if form.relatedProducts is defined %}
-<li class="related_products"><a href="#related_products" data-toggle="tab">Related products</a></li>
-{% endif %}
-
 {% if form.productParts is defined %}
     <li class="parts"><a href="#parts" data-toggle="tab">Parts</a></li>
 {% endif %}
@@ -31,7 +27,11 @@
 
     <li class="images"><a href="#images" data-toggle="tab">{{ 'sylius.product.tabs.images'|trans }}</a></li>
 
-{% if form.channels|length > 0 %}
+{% if form.relatedProducts is defined %}
+    <li class="related_products"><a href="#related_products" data-toggle="tab">Related products</a></li>
+{% endif %}
+
+    {% if form.channels|length > 0 %}
     <li class="channels"><a href="#channels" data-toggle="tab">{{ 'sylius.product.tabs.channels'|trans }}</a></li>
 {% endif %}
 

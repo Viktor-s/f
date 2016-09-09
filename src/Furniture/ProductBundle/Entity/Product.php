@@ -114,15 +114,11 @@ class Product extends BaseProduct
 
     /**
      * @var Collection|Product[]
-     *
-     * @Assert\Valid()
      */
     private $relatedProducts;
 
     /**
      * @var Collection|Product[]
-     *
-     * @Assert\Valid()
      */
     private $relatedWithThisProducts;
     /**

@@ -39,6 +39,10 @@ class ProductRepository extends BaseProductRepositiry
                 ->setParameter('factory', $criteria['factory']);
         }
 
+        $qb
+            ->andWhere('availableForSale = :availableForSale')
+            ->setParameter('availableForSale', true);
+
         return $query
             ->getQuery()
             ->getResult();
