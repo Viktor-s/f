@@ -46,7 +46,7 @@
 
     {% endspaceless %}
     <div class="panel col-xs-6 col-sm-12">
-        <div class="information-blocks">
+        <div class="information-blocks__price">
             <div class="block-title size-2">Price</div>
             <div class="range-wrapper">
                 <div id="slider-range"></div>
@@ -54,19 +54,6 @@
                     <label for="amount">Price:</label>
                     <input type="text" id="amount" style="border:0; font-weight:bold;" />
                 </p>
-                <script>
-                    $("#slider-range").slider({
-                        range: true,
-                        min: 0,
-                        max: 500,
-                        values: [ 0, 300 ],
-                        slide: function( event, ui ) {
-                            $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-                        }
-                    });
-                    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-                            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-                </script>
             </div>
         </div>
     </div>
