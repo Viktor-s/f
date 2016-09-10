@@ -267,9 +267,17 @@ class ProductType extends BaseProductType
                     foreach ($product->getProductParts() as $productPart) {
                         $productPart->setProduct($product);
                     }
+
+                    $exists = [];
+                    foreach ($product->getRelatedProducts() as $relatedProduct) {
+                        if (!in_array($relatedProduct->getId(), $exists)) {
+                            $exists[] = $relatedProduct->getId();
+                        } else {
+                            $product->removeRelatedProduct($relatedProduct);
+                        }
+                    }
                 }
             );
-
         } else if ($options['mode'] == 'small') {
             $builder
                 ->add(
