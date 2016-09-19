@@ -196,7 +196,7 @@
                 {% endif %}
             {% endif %}
         </div>
-        {% if product.relatedProducts is defined %}
+        {% if product.relatedProducts is not empty %}
         <div class="col-sm-12">
             <div class="swiper-tabs tabs-switch">
                 <a class="block-title tab-switcher active">Suggested Products</a>
